@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <RadioGroup
+        android:id="@+id/dialogfragment_restore_strategy_radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/dialogfragment_restore_strategy_radio_merge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="@string/backup_strategy_merge"
+            android:checked="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <RadioButton
+            android:id="@+id/dialogfragment_restore_strategy_radio_overwrite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/backup_strategy_overwrite"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    </RadioGroup>
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:id="@+id/dialogfragment_restore_strategy_txt_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/backup_info_merge"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+</LinearLayout>

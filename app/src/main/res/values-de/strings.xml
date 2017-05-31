@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_delete">Löschen</string>
+    <string name="action_move_to_done">Verschieben zu Gelesen</string>
+    <string name="action_move_to_reading">Verschieben zu Lesen</string>
+    <string name="action_move_to_upcoming">Verschieben zu Später Lesen</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="action_stats">Statistiken</string>
+    <string name="detail_pages">Seiten: %d</string>
+    <string name="detail_published">Veröffentlicht: %s</string>
+    <string name="dialogfragment_state_current">Lese ich gerade</string>
+    <string name="dialogfragment_state_done">Habe ich schon gelesen</string>
+    <string name="dialogfragment_state_upcoming">Wird bald gelesen</string>
+    <string name="label_settings">Einstellungen</string>
+    <string name="label_stats">Deine Bücherstatistiken</string>
+    <string name="prefs_app_version_title">App Version</string>
+    <string name="prefs_category_about">Über</string>
+    <string name="prefs_category_books">Bücher</string>
+    <string name="prefs_developer_title">Entwickler</string>
+    <string name="tab_upcoming">Für später</string>
+    <string name="tab_done">Gelesen</string>
+    <string name="tab_current">Lesen</string>
+    <string name="detail_google_play">In Google Bücher ansehen</string>
+    <string name="error_load_book">Ups, das Buch konnte nicht geladen werden!</string>
+    <string name="dialogfragment_stats_upcoming">%d Bücher warten auf dich</string>
+    <string name="dialogfragment_stats_pages">Du hast bereits durch %d Seiten geblättert!</string>
+    <string name="dialogfragment_stats_done">Du hast schon %d Bücher gelesen</string>
+    <string name="dialogfragment_stats_current">Du liest gerade %d Bücher</string>
+    <string name="prefs_show_book_link_summary_off">Der blaue Google Bücher Button ist ausgeblendet</string>
+    <string name="prefs_show_book_link_summary_on">Der blaue Google Bücher Button in der Detailansicht wird angezeigt</string>
+    <string name="prefs_show_book_link_title">Zeige Link zu Google Bücher</string>
+    <string name="permission_camera_rationale">Es wird die Berechtigung für die Kamera benötigt, um den Barcode zu scannen</string>
+    <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
+    <string name="low_storage_error">Barcode Scanner Bibliotheken können nicht heruntergeladen werden, da zu wenig Speicher verfügbar ist!</string>
+    <string name="action_share">Teilen</string>
+
+    <string-array name="empty_indicators">
+        <item>Scanne Bücher um sie später zu lesen</item>
+        <item>Warum liest du kein Buch?</item>
+        <item>Du hast noch kein Buch gelesen</item>
+    </string-array>
+
+    <string name="action_add_isbn">ISBN manuell hinzufügen</string>
+    <string name="label_capture">Buch scannen</string>
+    <string name="dismiss">Ausblenden</string>
+    <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
+    <string name="dialogfragment_isbn_title">ISBN manuell eingeben</string>
+    <string name="dialogfragment_isbn_message">Wenn die Kamera den ISBN nicht erkennt, kannst du hier den ISBN manuell eingeben</string>
+    <string name="download_error">Downloadfehler</string>
+    <string name="download_book_network_error">Das Buch konnte nicht heruntergeladen werden.\n\nBitte überprüfe deine Internetverbindung und versuche es erneut.</string>
+    <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.\n\nVergewissere dich, dass du einen ISBN-Barcode einscannst.</string>
+    <string name="fetch_data">Buchdaten laden</string>
+    <string name="detail_wishlist_date">Auf der Wunschliste seit %s</string>
+    <string name="detail_start_date">Begonnen am %s</string>
+    <string name="detail_end_date">Fertig gelesen am %s</string>
+    <string name="share_template">Hey, ich lese gerade %1$s und es ist fantastisch!\nSieh es dir selbst an: %2$s</string>
+    <string name="send_to">Teile dein Buch</string>
+    <string name="label_backup">Backups verwalten</string>
+    <string name="last_backup">Letzte Sicherung: %s</string>
+    <string name="restore">WIEDERHERSTELLEN</string>
+    <string name="backup_now">Jetzt sichern</string>
+    <string name="backup_label_auto">Autom. Backups</string>
+    <string name="backup_books_amount">Bücher: %d</string>
+    <string name="backup">SICHERN</string>
+    <string name="action_backup">Backup</string>
+    <string name="backup_strategy_merge">Zusammenführen</string>
+    <string name="backup_strategy_overwrite">Überschreiben</string>
+    <string name="backup_info_overwrite">Alle Bücher am Gerät werden gelöscht und durch die im Backup gespeicherten Bücher überschrieben.</string>
+    <string name="backup_info_merge">Die Bücher am Gerät werden beibehalten und durch die nicht gespeicherten Bücher ergänzt.</string>
+    <string name="backup_created">Backup erstellt</string>
+    <string name="backup_not_created">Backup konnte nicht erstellt werden</string>
+    <string name="backup_removed">Backup gelöscht</string>
+    <string name="dialogfragment_restore_strategy_title">Wiederherstellungsoption wählen</string>
+    <string name="backup_restored">Backup vom %s hergestellt</string>
+    <string name="backup_restore_error">Fehler beim Wiederherstellen</string>
+    <string name="dialogfragment_legal_notice_title">Open Source Lizenzen</string>
+    <string name="prefs_open_source_licenses_title">Open Source Lizenzen</string>
+
+</resources>

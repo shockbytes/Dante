@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+    <PreferenceCategory android:title="Backup">
+
+        <Preference
+            android:title="Export books"
+            android:summary="Export all books to a Google drive backup"/>
+
+        <Preference
+            android:title="Import Google Drive backup" />
+
+    </PreferenceCategory> -->
+
+    <PreferenceCategory android:title="@string/prefs_category_about">
+
+        <Preference
+            android:summary="@string/app_version"
+            android:title="@string/prefs_app_version_title" />
+
+        <Preference
+            android:summary="@string/prefs_developer_summary"
+            android:title="@string/prefs_developer_title" />
+
+        <Preference
+            android:summary="@string/prefs_icons_summary"
+            android:title="@string/prefs_icons_title" />
+
+        <Preference
+            android:key="@string/prefs_open_source_licenses_key"
+            android:title="@string/prefs_open_source_licenses_title" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

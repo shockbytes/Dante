@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/listitem_book_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:minHeight="80dp"
+    android:padding="8dp"
+    android:transitionName="@string/transition_name_card"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/listitem_book_img_thumb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/contentdesc_listitem_img_thumb"
+            app:srcCompat="@drawable/ic_placeholder"
+            android:transitionName="@string/transition_name_thumb" />
+
+        <ImageButton
+            android:id="@+id/listitem_book_img_overflow"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="36dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/contentdesc_listitem_img_overflow"
+            android:scaleType="center"
+            app:srcCompat="@drawable/ic_overflow" />
+
+        <TextView
+            android:id="@+id/listitem_book_txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@+id/listitem_book_img_thumb"
+            android:layout_toLeftOf="@+id/listitem_book_img_overflow"
+            android:layout_toRightOf="@+id/listitem_book_img_thumb"
+            android:layout_toStartOf="@+id/listitem_book_img_overflow"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:transitionName="@string/transition_name_title" />
+
+        <TextView
+            android:id="@+id/listitem_book_txt_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listitem_book_txt_title"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@+id/listitem_book_img_thumb"
+            android:layout_toLeftOf="@+id/listitem_book_img_overflow"
+            android:layout_toRightOf="@+id/listitem_book_img_thumb"
+            android:layout_toStartOf="@+id/listitem_book_img_overflow"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="14sp"
+            android:transitionName="@string/transition_name_subtitle" />
+
+        <TextView
+            android:id="@+id/listitem_book_txt_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listitem_book_txt_subtitle"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_toEndOf="@+id/listitem_book_img_thumb"
+            android:layout_toLeftOf="@+id/listitem_book_img_overflow"
+            android:layout_toRightOf="@+id/listitem_book_img_thumb"
+            android:layout_toStartOf="@+id/listitem_book_img_overflow"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="15sp"
+            android:transitionName="@string/transition_name_author" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

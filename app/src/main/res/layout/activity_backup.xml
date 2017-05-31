@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee"
+    android:id="@+id/activity_backup_root"
+    tools:context="at.shockbytes.dante.core.BackupActivity">
+
+    <RelativeLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#82B1FF"
+        android:visibility="gone"
+        android:elevation="8dp">
+
+        <Switch
+            android:id="@+id/activity_backup_switch_auto_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="48dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="48dp"
+            android:text="@string/backup_label_auto"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/activity_backup_backup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_below="@+id/headerLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/backup"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <TextView
+            android:id="@+id/activity_backup_txt_last_backup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/last_backup"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/activity_backup_btn_backup"
+            android:text="@string/backup_now"
+            android:layout_width="wrap_content"
+            android:padding="16dp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="end"
+            app:backgroundTint="@color/colorAccent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/activity_backup_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:background="#aaa"
+        android:layout_below="@+id/activity_backup_backup" />
+
+    <LinearLayout
+        android:id="@+id/activity_backup_restore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_below="@+id/activity_backup_backup">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/restore"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_backup_rv_backups"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package at.shockbytes.dante.fragments.dialogs;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,11 +22,15 @@ public class BookStateDialogFragment extends DialogFragment implements View.OnCl
 
     public interface OnBookStateClickedListener {
         void onBookStateClicked(Book.State state);
+
+        void onCancel();
     }
 
     private static final String ARG_TITLE = "arg_title";
 
     private String title;
+
+    private boolean isCanceled;
 
     private OnBookStateClickedListener listener;
 
@@ -42,6 +47,7 @@ public class BookStateDialogFragment extends DialogFragment implements View.OnCl
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         title = getArguments().getString(ARG_TITLE);
+        isCanceled = true;
     }
 
     @NonNull
@@ -54,6 +60,15 @@ public class BookStateDialogFragment extends DialogFragment implements View.OnCl
         builder.setCancelable(true);
 
         return builder.create();
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+
+        if (isCanceled) {
+            listener.onCancel();
+        }
     }
 
     @Override
@@ -84,6 +99,10 @@ public class BookStateDialogFragment extends DialogFragment implements View.OnCl
                 break;
 
         }
+
+        // This will prevent the onDismiss() method to activate the listener call
+        isCanceled = false;
+
         listener.onBookStateClicked(state);
         dismiss();
     }

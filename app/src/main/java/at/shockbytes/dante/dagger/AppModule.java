@@ -22,6 +22,8 @@ import at.shockbytes.dante.util.backup.GoogleDriveBackupManager;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
 import at.shockbytes.dante.util.books.RealmBookManager;
+import at.shockbytes.dante.util.tracking.KeenTracker;
+import at.shockbytes.dante.util.tracking.Tracker;
 import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
@@ -84,9 +86,14 @@ public class AppModule {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return new Gson(); // THis should never be the case
+        return new Gson(); // This should never be the case
     }
 
+    @Provides
+    @Singleton
+    public Tracker provideTracker() {
+        return new KeenTracker(app.getApplicationContext());
+    }
 
     @Provides
     @Singleton

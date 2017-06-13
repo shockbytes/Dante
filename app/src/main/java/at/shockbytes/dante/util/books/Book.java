@@ -24,6 +24,9 @@ public class Book extends RealmObject {
     */
     private int position;
 
+    private int rating; // 1 - 5
+    private String language;
+
     private String title;
     private String subTitle;
 
@@ -42,18 +45,18 @@ public class Book extends RealmObject {
     private long wishlistDate;
 
     public Book() {
-        this("", "", "", 0, "", "", "", "");
+        this("", "", "", 0, "", "", "", "", "");
     }
 
     public Book(String title, String subTitle, String author, int pageCount, String publishedDate,
-                String isbn, String thumbnailAddress, String googleBooksLink) {
+                String isbn, String thumbnailAddress, String googleBooksLink, String language) {
         this(title, subTitle, author, pageCount, publishedDate, isbn,
-                thumbnailAddress, googleBooksLink, 0, 0, 0);
+                thumbnailAddress, googleBooksLink, 0, 0, 0, language, -1);
     }
 
     public Book(String title, String subTitle, String author, int pageCount, String publishedDate,
                 String isbn, String thumbnailAddress, String googleBooksLink, long startDate,
-                long endDate, long wishlistDate) {
+                long endDate, long wishlistDate, String language, int rating) {
         this.title = title;
         this.subTitle = subTitle;
         this.author = author;
@@ -62,6 +65,9 @@ public class Book extends RealmObject {
         this.isbn = isbn;
         this.thumbnailAddress = thumbnailAddress;
         this.googleBooksLink = googleBooksLink;
+
+        this.language = language;
+        this.rating = rating;
 
         this.startDate = startDate;
         this.endDate = endDate;
@@ -150,6 +156,24 @@ public class Book extends RealmObject {
         this.position = position;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        if (rating > 0 && rating <= 5) {
+            this.rating = rating;
+        }
+    }
+
     public long getStartDate() {
         return startDate;
     }
@@ -187,9 +211,11 @@ public class Book extends RealmObject {
         jsonObject.addProperty("pageCount", getPageCount());
         jsonObject.addProperty("publishedDate", getPublishedDate());
         jsonObject.addProperty("isbn", getIsbn());
+        jsonObject.addProperty("language", getLanguage());
         jsonObject.addProperty("thumbnailAddress", getThumbnailAddress());
         jsonObject.addProperty("googleBooksLink", getGoogleBooksLink());
         jsonObject.addProperty("ordinalState", getState().ordinal());
+        jsonObject.addProperty("rating", getRating());
         jsonObject.addProperty("startDate", getStartDate());
         jsonObject.addProperty("endDate", getEndDate());
         jsonObject.addProperty("wishlistDate", getWishlistDate());
@@ -211,6 +237,8 @@ public class Book extends RealmObject {
         str += "\nStartdate:\t" + new Date(startDate).toString();
         str += "\nEnddate:\t" + new Date(endDate).toString();
         str += "\nWishlistdate:\t" + new Date(wishlistDate).toString();
+        str += "\nLanguage:\t" + language;
+        str += "\nRating:\t" + rating;
         str += "\nState:\t" + State.values()[ordinalState];
         return str;
     }

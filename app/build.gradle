@@ -46,6 +46,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'com.github.shockbytes:ShockUtil:1.0'
+    compile 'io.keen:keen-client-api-android:3.0.0@aar'
 
     compile 'com.google.dagger:dagger:2.9'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

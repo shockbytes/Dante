@@ -66,6 +66,6 @@
         android:layout_gravity="bottom|end"
         android:clickable="true"
         app:layout_behavior="at.shockbytes.dante.util.ui.ScrollAwareFloatingActionButtonBehavior"
-        android:src="@drawable/ic_add" />
+        app:srcCompat="@drawable/ic_add" />
 
 </android.support.design.widget.CoordinatorLayout>

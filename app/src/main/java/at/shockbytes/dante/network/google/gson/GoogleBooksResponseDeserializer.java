@@ -58,9 +58,10 @@ public class GoogleBooksResponseDeserializer implements JsonDeserializer<Book> {
             String isbn = getIsbn(volumeInfo);
             String thumbnailAddress = getImageLink(volumeInfo);
             String gooogleBooksLink = volumeInfo.get("infoLink").getAsString();
+            String language = ""; // TODO Parse language!!!
 
             return new Book(title, subtitle, author, pageCount, publishedDate,
-                    isbn, thumbnailAddress, gooogleBooksLink);
+                    isbn, thumbnailAddress, gooogleBooksLink, language);
         }
         return null;
     }

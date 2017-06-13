@@ -37,6 +37,7 @@ import at.shockbytes.dante.util.barcode.BarcodeCaptureActivity;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookListener;
 import at.shockbytes.dante.util.books.BookManager;
+import at.shockbytes.dante.util.tracking.Tracker;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity
 
     @Inject
     protected BackupManager backupManager;
+
+    @Inject
+    protected Tracker tracker;
 
     private BookListener bookListener;
 
@@ -117,9 +121,16 @@ public class MainActivity extends AppCompatActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == AppParams.REQ_CODE_SCAN_BOOK && resultCode == RESULT_OK) {
-            Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.EXTRA_BARCODE);
-            downloadBook(barcode);
+        if (requestCode == AppParams.REQ_CODE_SCAN_BOOK) {
+
+            if (resultCode == RESULT_OK) {
+                Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.EXTRA_BARCODE);
+                downloadBook(barcode);
+            } else {
+                tracker.trackOnScanBookCanceled();
+            }
+
+
         } else if (requestCode == BackupManager.RESOLVE_CONNECTION_REQUEST_CODE
                 && resultCode == RESULT_OK) {
             backupManager.connect(this, this);
@@ -176,6 +187,8 @@ public class MainActivity extends AppCompatActivity
 
         Intent sendIntent = createSharingIntent(b);
         startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.send_to)));
+
+        tracker.trackOnBookShared();
     }
 
     @Override
@@ -194,6 +207,8 @@ public class MainActivity extends AppCompatActivity
     public void onMoveToDone(Book b) {
         bookManager.updateBookState(b, Book.State.READ);
         bookListener.onBookStateChanged(b, Book.State.READ);
+
+        tracker.trackOnBookMovedToDone(b);
     }
 
     @Override
@@ -223,6 +238,9 @@ public class MainActivity extends AppCompatActivity
 
     @OnClick(R.id.main_fab)
     public void onClickNewBook() {
+
+        tracker.trackOnScanBook();
+
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
         startActivityForResult(BarcodeCaptureActivity.newIntent(this),
                 AppParams.REQ_CODE_SCAN_BOOK, options.toBundle());
@@ -361,6 +379,13 @@ public class MainActivity extends AppCompatActivity
                             book.setState(state);
                             bookManager.addBook(book);
                             bookListener.onBookAdded(book);
+
+                            tracker.trackOnBookScanned(book);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            tracker.trackOnFoundBookCanceled();
                         }
                     });
                     dialogFragment.show(getSupportFragmentManager(), "bookstate-dialogfragment");
@@ -376,6 +401,7 @@ public class MainActivity extends AppCompatActivity
 
                 //throwable.printStackTrace();
 
+                // TODO Nicer error messages
                 DownloadErrorDialogFragment errorFragment = DownloadErrorDialogFragment
                         .newInstance(throwable.getLocalizedMessage());
                 errorFragment.show(getSupportFragmentManager(), "download-error-dialogfragment");

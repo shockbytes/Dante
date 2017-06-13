@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity
+            android:theme="@style/Dante.ScanTheme"
             android:name=".util.barcode.BarcodeCaptureActivity"
             android:label="@string/label_capture"
             android:screenOrientation="portrait" />

@@ -26,6 +26,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -40,6 +42,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -51,10 +55,15 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import at.shockbytes.dante.R;
+import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.fragments.dialogs.IsbnDialogFragment;
+import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.barcode.camera.CameraSourcePreview;
 import at.shockbytes.dante.util.barcode.camera.GraphicOverlay;
-import at.shockbytes.dante.fragments.dialogs.IsbnDialogFragment;
+import at.shockbytes.dante.util.tracking.Tracker;
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -63,7 +72,7 @@ import at.shockbytes.dante.fragments.dialogs.IsbnDialogFragment;
  */
 public final class BarcodeCaptureActivity extends AppCompatActivity
         implements GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic>,
-                    IsbnDialogFragment.OnIsbnEnteredListener {
+        IsbnDialogFragment.OnIsbnEnteredListener {
 
     private static final String TAG = "Dante";
 
@@ -79,6 +88,9 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
+    @Inject
+    protected Tracker tracker;
+
     // helper objects for detecting taps and pinches.
     //private GestureDetector gestureDetector;
 
@@ -92,14 +104,18 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        ((DanteApplication) getApplication()).getAppComponent().inject(this);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Slide(Gravity.BOTTOM));
         }
         setContentView(R.layout.barcode_capture);
+        setStatusBarTranslucent(true);
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(AppParams.TRANSLUCENT_ACTION_BAR_COLOR)));
         }
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
@@ -127,10 +143,20 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
                     prefs.edit().putBoolean("show_scan_snackbar", false).apply();
                 }
             });
-            sb.setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
+            sb.setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
             sb.show();
         }
+    }
 
+    private void setStatusBarTranslucent(boolean makeTranslucent) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (makeTranslucent) {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            } else {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            }
+        }
     }
 
     /**
@@ -367,7 +393,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
             Intent data = new Intent();
             data.putExtra(EXTRA_BARCODE, barcode);
             setResult(RESULT_OK, data);
-            finish();
+            supportFinishAfterTransition();
         } else {
             Log.d(TAG, "barcode data is null");
         }
@@ -389,6 +415,9 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
 
     @Override
     public void onIsbnEntered(String isbn) {
+
+        tracker.trackOnBookManuallyEntered();
+
         Barcode barcode = new Barcode();
         barcode.displayValue = isbn;
         sendResultToCallingActivity(barcode);

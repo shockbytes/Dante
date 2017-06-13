@@ -15,4 +15,5 @@ public class AppParams {
 
     public static final long REALM_SCHEMA_VERSION = 1;
 
+    public static final String TRANSLUCENT_ACTION_BAR_COLOR = "#42424242";
 }

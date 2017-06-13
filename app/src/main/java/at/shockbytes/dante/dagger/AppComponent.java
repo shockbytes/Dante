@@ -7,6 +7,7 @@ import at.shockbytes.dante.core.DetailActivity;
 import at.shockbytes.dante.core.MainActivity;
 import at.shockbytes.dante.fragments.MainBookFragment;
 import at.shockbytes.dante.fragments.dialogs.StatsDialogFragment;
+import at.shockbytes.dante.util.barcode.BarcodeCaptureActivity;
 import dagger.Component;
 
 /**
@@ -23,6 +24,8 @@ public interface AppComponent {
     void inject(DetailActivity activity);
 
     void inject(BackupActivity activity);
+
+    void inject(BarcodeCaptureActivity activity);
 
     void inject(MainBookFragment fragment);
 

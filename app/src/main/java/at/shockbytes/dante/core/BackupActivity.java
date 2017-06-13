@@ -27,14 +27,15 @@ import java.util.List;
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.ResourceManager;
 import at.shockbytes.dante.adapter.BackupEntryAdapter;
 import at.shockbytes.dante.adapter.BaseAdapter;
 import at.shockbytes.dante.adapter.helper.BackupEntryTouchHelper;
 import at.shockbytes.dante.fragments.dialogs.RestoreStrategyDialogFragment;
+import at.shockbytes.dante.util.ResourceManager;
 import at.shockbytes.dante.util.backup.BackupEntry;
 import at.shockbytes.dante.util.backup.BackupManager;
 import at.shockbytes.dante.util.books.BookManager;
+import at.shockbytes.dante.util.tracking.Tracker;
 import at.shockbytes.util.view.EqualSpaceItemDecoration;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -71,6 +72,9 @@ public class BackupActivity extends AppCompatActivity
 
     @Inject
     protected BackupManager backupManager;
+
+    @Inject
+    protected Tracker tracker;
 
     private BackupEntryAdapter adapter;
 
@@ -117,6 +121,8 @@ public class BackupActivity extends AppCompatActivity
                 showSnackbar(getString(R.string.backup_created));
                 updateLastBackupTime();
                 loadBackupList();
+
+                tracker.trackOnBackupMade();
             }
 
             @Override
@@ -164,7 +170,7 @@ public class BackupActivity extends AppCompatActivity
                         .subscribe(new Action1<Void>() {
                             @Override
                             public void call(Void aVoid) {
-
+                                tracker.trackOnBackupRestored();
                             }
                         }, new Action1<Throwable>() {
                             @Override

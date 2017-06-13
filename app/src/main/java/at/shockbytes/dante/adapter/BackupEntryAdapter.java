@@ -9,7 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.ResourceManager;
+import at.shockbytes.dante.util.ResourceManager;
 import at.shockbytes.dante.util.backup.BackupEntry;
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter;
 import butterknife.Bind;

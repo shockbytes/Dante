@@ -10,18 +10,32 @@ import io.realm.RealmSchema;
  */
 
 public class DanteRealmMigration implements RealmMigration {
+
     @Override
     public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
 
         RealmSchema schema = realm.getSchema();
 
         if (oldVersion == 0) {
-            schema.get("Book")
-                    .addField("startDate", long.class)
-                    .addField("endDate", long.class)
-                    .addField("wishlistDate", long.class);
+            migrateDates(schema);
             oldVersion++;
         }
+        if (oldVersion == 1) {
+            migrateRatingAndLanguage(schema);
+            //oldVersion++;
+        }
+    }
 
+    private void migrateDates(RealmSchema schema) {
+        schema.get("Book")
+                .addField("startDate", long.class)
+                .addField("endDate", long.class)
+                .addField("wishlistDate", long.class);
+    }
+
+    private void migrateRatingAndLanguage(RealmSchema schema) {
+        schema.get("Book")
+                .addField("rating", int.class)
+                .addField("language", String.class);
     }
 }

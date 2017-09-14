@@ -60,6 +60,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     private final LayoutInflater inflater;
     private Book.State state;
 
+    private boolean showOverflow;
+
     private OnBookPopupItemSelectedListener onBookPopupItemSelectedListener;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
@@ -67,11 +69,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     //----------------------------------------------------------------------
 
     public BookAdapter(Context context, List<Book> data, Book.State state,
-                       OnBookPopupItemSelectedListener onBookPopupItemSelectedListener) {
+                       OnBookPopupItemSelectedListener onBookPopupItemSelectedListener,
+                       boolean showOverflow) {
 
         inflater = LayoutInflater.from(context);
         this.context = context;
         this.state = state;
+        this.showOverflow = showOverflow;
         this.onBookPopupItemSelectedListener = onBookPopupItemSelectedListener;
 
         this.data = new ArrayList<>();
@@ -159,6 +163,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         }
     }
 
+    public int getLocation(Book searching) {
+        return getLocation(data, searching);
+    }
+
     private int getLocation(List<Book> data, Book searching) {
 
         for (int j = 0; j < data.size(); ++j) {
@@ -215,6 +223,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
                     return true;
                 }
             });
+
+            int visibilityOverflow = showOverflow ? View.VISIBLE : View.GONE;
+            imgBtnOverflow.setVisibility(visibilityOverflow);
 
             popupMenu = new PopupMenu(context, imgBtnOverflow);
             popupMenu.getMenuInflater().inflate(R.menu.popup_item, popupMenu.getMenu());

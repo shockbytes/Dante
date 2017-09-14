@@ -1,0 +1,168 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mainBackground"
+    android:padding="16dp"
+    tools:context="at.shockbytes.dante.fragments.DownloadBookFragment">
+
+    <RelativeLayout
+        android:id="@+id/fragment_download_book_main_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/fragment_download_book_progressbar"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerInParent="true"
+            android:indeterminate="true" />
+
+        <ImageView
+            android:id="@+id/fragment_download_book_imgview_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:translationY="60dp"
+            app:srcCompat="@drawable/ic_placeholder" />
+
+        <TextView
+            android:id="@+id/fragment_download_book_txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:translationY="60dp"
+            android:text="@string/fragment_download_text_placeholder"
+            android:layout_below="@+id/fragment_download_book_imgview_cover"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+        <TextView
+            android:id="@+id/fragment_download_book_txt_other_suggestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_download_book_txt_title"
+            android:layout_marginTop="32dp"
+            android:alpha="0"
+            android:gravity="center"
+            android:text="@string/download_suggestion_header_other"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_download_book_rv_other_suggestions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fragment_download_book_view_pick_states"
+            android:layout_below="@+id/fragment_download_book_txt_other_suggestions"
+            android:alpha="0"
+            android:padding="4dp" />
+
+        <LinearLayout
+            android:id="@+id/fragment_download_book_view_pick_states"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fragment_download_book_btn_not_my_book"
+            android:weightSum="1.2">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/fragment_download_book_btn_upcoming"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:alpha="0"
+                android:drawablePadding="8dp"
+                android:drawableTop="@drawable/ic_pick_upcoming"
+                android:maxLines="1"
+                android:text="@string/tab_upcoming"
+                android:textColor="@color/tabcolor_upcoming" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/fragment_download_book_btn_current"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:drawablePadding="8dp"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:alpha="0"
+                android:drawableTop="@drawable/ic_pick_current"
+                android:maxLines="1"
+                android:text="@string/tab_current"
+                android:textColor="@color/tabcolor_current" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/fragment_download_book_btn_done"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:drawablePadding="8dp"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:alpha="0"
+                android:drawableTop="@drawable/ic_pick_done"
+                android:maxLines="1"
+                android:text="@string/tab_done"
+                android:textColor="@color/tabcolor_done" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/fragment_download_book_btn_not_my_book"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="16dp"
+            android:text="@string/download_suggestion_other"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:alpha="0"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/disabled_view" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_download_book_error_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/fragment_download_book_imgview_error"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            app:srcCompat="@drawable/ic_download_error" />
+
+        <TextView
+            android:id="@+id/fragment_download_book_txt_error_cause"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/fragment_download_book_btn_error_close"
+            android:layout_below="@+id/fragment_download_book_imgview_error"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/fragment_download_book_btn_error_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/download_btn_error"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/color_error" />
+
+    </RelativeLayout>
+
+</FrameLayout>

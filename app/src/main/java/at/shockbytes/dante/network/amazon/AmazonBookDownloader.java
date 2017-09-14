@@ -3,7 +3,7 @@ package at.shockbytes.dante.network.amazon;
 import javax.inject.Inject;
 
 import at.shockbytes.dante.network.BookDownloader;
-import at.shockbytes.dante.util.books.Book;
+import at.shockbytes.dante.util.books.BookSuggestion;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -26,8 +26,8 @@ public class AmazonBookDownloader implements BookDownloader {
     }
 
     @Override
-    public Observable<Book> downloadBook(String isbn) {
-        return api.downloadBook("AWSECommerceService", "ItemLookup", "Large",
+    public Observable<BookSuggestion> downloadBookSuggestion(String isbn) {
+        return api.downloadBookSuggestion("AWSECommerceService", "ItemLookup", "Large",
                 "All", "ISBN", isbn, ACCESS_KEY, ASSOCIATE_TAG, createTimestamp(),
                 createSignature())
                 .observeOn(AndroidSchedulers.mainThread())

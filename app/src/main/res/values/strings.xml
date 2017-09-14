@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">1.2</string>
+    <string name="app_version" translatable="false">2.0b</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
@@ -58,9 +58,9 @@
     <string name="label_capture">Capture book</string>
     <string name="dismiss">Dismiss</string>
     <string name="help_scan">Focus the ISBN until the app automatically recognizes it</string>
-    <string name="dialogfragment_isbn_title">Enter ISBN manually</string>
-    <string name="dialogfragment_isbn_message">If the camera cannot capture the ISBN, you can add the ISBN here manually</string>
-    <string name="isbn" translatable="false">ISBN</string>
+    <string name="dialogfragment_query_title">Manual search</string>
+    <string name="dialogfragment_query_message">If the camera cannot capture the ISBN, you can search for the title or enter the ISBN here manually</string>
+    <string name="manual_query" >Title or ISBN</string>
     <string name="download_error">Download error</string>
     <string name="download_book_json_error">Cannot find any corresponding entry in Googles book database.\n\nMake sure you\'re scanning a barcode belonging to a book (ISBN).</string>
 
@@ -99,5 +99,11 @@
     <string name="prefs_open_source_licenses_key" translatable="false">open_source_licenses_key</string>
     <string name="prefs_open_source_licenses_title">Open Source licenses</string>
     <string name="dialogfragment_legal_notice_title">Open source licenses</string>
+    <string name="download_suggestions_none">None of them</string>
+    <string name="download_suggestion_header_other">Maybe one of them?</string>
+    <string name="download_suggestion_other">Not my book</string>
+    <string name="download_btn_error">Okay, got it</string>
+    <string name="download_code_error">Sorry! An unexpected error occurred.</string>
+    <string name="fragment_download_text_placeholder">...</string>
 
 </resources>

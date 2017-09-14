@@ -14,13 +14,13 @@ import javax.inject.Singleton;
 
 import at.shockbytes.dante.network.BookDownloader;
 import at.shockbytes.dante.network.google.gson.BookBackupSerializer;
-import at.shockbytes.dante.network.google.gson.GoogleBooksResponseDeserializer;
+import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.DanteRealmMigration;
 import at.shockbytes.dante.util.backup.BackupManager;
 import at.shockbytes.dante.util.backup.GoogleDriveBackupManager;
-import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
+import at.shockbytes.dante.util.books.BookSuggestion;
 import at.shockbytes.dante.util.books.RealmBookManager;
 import at.shockbytes.dante.util.tracking.KeenTracker;
 import at.shockbytes.dante.util.tracking.Tracker;
@@ -60,7 +60,7 @@ public class AppModule {
     @Singleton
     public Gson provideGson() {
         return new GsonBuilder()
-                .registerTypeAdapter(Book.class, new GoogleBooksResponseDeserializer())
+                .registerTypeAdapter(BookSuggestion.class, new GoogleBooksSuggestionResponseDeserializer())
                 .create();
     }
 
@@ -98,7 +98,6 @@ public class AppModule {
     @Provides
     @Singleton
     public Realm provideRealm() {
-
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .schemaVersion(AppParams.REALM_SCHEMA_VERSION)
                 .migration(new DanteRealmMigration())

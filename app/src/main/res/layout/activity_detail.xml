@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:contentDescription="@string/contentdesc_listitem_img_thumb"
-                android:src="@drawable/ic_placeholder"
+                app:srcCompat="@drawable/ic_placeholder"
                 android:transitionName="@string/transition_name_thumb" />
 
             <TextView

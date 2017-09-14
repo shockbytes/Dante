@@ -136,7 +136,7 @@ public class MainBookFragment extends Fragment
 
         // Initialize RecyclerView
         bookAdapter = new BookAdapter(getContext(), new ArrayList<Book>(),
-                bookState, popupItemSelectedListener);
+                bookState, popupItemSelectedListener, true);
         recyclerView.setLayoutManager(getLayoutManager());
         bookAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(bookAdapter);

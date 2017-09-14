@@ -25,18 +25,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:theme="@style/Dante.ScanTheme"
-            android:name=".util.barcode.BarcodeCaptureActivity"
+            android:name=".util.barcode.QueryCaptureActivity"
             android:label="@string/label_capture"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Dante.ScanTheme" />
         <activity android:name=".core.DetailActivity" />
         <activity
             android:name=".core.SettingsActivity"
             android:label="@string/label_settings" />
-        <activity android:name=".core.BackupActivity"
-            android:label="@string/label_backup">
-
-        </activity>
+        <activity
+            android:name=".core.BackupActivity"
+            android:label="@string/label_backup" />
+        <activity android:name=".core.DownloadActivity"
+            android:label=""
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

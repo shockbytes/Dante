@@ -16,19 +16,19 @@ import at.shockbytes.dante.R;
  * @author Martin Macheiner
  *         Date: 30.08.2016.
  */
-public class IsbnDialogFragment extends DialogFragment {
+public class QueryDialogFragment extends DialogFragment {
 
-    public interface OnIsbnEnteredListener {
+    public interface OnQueryEnteredListener {
 
-        void onIsbnEntered(String isbn);
+        void onQueryEntered(String isbn);
     }
 
-    private EditText editIsbn;
+    private EditText editQuery;
 
-    private OnIsbnEnteredListener isbnListener;
+    private OnQueryEnteredListener queryListener;
 
-    public static IsbnDialogFragment newInstance() {
-        return new IsbnDialogFragment();
+    public static QueryDialogFragment newInstance() {
+        return new QueryDialogFragment();
     }
 
     @NonNull
@@ -36,9 +36,9 @@ public class IsbnDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.dialogfragment_isbn_title);
+        builder.setTitle(R.string.dialogfragment_query_title);
         builder.setIcon(R.mipmap.ic_launcher);
-        builder.setMessage(R.string.dialogfragment_isbn_message);
+        builder.setMessage(R.string.dialogfragment_query_message);
         builder.setView(buildView());
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
@@ -49,8 +49,9 @@ public class IsbnDialogFragment extends DialogFragment {
         builder.setPositiveButton(android.R.string.search_go, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (isbnListener != null) {
-                    isbnListener.onIsbnEntered(editIsbn.getText().toString());
+                if (queryListener != null) {
+                    // Remove blanks with + so query works also for titles
+                    queryListener.onQueryEntered(editQuery.getText().toString().replace(' ', '+'));
                 }
             }
         });
@@ -59,15 +60,15 @@ public class IsbnDialogFragment extends DialogFragment {
     }
 
 
-    public void setOnIsbnEnteredListener(OnIsbnEnteredListener listener) {
-        this.isbnListener = listener;
+    public void setOnQueryEnteredListener(OnQueryEnteredListener listener) {
+        this.queryListener = listener;
     }
 
     private View buildView() {
 
         View v = LayoutInflater.from(getContext())
-                .inflate(R.layout.dialogfragment_enter_isbn, null, false);
-        editIsbn = (EditText) v.findViewById(R.id.dialogfragment_isbn_edit);
+                .inflate(R.layout.dialogfragment_enter_query, null, false);
+        editQuery = (EditText) v.findViewById(R.id.dialogfragment_isbn_edit);
         return v;
     }
 }

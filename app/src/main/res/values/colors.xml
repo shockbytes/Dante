@@ -17,5 +17,6 @@
     <color name="disabled_view">#888</color>
     <color name="white">#FFF</color>
     <color name="divider">#aaa</color>
+    <color name="color_error">#F44336</color>
 
 </resources>

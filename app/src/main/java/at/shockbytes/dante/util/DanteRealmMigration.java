@@ -1,5 +1,7 @@
 package at.shockbytes.dante.util;
 
+import android.support.annotation.NonNull;
+
 import io.realm.DynamicRealm;
 import io.realm.RealmMigration;
 import io.realm.RealmSchema;
@@ -12,7 +14,7 @@ import io.realm.RealmSchema;
 public class DanteRealmMigration implements RealmMigration {
 
     @Override
-    public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
+    public void migrate(@NonNull DynamicRealm realm, long oldVersion, long newVersion) {
 
         RealmSchema schema = realm.getSchema();
 
@@ -22,7 +24,11 @@ public class DanteRealmMigration implements RealmMigration {
         }
         if (oldVersion == 1) {
             migrateRatingAndLanguage(schema);
-            //oldVersion++;
+            oldVersion++;
+        }
+        if (oldVersion == 2) {
+            migrateBookPageCountAndNotes(schema);
+            oldVersion++;
         }
     }
 
@@ -34,8 +40,21 @@ public class DanteRealmMigration implements RealmMigration {
     }
 
     private void migrateRatingAndLanguage(RealmSchema schema) {
-        schema.get("Book")
-                .addField("rating", int.class)
-                .addField("language", String.class);
+
+        // FIXME look into this
+        try {
+            schema.get("Book")
+                    .addField("rating", int.class)
+                    .addField("language", String.class);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
     }
+
+    private void migrateBookPageCountAndNotes(RealmSchema schema) {
+        schema.get("Book")
+                .addField("currentPage", int.class)
+                .addField("notes", String.class);
+    }
+
 }

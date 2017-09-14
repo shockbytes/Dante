@@ -33,37 +33,44 @@ public class KeenTracker implements Tracker {
 
     @Override
     public void trackOnScanBook() {
-        trackEvent("bookScan", createTrackEventData(new Pair<String, Object>("scan_clicked", 1)));
+        trackEvent("bookScan", createTrackEventData(
+                new Pair<String, Object>("scan_clicked", 1)));
     }
 
     @Override
     public void trackOnScanBookCanceled() {
-        trackEvent("bookScanCanceled", createTrackEventData(new Pair<String, Object>("scan_canceled", 1)));
+        trackEvent("bookScanCanceled", createTrackEventData(
+                new Pair<String, Object>("scan_canceled", 1)));
     }
 
     @Override
     public void trackOnBookManuallyEntered() {
-        trackEvent("bookScanManuallyEntered", createTrackEventData(new Pair<String, Object>("book_manually_entered", 1)));
+        trackEvent("bookScanManuallyEntered", createTrackEventData(
+                new Pair<String, Object>("book_manually_entered", 1)));
     }
 
     @Override
     public void trackOnFoundBookCanceled() {
-        trackEvent("bookScanFoundCanceled", createTrackEventData(new Pair<String, Object>("found_book_cancelled", 1)));
+        trackEvent("bookScanFoundCanceled", createTrackEventData(
+                new Pair<String, Object>("found_book_cancelled", 1)));
     }
 
     @Override
     public void trackOnBookShared() {
-        trackEvent("shareBook", createTrackEventData(new Pair<String, Object>("share_book", 1)));
+        trackEvent("shareBook", createTrackEventData(
+                new Pair<String, Object>("share_book", 1)));
     }
 
     @Override
     public void trackOnBackupMade() {
-        trackEvent("backupMade", createTrackEventData(new Pair<String, Object>("backupMade", 1)));
+        trackEvent("backupMade", createTrackEventData(
+                new Pair<String, Object>("backupMade", 1)));
     }
 
     @Override
     public void trackOnBackupRestored() {
-        trackEvent("backupRestored", createTrackEventData(new Pair<String, Object>("backupRestored", 1)));
+        trackEvent("backupRestored", createTrackEventData(
+                new Pair<String, Object>("backupRestored", 1)));
     }
 
     @Override
@@ -78,7 +85,15 @@ public class KeenTracker implements Tracker {
     @Override
     public void trackOnBookMovedToDone(Book b) {
         long duration = b.getEndDate() - b.getStartDate();
-        trackEvent("bookFinished", createTrackEventData(new Pair<String, Object>("duration", duration)));
+        trackEvent("bookFinished", createTrackEventData(
+                new Pair<String, Object>("duration", duration)));
+    }
+
+    @Override
+    public void trackOnDownloadError(String reason) {
+        trackEvent("bookScanDownloadError", createTrackEventData(
+                new Pair<String, Object>("found_book_download_error", 1),
+                new Pair<String, Object>("found_book_download_error_reason", reason)));
     }
 
     // -------------------------- Helper methods --------------------------

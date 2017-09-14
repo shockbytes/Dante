@@ -2,8 +2,8 @@ package at.shockbytes.dante.network.google;
 
 import javax.inject.Inject;
 
-import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.network.BookDownloader;
+import at.shockbytes.dante.util.books.BookSuggestion;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -23,8 +23,8 @@ public class GoogleBooksDownloader implements BookDownloader {
     }
 
     @Override
-    public Observable<Book> downloadBook(String isbn) {
-        return api.downloadBook(isbn)
+    public Observable<BookSuggestion> downloadBookSuggestion(String isbn) {
+        return api.downloadBookSuggestion(isbn)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

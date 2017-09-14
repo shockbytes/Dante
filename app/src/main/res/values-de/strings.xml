@@ -44,8 +44,8 @@
     <string name="label_capture">Buch scannen</string>
     <string name="dismiss">Ausblenden</string>
     <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
-    <string name="dialogfragment_isbn_title">ISBN manuell eingeben</string>
-    <string name="dialogfragment_isbn_message">Wenn die Kamera den ISBN nicht erkennt, kannst du hier den ISBN manuell eingeben</string>
+    <string name="dialogfragment_query_title">Manuelle Suche</string>
+    <string name="dialogfragment_query_message">Wenn die Kamera den ISBN nicht erkennt, kannst du hier nach dem Titel suchen oder den ISBN manuell eingeben</string>
     <string name="download_error">Downloadfehler</string>
     <string name="download_book_network_error">Das Buch konnte nicht heruntergeladen werden.\n\nBitte überprüfe deine Internetverbindung und versuche es erneut.</string>
     <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.\n\nVergewissere dich, dass du einen ISBN-Barcode einscannst.</string>
@@ -75,5 +75,9 @@
     <string name="backup_restore_error">Fehler beim Wiederherstellen</string>
     <string name="dialogfragment_legal_notice_title">Open Source Lizenzen</string>
     <string name="prefs_open_source_licenses_title">Open Source Lizenzen</string>
+    <string name="download_suggestion_header_other">Eines von denen?</string>
+    <string name="download_suggestion_other">Nicht mein Buch</string>
+    <string name="download_suggestions_none">Keines von denen</string>
+    <string name="manual_query">Titel oder ISBN</string>
 
 </resources>

@@ -13,7 +13,9 @@ public class AppParams {
     public static final String STAT_DONE = "stat_done";
     public static final String STAT_PAGES = "stat_pages";
 
-    public static final long REALM_SCHEMA_VERSION = 1;
+    public static final long REALM_SCHEMA_VERSION = 3;
+
+    public static final int MAX_FETCH_AMOUNT = 10;
 
     public static final String TRANSLUCENT_ACTION_BAR_COLOR = "#42424242";
 }

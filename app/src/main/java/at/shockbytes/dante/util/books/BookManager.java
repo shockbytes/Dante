@@ -15,7 +15,7 @@ import rx.Observable;
  */
 public interface BookManager {
 
-    void addBook(@NonNull Book book);
+    Book addBook(@NonNull Book book);
 
     Book getBook(long id);
 
@@ -25,7 +25,7 @@ public interface BookManager {
 
     Map<String, Integer> getStatistics();
 
-    Observable<Book> downloadBook(@NonNull String isbn);
+    Observable<BookSuggestion> downloadBook(@NonNull String isbn);
 
     Observable<List<Book>> getAllBooks();
 

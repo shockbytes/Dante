@@ -1,6 +1,6 @@
 package at.shockbytes.dante.network;
 
-import at.shockbytes.dante.util.books.Book;
+import at.shockbytes.dante.util.books.BookSuggestion;
 import rx.Observable;
 
 /**
@@ -10,6 +10,6 @@ import rx.Observable;
 
 public interface BookDownloader {
 
-    Observable<Book> downloadBook(String isbn);
+    Observable<BookSuggestion> downloadBookSuggestion(String isbn);
 
 }

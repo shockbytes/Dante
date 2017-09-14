@@ -18,14 +18,11 @@ public class Book extends RealmObject {
     @PrimaryKey
     private long id;
 
-    /* TODO Let it here, so we can
-    * switch the books in position in RecyclerView
+    /*
+    * Switch the books in position in RecyclerView
     * To add it now will not break realm on a later update
     */
     private int position;
-
-    private int rating; // 1 - 5
-    private String language;
 
     private String title;
     private String subTitle;
@@ -40,9 +37,18 @@ public class Book extends RealmObject {
 
     private int ordinalState;
 
+    // Version 1
     private long startDate;
     private long endDate;
     private long wishlistDate;
+
+    // Version 2
+    private int rating; // 1 - 5
+    private String language;
+
+    // Version 3 TODO integrate
+    private int currentPage;
+    private String notes;
 
     public Book() {
         this("", "", "", 0, "", "", "", "", "");
@@ -57,6 +63,7 @@ public class Book extends RealmObject {
     public Book(String title, String subTitle, String author, int pageCount, String publishedDate,
                 String isbn, String thumbnailAddress, String googleBooksLink, long startDate,
                 long endDate, long wishlistDate, String language, int rating) {
+        this.id = -1;
         this.title = title;
         this.subTitle = subTitle;
         this.author = author;

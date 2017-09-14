@@ -27,4 +27,5 @@ public interface Tracker {
 
     void trackOnBookMovedToDone(Book b);
 
+    void trackOnDownloadError(String reason);
 }

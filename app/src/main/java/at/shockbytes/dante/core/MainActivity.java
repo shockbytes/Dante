@@ -5,7 +5,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,26 +13,21 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.vision.barcode.Barcode;
-
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BookAdapter;
 import at.shockbytes.dante.fragments.MainBookFragment;
-import at.shockbytes.dante.fragments.dialogs.BookStateDialogFragment;
-import at.shockbytes.dante.fragments.dialogs.DownloadErrorDialogFragment;
 import at.shockbytes.dante.fragments.dialogs.StatsDialogFragment;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.backup.BackupManager;
-import at.shockbytes.dante.util.barcode.BarcodeCaptureActivity;
+import at.shockbytes.dante.util.barcode.QueryCaptureActivity;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookListener;
 import at.shockbytes.dante.util.books.BookManager;
@@ -41,15 +35,14 @@ import at.shockbytes.dante.util.tracking.Tracker;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.functions.Action1;
+import icepick.Icepick;
+import icepick.State;
 
 public class MainActivity extends AppCompatActivity
         implements BookAdapter.OnBookPopupItemSelectedListener, TabLayout.OnTabSelectedListener,
         BackupManager.OnConnectionStatusListener {
 
-    private static final String ARG_PRIMARY = "arg_primary";
-    private static final String ARG_PRIMARY_DARK = "arg_primary_dark";
-    private static final String ARG_TAB_POSITION = "arg_tab_position";
+    private static final int REQ_CODE_DOWNLOAD_BOOK = 0x1235;
 
     @Bind(R.id.tablayout)
     protected TabLayout tabLayout;
@@ -72,15 +65,18 @@ public class MainActivity extends AppCompatActivity
     @Inject
     protected Tracker tracker;
 
+    @State
+    protected int primaryOld;
+
+    @State
+    protected int primaryDarkOld;
+
+    @State
+    protected int initialTabPosition;
+
     private BookListener bookListener;
 
-    private ProgressDialog progressDialog;
-
     private MenuItem menuItemBackup;
-
-    private int primaryOld;
-    private int primaryDarkOld;
-    private int initialTabPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         if (savedInstanceState != null) {
-            restoreFromInstanceState(savedInstanceState);
+            Icepick.restoreInstanceState(this, savedInstanceState);
         } else {
             primaryOld = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
             primaryDarkOld = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
@@ -121,19 +117,34 @@ public class MainActivity extends AppCompatActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == AppParams.REQ_CODE_SCAN_BOOK) {
+        switch (requestCode) {
 
-            if (resultCode == RESULT_OK) {
-                Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.EXTRA_BARCODE);
-                downloadBook(barcode);
-            } else {
-                tracker.trackOnScanBookCanceled();
-            }
+            case AppParams.REQ_CODE_SCAN_BOOK:
 
+                if (resultCode == RESULT_OK) {
+                    String query = data.getStringExtra(QueryCaptureActivity.EXTRA_QUERY);
+                    downloadBook(query);
+                } else {
+                    tracker.trackOnScanBookCanceled();
+                }
+                break;
 
-        } else if (requestCode == BackupManager.RESOLVE_CONNECTION_REQUEST_CODE
-                && resultCode == RESULT_OK) {
-            backupManager.connect(this, this);
+            case REQ_CODE_DOWNLOAD_BOOK:
+
+                if (resultCode == RESULT_OK) {
+                    long bookId = data.getLongExtra(DownloadActivity.EXTRA_BOOK_ID, -1);
+                    if (bookId > -1) {
+                        bookListener.onBookAdded(bookManager.getBook(bookId));
+                    }
+                }
+                break;
+
+            case BackupManager.RESOLVE_CONNECTION_REQUEST_CODE:
+
+                if (resultCode == RESULT_OK) {
+                    backupManager.connect(this, this);
+                }
+                break;
         }
     }
 
@@ -164,16 +175,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(ARG_PRIMARY, primaryOld);
-        outState.putInt(ARG_PRIMARY_DARK, primaryDarkOld);
-        outState.putInt(ARG_TAB_POSITION, tabLayout.getSelectedTabPosition());
         super.onSaveInstanceState(outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        restoreFromInstanceState(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
     }
 
     @Override
@@ -214,12 +223,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         MainBookFragment fragment = MainBookFragment.newInstance(Book.State.values()[tab.getPosition()]);
         bookListener = fragment;
-        transaction.replace(R.id.main_content, fragment);
-        transaction.commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.main_content, fragment)
+                .commit();
 
         appBar.setExpanded(true, true);
         toggleFab();
@@ -242,7 +253,7 @@ public class MainActivity extends AppCompatActivity
         tracker.trackOnScanBook();
 
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-        startActivityForResult(BarcodeCaptureActivity.newIntent(this),
+        startActivityForResult(QueryCaptureActivity.newIntent(this),
                 AppParams.REQ_CODE_SCAN_BOOK, options.toBundle());
     }
 
@@ -261,7 +272,6 @@ public class MainActivity extends AppCompatActivity
         tabLayout.addOnTabSelectedListener(this);
         TabLayout.Tab initialTab = tabLayout.getTabAt(initialTabPosition);
         if (initialTab != null) {
-            //onTabSelected(initialTab);
             initialTab.select();
         }
 
@@ -331,20 +341,6 @@ public class MainActivity extends AppCompatActivity
         primaryDarkOld = primaryDark;
     }
 
-    private void showProgressDialog() {
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setTitle(R.string.fetch_data);
-        progressDialog.show();
-    }
-
-    private void restoreFromInstanceState(Bundle savedInstanceState) {
-        primaryOld = savedInstanceState.getInt(ARG_PRIMARY);
-        primaryDarkOld = savedInstanceState.getInt(ARG_PRIMARY_DARK);
-        initialTabPosition = savedInstanceState.getInt(ARG_TAB_POSITION);
-    }
-
     private Intent createSharingIntent(Book b) {
 
         String msg = getString(R.string.share_template, b.getTitle(), b.getGoogleBooksLink());
@@ -354,61 +350,11 @@ public class MainActivity extends AppCompatActivity
                 .setType("text/plain");
     }
 
-    private void downloadBook(Barcode barcode) {
+    private void downloadBook(String query) {
 
-        bookManager.downloadBook(barcode.displayValue).subscribe(new Action1<Book>() {
-            @Override
-            public void call(final Book book) {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
-
-
-                // No book was found
-                if (book == null) {
-                    DownloadErrorDialogFragment errorFragment = DownloadErrorDialogFragment
-                            .newInstance(getString(R.string.download_book_json_error));
-                    errorFragment.show(getSupportFragmentManager(), "download-error-dialogfragment");
-                } else {
-                    BookStateDialogFragment dialogFragment = BookStateDialogFragment.newInstance(book.getTitle());
-                    dialogFragment.setOnBookStateClickedListener(new BookStateDialogFragment.OnBookStateClickedListener() {
-                        @Override
-                        public void onBookStateClicked(Book.State state) {
-
-                            book.setState(state);
-                            bookManager.addBook(book);
-                            bookListener.onBookAdded(book);
-
-                            tracker.trackOnBookScanned(book);
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            tracker.trackOnFoundBookCanceled();
-                        }
-                    });
-                    dialogFragment.show(getSupportFragmentManager(), "bookstate-dialogfragment");
-                }
-            }
-        }, new Action1<Throwable>() {
-            @Override
-            public void call(Throwable throwable) {
-                if (progressDialog != null) {
-                    progressDialog.dismiss();
-                    progressDialog = null;
-                }
-
-                //throwable.printStackTrace();
-
-                // TODO Nicer error messages
-                DownloadErrorDialogFragment errorFragment = DownloadErrorDialogFragment
-                        .newInstance(throwable.getLocalizedMessage());
-                errorFragment.show(getSupportFragmentManager(), "download-error-dialogfragment");
-            }
-        });
-
-        showProgressDialog();
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+        startActivityForResult(DownloadActivity.newIntent(this, query),
+                REQ_CODE_DOWNLOAD_BOOK, options.toBundle());
     }
 
 }

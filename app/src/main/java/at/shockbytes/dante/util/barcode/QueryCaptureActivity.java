@@ -59,7 +59,7 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.core.DanteApplication;
-import at.shockbytes.dante.fragments.dialogs.IsbnDialogFragment;
+import at.shockbytes.dante.fragments.dialogs.QueryDialogFragment;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.barcode.camera.CameraSourcePreview;
 import at.shockbytes.dante.util.barcode.camera.GraphicOverlay;
@@ -70,9 +70,9 @@ import at.shockbytes.dante.util.tracking.Tracker;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-public final class BarcodeCaptureActivity extends AppCompatActivity
+public final class QueryCaptureActivity extends AppCompatActivity
         implements GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic>,
-        IsbnDialogFragment.OnIsbnEnteredListener {
+        QueryDialogFragment.OnQueryEnteredListener {
 
     private static final String TAG = "Dante";
 
@@ -82,7 +82,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
     // permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
-    public static final String EXTRA_BARCODE = "Barcode";
+    public static final String EXTRA_QUERY = "Barcode";
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -95,7 +95,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
     //private GestureDetector gestureDetector;
 
     public static Intent newIntent(Context context) {
-        return new Intent(context, BarcodeCaptureActivity.class);
+        return new Intent(context, QueryCaptureActivity.class);
     }
 
     /**
@@ -115,11 +115,12 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(AppParams.TRANSLUCENT_ACTION_BAR_COLOR)));
+            getSupportActionBar().setBackgroundDrawable(
+                    new ColorDrawable(Color.parseColor(AppParams.TRANSLUCENT_ACTION_BAR_COLOR)));
         }
 
-        mPreview = (CameraSourcePreview) findViewById(R.id.preview);
-        mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
+        mPreview = findViewById(R.id.preview);
+        mGraphicOverlay = findViewById(R.id.graphicOverlay);
         mGraphicOverlay.setOnGraphicAvailableListener(this);
 
         // Check for the camera permission before accessing the camera.  If the
@@ -201,9 +202,9 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.menu_new_add_isbn) {
-            IsbnDialogFragment idf = IsbnDialogFragment.newInstance();
-            idf.setOnIsbnEnteredListener(this);
-            idf.show(getSupportFragmentManager(), "isbn-dialog-fragment");
+            QueryDialogFragment idf = QueryDialogFragment.newInstance();
+            idf.setOnQueryEnteredListener(this);
+            idf.show(getSupportFragmentManager(), "query-dialog-fragment");
         } else if (item.getItemId() == android.R.id.home) {
             finish();
         }
@@ -388,14 +389,15 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
         }
         return barcode != null;
     } */
-    private void sendResultToCallingActivity(Barcode barcode) {
-        if (barcode != null) {
+
+    private void sendResultToCallingActivity(String query) {
+        if (query != null) {
             Intent data = new Intent();
-            data.putExtra(EXTRA_BARCODE, barcode);
+            data.putExtra(EXTRA_QUERY, query);
             setResult(RESULT_OK, data);
             supportFinishAfterTransition();
         } else {
-            Log.d(TAG, "barcode data is null");
+            Log.d(TAG, "Query data is null");
         }
     }
 
@@ -407,20 +409,18 @@ public final class BarcodeCaptureActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    sendResultToCallingActivity(barcode);
+                    sendResultToCallingActivity(barcode.displayValue);
                 }
             });
         }
     }
 
     @Override
-    public void onIsbnEntered(String isbn) {
+    public void onQueryEntered(String query) {
 
         tracker.trackOnBookManuallyEntered();
 
-        Barcode barcode = new Barcode();
-        barcode.displayValue = isbn;
-        sendResultToCallingActivity(barcode);
+        sendResultToCallingActivity(query);
     }
 
     /*

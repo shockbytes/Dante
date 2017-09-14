@@ -38,22 +38,17 @@ public class RealmBookManager implements BookManager {
     }
 
     @Override
-    public void addBook(@NonNull final Book book) {
+    public Book addBook(@NonNull Book book) {
 
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // This is the only place where a real realm transaction is executed
-                BookConfig config = realm.where(BookConfig.class).findFirst();
-                if (config == null) { // First time config is written
-                    config = realm.createObject(BookConfig.class);
-                }
+        realm.beginTransaction();
 
-                long id = config.getLastPrimaryKey();
-                book.setId(id);
-                realm.copyToRealm(book);
-            }
-        });
+        long id = getLastId();
+        book.setId(id);
+        realm.copyToRealm(book);
+
+        realm.commitTransaction();
+
+        return book;
     }
 
     @Override
@@ -66,7 +61,7 @@ public class RealmBookManager implements BookManager {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
 
                 book.setState(newState);
                 realm.copyToRealmOrUpdate(book);
@@ -80,7 +75,7 @@ public class RealmBookManager implements BookManager {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 realm.where(Book.class).equalTo("id", id).findFirst().deleteFromRealm();
             }
         });
@@ -110,8 +105,8 @@ public class RealmBookManager implements BookManager {
     }
 
     @Override
-    public Observable<Book> downloadBook(@NonNull String isbn) {
-        return bookDownloader.downloadBook(isbn);
+    public Observable<BookSuggestion> downloadBook(@NonNull String isbn) {
+        return bookDownloader.downloadBookSuggestion(isbn);
     }
 
     @Override
@@ -162,6 +157,20 @@ public class RealmBookManager implements BookManager {
     @Override
     public void close() {
         realm.close();
+    }
+
+    /**
+     * This must always be called inside a transaction
+     */
+    private long getLastId() {
+
+        // This is the only place where a real realm transaction is executed
+        BookConfig config = realm.where(BookConfig.class).findFirst();
+        if (config == null) { // First time config is written
+            config = realm.createObject(BookConfig.class);
+        }
+
+        return config.getLastPrimaryKey();
     }
 
     private Observable<Void> mergeBackupRestore(final FragmentActivity activity,

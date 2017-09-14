@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:fontFamily="sans-serif-light"
-        android:hint="@string/isbn"
-        android:inputType="numberDecimal"
+        android:hint="@string/manual_query"
+        android:inputType="text"
         android:textSize="18sp" />
 
 </LinearLayout>

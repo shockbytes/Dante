@@ -40,15 +40,9 @@ public class DanteRealmMigration implements RealmMigration {
     }
 
     private void migrateRatingAndLanguage(RealmSchema schema) {
-
-        // FIXME look into this
-        try {
-            schema.get("Book")
-                    .addField("rating", int.class)
-                    .addField("language", String.class);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
+        schema.get("Book")
+                .addField("rating", int.class)
+                .addField("language", String.class);
     }
 
     private void migrateBookPageCountAndNotes(RealmSchema schema) {

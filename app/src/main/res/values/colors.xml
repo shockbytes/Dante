@@ -19,4 +19,7 @@
     <color name="divider">#aaa</color>
     <color name="color_error">#F44336</color>
 
+    <color name="nice_color">#0d9</color>
+    <color name="color_barcode">#424242</color>
+
 </resources>

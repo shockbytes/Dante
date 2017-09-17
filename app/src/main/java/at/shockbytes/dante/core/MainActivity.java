@@ -39,8 +39,8 @@ import icepick.Icepick;
 import icepick.State;
 
 public class MainActivity extends AppCompatActivity
-        implements BookAdapter.OnBookPopupItemSelectedListener, TabLayout.OnTabSelectedListener,
-        BackupManager.OnConnectionStatusListener {
+        implements BookAdapter.OnBookPopupItemSelectedListener,
+        TabLayout.OnTabSelectedListener, BackupManager.OnConnectionStatusListener {
 
     private static final int REQ_CODE_DOWNLOAD_BOOK = 0x1235;
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
     protected int primaryDarkOld;
 
     @State
-    protected int initialTabPosition;
+    protected int tabPosition;
 
     private BookListener bookListener;
 
@@ -86,13 +86,11 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState != null) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
-        } else {
-            primaryOld = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
-            primaryDarkOld = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
-            initialTabPosition = 1;
-        }
+        // Fields will be overwritten by icepick if they have already a value
+        tabPosition = 1;
+        primaryOld = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary);
+        primaryDarkOld = ContextCompat.getColor(getApplicationContext(), R.color.colorPrimaryDark);
+        Icepick.restoreInstanceState(this, savedInstanceState);
 
         // Connect to Google Drive for backups
         backupManager.connect(this, this);
@@ -180,12 +178,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Icepick.restoreInstanceState(this, savedInstanceState);
-    }
-
-    @Override
     public void onDelete(Book b) {
         bookListener.onBookDeleted(b);
         bookManager.removeBook(b.getId());
@@ -223,7 +215,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
 
-        MainBookFragment fragment = MainBookFragment.newInstance(Book.State.values()[tab.getPosition()]);
+        tabPosition = tab.getPosition();
+        MainBookFragment fragment = MainBookFragment.newInstance(Book.State.values()[tabPosition]);
         bookListener = fragment;
 
         getSupportFragmentManager()
@@ -269,12 +262,19 @@ public class MainActivity extends AppCompatActivity
 
     private void initialize() {
 
+        // Select the tab
         tabLayout.addOnTabSelectedListener(this);
-        TabLayout.Tab initialTab = tabLayout.getTabAt(initialTabPosition);
+        TabLayout.Tab initialTab = tabLayout.getTabAt(tabPosition);
         if (initialTab != null) {
             initialTab.select();
         }
 
+        // Color the controls accordingly
+        toolbar.setBackgroundColor(primaryOld);
+        appBar.setBackgroundColor(primaryOld);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+           getWindow().setStatusBarColor(primaryDarkOld);
+        }
     }
 
     private void toggleFab() {
@@ -351,7 +351,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void downloadBook(String query) {
-
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
         startActivityForResult(DownloadActivity.newIntent(this, query),
                 REQ_CODE_DOWNLOAD_BOOK, options.toBundle());

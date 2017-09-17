@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="@string/prefs_category_books_title">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:title="@string/prefs_page_tracking_title"
+            android:key="@string/prefs_page_tracking_key"/>
+
+    </PreferenceCategory>
+
     <!--
     <PreferenceCategory android:title="Backup">
 

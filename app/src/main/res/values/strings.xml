@@ -49,7 +49,7 @@
     <string name="dialogfragment_state_current">is being read</string>
     <string name="dialogfragment_state_done">is already read</string>
 
-    <string name="detail_pages">Pages: %d</string>
+    <string name="detail_pages" translatable="false">%1$d / %2$d</string>
     <string name="detail_published">Published: %s</string>
     <string name="detail_isbn" translatable="false">ISBN: %s</string>
     <string name="detail_google_play">View it on Google Books</string>
@@ -61,7 +61,7 @@
     <string name="dialogfragment_query_title">Manual search</string>
     <string name="dialogfragment_query_message">If the camera cannot capture the ISBN, you can search for the title or enter the ISBN here manually</string>
     <string name="manual_query" >Title or ISBN</string>
-    <string name="download_error">Download error</string>
+    <string name="book_finished">%s finished</string>
     <string name="download_book_json_error">Cannot find any corresponding entry in Googles book database.\n\nMake sure you\'re scanning a barcode belonging to a book (ISBN).</string>
 
     <string-array name="empty_indicators">
@@ -105,5 +105,9 @@
     <string name="download_btn_error">Okay, got it</string>
     <string name="download_code_error">Sorry! An unexpected error occurred.</string>
     <string name="fragment_download_text_placeholder">...</string>
+    <string name="prefs_page_tracking_title">Page tracking</string>
+    <string name="prefs_category_books_title">Books</string>
+    <string name="prefs_page_tracking_key">prefs_page_tracking_key</string>
+    <string name="book_finished_move_to_done_question">You have finished your book. Would you like to add it to the done list?</string>
 
 </resources>

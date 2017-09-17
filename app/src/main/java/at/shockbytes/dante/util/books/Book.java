@@ -2,8 +2,6 @@ package at.shockbytes.dante.util.books;
 
 import com.google.gson.JsonObject;
 
-import java.util.Date;
-
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -46,7 +44,7 @@ public class Book extends RealmObject {
     private int rating; // 1 - 5
     private String language;
 
-    // Version 3 TODO integrate
+    // Version 3
     private int currentPage;
     private String notes;
 
@@ -57,12 +55,13 @@ public class Book extends RealmObject {
     public Book(String title, String subTitle, String author, int pageCount, String publishedDate,
                 String isbn, String thumbnailAddress, String googleBooksLink, String language) {
         this(title, subTitle, author, pageCount, publishedDate, isbn,
-                thumbnailAddress, googleBooksLink, 0, 0, 0, language, -1);
+                thumbnailAddress, googleBooksLink, 0, 0, 0, language, -1, 0, "");
     }
 
     public Book(String title, String subTitle, String author, int pageCount, String publishedDate,
                 String isbn, String thumbnailAddress, String googleBooksLink, long startDate,
-                long endDate, long wishlistDate, String language, int rating) {
+                long endDate, long wishlistDate, String language, int rating, int currentPage,
+                String notes) {
         this.id = -1;
         this.title = title;
         this.subTitle = subTitle;
@@ -75,6 +74,9 @@ public class Book extends RealmObject {
 
         this.language = language;
         this.rating = rating;
+
+        this.currentPage = currentPage;
+        this.notes = notes;
 
         this.startDate = startDate;
         this.endDate = endDate;
@@ -113,7 +115,6 @@ public class Book extends RealmObject {
 
         this.ordinalState = state.ordinal();
     }
-
 
     public boolean isAnyTimeInformationAvailable() {
         return wishlistDate != 0 || startDate != 0 || endDate != 0;
@@ -171,6 +172,14 @@ public class Book extends RealmObject {
         this.language = language;
     }
 
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
+
     public int getRating() {
         return rating;
     }
@@ -180,6 +189,15 @@ public class Book extends RealmObject {
             this.rating = rating;
         }
     }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
 
     public long getStartDate() {
         return startDate;
@@ -219,6 +237,8 @@ public class Book extends RealmObject {
         jsonObject.addProperty("publishedDate", getPublishedDate());
         jsonObject.addProperty("isbn", getIsbn());
         jsonObject.addProperty("language", getLanguage());
+        jsonObject.addProperty("currentPage", getCurrentPage());
+        jsonObject.addProperty("notes", getNotes());
         jsonObject.addProperty("thumbnailAddress", getThumbnailAddress());
         jsonObject.addProperty("googleBooksLink", getGoogleBooksLink());
         jsonObject.addProperty("ordinalState", getState().ordinal());
@@ -231,22 +251,6 @@ public class Book extends RealmObject {
 
     @Override
     public String toString() {
-
-        String str = "\nId:\t" + id;
-        str += "\nTitle:\t" + title;
-        str += "\nSubtitle:\t" + subTitle;
-        str += "\nAuthor:\t" + author;
-        str += "\nPage count:\t" + pageCount;
-        str += "\nPublished date:\t" + publishedDate;
-        str += "\nISBN:\t" + isbn;
-        str += "\nThumbnailaddress:\t" + thumbnailAddress;
-        str += "\nGoogle books address:\t" + googleBooksLink;
-        str += "\nStartdate:\t" + new Date(startDate).toString();
-        str += "\nEnddate:\t" + new Date(endDate).toString();
-        str += "\nWishlistdate:\t" + new Date(wishlistDate).toString();
-        str += "\nLanguage:\t" + language;
-        str += "\nRating:\t" + rating;
-        str += "\nState:\t" + State.values()[ordinalState];
-        return str;
+        return toJson().toString();
     }
 }

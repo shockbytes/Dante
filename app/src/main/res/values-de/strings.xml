@@ -6,7 +6,6 @@
     <string name="action_move_to_upcoming">Verschieben zu Später Lesen</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_stats">Statistiken</string>
-    <string name="detail_pages">Seiten: %d</string>
     <string name="detail_published">Veröffentlicht: %s</string>
     <string name="dialogfragment_state_current">Lese ich gerade</string>
     <string name="dialogfragment_state_done">Habe ich schon gelesen</string>
@@ -46,7 +45,7 @@
     <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
     <string name="dialogfragment_query_title">Manuelle Suche</string>
     <string name="dialogfragment_query_message">Wenn die Kamera den ISBN nicht erkennt, kannst du hier nach dem Titel suchen oder den ISBN manuell eingeben</string>
-    <string name="download_error">Downloadfehler</string>
+    <string name="book_finished">%s fertig</string>
     <string name="download_book_network_error">Das Buch konnte nicht heruntergeladen werden.\n\nBitte überprüfe deine Internetverbindung und versuche es erneut.</string>
     <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.\n\nVergewissere dich, dass du einen ISBN-Barcode einscannst.</string>
     <string name="fetch_data">Buchdaten laden</string>

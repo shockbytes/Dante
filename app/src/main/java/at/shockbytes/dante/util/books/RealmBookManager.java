@@ -71,6 +71,35 @@ public class RealmBookManager implements BookManager {
     }
 
     @Override
+    public void updateCurrentBookPage(@NonNull final Book book, final int page) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(@NonNull Realm realm) {
+
+                book.setCurrentPage(page);
+                realm.copyToRealmOrUpdate(book);
+            }
+        });
+
+    }
+
+    @Override
+    public void updateBookStateAndPage(@NonNull final Book book, final Book.State state,
+                                       final int page) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(@NonNull Realm realm) {
+
+                book.setCurrentPage(page);
+                book.setState(state);
+                realm.copyToRealmOrUpdate(book);
+            }
+        });
+    }
+
+    @Override
     public void removeBook(final long id) {
 
         realm.executeTransaction(new Realm.Transaction() {

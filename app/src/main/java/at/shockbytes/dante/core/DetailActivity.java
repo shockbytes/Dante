@@ -2,6 +2,7 @@ package at.shockbytes.dante.core;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.CardView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -16,6 +18,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,12 +30,13 @@ import org.joda.time.DateTime;
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
+import at.shockbytes.dante.fragments.dialogs.BookFinishedDialogFragment;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity implements Callback, Palette.PaletteAsyncListener {
+public class DetailActivity extends AppCompatActivity implements Callback, Palette.PaletteAsyncListener, SeekBar.OnSeekBarChangeListener {
 
     private static final String ARG_ID = "arg_id";
 
@@ -40,6 +44,9 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
 
     @Inject
     protected BookManager manager;
+
+    @Inject
+    protected SharedPreferences prefs;
 
     @Bind(R.id.activity_detail_img_thumb)
     protected ImageView imgViewThumb;
@@ -73,6 +80,9 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
 
     @Bind(R.id.activity_detail_txt_end_date)
     protected TextView txtEnddate;
+
+    @Bind(R.id.activity_detail_seekbar_pages)
+    protected AppCompatSeekBar seekBarPages;
 
     public static Intent newIntent(Context context, long id) {
         return new Intent(context, DetailActivity.class).putExtra(ARG_ID, id);
@@ -131,9 +141,8 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
         txtTitle.setText(book.getTitle());
         txtAuthor.setText(book.getAuthor());
 
-        txtPages.setText(getString(R.string.detail_pages, book.getPageCount()));
-        txtPublished.setText(getString(R.string.detail_published, book.getPublishedDate()));
-        txtIsbn.setText(getString(R.string.detail_isbn, book.getIsbn()));
+        txtPublished.setText(!book.getPublishedDate().isEmpty() ? book.getPublishedDate() : "---");
+        txtIsbn.setText(!book.getIsbn().isEmpty() ? book.getIsbn() : "---");
 
         // Hide subtitle if not available
         String subtitle = book.getSubTitle();
@@ -147,6 +156,24 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
         if (thumbnailAddress != null && !thumbnailAddress.isEmpty()) {
             Picasso.with(getApplicationContext()).load(thumbnailAddress)
                     .placeholder(R.drawable.ic_placeholder).into(imgViewThumb, this);
+        }
+
+        // Setup pages and SeekBar
+        String pages = book.getState() == Book.State.READING
+                ? getString(R.string.detail_pages, book.getCurrentPage(), book.getPageCount())
+                : String.valueOf(book.getPageCount());
+        txtPages.setText(pages);
+
+        // Book must be in reading state and must have a legit page count and overall the feature
+        // must be enabled in the settings
+        if (prefs.getBoolean(getString(R.string.prefs_page_tracking_key), true)
+                && book.getState() == Book.State.READING
+                && book.getPageCount() > 0) {
+            seekBarPages.setProgress(book.getCurrentPage());
+            seekBarPages.setMax(book.getPageCount());
+            seekBarPages.setOnSeekBarChangeListener(this);
+        } else {
+            seekBarPages.setVisibility(View.GONE);
         }
     }
 
@@ -221,6 +248,33 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(statusBarColor);
+        }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+        txtPages.setText(getString(R.string.detail_pages, i, book.getPageCount()));
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+        manager.updateCurrentBookPage(book, seekBar.getProgress());
+        if (book.getCurrentPage() == book.getPageCount()) {
+            BookFinishedDialogFragment.newInstance(book.getTitle())
+                    .setOnBookMoveFinishedListener(new BookFinishedDialogFragment.OnBookMoveFinishedListener() {
+                        @Override
+                        public void onBookMoveAccepted() {
+                            manager.updateBookState(book, Book.State.READ);
+                            supportFinishAfterTransition();
+                        }
+                    })
+                    .show(getSupportFragmentManager(), "book_finished_fragment");
         }
     }
 }

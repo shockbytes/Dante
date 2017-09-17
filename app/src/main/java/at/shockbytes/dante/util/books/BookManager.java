@@ -21,6 +21,10 @@ public interface BookManager {
 
     void updateBookState(@NonNull Book book, Book.State newState);
 
+    void updateCurrentBookPage(@NonNull Book book, int page);
+
+    void updateBookStateAndPage(@NonNull Book book, Book.State state, int page);
+
     void removeBook(long id);
 
     Map<String, Integer> getStatistics();
@@ -37,4 +41,5 @@ public interface BookManager {
     Observable<List<Book>> getBookByState(Book.State state);
 
     void close();
+
 }

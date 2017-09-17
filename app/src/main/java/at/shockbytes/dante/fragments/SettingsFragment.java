@@ -18,7 +18,7 @@ public class SettingsFragment extends PreferenceFragment
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.xml.prefs);
+        addPreferencesFromResource(R.xml.settings);
         findPreference(getString(R.string.prefs_open_source_licenses_key))
                 .setOnPreferenceClickListener(this);
     }

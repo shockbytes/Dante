@@ -94,8 +94,12 @@ public class MainActivity extends AppCompatActivity
 
         // Connect to Google Drive for backups
         backupManager.connect(this, this);
+    }
 
-        initialize();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initializeTabs();
     }
 
     @Override
@@ -260,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         menuItemBackup.setVisible(true);
     }
 
-    private void initialize() {
+    private void initializeTabs() {
 
         // Select the tab
         tabLayout.addOnTabSelectedListener(this);

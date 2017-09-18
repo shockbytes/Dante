@@ -76,10 +76,8 @@ public final class QueryCaptureActivity extends AppCompatActivity
 
     private static final String TAG = "Dante";
 
-    // intent request code to handle updating play services if needed.
     private static final int RC_HANDLE_GMS = 9001;
 
-    // permission request codes need to be < 256
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
     public static final String EXTRA_QUERY = "Barcode";
@@ -91,16 +89,10 @@ public final class QueryCaptureActivity extends AppCompatActivity
     @Inject
     protected Tracker tracker;
 
-    // helper objects for detecting taps and pinches.
-    //private GestureDetector gestureDetector;
-
     public static Intent newIntent(Context context) {
         return new Intent(context, QueryCaptureActivity.class);
     }
 
-    /**
-     * Initializes the UI and creates the detector pipeline.
-     */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -123,16 +115,12 @@ public final class QueryCaptureActivity extends AppCompatActivity
         mGraphicOverlay = findViewById(R.id.graphicOverlay);
         mGraphicOverlay.setOnGraphicAvailableListener(this);
 
-        // Check for the camera permission before accessing the camera.  If the
-        // permission is not granted yet, request permission.
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED) {
             createCameraSource();
         } else {
             requestCameraPermission();
         }
-
-        //gestureDetector = new GestureDetector(this, new CaptureGestureListener());
 
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (prefs.getBoolean("show_scan_snackbar", true)) {
@@ -160,13 +148,7 @@ public final class QueryCaptureActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Handles the requesting of the camera permission.  This includes
-     * showing a "Snackbar" message of why the permission is needed then
-     * sending the request.
-     */
     private void requestCameraPermission() {
-        Log.w(TAG, "Camera permission is not granted. Requesting permission");
 
         final String[] permissions = new String[]{Manifest.permission.CAMERA};
 
@@ -212,14 +194,6 @@ public final class QueryCaptureActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Creates and starts the camera.  Note that this uses a higher resolution in comparison
-     * to other detection examples to enable the barcode detector to detect small barcodes
-     * at long distances.
-     * <p/>
-     * Suppressing InlinedApi since there is a check that the minimum version is met before using
-     * the constant.
-     */
     @SuppressLint("InlinedApi")
     private void createCameraSource() {
         Context context = getApplicationContext();
@@ -230,7 +204,6 @@ public final class QueryCaptureActivity extends AppCompatActivity
         // create a separate tracker instance for each barcode.
         BarcodeDetector barcodeDetector = new BarcodeDetector
                 .Builder(context)
-                //.setBarcodeFormats(Barcode.ISBN)
                 .build();
         BarcodeTrackerFactory barcodeFactory = new BarcodeTrackerFactory(mGraphicOverlay);
         barcodeDetector.setProcessor(
@@ -270,18 +243,12 @@ public final class QueryCaptureActivity extends AppCompatActivity
                 .build();
     }
 
-    /**
-     * Restarts the camera.
-     */
     @Override
     protected void onResume() {
         super.onResume();
         startCameraSource();
     }
 
-    /**
-     * Stops the camera.
-     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -290,10 +257,6 @@ public final class QueryCaptureActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Releases the resources associated with the camera source, the associated detectors, and the
-     * rest of the processing pipeline.
-     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -302,41 +265,19 @@ public final class QueryCaptureActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Callback for the result from requesting permissions. This method
-     * is invoked for every call on {@link #requestPermissions(String[], int)}.
-     * <p>
-     * <strong>Note:</strong> It is possible that the permissions request interaction
-     * with the user is interrupted. In this case you will receive empty permissions
-     * and results arrays which should be treated as a cancellation.
-     * </p>
-     *
-     * @param requestCode  The request code passed in {@link #requestPermissions(String[], int)}.
-     * @param permissions  The requested permissions. Never null.
-     * @param grantResults The grant results for the corresponding permissions
-     *                     which is either {@link PackageManager#PERMISSION_GRANTED}
-     *                     or {@link PackageManager#PERMISSION_DENIED}. Never null.
-     * @see #requestPermissions(String[], int)
-     */
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode != RC_HANDLE_CAMERA_PERM) {
-            Log.d(TAG, "Got unexpected permission result: " + requestCode);
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
             return;
         }
 
         if (grantResults.length != 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "Camera permission granted - initialize the camera source");
-            // we have permission, so create the camerasource
             createCameraSource();
             return;
         }
-
-        Log.e(TAG, "Permission not granted: results len = " + grantResults.length +
-                " Result code = " + (grantResults.length > 0 ? grantResults[0] : "(empty)"));
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -351,11 +292,6 @@ public final class QueryCaptureActivity extends AppCompatActivity
                 .show();
     }
 
-    /**
-     * Starts or restarts the camera source, if it exists.  If the camera source doesn't exist yet
-     * (e.g., because onResume was called before the camera source was created), this will be called
-     * again when the camera source is created.
-     */
     private void startCameraSource() throws SecurityException {
         // check that the device has play services available.
         int code = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(
@@ -370,25 +306,11 @@ public final class QueryCaptureActivity extends AppCompatActivity
             try {
                 mPreview.start(mCameraSource, mGraphicOverlay);
             } catch (IOException e) {
-                Log.e(TAG, "Unable to start camera source.", e);
                 mCameraSource.release();
                 mCameraSource = null;
             }
         }
     }
-
-    /*private boolean onTap(float rawX, float rawY) {
-
-        BarcodeGraphic graphic = mGraphicOverlay.getFirstGraphic();
-        Barcode barcode = null;
-        if (graphic != null) {
-            barcode = graphic.getBarcode();
-            sendResultToCallingActivity(barcode);
-        } else {
-            Log.d(TAG, "no barcode detected");
-        }
-        return barcode != null;
-    } */
 
     private void sendResultToCallingActivity(String query) {
         if (query != null) {
@@ -419,17 +341,7 @@ public final class QueryCaptureActivity extends AppCompatActivity
     public void onQueryEntered(String query) {
 
         tracker.trackOnBookManuallyEntered();
-
         sendResultToCallingActivity(query);
     }
-
-    /*
-    private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return onTap(e.getRawX(), e.getRawY()) || super.onSingleTapConfirmed(e);
-        }
-    } */
 
 }

@@ -56,8 +56,8 @@ public class LegalNoticeDialogFragment extends android.app.DialogFragment {
 
         View v = LayoutInflater.from(getActivity())
                 .inflate(R.layout.dialogfragment_legal_notice, null, false);
-        textInfo = (WebView) v.findViewById(R.id.dialogfragment_legal_notice_txt_info);
-        progressBar = (ProgressBar) v.findViewById(R.id.dialogfragment_legal_notice_pb);
+        textInfo = v.findViewById(R.id.dialogfragment_legal_notice_txt_info);
+        progressBar = v.findViewById(R.id.dialogfragment_legal_notice_pb);
         return v;
     }
 

@@ -6,28 +6,19 @@
     <string name="action_move_to_upcoming">Verschieben zu Später Lesen</string>
     <string name="action_settings">Einstellungen</string>
     <string name="action_stats">Statistiken</string>
-    <string name="detail_published">Veröffentlicht: %s</string>
-    <string name="dialogfragment_state_current">Lese ich gerade</string>
-    <string name="dialogfragment_state_done">Habe ich schon gelesen</string>
-    <string name="dialogfragment_state_upcoming">Wird bald gelesen</string>
     <string name="label_settings">Einstellungen</string>
     <string name="label_stats">Deine Bücherstatistiken</string>
     <string name="prefs_app_version_title">App Version</string>
     <string name="prefs_category_about">Über</string>
-    <string name="prefs_category_books">Bücher</string>
     <string name="prefs_developer_title">Entwickler</string>
     <string name="tab_upcoming">Für später</string>
     <string name="tab_done">Gelesen</string>
     <string name="tab_current">Lesen</string>
-    <string name="detail_google_play">In Google Bücher ansehen</string>
     <string name="error_load_book">Ups, das Buch konnte nicht geladen werden!</string>
     <string name="dialogfragment_stats_upcoming">%d Bücher warten auf dich</string>
     <string name="dialogfragment_stats_pages">Du hast bereits durch %d Seiten geblättert!</string>
     <string name="dialogfragment_stats_done">Du hast schon %d Bücher gelesen</string>
     <string name="dialogfragment_stats_current">Du liest gerade %d Bücher</string>
-    <string name="prefs_show_book_link_summary_off">Der blaue Google Bücher Button ist ausgeblendet</string>
-    <string name="prefs_show_book_link_summary_on">Der blaue Google Bücher Button in der Detailansicht wird angezeigt</string>
-    <string name="prefs_show_book_link_title">Zeige Link zu Google Bücher</string>
     <string name="permission_camera_rationale">Es wird die Berechtigung für die Kamera benötigt, um den Barcode zu scannen</string>
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="low_storage_error">Barcode Scanner Bibliotheken können nicht heruntergeladen werden, da zu wenig Speicher verfügbar ist!</string>
@@ -46,9 +37,7 @@
     <string name="dialogfragment_query_title">Manuelle Suche</string>
     <string name="dialogfragment_query_message">Wenn die Kamera den ISBN nicht erkennt, kannst du hier nach dem Titel suchen oder den ISBN manuell eingeben</string>
     <string name="book_finished">%s fertig</string>
-    <string name="download_book_network_error">Das Buch konnte nicht heruntergeladen werden.\n\nBitte überprüfe deine Internetverbindung und versuche es erneut.</string>
-    <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.\n\nVergewissere dich, dass du einen ISBN-Barcode einscannst.</string>
-    <string name="fetch_data">Buchdaten laden</string>
+    <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.</string>
     <string name="detail_wishlist_date">Auf der Wunschliste seit %s</string>
     <string name="detail_start_date">Begonnen am %s</string>
     <string name="detail_end_date">Fertig gelesen am %s</string>
@@ -78,5 +67,10 @@
     <string name="download_suggestion_other">Nicht mein Buch</string>
     <string name="download_suggestions_none">Keines von denen</string>
     <string name="manual_query">Titel oder ISBN</string>
+    <string name="book_finished_move_to_done_question">Soll das Buch auf die Liste der gelesenen Büchern?</string>
+    <string name="download_btn_error">Okay, verstanden</string>
+    <string name="download_code_error">Sorry! Ein unerwarteter Fehler ist aufgetreten.</string>
+    <string name="prefs_category_books_title">Bücher</string>
+    <string name="prefs_page_tracking_title">Seitentracking</string>
 
 </resources>

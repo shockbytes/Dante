@@ -72,9 +72,9 @@ public class RestoreStrategyDialogFragment extends DialogFragment
 
         View v = LayoutInflater.from(getContext())
                 .inflate(R.layout.dialogfragment_restore_strategy, null, false);
-        radioGroup = (RadioGroup) v.findViewById(R.id.dialogfragment_restore_strategy_radiogroup);
+        radioGroup = v.findViewById(R.id.dialogfragment_restore_strategy_radiogroup);
         radioGroup.setOnCheckedChangeListener(this);
-        textInfo = (TextView) v.findViewById(R.id.dialogfragment_restore_strategy_txt_info);
+        textInfo = v.findViewById(R.id.dialogfragment_restore_strategy_txt_info);
         return v;
     }
 

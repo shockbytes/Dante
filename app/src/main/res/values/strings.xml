@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">2.0b</string>
+    <string name="app_version" translatable="false">2.0</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
@@ -28,12 +28,7 @@
     <string name="transition_name_author" translatable="false">transition_name_author</string>
     <string name="transition_name_card" translatable="false">transition_name_card</string>
 
-    <string name="prefs_category_books">Books</string>
     <string name="prefs_category_about">About</string>
-    <string name="prefs_show_book_link_title">Show link to Google Books</string>
-    <string name="prefs_show_book_link_summary_on">The blue Google Books button in the details view is visible</string>
-    <string name="prefs_show_book_link_summary_off">The blue Google Books button is hidden</string>
-    <string name="prefs_show_book_link_key" translatable="false">prefsShowBookLinkKey</string>
     <string name="prefs_app_version_title">App version</string>
     <string name="prefs_developer_title">Developer</string>
     <string name="prefs_developer_summary" translatable="false">Shockbytes Studio &#169; 2016-2017</string>
@@ -45,14 +40,7 @@
     <string name="dialogfragment_stats_done">You\'ve already finished %d books</string>
     <string name="dialogfragment_stats_pages">You\'ve read %d pages so far!</string>
 
-    <string name="dialogfragment_state_upcoming">will be read soon</string>
-    <string name="dialogfragment_state_current">is being read</string>
-    <string name="dialogfragment_state_done">is already read</string>
-
     <string name="detail_pages" translatable="false">%1$d / %2$d</string>
-    <string name="detail_published">Published: %s</string>
-    <string name="detail_isbn" translatable="false">ISBN: %s</string>
-    <string name="detail_google_play">View it on Google Books</string>
     <string name="action_share">Share</string>
     <string name="action_add_isbn">Add ISBN manually</string>
     <string name="label_capture">Capture book</string>
@@ -62,15 +50,13 @@
     <string name="dialogfragment_query_message">If the camera cannot capture the ISBN, you can search for the title or enter the ISBN here manually</string>
     <string name="manual_query" >Title or ISBN</string>
     <string name="book_finished">%s finished</string>
-    <string name="download_book_json_error">Cannot find any corresponding entry in Googles book database.\n\nMake sure you\'re scanning a barcode belonging to a book (ISBN).</string>
+    <string name="download_book_json_error">Cannot find any corresponding entry in Googles book database.</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>
         <item>Why are you not reading a book?</item>
         <item>No book finished right now</item>
     </string-array>
-    <string name="download_book_network_error">Cannot download book information.\n\nPlease check your internet connection and try again.</string>
-    <string name="fetch_data">Fetch book data</string>
     <string name="contentdesc_listitem_img_thumb" translatable="false">Thumbnail for book cover</string>
     <string name="contentdesc_listitem_img_overflow" translatable="false">Overflow icon for list item</string>
     <string name="detail_wishlist_date">On the wishlist since %s</string>
@@ -104,10 +90,10 @@
     <string name="download_suggestion_other">Not my book</string>
     <string name="download_btn_error">Okay, got it</string>
     <string name="download_code_error">Sorry! An unexpected error occurred.</string>
-    <string name="fragment_download_text_placeholder">...</string>
+    <string name="fragment_download_text_placeholder" translatable="false">&#8230;</string>
     <string name="prefs_page_tracking_title">Page tracking</string>
     <string name="prefs_category_books_title">Books</string>
-    <string name="prefs_page_tracking_key">prefs_page_tracking_key</string>
+    <string name="prefs_page_tracking_key" translatable="false">prefs_page_tracking_key</string>
     <string name="book_finished_move_to_done_question">You have finished your book. Would you like to add it to the done list?</string>
 
 </resources>

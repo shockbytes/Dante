@@ -68,7 +68,7 @@ public class QueryDialogFragment extends DialogFragment {
 
         View v = LayoutInflater.from(getContext())
                 .inflate(R.layout.dialogfragment_enter_query, null, false);
-        editQuery = (EditText) v.findViewById(R.id.dialogfragment_isbn_edit);
+        editQuery = v.findViewById(R.id.dialogfragment_isbn_edit);
         return v;
     }
 }

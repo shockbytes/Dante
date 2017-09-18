@@ -25,7 +25,7 @@ import at.shockbytes.dante.util.barcode.camera.GraphicOverlay;
  * Factory for creating a tracker and associated graphic to be associated with a new barcode.  The
  * multi-processor uses this factory to create barcode trackers as needed -- one for each barcode.
  */
-public class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
+class BarcodeTrackerFactory implements MultiProcessor.Factory<Barcode> {
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
 
     BarcodeTrackerFactory(GraphicOverlay<BarcodeGraphic> barcodeGraphicOverlay) {

@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.view.MenuItem;
 
 import javax.inject.Inject;
 
@@ -35,6 +38,7 @@ public class DownloadActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
         ((DanteApplication) getApplication()).getAppComponent().inject(this);
+        setupWindow();
 
         String query = getIntent().getExtras().getString(ARG_QUERY);
         if (query != null) {
@@ -43,6 +47,17 @@ public class DownloadActivity extends AppCompatActivity
             setResult(RESULT_CANCELED);
             supportFinishAfterTransition();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            supportFinishAfterTransition();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -99,6 +114,20 @@ public class DownloadActivity extends AppCompatActivity
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(R.id.activity_download_main_content, fragment)
                 .commit();
+    }
+
+    private void setupWindow() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Slide());
+            getWindow().setExitTransition(new Fade());
+        }
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_cancel);
+        }
     }
 
 }

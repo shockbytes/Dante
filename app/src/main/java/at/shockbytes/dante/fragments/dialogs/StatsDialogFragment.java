@@ -56,10 +56,10 @@ public class StatsDialogFragment extends DialogFragment {
         Map<String, Integer> stats = bookManager.getStatistics();
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.dialogfragment_stats, null, false);
 
-        TextView txtUpcoming = (TextView) v.findViewById(R.id.dialogfragment_stats_txt_upcoming);
-        TextView txtCurrent = (TextView) v.findViewById(R.id.dialogfragment_stats_txt_current);
-        TextView txtDone = (TextView) v.findViewById(R.id.dialogfragment_stats_txt_done);
-        TextView txtPages = (TextView) v.findViewById(R.id.dialogfragment_stats_txt_pages);
+        TextView txtUpcoming = v.findViewById(R.id.dialogfragment_stats_txt_upcoming);
+        TextView txtCurrent = v.findViewById(R.id.dialogfragment_stats_txt_current);
+        TextView txtDone = v.findViewById(R.id.dialogfragment_stats_txt_done);
+        TextView txtPages = v.findViewById(R.id.dialogfragment_stats_txt_pages);
 
         String upcoming = getString(R.string.dialogfragment_stats_upcoming,
                 stats.get(AppParams.STAT_UPCOMING));

@@ -15,6 +15,7 @@ import android.support.v7.widget.CardView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -169,8 +170,8 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
         if (prefs.getBoolean(getString(R.string.prefs_page_tracking_key), true)
                 && book.getState() == Book.State.READING
                 && book.getPageCount() > 0) {
-            seekBarPages.setProgress(book.getCurrentPage());
             seekBarPages.setMax(book.getPageCount());
+            seekBarPages.setProgress(book.getCurrentPage());
             seekBarPages.setOnSeekBarChangeListener(this);
         } else {
             seekBarPages.setVisibility(View.GONE);
@@ -215,9 +216,11 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
     @Override
     public void onSuccess() {
 
-        Bitmap bm = ((BitmapDrawable) imgViewThumb.getDrawable()).getBitmap();
-        if (bm != null) {
-            Palette.from(bm).generate(this);
+        if (imgViewThumb != null && imgViewThumb.getDrawable() != null) {
+            Bitmap bm = ((BitmapDrawable) imgViewThumb.getDrawable()).getBitmap();
+            if (bm != null) {
+                Palette.from(bm).generate(this);
+            }
         }
     }
 

@@ -23,7 +23,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -34,6 +33,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
@@ -44,7 +44,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -59,6 +58,7 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.core.DownloadActivity;
 import at.shockbytes.dante.fragments.dialogs.QueryDialogFragment;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.barcode.camera.CameraSourcePreview;
@@ -70,18 +70,16 @@ import at.shockbytes.dante.util.tracking.Tracker;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-public final class QueryCaptureActivity extends AppCompatActivity
+public class QueryCaptureActivity extends AppCompatActivity
         implements GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic>,
         QueryDialogFragment.OnQueryEnteredListener {
 
     private static final String TAG = "Dante";
 
     private static final int RC_HANDLE_GMS = 9001;
-
+    private static final int REQ_CODE_DOWNLOAD_BOOK = 0x8434;
     private static final int RC_HANDLE_CAMERA_PERM = 2;
-
-    public static final String EXTRA_QUERY = "Barcode";
-
+    
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
@@ -221,6 +219,7 @@ public final class QueryCaptureActivity extends AppCompatActivity
             // downloads complete on device.
             Log.w(TAG, "Detector dependencies are not yet available.");
 
+            /*
             // Check for low storage.  If there is low storage, the native library will not be
             // downloaded, so detection will not become operational.
             IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
@@ -229,7 +228,7 @@ public final class QueryCaptureActivity extends AppCompatActivity
             if (hasLowStorage) {
                 Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
                 Log.w(TAG, getString(R.string.low_storage_error));
-            }
+            } */
         }
 
         // Creates and starts the camera.  Note that this uses a higher resolution in comparison
@@ -262,6 +261,28 @@ public final class QueryCaptureActivity extends AppCompatActivity
         super.onDestroy();
         if (mPreview != null) {
             mPreview.release();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+
+            case REQ_CODE_DOWNLOAD_BOOK:
+
+                if (resultCode == RESULT_OK) {
+                    long bookId = data.getLongExtra(AppParams.EXTRA_BOOK_ID, -1);
+                    if (bookId > -1) {
+                        Intent intentData = new Intent();
+                        intentData.putExtra(AppParams.EXTRA_BOOK_ID, bookId);
+                        setResult(RESULT_OK, data);
+                    }
+                }
+
+                supportFinishAfterTransition();
+                break;
         }
     }
 
@@ -314,10 +335,9 @@ public final class QueryCaptureActivity extends AppCompatActivity
 
     private void sendResultToCallingActivity(String query) {
         if (query != null) {
-            Intent data = new Intent();
-            data.putExtra(EXTRA_QUERY, query);
-            setResult(RESULT_OK, data);
-            supportFinishAfterTransition();
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
+            startActivityForResult(DownloadActivity.newIntent(this, query),
+                    REQ_CODE_DOWNLOAD_BOOK, options.toBundle());
         } else {
             Log.d(TAG, "Query data is null");
         }

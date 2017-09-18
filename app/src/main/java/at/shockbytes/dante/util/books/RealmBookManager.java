@@ -135,7 +135,9 @@ public class RealmBookManager implements BookManager {
 
     @Override
     public Observable<BookSuggestion> downloadBook(@NonNull String isbn) {
-        return bookDownloader.downloadBookSuggestion(isbn);
+        return bookDownloader.downloadBookSuggestion(isbn)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

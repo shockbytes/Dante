@@ -7,6 +7,7 @@ package at.shockbytes.dante.util;
 public class AppParams {
 
     public static final int REQ_CODE_SCAN_BOOK = 0x2512;
+    public static final String EXTRA_BOOK_ID = "extra_book_downloaded";
 
     public static final String STAT_UPCOMING = "stat_upcoming";
     public static final String STAT_CURRENT = "stat_current";

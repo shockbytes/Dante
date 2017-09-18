@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.fragments.DownloadBookFragment;
+import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.tracking.Tracker;
 
@@ -24,7 +25,6 @@ public class DownloadActivity extends AppCompatActivity
         implements DownloadBookFragment.OnBookDownloadedListener {
 
     private static final String ARG_QUERY = "arg_barcode";
-    public static final String EXTRA_BOOK_ID = "extra_book_downloaded";
 
     public static Intent newIntent(Context context, String query) {
         return new Intent(context, DownloadActivity.class).putExtra(ARG_QUERY, query);
@@ -101,7 +101,7 @@ public class DownloadActivity extends AppCompatActivity
     private void forwardToCaller(long bookId, boolean isSuccessful) {
 
         int resultCode = isSuccessful ? RESULT_OK : RESULT_CANCELED;
-        setResult(resultCode, new Intent().putExtra(EXTRA_BOOK_ID, bookId));
+        setResult(resultCode, new Intent().putExtra(AppParams.EXTRA_BOOK_ID, bookId));
         supportFinishAfterTransition();
     }
 

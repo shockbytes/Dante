@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity
         implements BookAdapter.OnBookPopupItemSelectedListener,
         TabLayout.OnTabSelectedListener, BackupManager.OnConnectionStatusListener {
 
-    private static final int REQ_CODE_DOWNLOAD_BOOK = 0x1235;
-
     @Bind(R.id.tablayout)
     protected TabLayout tabLayout;
 
@@ -124,17 +122,7 @@ public class MainActivity extends AppCompatActivity
             case AppParams.REQ_CODE_SCAN_BOOK:
 
                 if (resultCode == RESULT_OK) {
-                    String query = data.getStringExtra(QueryCaptureActivity.EXTRA_QUERY);
-                    downloadBook(query);
-                } else {
-                    tracker.trackOnScanBookCanceled();
-                }
-                break;
-
-            case REQ_CODE_DOWNLOAD_BOOK:
-
-                if (resultCode == RESULT_OK) {
-                    long bookId = data.getLongExtra(DownloadActivity.EXTRA_BOOK_ID, -1);
+                    long bookId = data.getLongExtra(AppParams.EXTRA_BOOK_ID, -1);
                     if (bookId > -1) {
                         bookListener.onBookAdded(bookManager.getBook(bookId));
                     }
@@ -352,12 +340,6 @@ public class MainActivity extends AppCompatActivity
                 .setAction(Intent.ACTION_SEND)
                 .putExtra(Intent.EXTRA_TEXT, msg)
                 .setType("text/plain");
-    }
-
-    private void downloadBook(String query) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-        startActivityForResult(DownloadActivity.newIntent(this, query),
-                REQ_CODE_DOWNLOAD_BOOK, options.toBundle());
     }
 
 }

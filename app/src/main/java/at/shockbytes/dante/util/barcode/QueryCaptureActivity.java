@@ -58,8 +58,8 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.core.DanteApplication;
-import at.shockbytes.dante.core.DownloadActivity;
-import at.shockbytes.dante.fragments.dialogs.QueryDialogFragment;
+import at.shockbytes.dante.ui.activity.DownloadActivity;
+import at.shockbytes.dante.ui.fragment.dialogs.QueryDialogFragment;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.barcode.camera.CameraSourcePreview;
 import at.shockbytes.dante.util.barcode.camera.GraphicOverlay;

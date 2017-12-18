@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#eee"
     android:id="@+id/activity_backup_root"
-    tools:context="at.shockbytes.dante.core.BackupActivity">
+    tools:context="at.shockbytes.dante.ui.activity.BackupActivity">
 
     <RelativeLayout
         android:id="@+id/headerLayout"

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.util.books.Book;
-import at.shockbytes.dante.fragments.MainBookFragment;
+import at.shockbytes.dante.ui.fragment.MainBookFragment;
 
 /**
  * @author Martin Macheiner

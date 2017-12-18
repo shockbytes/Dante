@@ -1,11 +1,11 @@
-package at.shockbytes.dante.fragments;
+package at.shockbytes.dante.ui.fragment;
 
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.fragments.dialogs.LegalNoticeDialogFragment;
+import at.shockbytes.dante.ui.fragment.dialogs.LegalNoticeDialogFragment;
 
 public class SettingsFragment extends PreferenceFragment
         implements Preference.OnPreferenceClickListener {

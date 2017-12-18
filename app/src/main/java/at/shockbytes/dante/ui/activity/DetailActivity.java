@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core;
+package at.shockbytes.dante.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,6 @@ import android.support.v7.widget.CardView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -31,7 +30,8 @@ import org.joda.time.DateTime;
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.fragments.dialogs.BookFinishedDialogFragment;
+import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.ui.fragment.dialogs.BookFinishedDialogFragment;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
 import butterknife.Bind;

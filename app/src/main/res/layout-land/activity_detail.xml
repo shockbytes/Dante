@@ -11,7 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="4dp"
     android:weightSum="1"
-    tools:context="at.shockbytes.dante.core.DetailActivity">
+    tools:context="at.shockbytes.dante.ui.activity.DetailActivity">
 
     <android.support.v7.widget.CardView
         android:layout_width="0dp"

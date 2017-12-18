@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core;
+package at.shockbytes.dante.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +16,8 @@ import android.view.MenuItem;
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.fragments.DownloadBookFragment;
+import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.ui.fragment.DownloadBookFragment;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.tracking.Tracker;

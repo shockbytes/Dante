@@ -4,6 +4,6 @@
     android:id="@+id/activity_download_main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="at.shockbytes.dante.core.DownloadActivity">
+    tools:context="at.shockbytes.dante.ui.activity.DownloadActivity">
 
 </FrameLayout>

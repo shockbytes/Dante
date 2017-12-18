@@ -1,4 +1,4 @@
-package at.shockbytes.dante.fragments;
+package at.shockbytes.dante.ui.fragment;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BookAdapter;
 import at.shockbytes.dante.core.DanteApplication;
-import at.shockbytes.dante.core.DetailActivity;
+import at.shockbytes.dante.ui.activity.DetailActivity;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookListener;
 import at.shockbytes.dante.util.books.BookManager;

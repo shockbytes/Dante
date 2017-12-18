@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core;
+package at.shockbytes.dante.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +30,8 @@ import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BackupEntryAdapter;
 import at.shockbytes.dante.adapter.BaseAdapter;
 import at.shockbytes.dante.adapter.helper.BackupEntryTouchHelper;
-import at.shockbytes.dante.fragments.dialogs.RestoreStrategyDialogFragment;
+import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.ui.fragment.dialogs.RestoreStrategyDialogFragment;
 import at.shockbytes.dante.util.ResourceManager;
 import at.shockbytes.dante.util.backup.BackupEntry;
 import at.shockbytes.dante.util.backup.BackupManager;

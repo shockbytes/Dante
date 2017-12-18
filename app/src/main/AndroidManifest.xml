@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".core.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,14 +29,14 @@
             android:label="@string/label_capture"
             android:screenOrientation="portrait"
             android:theme="@style/Dante.ScanTheme" />
-        <activity android:name=".core.DetailActivity" />
+        <activity android:name=".ui.activity.DetailActivity" />
         <activity
-            android:name=".core.SettingsActivity"
+            android:name=".ui.activity.SettingsActivity"
             android:label="@string/label_settings" />
         <activity
-            android:name=".core.BackupActivity"
+            android:name=".ui.activity.BackupActivity"
             android:label="@string/label_backup" />
-        <activity android:name=".core.DownloadActivity"
+        <activity android:name=".ui.activity.DownloadActivity"
             android:label=""
             android:screenOrientation="portrait" />
     </application>

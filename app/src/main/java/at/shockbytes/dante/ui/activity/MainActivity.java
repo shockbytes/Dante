@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core;
+package at.shockbytes.dante.ui.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
@@ -23,8 +23,9 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BookAdapter;
-import at.shockbytes.dante.fragments.MainBookFragment;
-import at.shockbytes.dante.fragments.dialogs.StatsDialogFragment;
+import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.ui.fragment.MainBookFragment;
+import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.backup.BackupManager;
 import at.shockbytes.dante.util.barcode.QueryCaptureActivity;

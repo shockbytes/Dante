@@ -1,4 +1,4 @@
-package at.shockbytes.dante.fragments.dialogs;
+package at.shockbytes.dante.ui.fragment.dialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;

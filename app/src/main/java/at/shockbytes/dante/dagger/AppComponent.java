@@ -2,13 +2,13 @@ package at.shockbytes.dante.dagger;
 
 import javax.inject.Singleton;
 
-import at.shockbytes.dante.core.BackupActivity;
-import at.shockbytes.dante.core.DetailActivity;
-import at.shockbytes.dante.core.DownloadActivity;
-import at.shockbytes.dante.core.MainActivity;
-import at.shockbytes.dante.fragments.DownloadBookFragment;
-import at.shockbytes.dante.fragments.MainBookFragment;
-import at.shockbytes.dante.fragments.dialogs.StatsDialogFragment;
+import at.shockbytes.dante.ui.activity.BackupActivity;
+import at.shockbytes.dante.ui.activity.DetailActivity;
+import at.shockbytes.dante.ui.activity.DownloadActivity;
+import at.shockbytes.dante.ui.activity.MainActivity;
+import at.shockbytes.dante.ui.fragment.DownloadBookFragment;
+import at.shockbytes.dante.ui.fragment.MainBookFragment;
+import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment;
 import at.shockbytes.dante.util.barcode.QueryCaptureActivity;
 import dagger.Component;
 

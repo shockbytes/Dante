@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core;
+package at.shockbytes.dante.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +10,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.fragments.SettingsFragment;
+import at.shockbytes.dante.ui.fragment.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
     

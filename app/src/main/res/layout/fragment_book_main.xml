@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    tools:context=".fragments.MainBookFragment">
+    tools:context=".ui.fragment.MainBookFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/fragment_book_main_rv"

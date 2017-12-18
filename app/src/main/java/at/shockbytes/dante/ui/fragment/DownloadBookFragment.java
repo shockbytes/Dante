@@ -1,4 +1,4 @@
-package at.shockbytes.dante.fragments;
+package at.shockbytes.dante.ui.fragment;
 
 
 import android.graphics.Bitmap;
@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BookAdapter;
 import at.shockbytes.dante.core.DanteApplication;
-import at.shockbytes.dante.core.DownloadActivity;
+import at.shockbytes.dante.ui.activity.DownloadActivity;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
 import at.shockbytes.dante.util.books.BookSuggestion;

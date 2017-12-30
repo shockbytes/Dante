@@ -6,7 +6,8 @@ import java.util.List;
 
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
-import rx.Observable;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
 
 /**
  * @author Martin Macheiner
@@ -38,13 +39,13 @@ public interface BackupManager {
 
     Observable<List<BackupEntry>> getBackupList();
 
-    Observable<Void> removeBackupEntry(BackupEntry entry);
+    Completable removeBackupEntry(BackupEntry entry);
 
-    Observable<Void> removeAllBackupEntries();
+    Completable removeAllBackupEntries();
 
-    Observable<Void> backup(List<Book> books);
+    Completable backup(List<Book> books);
 
-    Observable<Void> restoreBackup(FragmentActivity activity, BackupEntry entry,
+    Completable restoreBackup(FragmentActivity activity, BackupEntry entry,
                                    BookManager bookManager, RestoreStrategy strategy);
 
 }

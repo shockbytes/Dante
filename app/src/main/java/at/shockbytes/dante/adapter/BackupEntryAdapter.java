@@ -12,7 +12,7 @@ import at.shockbytes.dante.R;
 import at.shockbytes.dante.util.ResourceManager;
 import at.shockbytes.dante.util.backup.BackupEntry;
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * @author Martin Macheiner
@@ -50,16 +50,16 @@ public class BackupEntryAdapter extends BaseAdapter<BackupEntry> implements Item
 
     class ViewHolder extends BaseAdapter<BackupEntry>.ViewHolder {
 
-        @Bind(R.id.item_backup_entry_imgview_provider)
+        @BindView(R.id.item_backup_entry_imgview_provider)
         ImageView imgViewProvider;
 
-        @Bind(R.id.item_backup_entry_txt_time)
+        @BindView(R.id.item_backup_entry_txt_time)
         TextView txtTime;
 
-        @Bind(R.id.item_backup_entry_txt_books)
+        @BindView(R.id.item_backup_entry_txt_books)
         TextView txtBookAmount;
 
-        @Bind(R.id.item_backup_entry_txt_device)
+        @BindView(R.id.item_backup_entry_txt_device)
         TextView txtDevice;
 
         ViewHolder(final View itemView) {

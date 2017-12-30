@@ -1,17 +1,18 @@
 apply plugin: 'com.android.application'
-apply plugin: 'realm-android'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
 
 def daggerVersion = "2.11"
 def butterknifeVersion = "8.8.1"
 def supportVersion = "26.1.0"
 def rxJavaVersion = "2.1.6"
 def rxAndroidVersion = "2.0.1"
-def playServicesVersion = "11.6.2"
+def playServicesVersion = "11.8.0"
 def retrofitVersion = "2.3.0"
 def icePickVersion = "3.2.0"
+def rxBindingsVersion = "2.0.0"
 
 android {
     compileSdkVersion 26
@@ -22,7 +23,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 26
         versionCode 6
-        versionName "2.1"
+        versionName "2.5"
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -30,12 +31,25 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_version", "2.5"
         }
+        debug {
+            resValue "string", "app_version", "2.5b - Debug Build"
+        }
+    }
+    lintOptions {
+        disable 'RestrictedApi'
     }
 }
 
+androidExtensions {
+    experimental = true
+}
 kapt {
     generateStubs = true
+    arguments {
+        arg("realm.ignoreKotlinNullability", true)
+    }
 }
 
 dependencies {
@@ -52,6 +66,7 @@ dependencies {
 
     implementation "com.google.android.gms:play-services-vision:$playServicesVersion"
     implementation "com.google.android.gms:play-services-drive:$playServicesVersion"
+    implementation "com.google.android.gms:play-services-auth:$playServicesVersion"
 
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
@@ -62,19 +77,24 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butterknifeVersion"
     kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    implementation 'com.github.shockbytes:ShockUtil:1.2.1'
+    implementation 'com.github.shockbytes:ShockUtil:2.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    implementation "io.keen:keen-client-api-android:5.2.0@aar"
+    implementation 'io.keen:keen-client-api-android:5.2.0@aar'
+    implementation 'io.keen:keen-client-api-query:5.2.0'
+    implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+
+    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingsVersion"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
     implementation "frankiesardo:icepick:$icePickVersion"
     kapt "frankiesardo:icepick-processor:$icePickVersion"
-
-    //compileOnly 'javax.annotation:jsr250-api:1.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
 

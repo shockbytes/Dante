@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import at.shockbytes.dante.util.backup.BackupManager;
-import rx.Observable;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
 
 /**
  * @author Martin Macheiner
@@ -33,8 +34,8 @@ public interface BookManager {
 
     Observable<List<Book>> getAllBooks();
 
-    Observable<Void> restoreBackup(FragmentActivity activity, List<Book> backupBooks,
-                          BackupManager.RestoreStrategy strategy);
+    Completable restoreBackup(FragmentActivity activity, List<Book> backupBooks,
+                              BackupManager.RestoreStrategy strategy);
 
     List<Book> getAllBooksSync();
 

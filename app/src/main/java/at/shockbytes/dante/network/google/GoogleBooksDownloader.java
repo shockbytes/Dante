@@ -4,9 +4,10 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.network.BookDownloader;
 import at.shockbytes.dante.util.books.BookSuggestion;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * @author Martin Macheiner

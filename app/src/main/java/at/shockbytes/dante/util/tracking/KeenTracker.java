@@ -14,6 +14,7 @@ import io.keen.client.android.AndroidKeenClientBuilder;
 import io.keen.client.java.KeenClient;
 import io.keen.client.java.KeenProject;
 
+
 /**
  * @author Martin Macheiner
  *         Date: 01.06.2017.

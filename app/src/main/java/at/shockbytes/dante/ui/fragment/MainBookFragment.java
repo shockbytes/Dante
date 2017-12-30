@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,27 +24,26 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BookAdapter;
-import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.dagger.AppComponent;
 import at.shockbytes.dante.ui.activity.DetailActivity;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookListener;
 import at.shockbytes.dante.util.books.BookManager;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import rx.Subscriber;
+import butterknife.BindView;
+import io.reactivex.observers.DisposableObserver;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainBookFragment extends Fragment
+public class MainBookFragment extends BaseFragment
         implements BookAdapter.OnItemClickListener, BookListener {
 
     private static final String ARG_STATE = "arg_state";
 
-    @Bind(R.id.fragment_book_main_rv)
+    @BindView(R.id.fragment_book_main_rv)
     protected RecyclerView recyclerView;
 
-    @Bind(R.id.fragment_book_main_empty_view)
+    @BindView(R.id.fragment_book_main_empty_view)
     protected TextView emptyView;
 
     @Inject
@@ -55,7 +55,7 @@ public class MainBookFragment extends Fragment
     private BookAdapter.OnBookPopupItemSelectedListener popupItemSelectedListener;
 
     public static MainBookFragment newInstance(Book.State state) {
-        MainBookFragment fragment =  new MainBookFragment();
+        MainBookFragment fragment = new MainBookFragment();
         Bundle args = new Bundle(1);
         args.putSerializable(ARG_STATE, state);
         fragment.setArguments(args);
@@ -69,7 +69,7 @@ public class MainBookFragment extends Fragment
 
         try {
             popupItemSelectedListener = (BookAdapter.OnBookPopupItemSelectedListener) context;
-        }catch (IllegalStateException exception) {
+        } catch (IllegalStateException exception) {
             Log.e("Dante", "Calling activity must implement OnItemPopupItemSelectedListener");
         }
     }
@@ -77,40 +77,33 @@ public class MainBookFragment extends Fragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((DanteApplication)getActivity().getApplication()).getAppComponent().inject(this);
-
         bookState = (Book.State) getArguments().getSerializable(ARG_STATE);
+    }
+
+    @Override
+    protected void injectToGraph(@NotNull AppComponent appComponent) {
+        appComponent.inject(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_book_main, container, false);
-        ButterKnife.bind(this, v);
-        return v;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        initializeViews();
+        return inflater.inflate(R.layout.fragment_book_main, container, false);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // Load books async
-        bookManager.getBookByState(bookState).subscribe(new Subscriber<List<Book>>() {
-            @Override
-            public void onCompleted() {
-
-            }
+        bookManager.getBookByState(bookState).subscribe(new DisposableObserver<List<Book>>() {
 
             @Override
             public void onError(Throwable e) {
                 Log.e("Dante", "Cannot load books --> " + e.toString());
             }
+
+            @Override
+            public void onComplete() { }
 
             @Override
             public void onNext(List<Book> books) {
@@ -123,12 +116,7 @@ public class MainBookFragment extends Fragment
     }
 
     @Override
-    public void onDestroyView() {
-        ButterKnife.unbind(this);
-        super.onDestroyView();
-    }
-
-    private void initializeViews() {
+    public void setupViews() {
 
         // Initialize text for empty indicator
         String empty = getResources().getStringArray(R.array.empty_indicators)[bookState.ordinal()];
@@ -174,7 +162,7 @@ public class MainBookFragment extends Fragment
                                 getString(R.string.transition_name_subtitle)),
                         new Pair<>(v.findViewById(R.id.listitem_book_txt_author),
                                 getString(R.string.transition_name_author))
-            ).toBundle();
+                ).toBundle();
     }
 
     @Override
@@ -210,7 +198,7 @@ public class MainBookFragment extends Fragment
                     .alpha((bookAdapter.getItemCount() > 0) ? 0 : 1)
                     .setDuration(450)
                     .start();
-        } else{
+        } else {
             emptyView.setAlpha((bookAdapter.getItemCount() > 0) ? 0 : 1);
         }
     }

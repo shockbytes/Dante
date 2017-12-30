@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -13,16 +12,19 @@ import android.transition.Fade;
 import android.transition.Slide;
 import android.view.MenuItem;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.dagger.AppComponent;
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.tracking.Tracker;
 
-public class DownloadActivity extends AppCompatActivity
+public class DownloadActivity extends BaseActivity
         implements DownloadBookFragment.OnBookDownloadedListener {
 
     private static final String ARG_QUERY = "arg_barcode";
@@ -48,6 +50,11 @@ public class DownloadActivity extends AppCompatActivity
             setResult(RESULT_CANCELED);
             supportFinishAfterTransition();
         }
+    }
+
+    @Override
+    public void injectToGraph(@NotNull AppComponent appComponent) {
+        appComponent.inject(this);
     }
 
     @Override

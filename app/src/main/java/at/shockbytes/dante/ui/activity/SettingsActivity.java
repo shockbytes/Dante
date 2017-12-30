@@ -2,17 +2,15 @@ package at.shockbytes.dante.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.transition.Slide;
-import android.view.Gravity;
 import android.view.MenuItem;
 
-import at.shockbytes.dante.R;
+import org.jetbrains.annotations.NotNull;
+
+import at.shockbytes.dante.dagger.AppComponent;
 import at.shockbytes.dante.ui.fragment.SettingsFragment;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BackNavigableActivity {
     
     public static Intent newIntent(Context context) {
         return new Intent(context, SettingsActivity.class);
@@ -20,19 +18,9 @@ public class SettingsActivity extends AppCompatActivity {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			getWindow().setEnterTransition(new Slide(Gravity.BOTTOM));
-		}
-		setContentView(R.layout.activity_settings);
-
-		if (getSupportActionBar() != null) {
-			getSupportActionBar().setHomeButtonEnabled(true);
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			getSupportActionBar().setDisplayShowHomeEnabled(false);
-		}
 		getFragmentManager()
 				.beginTransaction()
-				.replace(R.id.content_frame, SettingsFragment.newInstance())
+				.replace(android.R.id.content, SettingsFragment.newInstance())
 				.commit();
 	}
 
@@ -46,4 +34,8 @@ public class SettingsActivity extends AppCompatActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	public void injectToGraph(@NotNull AppComponent appComponent) {
+		// Do nothing
+	}
 }

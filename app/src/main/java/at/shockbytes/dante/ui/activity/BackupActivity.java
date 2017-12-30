@@ -25,21 +25,24 @@ import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BackupEntryAdapter;
-import at.shockbytes.dante.adapter.BaseAdapter;
-import at.shockbytes.dante.adapter.helper.BackupEntryTouchHelper;
+import at.shockbytes.dante.backup.BackupEntry;
+import at.shockbytes.dante.backup.BackupManager;
 import at.shockbytes.dante.dagger.AppComponent;
 import at.shockbytes.dante.ui.fragment.dialogs.RestoreStrategyDialogFragment;
 import at.shockbytes.dante.util.ResourceManager;
-import at.shockbytes.dante.util.backup.BackupEntry;
-import at.shockbytes.dante.util.backup.BackupManager;
 import at.shockbytes.dante.util.books.BookManager;
 import at.shockbytes.dante.util.tracking.Tracker;
+import at.shockbytes.util.adapter.BaseAdapter;
+import at.shockbytes.util.adapter.BaseItemTouchHelper;
 import at.shockbytes.util.view.EqualSpaceItemDecoration;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
+/**
+ * TODO Candidate for ContainerBackNavigableActivity
+ */
 public class BackupActivity extends BackNavigableActivity
         implements BaseAdapter.OnItemClickListener<BackupEntry>,
         CompoundButton.OnCheckedChangeListener, BaseAdapter.OnItemMoveListener<BackupEntry> {
@@ -114,7 +117,8 @@ public class BackupActivity extends BackNavigableActivity
         rvBackups.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter.setOnItemClickListener(this);
         adapter.setOnItemMoveListener(this);
-        ItemTouchHelper.Callback callback = new BackupEntryTouchHelper(adapter);
+        ItemTouchHelper.Callback callback = new BaseItemTouchHelper(adapter, true,
+                BaseItemTouchHelper.DragAccess.NONE);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(rvBackups);
         rvBackups.setAdapter(adapter);

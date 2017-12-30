@@ -35,10 +35,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.transition.Slide;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,12 +49,15 @@ import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.dagger.AppComponent;
+import at.shockbytes.dante.ui.activity.BackNavigableActivity;
 import at.shockbytes.dante.ui.activity.DownloadActivity;
 import at.shockbytes.dante.ui.fragment.dialogs.QueryDialogFragment;
 import at.shockbytes.dante.util.AppParams;
@@ -70,7 +70,7 @@ import at.shockbytes.dante.util.tracking.Tracker;
  * rear facing camera. During detection overlay graphics are drawn to indicate the position,
  * size, and ID of each barcode.
  */
-public class QueryCaptureActivity extends AppCompatActivity
+public class QueryCaptureActivity extends BackNavigableActivity
         implements GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic>,
         QueryDialogFragment.OnQueryEnteredListener {
 
@@ -93,18 +93,13 @@ public class QueryCaptureActivity extends AppCompatActivity
 
     @Override
     public void onCreate(Bundle icicle) {
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY); // Call has to happen before in order to avoid a crash
         super.onCreate(icicle);
-        ((DanteApplication) getApplication()).getAppComponent().inject(this);
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Slide(Gravity.BOTTOM));
-        }
         setContentView(R.layout.barcode_capture);
         setStatusBarTranslucent(true);
+        setResult(RESULT_CANCELED, new Intent()); // Set this, otherwise this will trigger a Kotlin Exception
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setBackgroundDrawable(
                     new ColorDrawable(Color.parseColor(AppParams.TRANSLUCENT_ACTION_BAR_COLOR)));
         }
@@ -133,6 +128,11 @@ public class QueryCaptureActivity extends AppCompatActivity
             sb.setActionTextColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent));
             sb.show();
         }
+    }
+
+    @Override
+    public void injectToGraph(@NotNull AppComponent appComponent) {
+        appComponent.inject(this);
     }
 
     private void setStatusBarTranslucent(boolean makeTranslucent) {

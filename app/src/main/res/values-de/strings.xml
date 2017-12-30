@@ -4,8 +4,8 @@
     <string name="action_move_to_done">Verschieben zu Gelesen</string>
     <string name="action_move_to_reading">Verschieben zu Lesen</string>
     <string name="action_move_to_upcoming">Verschieben zu Später Lesen</string>
-    <string name="action_settings">Einstellungen</string>
-    <string name="action_stats">Statistiken</string>
+    <string name="settings">Einstellungen</string>
+    <string name="menu_main_stats">Statistiken</string>
     <string name="label_settings">Einstellungen</string>
     <string name="label_stats">Deine Bücherstatistiken</string>
     <string name="prefs_app_version_title">App Version</string>
@@ -50,7 +50,7 @@
     <string name="backup_label_auto">Autom. Backups</string>
     <string name="backup_books_amount">Bücher: %d</string>
     <string name="backup">SICHERN</string>
-    <string name="action_backup">Backup</string>
+    <string name="menu_main_backup">Backup</string>
     <string name="backup_strategy_merge">Zusammenführen</string>
     <string name="backup_strategy_overwrite">Überschreiben</string>
     <string name="backup_info_overwrite">Alle Bücher am Gerät werden gelöscht und durch die im Backup gespeicherten Bücher überschrieben.</string>
@@ -72,5 +72,12 @@
     <string name="download_code_error">Sorry! Ein unerwarteter Fehler ist aufgetreten.</string>
     <string name="prefs_category_books_title">Bücher</string>
     <string name="prefs_page_tracking_title">Seitentracking</string>
+    <string name="login_title">Hallo!</string>
+    <string name="login_later">Später</string>
+    <string name="login_rationale">Danke, dass du Dante benützt. Um ein besseres Erlebnis zu bieten benötigen wir Zugang zu deinem Google Account. Damit kannst du unter anderem Google Drive Backups erstellen. Du kannst dich auch jederzeit später mit deinem Google Account verbinden.</string>
+    <string name="dialog_login_title">Login bei Dante</string>
+    <string name="signin_goodbye">Bis bald!</string>
+    <string name="signin_no_account">Kein gültiger Account!</string>
+    <string name="signin_welcome">Willkommen zurück %s</string>
 
 </resources>

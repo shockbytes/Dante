@@ -34,6 +34,7 @@ import at.shockbytes.dante.ui.activity.DownloadActivity;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
 import at.shockbytes.dante.util.books.BookSuggestion;
+import at.shockbytes.util.adapter.BaseAdapter;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
@@ -42,7 +43,7 @@ import io.reactivex.functions.Consumer;
 
 
 public class DownloadBookFragment extends BaseFragment
-        implements Callback, Palette.PaletteAsyncListener, BookAdapter.OnItemClickListener {
+        implements Callback, Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<Book> {
 
     public interface OnBookDownloadedListener {
 

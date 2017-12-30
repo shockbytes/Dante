@@ -8,6 +8,7 @@ import at.shockbytes.dante.ui.activity.DownloadActivity;
 import at.shockbytes.dante.ui.activity.MainActivity;
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment;
 import at.shockbytes.dante.ui.fragment.MainBookFragment;
+import at.shockbytes.dante.ui.fragment.dialogs.GoogleSignInDialogFragment;
 import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment;
 import at.shockbytes.dante.util.barcode.QueryCaptureActivity;
 import dagger.Component;
@@ -36,5 +37,7 @@ public interface AppComponent {
     void inject(StatsDialogFragment fragment);
 
     void inject(DownloadBookFragment fragment);
+
+    void inject(GoogleSignInDialogFragment dialogFragment);
 
 }

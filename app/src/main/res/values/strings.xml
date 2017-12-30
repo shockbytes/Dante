@@ -10,8 +10,8 @@
 
     <string name="error_load_book">Oops, cannot load the book!</string>
 
-    <string name="action_stats">Stats</string>
-    <string name="action_settings">Settings</string>
+    <string name="menu_main_stats">Stats</string>
+    <string name="settings">Settings</string>
     <string name="action_move_to_upcoming">Move to read later</string>
     <string name="action_move_to_reading">Move to reading</string>
     <string name="action_move_to_done">Move to done</string>
@@ -69,7 +69,7 @@
     <string name="backup">BACKUP</string>
     <string name="last_backup">Last backup: %s</string>
     <string name="backup_books_amount">Books: %d</string>
-    <string name="action_backup">Backup</string>
+    <string name="menu_main_backup">Backup</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>
     <string name="backup_strategy_overwrite">Overwrite</string>
@@ -94,5 +94,16 @@
     <string name="prefs_category_books_title">Books</string>
     <string name="prefs_page_tracking_key" translatable="false">prefs_page_tracking_key</string>
     <string name="book_finished_move_to_done_question">You have finished your book. Would you like to add it to the done list?</string>
+    <string name="login_title">Hello!</string>
+    <string name="login_rationale">thank you for using Dante. Bla bla</string>
+    <string name="login_later">Maybe later</string>
+    <string name="dialog_login_title">Login to Dante</string>
+    <string name="signin_goodbye">Bye for now!</string>
+    <string name="signin_no_account">You don\'t have a valid account</string>
+    <string name="menu_main_google_login" translatable="false">Google Login</string>
+    <string name="login" translatable="false">Login</string>
+    <string name="Logout" translatable="false">Logout</string>
+    <string name="signin_welcome">Welcome back %s</string>
+    <string name="error_load_books">Cannot load books</string>
 
 </resources>

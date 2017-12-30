@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.util.backup.BackupManager;
+import at.shockbytes.dante.backup.BackupManager;
 
 /**
  * @author Martin Macheiner
@@ -43,7 +43,7 @@ public class RestoreStrategyDialogFragment extends DialogFragment
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(R.string.dialogfragment_restore_strategy_title);
-        builder.setIcon(R.mipmap.ic_google_drive);
+        builder.setIcon(R.drawable.ic_google_drive);
         builder.setView(buildView());
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
             @Override

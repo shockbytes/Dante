@@ -4,19 +4,33 @@
     tools:context=".ui.activity.MainActivity">
 
     <item
-        android:id="@+id/action_backup"
-        android:title="@string/action_backup"
-        app:showAsAction="never" />
+        android:id="@+id/action_google"
+        android:title="@string/menu_main_google_login"
+        android:icon="@drawable/ic_google_white"
+        app:showAsAction="always" >
+
+        <menu>
+            <item
+                android:id="@+id/action_backup"
+                android:title="@string/menu_main_backup"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/action_google_login"
+                android:title="@string/login"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/action_stats"
-        android:title="@string/action_stats"
+        android:title="@string/menu_main_stats"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/settings"
         app:showAsAction="never" />
 
 </menu>

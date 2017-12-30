@@ -1,11 +1,8 @@
 package at.shockbytes.dante.util.books
 
-import android.support.v4.app.FragmentActivity
-import android.util.Log
+import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.util.AppParams
-import at.shockbytes.dante.util.backup.BackupManager
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -20,6 +17,39 @@ import java.util.*
  */
 class RealmBookManager(private val bookDownloader: BookDownloader,
                        private val realm: Realm) : BookManager {
+
+
+    override val statistics: Map<String, Int>
+        get() {
+            val stats = HashMap<String, Int>()
+
+            val upcoming = realm.where(Book::class.java)
+                    .equalTo("ordinalState", Book.State.READ_LATER.ordinal).findAll().size
+            val current = realm.where(Book::class.java)
+                    .equalTo("ordinalState", Book.State.READING.ordinal).findAll().size
+            val doneList = realm.where(Book::class.java)
+                    .equalTo("ordinalState", Book.State.READ.ordinal).findAll()
+            val done = doneList.size
+            val pages = doneList.sumBy { it.pageCount }
+            stats.put(AppParams.STAT_UPCOMING, upcoming)
+            stats.put(AppParams.STAT_CURRENT, current)
+            stats.put(AppParams.STAT_DONE, done)
+            stats.put(AppParams.STAT_PAGES, pages)
+            return stats
+        }
+
+    override val allBooks: Observable<List<Book>>
+        get() {
+            val books = realm.where(Book::class.java)
+                    .findAll()
+                    .sort("id", Sort.DESCENDING)
+            return Observable.just<List<Book>>(books)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+        }
+
+    override val allBooksSync: List<Book>
+        get() = realm.where(Book::class.java).findAll().sort("id", Sort.DESCENDING)
 
     /**
      * This must always be called inside a transaction
@@ -47,8 +77,8 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         return book
     }
 
-    override fun getBook(id: Long): Book? {
-        return realm.where(Book::class.java).equalTo("id", id).findFirst()
+    override fun getBook(id: Long): Book {
+        return realm.where(Book::class.java).equalTo("id", id).findFirst()!!
     }
 
     override fun updateBookState(book: Book, newState: Book.State) {
@@ -81,27 +111,10 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
 
     override fun removeBook(id: Long) {
 
-        realm.executeTransaction { realm -> realm.where(Book::class.java)
-                .equalTo("id", id).findFirst()!!.deleteFromRealm() }
-    }
-
-    override fun getStatistics(): Map<String, Int> {
-
-        val stats = HashMap<String, Int>()
-
-        val upcoming = realm.where(Book::class.java)
-                .equalTo("ordinalState", Book.State.READ_LATER.ordinal).findAll().size
-        val current = realm.where(Book::class.java)
-                .equalTo("ordinalState", Book.State.READING.ordinal).findAll().size
-        val doneList = realm.where(Book::class.java)
-                .equalTo("ordinalState", Book.State.READ.ordinal).findAll()
-        val done = doneList.size
-        val pages = doneList.sumBy { it.pageCount }
-        stats.put(AppParams.STAT_UPCOMING, upcoming)
-        stats.put(AppParams.STAT_CURRENT, current)
-        stats.put(AppParams.STAT_DONE, done)
-        stats.put(AppParams.STAT_PAGES, pages)
-        return stats
+        realm.executeTransaction { realm ->
+            realm.where(Book::class.java)
+                    .equalTo("id", id).findFirst()!!.deleteFromRealm()
+        }
     }
 
     override fun downloadBook(isbn: String): Observable<BookSuggestion> {
@@ -110,32 +123,16 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getAllBooks(): Observable<List<Book>> {
-        val books = realm.where(Book::class.java)
-                .findAll()
-                .sort("id", Sort.DESCENDING)
-        return Observable.just<List<Book>>(books)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-    }
+    override fun restoreBackup(backupBooks: List<Book>, strategy: BackupManager.RestoreStrategy) {
 
-    override fun restoreBackup(activity: FragmentActivity, backupBooks: List<Book>,
-                               strategy: BackupManager.RestoreStrategy): Completable {
+        when (strategy) {
 
-        return when (strategy) {
-
-            BackupManager.RestoreStrategy.MERGE -> mergeBackupRestore(activity, backupBooks)
-            BackupManager.RestoreStrategy.OVERWRITE -> overwriteBackupRestore(activity, backupBooks)
+            BackupManager.RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
+            BackupManager.RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
         }
     }
 
-    override fun getAllBooksSync(): List<Book> {
-        return realm.where(Book::class.java)
-                .findAll()
-                .sort("id", Sort.DESCENDING)
-    }
-
-    override fun getBookByState(state: Book.State): Observable<List<Book>> {
+    override fun getBooksByState(state: Book.State): Observable<List<Book>> {
         val books = realm.where(Book::class.java)
                 .equalTo("ordinalState", state.ordinal)
                 .findAll()
@@ -149,44 +146,27 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         realm.close()
     }
 
-    private fun mergeBackupRestore(activity: FragmentActivity,
-                                   backupBooks: List<Book>): Completable {
+    private fun mergeBackupRestore(backupBooks: List<Book>) {
 
-        return Completable.create {
-            // TODO Why not with subscriptions?!?!?!
-            activity.runOnUiThread {
-                val books = allBooksSync
-                for (bBook in backupBooks) {
-                    val insert = books.none { it.title == bBook.title }
-                    if (insert) {
-                        addBook(bBook)
-                    }
-                }
+        val books = allBooksSync
+        for (bBook in backupBooks) {
+            val insert = books.none { it.title == bBook.title }
+            if (insert) {
+                addBook(bBook)
             }
         }
-
     }
 
-    private fun overwriteBackupRestore(activity: FragmentActivity,
-                                       backupBooks: List<Book>): Completable {
+    private fun overwriteBackupRestore(backupBooks: List<Book>) {
 
-        return Completable.create {
-            Log.wtf("Dante", "Overwrite completable")
-            // TODO Why not with subscriptions?!?!?!
-            activity.runOnUiThread {
-                
-                Log.wtf("Dante", "Run on ui thread")
-                val stored = realm.where(Book::class.java).findAll()
-                realm.beginTransaction()
-                stored.deleteAllFromRealm()
-                realm.commitTransaction()
+        val stored = realm.where(Book::class.java).findAll()
+        realm.beginTransaction()
+        stored.deleteAllFromRealm()
+        realm.commitTransaction()
 
-                for (b in backupBooks) {
-                    addBook(b)
-                }
-            }
+        for (b in backupBooks) {
+            addBook(b)
         }
-
     }
 
 }

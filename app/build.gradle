@@ -13,6 +13,8 @@ def playServicesVersion = "11.8.0"
 def retrofitVersion = "2.3.0"
 def icePickVersion = "3.2.0"
 def rxBindingsVersion = "2.0.0"
+def shockUtilVersion = "2.0.2"
+def keenVersion = "5.2.0"
 
 android {
     compileSdkVersion 26
@@ -77,13 +79,15 @@ dependencies {
     implementation "com.jakewharton:butterknife:$butterknifeVersion"
     kapt "com.jakewharton:butterknife-compiler:$butterknifeVersion"
 
-    implementation 'com.github.shockbytes:ShockUtil:2.0'
+    implementation "com.github.shockbytes:ShockUtil:$shockUtilVersion"
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    implementation 'io.keen:keen-client-api-android:5.2.0@aar'
-    implementation 'io.keen:keen-client-api-query:5.2.0'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+    implementation 'com.github.iammert:MaterialIntroView:1.6.0'
+
+    implementation "io.keen:keen-client-api-android:$keenVersion@aar"
+    implementation "io.keen:keen-client-api-query:$keenVersion"
 
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingsVersion"

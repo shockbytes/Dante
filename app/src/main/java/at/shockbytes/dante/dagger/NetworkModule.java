@@ -8,14 +8,14 @@ import javax.inject.Singleton;
 
 import at.shockbytes.dante.network.BookDownloader;
 import at.shockbytes.dante.network.amazon.AmazonItemLookupApi;
-import at.shockbytes.dante.network.google.GoogleBooksDownloader;
 import at.shockbytes.dante.network.google.GoogleBooksApi;
+import at.shockbytes.dante.network.google.GoogleBooksDownloader;
 import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
@@ -49,7 +49,7 @@ public class NetworkModule {
     public GoogleBooksApi provideGoogleBooksApi(OkHttpClient client, Gson gson) {
 
         return new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .baseUrl(GoogleBooksApi.SERVICE_ENDPOINT)
@@ -63,7 +63,7 @@ public class NetworkModule {
     public AmazonItemLookupApi provideAmazonItemlookupApi(OkHttpClient client) {
 
         return new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(AmazonItemLookupApi.SERVICE_ENDPOINT)

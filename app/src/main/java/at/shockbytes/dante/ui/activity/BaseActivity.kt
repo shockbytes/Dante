@@ -5,26 +5,31 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.transition.Explode
-import android.transition.Fade
+import android.transition.Slide
+import android.view.Gravity
 import android.view.Window
 import android.widget.Toast
-import at.shockbytes.remote.R
-import at.shockbytes.remote.dagger.AppComponent
+import at.shockbytes.dante.core.DanteApplication
+import at.shockbytes.dante.dagger.AppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
 
 abstract class BaseActivity : AppCompatActivity() {
+
+    open val enableActivityTransition: Boolean = true
 
     private var unbinder: Unbinder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-            window.enterTransition = Explode()
-            window.exitTransition = Fade()
+            if (enableActivityTransition) {
+                window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
+                window.exitTransition = Slide(Gravity.BOTTOM)
+                window.enterTransition = Explode()
+            }
         }
-        injectToGraph((application as RemiApp).appComponent)
+        injectToGraph((application as DanteApplication).appComponent)
     }
 
     override fun setContentView(layoutResID: Int) {
@@ -37,9 +42,9 @@ abstract class BaseActivity : AppCompatActivity() {
         unbinder?.unbind()
     }
 
-    protected fun showSnackbar(text: String?) {
-        if (text != null && !text.isEmpty()) {
-            Snackbar.make(findViewById(R.id.main_layout), text, Snackbar.LENGTH_LONG).show()
+    protected fun showSnackbar(text: String) {
+        if (!text.isEmpty()) {
+            Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG).show()
         }
     }
 

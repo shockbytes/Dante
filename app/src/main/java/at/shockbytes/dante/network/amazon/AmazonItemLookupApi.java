@@ -1,9 +1,9 @@
 package at.shockbytes.dante.network.amazon;
 
 import at.shockbytes.dante.util.books.BookSuggestion;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
 
 /**
  * @author Martin Macheiner

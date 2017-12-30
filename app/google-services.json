@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "150599422814",
+    "firebase_url": "https://dante-166506.firebaseio.com",
+    "project_id": "dante-166506",
+    "storage_bucket": "dante-166506.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150599422814:android:f6bdab42b5d510f2",
+        "android_client_info": {
+          "package_name": "at.shockbytes.dante"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150599422814-6n2plb042g6j329alkregkchbh8q4t87.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "150599422814-moto7djse1tf7vtso7slemniki76ohg6.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "150599422814-phnhcn5pnnmr2e71dinq2jcb9n1pp2l5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "at.shockbytes.dante",
+            "certificate_hash": "37bdb32c83fc0f9934ed054d86610eaf59a336ce"
+          }
+        },
+        {
+          "client_id": "150599422814-1jld26rsteqib6f6iohsm61kr6fqp3ln.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "at.shockbytes.dante",
+            "certificate_hash": "a148f6e8d35386fc2795f33455e2add9437de47b"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-oVMv1ZEFsS84bTCAmHQbovL8JjAM5D0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150599422814-6n2plb042g6j329alkregkchbh8q4t87.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,7 @@
 package at.shockbytes.dante.network;
 
 import at.shockbytes.dante.util.books.BookSuggestion;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * @author Martin Macheiner

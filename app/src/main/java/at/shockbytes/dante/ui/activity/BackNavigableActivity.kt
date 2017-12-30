@@ -14,6 +14,7 @@ abstract class BackNavigableActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
+            backwardAnimation()
             if (supportFragmentManager.backStackEntryCount > 0) {
                 supportFragmentManager.popBackStack()
             } else {
@@ -22,5 +23,12 @@ abstract class BackNavigableActivity : BaseActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onBackPressed() {
+        backwardAnimation()
+        super.onBackPressed()
+    }
+
+    open fun backwardAnimation() { }
 
 }

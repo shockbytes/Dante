@@ -1,14 +1,11 @@
 package at.shockbytes.dante.ui.fragment;
 
 import android.os.Bundle;
-import android.preference.Preference;
 import android.preference.PreferenceFragment;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.ui.fragment.dialogs.LegalNoticeDialogFragment;
 
-public class SettingsFragment extends PreferenceFragment
-        implements Preference.OnPreferenceClickListener {
+public class SettingsFragment extends PreferenceFragment {
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -17,17 +14,7 @@ public class SettingsFragment extends PreferenceFragment
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
         addPreferencesFromResource(R.xml.settings);
-        findPreference(getString(R.string.prefs_open_source_licenses_key))
-                .setOnPreferenceClickListener(this);
     }
 
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-
-        LegalNoticeDialogFragment lndf = LegalNoticeDialogFragment.newInstance();
-        lndf.show(getFragmentManager(), lndf.getTag());
-        return true;
-    }
 }

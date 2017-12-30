@@ -21,7 +21,7 @@ import java.util.List;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.util.books.Book;
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -185,19 +185,19 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
         private Book book;
 
-        @Bind(R.id.listitem_book_txt_title)
+        @BindView(R.id.listitem_book_txt_title)
         protected TextView txtTitle;
 
-        @Bind(R.id.listitem_book_txt_subtitle)
+        @BindView(R.id.listitem_book_txt_subtitle)
         protected TextView txtSubTitle;
 
-        @Bind(R.id.listitem_book_txt_author)
+        @BindView(R.id.listitem_book_txt_author)
         protected TextView txtAuthor;
 
-        @Bind(R.id.listitem_book_img_thumb)
+        @BindView(R.id.listitem_book_img_thumb)
         protected ImageView imgViewThumb;
 
-        @Bind(R.id.listitem_book_img_overflow)
+        @BindView(R.id.listitem_book_img_overflow)
         protected ImageButton imgBtnOverflow;
 
         private PopupMenu popupMenu;

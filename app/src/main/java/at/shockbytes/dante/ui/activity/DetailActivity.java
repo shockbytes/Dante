@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.CardView;
@@ -25,21 +24,26 @@ import android.widget.Toast;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.jetbrains.annotations.NotNull;
 import org.joda.time.DateTime;
 
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.dagger.AppComponent;
 import at.shockbytes.dante.ui.fragment.dialogs.BookFinishedDialogFragment;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookManager;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.BindView;
 
-public class DetailActivity extends AppCompatActivity implements Callback, Palette.PaletteAsyncListener, SeekBar.OnSeekBarChangeListener {
+public class DetailActivity extends BackNavigableActivity
+        implements Callback, Palette.PaletteAsyncListener, SeekBar.OnSeekBarChangeListener {
 
     private static final String ARG_ID = "arg_id";
+
+    public static Intent newIntent(Context context, long id) {
+        return new Intent(context, DetailActivity.class).putExtra(ARG_ID, id);
+    }
 
     private Book book;
 
@@ -49,52 +53,46 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
     @Inject
     protected SharedPreferences prefs;
 
-    @Bind(R.id.activity_detail_img_thumb)
+    @BindView(R.id.activity_detail_img_thumb)
     protected ImageView imgViewThumb;
 
-    @Bind(R.id.activity_detail_txt_title)
+    @BindView(R.id.activity_detail_txt_title)
     protected TextView txtTitle;
 
-    @Bind(R.id.activity_detail_txt_subtitle)
+    @BindView(R.id.activity_detail_txt_subtitle)
     protected TextView txtSubTitle;
 
-    @Bind(R.id.activity_detail_txt_author)
+    @BindView(R.id.activity_detail_txt_author)
     protected TextView txtAuthor;
 
-    @Bind(R.id.activity_detail_txt_pages)
+    @BindView(R.id.activity_detail_txt_pages)
     protected TextView txtPages;
 
-    @Bind(R.id.activity_detail_txt_published)
+    @BindView(R.id.activity_detail_txt_published)
     protected TextView txtPublished;
 
-    @Bind(R.id.activity_detail_txt_isbn)
+    @BindView(R.id.activity_detail_txt_isbn)
     protected TextView txtIsbn;
 
-    @Bind(R.id.activity_detail_cardview_dates)
+    @BindView(R.id.activity_detail_cardview_dates)
     protected CardView cardViewDates;
 
-    @Bind(R.id.activity_detail_txt_wishlist_date)
+    @BindView(R.id.activity_detail_txt_wishlist_date)
     protected TextView txtWishlistdate;
 
-    @Bind(R.id.activity_detail_txt_start_date)
+    @BindView(R.id.activity_detail_txt_start_date)
     protected TextView txtStartdate;
 
-    @Bind(R.id.activity_detail_txt_end_date)
+    @BindView(R.id.activity_detail_txt_end_date)
     protected TextView txtEnddate;
 
-    @Bind(R.id.activity_detail_seekbar_pages)
+    @BindView(R.id.activity_detail_seekbar_pages)
     protected AppCompatSeekBar seekBarPages;
-
-    public static Intent newIntent(Context context, long id) {
-        return new Intent(context, DetailActivity.class).putExtra(ARG_ID, id);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        ((DanteApplication)getApplication()).getAppComponent().inject(this);
-        ButterKnife.bind(this);
 
         long id = getIntent().getLongExtra(ARG_ID, -1);
         if (id == -1) {
@@ -102,19 +100,14 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
             supportFinishAfterTransition();
             return;
         }
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
 
         book = manager.getBook(id);
         initialize();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ButterKnife.unbind(this);
+    public void injectToGraph(@NotNull AppComponent appComponent) {
+        appComponent.inject(this);
     }
 
     @Override
@@ -280,4 +273,5 @@ public class DetailActivity extends AppCompatActivity implements Callback, Palet
                     .show(getSupportFragmentManager(), "book_finished_fragment");
         }
     }
+
 }

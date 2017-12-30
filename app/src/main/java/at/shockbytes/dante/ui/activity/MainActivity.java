@@ -14,16 +14,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
 import at.shockbytes.dante.adapter.BookAdapter;
-import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.dagger.AppComponent;
 import at.shockbytes.dante.ui.fragment.MainBookFragment;
 import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment;
 import at.shockbytes.dante.util.AppParams;
@@ -33,26 +34,25 @@ import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookListener;
 import at.shockbytes.dante.util.books.BookManager;
 import at.shockbytes.dante.util.tracking.Tracker;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+import butterknife.BindView;
 import butterknife.OnClick;
 import icepick.Icepick;
 import icepick.State;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements BookAdapter.OnBookPopupItemSelectedListener,
         TabLayout.OnTabSelectedListener, BackupManager.OnConnectionStatusListener {
 
-    @Bind(R.id.tablayout)
+    @BindView(R.id.tablayout)
     protected TabLayout tabLayout;
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     protected Toolbar toolbar;
 
-    @Bind(R.id.appbar)
+    @BindView(R.id.appbar)
     protected AppBarLayout appBar;
 
-    @Bind(R.id.main_fab)
+    @BindView(R.id.main_fab)
     protected FloatingActionButton fab;
 
     @Inject
@@ -81,8 +81,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ((DanteApplication) getApplication()).getAppComponent().inject(this);
-        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
         // Fields will be overwritten by icepick if they have already a value
@@ -92,7 +90,13 @@ public class MainActivity extends AppCompatActivity
         Icepick.restoreInstanceState(this, savedInstanceState);
 
         // Connect to Google Drive for backups
-        backupManager.connect(this, this);
+        // TODO Enable later, this will cause an exception for now
+        // backupManager.connect(this, this);
+    }
+
+    @Override
+    public void injectToGraph(@NotNull AppComponent appComponent) {
+        appComponent.inject(this);
     }
 
     @Override
@@ -103,7 +107,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        ButterKnife.unbind(this);
         //bookManager.close();
 
         if (backupManager.isAutoBackupEnabled()) {

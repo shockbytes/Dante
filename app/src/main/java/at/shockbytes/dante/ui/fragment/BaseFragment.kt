@@ -1,17 +1,27 @@
-package at.shockbytes.remote.fragment
-
+package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
+import at.shockbytes.dante.core.DanteApplication
+import at.shockbytes.dante.dagger.AppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
 
+/**
+ * @author Martin Macheiner
+ * Date: 29.11.2017.
+ */
 abstract class BaseFragment : Fragment() {
 
     private var unbinder: Unbinder? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        injectToGraph((activity.application as DanteApplication).appComponent)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -25,6 +35,8 @@ abstract class BaseFragment : Fragment() {
     }
 
     protected abstract fun setupViews()
+
+    protected abstract fun injectToGraph(appComponent: AppComponent)
 
     @JvmOverloads
     protected fun showSnackbar(text: String, actionText: String,

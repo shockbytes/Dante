@@ -10,10 +10,10 @@
 - [x] Update to newest ButterKnife version
 - [x] Improve backup api
 - [x] Introduce GoogleSignIn
-- [ ] Add Firebase crash reporting
-- [ ] ViewPagerAdapter
-- [ ] Code cleanup and Kotlin Port
+- [x] Add Crashlytics
+- [ ] Code cleanup and Kotlin Port (~70% Kotlin)
 - [ ] DownloadBook / QueryCapture Activity merging 
+- [ ] ViewPagerAdapter
 
 ### Version 2.6
 
@@ -31,6 +31,6 @@
 - [ ] Upload scanned books to Firebase, or change backend as a whole to firebase?
 - [ ] Include Amazon books API?
 - [ ] Include Proguard
-- [ ] Add advertisement API (Add AdView (in list or as banner in DetailView) or In-App Billing to remove Ads (0,89€))
+- [ ] Add advertisement API (Add AdView in list)
 - [ ] Add book manually
 - [ ] Change book cover

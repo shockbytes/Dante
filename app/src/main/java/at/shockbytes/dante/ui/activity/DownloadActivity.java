@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.core.DanteApp;
 import at.shockbytes.dante.dagger.AppComponent;
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment;
 import at.shockbytes.dante.util.AppParams;
@@ -40,7 +40,7 @@ public class DownloadActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-        ((DanteApplication) getApplication()).getAppComponent().inject(this);
+        ((DanteApp) getApplication()).getAppComponent().inject(this);
         setupWindow();
 
         String query = getIntent().getExtras().getString(ARG_QUERY);

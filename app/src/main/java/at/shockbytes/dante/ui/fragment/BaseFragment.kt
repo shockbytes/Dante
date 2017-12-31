@@ -5,7 +5,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Toast
-import at.shockbytes.dante.core.DanteApplication
+import at.shockbytes.dante.core.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
@@ -20,7 +20,7 @@ abstract class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectToGraph((activity.application as DanteApplication).appComponent)
+        injectToGraph((activity.application as DanteApp).appComponent)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

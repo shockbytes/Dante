@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import at.shockbytes.dante.R;
-import at.shockbytes.dante.core.DanteApplication;
+import at.shockbytes.dante.core.DanteApp;
 import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.books.BookManager;
 
@@ -36,7 +36,7 @@ public class StatsDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((DanteApplication)getActivity().getApplication()).getAppComponent().inject(this);
+        ((DanteApp)getActivity().getApplication()).getAppComponent().inject(this);
     }
 
     @NonNull

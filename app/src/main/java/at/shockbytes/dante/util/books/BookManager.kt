@@ -1,9 +1,7 @@
 package at.shockbytes.dante.util.books
 
-import android.support.v4.app.FragmentActivity
 import at.shockbytes.dante.backup.BackupManager
 import io.reactivex.Observable
-import io.reactivex.Single
 
 /**
  * @author Martin Macheiner
@@ -29,7 +27,7 @@ interface BookManager {
 
     fun removeBook(id: Long)
 
-    fun downloadBook(isbn: String): Observable<BookSuggestion>
+    fun downloadBook(isbn: String?): Observable<BookSuggestion>
 
     fun restoreBackup(backupBooks: List<Book>, strategy: BackupManager.RestoreStrategy)
 

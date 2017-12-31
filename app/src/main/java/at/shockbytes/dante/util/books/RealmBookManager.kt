@@ -117,10 +117,14 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         }
     }
 
-    override fun downloadBook(isbn: String): Observable<BookSuggestion> {
-        return bookDownloader.downloadBookSuggestion(isbn)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    override fun downloadBook(isbn: String?): Observable<BookSuggestion> {
+        return if (isbn == null) {
+            Observable.error(NullPointerException("ISBN is null"))
+        } else {
+            bookDownloader.downloadBookSuggestion(isbn)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+        }
     }
 
     override fun restoreBackup(backupBooks: List<Book>, strategy: BackupManager.RestoreStrategy) {

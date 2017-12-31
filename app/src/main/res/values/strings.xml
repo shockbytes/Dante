@@ -65,25 +65,20 @@
     <string name="send_to">Share your book</string>
     <string name="label_backup">Manage backups</string>
     <string name="backup_label_auto">Auto backups</string>
-    <string name="restore">RESTORE</string>
-    <string name="backup">BACKUP</string>
+    <string name="restore">Restore</string>
+    <string name="backup">Backup</string>
     <string name="last_backup">Last backup: %s</string>
     <string name="backup_books_amount">Books: %d</string>
     <string name="menu_main_backup">Backup</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>
     <string name="backup_strategy_overwrite">Overwrite</string>
-    <string name="backup_info_merge">The books on the device will be preserved and complemented with the books from the backup.</string>
-    <string name="backup_info_overwrite">All books, which are stored on the device will be deleted and replaced by the books stored in the backup.</string>
     <string name="backup_created">Backup created</string>
     <string name="backup_not_created">Cannot create backup</string>
     <string name="backup_removed">Backup removed</string>
-    <string name="dialogfragment_restore_strategy_title">Choose restore strategy</string>
+    <string name="backup_restore_strategy_title">backup_restore_strategy_title</string>
     <string name="backup_restored">Backup from %s restored</string>
     <string name="backup_restore_error">Error while restoring backup</string>
-    <string name="prefs_open_source_licenses_key" translatable="false">open_source_licenses_key</string>
-    <string name="prefs_open_source_licenses_title">Open Source licenses</string>
-    <string name="dialogfragment_legal_notice_title">Open source licenses</string>
     <string name="download_suggestions_none">None of them</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>
     <string name="download_suggestion_other">Not my book</string>
@@ -95,7 +90,7 @@
     <string name="prefs_page_tracking_key" translatable="false">prefs_page_tracking_key</string>
     <string name="book_finished_move_to_done_question">You have finished your book. Would you like to add it to the done list?</string>
     <string name="login_title">Hello!</string>
-    <string name="login_rationale">thank you for using Dante. Bla bla</string>
+    <string name="login_rationale">Thank you for using Dante. In order to provide a better experience we will need access to your Google Account. Furthermore you can also create Google Drive backups. You can also login anytime later if you do not need these features now.</string>
     <string name="login_later">Maybe later</string>
     <string name="dialog_login_title">Login to Dante</string>
     <string name="signin_goodbye">Bye for now!</string>
@@ -105,5 +100,10 @@
     <string name="Logout" translatable="false">Logout</string>
     <string name="signin_welcome">Welcome back %s</string>
     <string name="error_load_books">Cannot load books</string>
+    <string name="backup_info">Choose <b>merge</b> if you want to preserve the books on your device and complement the collection with the missing books in the backup. Or choose <b>overwrite</b> to completely delete all books on your device and replace them by the books in the backup file.</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_acknowledge">OKAY, GOT IT</string>
+    <string name="welcome_with_name">Hello %s!</string>
+    <string name="google_welcome_rationale">You can manage all your Google related activities when your are clicking the symbol above in the app bar. Click on this icon if you want to create a <b>backup</b>.</string>
 
 </resources>

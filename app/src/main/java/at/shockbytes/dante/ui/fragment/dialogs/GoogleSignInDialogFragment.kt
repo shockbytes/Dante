@@ -30,7 +30,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
 
     private val loginView: View
         get() = LayoutInflater.from(context)
-                .inflate(R.layout.dialog_fragment_login, null, false)
+                .inflate(R.layout.dialogfragment_login, null, false)
 
     private var signInListener: (() -> Unit)? = null
 

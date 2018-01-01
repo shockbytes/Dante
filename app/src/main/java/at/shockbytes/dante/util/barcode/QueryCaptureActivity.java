@@ -64,6 +64,8 @@ import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.barcode.camera.CameraSourcePreview;
 import at.shockbytes.dante.util.barcode.camera.GraphicOverlay;
 import at.shockbytes.dante.util.tracking.Tracker;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 /**
  * Activity for the multi-tracker app.  This app detects barcodes and displays the value with the
@@ -71,8 +73,7 @@ import at.shockbytes.dante.util.tracking.Tracker;
  * size, and ID of each barcode.
  */
 public class QueryCaptureActivity extends BackNavigableActivity
-        implements GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic>,
-        QueryDialogFragment.OnQueryEnteredListener {
+        implements GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic> {
 
     private static final String TAG = "Dante";
 
@@ -182,9 +183,16 @@ public class QueryCaptureActivity extends BackNavigableActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.menu_new_add_isbn) {
-            QueryDialogFragment idf = QueryDialogFragment.newInstance();
-            idf.setOnQueryEnteredListener(this);
-            idf.show(getSupportFragmentManager(), "query-dialog-fragment");
+            QueryDialogFragment.Companion.newInstance()
+                    .setOnQueryEnteredListener(new Function1<String, Unit>() {
+                        @Override
+                        public Unit invoke(String query) {
+                            tracker.trackOnBookManuallyEntered();
+                            sendResultToCallingActivity(query);
+                            return Unit.INSTANCE;
+                        }
+                    })
+                    .show(getSupportFragmentManager(), "query-dialog-fragment");
         } else if (item.getItemId() == android.R.id.home) {
             finish();
         }
@@ -336,7 +344,7 @@ public class QueryCaptureActivity extends BackNavigableActivity
     private void sendResultToCallingActivity(String query) {
         if (query != null) {
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this);
-            startActivityForResult(DownloadActivity.newIntent(this, query),
+            startActivityForResult(DownloadActivity.Companion.newIntent(this, query),
                     REQ_CODE_DOWNLOAD_BOOK, options.toBundle());
         } else {
             Log.d(TAG, "Query data is null");
@@ -355,13 +363,6 @@ public class QueryCaptureActivity extends BackNavigableActivity
                 }
             });
         }
-    }
-
-    @Override
-    public void onQueryEntered(String query) {
-
-        tracker.trackOnBookManuallyEntered();
-        sendResultToCallingActivity(query);
     }
 
 }

@@ -11,7 +11,8 @@
 - [x] Improve backup api
 - [x] Introduce GoogleSignIn
 - [x] Add Crashlytics
-- [ ] Code cleanup and Kotlin Port (~70% Kotlin)
+- [x] Code cleanup and Kotlin Port
+- [x] Introduction / Showcase View
 - [ ] DownloadBook / QueryCapture Activity merging 
 - [ ] ViewPagerAdapter
 

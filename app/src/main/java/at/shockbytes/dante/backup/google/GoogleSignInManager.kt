@@ -31,6 +31,10 @@ class GoogleSignInManager(private val prefs: SharedPreferences) {
         get() = prefs.getBoolean(prefsMaybeLater, false)
         set(value) { prefs.edit().putBoolean(prefsMaybeLater, true).apply() }
 
+    var showWelcomeScreen: Boolean
+        get() = prefs.getBoolean(prefsShowWelcomeScreen, true)
+        set(value) { prefs.edit().putBoolean(prefsShowWelcomeScreen, value).apply() }
+
     val signInIntent: Intent?
         get() = client?.signInIntent
 
@@ -80,7 +84,7 @@ class GoogleSignInManager(private val prefs: SharedPreferences) {
 
         val rcSignIn = 0x8944
         val prefsMaybeLater = "prefs_google_login_maybe_later"
-
+        val prefsShowWelcomeScreen = "prefs_google_show_welcome_screen"
     }
 
 

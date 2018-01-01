@@ -25,6 +25,7 @@ import at.shockbytes.dante.backup.google.GoogleSignInManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.dialogs.GoogleSignInDialogFragment
+import at.shockbytes.dante.ui.fragment.dialogs.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment
 import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.ResourceManager
@@ -83,15 +84,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        // Fields will be overwritten by icepick if they have already a value
-        tabPosition = 1
-        primaryOld = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
-        primaryDarkOld = ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark)
-        Icepick.restoreInstanceState(this, savedInstanceState)
-
-        // Connect to Google Drive for backups
-        setupBackup()
+        setupIcepick(savedInstanceState)
+        setupGoogleServices()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -108,7 +102,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         super.onDestroy()
     }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
@@ -125,13 +119,14 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
             GoogleSignInManager.rcSignIn -> {
                 signInManager.signIn(data).subscribe { account ->
                     if (account != null) {
-                        connectToGoogle(account)
+                        showFabAwareSnackbar(getString(R.string.signin_welcome, account.givenName))
+                        connectToGoogleServices()
+                        showGoogleWelcomeScreen(account)
                     } else {
                         showFabAwareSnackbar(getString(R.string.signin_no_account))
                     }
                 }
             }
-
         }
     }
 
@@ -186,7 +181,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         return true
     }
 
-    public override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         Icepick.saveInstanceState(this, outState)
     }
@@ -241,6 +236,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     override fun onTabUnselected(tab: TabLayout.Tab) {}
     override fun onTabReselected(tab: TabLayout.Tab) {}
 
+    // ---------------------------------------------------
+
     @OnClick(R.id.main_fab)
     fun onClickNewBook() {
 
@@ -266,13 +263,13 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         }
     }
 
-    private fun setupBackup() {
+    private fun setupGoogleServices() {
 
         signInManager.setup(this)
         signInManager.isSignedIn(this).subscribe { isSignedIn ->
 
             if (isSignedIn) { // <- User signed in, TOP!
-                connectToGoogle(signInManager.getAccount(this@MainActivity)!!)
+                connectToGoogleServices()
             } else if (!signInManager.maybeLater) { // <- user not signed in and did not opt-out
                 GoogleSignInDialogFragment.newInstance()
                         .setSignInListener {
@@ -285,6 +282,11 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         }
     }
 
+    private fun connectToGoogleServices() {
+        backupManager.connect(this)
+        tryPersonalizeMenu()
+    }
+
     private fun tryPersonalizeMenu() {
 
         val account = signInManager.getAccount(this)
@@ -295,7 +297,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                             menuItemGoogle?.icon = AppUtils.createRoundedBitmap(this, bm)
                         }
             } else {
-                menuItemGoogle?.icon = ContextCompat.getDrawable(this, R.drawable.ic_user_template)
+                menuItemGoogle?.icon = ContextCompat
+                        .getDrawable(this, R.drawable.ic_user_template)
             }
             menuItemGoogle?.title = account.displayName
             menuItemLogin?.title = getString(R.string.Logout)
@@ -307,13 +310,6 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
             menuItemGoogle?.icon = ContextCompat.getDrawable(this, R.drawable.ic_google_white)
         }
 
-    }
-
-    private fun connectToGoogle(account: GoogleSignInAccount) {
-
-        backupManager.connect(this)
-        showFabAwareSnackbar(getString(R.string.signin_welcome, account.givenName))
-        tryPersonalizeMenu()
     }
 
     private fun toggleFab() {
@@ -367,6 +363,25 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
     private fun showFabAwareSnackbar(text: String) {
         Snackbar.make(findViewById(R.id.main_content), text, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun setupIcepick(savedInstanceState: Bundle?) {
+        // Fields will be overwritten by icepick if they have already a value
+        tabPosition = 1
+        primaryOld = ContextCompat.getColor(applicationContext, R.color.colorPrimary)
+        primaryDarkOld = ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark)
+        Icepick.restoreInstanceState(this, savedInstanceState)
+    }
+
+    private fun showGoogleWelcomeScreen(account: GoogleSignInAccount) {
+        if (signInManager.showWelcomeScreen) {
+            GoogleWelcomeScreenDialogFragment
+                    .newInstance(account.givenName, account.photoUrl)
+                    .setOnAcknowledgedListener {
+                        signInManager.showWelcomeScreen = false
+                    }
+                    .show(supportFragmentManager, "google_welcome_dialog_fragment")
+        }
     }
 
 }

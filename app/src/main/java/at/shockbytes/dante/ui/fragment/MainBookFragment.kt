@@ -30,7 +30,6 @@ import javax.inject.Inject
 class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, BookListener {
 
     private val recyclerView: RecyclerView by bindView(R.id.fragment_book_main_rv)
-
     private val emptyView: TextView by bindView(R.id.fragment_book_main_empty_view)
 
     @Inject
@@ -55,6 +54,8 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
         }
 
 
+    override val layoutId = R.layout.fragment_book_main
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         popupItemSelectedListener = context as? BookAdapter.OnBookPopupItemSelectedListener?
@@ -67,11 +68,6 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_book_main, container, false)
     }
 
     override fun onResume() {

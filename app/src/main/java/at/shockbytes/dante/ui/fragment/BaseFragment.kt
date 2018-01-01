@@ -1,9 +1,13 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.support.annotation.IntegerRes
+import android.support.annotation.LayoutRes
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import at.shockbytes.dante.core.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
@@ -18,9 +22,16 @@ abstract class BaseFragment : Fragment() {
 
     private var unbinder: Unbinder? = null
 
+    abstract val layoutId: Int
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectToGraph((activity.application as DanteApp).appComponent)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?,
+                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater?.inflate(layoutId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

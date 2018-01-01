@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_backup_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    android:id="@+id/activity_backup_root"
+    android:orientation="vertical"
     tools:context="at.shockbytes.dante.ui.activity.BackupActivity">
 
     <RelativeLayout
@@ -13,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#82B1FF"
-        android:visibility="gone"
-        android:elevation="8dp">
+        android:elevation="8dp"
+        android:visibility="gone">
 
         <Switch
             android:id="@+id/activity_backup_switch_auto_update"
@@ -42,10 +43,9 @@
     <LinearLayout
         android:id="@+id/activity_backup_backup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_below="@+id/headerLayout">
+        android:padding="16dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:text="@string/backup"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <TextView
             android:id="@+id/activity_backup_txt_last_backup"
@@ -65,42 +65,28 @@
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/activity_backup_btn_backup"
-            android:text="@string/backup_now"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/backup_now"
             android:padding="16dp"
             android:textColor="@android:color/white"
-            android:layout_gravity="end"
-            app:backgroundTint="@color/colorAccent"
-            android:layout_height="wrap_content" />
+            app:backgroundTint="@color/colorAccent" />
 
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:background="#aaa"
-        android:layout_below="@+id/activity_backup_backup" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="4dp"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:layout_below="@+id/activity_backup_backup">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#aaa" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/restore"
-            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/activity_backup_rv_backups"
@@ -109,4 +95,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

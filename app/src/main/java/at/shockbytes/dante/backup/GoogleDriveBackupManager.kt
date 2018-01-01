@@ -71,7 +71,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {
-        return Completable.create {
+        return Completable.fromAction {
             if (!deleteDriveFile(DriveId.decodeFromString(entry.fileId))) {
                 Completable.error(Throwable(
                         BackupException("Cannot delete backup entry: " + entry.fileName)))
@@ -110,8 +110,8 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun restoreBackup(activity: FragmentActivity, entry: BackupEntry,
-                               bookManager: BookManager, strategy: BackupManager.RestoreStrategy): Completable {
+    override fun restoreBackup(entry: BackupEntry, bookManager: BookManager,
+                               strategy: BackupManager.RestoreStrategy): Completable {
 
         return if (client != null) {
             Completable.fromAction {

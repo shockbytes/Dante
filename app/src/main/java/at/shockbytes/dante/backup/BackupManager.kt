@@ -34,8 +34,8 @@ interface BackupManager {
 
     fun backup(books: List<Book>): Completable
 
-    fun restoreBackup(activity: FragmentActivity, entry: BackupEntry,
-                      bookManager: BookManager, strategy: RestoreStrategy): Completable
+    fun restoreBackup(entry: BackupEntry, bookManager: BookManager,
+                      strategy: RestoreStrategy): Completable
 
     companion object {
 

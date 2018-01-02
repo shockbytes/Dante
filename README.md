@@ -16,13 +16,15 @@
 * DownloadBook / QueryCapture Activity merging 
 * ViewPagerAdapter
 
-### Version 2.6
+### Version 2.7
 
 - [ ] Tablet optimization
 - [ ] Adding notes to books
 - [ ] Show book page state as progressbar around a round icon?
 - [ ] Rate books
 - [ ] Enter book page count manually 
+- [ ] Adaptive Icons
+- [ ] 100% Kotlin Port if possible
 
 ### Version 3.0
 - [ ] Auto backup

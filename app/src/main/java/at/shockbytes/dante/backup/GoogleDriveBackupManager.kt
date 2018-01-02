@@ -162,6 +162,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
                 }
 
             }
+            result.release()
         }
         return entries
     }
@@ -229,7 +230,6 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-
         }
 
         val driveFileResult = Tasks.await(client?.appFolder!!)

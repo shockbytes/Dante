@@ -5,16 +5,16 @@
 
 ### Version 2.5
 
-- [x] Introduce utility classes (BaseFragment, BaseActivity, BackNavigableActivity)
-- [x] Introduce KotterKnife
-- [x] Update to newest ButterKnife version
-- [x] Improve backup api
-- [x] Introduce GoogleSignIn
-- [x] Add Crashlytics
-- [x] Code cleanup and Kotlin Port
-- [x] Introduction / Showcase View
-- [x] DownloadBook / QueryCapture Activity merging 
-- [ ] ViewPagerAdapter
+* Introduce utility classes (BaseFragment, BaseActivity, BackNavigableActivity)
+* Introduce KotterKnife
+* Update to newest ButterKnife version
+* Improve backup api
+* Introduce GoogleSignIn
+* Add Crashlytics
+* Code cleanup and Kotlin Port
+* Introduction / Showcase View
+* DownloadBook / QueryCapture Activity merging 
+* ViewPagerAdapter
 
 ### Version 2.6
 

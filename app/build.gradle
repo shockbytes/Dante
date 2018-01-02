@@ -16,7 +16,7 @@ def firebaseVersion="11.8.0"
 def retrofitVersion = "2.3.0"
 def icePickVersion = "3.2.0"
 def rxBindingsVersion = "2.0.0"
-def shockUtilVersion = "2.0.3"
+def shockUtilVersion = "2.1.0"
 def keenVersion = "5.2.0"
 def crashlyticsVersion = "2.7.1"
 

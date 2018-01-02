@@ -30,7 +30,8 @@ import kotterknife.bindViews
 import javax.inject.Inject
 
 
-class DownloadBookFragment : BaseFragment(), Callback, Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<Book> {
+class DownloadBookFragment : BaseFragment(), Callback,
+        Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<Book> {
 
     interface OnBookDownloadedListener {
 
@@ -229,8 +230,7 @@ class DownloadBookFragment : BaseFragment(), Callback, Palette.PaletteAsyncListe
 
     private fun setupOtherSuggestionsRecyclerView(books: List<Book>) {
 
-        bookAdapter = BookAdapter(context, books, Book.State.READ,
-                null, false)
+        bookAdapter = BookAdapter(context, books, Book.State.READ, null, false)
         rvOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this
         rvOtherSuggestions.adapter = bookAdapter

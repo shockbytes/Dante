@@ -23,7 +23,7 @@ import kotterknife.bindView
 
 class BookAdapter(context: Context, extData: List<Book>, private val state: Book.State,
                   private val popupListener: OnBookPopupItemSelectedListener?,
-                  private val showOverflow: Boolean) : BaseAdapter<Book>(context, extData) {
+                  private val showOverflow: Boolean) : BaseAdapter<Book>(context, extData.toMutableList()) {
 
     interface OnBookPopupItemSelectedListener {
 
@@ -89,7 +89,7 @@ class BookAdapter(context: Context, extData: List<Book>, private val state: Book
             txtSubTitle.text = t.subTitle
 
             val thumbnailAddress = t.thumbnailAddress
-            if (!thumbnailAddress.isEmpty()) {
+            if (thumbnailAddress != null && !thumbnailAddress.isEmpty()) {
                 Picasso.with(context).load(thumbnailAddress)
                         .placeholder(R.drawable.ic_placeholder).into(imgViewThumb)
             } else {

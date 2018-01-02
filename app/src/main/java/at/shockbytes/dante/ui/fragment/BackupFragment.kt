@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -37,6 +38,11 @@ import javax.inject.Inject
 class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntry>,
         CompoundButton.OnCheckedChangeListener, BaseAdapter.OnItemMoveListener<BackupEntry> {
 
+    interface OnBackupRestoreListener {
+
+        fun onBackupRestored()
+    }
+
     override val layoutId = R.layout.activity_backup
 
     private val rvBackups: RecyclerView by bindView(R.id.activity_backup_rv_backups)
@@ -55,8 +61,15 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     private lateinit var adapter: BackupEntryAdapter
 
+    private var backupRestoreListener: OnBackupRestoreListener? = null
+
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        backupRestoreListener = context as? OnBackupRestoreListener
     }
 
     @OnClick(R.id.activity_backup_btn_backup)
@@ -102,6 +115,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                     backupManager.restoreBackup(t, bookManager, strategy)
                             .subscribe({
                                 tracker.trackOnBackupRestored()
+                                backupRestoreListener?.onBackupRestored() // Notify MainActivity
                                 showSnackbar(getString(R.string.backup_restored,
                                         ResourceManager.formatTimestamp(t.timestamp)))
                             }) { throwable ->

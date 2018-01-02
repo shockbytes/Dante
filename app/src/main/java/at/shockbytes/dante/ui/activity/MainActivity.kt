@@ -15,23 +15,23 @@ import android.support.design.widget.Snackbar
 import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
+import at.shockbytes.dante.adapter.BookPagerAdapter
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.google.GoogleSignInManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.BaseActivity
-import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.dialogs.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment
 import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.ResourceManager
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.util.books.BookListener
 import at.shockbytes.dante.util.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
@@ -43,12 +43,13 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener,
-        TabLayout.OnTabSelectedListener {
+        ViewPager.OnPageChangeListener {
 
     private val tabLayout: TabLayout by bindView(R.id.tablayout)
     private val toolbar: Toolbar by bindView(R.id.toolbar)
     private val appBar: AppBarLayout by bindView(R.id.appbar)
     private val fab: FloatingActionButton by bindView(R.id.main_fab)
+    private val viewpager: ViewPager by bindView(R.id.viewpager)
 
     @Inject
     protected lateinit var bookManager: BookManager
@@ -74,7 +75,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     @JvmField
     protected var tabPosition: Int = 0
 
-    private var bookListener: BookListener? = null
+    private lateinit var pagerAdapter: BookPagerAdapter
 
     private var menuItemBackup: MenuItem? = null
     private var menuItemGoogle: MenuItem? = null
@@ -86,15 +87,11 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         setSupportActionBar(toolbar)
         setupIcepick(savedInstanceState)
         setupGoogleServices()
+        initializeTabs()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initializeTabs()
     }
 
     override fun onDestroy() {
@@ -108,11 +105,10 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         when (requestCode) {
 
             AppParams.rcScanBook -> {
-
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     val bookId = data.getLongExtra(AppParams.extraBookId, -1)
                     if (bookId > -1) {
-                        bookListener?.onBookAdded(bookManager.getBook(bookId))
+                        pagerAdapter.listener?.onBookAdded(bookManager.getBook(bookId))
                     }
                 }
             }
@@ -125,6 +121,12 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                     } else {
                         showFabAwareSnackbar(getString(R.string.signin_no_account))
                     }
+                }
+            }
+            BackupActivity.rcBackupRestored -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    // Backup is restored, data no longer valid --> refresh
+                    initializeTabs()
                 }
             }
         }
@@ -143,7 +145,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                 fragment.show(supportFragmentManager, "stats-dialog-fragment")
             }
             R.id.action_backup -> {
-                startActivity(BackupActivity.newIntent(this), options)
+                startActivityForResult(BackupActivity.newIntent(this),
+                        BackupActivity.rcBackupRestored, options)
             }
             R.id.action_google_login -> {
 
@@ -187,7 +190,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     }
 
     override fun onDelete(b: Book) {
-        bookListener?.onBookDeleted(b)
+        pagerAdapter.listener?.onBookDeleted(b)
         bookManager.removeBook(b.id)
     }
 
@@ -201,40 +204,31 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
     override fun onMoveToUpcoming(b: Book) {
         bookManager.updateBookState(b, Book.State.READ_LATER)
-        bookListener?.onBookStateChanged(b, Book.State.READ_LATER)
+        pagerAdapter.listener?.onBookStateChanged(b, Book.State.READ_LATER)
     }
 
     override fun onMoveToCurrent(b: Book) {
         bookManager.updateBookState(b, Book.State.READING)
-        bookListener?.onBookStateChanged(b, Book.State.READING)
+        pagerAdapter.listener?.onBookStateChanged(b, Book.State.READING)
     }
 
     override fun onMoveToDone(b: Book) {
         bookManager.updateBookState(b, Book.State.READ)
-        bookListener?.onBookStateChanged(b, Book.State.READ)
+        pagerAdapter.listener?.onBookStateChanged(b, Book.State.READ)
 
         tracker.trackOnBookMovedToDone(b)
     }
 
-    override fun onTabSelected(tab: TabLayout.Tab) {
+    override fun onPageSelected(position: Int) {
 
-        tabPosition = tab.position
-        val fragment = MainBookFragment.newInstance(Book.State.values()[tabPosition])
-        bookListener = fragment
-
-        supportFragmentManager
-                .beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-                .replace(R.id.main_content, fragment)
-                .commit()
-
+        tabPosition = position
         appBar.setExpanded(true, true)
         toggleFab()
-        animateHeader(tab.position)
+        animateHeader(position)
     }
 
-    override fun onTabUnselected(tab: TabLayout.Tab) {}
-    override fun onTabReselected(tab: TabLayout.Tab) {}
+    override fun onPageScrollStateChanged(state: Int) { }
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
 
     // ---------------------------------------------------
 
@@ -250,10 +244,22 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
     private fun initializeTabs() {
 
+        // Setup the ViewPager
+        pagerAdapter = BookPagerAdapter(applicationContext, supportFragmentManager)
+        viewpager.adapter = pagerAdapter
+        viewpager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
+        viewpager.addOnPageChangeListener(this)
+        viewpager.offscreenPageLimit = 2
+        tabLayout.setupWithViewPager(viewpager, false)
+
         // Select the tab
-        tabLayout.addOnTabSelectedListener(this)
         val initialTab = tabLayout.getTabAt(tabPosition)
         initialTab?.select()
+
+        // Set the icons of the tabs
+        for (i in 0..tabLayout.tabCount) {
+            tabLayout.getTabAt(i)?.icon = ContextCompat.getDrawable(this, pagerAdapter.getPageIcon(i))
+        }
 
         // Color the controls accordingly
         toolbar.setBackgroundColor(primaryOld)

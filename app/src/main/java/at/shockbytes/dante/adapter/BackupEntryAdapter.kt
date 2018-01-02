@@ -17,8 +17,8 @@ import kotterknife.bindView
  * Date: 22.04.2017.
  */
 
-class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>) : BaseAdapter<BackupEntry>(cxt, data),
-        ItemTouchHelperAdapter {
+class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
+    : BaseAdapter<BackupEntry>(cxt, data.toMutableList()), ItemTouchHelperAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): BaseAdapter<BackupEntry>.ViewHolder {

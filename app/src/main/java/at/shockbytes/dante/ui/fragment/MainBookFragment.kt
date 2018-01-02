@@ -22,19 +22,19 @@ import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 import javax.inject.Inject
 
-/**
- * A placeholder fragment containing a simple view.
- */
-class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, BookListener {
 
-    private val recyclerView: RecyclerView by bindView(R.id.fragment_book_main_rv)
-    private val emptyView: TextView by bindView(R.id.fragment_book_main_empty_view)
+class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, BookListener {
 
     @Inject
     protected lateinit var bookManager: BookManager
 
+    private val recyclerView: RecyclerView by bindView(R.id.fragment_book_main_rv)
+    private val emptyView: TextView by bindView(R.id.fragment_book_main_empty_view)
+
     private lateinit var bookState: Book.State
     private var bookAdapter: BookAdapter? = null
+
+    private var isInitialized: Boolean = false
 
     private var popupItemSelectedListener: BookAdapter.OnBookPopupItemSelectedListener? = null
 
@@ -64,32 +64,31 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
         bookState = arguments.getSerializable(ARG_STATE) as Book.State
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadBooks()
+        isInitialized = true
+    }
+
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        bookManager.getBooksByState(bookState).subscribe ({ books ->
-            bookAdapter?.data = books.toMutableList()
-            animateEmptyView(false)
-        }, ({ e ->
-            showSnackbar(getString(R.string.error_load_books))
-            Log.e("Dante", "Cannot load books --> " + e.toString())
-        }))
-
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser and isInitialized) {
+            loadBooks()
+        }
     }
 
-    public override fun setupViews() {
+    override fun setupViews() {
 
         // Initialize text for empty indicator
         val empty = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
         emptyView.text = empty
 
         // Initialize RecyclerView
-        bookAdapter = BookAdapter(context, listOf(), bookState,
-                popupItemSelectedListener, true)
+        bookAdapter = BookAdapter(context, listOf(), bookState, popupItemSelectedListener, true)
         recyclerView.layoutManager = layoutManager
         bookAdapter?.onItemClickListener = this
         recyclerView.adapter = bookAdapter
@@ -97,22 +96,6 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
 
     override fun onItemClick(t: Book, v: View) {
         startActivity(DetailActivity.newIntent(context, t.id), getTransitionBundle(v))
-    }
-
-    private fun getTransitionBundle(v: View): Bundle {
-        return ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity,
-                        Pair(v.findViewById(R.id.listitem_book_card),
-                                getString(R.string.transition_name_card)),
-                        Pair(v.findViewById(R.id.listitem_book_img_thumb),
-                                getString(R.string.transition_name_thumb)),
-                        Pair(v.findViewById(R.id.listitem_book_txt_title),
-                                getString(R.string.transition_name_title)),
-                        Pair(v.findViewById(R.id.listitem_book_txt_subtitle),
-                                getString(R.string.transition_name_subtitle)),
-                        Pair(v.findViewById(R.id.listitem_book_txt_author),
-                                getString(R.string.transition_name_author))
-                ).toBundle()
     }
 
     override fun onBookAdded(book: Book) {
@@ -129,6 +112,35 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
 
     override fun onBookStateChanged(book: Book, state: Book.State) {
         animateEmptyView(true)
+    }
+
+    private fun loadBooks() {
+        bookManager.getBooksByState(bookState).subscribe ({ books ->
+            if (bookAdapter?.data !== books) {
+                bookAdapter?.data = ArrayList(books)
+                animateEmptyView(false)
+            }
+        }, ({ e ->
+            e.printStackTrace()
+            showSnackbar(getString(R.string.error_load_books))
+            Log.e("Dante", "Cannot load books --> " + e.toString())
+        }))
+    }
+
+    private fun getTransitionBundle(v: View): Bundle {
+        return ActivityOptionsCompat
+                .makeSceneTransitionAnimation(activity,
+                        Pair(v.findViewById(R.id.listitem_book_card),
+                                getString(R.string.transition_name_card)),
+                        Pair(v.findViewById(R.id.listitem_book_img_thumb),
+                                getString(R.string.transition_name_thumb)),
+                        Pair(v.findViewById(R.id.listitem_book_txt_title),
+                                getString(R.string.transition_name_title)),
+                        Pair(v.findViewById(R.id.listitem_book_txt_subtitle),
+                                getString(R.string.transition_name_subtitle)),
+                        Pair(v.findViewById(R.id.listitem_book_txt_author),
+                                getString(R.string.transition_name_author))
+                ).toBundle()
     }
 
     private fun animateEmptyView(animate: Boolean) {

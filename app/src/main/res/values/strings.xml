@@ -17,9 +17,8 @@
     <string name="action_move_to_done">Move to done</string>
     <string name="action_delete">Delete</string>
 
-    <string name="permission_camera_rationale">Access to the camera is needed for barcode detection</string>
+    <string name="permission_camera_rationale">The app needs access to your camera, in order to detect the barcodes of the books.</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission. The scan window will terminate.</string>
-    <string name="low_storage_error">Barcode detector dependencies cannot be downloaded due to low device storage</string>
 
     <string name="transition_name_thumb" translatable="false">transition_name_thumb</string>
     <string name="transition_name_title" translatable="false">transition_name_title</string>
@@ -105,5 +104,7 @@
     <string name="welcome_acknowledge">OKAY, GOT IT</string>
     <string name="welcome_with_name">Hello %s!</string>
     <string name="google_welcome_rationale">You can manage all your Google related activities when your are clicking the symbol above in the app bar. Click on this icon if you want to create a <b>backup</b>.</string>
+    <string name="camera_permission_title">Camera</string>
+    <string name="scanner_not_operational">The app is currently being configured</string>
 
 </resources>

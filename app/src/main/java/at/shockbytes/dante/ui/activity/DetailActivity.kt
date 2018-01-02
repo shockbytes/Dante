@@ -4,16 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.AppCompatSeekBar
 import android.support.v7.widget.CardView
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -21,7 +15,8 @@ import android.widget.TextView
 import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.fragment.dialogs.BookFinishedDialogFragment
+import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
+import at.shockbytes.dante.ui.fragment.dialogs.SimpleRequestDialogFragment
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.books.BookManager
 import com.squareup.picasso.Callback
@@ -30,7 +25,7 @@ import kotterknife.bindView
 import org.joda.time.DateTime
 import javax.inject.Inject
 
-class DetailActivity : BackNavigableActivity(), Callback,
+class DetailActivity : TintableBackNavigableActivity(), Callback,
         Palette.PaletteAsyncListener, SeekBar.OnSeekBarChangeListener {
 
     @Inject
@@ -171,21 +166,9 @@ class DetailActivity : BackNavigableActivity(), Callback,
     override fun onGenerated(palette: Palette) {
 
         val actionBarColor = palette.lightMutedSwatch?.rgb
-                ?: ContextCompat.getColor(this, R.color.colorPrimary)
         val actionBarTextColor = palette.lightMutedSwatch?.titleTextColor
-                ?: ContextCompat.getColor(this, android.R.color.white)
         val statusBarColor = palette.darkMutedSwatch?.rgb
-                ?: ContextCompat.getColor(this, R.color.colorPrimaryDark)
-
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(actionBarColor))
-        val text = SpannableString(book.title)
-        text.setSpan(ForegroundColorSpan(actionBarTextColor), 0, text.length,
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-        supportActionBar?.title = text
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = statusBarColor
-        }
+        tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, book.title)
     }
 
     override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
@@ -199,12 +182,13 @@ class DetailActivity : BackNavigableActivity(), Callback,
         manager.updateCurrentBookPage(book, seekBar.progress)
 
         if (book.currentPage == book.pageCount) {
-            BookFinishedDialogFragment.newInstance(book.title)
-                    .setOnBookMoveFinishedListener {
+            SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, book.title),
+                    getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
+                    .setOnAcceptListener {
                         manager.updateBookState(book, Book.State.READ)
                         supportFinishAfterTransition()
                     }
-                    .show(supportFragmentManager, "book_finished_fragment")
+                    .show(supportFragmentManager, "book-finished-dialogfragment")
         }
     }
 

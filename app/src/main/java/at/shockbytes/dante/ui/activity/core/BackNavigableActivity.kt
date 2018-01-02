@@ -1,6 +1,7 @@
-package at.shockbytes.dante.ui.activity
+package at.shockbytes.dante.ui.activity.core
 
 import android.os.Bundle
+import android.support.annotation.DrawableRes
 import android.view.MenuItem
 
 abstract class BackNavigableActivity : BaseActivity() {
@@ -30,5 +31,9 @@ abstract class BackNavigableActivity : BaseActivity() {
     }
 
     open fun backwardAnimation() { }
+
+    fun setHomeAsUpIndicator(@DrawableRes indicator: Int) {
+        supportActionBar?.setHomeAsUpIndicator(indicator)
+    }
 
 }

@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.shockbytes.dante.util.barcode;
+package at.shockbytes.dante.util.barcode
 
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.Tracker;
-import com.google.android.gms.vision.barcode.Barcode;
-
-import at.shockbytes.dante.util.barcode.camera.GraphicOverlay;
+import at.shockbytes.dante.util.barcode.camera.GraphicOverlay
+import com.google.android.gms.vision.Detector
+import com.google.android.gms.vision.Tracker
+import com.google.android.gms.vision.barcode.Barcode
 
 /**
  * Generic tracker which is used for tracking or reading a barcode (and can really be used for
@@ -27,30 +26,22 @@ import at.shockbytes.dante.util.barcode.camera.GraphicOverlay;
  * to an overlay, update the graphics as the item changes, and remove the graphics when the item
  * goes away.
  */
-class BarcodeGraphicTracker extends Tracker<Barcode> {
-    private GraphicOverlay<BarcodeGraphic> mOverlay;
-    private BarcodeGraphic mGraphic;
-
-    BarcodeGraphicTracker(GraphicOverlay<BarcodeGraphic> overlay, BarcodeGraphic graphic) {
-        mOverlay = overlay;
-        mGraphic = graphic;
-    }
+class BarcodeGraphicTracker(private val mOverlay: GraphicOverlay<BarcodeGraphic>,
+                                     private val mGraphic: BarcodeGraphic) : Tracker<Barcode>() {
 
     /**
      * Start tracking the detected item instance within the item overlay.
      */
-    @Override
-    public void onNewItem(int id, Barcode item) {
-        mGraphic.setId(id);
+    override fun onNewItem(id: Int, item: Barcode?) {
+        mGraphic.id = id
     }
 
     /**
      * Update the position/characteristics of the item within the overlay.
      */
-    @Override
-    public void onUpdate(Detector.Detections<Barcode> detectionResults, Barcode item) {
-        mOverlay.add(mGraphic);
-        mGraphic.updateItem(item);
+    override fun onUpdate(detectionResults: Detector.Detections<Barcode>?, item: Barcode) {
+        mOverlay.add(mGraphic)
+        mGraphic.updateItem(item)
     }
 
     /**
@@ -58,17 +49,15 @@ class BarcodeGraphicTracker extends Tracker<Barcode> {
      * intermediate frames temporarily, for example if the object was momentarily blocked from
      * view.
      */
-    @Override
-    public void onMissing(Detector.Detections<Barcode> detectionResults) {
-        mOverlay.remove(mGraphic);
+    override fun onMissing(detectionResults: Detector.Detections<Barcode>?) {
+        mOverlay.remove(mGraphic)
     }
 
     /**
      * Called when the item is assumed to be gone for good. Remove the graphic annotation from
      * the overlay.
      */
-    @Override
-    public void onDone() {
-        mOverlay.remove(mGraphic);
+    override fun onDone() {
+        mOverlay.remove(mGraphic)
     }
 }

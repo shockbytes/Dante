@@ -11,10 +11,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.shockbytes.dante.util.AppParams;
 import at.shockbytes.dante.util.books.Book;
 import at.shockbytes.dante.util.books.BookSuggestion;
-
-import static at.shockbytes.dante.util.AppParams.MAX_FETCH_AMOUNT;
 
 
 /**
@@ -39,7 +38,9 @@ public class GoogleBooksSuggestionResponseDeserializer implements JsonDeserializ
                 Book mainSuggestion = grabBook(volumeInfoMain);
                 List<Book> otherSuggestions = new ArrayList<>();
 
-                size = size >= MAX_FETCH_AMOUNT ? MAX_FETCH_AMOUNT : size;
+                size = (size >= AppParams.INSTANCE.getMaxFetchAmount())
+                        ? AppParams.INSTANCE.getMaxFetchAmount()
+                        : size;
                 for (int i = 1; i < size; i++) {
                     JsonObject volumeInfo = json.getAsJsonObject().getAsJsonArray("items").get(i)
                             .getAsJsonObject().get("volumeInfo").getAsJsonObject();

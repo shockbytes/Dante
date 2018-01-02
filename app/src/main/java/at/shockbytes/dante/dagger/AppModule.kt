@@ -87,7 +87,7 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideRealm(): Realm {
         return Realm.getInstance(RealmConfiguration.Builder()
-                .schemaVersion(AppParams.REALM_SCHEMA_VERSION)
+                .schemaVersion(AppParams.realmSchemaVersion)
                 .migration(DanteRealmMigration())
                 .build())
     }
@@ -102,7 +102,7 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    internal fun provideGoogleSignInManager(prefs: SharedPreferences): GoogleSignInManager {
+    fun provideGoogleSignInManager(prefs: SharedPreferences): GoogleSignInManager {
         return GoogleSignInManager(prefs)
     }
 

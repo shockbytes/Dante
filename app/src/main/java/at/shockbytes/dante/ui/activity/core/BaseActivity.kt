@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.activity
+package at.shockbytes.dante.ui.activity.core
 
 import android.os.Build
 import android.os.Bundle

@@ -29,7 +29,6 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>) : BaseAdapter<Ba
 
     override fun onItemMoveFinished() {}
 
-    // TODO Before v2.5 update views, if one is deleted!
     override fun onItemDismiss(position: Int) {
         onItemMoveListener?.onItemDismissed(data[position], position)
     }

@@ -37,9 +37,4 @@ interface BackupManager {
     fun restoreBackup(entry: BackupEntry, bookManager: BookManager,
                       strategy: RestoreStrategy): Completable
 
-    companion object {
-
-        val resolveConnectionRequestCode = 0x1231
-    }
-
 }

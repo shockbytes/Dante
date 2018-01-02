@@ -34,7 +34,6 @@
         app:srcCompat="@drawable/ic_user_template_dark" />
 
     <TextView
-        android:id="@+id/dialogfragment_google_welcome_txt_rationale"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

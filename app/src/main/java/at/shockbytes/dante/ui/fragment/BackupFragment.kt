@@ -8,7 +8,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
-import android.widget.*
+import android.widget.CompoundButton
+import android.widget.Switch
+import android.widget.TextView
+import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BackupEntryAdapter
 import at.shockbytes.dante.backup.BackupEntry
@@ -36,7 +39,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     override val layoutId = R.layout.activity_backup
 
-    private val rootLayout: RelativeLayout by bindView(R.id.activity_backup_root)
     private val rvBackups: RecyclerView by bindView(R.id.activity_backup_rv_backups)
     private val switchAutoUpdate: Switch by bindView(R.id.activity_backup_switch_auto_update)
     private val txtLastBackup: TextView by bindView(R.id.activity_backup_txt_last_backup)

@@ -1,6 +1,7 @@
 package at.shockbytes.dante.ui.fragment
 
 
+import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
@@ -16,7 +17,6 @@ import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.activity.DownloadActivity
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.books.BookManager
 import at.shockbytes.util.adapter.BaseAdapter
@@ -41,6 +41,9 @@ class DownloadBookFragment : BaseFragment(), Callback, Palette.PaletteAsyncListe
         fun onErrorDownload(reason: String)
 
         fun onCloseOnError()
+
+        fun colorSystemBars(actionBarColor: Int?, actionBarTextColor: Int?,
+                            statusBarColor: Int?, title: String?)
 
     }
 
@@ -84,13 +87,16 @@ class DownloadBookFragment : BaseFragment(), Callback, Palette.PaletteAsyncListe
         appComponent.inject(this)
     }
 
-    override fun setupViews() {
-        // Do nothing
-    }
+    override fun setupViews() { }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         downloadBook()
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        listener = context as? OnBookDownloadedListener
     }
 
     override fun onSuccess() {
@@ -108,7 +114,7 @@ class DownloadBookFragment : BaseFragment(), Callback, Palette.PaletteAsyncListe
         val actionBarTextColor = palette.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette.darkMutedSwatch?.rgb
 
-        (activity as DownloadActivity).colorSystemBars(actionBarColor, actionBarTextColor,
+        listener?.colorSystemBars(actionBarColor, actionBarTextColor,
                         statusBarColor, selectedBook?.title)
     }
 
@@ -147,7 +153,7 @@ class DownloadBookFragment : BaseFragment(), Callback, Palette.PaletteAsyncListe
 
             isOtherSuggestionsShowing = true
         } else {
-            listener!!.onCancelDownload()
+            listener?.onCancelDownload()
         }
 
     }
@@ -165,11 +171,6 @@ class DownloadBookFragment : BaseFragment(), Callback, Palette.PaletteAsyncListe
     @OnClick(R.id.fragment_download_book_btn_done)
     fun onClickDone() {
         finishBookDownload(Book.State.READ)
-    }
-
-    fun setOnBookDownloadedListener(listener: OnBookDownloadedListener): DownloadBookFragment {
-        this.listener = listener
-        return this
     }
 
     private fun finishBookDownload(bookState: Book.State) {

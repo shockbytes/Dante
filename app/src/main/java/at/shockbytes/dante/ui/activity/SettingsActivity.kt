@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.ui.activity.core.BackNavigableActivity
 import at.shockbytes.dante.ui.fragment.SettingsFragment
 
 class SettingsActivity : BackNavigableActivity() {

@@ -13,7 +13,7 @@
 - [x] Add Crashlytics
 - [x] Code cleanup and Kotlin Port
 - [x] Introduction / Showcase View
-- [ ] DownloadBook / QueryCapture Activity merging 
+- [x] DownloadBook / QueryCapture Activity merging 
 - [ ] ViewPagerAdapter
 
 ### Version 2.6

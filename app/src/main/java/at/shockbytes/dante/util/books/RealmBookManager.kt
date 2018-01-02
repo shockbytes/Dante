@@ -31,10 +31,10 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
                     .equalTo("ordinalState", Book.State.READ.ordinal).findAll()
             val done = doneList.size
             val pages = doneList.sumBy { it.pageCount }
-            stats.put(AppParams.STAT_UPCOMING, upcoming)
-            stats.put(AppParams.STAT_CURRENT, current)
-            stats.put(AppParams.STAT_DONE, done)
-            stats.put(AppParams.STAT_PAGES, pages)
+            stats.put(AppParams.statKeyUpcoming, upcoming)
+            stats.put(AppParams.statKeyCurrent, current)
+            stats.put(AppParams.statKeyDone, done)
+            stats.put(AppParams.statKeyPages, pages)
             return stats
         }
 

@@ -23,13 +23,13 @@ import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.google.GoogleSignInManager
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.dialogs.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment
 import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.ResourceManager
-import at.shockbytes.dante.util.barcode.QueryCaptureActivity
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.books.BookListener
 import at.shockbytes.dante.util.books.BookManager
@@ -107,10 +107,10 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
         when (requestCode) {
 
-            AppParams.REQ_CODE_SCAN_BOOK -> {
+            AppParams.rcScanBook -> {
 
                 if (resultCode == Activity.RESULT_OK) {
-                    val bookId = data.getLongExtra(AppParams.EXTRA_BOOK_ID, -1)
+                    val bookId = data.getLongExtra(AppParams.extraBookId, -1)
                     if (bookId > -1) {
                         bookListener?.onBookAdded(bookManager.getBook(bookId))
                     }
@@ -243,9 +243,9 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
         tracker.trackOnScanBook()
 
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this)
-        startActivityForResult(QueryCaptureActivity.newIntent(this),
-                AppParams.REQ_CODE_SCAN_BOOK, options.toBundle())
+        startActivityForResult(BookRetrievalActivity .newIntent(this),
+                AppParams.rcScanBook,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
     }
 
     private fun initializeTabs() {

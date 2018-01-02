@@ -70,22 +70,15 @@ class BookAdapter(context: Context, extData: List<Book>, private val state: Book
 
         private fun hideSelectedPopupItem() {
 
-            var item: MenuItem? = null
-            when (state) {
+            val item = when (state) {
 
-                Book.State.READ_LATER ->
+                Book.State.READ_LATER -> popupMenu.menu.findItem(R.id.popup_item_move_to_upcoming)
 
-                    item = popupMenu.menu.findItem(R.id.popup_item_move_to_upcoming)
+                Book.State.READING -> popupMenu.menu.findItem(R.id.popup_item_move_to_current)
 
-                Book.State.READING ->
-
-                    item = popupMenu.menu.findItem(R.id.popup_item_move_to_current)
-
-                Book.State.READ ->
-
-                    item = popupMenu.menu.findItem(R.id.popup_item_move_to_done)
+                Book.State.READ -> popupMenu.menu.findItem(R.id.popup_item_move_to_done)
             }
-            item!!.isVisible = false
+            item?.isVisible = false
         }
 
         override fun bind(t: Book) {

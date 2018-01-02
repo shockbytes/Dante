@@ -51,10 +51,10 @@ class StatsDialogFragment : BaseDialogFragment() {
 
     private fun showStats() {
         val stats = bookManager.statistics
-        txtUpcoming.text = getString(R.string.dialogfragment_stats_upcoming, stats[AppParams.STAT_UPCOMING])
-        txtCurrent.text = getString(R.string.dialogfragment_stats_current, stats[AppParams.STAT_CURRENT])
-        txtDone.text = getString(R.string.dialogfragment_stats_done, stats[AppParams.STAT_DONE])
-        txtPages.text = getString(R.string.dialogfragment_stats_pages, stats[AppParams.STAT_PAGES])
+        txtUpcoming.text = getString(R.string.dialogfragment_stats_upcoming, stats[AppParams.statKeyUpcoming])
+        txtCurrent.text = getString(R.string.dialogfragment_stats_current, stats[AppParams.statKeyCurrent])
+        txtDone.text = getString(R.string.dialogfragment_stats_done, stats[AppParams.statKeyDone])
+        txtPages.text = getString(R.string.dialogfragment_stats_pages, stats[AppParams.statKeyPages])
     }
 
     companion object {

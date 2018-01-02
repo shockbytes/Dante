@@ -15,6 +15,7 @@
 * Introduction / Showcase View
 * DownloadBook / QueryCapture Activity merging 
 * ViewPagerAdapter
+* Adaptive Icons
 
 ### Version 2.7
 
@@ -23,7 +24,6 @@
 - [ ] Show book page state as progressbar around a round icon?
 - [ ] Rate books
 - [ ] Enter book page count manually 
-- [ ] Adaptive Icons
 - [ ] 100% Kotlin Port if possible
 
 ### Version 3.0

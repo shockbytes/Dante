@@ -65,7 +65,6 @@ class QueryCaptureFragment : BaseFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        showSnackbarInfo()
     }
 
     override fun setupViews() {
@@ -109,6 +108,7 @@ class QueryCaptureFragment : BaseFragment(),
 
     override fun onResume() {
         super.onResume()
+        showSnackbarInfo()
         startCameraSource()
     }
 

@@ -18,7 +18,7 @@
         android:alpha="1"
         android:padding="8dp"
         android:drawablePadding="16dp"
-        android:drawableTop="@mipmap/ic_empty_indicator"
+        android:drawableTop="@drawable/ic_empty_indicator"
         android:gravity="center"
         android:textColor="@color/colorSecondaryText"
         android:textSize="25sp"

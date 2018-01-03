@@ -39,7 +39,6 @@ class GoogleSignInManager(private val prefs: SharedPreferences) {
         get() = client?.signInIntent
 
     fun setup(activity: FragmentActivity) {
-
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestScopes(Scope(Scopes.DRIVE_APPFOLDER), Scope(Scopes.DRIVE_FILE))
@@ -49,12 +48,7 @@ class GoogleSignInManager(private val prefs: SharedPreferences) {
 
     fun signIn(data: Intent): Single<GoogleSignInAccount?> {
         return Single.fromCallable {
-            try {
-                Tasks.await(GoogleSignIn.getSignedInAccountFromIntent(data))
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null
-            }
+            Tasks.await(GoogleSignIn.getSignedInAccountFromIntent(data))
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 

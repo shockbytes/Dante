@@ -36,6 +36,7 @@ import at.shockbytes.dante.util.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
 import butterknife.OnClick
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import icepick.Icepick
 import icepick.State
@@ -113,7 +114,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                 }
             }
             GoogleSignInManager.rcSignIn -> {
-                signInManager.signIn(data).subscribe { account ->
+                signInManager.signIn(data).subscribe({ account ->
                     if (account != null) {
                         showFabAwareSnackbar(getString(R.string.signin_welcome, account.givenName))
                         connectToGoogleServices()
@@ -121,7 +122,11 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                     } else {
                         showFabAwareSnackbar(getString(R.string.signin_no_account))
                     }
-                }
+                }, { throwable: Throwable ->
+                    throwable.printStackTrace()
+                    Crashlytics.logException(throwable)
+                    showFabAwareSnackbar(getString(R.string.error_google_login))
+                })
             }
             BackupActivity.rcBackupRestored -> {
                 if (resultCode == Activity.RESULT_OK) {
@@ -153,10 +158,14 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                 signInManager.isSignedIn(this).subscribe { isSignedIn ->
 
                     if (isSignedIn) {
-                        signInManager.signOut().subscribe {
+                        signInManager.signOut().subscribe({
                             tryPersonalizeMenu()
                             showFabAwareSnackbar(getString(R.string.signin_goodbye))
-                        }
+                        }, { throwable: Throwable ->
+                            throwable.printStackTrace()
+                            Crashlytics.logException(throwable)
+                            showFabAwareSnackbar(getString(R.string.error_google_logout))
+                        })
                     } else {
                         GoogleSignInDialogFragment.newInstance()
                                 .setSignInListener {
@@ -227,8 +236,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         animateHeader(position)
     }
 
-    override fun onPageScrollStateChanged(state: Int) { }
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) { }
+    override fun onPageScrollStateChanged(state: Int) {}
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
     // ---------------------------------------------------
 
@@ -237,7 +246,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
         tracker.trackOnScanBook()
 
-        startActivityForResult(BookRetrievalActivity .newIntent(this),
+        startActivityForResult(BookRetrievalActivity.newIntent(this),
                 AppParams.rcScanBook,
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
     }
@@ -299,9 +308,13 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         if (account != null) {
             if (account.photoUrl != null) {
                 signInManager.loadAccountImage(this, account.photoUrl!!)
-                        .subscribe { bm ->
+                        .subscribe({ bm ->
                             menuItemGoogle?.icon = AppUtils.createRoundedBitmap(this, bm)
-                        }
+                        }, { throwable: Throwable ->
+                            throwable.printStackTrace()
+                            Crashlytics.logException(throwable)
+                            showToast(R.string.error_google_photo)
+                        })
             } else {
                 menuItemGoogle?.icon = ContextCompat
                         .getDrawable(this, R.drawable.ic_user_template)

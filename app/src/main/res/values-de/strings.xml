@@ -82,5 +82,8 @@
     <string name="google_welcome_rationale">Klicke auf das angezeigte Icon in der Appbar, um alle deine Google-verbundenen Dienste zu vewalten. Klicke auch auf das Icon, wenn du ein <b>Backup</b> erstellen willst.</string>
     <string name="camera_permission_title">Kamera</string>
     <string name="scanner_not_operational">Die App wird gerade noch konfiguriert</string>
+    <string name="error_google_photo">Profilbild konnte nicht geladen werden</string>
+    <string name="error_google_logout">Oh, da ist was schiefgelaufen!</string>
+    <string name="error_google_login">Oh, ich kann mich nicht in den Account einloggen!</string>
 
 </resources>

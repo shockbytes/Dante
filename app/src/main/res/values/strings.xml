@@ -106,5 +106,8 @@
     <string name="google_welcome_rationale">You can manage all your Google related activities when your are clicking the symbol above in the app bar. Click on this icon if you want to create a <b>backup</b>.</string>
     <string name="camera_permission_title">Camera</string>
     <string name="scanner_not_operational">The app is currently being configured</string>
+    <string name="error_google_photo">Cannot load your profile image</string>
+    <string name="error_google_logout">Oh. Something went wrong!</string>
+    <string name="error_google_login">Oh. I cannot log into your account!</string>
 
 </resources>

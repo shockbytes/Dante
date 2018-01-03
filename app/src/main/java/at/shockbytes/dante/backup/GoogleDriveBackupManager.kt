@@ -65,7 +65,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     override fun close(books: List<Book>?) {
 
         if (isAutoBackupEnabled && books != null) {
-            backup(books)
+            backup(books) // TODO Must subscribe to backup the books
         }
         activity = null
     }

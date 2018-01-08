@@ -28,7 +28,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Show book page state as progressbar around icon?
 - [ ] Search feature?
 
-## Version 2.6
+### Version 2.6
 - [ ] Rate books
 - [ ] Adding notes to books
 - [ ] Enter book page count manually 

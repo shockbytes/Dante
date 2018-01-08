@@ -25,9 +25,12 @@ can simply keep track of your progress of all your books and their current state
 ### Version 2.7
 
 - [ ] Tablet optimization
-- [ ] Adding notes to books
-- [ ] Show book page state as progressbar around a round icon?
+- [ ] Show book page state as progressbar around icon?
+- [ ] Search feature?
+
+## Version 2.6
 - [ ] Rate books
+- [ ] Adding notes to books
 - [ ] Enter book page count manually 
 - [ ] 100% Kotlin Port if possible
 

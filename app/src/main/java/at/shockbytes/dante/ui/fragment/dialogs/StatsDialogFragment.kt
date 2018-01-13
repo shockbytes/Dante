@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import at.shockbytes.dante.R
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.util.AppParams
-import at.shockbytes.dante.util.books.BookManager
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -50,11 +50,12 @@ class StatsDialogFragment : BaseDialogFragment() {
     }
 
     private fun showStats() {
-        val stats = bookManager.statistics
-        txtUpcoming.text = getString(R.string.dialogfragment_stats_upcoming, stats[AppParams.statKeyUpcoming])
-        txtCurrent.text = getString(R.string.dialogfragment_stats_current, stats[AppParams.statKeyCurrent])
-        txtDone.text = getString(R.string.dialogfragment_stats_done, stats[AppParams.statKeyDone])
-        txtPages.text = getString(R.string.dialogfragment_stats_pages, stats[AppParams.statKeyPages])
+        bookManager.statistics.subscribe { stats ->
+            txtUpcoming.text = getString(R.string.dialogfragment_stats_upcoming, stats[AppParams.statKeyUpcoming])
+            txtCurrent.text = getString(R.string.dialogfragment_stats_current, stats[AppParams.statKeyCurrent])
+            txtDone.text = getString(R.string.dialogfragment_stats_done, stats[AppParams.statKeyDone])
+            txtPages.text = getString(R.string.dialogfragment_stats_pages, stats[AppParams.statKeyPages])
+        }
     }
 
     companion object {

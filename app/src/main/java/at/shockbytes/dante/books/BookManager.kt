@@ -1,6 +1,7 @@
-package at.shockbytes.dante.util.books
+package at.shockbytes.dante.books
 
 import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.util.books.Book
 import io.reactivex.Observable
 
 /**
@@ -9,7 +10,7 @@ import io.reactivex.Observable
  */
 interface BookManager {
 
-    val statistics: Map<String, Int>
+    val statistics: Observable<MutableMap<String, Int>>
 
     val allBooks: Observable<List<Book>>
 

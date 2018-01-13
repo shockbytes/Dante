@@ -18,7 +18,7 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = [(NetworkModule::class), (AppModule::class)])
+@Component(modules = [(NetworkModule::class), (AppModule::class), (BookModule::class)])
 interface AppComponent {
 
     fun inject(activity: MainActivity)

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity
 import android.util.Log
 import at.shockbytes.dante.backup.google.GoogleSignInManager
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.util.books.BookManager
+import at.shockbytes.dante.books.BookManager
 import com.google.android.gms.drive.*
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson

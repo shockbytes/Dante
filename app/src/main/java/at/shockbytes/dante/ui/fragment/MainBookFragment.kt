@@ -16,8 +16,8 @@ import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.util.books.BookListener
-import at.shockbytes.dante.util.books.BookManager
+import at.shockbytes.dante.books.BookListener
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 import javax.inject.Inject

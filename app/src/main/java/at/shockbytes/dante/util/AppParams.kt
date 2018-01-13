@@ -14,8 +14,6 @@ object AppParams {
     val statKeyDone = "stat_done"
     val statKeyPages = "stat_pages"
 
-    val realmSchemaVersion: Long = 3
-
     val maxFetchAmount = 10
 
 }

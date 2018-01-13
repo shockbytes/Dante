@@ -1,7 +1,7 @@
 package at.shockbytes.dante.network.amazon
 
 import at.shockbytes.dante.network.BookDownloader
-import at.shockbytes.dante.util.books.BookSuggestion
+import at.shockbytes.dante.books.BookSuggestion
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

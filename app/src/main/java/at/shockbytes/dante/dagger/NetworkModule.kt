@@ -1,6 +1,5 @@
 package at.shockbytes.dante.dagger
 
-import android.app.Application
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.network.amazon.AmazonItemLookupApi
@@ -14,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 /**
@@ -22,7 +22,7 @@ import javax.inject.Singleton
  */
 
 @Module
-class NetworkModule(private val app: Application) {
+class NetworkModule {
 
     @Provides
     @Singleton
@@ -39,7 +39,8 @@ class NetworkModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideGoogleBooksApi(client: OkHttpClient, gson: Gson): GoogleBooksApi {
+    fun provideGoogleBooksApi(client: OkHttpClient,
+                              @Named("gsonDownload") gson: Gson): GoogleBooksApi {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
@@ -52,7 +53,7 @@ class NetworkModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideAmazonItemlookupApi(client: OkHttpClient): AmazonItemLookupApi {
+    fun provideAmazonItemLookupApi(client: OkHttpClient): AmazonItemLookupApi {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)

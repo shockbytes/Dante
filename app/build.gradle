@@ -28,8 +28,8 @@ android {
         applicationId "at.shockbytes.dante"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 7
-        versionName "2.5.1"
+        versionCode 8
+        versionName "2.6"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -38,10 +38,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string", "app_version", "2.5"
+            resValue "string", "app_version", "2.6"
         }
         debug {
-            resValue "string", "app_version", "2.5b - Debug Build"
+            resValue "string", "app_version", "2.6b - Debug Build"
         }
     }
     lintOptions {

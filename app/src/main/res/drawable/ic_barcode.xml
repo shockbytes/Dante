@@ -1,10 +1,10 @@
 <vector android:height="24dp" android:viewportHeight="16.0"
     android:viewportWidth="16.0" android:width="24dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="@color/color_barcode" android:pathData="M0,3h1v10h-1v-10z"/>
-    <path android:fillColor="@color/color_barcode" android:pathData="M8,3h2v10h-2v-10z"/>
-    <path android:fillColor="@color/color_barcode" android:pathData="M11,3h1v10h-1v-10z"/>
-    <path android:fillColor="@color/color_barcode" android:pathData="M13,3h1v10h-1v-10z"/>
-    <path android:fillColor="@color/color_barcode" android:pathData="M15,3h1v10h-1v-10z"/>
-    <path android:fillColor="@color/color_barcode" android:pathData="M2,3h3v10h-3v-10z"/>
-    <path android:fillColor="@color/color_barcode" android:pathData="M6,3h1v10h-1v-10z"/>
+    <path android:fillColor="@color/iconColor" android:pathData="M0,3h1v10h-1v-10z"/>
+    <path android:fillColor="@color/iconColor" android:pathData="M8,3h2v10h-2v-10z"/>
+    <path android:fillColor="@color/iconColor" android:pathData="M11,3h1v10h-1v-10z"/>
+    <path android:fillColor="@color/iconColor" android:pathData="M13,3h1v10h-1v-10z"/>
+    <path android:fillColor="@color/iconColor" android:pathData="M15,3h1v10h-1v-10z"/>
+    <path android:fillColor="@color/iconColor" android:pathData="M2,3h3v10h-3v-10z"/>
+    <path android:fillColor="@color/iconColor" android:pathData="M6,3h1v10h-1v-10z"/>
 </vector>

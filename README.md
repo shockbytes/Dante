@@ -28,13 +28,13 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Show book page state as progressbar around icon?
 - [ ] Search feature?
 
-### Version 2.6
-- [ ] Rate books
+### Version 2.6 - DETAIL DESIGNED
+- [ ] Rate books 
 - [ ] Adding notes to books
 - [ ] Enter book page count manually 
-- [ ] 100% Kotlin Port if possible
+- [x] 100% Kotlin Port if possible
 
-### Version 2.5
+### Version 2.5 - REFACTOR RAMPAGE
 
 * Introduce utility classes (BaseFragment, BaseActivity, BackNavigableActivity)
 * Introduce KotterKnife

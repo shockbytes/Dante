@@ -43,7 +43,7 @@
             android:drawableTop="@drawable/ic_restore_overwrite"
             android:text="@string/backup_strategy_overwrite"
             android:textColor="@android:color/white"
-            app:backgroundTint="@color/color_barcode" />
+            app:backgroundTint="@color/iconColor" />
 
     </LinearLayout>
 

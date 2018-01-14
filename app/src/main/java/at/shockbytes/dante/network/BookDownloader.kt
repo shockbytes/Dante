@@ -1,6 +1,6 @@
 package at.shockbytes.dante.network
 
-import at.shockbytes.dante.util.books.BookSuggestion
+import at.shockbytes.dante.books.BookSuggestion
 import io.reactivex.Observable
 
 /**

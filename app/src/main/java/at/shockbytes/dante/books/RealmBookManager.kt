@@ -1,8 +1,10 @@
-package at.shockbytes.dante.util.books
+package at.shockbytes.dante.books
 
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.util.AppParams
+import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.util.books.BookConfig
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,50 +20,50 @@ import java.util.*
 class RealmBookManager(private val bookDownloader: BookDownloader,
                        private val realm: Realm) : BookManager {
 
+    private val bookClass = Book::class.java
+    private val configClass = BookConfig::class.java
 
-    override val statistics: Map<String, Int>
+    override val statistics: Observable<MutableMap<String, Int>>
         get() {
-            val stats = HashMap<String, Int>()
+            return Observable.fromCallable {
+                val stats: MutableMap<String, Int> = HashMap()
 
-            val upcoming = realm.where(Book::class.java)
-                    .equalTo("ordinalState", Book.State.READ_LATER.ordinal).findAll().size
-            val current = realm.where(Book::class.java)
-                    .equalTo("ordinalState", Book.State.READING.ordinal).findAll().size
-            val doneList = realm.where(Book::class.java)
-                    .equalTo("ordinalState", Book.State.READ.ordinal).findAll()
-            val done = doneList.size
-            val pages = doneList.sumBy { it.pageCount }
-            stats.put(AppParams.statKeyUpcoming, upcoming)
-            stats.put(AppParams.statKeyCurrent, current)
-            stats.put(AppParams.statKeyDone, done)
-            stats.put(AppParams.statKeyPages, pages)
-            return stats
+                val upcoming = realm.where(bookClass)
+                        .equalTo("ordinalState", Book.State.READ_LATER.ordinal).findAll().size
+                val current = realm.where(bookClass)
+                        .equalTo("ordinalState", Book.State.READING.ordinal).findAll().size
+                val doneList = realm.where(bookClass)
+                        .equalTo("ordinalState", Book.State.READ.ordinal).findAll()
+                val done = doneList.size
+                val pages = doneList.sumBy { it.pageCount }
+                stats.put(AppParams.statKeyUpcoming, upcoming)
+                stats.put(AppParams.statKeyCurrent, current)
+                stats.put(AppParams.statKeyDone, done)
+                stats.put(AppParams.statKeyPages, pages)
+                stats
+            }.subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
         }
 
     override val allBooks: Observable<List<Book>>
         get() {
-            val books = realm.where(Book::class.java)
-                    .findAll()
-                    .sort("id", Sort.DESCENDING)
-            return Observable.just<List<Book>>(books)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+            return Observable.fromCallable {
+                realm.where(bookClass)
+                        .findAll()
+                        .sort("id", Sort.DESCENDING).toList()
+            }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         }
 
     override val allBooksSync: List<Book>
-        get() = realm.where(Book::class.java).findAll().sort("id", Sort.DESCENDING)
+        get() = realm.where(bookClass).findAll().sort("id", Sort.DESCENDING)
 
     /**
      * This must always be called inside a transaction
      */
     private val lastId: Long
         get() {
-            var config = realm.where(BookConfig::class.java).findFirst()
-            if (config == null) {
-                config = realm.createObject(BookConfig::class.java)
-            }
-
-            return config!!.lastPrimaryKey
+            val config = realm.where(configClass).findFirst()
+                    ?: realm.createObject(configClass)
+            return config.getLastPrimaryKey()
         }
 
     override fun addBook(book: Book): Book {
@@ -78,31 +80,26 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
     }
 
     override fun getBook(id: Long): Book {
-        return realm.where(Book::class.java).equalTo("id", id).findFirst()!!
+        return realm.where(bookClass).equalTo("id", id).findFirst()!!
     }
 
     override fun updateBookState(book: Book, newState: Book.State) {
-
-        realm.executeTransaction { realm ->
+        realm.executeTransaction {
             book.state = newState
             realm.copyToRealmOrUpdate(book)
         }
-
     }
 
     override fun updateCurrentBookPage(book: Book, page: Int) {
-
-        realm.executeTransaction { realm ->
+        realm.executeTransaction {
             book.currentPage = page
             realm.copyToRealmOrUpdate(book)
         }
-
     }
 
     override fun updateBookStateAndPage(book: Book, state: Book.State,
                                         page: Int) {
-
-        realm.executeTransaction { realm ->
+        realm.executeTransaction {
             book.currentPage = page
             book.state = state
             realm.copyToRealmOrUpdate(book)
@@ -110,9 +107,8 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
     }
 
     override fun removeBook(id: Long) {
-
-        realm.executeTransaction { realm ->
-            realm.where(Book::class.java)
+        realm.executeTransaction {
+            realm.where(bookClass)
                     .equalTo("id", id).findFirst()!!.deleteFromRealm()
         }
     }
@@ -137,13 +133,12 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
     }
 
     override fun getBooksByState(state: Book.State): Observable<List<Book>> {
-        val books = realm.where(Book::class.java)
-                .equalTo("ordinalState", state.ordinal)
-                .findAll()
-                .sort("id", Sort.DESCENDING)
-        return Observable.just<List<Book>>(books)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+        return Observable.fromCallable {
+            realm.where(bookClass)
+                    .equalTo("ordinalState", state.ordinal)
+                    .findAll()
+                    .sort("id", Sort.DESCENDING).toList()
+        }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun close() {
@@ -163,14 +158,12 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
 
     private fun overwriteBackupRestore(backupBooks: List<Book>) {
 
-        val stored = realm.where(Book::class.java).findAll()
+        val stored = realm.where(bookClass).findAll()
         realm.beginTransaction()
         stored.deleteAllFromRealm()
         realm.commitTransaction()
 
-        for (b in backupBooks) {
-            addBook(b)
-        }
+        backupBooks.forEach { addBook(it) }
     }
 
 }

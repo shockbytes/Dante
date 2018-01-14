@@ -14,11 +14,11 @@ import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import at.shockbytes.dante.R
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.dialogs.SimpleRequestDialogFragment
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.util.books.BookManager
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotterknife.bindView
@@ -80,12 +80,12 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         txtTitle.text = book.title
         txtAuthor.text = book.author
 
-        txtPublished.text = if (book.publishedDate?.isEmpty() == false) book.publishedDate else "---"
-        txtIsbn.text = if (book.isbn?.isEmpty() == false) book.isbn else "---"
+        txtPublished.text = if (!book.publishedDate.isEmpty()) book.publishedDate else "---"
+        txtIsbn.text = if (!book.isbn.isEmpty()) book.isbn else "---"
 
         // Hide subtitle if not available
         val subtitle = book.subTitle
-        if (subtitle?.isEmpty() == true) {
+        if (subtitle.isEmpty()) {
             txtSubTitle.visibility = View.GONE
         } else {
             txtSubTitle.text = subtitle

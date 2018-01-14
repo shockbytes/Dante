@@ -6,14 +6,10 @@ import android.preference.PreferenceManager
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.GoogleDriveBackupManager
 import at.shockbytes.dante.backup.google.GoogleSignInManager
-import at.shockbytes.dante.network.BookDownloader
+import at.shockbytes.dante.books.BookSuggestion
 import at.shockbytes.dante.network.google.gson.BookBackupSerializer
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
-import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.DanteRealmMigration
-import at.shockbytes.dante.util.books.BookManager
-import at.shockbytes.dante.util.books.BookSuggestion
-import at.shockbytes.dante.util.books.RealmBookManager
 import at.shockbytes.dante.util.tracking.KeenTracker
 import at.shockbytes.dante.util.tracking.Tracker
 import com.google.gson.ExclusionStrategy
@@ -44,12 +40,7 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideBookManager(bookDownloader: BookDownloader, realm: Realm): BookManager {
-        return RealmBookManager(bookDownloader, realm)
-    }
-
-    @Provides
-    @Singleton
+    @Named("gsonDownload")
     fun provideGson(): Gson {
         return GsonBuilder()
                 .registerTypeAdapter(BookSuggestion::class.java, GoogleBooksSuggestionResponseDeserializer())
@@ -58,7 +49,7 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    @Named("backup_gson")
+    @Named("gsonBackup")
     fun provideBackupGson(): Gson {
         return try {
             GsonBuilder()
@@ -87,7 +78,7 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideRealm(): Realm {
         return Realm.getInstance(RealmConfiguration.Builder()
-                .schemaVersion(AppParams.realmSchemaVersion)
+                .schemaVersion(DanteRealmMigration.migrationVersion)
                 .migration(DanteRealmMigration())
                 .build())
     }
@@ -96,7 +87,7 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideBackupManager(preferences: SharedPreferences,
                              signInManager: GoogleSignInManager,
-                             @Named("backup_gson") gson: Gson): BackupManager {
+                             @Named("gsonBackup") gson: Gson): BackupManager {
         return GoogleDriveBackupManager(preferences, signInManager, gson)
     }
 

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.util.books.BookListener
+import at.shockbytes.dante.books.BookListener
 
 
 

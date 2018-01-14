@@ -1,4 +1,6 @@
-package at.shockbytes.dante.util.books
+package at.shockbytes.dante.books
+
+import at.shockbytes.dante.util.books.Book
 
 /**
  * @author Martin Macheiner

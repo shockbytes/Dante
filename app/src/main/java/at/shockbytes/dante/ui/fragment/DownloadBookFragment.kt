@@ -16,9 +16,9 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.util.books.BookManager
 import at.shockbytes.util.adapter.BaseAdapter
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -220,8 +220,8 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
         txtTitle.text = mainBook?.title
 
-        if (mainBook?.thumbnailAddress != null && !mainBook.thumbnailAddress.isEmpty()) {
-            Picasso.with(context).load(mainBook.thumbnailAddress)
+        if (!mainBook?.thumbnailAddress.isNullOrEmpty()) {
+            Picasso.with(context).load(mainBook?.thumbnailAddress)
                     .placeholder(R.drawable.ic_placeholder).into(imgViewCover, this)
         } else {
             imgViewCover.setImageResource(R.drawable.ic_placeholder)

@@ -2,10 +2,7 @@ package at.shockbytes.dante.core
 
 import android.app.Application
 import at.shockbytes.dante.BuildConfig
-import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.dagger.AppModule
-import at.shockbytes.dante.dagger.DaggerAppComponent
-import at.shockbytes.dante.dagger.NetworkModule
+import at.shockbytes.dante.dagger.*
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
@@ -33,7 +30,8 @@ class DanteApp : Application() {
                 .build())
 
         appComponent = DaggerAppComponent.builder()
-                .networkModule(NetworkModule(this))
+                .networkModule(NetworkModule())
+                .bookModule(BookModule())
                 .appModule(AppModule(this))
                 .build()
     }

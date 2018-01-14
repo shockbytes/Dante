@@ -32,7 +32,7 @@ import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment
 import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.ResourceManager
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.util.books.BookManager
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
 import butterknife.OnClick

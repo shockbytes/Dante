@@ -20,7 +20,7 @@ import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.fragment.dialogs.RestoreStrategyDialogFragment
 import at.shockbytes.dante.util.ResourceManager
-import at.shockbytes.dante.util.books.BookManager
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper

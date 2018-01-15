@@ -22,13 +22,6 @@
     <string name="permission_camera_rationale">Die App benötigt den Zugang zu deiner Kamera, um die Barcodes deiner Bücher zu scannen.</string>
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>
-
-    <string-array name="empty_indicators">
-        <item>Scanne Bücher um sie später zu lesen</item>
-        <item>Warum liest du kein Buch?</item>
-        <item>Du hast noch kein Buch gelesen</item>
-    </string-array>
-
     <string name="action_add_isbn">ISBN manuell hinzufügen</string>
     <string name="label_capture">Buch scannen</string>
     <string name="dismiss">Ausblenden</string>
@@ -85,5 +78,29 @@
     <string name="error_google_photo">Profilbild konnte nicht geladen werden</string>
     <string name="error_google_logout">Oh, da ist was schiefgelaufen!</string>
     <string name="error_google_login">Oh, ich kann mich nicht in den Account einloggen!</string>
+    <string name="rate_book">Buch bewerten</string>
+    <string name="rate">Bewerten</string>
+    <string name="ratings_default">Es ist okay!</string>
+    <string name="dialogfragment_rating_title">Wie gefällt dir %s?</string>
+
+    <string-array name="empty_indicators">
+        <item>Scanne Bücher um sie später zu lesen</item>
+        <item>Warum liest du kein Buch?</item>
+        <item>Du hast noch kein Buch gelesen</item>
+    </string-array>
+
+    <string-array name="ratings">
+        <item>Zeitverwschwendung!</item>
+        <item>Hab schon bessere gelesen!</item>
+        <item>Es ist okay!</item>
+        <item>Wirklich, wirklich gut!</item>
+        <item>Exzellent!</item>
+    </string-array>
+
+    <plurals name="book_rating">
+        <item quantity="one">%d Stern</item>
+        <item quantity="other">%d Sterne</item>
+    </plurals>
+    <string name="notes">Notizen hinzufügen</string>
 
 </resources>

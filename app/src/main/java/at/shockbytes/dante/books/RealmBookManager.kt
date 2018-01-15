@@ -41,7 +41,7 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
                 stats.put(AppParams.statKeyDone, done)
                 stats.put(AppParams.statKeyPages, pages)
                 stats
-            }.subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
+            }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         }
 
     override val allBooks: Observable<List<Book>>
@@ -102,6 +102,13 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         realm.executeTransaction {
             book.currentPage = page
             book.state = state
+            realm.copyToRealmOrUpdate(book)
+        }
+    }
+
+    override fun updateBookRating(book: Book, rating: Int) {
+        realm.executeTransaction {
+            book.rating = rating
             realm.copyToRealmOrUpdate(book)
         }
     }

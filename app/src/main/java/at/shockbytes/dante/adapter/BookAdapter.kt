@@ -40,17 +40,17 @@ class BookAdapter(context: Context, extData: List<Book>, private val state: Book
 
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseAdapter<Book>.ViewHolder {
-        return ViewHolder(inflater.inflate(R.layout.listitem_book, parent, false))
+        return ViewHolder(inflater.inflate(R.layout.item_book, parent, false))
     }
 
     inner class ViewHolder(itemView: View) : BaseAdapter<Book>.ViewHolder(itemView),
             PopupMenu.OnMenuItemClickListener {
 
-        private val txtTitle: TextView by bindView(R.id.listitem_book_txt_title)
-        private val txtSubTitle: TextView by bindView(R.id.listitem_book_txt_subtitle)
-        private val txtAuthor: TextView by bindView(R.id.listitem_book_txt_author)
-        private val imgViewThumb: ImageView by bindView(R.id.listitem_book_img_thumb)
-        private val imgBtnOverflow: ImageButton by bindView(R.id.listitem_book_img_overflow)
+        private val txtTitle: TextView by bindView(R.id.item_book_txt_title)
+        private val txtSubTitle: TextView by bindView(R.id.item_book_txt_subtitle)
+        private val txtAuthor: TextView by bindView(R.id.item_book_txt_author)
+        private val imgViewThumb: ImageView by bindView(R.id.item_book_img_thumb)
+        private val imgBtnOverflow: ImageButton by bindView(R.id.item_book_img_overflow)
 
         private val popupMenu: PopupMenu
 
@@ -88,9 +88,8 @@ class BookAdapter(context: Context, extData: List<Book>, private val state: Book
             txtAuthor.text = t.author
             txtSubTitle.text = t.subTitle
 
-            val thumbnailAddress = t.thumbnailAddress
-            if (thumbnailAddress != null && !thumbnailAddress.isEmpty()) {
-                Picasso.with(context).load(thumbnailAddress)
+            if (!t.thumbnailAddress.isNullOrEmpty()) {
+                Picasso.with(context).load(t.thumbnailAddress)
                         .placeholder(R.drawable.ic_placeholder).into(imgViewThumb)
             } else {
                 // Books with no image will recycle another cover if not cleared here

@@ -26,6 +26,8 @@ interface BookManager {
 
     fun updateBookStateAndPage(book: Book, state: Book.State, page: Int)
 
+    fun updateBookRating(book: Book, rating: Int)
+
     fun removeBook(id: Long)
 
     fun downloadBook(isbn: String?): Observable<BookSuggestion>

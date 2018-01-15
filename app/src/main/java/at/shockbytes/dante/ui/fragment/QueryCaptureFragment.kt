@@ -84,7 +84,7 @@ class QueryCaptureFragment : BaseFragment(),
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.menu_new, menu)
+        inflater?.inflate(R.menu.menu_add, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

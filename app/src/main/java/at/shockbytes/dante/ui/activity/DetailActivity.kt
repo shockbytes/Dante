@@ -6,27 +6,33 @@ import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
-import android.support.v7.widget.AppCompatSeekBar
 import android.support.v7.widget.CardView
+import android.view.HapticFeedbackConstants
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Button
 import android.widget.ImageView
-import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
+import at.shockbytes.dante.ui.fragment.dialogs.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.SimpleRequestDialogFragment
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.util.tracking.Tracker
+import butterknife.OnClick
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotterknife.bindView
 import org.joda.time.DateTime
+import ru.bullyboo.view.CircleSeekBar
 import javax.inject.Inject
 
 class DetailActivity : TintableBackNavigableActivity(), Callback,
-        Palette.PaletteAsyncListener, SeekBar.OnSeekBarChangeListener {
+        Palette.PaletteAsyncListener, CircleSeekBar.Callback {
 
     @Inject
     protected lateinit var manager: BookManager
@@ -34,18 +40,29 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     @Inject
     protected lateinit var prefs: SharedPreferences
 
+    @Inject
+    protected lateinit var tracker: Tracker
+
     private val imgViewThumb: ImageView by bindView(R.id.activity_detail_img_thumb)
     private val txtTitle: TextView by bindView(R.id.activity_detail_txt_title)
     private val txtSubTitle: TextView by bindView(R.id.activity_detail_txt_subtitle)
     private val txtAuthor: TextView by bindView(R.id.activity_detail_txt_author)
-    private val txtPages: TextView by bindView(R.id.activity_detail_txt_pages)
-    private val txtPublished: TextView by bindView(R.id.activity_detail_txt_published)
-    private val txtIsbn: TextView by bindView(R.id.activity_detail_txt_isbn)
+
+    private val btnPublished: Button by bindView(R.id.activity_detail_btn_published)
+    private val btnRating: Button by bindView(R.id.activity_detail_btn_rating)
+    private val btnNotes: Button by bindView(R.id.activity_detail_btn_notes)
+    private val btnPages: Button by bindView(R.id.activity_detail_btn_pages)
+    private val sbPages: CircleSeekBar by bindView(R.id.activity_detail_circle_seekbar_pages)
+
     private val cardViewDates: CardView by bindView(R.id.activity_detail_cardview_dates)
-    private val txtWishlistdate: TextView by bindView(R.id.activity_detail_txt_wishlist_date)
-    private val txtStartdate: TextView by bindView(R.id.activity_detail_txt_start_date)
-    private val txtEnddate: TextView by bindView(R.id.activity_detail_txt_end_date)
-    private val seekBarPages: AppCompatSeekBar by bindView(R.id.activity_detail_seekbar_pages)
+    private val txtWishlistDate: TextView by bindView(R.id.activity_detail_txt_wishlist_date)
+    private val txtStartDate: TextView by bindView(R.id.activity_detail_txt_start_date)
+    private val txtEndDate: TextView by bindView(R.id.activity_detail_txt_end_date)
+
+
+    private val animationList: List<View> by lazy {
+        listOf(btnPublished, btnRating, sbPages, btnPages, btnNotes)
+    }
 
     private lateinit var book: Book
 
@@ -80,8 +97,10 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         txtTitle.text = book.title
         txtAuthor.text = book.author
 
-        txtPublished.text = if (!book.publishedDate.isEmpty()) book.publishedDate else "---"
-        txtIsbn.text = if (!book.isbn.isEmpty()) book.isbn else "---"
+        btnPublished.text = if (!book.publishedDate.isEmpty()) book.publishedDate else "---"
+        btnRating.text = if (book.rating in 1..5) {
+            resources.getQuantityString(R.plurals.book_rating, book.rating, book.rating)
+        } else getString(R.string.rate_book)
 
         // Hide subtitle if not available
         val subtitle = book.subTitle
@@ -91,10 +110,9 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
             txtSubTitle.text = subtitle
         }
 
-        val thumbnailAddress = book.thumbnailAddress
-        if (thumbnailAddress?.isEmpty() == false) {
+        if (!book.thumbnailAddress.isNullOrEmpty()) {
             Picasso.with(applicationContext)
-                    .load(thumbnailAddress)
+                    .load(book.thumbnailAddress)
                     .placeholder(R.drawable.ic_placeholder)
                     .into(imgViewThumb, this)
         }
@@ -105,19 +123,10 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         else
             book.pageCount.toString()
 
-        txtPages.text = pages
+        btnPages.text = pages
 
-        // Book must be in reading state and must have a legit page count and overall the feature
-        // must be enabled in the settings
-        if (prefs.getBoolean(getString(R.string.prefs_page_tracking_key), true)
-                && book.state == Book.State.READING
-                && book.pageCount > 0) {
-            seekBarPages.max = book.pageCount
-            seekBarPages.progress = book.currentPage
-            seekBarPages.setOnSeekBarChangeListener(this)
-        } else {
-            seekBarPages.visibility = View.GONE
-        }
+        setupSeekBar()
+        startComponentAnimations()
     }
 
     private fun initializeTimeCard() {
@@ -131,25 +140,25 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
             // Check if wishlist date is available
             if (book.wishlistDate > 0) {
                 val wishlistDate = DateTime(book.wishlistDate).toString(pattern)
-                txtWishlistdate.text = getString(R.string.detail_wishlist_date, wishlistDate)
+                txtWishlistDate.text = getString(R.string.detail_wishlist_date, wishlistDate)
             } else {
-                txtWishlistdate.visibility = View.GONE
+                txtWishlistDate.visibility = View.GONE
             }
 
             // Check if start date is available
             if (book.startDate > 0) {
                 val startDate = DateTime(book.startDate).toString(pattern)
-                txtStartdate.text = getString(R.string.detail_start_date, startDate)
+                txtStartDate.text = getString(R.string.detail_start_date, startDate)
             } else {
-                txtStartdate.visibility = View.GONE
+                txtStartDate.visibility = View.GONE
             }
 
             // Check if end date is available
             if (book.endDate > 0) {
                 val endDate = DateTime(book.endDate).toString(pattern)
-                txtEnddate.text = getString(R.string.detail_end_date, endDate)
+                txtEndDate.text = getString(R.string.detail_end_date, endDate)
             } else {
-                txtEnddate.visibility = View.GONE
+                txtEndDate.visibility = View.GONE
             }
         }
     }
@@ -171,16 +180,11 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, book.title)
     }
 
-    override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
-        txtPages.text = getString(R.string.detail_pages, i, book.pageCount)
-    }
+    override fun onStartScrolling(startValue: Int) { }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar) {}
+    override fun onEndScrolling(endValue: Int) {
 
-    override fun onStopTrackingTouch(seekBar: SeekBar) {
-
-        manager.updateCurrentBookPage(book, seekBar.progress)
-
+        manager.updateCurrentBookPage(book, endValue)
         if (book.currentPage == book.pageCount) {
             SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, book.title),
                     getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
@@ -190,6 +194,54 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
                     }
                     .show(supportFragmentManager, "book-finished-dialogfragment")
         }
+    }
+
+    override fun backwardAnimation() {
+        super.backwardAnimation()
+        animationList.forEach { it.alpha = 0f }
+    }
+
+    private fun setupSeekBar() {
+        // Book must be in reading state and must have a legit page count and overall the feature
+        // must be enabled in the settings
+        if (prefs.getBoolean(getString(R.string.prefs_page_tracking_key), true)
+                && book.state == Book.State.READING
+                && book.pageCount > 0) {
+            sbPages.maxValue = book.pageCount
+            sbPages.value = book.currentPage
+            sbPages.setCallback(this)
+            sbPages.setOnValueChangedListener { page ->
+                btnPages.text = getString(R.string.detail_pages, page, book.pageCount)
+            }
+        } else {
+            sbPages.visibility = View.GONE
+        }
+    }
+
+    private fun startComponentAnimations() {
+        val duration = if (DanteUtils.isPortrait(this)) 350L else 500L
+        DanteUtils.listPopAnimation(animationList, duration, AccelerateDecelerateInterpolator())
+    }
+
+    @OnClick(R.id.activity_detail_btn_rating)
+    protected fun onClickRateBook(v: View) {
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        RateBookDialogFragment.newInstance(book.title, book.thumbnailAddress)
+                .setRatingListener {
+                    manager.updateBookRating(book, it)
+                    tracker.trackRatingEvent(it)
+                    btnRating.text = resources.getQuantityString(R.plurals.book_rating, it, it)
+                }.show(supportFragmentManager, "rating-dialogfragment")
+    }
+
+    @OnClick(R.id.activity_detail_btn_pages)
+    protected fun onClickPages(v: View) {
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+    }
+
+    @OnClick(R.id.activity_detail_btn_notes)
+    protected fun onClickNotes(v: View) {
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
     }
 
     companion object {

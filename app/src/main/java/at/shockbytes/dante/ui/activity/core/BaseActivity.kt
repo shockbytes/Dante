@@ -49,6 +49,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     protected fun showToast(text: Int) {
+        showToast(getString(text))
+    }
+
+    protected fun showToast(text: String) {
         Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
     }
 

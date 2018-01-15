@@ -71,7 +71,7 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
 
     override fun colorSystemBars(actionBarColor: Int?, actionBarTextColor: Int?,
                                  statusBarColor: Int?, title: String?) {
-        tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, title)
+        tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, title, true)
     }
 
     private fun finishBookDownload(bookId: Long, isSuccessful: Boolean) {

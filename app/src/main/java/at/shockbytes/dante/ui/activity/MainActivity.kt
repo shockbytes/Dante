@@ -30,7 +30,7 @@ import at.shockbytes.dante.ui.fragment.dialogs.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment
 import at.shockbytes.dante.util.AppParams
-import at.shockbytes.dante.util.ResourceManager
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
@@ -205,7 +205,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
     override fun onShare(b: Book) {
 
-        val sendIntent = ResourceManager.createSharingIntent(this, b)
+        val sendIntent = DanteUtils.createSharingIntent(this, b)
         startActivity(Intent.createChooser(sendIntent, resources.getText(R.string.send_to)))
 
         tracker.trackOnBookShared()

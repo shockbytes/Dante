@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activity.MainActivity">
 
+
+    <item android:id="@+id/action_search"
+        android:title="Search"
+        android:icon="@drawable/ic_search"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_google"
         android:title="@string/menu_main_google_login"

@@ -19,6 +19,8 @@
     <color name="color_error">#F44336</color>
 
     <color name="nice_color">#0d9</color>
-    <color name="iconColor">#424242</color>
+    <color name="iconColor">#535353</color>
+    <color name="white">#FFF</color>
+    <color name="placeholder">#555</color>
 
 </resources>

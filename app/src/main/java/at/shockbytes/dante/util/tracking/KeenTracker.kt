@@ -74,6 +74,10 @@ class KeenTracker(context: Context) : Tracker {
         trackEvent("googleLogin", createTrackEventData(Pair("isLoggedIn", login)))
     }
 
+    override fun trackRatingEvent(rating: Int) {
+        trackEvent("bookRating", createTrackEventData(Pair("rated", rating)))
+    }
+
     // -------------------------- Helper methods --------------------------
 
     private fun initializeKeen(context: Context) {
@@ -90,8 +94,8 @@ class KeenTracker(context: Context) : Tracker {
     private fun createTrackEventData(vararg entries: Pair<String, Any>): Map<String, Any> {
 
         val data = HashMap<String, Any>()
-        for (p in entries) {
-            data.put(p.first, p.second)
+        entries.forEach {
+            data.put(it.first, it.second)
         }
         return data
     }

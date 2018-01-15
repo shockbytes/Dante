@@ -18,9 +18,9 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
-import butterknife.ButterKnife
 import butterknife.OnClick
 import com.crashlytics.android.Crashlytics
 import com.squareup.picasso.Callback
@@ -207,13 +207,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
         // Hide progressbar smoothly
         progressBar.animate().alpha(0f).scaleY(0.5f).scaleX(0.5f).setDuration(500).start()
-
-        ButterKnife.apply(animViews) { view, index ->
-            view.animate().scaleY(1f).scaleX(1f).alpha(1f)
-                    .setInterpolator(OvershootInterpolator(4f))
-                    .setStartDelay((index * 150).toLong()).setDuration(250).start()
-        }
-
+        DanteUtils.listPopAnimation(animViews, 250, OvershootInterpolator(4f))
     }
 
     private fun setTitleAndIcon(mainBook: Book?) {

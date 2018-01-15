@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupEntry
-import at.shockbytes.dante.util.ResourceManager
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotterknife.bindView
@@ -50,7 +50,7 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
                 imgViewProvider.setImageResource(R.drawable.ic_google_drive)
             }
 
-            txtTime.text = ResourceManager.formatTimestamp(t.timestamp)
+            txtTime.text = DanteUtils.formatTimestamp(t.timestamp)
             txtBookAmount.text = context.getString(R.string.backup_books_amount, t.books)
             txtDevice.text = t.device
         }

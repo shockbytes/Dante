@@ -31,4 +31,6 @@ interface Tracker {
 
     fun trackGoogleLogin(login: Boolean)
 
+    fun trackRatingEvent(rating: Int)
+
 }

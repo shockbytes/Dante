@@ -22,17 +22,19 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Add book manually
 - [ ] Change book cover
 
-### Version 2.7
+### Version 2.7 SOMETHING & SEARCH
 
 - [ ] Tablet optimization
 - [ ] Show book page state as progressbar around icon?
-- [ ] Search feature?
+- [ ] Search feature
+- [ ] Change date for book
 
 ### Version 2.6 - DETAIL DESIGNED
-- [ ] Rate books 
+- [x] Rate books 
+- [x] 100% Kotlin Port if possible
 - [ ] Adding notes to books
 - [ ] Enter book page count manually 
-- [x] 100% Kotlin Port if possible
+- [ ] Overflow menu with additional info
 
 ### Version 2.5 - REFACTOR RAMPAGE
 

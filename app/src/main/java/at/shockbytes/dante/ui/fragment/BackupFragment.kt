@@ -19,7 +19,7 @@ import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.fragment.dialogs.RestoreStrategyDialogFragment
-import at.shockbytes.dante.util.ResourceManager
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.adapter.BaseAdapter
@@ -117,7 +117,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                                 tracker.trackOnBackupRestored()
                                 backupRestoreListener?.onBackupRestored() // Notify MainActivity
                                 showSnackbar(getString(R.string.backup_restored,
-                                        ResourceManager.formatTimestamp(t.timestamp)))
+                                        DanteUtils.formatTimestamp(t.timestamp)))
                             }) { throwable ->
                                 throwable.printStackTrace()
                                 showSnackbar(getString(R.string.backup_restore_error))
@@ -159,7 +159,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     private fun updateLastBackupTime() {
         val lastBackupMillis = backupManager.lastBackupTime
         val lastBackup = if (lastBackupMillis > 0)
-            ResourceManager.formatTimestamp(lastBackupMillis)
+            DanteUtils.formatTimestamp(lastBackupMillis)
         else
             "---"
         txtLastBackup.text = getString(R.string.last_backup, lastBackup)

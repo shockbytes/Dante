@@ -130,15 +130,15 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
     private fun getTransitionBundle(v: View): Bundle {
         return ActivityOptionsCompat
                 .makeSceneTransitionAnimation(activity,
-                        Pair(v.findViewById(R.id.listitem_book_card),
+                        Pair(v.findViewById(R.id.item_book_card),
                                 getString(R.string.transition_name_card)),
-                        Pair(v.findViewById(R.id.listitem_book_img_thumb),
+                        Pair(v.findViewById(R.id.item_book_img_thumb),
                                 getString(R.string.transition_name_thumb)),
-                        Pair(v.findViewById(R.id.listitem_book_txt_title),
+                        Pair(v.findViewById(R.id.item_book_txt_title),
                                 getString(R.string.transition_name_title)),
-                        Pair(v.findViewById(R.id.listitem_book_txt_subtitle),
+                        Pair(v.findViewById(R.id.item_book_txt_subtitle),
                                 getString(R.string.transition_name_subtitle)),
-                        Pair(v.findViewById(R.id.listitem_book_txt_author),
+                        Pair(v.findViewById(R.id.item_book_txt_author),
                                 getString(R.string.transition_name_author))
                 ).toBundle()
     }

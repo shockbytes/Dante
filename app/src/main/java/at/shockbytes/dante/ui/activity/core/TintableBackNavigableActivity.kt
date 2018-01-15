@@ -1,5 +1,8 @@
 package at.shockbytes.dante.ui.activity.core
 
+import android.animation.AnimatorSet
+import android.animation.ArgbEvaluator
+import android.animation.ValueAnimator
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
@@ -41,24 +44,55 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
     }
 
     fun tintSystemBarsWithText(@ColorInt actionBarColor: Int?, @ColorInt actionBarTextColor: Int?,
-                               @ColorInt statusBarColor: Int?, title: String?) {
+                               @ColorInt statusBarColor: Int?, title: String?,
+                               animated: Boolean = false) {
 
         // Default initialize if not set
         val abColor = actionBarColor ?: ContextCompat.getColor(applicationContext, abDefColor)
         val abtColor = actionBarTextColor ?: ContextCompat.getColor(applicationContext, abTextDefColor)
         val sbColor = statusBarColor ?: ContextCompat.getColor(applicationContext, sbDefColor)
 
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(abColor))
+        // Set and tint text of action bar
         val text = SpannableString(title)
         text.setSpan(ForegroundColorSpan(abtColor), 0, text.length,
                 Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         supportActionBar?.title = text
 
+        if (animated) {
+            tintSystemBarsAnimated(abColor, abtColor)
+        } else {
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(abColor))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.statusBarColor = sbColor
+            }
+        }
+        setTintableHomeAsUpIndicator(tint = true, tintColor = abtColor)
+    }
+
+    private fun tintSystemBarsAnimated(@ColorInt newColor: Int, @ColorInt newColorDark: Int) {
+
+        val primary = ContextCompat.getColor(this, R.color.colorPrimary)
+        val primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+
+        val animatorToolbar = ValueAnimator.ofObject(ArgbEvaluator(), primary, newColor)
+                .setDuration(300)
+        animatorToolbar.addUpdateListener { valueAnimator ->
+            supportActionBar?.setBackgroundDrawable(ColorDrawable(valueAnimator.animatedValue as Int))
+        }
+        val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), primaryDark, newColorDark)
+                .setDuration(300)
+        // Suppress lint, because we are only setting listener, when api is available
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = sbColor
+            colorAnimation.addUpdateListener { valueAnimator ->
+                window.statusBarColor = valueAnimator.animatedValue as Int
+            }
         }
 
-        setTintableHomeAsUpIndicator(tint = true, tintColor = abtColor)
+        val set = AnimatorSet()
+        set.playTogether(animatorToolbar, colorAnimation)
+        set.start()
+
+
     }
 
 }

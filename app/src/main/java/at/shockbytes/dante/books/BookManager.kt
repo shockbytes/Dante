@@ -10,6 +10,8 @@ import io.reactivex.Observable
  */
 interface BookManager {
 
+    var pageTrackingEnabled: Boolean
+
     val statistics: Observable<MutableMap<String, Int>>
 
     val allBooks: Observable<List<Book>>

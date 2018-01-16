@@ -1,9 +1,6 @@
 package at.shockbytes.dante.ui.fragment.dialog
 
-import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -11,6 +8,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import at.shockbytes.dante.R
+import at.shockbytes.dante.dagger.AppComponent
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxRatingBar
 import com.squareup.picasso.Picasso
@@ -21,9 +19,7 @@ import kotterknife.bindView
  * Date: 14.01.2018.
  */
 
-class RateBookDialogFragment : DialogFragment() {
-
-    private var ratingListener: ((Int) -> Unit)? = null
+class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
 
     private val btnRate: Button by bindView(R.id.dialogfragment_rating_btn_rate)
     private val txtTitle: TextView by bindView(R.id.dialogfragment_rating_txt_title)
@@ -31,9 +27,8 @@ class RateBookDialogFragment : DialogFragment() {
     private val txtRatings: TextView by bindView(R.id.dialogfragment_rating_txt_ratings)
     private val imgViewCover: ImageView by bindView(R.id.dialogfragment_rating_imgview_cover)
 
-    private val rateView: View
-        get() = LayoutInflater.from(context)
-                .inflate(R.layout.dialogfragment_rating, null, false)
+    override val containerView: View
+        get() = LayoutInflater.from(context).inflate(R.layout.dialogfragment_rating, null, false)
 
     private lateinit var bookTitle: String
     private var bookImageLink: String? = null
@@ -41,29 +36,13 @@ class RateBookDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         bookTitle = arguments.getString(ARG_TITLE)
         bookImageLink = arguments.getString(ARG_IMAGE)
         previousRating = arguments.getInt(ARG_PREV_RATING)
-        setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme)
     }
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
-                .setView(rateView)
-                .create()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setupViews()
-    }
-
-    fun setRatingListener(listener: (Int) -> Unit): RateBookDialogFragment {
-        ratingListener = listener
-        return this
-    }
-
-    private fun setupViews() {
+    override fun setupViews() {
 
         txtTitle.text = getString(R.string.dialogfragment_rating_title, bookTitle)
         if (!bookImageLink.isNullOrEmpty()) {
@@ -82,9 +61,13 @@ class RateBookDialogFragment : DialogFragment() {
 
         RxView.clicks(btnRate).distinctUntilChanged()
                 .subscribe {
-                    ratingListener?.invoke(ratingBar.rating.toInt())
+                    applyListener?.invoke(ratingBar.rating.toInt())
                     dismiss()
                 }
+    }
+
+    override fun injectToGraph(appComponent: AppComponent) {
+        // Not needed
     }
 
 

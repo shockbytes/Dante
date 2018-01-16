@@ -52,6 +52,12 @@ open class Book @JvmOverloads constructor(@PrimaryKey var id: Long = -1,
             }
         }
 
+    val reading: Boolean
+        get() = state == State.READING
+
+    val hasPages: Boolean
+        get() = pageCount > 0
+
     val isAnyTimeInformationAvailable: Boolean
         get() = wishlistDate != 0L || startDate != 0L || endDate != 0L
 

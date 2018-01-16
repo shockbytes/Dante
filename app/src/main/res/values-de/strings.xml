@@ -101,10 +101,16 @@
         <item quantity="one">%d Stern</item>
         <item quantity="other">%d Sterne</item>
     </plurals>
-    <string name="notes">Notizen hinzufügen</string>
+    <string name="add_notes">Notizen hinzufügen</string>
     <string name="apply">Übernehmen</string>
     <string name="dialogfragment_paging_title">Seiten manuell eingeben</string>
-    <string name="dialogfragment_paging_current_page">Aktuelle Seiten</string>
+    <string name="dialogfragment_paging_current_page">Aktuelle Seite</string>
     <string name="dialogfragment_paging_pages">Buchseiten</string>
+    <string name="save">Speichern</string>
+    <string name="dialogfragment_notes_hint">Deine Gedanken gehören hier her&#8230;</string>
+    <string name="dialogfragment_notes_header">Schreibe deine Gedanken, Gefühle oder einfach nur Bemerkungen über %s nieder.</string>
+    <string name="dialogfragment_paging_error">Die Seitenanzahl kann nicht kleiner als die aktuelle Seite sein!</string>
+    <string name="my_notes">Meine Notizen</string>
+    <string name="clear">Löschen</string>
 
 </resources>

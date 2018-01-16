@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
@@ -18,6 +17,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
+import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
@@ -37,9 +37,6 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
 
     @Inject
     protected lateinit var manager: BookManager
-
-    @Inject
-    protected lateinit var prefs: SharedPreferences
 
     @Inject
     protected lateinit var tracker: Tracker
@@ -118,8 +115,8 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
                     .into(imgViewThumb, this)
         }
 
-        setupPageCount()
-        setupSeekBar()
+        setupNotes()
+        setupPageComponents()
         startComponentAnimations()
     }
 
@@ -174,7 +171,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, book.title)
     }
 
-    override fun onStartScrolling(startValue: Int) { }
+    override fun onStartScrolling(startValue: Int) {}
 
     override fun onEndScrolling(endValue: Int) {
 
@@ -195,62 +192,72 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         animationList.forEach { it.alpha = 0f }
     }
 
-    private fun setupSeekBar() {
+    private fun setupPageComponents() {
         // Book must be in reading state and must have a legit page count and overall the feature
         // must be enabled in the settings
-        if (prefs.getBoolean(getString(R.string.prefs_page_tracking_key), true)
-                && book.state == Book.State.READING
-                && book.pageCount > 0) {
+        if (manager.pageTrackingEnabled && book.reading && book.hasPages) {
             sbPages.maxValue = book.pageCount
             sbPages.value = book.currentPage
             sbPages.setCallback(this)
             sbPages.setOnValueChangedListener { page ->
                 btnPages.text = getString(R.string.detail_pages, page, book.pageCount)
             }
+
+            // Show pages as button text
+            val pages = if (book.state == Book.State.READING)
+                getString(R.string.detail_pages, book.currentPage, book.pageCount)
+            else
+                book.pageCount.toString()
+            btnPages.text = pages
+
         } else {
             sbPages.visibility = View.GONE
+            // Show all pages, but disable button clicking
+            btnPages.text = book.pageCount.toString()
         }
     }
 
     private fun startComponentAnimations() {
-        val duration = if (DanteUtils.isPortrait(this)) 200L else 300L
+        val duration = if (DanteUtils.isPortrait(this)) 150L else 300L
         DanteUtils.listPopAnimation(animationList, duration, 500, DecelerateInterpolator(2f))
     }
 
-    private fun setupPageCount() {
-        // Setup pages and SeekBar
-        val pages = if (book.state == Book.State.READING)
-            getString(R.string.detail_pages, book.currentPage, book.pageCount)
-        else
-            book.pageCount.toString()
-        btnPages.text = pages
+    private fun setupNotes() {
+        val notesId = if (!book.notes.isEmpty()) R.string.my_notes else R.string.add_notes
+        btnNotes.text = getString(notesId)
     }
 
     @OnClick(R.id.activity_detail_btn_rating)
     protected fun onClickRateBook(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         RateBookDialogFragment.newInstance(book.title, book.thumbnailAddress, book.rating)
-                .setRatingListener {
-                    manager.updateBookRating(book, it)
-                    tracker.trackRatingEvent(it)
-                    btnRating.text = resources.getQuantityString(R.plurals.book_rating, it, it)
+                .setOnApplyListener { rating ->
+                    manager.updateBookRating(book, rating)
+                    tracker.trackRatingEvent(rating)
+                    btnRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                 }.show(supportFragmentManager, "rating-dialogfragment")
     }
 
     @OnClick(R.id.activity_detail_btn_pages)
     protected fun onClickPages(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        PageEditDialogFragment.newInstance(book.currentPage, book.pageCount)
+        // Only show current page in dialog if tracking is enabled and book is in reading state
+        val showCurrentPage = manager.pageTrackingEnabled and book.reading
+        PageEditDialogFragment.newInstance(book.currentPage, book.pageCount, showCurrentPage)
                 .setOnPageEditedListener { current, pages ->
                     manager.updateBookPages(book, current, pages)
-                    setupPageCount()
-                    setupSeekBar()
+                    setupPageComponents()
                 }.show(supportFragmentManager, "pages-dialogfragment")
     }
 
     @OnClick(R.id.activity_detail_btn_notes)
     protected fun onClickNotes(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        NotesDialogFragment.newInstance(book.title, book.thumbnailAddress, book.notes)
+                .setOnApplyListener { notes ->
+                    manager.updateBookNotes(book, notes)
+                    setupNotes()
+                }.show(supportFragmentManager, "notes-dialogfragment")
     }
 
     companion object {

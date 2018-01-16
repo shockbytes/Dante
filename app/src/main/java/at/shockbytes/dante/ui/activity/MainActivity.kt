@@ -364,7 +364,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(),
                 primaryDarkOld, primaryDark)
                 .setDuration(300)
-        // Suppress lint, because we are only setting listener, when api is available
+        // Suppress lint, because we are only setting applyListener, when api is available
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorAnimation.addUpdateListener { valueAnimator ->
                 window.statusBarColor = valueAnimator.animatedValue as Int

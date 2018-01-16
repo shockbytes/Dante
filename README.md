@@ -29,16 +29,16 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Auto backup
 
 ### Version 2.7 - SOMETHING & SEARCH
-- [ ] Tablet optimization
-- [ ] Search feature
 - [ ] Change date for book
-- [ ] Overflow menu with additional info
+- [ ] Search feature
+- [ ] Tablet optimization
+- [ ] Overflow menu with additional info (description, isbn, maybe more)
 
 ### Version 2.6 - DETAIL DESIGNED
-- [x] Rate books 
-- [x] 100% Kotlin Port if possible
-- [x] Enter book page count manually 
-- [ ] Adding notes to books
+* Rate books 
+* 100% Kotlin Port if possible
+* Enter book page count manually 
+* Adding notes to books
 
 ### Version 2.5 - REFACTOR RAMPAGE
 

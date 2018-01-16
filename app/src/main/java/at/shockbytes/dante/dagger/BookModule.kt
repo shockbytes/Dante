@@ -1,5 +1,7 @@
 package at.shockbytes.dante.dagger
 
+import android.app.Application
+import android.content.SharedPreferences
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.books.RealmBookManager
 import at.shockbytes.dante.network.BookDownloader
@@ -14,12 +16,13 @@ import javax.inject.Singleton
  */
 
 @Module
-class BookModule {
+class BookModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideBookManager(bookDownloader: BookDownloader, realm: Realm): BookManager {
-        return RealmBookManager(bookDownloader, realm)
+    fun provideBookManager(bookDownloader: BookDownloader, realm: Realm,
+                           prefs: SharedPreferences): BookManager {
+        return RealmBookManager(bookDownloader, realm, app.applicationContext, prefs)
     }
 
 }

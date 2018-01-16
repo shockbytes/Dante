@@ -24,16 +24,14 @@ class DanteApp : Application() {
         Realm.init(this)
         JodaTimeAndroid.init(this)
 
-        if (!BuildConfig.DEBUG) {
-            Fabric.with(Fabric.Builder(this)
-                    .kits(Crashlytics())
-                    .debuggable(BuildConfig.DEBUG)
-                    .build())
-        }
+        Fabric.with(Fabric.Builder(this)
+                .kits(Crashlytics())
+                .debuggable(BuildConfig.DEBUG)
+                .build())
 
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule())
-                .bookModule(BookModule())
+                .bookModule(BookModule(this))
                 .appModule(AppModule(this))
                 .build()
     }

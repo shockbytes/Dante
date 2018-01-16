@@ -14,8 +14,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.fragment.dialogs.QueryDialogFragment
-import at.shockbytes.dante.ui.fragment.dialogs.SimpleRequestDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.util.barcode.BarcodeGraphic
 import at.shockbytes.dante.util.barcode.BarcodeTrackerFactory
 import at.shockbytes.dante.util.barcode.camera.CameraSourcePreview

@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.fragment.dialogs
+package at.shockbytes.dante.ui.fragment.dialog
 
 import android.app.Dialog
 import android.os.Bundle
@@ -37,11 +37,13 @@ class RateBookDialogFragment : DialogFragment() {
 
     private lateinit var bookTitle: String
     private var bookImageLink: String? = null
+    private var previousRating: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bookTitle = arguments.getString(ARG_TITLE)
         bookImageLink = arguments.getString(ARG_IMAGE)
+        previousRating = arguments.getInt(ARG_PREV_RATING)
         setStyle(DialogFragment.STYLE_NO_FRAME, R.style.AppTheme)
     }
 
@@ -74,6 +76,9 @@ class RateBookDialogFragment : DialogFragment() {
                     val rating = it.toInt() - 1 // -1 because rating starts with 1
                     txtRatings.text = context.resources.getStringArray(R.array.ratings)[rating]
                 }
+        if (previousRating > 0) {
+            ratingBar.rating = previousRating.toFloat()
+        }
 
         RxView.clicks(btnRate).distinctUntilChanged()
                 .subscribe {
@@ -87,12 +92,15 @@ class RateBookDialogFragment : DialogFragment() {
 
         private const val ARG_TITLE = "arg_title"
         private const val ARG_IMAGE = "arg_image"
+        private const val ARG_PREV_RATING = "arg_prev_rating"
 
-        fun newInstance(title: String, imageLink: String?): RateBookDialogFragment {
+        fun newInstance(title: String, imageLink: String?,
+                        previousRating: Int): RateBookDialogFragment {
             val fragment = RateBookDialogFragment()
             val args = Bundle()
             args.putString(ARG_TITLE, title)
             args.putString(ARG_IMAGE, imageLink)
+            args.putInt(ARG_PREV_RATING, previousRating)
             fragment.arguments = args
             return fragment
         }

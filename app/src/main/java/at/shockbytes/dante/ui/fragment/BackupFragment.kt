@@ -18,7 +18,7 @@ import at.shockbytes.dante.adapter.BackupEntryAdapter
 import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.fragment.dialogs.RestoreStrategyDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker

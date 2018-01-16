@@ -10,31 +10,35 @@ can simply keep track of your progress of all your books and their current state
 
 ## Versions
 
+### Backlog
+- [ ] Add book manually
+- [ ] Change book cover
+- [ ] Include Amazon books API?
+
 ### Version 3.0
-- [ ] Auto backup
 - [ ] Switch position of books in category with drag and drop?
 - [ ] Book recommendation
 - [ ] Ask user if it wants to send anonymous data to backend
 - [ ] Upload scanned books to Firebase, or change backend as a whole to firebase?
-- [ ] Include Amazon books API?
 - [ ] Include Proguard
 - [ ] Add advertisement API (Add AdView in list)
-- [ ] Add book manually
-- [ ] Change book cover
 
-### Version 2.7 SOMETHING & SEARCH
+### Version 2.8 - PAGES & BACKUP
+- [ ] Show book page state as Overlay on cover in BookAdapter
+- [ ] Improve statistics
+- [ ] Auto backup
 
+### Version 2.7 - SOMETHING & SEARCH
 - [ ] Tablet optimization
-- [ ] Show book page state as progressbar around icon?
 - [ ] Search feature
 - [ ] Change date for book
+- [ ] Overflow menu with additional info
 
 ### Version 2.6 - DETAIL DESIGNED
 - [x] Rate books 
 - [x] 100% Kotlin Port if possible
+- [x] Enter book page count manually 
 - [ ] Adding notes to books
-- [ ] Enter book page count manually 
-- [ ] Overflow menu with additional info
 
 ### Version 2.5 - REFACTOR RAMPAGE
 

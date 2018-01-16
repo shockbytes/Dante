@@ -7,8 +7,8 @@ import at.shockbytes.dante.ui.fragment.BackupFragment
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
-import at.shockbytes.dante.ui.fragment.dialogs.GoogleSignInDialogFragment
-import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
 import dagger.Component
 import javax.inject.Singleton
 

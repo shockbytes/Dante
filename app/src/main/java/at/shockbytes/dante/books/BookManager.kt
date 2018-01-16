@@ -24,6 +24,10 @@ interface BookManager {
 
     fun updateCurrentBookPage(book: Book, page: Int)
 
+    fun updateBookPages(book: Book, currentPage: Int, pageCount: Int)
+
+    fun updateBookNotes(book: Book, notes: String)
+
     fun updateBookStateAndPage(book: Book, state: Book.State, page: Int)
 
     fun updateBookRating(book: Book, rating: Int)

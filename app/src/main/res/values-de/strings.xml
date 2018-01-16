@@ -102,5 +102,9 @@
         <item quantity="other">%d Sterne</item>
     </plurals>
     <string name="notes">Notizen hinzufügen</string>
+    <string name="apply">Übernehmen</string>
+    <string name="dialogfragment_paging_title">Seiten manuell eingeben</string>
+    <string name="dialogfragment_paging_current_page">Aktuelle Seiten</string>
+    <string name="dialogfragment_paging_pages">Buchseiten</string>
 
 </resources>

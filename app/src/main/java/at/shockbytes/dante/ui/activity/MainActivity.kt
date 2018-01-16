@@ -24,15 +24,15 @@ import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.adapter.BookPagerAdapter
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.google.GoogleSignInManager
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.BaseActivity
-import at.shockbytes.dante.ui.fragment.dialogs.GoogleSignInDialogFragment
-import at.shockbytes.dante.ui.fragment.dialogs.GoogleWelcomeScreenDialogFragment
-import at.shockbytes.dante.ui.fragment.dialogs.StatsDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
 import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
 import butterknife.OnClick
@@ -312,7 +312,6 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                             menuItemGoogle?.icon = AppUtils.createRoundedBitmap(this, bm)
                         }, { throwable: Throwable ->
                             throwable.printStackTrace()
-                            Crashlytics.logException(throwable)
                             showToast(R.string.error_google_photo)
                         })
             } else {

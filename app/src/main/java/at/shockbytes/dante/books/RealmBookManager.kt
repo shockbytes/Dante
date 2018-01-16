@@ -97,6 +97,21 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         }
     }
 
+    override fun updateBookPages(book: Book, currentPage: Int, pageCount: Int) {
+        realm.executeTransaction {
+            book.currentPage = currentPage
+            book.pageCount = pageCount
+            realm.copyToRealmOrUpdate(book)
+        }
+    }
+
+    override fun updateBookNotes(book: Book, notes: String) {
+        realm.executeTransaction {
+            book.notes = notes
+            realm.copyToRealmOrUpdate(book)
+        }
+    }
+
     override fun updateBookStateAndPage(book: Book, state: Book.State,
                                         page: Int) {
         realm.executeTransaction {

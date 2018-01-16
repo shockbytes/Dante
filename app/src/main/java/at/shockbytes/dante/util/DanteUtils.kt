@@ -48,7 +48,7 @@ object DanteUtils {
         return bitmapResult
     }
 
-    fun listPopAnimation(animationList: List<View>, duration: Long = 300,
+    fun listPopAnimation(animationList: List<View>, duration: Long = 300, initialDelay: Long = 300,
                          interpolator: Interpolator = OvershootInterpolator(2f)) {
 
         animationList.forEach {
@@ -58,7 +58,7 @@ object DanteUtils {
         animationList.forEachIndexed { index, view ->
             view.animate().scaleY(1f).scaleX(1f).alpha(1f)
                     .setInterpolator(interpolator)
-                    .setStartDelay((300 + (index * 100)).toLong())
+                    .setStartDelay((initialDelay + (index * 100L)))
                     .setDuration(duration)
                     .withEndAction { view.alpha = 1f; view.scaleX = 1f; view.scaleY = 1f } // <-- If anim failed, set it in the end
                     .start()

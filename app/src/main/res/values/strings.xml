@@ -110,6 +110,12 @@
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
     <string name="notes">Add notes</string>
+    <string name="apply">Apply</string>
+    <string name="dialogfragment_paging_title">Enter pages manually</string>
+    <string name="dialogfragment_paging_current_page">Current page</string>
+    <string name="dialogfragment_paging_pages">Pages</string>
+    <string name="dialogfragment_paging_separator" translatable="false">/</string>
+    <string name="dialogfragment_paging_error">Pages cannot be less than current page!</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

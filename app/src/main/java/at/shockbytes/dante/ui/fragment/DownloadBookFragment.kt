@@ -207,7 +207,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
         // Hide progressbar smoothly
         progressBar.animate().alpha(0f).scaleY(0.5f).scaleX(0.5f).setDuration(500).start()
-        DanteUtils.listPopAnimation(animViews, 250, OvershootInterpolator(4f))
+        DanteUtils.listPopAnimation(animViews, 250, interpolator = OvershootInterpolator(4f))
     }
 
     private fun setTitleAndIcon(mainBook: Book?) {

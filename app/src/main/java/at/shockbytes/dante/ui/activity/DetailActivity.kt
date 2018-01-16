@@ -9,7 +9,7 @@ import android.support.v7.graphics.Palette
 import android.support.v7.widget.CardView
 import android.view.HapticFeedbackConstants
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,8 +18,9 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
-import at.shockbytes.dante.ui.fragment.dialogs.RateBookDialogFragment
-import at.shockbytes.dante.ui.fragment.dialogs.SimpleRequestDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
@@ -117,14 +118,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
                     .into(imgViewThumb, this)
         }
 
-        // Setup pages and SeekBar
-        val pages = if (book.state == Book.State.READING)
-            getString(R.string.detail_pages, book.currentPage, book.pageCount)
-        else
-            book.pageCount.toString()
-
-        btnPages.text = pages
-
+        setupPageCount()
         setupSeekBar()
         startComponentAnimations()
     }
@@ -219,14 +213,23 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     }
 
     private fun startComponentAnimations() {
-        val duration = if (DanteUtils.isPortrait(this)) 350L else 500L
-        DanteUtils.listPopAnimation(animationList, duration, AccelerateDecelerateInterpolator())
+        val duration = if (DanteUtils.isPortrait(this)) 200L else 300L
+        DanteUtils.listPopAnimation(animationList, duration, 500, DecelerateInterpolator(2f))
+    }
+
+    private fun setupPageCount() {
+        // Setup pages and SeekBar
+        val pages = if (book.state == Book.State.READING)
+            getString(R.string.detail_pages, book.currentPage, book.pageCount)
+        else
+            book.pageCount.toString()
+        btnPages.text = pages
     }
 
     @OnClick(R.id.activity_detail_btn_rating)
     protected fun onClickRateBook(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        RateBookDialogFragment.newInstance(book.title, book.thumbnailAddress)
+        RateBookDialogFragment.newInstance(book.title, book.thumbnailAddress, book.rating)
                 .setRatingListener {
                     manager.updateBookRating(book, it)
                     tracker.trackRatingEvent(it)
@@ -237,6 +240,12 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     @OnClick(R.id.activity_detail_btn_pages)
     protected fun onClickPages(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        PageEditDialogFragment.newInstance(book.currentPage, book.pageCount)
+                .setOnPageEditedListener { current, pages ->
+                    manager.updateBookPages(book, current, pages)
+                    setupPageCount()
+                    setupSeekBar()
+                }.show(supportFragmentManager, "pages-dialogfragment")
     }
 
     @OnClick(R.id.activity_detail_btn_notes)

@@ -109,13 +109,18 @@
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
-    <string name="notes">Add notes</string>
+    <string name="add_notes">Add notes</string>
     <string name="apply">Apply</string>
     <string name="dialogfragment_paging_title">Enter pages manually</string>
     <string name="dialogfragment_paging_current_page">Current page</string>
     <string name="dialogfragment_paging_pages">Pages</string>
     <string name="dialogfragment_paging_separator" translatable="false">/</string>
     <string name="dialogfragment_paging_error">Pages cannot be less than current page!</string>
+    <string name="dialogfragment_notes_header">Write down your thoughts, feelings or some general remarks about %s.</string>
+    <string name="save">Save</string>
+    <string name="dialogfragment_notes_hint">Your thoughts belong in here&#8230;</string>
+    <string name="my_notes">My notes</string>
+    <string name="clear">Clear</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

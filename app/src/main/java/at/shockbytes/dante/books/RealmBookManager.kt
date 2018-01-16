@@ -1,5 +1,8 @@
 package at.shockbytes.dante.books
 
+import android.content.Context
+import android.content.SharedPreferences
+import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.util.AppParams
@@ -18,10 +21,20 @@ import java.util.*
  * Date: 27.08.2016.
  */
 class RealmBookManager(private val bookDownloader: BookDownloader,
-                       private val realm: Realm) : BookManager {
+                       private val realm: Realm,
+                       private val context: Context,
+                       private val prefs: SharedPreferences) : BookManager {
 
     private val bookClass = Book::class.java
     private val configClass = BookConfig::class.java
+
+    override var pageTrackingEnabled: Boolean
+        get() = prefs.getBoolean(context.getString(R.string.prefs_page_tracking_key), true)
+        set(value) {
+            prefs.edit()
+                    .putBoolean(context.getString(R.string.prefs_page_tracking_key), value)
+                    .apply()
+        }
 
     override val statistics: Observable<MutableMap<String, Int>>
         get() {

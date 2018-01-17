@@ -20,7 +20,7 @@ open class Book @JvmOverloads constructor(@PrimaryKey var id: Long = -1,
                                           var wishlistDate: Long = 0, var language: String = "NA", // Version 2
                                           var rating: Int = 0, // 1 - 5
                                           var currentPage: Int = 0, // Version 3
-                                          var notes: String = "") : RealmObject(), Gsonify {
+                                          var notes: String? = null) : RealmObject(), Gsonify {
 
     enum class State {
         READ_LATER, READING, READ

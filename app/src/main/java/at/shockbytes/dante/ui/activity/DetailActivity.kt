@@ -223,7 +223,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     }
 
     private fun setupNotes() {
-        val notesId = if (!book.notes.isEmpty()) R.string.my_notes else R.string.add_notes
+        val notesId = if (!book.notes.isNullOrEmpty()) R.string.my_notes else R.string.add_notes
         btnNotes.text = getString(notesId)
     }
 
@@ -253,7 +253,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     @OnClick(R.id.activity_detail_btn_notes)
     protected fun onClickNotes(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        NotesDialogFragment.newInstance(book.title, book.thumbnailAddress, book.notes)
+        NotesDialogFragment.newInstance(book.title, book.thumbnailAddress, book.notes ?: "")
                 .setOnApplyListener { notes ->
                     manager.updateBookNotes(book, notes)
                     setupNotes()

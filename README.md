@@ -28,13 +28,13 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Improve statistics
 - [ ] Auto backup
 
-### Version 2.7 - SOMETHING & SEARCH
+### Version 2.7 - SEARCHY SUBJECT
 - [ ] Change date for book
 - [ ] Search feature
 - [ ] Tablet optimization
 - [ ] Overflow menu with additional info (description, isbn, maybe more)
 
-### Version 2.6 - DETAIL DESIGNED
+### Version 2.6 - DETAILED DESIGN
 * Rate books 
 * 100% Kotlin Port if possible
 * Enter book page count manually 

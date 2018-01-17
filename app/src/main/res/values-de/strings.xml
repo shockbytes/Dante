@@ -109,7 +109,7 @@
     <string name="save">Speichern</string>
     <string name="dialogfragment_notes_hint">Deine Gedanken gehören hier her&#8230;</string>
     <string name="dialogfragment_notes_header">Schreibe deine Gedanken, Gefühle oder einfach nur Bemerkungen über %s nieder.</string>
-    <string name="dialogfragment_paging_error">Die Seitenanzahl kann nicht kleiner als die aktuelle Seite sein!</string>
+    <string name="dialogfragment_paging_error">Ungültige Eingabe! Die Seitenanzahl kann nicht kleiner als die aktuelle Seite sein, oder die Eingabe ist leer!</string>
     <string name="my_notes">Meine Notizen</string>
     <string name="clear">Löschen</string>
 

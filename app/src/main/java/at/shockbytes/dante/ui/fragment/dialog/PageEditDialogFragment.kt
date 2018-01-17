@@ -46,9 +46,9 @@ class PageEditDialogFragment : DialogFragment() {
                 .setIcon(R.drawable.ic_pages_colored)
                 .setPositiveButton(R.string.apply) { _, _ ->
 
-                    val current = editCurrentPages.text.toString().toInt()
-                    val pages = editPages.text.toString().toInt()
-                    if (pages > current) {
+                    if (validateInput()) {
+                        val current = editCurrentPages.text.toString().toInt()
+                        val pages = editPages.text.toString().toInt()
                         pageEditListener?.invoke(current, pages)
                     } else {
                         Toast.makeText(context, getString(R.string.dialogfragment_paging_error),
@@ -67,6 +67,18 @@ class PageEditDialogFragment : DialogFragment() {
     fun setOnPageEditedListener(listener: (current: Int, pages: Int) -> Unit): PageEditDialogFragment {
         pageEditListener = listener
         return this
+    }
+
+    private fun validateInput(): Boolean {
+
+        val current = editCurrentPages.text.toString().toIntOrNull()
+        val pages = editPages.text.toString().toIntOrNull()
+
+        return if (current == null || pages == null) {
+            false
+        } else {
+            pages >= current
+        }
     }
 
     private fun setupViews() {

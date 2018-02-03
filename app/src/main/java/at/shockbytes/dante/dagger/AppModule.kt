@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.GoogleDriveBackupManager
-import at.shockbytes.dante.backup.google.GoogleSignInManager
+import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.books.BookSuggestion
 import at.shockbytes.dante.network.google.gson.BookBackupSerializer
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer

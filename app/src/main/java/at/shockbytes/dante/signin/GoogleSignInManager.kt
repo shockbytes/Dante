@@ -1,4 +1,4 @@
-package at.shockbytes.dante.backup.google
+package at.shockbytes.dante.signin
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -21,6 +21,10 @@ import io.reactivex.schedulers.Schedulers
 /**
  * @author Martin Macheiner
  * Date: 30.12.2017.
+ *
+ * Use This class to signin with Firebase
+ * https://firebase.google.com/docs/auth/android/google-signin
+ *
  */
 
 class GoogleSignInManager(private val prefs: SharedPreferences) {

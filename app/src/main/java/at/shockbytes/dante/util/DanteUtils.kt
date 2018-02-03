@@ -6,11 +6,15 @@ import android.content.res.Configuration
 import android.graphics.*
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
+import android.support.v7.view.menu.MenuPopupHelper
+import android.support.v7.widget.PopupMenu
+import android.util.Log
 import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.books.Book
+import com.mlsdev.rximagepicker.Sources
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -67,6 +71,26 @@ object DanteUtils {
 
     fun isPortrait(context: Context): Boolean {
         return context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    }
+
+    fun tryShowIconsInPopupMenu(menu: PopupMenu) {
+
+        try {
+            val fieldPopup = menu.javaClass.getDeclaredField("mPopup")
+            fieldPopup.isAccessible = true
+            val popup = fieldPopup.get(menu) as MenuPopupHelper
+            popup.setForceShowIcon(true)
+        } catch (e: Exception) {
+            Log.d("Dante", "Cannot force to show icons in popupmenu")
+        }
+    }
+
+    fun getImagePickerSourceByItemId(menuItemId: Int): Sources {
+        return if (menuItemId == R.id.popup_item_book_cover_camera) {
+            Sources.CAMERA
+        } else {
+            Sources.GALLERY
+        }
     }
 
 }

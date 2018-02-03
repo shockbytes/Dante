@@ -1,9 +1,7 @@
 package at.shockbytes.dante.adapter
 
 import android.content.Context
-import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
 import com.squareup.picasso.Picasso
@@ -62,7 +61,7 @@ class BookAdapter(context: Context, extData: List<Book>, private val state: Book
             popupMenu = PopupMenu(context, imgBtnOverflow)
             popupMenu.menuInflater.inflate(R.menu.popup_item, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(this)
-            tryShowIconsInPopupMenu(popupMenu)
+            DanteUtils.tryShowIconsInPopupMenu(popupMenu)
             hideSelectedPopupItem()
 
             imgBtnOverflow.setOnClickListener { popupMenu.show() }
@@ -122,19 +121,6 @@ class BookAdapter(context: Context, extData: List<Book>, private val state: Book
                 false
             }
         }
-    }
-
-    private fun tryShowIconsInPopupMenu(menu: PopupMenu) {
-
-        try {
-            val fieldPopup = menu.javaClass.getDeclaredField("mPopup")
-            fieldPopup.isAccessible = true
-            val popup = fieldPopup.get(menu) as MenuPopupHelper
-            popup.setForceShowIcon(true)
-        } catch (e: Exception) {
-            Log.d("Dante", "Cannot force to show icons in popupmenu")
-        }
-
     }
 
 }

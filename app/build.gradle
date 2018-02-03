@@ -42,7 +42,6 @@ android {
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
-
     signingConfigs {
         debug {
             // default
@@ -54,8 +53,6 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-
-
     buildTypes {
         release {
             minifyEnabled false

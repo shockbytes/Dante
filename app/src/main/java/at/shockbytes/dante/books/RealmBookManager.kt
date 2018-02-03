@@ -125,6 +125,13 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         }
     }
 
+    override fun updateBookPublishedDate(book: Book, publishedDate: String) {
+        realm.executeTransaction {
+            book.publishedDate = publishedDate
+            realm.copyToRealmOrUpdate(book)
+        }
+    }
+
     override fun updateBookNotes(book: Book, notes: String) {
         realm.executeTransaction {
             book.notes = notes

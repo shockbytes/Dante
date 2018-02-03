@@ -32,6 +32,8 @@ interface BookManager {
 
     fun updateBookCover(book: Book, thumbnailAddress: String)
 
+    fun updateBookPublishedDate(book: Book, publishedDate: String)
+
     fun updateBookStateAndPage(book: Book, state: Book.State, page: Int)
 
     fun updateBookRating(book: Book, rating: Int)

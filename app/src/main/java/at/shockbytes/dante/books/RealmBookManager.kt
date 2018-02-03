@@ -5,15 +5,14 @@ import android.content.SharedPreferences
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.network.BookDownloader
-import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.books.BookConfig
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.Sort
-import java.util.*
 
 
 /**
@@ -36,24 +35,25 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
                     .apply()
         }
 
-    override val statistics: Observable<MutableMap<String, Int>>
+    override val statistics: Single<BookStatistics>
         get() {
-            return Observable.fromCallable {
-                val stats: MutableMap<String, Int> = HashMap()
+            return Single.fromCallable {
 
                 val upcoming = realm.where(bookClass)
-                        .equalTo("ordinalState", Book.State.READ_LATER.ordinal).findAll().size
-                val current = realm.where(bookClass)
-                        .equalTo("ordinalState", Book.State.READING.ordinal).findAll().size
-                val doneList = realm.where(bookClass)
+                        .equalTo("ordinalState", Book.State.READ_LATER.ordinal).findAll()
+                val done = realm.where(bookClass)
                         .equalTo("ordinalState", Book.State.READ.ordinal).findAll()
-                val done = doneList.size
-                val pages = doneList.sumBy { it.pageCount }
-                stats.put(AppParams.statKeyUpcoming, upcoming)
-                stats.put(AppParams.statKeyCurrent, current)
-                stats.put(AppParams.statKeyDone, done)
-                stats.put(AppParams.statKeyPages, pages)
-                stats
+
+                val pagesRead = done.sumBy { it.pageCount }
+                val pagesWaiting = upcoming.sumBy { it.pageCount }
+                val (fastestBook, slowestBook) = BookStatistics.bookDurations(done)
+                val avgBooksPerMonth = BookStatistics.averageBooksPerMonth(done)
+                val mostReadingMonth = BookStatistics.mostReadingMonth(done)
+
+                BookStatistics(pagesRead, pagesWaiting,
+                        done.size, upcoming.size,
+                        fastestBook, slowestBook,
+                        avgBooksPerMonth, mostReadingMonth)
             }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         }
 

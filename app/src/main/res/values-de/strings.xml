@@ -7,7 +7,7 @@
     <string name="settings">Einstellungen</string>
     <string name="menu_main_stats">Statistiken</string>
     <string name="label_settings">Einstellungen</string>
-    <string name="label_stats">Deine Bücherstatistiken</string>
+    <string name="label_stats">Deine Statistiken</string>
     <string name="prefs_app_version_title">App Version</string>
     <string name="prefs_category_about">Über</string>
     <string name="prefs_developer_title">Entwickler</string>
@@ -112,5 +112,13 @@
     <string name="dialogfragment_paging_error">Ungültige Eingabe! Die Seitenanzahl kann nicht kleiner als die aktuelle Seite sein, oder die Eingabe ist leer!</string>
     <string name="my_notes">Meine Notizen</string>
     <string name="clear">Löschen</string>
+    <string name="stats_pages_read">%d Seiten gelesen</string>
+    <string name="stats_pages_waiting">%d Seiten warten</string>
+    <string name="stats_books_read">%d Bücher gelesen</string>
+    <string name="stats_books_waiting">%d Bücher warten</string>
+    <string name="stats_avg_books_per_month">%s Bücher pro Monat</string>
+    <string name="stats_book_duration_default">Keine Daten verfügbar</string>
+    <string name="stats_most_reading_month">%d Bücher gelesen im %s</string>
+    <string name="stats_duration_book">%d Tage für %s</string>
 
 </resources>

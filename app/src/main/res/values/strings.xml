@@ -1,10 +1,14 @@
 <resources>
+
+    <string name="app_name" translatable="false">Dante</string>
+    <string name="app_version" translatable="false">2.7</string>
+
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
     <string name="tab_done">Done</string>
 
     <string name="label_settings">Settings</string>
-    <string name="label_stats">Your book stats</string>
+    <string name="label_stats">Your stats</string>
 
     <string name="error_load_book">Oops, cannot load the book!</string>
 
@@ -119,6 +123,14 @@
     <string name="dialogfragment_notes_hint">Your thoughts belong in here&#8230;</string>
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>
+    <string name="stats_pages_read">%d pages read</string>
+    <string name="stats_pages_waiting">%d pages waiting</string>
+    <string name="stats_books_read">%d books read</string>
+    <string name="stats_books_waiting">%d books waiting</string>
+    <string name="stats_avg_books_per_month">%s books per month</string>
+    <string name="stats_book_duration_default">No data available</string>
+    <string name="stats_duration_book">%d days for\n%s</string>
+    <string name="stats_most_reading_month">%d books read in %s</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

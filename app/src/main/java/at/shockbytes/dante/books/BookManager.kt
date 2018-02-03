@@ -3,6 +3,7 @@ package at.shockbytes.dante.books
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.util.books.Book
 import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * @author Martin Macheiner
@@ -12,7 +13,7 @@ interface BookManager {
 
     var pageTrackingEnabled: Boolean
 
-    val statistics: Observable<MutableMap<String, Int>>
+    val statistics: Single<BookStatistics>
 
     val allBooks: Observable<List<Book>>
 

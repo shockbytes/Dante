@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.activity
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
@@ -34,6 +35,7 @@ import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import kotterknife.bindView
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
+import java.util.*
 import javax.inject.Inject
 
 class DetailActivity : TintableBackNavigableActivity(), Callback,
@@ -87,7 +89,6 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     }
 
     private fun initialize() {
-
         supportActionBar?.title = book.title
 
         initializeMainCard()
@@ -254,6 +255,16 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
                 .into(imgViewThumb, this)
     }
 
+    private fun onUpdatePublishedDate(y: String, m: String, d: String) {
+
+        val mStr = m.padStart(2, '0')
+        val dStr = d.padStart(2, '0')
+        val publishedDate = "$y-$mStr-$dStr"
+
+        btnPublished.text = publishedDate
+        manager.updateBookPublishedDate(book, publishedDate)
+    }
+
     @OnClick(R.id.activity_detail_btn_rating)
     protected fun onClickRateBook(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -292,6 +303,17 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         // TODO Enable in v3.0
         // v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         // popupBookCover.show()
+    }
+
+    @OnClick(R.id.activity_detail_btn_published)
+    protected fun onClickPublishedDate(v: View) {
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+
+        val cal = Calendar.getInstance()
+        DatePickerDialog(this,
+                { _, y, m, d -> onUpdatePublishedDate(y.toString(), m.toString(), d.toString()) },
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+                .show()
     }
 
     companion object {

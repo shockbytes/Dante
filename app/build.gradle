@@ -57,13 +57,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            resValue "string", "app_version", "2.7"
-            resValue "string", "app_name", "Dante"
-
         }
         debug {
-            resValue "string", "app_version", "2.7 (Debug)"
-            resValue "string", "app_name", "Dante Debug"
             //applicationIdSuffix ".debug"
             debuggable true
         }

@@ -11,7 +11,7 @@ can simply keep track of your progress of all your books and their current state
 ## Versions
 
 ### Backlog
-- [ ] Add book manually
+- [ ] Add book manually (FAB menu)
 - [ ] Include Amazon books API?
 - [ ] Tablet optimization
 
@@ -29,11 +29,11 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Switch position of books in category with drag and drop?
 - [ ] Include Proguard
 
-### Version 2.7 - SEARCHY SUBJECT
-- [ ] Change publish date for book
-- [ ] Search feature
-- [ ] Improve statistics screen
+### Version 2.7 - SEARCHY STATS
+- [x] Change publish date for book
+- [x] Improve statistics screen
 - [ ] Overflow menu with additional info (description, isbn, maybe more)
+- [ ] Search feature
 
 ### Version 2.6 - DETAILED DESIGN
 * Rate books 

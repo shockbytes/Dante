@@ -1,78 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/dialogfragment_stats_txt_upcoming"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:drawableLeft="@drawable/ic_popup_upcoming"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_popup_upcoming"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="16sp" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/dialogfragment_stats_txt_current"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:drawableLeft="@drawable/ic_popup_current"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_popup_current"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="16sp" />
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
-    <TextView
-        android:id="@+id/dialogfragment_stats_txt_done"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:drawableLeft="@drawable/ic_popup_done"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_popup_done"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_pages_read"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_pages_colored"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/dialogfragment_stats_txt_pages"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:drawableLeft="@drawable/ic_pages_colored"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_pages_colored"
-        android:fontFamily="sans-serif-light"
-        android:gravity="center_vertical"
-        android:padding="8dp"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="16sp" />
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_pages_waiting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_pages"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_books_read"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_popup_done"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialogfragment_stats_txt_pages_read" />
+
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_books_waiting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_popup_upcoming"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/dialogfragment_stats_txt_pages_waiting" />
+
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_fastest_book"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_fast"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialogfragment_stats_txt_books_read" />
+
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_slowest_book"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_stats_slow"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/dialogfragment_stats_txt_books_waiting" />
+
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_avg_books"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_popup_current"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialogfragment_stats_txt_fastest_book" />
+
+        <TextView
+            android:id="@+id/dialogfragment_stats_txt_months_most_books"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="8dp"
+            android:drawableTop="@drawable/ic_books"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="2"
+            android:maxLines="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/dialogfragment_stats_txt_slowest_book" />
 
 
-</LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

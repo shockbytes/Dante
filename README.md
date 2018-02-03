@@ -12,26 +12,27 @@ can simply keep track of your progress of all your books and their current state
 
 ### Backlog
 - [ ] Add book manually
-- [ ] Change book cover
 - [ ] Include Amazon books API?
+- [ ] Tablet optimization
 
-### Version 3.0
-- [ ] Switch position of books in category with drag and drop?
-- [ ] Book recommendation
-- [ ] Ask user if it wants to send anonymous data to backend
-- [ ] Upload scanned books to Firebase, or change backend as a whole to firebase?
-- [ ] Include Proguard
+### Version 3.1
+- [ ] Use Firebase Data for book recommendations
+
+### Version 3.0 - CAMPING WITH FIREBASE
+- [ ] Firebase as Backend!
+- [ ] Change book cover and store data in Firebase Cloud Storage
 - [ ] Add advertisement API (Add AdView in list)
+- [ ] Redesign login flow with Firebase login
 
-### Version 2.8 - PAGES & BACKUP
+### Version 2.8 - PAGES AND BACKUP
 - [ ] Show book page state as Overlay on cover in BookAdapter
-- [ ] Improve statistics
-- [ ] Auto backup
+- [ ] Switch position of books in category with drag and drop?
+- [ ] Include Proguard
 
 ### Version 2.7 - SEARCHY SUBJECT
-- [ ] Change date for book
+- [ ] Change publish date for book
 - [ ] Search feature
-- [ ] Tablet optimization
+- [ ] Improve statistics screen
 - [ ] Overflow menu with additional info (description, isbn, maybe more)
 
 ### Version 2.6 - DETAILED DESIGN

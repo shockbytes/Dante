@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.CardView
+import android.support.v7.widget.PopupMenu
+import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -25,8 +27,10 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
 import butterknife.OnClick
+import com.mlsdev.rximagepicker.RxImagePicker
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import kotterknife.bindView
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
@@ -57,7 +61,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     private val txtStartDate: TextView by bindView(R.id.activity_detail_txt_start_date)
     private val txtEndDate: TextView by bindView(R.id.activity_detail_txt_end_date)
 
-
+    private lateinit var popupBookCover: PopupMenu
     private val animationList: List<View> by lazy {
         listOf(btnPublished, btnRating, sbPages, btnPages, btnNotes)
     }
@@ -109,14 +113,12 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         }
 
         if (!book.thumbnailAddress.isNullOrEmpty()) {
-            Picasso.with(applicationContext)
-                    .load(book.thumbnailAddress)
-                    .placeholder(R.drawable.ic_placeholder)
-                    .into(imgViewThumb, this)
+            loadImage(book.thumbnailAddress)
         }
 
         setupNotes()
         setupPageComponents()
+        setupBookCoverChange()
         startComponentAnimations()
     }
 
@@ -222,9 +224,34 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         DanteUtils.listPopAnimation(animationList, duration, 500, DecelerateInterpolator(2f))
     }
 
+    private fun setupBookCoverChange() {
+        popupBookCover = PopupMenu(this, imgViewThumb)
+        popupBookCover.menuInflater.inflate(R.menu.popup_item_book_cover, popupBookCover.menu)
+        popupBookCover.setOnMenuItemClickListener {
+
+            val source = DanteUtils.getImagePickerSourceByItemId(it.itemId)
+            RxImagePicker.with(this).requestImage(source)
+                    .bindToLifecycle(this)
+                    .subscribe {
+                        manager.updateBookCover(book, it.toString())
+                        Log.wtf("Dante", it.toString())
+                        loadImage(it.toString())
+                    }
+            true
+        }
+        DanteUtils.tryShowIconsInPopupMenu(popupBookCover)
+    }
+
     private fun setupNotes() {
         val notesId = if (!book.notes.isNullOrEmpty()) R.string.my_notes else R.string.add_notes
         btnNotes.text = getString(notesId)
+    }
+
+    private fun loadImage(address: String?) {
+        Picasso.with(applicationContext)
+                .load(address)
+                .placeholder(R.drawable.ic_placeholder)
+                .into(imgViewThumb, this)
     }
 
     @OnClick(R.id.activity_detail_btn_rating)
@@ -260,9 +287,16 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
                 }.show(supportFragmentManager, "notes-dialogfragment")
     }
 
+    @OnClick(R.id.activity_detail_img_thumb)
+    protected fun onClickBookCover(v: View) {
+        // TODO Enable in v3.0
+        // v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        // popupBookCover.show()
+    }
+
     companion object {
 
-        private val ARG_ID = "arg_id"
+        private const val ARG_ID = "arg_id"
 
         fun newIntent(context: Context, id: Long): Intent {
             return Intent(context, DetailActivity::class.java).putExtra(ARG_ID, id)

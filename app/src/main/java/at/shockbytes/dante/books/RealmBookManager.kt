@@ -118,6 +118,13 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         }
     }
 
+    override fun updateBookCover(book: Book, thumbnailAddress: String) {
+        realm.executeTransaction {
+            book.thumbnailAddress = thumbnailAddress
+            realm.copyToRealmOrUpdate(book)
+        }
+    }
+
     override fun updateBookNotes(book: Book, notes: String) {
         realm.executeTransaction {
             book.notes = notes

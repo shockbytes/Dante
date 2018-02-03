@@ -11,12 +11,13 @@ import at.shockbytes.dante.core.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.trello.rxlifecycle2.components.support.RxFragment
 
 /**
  * @author Martin Macheiner
  * Date: 29.11.2017.
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : RxFragment() {
 
     private var unbinder: Unbinder? = null
 

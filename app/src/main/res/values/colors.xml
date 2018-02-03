@@ -23,4 +23,6 @@
     <color name="white">#FFF</color>
     <color name="placeholder">#555</color>
 
+    <color name="indigo">#3F51B5</color>
+
 </resources>

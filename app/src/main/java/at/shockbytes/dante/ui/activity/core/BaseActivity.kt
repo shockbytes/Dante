@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.activity.core
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.transition.Explode
 import android.transition.Slide
 import android.view.Gravity
@@ -13,8 +12,9 @@ import at.shockbytes.dante.core.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : RxAppCompatActivity() {
 
     open val enableActivityTransition: Boolean = true
 

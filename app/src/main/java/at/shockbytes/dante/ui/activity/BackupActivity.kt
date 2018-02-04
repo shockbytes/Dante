@@ -23,7 +23,7 @@ class BackupActivity : ContainerBackNavigableActivity(), BackupFragment.OnBackup
 
     companion object {
 
-        val rcBackupRestored = 0x7592
+        const val rcBackupRestored = 0x7592
 
         fun newIntent(context: Context): Intent {
             return Intent(context, BackupActivity::class.java)

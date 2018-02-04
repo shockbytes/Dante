@@ -298,12 +298,14 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
                 }.show(supportFragmentManager, "notes-dialogfragment")
     }
 
+    // TODO Enable in v3.0
+    /*
     @OnClick(R.id.activity_detail_img_thumb)
     protected fun onClickBookCover(v: View) {
-        // TODO Enable in v3.0
-        // v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        // popupBookCover.show()
+        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        popupBookCover.show()
     }
+    */
 
     @OnClick(R.id.activity_detail_btn_published)
     protected fun onClickPublishedDate(v: View) {
@@ -311,7 +313,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
 
         val cal = Calendar.getInstance()
         DatePickerDialog(this,
-                { _, y, m, d -> onUpdatePublishedDate(y.toString(), m.toString(), d.toString()) },
+                { _, y, m, d -> onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) }, // +1 because month starts with 0
                 cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
                 .show()
     }

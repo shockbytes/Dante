@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Change cover with Camera"
+    <item
         android:id="@+id/popup_item_book_cover_camera"
-        android:icon="@drawable/ic_camera_lens" />
+        android:icon="@drawable/ic_camera_lens"
+        android:title="@string/popup_item_book_cover_camera" />
 
-    <item android:title="Load cover from Gallery"
+    <item
         android:id="@+id/popup_item_book_cover_gallery"
-        android:icon="@drawable/ic_gallery" />
+        android:icon="@drawable/ic_gallery"
+        android:title="@string/popup_item_book_cover_gallery" />
 
 </menu>

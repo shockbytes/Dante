@@ -26,7 +26,7 @@ interface AmazonItemLookupApi {
 
     companion object {
 
-        val SERVICE_ENDPOINT = "http://webservices.amazon.com/onca/"
+        const val SERVICE_ENDPOINT = "http://webservices.amazon.com/onca/"
     }
 
 }

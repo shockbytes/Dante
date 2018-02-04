@@ -47,6 +47,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     private val addClickedListener: (BookSearchSuggestion) -> Unit = { suggestion ->
         DanteUtils.hideKeyboard(activity)
+        searchView.setSearchFocused(false)
         downloadClickListener?.onBookSuggestionClicked(suggestion)
     }
 
@@ -141,8 +142,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
                 emptyView.visibility = emptyViewVisibility
                 searchView.hideProgress()
                 btnSearchOnline.isEnabled = true
-            }, { t ->
-                t.printStackTrace()
+            }, {
                 showToast(R.string.search_invalid_query)
 
                 searchView.clearQuery()

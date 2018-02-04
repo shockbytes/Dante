@@ -8,38 +8,6 @@
     android:orientation="vertical"
     tools:context="at.shockbytes.dante.ui.activity.BackupActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#82B1FF"
-        android:elevation="8dp"
-        android:visibility="gone">
-
-        <Switch
-            android:id="@+id/activity_backup_switch_auto_update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp" />
-
-        <TextView
-            android:layout_toLeftOf="@+id/activity_backup_switch_auto_update"
-            android:layout_toStartOf="@+id/activity_backup_switch_auto_update"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="48dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="48dp"
-            android:text="@string/backup_label_auto"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse" />
-
-    </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

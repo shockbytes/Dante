@@ -80,9 +80,9 @@ class GoogleSignInManager(private val prefs: SharedPreferences) {
 
     companion object {
 
-        val rcSignIn = 0x8944
-        val prefsMaybeLater = "prefs_google_login_maybe_later"
-        val prefsShowWelcomeScreen = "prefs_google_show_welcome_screen"
+        const val rcSignIn = 0x8944
+        private const val prefsMaybeLater = "prefs_google_login_maybe_later"
+        private const val prefsShowWelcomeScreen = "prefs_google_show_welcome_screen"
     }
 
 

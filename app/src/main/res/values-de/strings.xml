@@ -15,10 +15,6 @@
     <string name="tab_done">Gelesen</string>
     <string name="tab_current">Lesen</string>
     <string name="error_load_book">Ups, das Buch konnte nicht geladen werden!</string>
-    <string name="dialogfragment_stats_upcoming">%d Bücher warten auf dich</string>
-    <string name="dialogfragment_stats_pages">Du hast bereits durch %d Seiten geblättert!</string>
-    <string name="dialogfragment_stats_done">Du hast schon %d Bücher gelesen</string>
-    <string name="dialogfragment_stats_current">Du liest gerade %d Bücher</string>
     <string name="permission_camera_rationale">Die App benötigt den Zugang zu deiner Kamera, um die Barcodes deiner Bücher zu scannen.</string>
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>

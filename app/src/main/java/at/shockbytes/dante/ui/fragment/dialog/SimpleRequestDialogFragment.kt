@@ -51,10 +51,10 @@ class SimpleRequestDialogFragment : DialogFragment() {
 
     companion object {
 
-        private val argTitle = "title"
-        private val argMessage = "message"
-        private val argIcon = "icon"
-        private val argPositiveText = "positive_text"
+        private const val argTitle = "title"
+        private const val argMessage = "message"
+        private const val argIcon = "icon"
+        private const val argPositiveText = "positive_text"
 
         fun newInstance(title: String, message: String, icon: Int,
                         positiveText: Int = android.R.string.yes): SimpleRequestDialogFragment {

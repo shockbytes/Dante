@@ -1,26 +1,21 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BackupEntryAdapter
 import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
@@ -36,19 +31,12 @@ import javax.inject.Inject
  */
 
 class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntry>,
-        CompoundButton.OnCheckedChangeListener, BaseAdapter.OnItemMoveListener<BackupEntry> {
+        BaseAdapter.OnItemMoveListener<BackupEntry> {
 
     interface OnBackupRestoreListener {
 
         fun onBackupRestored()
     }
-
-    override val layoutId = R.layout.activity_backup
-
-    private val rvBackups: RecyclerView by bindView(R.id.activity_backup_rv_backups)
-    private val switchAutoUpdate: Switch by bindView(R.id.activity_backup_switch_auto_update)
-    private val txtLastBackup: TextView by bindView(R.id.activity_backup_txt_last_backup)
-    private val btnBackup: AppCompatButton by bindView(R.id.activity_backup_btn_backup)
 
     @Inject
     protected lateinit var bookManager: BookManager
@@ -62,6 +50,11 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     private lateinit var adapter: BackupEntryAdapter
 
     private var backupRestoreListener: OnBackupRestoreListener? = null
+
+    private val rvBackups: RecyclerView by bindView(R.id.activity_backup_rv_backups)
+    private val txtLastBackup: TextView by bindView(R.id.activity_backup_txt_last_backup)
+
+    override val layoutId = R.layout.activity_backup
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -89,10 +82,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     override fun setupViews() {
 
         updateLastBackupTime()
-        setStateOfBackupButton(backupManager.isAutoBackupEnabled)
-
-        switchAutoUpdate.isChecked = backupManager.isAutoBackupEnabled
-        switchAutoUpdate.setOnCheckedChangeListener(this)
 
         adapter = BackupEntryAdapter(context, ArrayList())
         rvBackups.layoutManager = LinearLayoutManager(context)
@@ -124,11 +113,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                             }
                 }
                 .show(fragmentManager, "restore-strategy-dialog-fragment")
-    }
-
-    override fun onCheckedChanged(compoundButton: CompoundButton, b: Boolean) {
-        backupManager.isAutoBackupEnabled = b
-        setStateOfBackupButton(b)
     }
 
     override fun onItemMove(t: BackupEntry, from: Int, to: Int) {}
@@ -163,13 +147,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         else
             "---"
         txtLastBackup.text = getString(R.string.last_backup, lastBackup)
-    }
-
-    private fun setStateOfBackupButton(b: Boolean) {
-        btnBackup.isEnabled = !b
-        val colorID = if (b) R.color.disabled_view else R.color.colorAccent
-        btnBackup.supportBackgroundTintList = ColorStateList
-                .valueOf(ContextCompat.getColor(context, colorID))
     }
 
     companion object {

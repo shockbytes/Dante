@@ -75,8 +75,8 @@ class GoogleWelcomeScreenDialogFragment : DialogFragment() {
 
     companion object {
 
-        private val argName = "arg_name"
-        private val argPhotoUrl = "arg_photo_url"
+        private const val argName = "arg_name"
+        private const val argPhotoUrl = "arg_photo_url"
 
         fun newInstance(name: String?, photoUrl: Uri?): GoogleWelcomeScreenDialogFragment {
             val fragment = GoogleWelcomeScreenDialogFragment()

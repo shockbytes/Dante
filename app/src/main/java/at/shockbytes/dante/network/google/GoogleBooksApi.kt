@@ -17,7 +17,7 @@ interface GoogleBooksApi {
 
     companion object {
 
-        val SERVICE_ENDPOINT = "https://www.googleapis.com/books/v1/"
+        const val SERVICE_ENDPOINT = "https://www.googleapis.com/books/v1/"
     }
 
 }

@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.*
@@ -28,24 +29,14 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
                                private val signInManager: GoogleSignInManager,
                                @param:Named("backup_gson") private val gson: Gson) : BackupManager {
 
-
-    override var isAutoBackupEnabled: Boolean
-        get() = preferences.getBoolean(AUTO_BACKUP_ENABLED, false)
-        set(value) {
-            preferences.edit().putBoolean(AUTO_BACKUP_ENABLED, value).apply()
-        }
-
     override val lastBackupTime: Long
         get() = preferences.getLong(LAST_BACKUP, 0)
 
-    override val backupList: Observable<List<BackupEntry>>
+    override val backupList: Single<List<BackupEntry>>
         get() {
-            return Observable.defer {
-
+            return Single.fromCallable {
                 val appFolder = Tasks.await(client?.appFolder!!)
-                val entries = fromMetadataToBackupEntries(Tasks.await(client?.listChildren(appFolder)!!))
-                return@defer Observable.just(entries)
-
+                fromMetadataToBackupEntries(Tasks.await(client?.listChildren(appFolder)!!))
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
 
@@ -63,10 +54,6 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     }
 
     override fun close(books: List<Book>?) {
-
-        if (isAutoBackupEnabled && books != null) {
-            backup(books) // TODO Remove as auto backup feature is now deprecated
-        }
         activity = null
     }
 
@@ -100,13 +87,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         val filename = createFilename(books.size)
 
         return Completable.fromAction {
-
-            // Either auto backup is disabled, or auto backup enabled and last backup
-            // was longer than two weeks ago
-            val backupThreshold = System.currentTimeMillis() - MILLIS_TWO_WEEKS
-            if (!isAutoBackupEnabled || lastBackupTime < backupThreshold) {
-                createFile(filename, content)
-            }
+            createFile(filename, content)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -170,7 +151,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     private fun createFilename(books: Int): String {
 
         val timestamp = System.currentTimeMillis()
-        val type = if (isAutoBackupEnabled) "auto" else "man"
+        val type = "man"
 
         return STORAGE_TYPE + "_" +
                 type + "_" +
@@ -245,12 +226,9 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
 
     companion object {
 
-        private val LAST_BACKUP = "google_drive_last_backup"
-        private val AUTO_BACKUP_ENABLED = "google_drive_auto_backup_enabled"
-        private val STORAGE_TYPE = "gdrive"
-        private val MIME_JSON = "application/json"
-
-        private val MILLIS_TWO_WEEKS = 1209600000L
+        private const val LAST_BACKUP = "google_drive_last_backup"
+        private const val STORAGE_TYPE = "gdrive"
+        private const val MIME_JSON = "application/json"
     }
 
 }

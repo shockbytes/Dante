@@ -7,10 +7,12 @@ import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.books.BookConfig
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.realm.Case
 import io.realm.Realm
 import io.realm.Sort
 
@@ -163,12 +165,12 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
     }
 
     override fun downloadBook(isbn: String?): Observable<BookSuggestion> {
-        return if (isbn == null) {
-            Observable.error(NullPointerException("ISBN is null"))
-        } else {
+        return if (isbn != null) {
             bookDownloader.downloadBookSuggestion(isbn)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+        } else {
+            Observable.error(NullPointerException("ISBN is null"))
         }
     }
 
@@ -188,6 +190,14 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
                     .findAll()
                     .sort("id", Sort.DESCENDING).toList()
         }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun searchBooks(query: String): Flowable<List<Book>> {
+        return realm.where(bookClass)
+                .contains("title", query, Case.INSENSITIVE)
+                .findAll()
+                .asFlowable()
+                .map { it.toList() }
     }
 
     override fun close() {

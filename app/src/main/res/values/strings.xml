@@ -131,6 +131,13 @@
     <string name="stats_book_duration_default">No data available</string>
     <string name="stats_duration_book">%d days for\n%s</string>
     <string name="stats_most_reading_month">%d books read in %s</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search…</string>
+    <string name="preview_failed">Cannot open the camera. Restarting your phone may help!</string>
+    <string name="add">Add</string>
+    <string name="search_online">Search online</string>
+    <string name="search_online_hint">No books found in your library. Do you want to search online?</string>
+    <string name="search_invalid_query">Invalid search query</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

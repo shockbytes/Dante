@@ -6,6 +6,8 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="mainBackground">#eee</color>
+    <color name="recycler_divider">#DDD</color>
+
 
     <color name="tabcolor_upcoming">#8BC34A</color>
     <color name="tabcolor_upcoming_dark">#689F38</color>
@@ -25,5 +27,7 @@
 
     <color name="indigo">#3F51B5</color>
     <color name="brown">#9F6459</color>
+
+    <color name="lined_btn_color">#4CAF50</color>
 
 </resources>

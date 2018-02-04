@@ -59,7 +59,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         supportActionBar?.title = text
 
         if (animated) {
-            tintSystemBarsAnimated(abColor, abtColor)
+            tintSystemBarsAnimated(abColor, sbColor)
         } else {
             supportActionBar?.setBackgroundDrawable(ColorDrawable(abColor))
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -91,8 +91,6 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         val set = AnimatorSet()
         set.playTogether(animatorToolbar, colorAnimation)
         set.start()
-
-
     }
 
 }

@@ -3,10 +3,8 @@ package at.shockbytes.dante.dagger
 import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.MainActivity
-import at.shockbytes.dante.ui.fragment.BackupFragment
-import at.shockbytes.dante.ui.fragment.DownloadBookFragment
-import at.shockbytes.dante.ui.fragment.MainBookFragment
-import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
+import at.shockbytes.dante.ui.activity.SearchActivity
+import at.shockbytes.dante.ui.fragment.*
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
 import dagger.Component
@@ -27,6 +25,8 @@ interface AppComponent {
 
     fun inject(activity: BookRetrievalActivity)
 
+    fun inject(activity: SearchActivity)
+
     fun inject(fragment: MainBookFragment)
 
     fun inject(fragment: StatsDialogFragment)
@@ -36,6 +36,8 @@ interface AppComponent {
     fun inject(fragment: BackupFragment)
 
     fun inject(fragment: QueryCaptureFragment)
+
+    fun inject(fragment: SearchFragment)
 
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 

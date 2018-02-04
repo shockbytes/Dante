@@ -23,14 +23,13 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.adapter.BookPagerAdapter
 import at.shockbytes.dante.backup.BackupManager
-import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
-import at.shockbytes.dante.util.AppParams
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
@@ -100,33 +99,35 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         super.onDestroy()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
 
-            AppParams.rcScanBook -> {
+            DanteUtils.rcAddBook -> {
                 if (resultCode == RESULT_OK) {
-                    val bookId = data.getLongExtra(AppParams.extraBookId, -1)
+                    val bookId = data?.getLongExtra(DanteUtils.extraBookId, -1) ?: -1
                     if (bookId > -1) {
                         pagerAdapter.listener?.onBookAdded(bookManager.getBook(bookId))
                     }
                 }
             }
             GoogleSignInManager.rcSignIn -> {
-                signInManager.signIn(data).subscribe({ account ->
-                    if (account != null) {
-                        showFabAwareSnackbar(getString(R.string.signin_welcome, account.givenName))
-                        connectToGoogleServices()
-                        showGoogleWelcomeScreen(account)
-                    } else {
-                        showFabAwareSnackbar(getString(R.string.signin_no_account))
-                    }
-                }, { throwable: Throwable ->
-                    throwable.printStackTrace()
-                    Crashlytics.logException(throwable)
-                    showFabAwareSnackbar(getString(R.string.error_google_login))
-                })
+                if (data != null) {
+                    signInManager.signIn(data).subscribe({ account ->
+                        if (account != null) {
+                            showFabAwareSnackbar(getString(R.string.signin_welcome, account.givenName))
+                            connectToGoogleServices()
+                            showGoogleWelcomeScreen(account)
+                        } else {
+                            showFabAwareSnackbar(getString(R.string.signin_no_account))
+                        }
+                    }, { throwable: Throwable ->
+                        throwable.printStackTrace()
+                        Crashlytics.logException(throwable)
+                        showFabAwareSnackbar(getString(R.string.error_google_login))
+                    })
+                }
             }
             BackupActivity.rcBackupRestored -> {
                 if (resultCode == Activity.RESULT_OK) {
@@ -146,12 +147,16 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                 startActivity(SettingsActivity.newIntent(applicationContext), options)
             }
             R.id.action_stats -> {
-                val fragment = StatsDialogFragment.newInstance()
-                fragment.show(supportFragmentManager, "stats-dialog-fragment")
+                StatsDialogFragment.newInstance()
+                        .show(supportFragmentManager, "stats-dialog-fragment")
             }
             R.id.action_backup -> {
                 startActivityForResult(BackupActivity.newIntent(this),
                         BackupActivity.rcBackupRestored, options)
+            }
+            R.id.action_search -> {
+                startActivityForResult(SearchActivity.newIntent(this),
+                        DanteUtils.rcAddBook, options)
             }
             R.id.action_google_login -> {
 
@@ -243,11 +248,10 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
     @OnClick(R.id.main_fab)
     fun onClickNewBook() {
-
         tracker.trackOnScanBook()
 
         startActivityForResult(BookRetrievalActivity.newIntent(this),
-                AppParams.rcScanBook,
+                DanteUtils.rcAddBook,
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
     }
 

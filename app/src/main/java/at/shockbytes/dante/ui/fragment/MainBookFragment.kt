@@ -13,11 +13,11 @@ import android.view.View
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
+import at.shockbytes.dante.books.BookListener
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.books.BookListener
-import at.shockbytes.dante.books.BookManager
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 import javax.inject.Inject
@@ -61,7 +61,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bookState = arguments.getSerializable(ARG_STATE) as Book.State
+        bookState = arguments.getSerializable(argState) as Book.State
     }
 
     override fun onResume() {
@@ -157,12 +157,12 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
 
     companion object {
 
-        private val ARG_STATE = "arg_state"
+        private const val argState = "arg_state"
 
         fun newInstance(state: Book.State): MainBookFragment {
             val fragment = MainBookFragment()
             val args = Bundle(1)
-            args.putSerializable(ARG_STATE, state)
+            args.putSerializable(argState, state)
             fragment.arguments = args
             return fragment
         }

@@ -120,5 +120,13 @@
     <string name="stats_book_duration_default">Keine Daten verfügbar</string>
     <string name="stats_most_reading_month">%d Bücher gelesen im %s</string>
     <string name="stats_duration_book">%d Tage für %s</string>
+    <string name="search">Suche</string>
+    <string name="search_hint">Suche…</string>
+    <string name="preview_failed">Kamera kann nicht geöffnet werden. Ein Neustart könnte helfen!</string>
+    <string name="add">Hinzufügen</string>
+    <string name="search_online">Online suchen</string>
+    <string name="search_online_hint">Keine Treffer in deiner Bibliothek gefunden. Sollen wir online suchen?</string>
+    <string name="search_invalid_query">Ungültige Sucheingabe</string>
+
 
 </resources>

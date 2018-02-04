@@ -2,6 +2,8 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="search_view_inset">2dp</dimen>
+    <dimen name="item_book_horizontal_spacing">8dp</dimen>
 
     <bool name="isTablet">false</bool>
 

@@ -23,7 +23,7 @@ interface Tracker {
 
     fun trackOnBackupRestored()
 
-    fun trackOnBookScanned(b: Book)
+    fun trackOnBookScanned(b: Book, viaSearchInterface: Boolean = false)
 
     fun trackOnBookMovedToDone(b: Book)
 

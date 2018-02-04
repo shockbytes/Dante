@@ -1,9 +1,9 @@
 package at.shockbytes.dante.network.google.gson
 
 import at.shockbytes.dante.books.BookFactory
-import at.shockbytes.dante.util.AppParams
-import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.books.BookSuggestion
+import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.books.Book
 import com.google.gson.*
 import java.lang.reflect.Type
 
@@ -30,7 +30,7 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
 
                 // Look for main suggestion and check for fetching size
                 val mainSuggestion = grabBook(volumeInfoMain)
-                size = if (size >= AppParams.maxFetchAmount) AppParams.maxFetchAmount else size
+                size = if (size >= DanteUtils.maxFetchAmount) DanteUtils.maxFetchAmount else size
 
                 // Because the data of other books is already fetched, let's convert them into objects
                 val otherSuggestions = (1 until size).map { idx ->

@@ -51,11 +51,12 @@ class KeenTracker(context: Context) : Tracker {
         trackEvent("backupRestored", createTrackEventData(Pair("backupRestored", 1)))
     }
 
-    override fun trackOnBookScanned(b: Book) {
+    override fun trackOnBookScanned(b: Book, viaSearchInterface: Boolean) {
         val data = createTrackEventData(
                 Pair("author", b.author),
                 Pair("language", b.language),
-                Pair("pages", b.pageCount))
+                Pair("pages", b.pageCount),
+                Pair("viaSearch", viaSearchInterface))
         trackEvent("bookScanned", data)
     }
 

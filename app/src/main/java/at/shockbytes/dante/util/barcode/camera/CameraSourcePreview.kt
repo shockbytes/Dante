@@ -23,8 +23,9 @@ import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.ViewGroup
+import android.widget.Toast
+import at.shockbytes.dante.R
 import com.google.android.gms.vision.CameraSource
-import java.io.IOException
 
 class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewGroup(cxt, attrs) {
 
@@ -50,7 +51,7 @@ class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewG
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)
-    @Throws(IOException::class, SecurityException::class)
+    @Throws(Exception::class, SecurityException::class)
     fun start(cameraSource: CameraSource?) {
         if (cameraSource == null) {
             stop()
@@ -65,7 +66,7 @@ class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewG
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)
-    @Throws(IOException::class, SecurityException::class)
+    @Throws(Exception::class, SecurityException::class)
     fun start(cameraSource: CameraSource, overlay: GraphicOverlay<*>) {
         this.overlay = overlay
         start(cameraSource)
@@ -81,7 +82,7 @@ class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewG
     }
 
     @RequiresPermission(Manifest.permission.CAMERA)
-    @Throws(IOException::class, SecurityException::class)
+    @Throws(Exception::class, SecurityException::class)
     private fun startIfReady() {
         if (startRequested && isSurfaceAvailable) {
             cameraSource?.start(surfaceView.holder)
@@ -107,10 +108,11 @@ class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewG
             isSurfaceAvailable = true
             try {
                 startIfReady()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                checkForRuntimeException(e)
             } catch (se: SecurityException) {
                 se.printStackTrace()
-            } catch (e: IOException) {
-                e.printStackTrace()
             }
 
         }
@@ -159,11 +161,20 @@ class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewG
 
         try {
             startIfReady()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            checkForRuntimeException(e)
         } catch (se: SecurityException) {
             se.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
+        }
+    }
+
+    private fun checkForRuntimeException(e: Exception) {
+
+        if (e is RuntimeException) {
+            Toast.makeText(context, R.string.preview_failed, Toast.LENGTH_LONG).show()
         }
 
     }
+
 }

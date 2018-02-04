@@ -13,14 +13,13 @@ def rxJavaVersion = "2.1.6"
 def rxAndroidVersion = "2.0.1"
 def rxBindingsVersion = "2.0.0"
 def rxLifeCycleVersion = "2.2.1"
-def firebaseVersion="11.8.0"
+def firebaseVersion = "11.8.0"
 def playServicesVersion = "11.8.0"
 def retrofitVersion = "2.3.0"
 def icePickVersion = "3.2.0"
 def shockUtilVersion = "2.1.0"
 def keenVersion = "5.2.0"
 def crashlyticsVersion = "2.7.1"
-
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
@@ -81,7 +80,7 @@ kapt {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     implementation "com.android.support:appcompat-v7:$supportVersion"
     implementation "com.android.support:support-v4:$supportVersion"
@@ -117,6 +116,7 @@ dependencies {
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation 'com.mlsdev.rximagepicker:library:2.0.2'
+    implementation 'com.github.arimorty:floatingsearchview:2.1.1'
 
     implementation "io.keen:keen-client-api-android:$keenVersion@aar"
     implementation "io.keen:keen-client-api-query:$keenVersion"

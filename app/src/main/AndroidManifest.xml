@@ -37,6 +37,10 @@
             android:name=".ui.activity.BookRetrievalActivity"
             android:label="@string/label_capture"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:label="@string/search"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

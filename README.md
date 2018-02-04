@@ -30,10 +30,9 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Include Proguard
 
 ### Version 2.7 - SEARCHY STATS
-- [x] Change publish date for book
-- [x] Improve statistics screen
-- [ ] Overflow menu with additional info (description, isbn, maybe more)
-- [ ] Search feature
+* Change publish date for book
+* Improve statistics screen
+* Search feature
 
 ### Version 2.6 - DETAILED DESIGN
 * Rate books 

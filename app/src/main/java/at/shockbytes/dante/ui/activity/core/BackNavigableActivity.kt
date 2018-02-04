@@ -15,22 +15,29 @@ abstract class BackNavigableActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            backwardAnimation()
-            if (supportFragmentManager.backStackEntryCount > 0) {
-                supportFragmentManager.popBackStack()
-            } else {
-                supportFinishAfterTransition()
-            }
+            back()
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun onBackPressed() {
+        back()
+        //super.onBackPressed()
+    }
+
+    private fun back() {
         backwardAnimation()
-        super.onBackPressed()
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+            onBackStackPopped()
+        } else {
+            supportFinishAfterTransition()
+        }
     }
 
     open fun backwardAnimation() { }
+
+    open fun onBackStackPopped() { }
 
     fun setHomeAsUpIndicator(@DrawableRes indicator: Int) {
         supportActionBar?.setHomeAsUpIndicator(indicator)

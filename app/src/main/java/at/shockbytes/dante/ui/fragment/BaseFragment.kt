@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +71,11 @@ abstract class BaseFragment : RxFragment() {
     protected fun showToast(text: String, showLong: Boolean = true) {
         val duration = if (showLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         Toast.makeText(context, text, duration).show()
+    }
+
+    @JvmOverloads
+    protected fun showToast(text: Int, showLong: Boolean = true) {
+        showToast(getString(text), showLong)
     }
 
 }

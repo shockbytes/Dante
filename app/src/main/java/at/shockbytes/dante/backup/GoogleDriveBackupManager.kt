@@ -4,9 +4,9 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.support.v4.app.FragmentActivity
 import android.util.Log
+import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.books.BookManager
 import com.google.android.gms.drive.*
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
@@ -65,7 +65,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     override fun close(books: List<Book>?) {
 
         if (isAutoBackupEnabled && books != null) {
-            backup(books) // TODO Must subscribe to backup the books
+            backup(books) // TODO Remove as auto backup feature is now deprecated
         }
         activity = null
     }

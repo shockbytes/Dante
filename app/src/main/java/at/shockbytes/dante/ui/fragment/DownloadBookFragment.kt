@@ -80,7 +80,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        query = arguments.getString(ARG_BARCODE)
+        query = arguments.getString(argBarcode)
         isOtherSuggestionsShowing = false
     }
 
@@ -237,20 +237,27 @@ class DownloadBookFragment : BaseFragment(), Callback,
     }
 
     private fun showErrorLayout(cause: String) {
-        mainView.visibility = View.GONE
-        errorView.visibility = View.VISIBLE
-        errorView.animate().alpha(1f).start()
-        txtErrorCause.text = cause
+        if (isAdded) {
+            mainView.visibility = View.GONE
+            errorView.visibility = View.VISIBLE
+            errorView.animate().alpha(1f).start()
+            txtErrorCause.text = cause
+        } else {
+            showToast(cause, true)
+            // Log this message, because this should not happen
+            Crashlytics.logException(IllegalArgumentException("Cannot show error layout, because DownloadBookFragment is not attached to Activity"))
+        }
+
     }
 
     companion object {
 
-        private val ARG_BARCODE = "arg_barcode"
+        private const val argBarcode = "arg_barcode"
 
         fun newInstance(barcode: String?): DownloadBookFragment {
             val fragment = DownloadBookFragment()
             val args = Bundle()
-            args.putString(ARG_BARCODE, barcode)
+            args.putString(argBarcode, barcode)
             fragment.arguments = args
             return fragment
         }

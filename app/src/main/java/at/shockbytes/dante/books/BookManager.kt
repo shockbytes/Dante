@@ -2,6 +2,7 @@ package at.shockbytes.dante.books
 
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.util.books.Book
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -46,6 +47,8 @@ interface BookManager {
     fun restoreBackup(backupBooks: List<Book>, strategy: BackupManager.RestoreStrategy)
 
     fun getBooksByState(state: Book.State): Observable<List<Book>>
+
+    fun searchBooks(query: String): Flowable<List<Book>>
 
     fun close()
 

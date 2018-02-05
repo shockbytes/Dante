@@ -115,7 +115,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
-    implementation 'com.mlsdev.rximagepicker:library:2.0.2'
+    // implementation 'com.mlsdev.rximagepicker:library:2.0.2'
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
 
     implementation "io.keen:keen-client-api-android:$keenVersion@aar"

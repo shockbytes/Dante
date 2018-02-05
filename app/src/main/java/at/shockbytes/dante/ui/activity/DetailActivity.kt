@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.CardView
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -28,10 +27,8 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
 import butterknife.OnClick
-import com.mlsdev.rximagepicker.RxImagePicker
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import com.trello.rxlifecycle2.android.lifecycle.kotlin.bindToLifecycle
 import kotterknife.bindView
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
@@ -226,21 +223,23 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     }
 
     private fun setupBookCoverChange() {
-        popupBookCover = PopupMenu(this, imgViewThumb)
-        popupBookCover.menuInflater.inflate(R.menu.popup_item_book_cover, popupBookCover.menu)
-        popupBookCover.setOnMenuItemClickListener {
+    /* TODO Enable in V3.0
+    popupBookCover = PopupMenu(this, imgViewThumb)
+    popupBookCover.menuInflater.inflate(R.menu.popup_item_book_cover, popupBookCover.menu)
+    popupBookCover.setOnMenuItemClickListener {
 
-            val source = DanteUtils.getImagePickerSourceByItemId(it.itemId)
-            RxImagePicker.with(this).requestImage(source)
-                    .bindToLifecycle(this)
-                    .subscribe {
-                        manager.updateBookCover(book, it.toString())
-                        Log.wtf("Dante", it.toString())
-                        loadImage(it.toString())
-                    }
-            true
-        }
-        DanteUtils.tryShowIconsInPopupMenu(popupBookCover)
+        val source = DanteUtils.getImagePickerSourceByItemId(it.itemId)
+        RxImagePicker.with(this).requestImage(source)
+                .bindToLifecycle(this)
+                .subscribe {
+                    manager.updateBookCover(book, it.toString())
+                    Log.wtf("Dante", it.toString())
+                    loadImage(it.toString())
+                }
+        true
+    }
+    DanteUtils.tryShowIconsInPopupMenu(popupBookCover)
+    */
     }
 
     private fun setupNotes() {

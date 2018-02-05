@@ -16,7 +16,6 @@ import android.view.animation.OvershootInterpolator
 import android.view.inputmethod.InputMethodManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.books.Book
-import com.mlsdev.rximagepicker.Sources
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -100,6 +99,7 @@ object DanteUtils {
         }
     }
 
+    /* TODO Enable in V3.0
     fun getImagePickerSourceByItemId(menuItemId: Int): Sources {
         return if (menuItemId == R.id.popup_item_book_cover_camera) {
             Sources.CAMERA
@@ -107,5 +107,6 @@ object DanteUtils {
             Sources.GALLERY
         }
     }
+    */
 
 }

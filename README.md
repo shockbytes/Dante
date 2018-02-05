@@ -24,7 +24,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Add advertisement API (Add AdView in list)
 - [ ] Redesign login flow with Firebase login
 
-### Version 2.8 - PAGES AND BACKUP
+### Version 2.8 - PAGES, POSITION, PROGUARD
 - [ ] Show book page state as Overlay on cover in BookAdapter
 - [ ] Switch position of books in category with drag and drop?
 - [ ] Include Proguard

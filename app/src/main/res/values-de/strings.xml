@@ -123,6 +123,9 @@
     <string name="search_online">Online suchen</string>
     <string name="search_online_hint">Keine Treffer in deiner Bibliothek gefunden. Sollen wir online suchen?</string>
     <string name="search_invalid_query">Ungültige Sucheingabe</string>
+    <string name="no_internet_connection">Zurzeit keine Internetverbindung möglich</string>
+    <string name="popup_item_book_cover_camera">Kamera</string>
+    <string name="popup_item_book_cover_gallery">Gallery</string>
 
 
 </resources>

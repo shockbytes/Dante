@@ -20,9 +20,12 @@ import at.shockbytes.util.adapter.BaseAdapter
 import butterknife.OnClick
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
+import com.trello.rxlifecycle2.android.FragmentEvent
+import com.trello.rxlifecycle2.kotlin.bindUntilEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import kotterknife.bindView
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 
@@ -128,28 +131,30 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
             btnSearchOnline.isEnabled = false
 
             val source = if (keepLocal) localSearch(query) else onlineSearch(query)
-            source.subscribe({
+            source.bindUntilEvent(this, FragmentEvent.DESTROY)
+                    .subscribe({
 
-                val emptyViewVisibility: Int
-                if (it.isNotEmpty()) {
-                    rvAdapter.data = it.toMutableList()
-                    rvResults.scrollToPosition(0)
-                    emptyViewVisibility = View.GONE
-                } else {
-                    rvAdapter.clear()
-                    emptyViewVisibility = View.VISIBLE
-                }
-                emptyView.visibility = emptyViewVisibility
-                searchView.hideProgress()
-                btnSearchOnline.isEnabled = true
-            }, {
-                showToast(R.string.search_invalid_query)
+                        val emptyViewVisibility: Int
+                        if (it.isNotEmpty()) {
+                            rvAdapter.data = it.toMutableList()
+                            rvResults.scrollToPosition(0)
+                            emptyViewVisibility = View.GONE
+                        } else {
+                            rvAdapter.clear()
+                            emptyViewVisibility = View.VISIBLE
+                        }
+                        emptyView.visibility = emptyViewVisibility
+                        searchView.hideProgress()
+                        btnSearchOnline.isEnabled = true
+                    }, {
 
-                searchView.clearQuery()
-                emptyView.visibility = View.GONE
-                searchView.hideProgress()
-                btnSearchOnline.isEnabled = true
-            })
+                        showToast(message4SearchException(it))
+
+                        searchView.clearQuery()
+                        emptyView.visibility = View.GONE
+                        searchView.hideProgress()
+                        btnSearchOnline.isEnabled = true
+                    })
         }
     }
 
@@ -172,6 +177,13 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
                     list.toList()
                 }
                 .toFlowable(BackpressureStrategy.BUFFER)
+    }
+
+    private fun message4SearchException(t: Throwable): String {
+        return when (t) {
+            is UnknownHostException -> getString(R.string.no_internet_connection)
+            else -> getString(R.string.search_invalid_query)
+        }
     }
 
     companion object {

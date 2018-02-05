@@ -133,8 +133,9 @@
     <string name="search_online">Search online</string>
     <string name="search_online_hint">No books found in your library. Do you want to search online?</string>
     <string name="search_invalid_query">Invalid search query</string>
-    <string name="popup_item_book_cover_gallery">Load cover from Gallery</string>
-    <string name="popup_item_book_cover_camera">Change cover with Camera</string>
+    <string name="popup_item_book_cover_gallery">Gallery</string>
+    <string name="popup_item_book_cover_camera">Camera</string>
+    <string name="no_internet_connection">No internet connection at the moment</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

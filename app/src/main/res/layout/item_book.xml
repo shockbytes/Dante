@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_book_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -109,6 +110,41 @@
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
             app:layout_constraintTop_toBottomOf="@+id/item_book_txt_subtitle" />
+
+        <FrameLayout
+            android:id="@+id/item_book_container_page_overlay"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_book_img_thumb"
+            app:layout_constraintEnd_toEndOf="@+id/item_book_img_thumb"
+            app:layout_constraintStart_toStartOf="@+id/item_book_img_thumb"
+            app:layout_constraintTop_toTopOf="@+id/item_book_img_thumb">
+
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/item_book_pb_page_overlay"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:indeterminate="false"
+                android:progress="60"
+                app:mpb_progressStyle="horizontal"
+                app:mpb_progressTint="@color/overlay_progress"
+                app:mpb_showProgressBackground="true"
+                app:mpb_useIntrinsicPadding="false" />
+
+            <TextView
+                android:id="@+id/item_book_txt_page_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:rotation="-45"
+                android:text="100%"
+                android:textColor="@color/overlay_progress_text_color" />
+
+        </FrameLayout>
+
 
     </android.support.constraint.ConstraintLayout>
 

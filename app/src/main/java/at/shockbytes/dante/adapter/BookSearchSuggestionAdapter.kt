@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.BookSearchSuggestion
+import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.util.adapter.BaseAdapter
 import com.squareup.picasso.Picasso
 import kotterknife.bindView

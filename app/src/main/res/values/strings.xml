@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">2.7</string>
+    <string name="app_version" translatable="false">2.8</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
@@ -136,6 +136,10 @@
     <string name="popup_item_book_cover_gallery">Gallery</string>
     <string name="popup_item_book_cover_camera">Camera</string>
     <string name="no_internet_connection">No internet connection at the moment</string>
+    <string name="prefs_page_overlay_key" translatable="false">prefs_page_overlay_key</string>
+    <string name="percentage_formatter" translatable="false">%d%%</string>
+    <string name="prefs_page_overlay_title">Page Overlay</string>
+    <string name="prefs_page_overlay_summary">Show an overlay with the current page on each reading book</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

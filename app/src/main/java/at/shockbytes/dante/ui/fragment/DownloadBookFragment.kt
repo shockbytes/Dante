@@ -224,7 +224,8 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     private fun setupOtherSuggestionsRecyclerView(books: List<Book>) {
 
-        bookAdapter = BookAdapter(context, books, Book.State.READ, null, false)
+        bookAdapter = BookAdapter(context, books, Book.State.READ,
+                null, false)
         rvOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this
         rvOtherSuggestions.adapter = bookAdapter

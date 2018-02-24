@@ -5,11 +5,12 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.GoogleDriveBackupManager
-import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.books.BookSuggestion
 import at.shockbytes.dante.network.google.gson.BookBackupSerializer
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
+import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.util.DanteRealmMigration
+import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.tracking.KeenTracker
 import at.shockbytes.dante.util.tracking.Tracker
 import com.google.gson.ExclusionStrategy
@@ -36,6 +37,12 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideSharedPreferences(): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(app.applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDanteSettings(): DanteSettings {
+        return DanteSettings(app.applicationContext)
     }
 
     @Provides

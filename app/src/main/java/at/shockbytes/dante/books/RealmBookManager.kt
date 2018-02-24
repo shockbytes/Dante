@@ -2,7 +2,6 @@ package at.shockbytes.dante.books
 
 import android.content.Context
 import android.content.SharedPreferences
-import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.util.books.Book
@@ -28,14 +27,6 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
 
     private val bookClass = Book::class.java
     private val configClass = BookConfig::class.java
-
-    override var pageTrackingEnabled: Boolean
-        get() = prefs.getBoolean(context.getString(R.string.prefs_page_tracking_key), true)
-        set(value) {
-            prefs.edit()
-                    .putBoolean(context.getString(R.string.prefs_page_tracking_key), value)
-                    .apply()
-        }
 
     override val statistics: Single<BookStatistics>
         get() {
@@ -188,7 +179,7 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
             realm.where(bookClass)
                     .equalTo("ordinalState", state.ordinal)
                     .findAll()
-                    .sort("id", Sort.DESCENDING).toList()
+                    .sort("id", Sort.DESCENDING).toList() // TODO Sort by position
         }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
     }
 

@@ -128,6 +128,7 @@ dependencies {
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     // implementation 'com.mlsdev.rximagepicker:library:2.0.2'
     implementation 'com.github.arimorty:floatingsearchview:2.1.1'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
 
     implementation "io.keen:keen-client-api-android:$keenVersion@aar"
     implementation "io.keen:keen-client-api-query:$keenVersion"

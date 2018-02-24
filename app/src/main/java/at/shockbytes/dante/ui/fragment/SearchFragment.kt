@@ -13,7 +13,7 @@ import at.shockbytes.dante.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
-import at.shockbytes.dante.util.BookSearchSuggestion
+import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter

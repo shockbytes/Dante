@@ -126,6 +126,8 @@
     <string name="no_internet_connection">Zurzeit keine Internetverbindung möglich</string>
     <string name="popup_item_book_cover_camera">Kamera</string>
     <string name="popup_item_book_cover_gallery">Gallery</string>
+    <string name="prefs_page_overlay_title">Seiten-Overlay</string>
+    <string name="prefs_page_overlay_summary">Zeige ein Overlay mit der aktuellen Seitenzahl auf jeden Buch</string>
 
 
 </resources>

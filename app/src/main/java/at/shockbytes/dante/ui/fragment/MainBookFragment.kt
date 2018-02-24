@@ -17,6 +17,7 @@ import at.shockbytes.dante.books.BookListener
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
+import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
@@ -28,6 +29,9 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
     @Inject
     protected lateinit var bookManager: BookManager
 
+    @Inject
+    protected lateinit var settings: DanteSettings
+
     private val recyclerView: RecyclerView by bindView(R.id.fragment_book_main_rv)
     private val emptyView: TextView by bindView(R.id.fragment_book_main_empty_view)
 
@@ -37,6 +41,8 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
     private var isInitialized: Boolean = false
 
     private var popupItemSelectedListener: BookAdapter.OnBookPopupItemSelectedListener? = null
+
+    private var selectedItem: Book? = null
 
     private val layoutManager: RecyclerView.LayoutManager
         get() = if (resources.getBoolean(R.bool.isTablet)) {
@@ -68,6 +74,8 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
         super.onResume()
         loadBooks()
         isInitialized = true
+
+        bookAdapter?.onItemMayChanged(selectedItem)
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -88,13 +96,15 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
         emptyView.text = empty
 
         // Initialize RecyclerView
-        bookAdapter = BookAdapter(context, listOf(), bookState, popupItemSelectedListener, true)
+        bookAdapter = BookAdapter(context, listOf(), bookState,
+                popupItemSelectedListener, true, settings)
         recyclerView.layoutManager = layoutManager
         bookAdapter?.onItemClickListener = this
         recyclerView.adapter = bookAdapter
     }
 
     override fun onItemClick(t: Book, v: View) {
+        selectedItem = t
         startActivity(DetailActivity.newIntent(context, t.id), getTransitionBundle(v))
     }
 

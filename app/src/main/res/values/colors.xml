@@ -20,7 +20,7 @@
     <color name="empty">#767676</color>
     <color name="color_error">#F44336</color>
 
-    <color name="nice_color">#0d9</color>
+    <color name="nice_color">#00dd99</color>
     <color name="iconColor">#535353</color>
     <color name="white">#FFF</color>
     <color name="placeholder">#555</color>
@@ -29,5 +29,8 @@
     <color name="brown">#9F6459</color>
 
     <color name="lined_btn_color">#4CAF50</color>
+
+    <color name="overlay_progress">#882196F3</color>
+    <color name="overlay_progress_text_color">#EEE</color>
 
 </resources>

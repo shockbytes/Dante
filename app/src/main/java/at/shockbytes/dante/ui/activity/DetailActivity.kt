@@ -23,6 +23,7 @@ import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
+import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
@@ -40,6 +41,9 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
 
     @Inject
     protected lateinit var manager: BookManager
+
+    @Inject
+    protected lateinit var settings: DanteSettings
 
     @Inject
     protected lateinit var tracker: Tracker
@@ -195,7 +199,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     private fun setupPageComponents() {
         // Book must be in reading state and must have a legit page count and overall the feature
         // must be enabled in the settings
-        if (manager.pageTrackingEnabled && book.reading && book.hasPages) {
+        if (settings.pageTrackingEnabled && book.reading && book.hasPages) {
             sbPages.maxValue = book.pageCount
             sbPages.value = book.currentPage
             sbPages.setCallback(this)
@@ -279,7 +283,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     protected fun onClickPages(v: View) {
         v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
         // Only show current page in dialog if tracking is enabled and book is in reading state
-        val showCurrentPage = manager.pageTrackingEnabled and book.reading
+        val showCurrentPage = settings.pageTrackingEnabled and book.reading
         PageEditDialogFragment.newInstance(book.currentPage, book.pageCount, showCurrentPage)
                 .setOnPageEditedListener { current, pages ->
                     manager.updateBookPages(book, current, pages)

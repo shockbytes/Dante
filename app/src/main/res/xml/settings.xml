@@ -8,6 +8,13 @@
             android:title="@string/prefs_page_tracking_title"
             android:key="@string/prefs_page_tracking_key"/>
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:title="@string/prefs_page_overlay_title"
+            android:summary="@string/prefs_page_overlay_summary"
+            android:key="@string/prefs_page_overlay_key"
+            android:dependency="@string/prefs_page_tracking_key"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/prefs_category_about">

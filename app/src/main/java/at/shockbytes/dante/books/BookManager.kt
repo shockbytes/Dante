@@ -12,8 +12,6 @@ import io.reactivex.Single
  */
 interface BookManager {
 
-    var pageTrackingEnabled: Boolean
-
     val statistics: Single<BookStatistics>
 
     val allBooks: Observable<List<Book>>

@@ -26,8 +26,8 @@ can simply keep track of your progress of all your books and their current state
 
 ### Version 2.8 - PAGES, POSITION, PROGUARD
 - [x] Include Proguard
-- [ ] Show book page state as Overlay on cover in BookAdapter
-- [ ] Switch position of books in category with drag and drop?
+- [x] Show book page state as Overlay on cover in BookAdapter
+- [ ] Switch position of books in category with drag and drop
 
 ### Version 2.7 - SEARCHY STATS
 * Change publish date for book

@@ -82,7 +82,6 @@ androidExtensions {
     experimental = true
 }
 kapt {
-    generateStubs = true
     arguments {
         arg("realm.ignoreKotlinNullability", true)
     }

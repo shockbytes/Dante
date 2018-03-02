@@ -7,12 +7,11 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.transition.Fade
-import at.shockbytes.dante.R
+import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
-import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
@@ -39,6 +38,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
             window.exitTransition = Fade()
             window.enterTransition = Fade()
         }
+        supportActionBar?.title = ""
         supportActionBar?.setShowHideAnimationEnabled(true)
         supportActionBar?.hide()
     }
@@ -79,8 +79,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
         super.onBackStackPopped()
         supportActionBar?.hide()
         // Use default colors and default title
-        tintSystemBarsWithText(null, null, null,
-                getString(R.string.search), true)
+        tintSystemBarsWithText(null, null, null, "", true)
 
     }
 

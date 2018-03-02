@@ -1,7 +1,5 @@
 package at.shockbytes.dante.books
 
-import android.content.Context
-import android.content.SharedPreferences
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.util.books.Book
@@ -21,9 +19,7 @@ import io.realm.Sort
  * Date: 27.08.2016.
  */
 class RealmBookManager(private val bookDownloader: BookDownloader,
-                       private val realm: Realm,
-                       private val context: Context,
-                       private val prefs: SharedPreferences) : BookManager {
+                       private val realm: Realm) : BookManager {
 
     private val bookClass = Book::class.java
     private val configClass = BookConfig::class.java
@@ -148,6 +144,17 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         }
     }
 
+    override fun updateBookPositions(books: List<Book>?) {
+        realm.executeTransaction {
+            books?.let {
+                it.forEachIndexed { index, book ->
+                    book.position = index
+                    realm.copyToRealmOrUpdate(book)
+                }
+            }
+        }
+    }
+
     override fun removeBook(id: Long) {
         realm.executeTransaction {
             realm.where(bookClass)
@@ -179,7 +186,7 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
             realm.where(bookClass)
                     .equalTo("ordinalState", state.ordinal)
                     .findAll()
-                    .sort("id", Sort.DESCENDING).toList() // TODO Sort by position
+                    .sort("position", Sort.ASCENDING).toList()
         }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
     }
 

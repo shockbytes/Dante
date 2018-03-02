@@ -2,7 +2,6 @@ package at.shockbytes.dante.adapter
 
 import android.content.Context
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,11 @@ import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
+import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import com.squareup.picasso.Picasso
 import kotterknife.bindView
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -25,10 +26,12 @@ import kotlin.math.roundToInt
  * Date: 30.12.2017.
  */
 
-class BookAdapter(context: Context, extData: List<Book>, private val state: Book.State,
+class BookAdapter(context: Context, extData: List<Book>,
+                  private val state: Book.State,
                   private val popupListener: OnBookPopupItemSelectedListener? = null,
                   private val showOverflow: Boolean = true,
-                  private val settings: DanteSettings? = null) : BaseAdapter<Book>(context, extData.toMutableList()) {
+                  private val settings: DanteSettings? = null)
+    : BaseAdapter<Book>(context, extData.toMutableList()), ItemTouchHelperAdapter {
 
     interface OnBookPopupItemSelectedListener {
 
@@ -49,15 +52,39 @@ class BookAdapter(context: Context, extData: List<Book>, private val state: Book
         return ViewHolder(inflater.inflate(R.layout.item_book, parent, false))
     }
 
+    override fun onItemDismiss(position: Int) {
+
+        val removed = data.removeAt(position)
+        onItemMoveListener?.onItemDismissed(removed, position)
+    }
+
+    override fun onItemMove(from: Int, to: Int): Boolean {
+
+        // Switch the item within the collection
+        if (from < to) {
+            for (i in from until to) {
+                Collections.swap(data, i, i + 1)
+            }
+        } else {
+            for (i in from downTo to + 1) {
+                Collections.swap(data, i, i - 1)
+            }
+        }
+        notifyItemMoved(from, to)
+        onItemMoveListener?.onItemMove(data[from], from, to)
+
+        return true
+    }
+
+    override fun onItemMoveFinished() {
+        onItemMoveListener?.onItemMoveFinished()
+    }
+
     fun onItemMayChanged(book: Book?) {
-
-        Log.wtf("Dante", "Settings: ${settings?.pageOverlayEnabled} / Draw overlay: $drawOverlay")
-
 
         // In case the user disabled the page overlay in the settings
         // and the adapter is by now not aware of the fact
         if (settings?.pageOverlayEnabled != drawOverlay) {
-            Log.wtf("Dante", "Redraw items!")
             notifyDataSetChanged()
         }
         // In case the book page for one specific book has changed

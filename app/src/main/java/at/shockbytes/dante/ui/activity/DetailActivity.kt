@@ -10,7 +10,7 @@ import android.support.v7.widget.CardView
 import android.support.v7.widget.PopupMenu
 import android.view.HapticFeedbackConstants
 import android.view.View
-import android.view.animation.DecelerateInterpolator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -222,8 +222,7 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     }
 
     private fun startComponentAnimations() {
-        val duration = if (DanteUtils.isPortrait(this)) 150L else 300L
-        DanteUtils.listPopAnimation(animationList, duration, 500, DecelerateInterpolator(2f))
+        DanteUtils.listPopAnimation(animationList, 250, 550, AccelerateDecelerateInterpolator())
     }
 
     private fun setupBookCoverChange() {

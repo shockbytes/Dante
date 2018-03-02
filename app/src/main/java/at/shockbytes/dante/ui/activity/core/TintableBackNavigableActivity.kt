@@ -29,14 +29,14 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
     private var upIndicator: Int = R.drawable.ic_back_arrow
 
     @JvmOverloads
-    fun setTintableHomeAsUpIndicator(@DrawableRes indicator: Int = upIndicator,
-                                     tint: Boolean = false,
-                                     @ColorInt tintColor: Int = Color.WHITE) {
+    fun tintHomeAsUpIndicator(@DrawableRes indicator: Int = upIndicator,
+                              tint: Boolean = false,
+                              @ColorInt tintColor: Int = Color.WHITE) {
 
         upIndicator = indicator // Store for next time if just tinting is necessary
         if (tint) {
             val drawable = ContextCompat.getDrawable(applicationContext, indicator)
-            drawable.setColorFilter(tintColor, PorterDuff.Mode.SRC_ATOP)
+            drawable.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
             supportActionBar?.setHomeAsUpIndicator(drawable)
         } else {
             supportActionBar?.setHomeAsUpIndicator(indicator)
@@ -66,7 +66,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
                 window.statusBarColor = sbColor
             }
         }
-        setTintableHomeAsUpIndicator(tint = true, tintColor = abtColor)
+        tintHomeAsUpIndicator(tint = true, tintColor = abtColor)
     }
 
     private fun tintSystemBarsAnimated(@ColorInt newColor: Int, @ColorInt newColorDark: Int) {

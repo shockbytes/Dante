@@ -50,7 +50,6 @@ class NetworkModule {
                 .create(GoogleBooksApi::class.java)
     }
 
-
     @Provides
     @Singleton
     fun provideAmazonItemLookupApi(client: OkHttpClient): AmazonItemLookupApi {

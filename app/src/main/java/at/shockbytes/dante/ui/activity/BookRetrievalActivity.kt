@@ -44,7 +44,7 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
 
     override fun onQueryAvailable(query: String?) {
         showDownloadFragment(query)
-        setTintableHomeAsUpIndicator(R.drawable.ic_cancel)
+        tintHomeAsUpIndicator(R.drawable.ic_cancel)
     }
 
     override fun onScannerNotOperational() {

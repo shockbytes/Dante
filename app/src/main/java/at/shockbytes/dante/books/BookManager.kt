@@ -38,6 +38,8 @@ interface BookManager {
 
     fun updateBookRating(book: Book, rating: Int)
 
+    fun updateBookPositions(books: List<Book>?)
+
     fun removeBook(id: Long)
 
     fun downloadBook(isbn: String?): Observable<BookSuggestion>

@@ -31,7 +31,7 @@ class DanteApp : Application() {
 
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule())
-                .bookModule(BookModule(this))
+                .bookModule(BookModule())
                 .appModule(AppModule(this))
                 .build()
     }

@@ -8,6 +8,7 @@ import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -20,11 +21,13 @@ import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
+import at.shockbytes.util.adapter.BaseItemTouchHelper
 import kotterknife.bindView
 import javax.inject.Inject
 
 
-class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, BookListener {
+class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
+        BookListener, BaseAdapter.OnItemMoveListener<Book> {
 
     @Inject
     protected lateinit var bookManager: BookManager
@@ -100,12 +103,30 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>, 
                 popupItemSelectedListener, true, settings)
         recyclerView.layoutManager = layoutManager
         bookAdapter?.onItemClickListener = this
+        bookAdapter?.onItemMoveListener = this
         recyclerView.adapter = bookAdapter
+
+        // Setup RecyclerView's ItemTouchHelper
+        val itemTouchHelper = ItemTouchHelper(BaseItemTouchHelper(bookAdapter!!, // Safe to call, because it is created above
+                false, BaseItemTouchHelper.DragAccess.VERTICAL))
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     override fun onItemClick(t: Book, v: View) {
         selectedItem = t
         startActivity(DetailActivity.newIntent(context, t.id), getTransitionBundle(v))
+    }
+
+    override fun onItemDismissed(t: Book, position: Int) {
+        // Not supported
+    }
+
+    override fun onItemMove(t: Book, from: Int, to: Int) {
+        // Do nothing, only react to move actions in the on item move finished method
+    }
+
+    override fun onItemMoveFinished() {
+        bookManager.updateBookPositions(bookAdapter?.data)
     }
 
     override fun onBookAdded(book: Book) {

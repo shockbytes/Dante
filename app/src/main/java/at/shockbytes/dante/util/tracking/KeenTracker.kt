@@ -1,13 +1,11 @@
 package at.shockbytes.dante.util.tracking
 
 import android.content.Context
-import android.support.v4.util.Pair
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.util.books.Book
 import io.keen.client.android.AndroidKeenClientBuilder
 import io.keen.client.java.KeenClient
 import io.keen.client.java.KeenProject
-import java.util.*
 
 
 /**
@@ -93,10 +91,9 @@ class KeenTracker(context: Context) : Tracker {
     }
 
     private fun createTrackEventData(vararg entries: Pair<String, Any>): Map<String, Any> {
-
         val data = HashMap<String, Any>()
-        entries.forEach {
-            data[it.first] = it.second
+        entries.forEach { (key, value) ->
+            data[key] = value
         }
         return data
     }

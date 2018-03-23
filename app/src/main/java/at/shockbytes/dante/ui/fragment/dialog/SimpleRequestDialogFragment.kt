@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
+import at.shockbytes.dante.R
 
 /**
  * @author Martin Macheiner
@@ -23,14 +24,14 @@ class SimpleRequestDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = arguments.getString(argTitle)
-        message = arguments.getString(argMessage)
-        icon = arguments.getInt(argIcon)
-        positiveTextId = arguments.getInt(argPositiveText)
+        title = arguments?.getString(argTitle) ?: ""
+        message = arguments?.getString(argMessage) ?: ""
+        icon = arguments?.getInt(argIcon) ?: R.mipmap.ic_launcher
+        positiveTextId = arguments?.getInt(argPositiveText) ?: android.R.string.ok
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setTitle(title)
                 .setIcon(icon)
                 .setMessage(message)

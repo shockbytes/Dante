@@ -11,9 +11,9 @@ import android.widget.Button
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.books.BookManager
+import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
-import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
@@ -67,19 +67,19 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun setupViews() {
 
-        rvAdapter = BookSearchSuggestionAdapter(context, mutableListOf(), addClickedListener)
+        rvAdapter = BookSearchSuggestionAdapter(context!!, mutableListOf(), addClickedListener)
         rvAdapter.onItemClickListener = this
         rvResults.layoutManager = LinearLayoutManager(context)
         rvResults.adapter = rvAdapter
         val dividerItemDecoration = DividerItemDecoration(rvResults.context,
                 DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context, R.drawable.recycler_divider))
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.recycler_divider)!!)
         rvResults.addItemDecoration(dividerItemDecoration)
 
         emptyView.visibility = View.GONE
 
         searchView.setOnHomeActionClickListener {
-            activity.supportFinishAfterTransition()
+            activity?.supportFinishAfterTransition()
         }
         searchView.setOnQueryChangeListener { oldQuery, newQuery ->
             if (oldQuery != "" && newQuery == "") {
@@ -114,7 +114,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     override fun onItemClick(t: BookSearchSuggestion, v: View) {
         DanteUtils.hideKeyboard(activity)
         if (t.bookId > -1) {
-            startActivity(DetailActivity.newIntent(context, t.bookId))
+            startActivity(DetailActivity.newIntent(context!!, t.bookId))
         }
     }
 

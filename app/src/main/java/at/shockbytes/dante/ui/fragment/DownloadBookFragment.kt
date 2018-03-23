@@ -80,7 +80,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        query = arguments.getString(argBarcode)
+        query = arguments?.getString(argBarcode)
         isOtherSuggestionsShowing = false
     }
 
@@ -224,7 +224,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     private fun setupOtherSuggestionsRecyclerView(books: List<Book>) {
 
-        bookAdapter = BookAdapter(context, books, Book.State.READ,
+        bookAdapter = BookAdapter(context!!, books, Book.State.READ,
                 null, false)
         rvOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this

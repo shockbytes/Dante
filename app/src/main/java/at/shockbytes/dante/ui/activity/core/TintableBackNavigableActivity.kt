@@ -36,7 +36,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         upIndicator = indicator // Store for next time if just tinting is necessary
         if (tint) {
             val drawable = ContextCompat.getDrawable(applicationContext, indicator)
-            drawable.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
+            drawable?.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
             supportActionBar?.setHomeAsUpIndicator(drawable)
         } else {
             supportActionBar?.setHomeAsUpIndicator(indicator)

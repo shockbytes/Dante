@@ -14,7 +14,7 @@ abstract class BaseDialogFragment: DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectToGraph((activity.application as DanteApp).appComponent)
+        injectToGraph((activity?.application as DanteApp).appComponent)
     }
 
     abstract fun injectToGraph(appComponent: AppComponent)

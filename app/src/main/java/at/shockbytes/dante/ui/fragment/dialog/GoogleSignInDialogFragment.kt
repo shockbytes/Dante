@@ -41,7 +41,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setTitle(getString(R.string.dialog_login_title))
                 .setIcon(R.drawable.ic_google)
                 .setView(loginView)

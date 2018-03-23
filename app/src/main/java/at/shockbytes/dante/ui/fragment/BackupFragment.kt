@@ -83,7 +83,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
         updateLastBackupTime()
 
-        adapter = BackupEntryAdapter(context, ArrayList())
+        adapter = BackupEntryAdapter(context!!, ArrayList())
         rvBackups.layoutManager = LinearLayoutManager(context)
         adapter.onItemClickListener = this
         adapter.onItemMoveListener = this

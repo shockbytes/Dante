@@ -7,4 +7,7 @@
 
     <bool name="isTablet">false</bool>
 
+    <dimen name="product_logo_bottom">56dp</dimen>
+    <dimen name="product_brand_bottom">96dp</dimen>
+
 </resources>

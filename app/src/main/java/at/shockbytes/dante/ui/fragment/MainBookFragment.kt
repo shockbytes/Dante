@@ -70,7 +70,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bookState = arguments.getSerializable(argState) as Book.State
+        bookState = arguments?.getSerializable(argState) as Book.State
     }
 
     override fun onResume() {
@@ -95,11 +95,10 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
     override fun setupViews() {
 
         // Initialize text for empty indicator
-        val empty = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
-        emptyView.text = empty
+        emptyView.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         // Initialize RecyclerView
-        bookAdapter = BookAdapter(context, listOf(), bookState,
+        bookAdapter = BookAdapter(context!!, listOf(), bookState,
                 popupItemSelectedListener, true, settings)
         recyclerView.layoutManager = layoutManager
         bookAdapter?.onItemClickListener = this
@@ -114,7 +113,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
 
     override fun onItemClick(t: Book, v: View) {
         selectedItem = t
-        startActivity(DetailActivity.newIntent(context, t.id), getTransitionBundle(v))
+        startActivity(DetailActivity.newIntent(context!!, t.id), getTransitionBundle(v))
     }
 
     override fun onItemDismissed(t: Book, position: Int) {
@@ -133,7 +132,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
         if (book.state == bookState) {
             bookAdapter?.addEntityAtFirst(book)
             recyclerView.scrollToPosition(0)
-            emptyView.alpha = (if ((bookAdapter?.itemCount ?: 0) > 0) 0 else 1).toFloat()
+            animateEmptyView(false)
         }
     }
 
@@ -158,9 +157,9 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
         }))
     }
 
-    private fun getTransitionBundle(v: View): Bundle {
+    private fun getTransitionBundle(v: View): Bundle? {
         return ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity,
+                .makeSceneTransitionAnimation(activity!!,
                         Pair(v.findViewById(R.id.item_book_card),
                                 getString(R.string.transition_name_card)),
                         Pair(v.findViewById(R.id.item_book_img_thumb),
@@ -178,11 +177,11 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
 
         if (animate) {
             emptyView.animate()
-                    .alpha((if ((bookAdapter?.itemCount ?: 0) > 0) 0 else 1).toFloat())
+                    .alpha((if ((bookAdapter?.itemCount ?: 0) > 0) 0f else 1f))
                     .setDuration(450)
                     .start()
         } else {
-            emptyView.alpha = (if ((bookAdapter?.itemCount ?: 0) > 0) 0 else 1).toFloat()
+            emptyView.alpha = (if ((bookAdapter?.itemCount ?: 0) > 0) 0f else 1f)
         }
     }
 

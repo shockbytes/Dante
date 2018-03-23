@@ -26,7 +26,7 @@ class QueryDialogFragment : DialogFragment() {
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setTitle(R.string.dialogfragment_query_title)
                 .setIcon(R.mipmap.ic_launcher)
                 .setMessage(R.string.dialogfragment_query_message)

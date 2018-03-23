@@ -37,9 +37,9 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bookTitle = arguments.getString(ARG_TITLE)
-        bookImageLink = arguments.getString(ARG_IMAGE)
-        previousRating = arguments.getInt(ARG_PREV_RATING)
+        bookTitle = arguments?.getString(ARG_TITLE) ?: ""
+        bookImageLink = arguments?.getString(ARG_IMAGE)
+        previousRating = arguments?.getInt(ARG_PREV_RATING) ?: 0
     }
 
     override fun setupViews() {
@@ -53,7 +53,7 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
         RxRatingBar.ratingChanges(ratingBar).distinctUntilChanged()
                 .subscribe {
                     val rating = it.toInt() - 1 // -1 because rating starts with 1
-                    txtRatings.text = context.resources.getStringArray(R.array.ratings)[rating]
+                    txtRatings.text = context!!.resources.getStringArray(R.array.ratings)[rating]
                 }
         if (previousRating > 0) {
             ratingBar.rating = previousRating.toFloat()

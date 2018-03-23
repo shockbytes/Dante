@@ -175,7 +175,7 @@ class QueryCaptureFragment : BaseFragment(),
 
     private fun checkPermissions() {
 
-        val rc = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+        val rc = ContextCompat.checkSelfPermission(context!!, Manifest.permission.CAMERA)
         if (rc == PackageManager.PERMISSION_GRANTED) {
             createCameraSource()
         } else {
@@ -194,7 +194,7 @@ class QueryCaptureFragment : BaseFragment(),
     private fun requestCameraPermission() {
 
         val permissions = arrayOf(Manifest.permission.CAMERA)
-        if (!ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.CAMERA)) {
+        if (!ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.CAMERA)) {
             requestPermissions(permissions, rcHandleCameraPermission)
         } else {
             SimpleRequestDialogFragment.newInstance(getString(R.string.camera_permission_title),

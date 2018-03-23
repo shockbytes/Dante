@@ -36,9 +36,9 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        bookTitle = arguments.getString(ARG_TITLE)
-        bookNotes = arguments.getString(ARG_NOTES)
-        bookImageLink = arguments.getString(ARG_IMAGE)
+        bookTitle = arguments?.getString(ARG_TITLE) ?: ""
+        bookNotes = arguments?.getString(ARG_NOTES) ?: ""
+        bookImageLink = arguments?.getString(ARG_IMAGE)
     }
 
     override fun setupViews() {

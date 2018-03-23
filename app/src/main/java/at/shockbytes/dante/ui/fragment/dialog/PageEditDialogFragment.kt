@@ -34,13 +34,13 @@ class PageEditDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pages = arguments.getInt(ARG_PAGES)
-        currentPage = arguments.getInt(ARG_CURRENT_PAGE)
-        showCurrentPage = arguments.getBoolean(ARG_PAGE_TRACKING)
+        pages = arguments?.getInt(ARG_PAGES) ?: 0
+        currentPage = arguments?.getInt(ARG_CURRENT_PAGE) ?: 0
+        showCurrentPage = arguments?.getBoolean(ARG_PAGE_TRACKING) ?: true
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setView(pageView)
                 .setTitle(getString(R.string.dialogfragment_paging_title))
                 .setIcon(R.drawable.ic_pages_colored)

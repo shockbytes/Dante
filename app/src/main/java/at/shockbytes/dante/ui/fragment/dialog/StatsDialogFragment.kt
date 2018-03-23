@@ -39,7 +39,7 @@ class StatsDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setTitle(R.string.label_stats)
                 .setIcon(R.drawable.ic_stats)
                 .setView(statsView)

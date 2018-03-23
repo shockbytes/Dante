@@ -31,7 +31,7 @@ class RestoreStrategyDialogFragment : DialogFragment() {
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setTitle(R.string.backup_restore_strategy_title)
                 .setIcon(R.drawable.ic_google_drive)
                 .setView(strategyView)

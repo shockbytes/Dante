@@ -50,9 +50,9 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
         get() {
             return Observable.fromCallable {
                 realm.where(bookClass)
-                        .findAll()
+                        .findAllAsync()
                         .sort("id", Sort.DESCENDING).toList()
-            }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
+            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
 
     override val allBooksSync: List<Book>

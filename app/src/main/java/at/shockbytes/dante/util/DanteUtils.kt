@@ -32,8 +32,8 @@ object DanteUtils {
     const val maxFetchAmount = 10
 
 
-    fun hideKeyboard(activity: Activity) {
-        val view = activity.currentFocus
+    fun hideKeyboard(activity: Activity?) {
+        val view = activity?.currentFocus
         if (view != null) {
             val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
@@ -83,8 +83,8 @@ object DanteUtils {
         }
     }
 
-    fun isPortrait(context: Context): Boolean {
-        return context.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    fun isPortrait(context: Context?): Boolean {
+        return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
     }
 
     fun tryShowIconsInPopupMenu(menu: PopupMenu) {

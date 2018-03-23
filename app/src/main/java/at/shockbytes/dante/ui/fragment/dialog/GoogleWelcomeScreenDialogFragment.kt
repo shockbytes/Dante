@@ -35,12 +35,12 @@ class GoogleWelcomeScreenDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        name = arguments.getString(argName)
-        photoUrlString = arguments.getString(argPhotoUrl)
+        name = arguments?.getString(argName)
+        photoUrlString = arguments?.getString(argPhotoUrl)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setTitle(R.string.welcome)
                 .setIcon(R.drawable.ic_google)
                 .setView(welcomeView)

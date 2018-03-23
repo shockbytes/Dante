@@ -21,7 +21,7 @@ class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSea
                                   private val addClickedListener: (BookSearchSuggestion) -> Unit)
     : BaseAdapter<BookSearchSuggestion>(context, extData) {
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_book_search_suggestion, parent, false))
     }
 

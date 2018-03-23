@@ -27,7 +27,7 @@ abstract class InteractiveViewDialogFragment<T>: BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return AlertDialog.Builder(context!!)
                 .setView(containerView)
                 .create()
     }

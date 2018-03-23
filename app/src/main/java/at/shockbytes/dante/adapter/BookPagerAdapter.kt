@@ -6,9 +6,9 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.view.ViewGroup
 import at.shockbytes.dante.R
+import at.shockbytes.dante.books.BookListener
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.util.books.Book
-import at.shockbytes.dante.books.BookListener
 
 
 
@@ -26,7 +26,7 @@ class BookPagerAdapter(private val context: Context,
         return MainBookFragment.newInstance(Book.State.values()[position])
     }
 
-    override fun setPrimaryItem(container: ViewGroup?, position: Int, obj: Any) {
+    override fun setPrimaryItem(container: ViewGroup, position: Int, obj: Any) {
         super.setPrimaryItem(container, position, obj)
         if (listener !== obj) {
             val frag = obj as MainBookFragment

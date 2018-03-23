@@ -48,7 +48,7 @@ class BookAdapter(context: Context, extData: List<Book>,
 
     private var drawOverlay: Boolean = settings?.pageOverlayEnabled == true
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BaseAdapter<Book>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Book>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_book, parent, false))
     }
 

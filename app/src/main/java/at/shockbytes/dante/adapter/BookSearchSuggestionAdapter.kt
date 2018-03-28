@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookSearchSuggestion
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import com.squareup.picasso.Picasso
 import kotterknife.bindView
@@ -45,7 +46,7 @@ class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSea
 
             if (!t.thumbnailAddress.isNullOrEmpty()) {
                 Picasso.with(context).load(t.thumbnailAddress)
-                        .placeholder(R.drawable.ic_placeholder)
+                        .placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder))
                         .into(imgViewCover)
             }
         }

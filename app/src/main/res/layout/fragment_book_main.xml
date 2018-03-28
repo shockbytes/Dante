@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/mainBackground"
     tools:context=".ui.fragment.MainBookFragment">
 
@@ -18,7 +19,7 @@
         android:alpha="0"
         android:padding="8dp"
         android:drawablePadding="16dp"
-        android:drawableTop="@drawable/ic_empty_indicator"
+        android:drawableTop="@drawable/compat_ic_empty_indicator"
         android:gravity="center"
         android:textColor="@color/colorSecondaryText"
         android:textSize="25sp"

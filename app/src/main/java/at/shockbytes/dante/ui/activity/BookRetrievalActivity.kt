@@ -61,8 +61,13 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
         finishBookDownload(-1, false)
     }
 
-    override fun onErrorDownload(reason: String) {
+    override fun onErrorDownload(reason: String, isAttached: Boolean) {
         tracker.trackOnDownloadError(reason)
+
+        if (!isAttached) {
+            showToast(R.string.download_attachment_error)
+            supportFinishAfterTransition()
+        }
     }
 
     override fun onCloseOnError() {

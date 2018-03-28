@@ -8,6 +8,7 @@ import android.graphics.*
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v7.view.menu.MenuPopupHelper
+import android.support.v7.widget.AppCompatDrawableManager
 import android.support.v7.widget.PopupMenu
 import android.util.Log
 import android.view.View
@@ -86,6 +87,8 @@ object DanteUtils {
     fun isPortrait(context: Context?): Boolean {
         return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
     }
+
+    fun vector2Drawable(c: Context, res: Int) = AppCompatDrawableManager.get().getDrawable(c, res)
 
     fun tryShowIconsInPopupMenu(menu: PopupMenu) {
 

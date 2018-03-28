@@ -14,6 +14,7 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import com.crashlytics.android.Crashlytics
 import com.squareup.picasso.Picasso
 import kotterknife.bindView
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -89,11 +90,16 @@ class BookAdapter(context: Context, extData: List<Book>,
         }
         // In case the book page for one specific book has changed
         else if (settings.pageOverlayEnabled) {
-            if (book != null) {
-                val location = getLocation(book)
-                if (location > -1) {
-                    notifyItemChanged(location)
+            try {
+                if (book != null && book.isValid) {
+                    val location = getLocation(book)
+                    if (location > -1) {
+                        notifyItemChanged(location)
+                    }
                 }
+            } catch(e: java.lang.IllegalStateException) {
+                e.printStackTrace()
+                Crashlytics.logException(e)
             }
         }
 
@@ -176,7 +182,8 @@ class BookAdapter(context: Context, extData: List<Book>,
 
             if (!t.thumbnailAddress.isNullOrEmpty()) {
                 Picasso.with(context).load(t.thumbnailAddress)
-                        .placeholder(R.drawable.ic_placeholder).into(imgViewThumb)
+                        .placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder))
+                        .into(imgViewThumb)
             } else {
                 // Books with no image will recycle another cover if not cleared here
                 imgViewThumb.setImageResource(R.drawable.ic_placeholder)

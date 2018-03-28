@@ -27,7 +27,7 @@
             android:layout_marginRight="2dp"
             android:layout_weight="0.5"
             android:drawablePadding="4dp"
-            android:drawableTop="@drawable/ic_restore_merge"
+            android:drawableTop="@drawable/compat_ic_restore_merge"
             android:text="@string/backup_strategy_merge"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/nice_color" />
@@ -40,7 +40,7 @@
             android:layout_marginStart="2dp"
             android:layout_weight="0.5"
             android:drawablePadding="4dp"
-            android:drawableTop="@drawable/ic_restore_overwrite"
+            android:drawableTop="@drawable/compat_ic_restore_overwrite"
             android:text="@string/backup_strategy_overwrite"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/iconColor" />

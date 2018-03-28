@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.transition.Fade
+import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
@@ -62,10 +63,15 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
         finishBookDownload(-1, false)
     }
 
-    override fun onErrorDownload(reason: String) {
+    override fun onErrorDownload(reason: String, isAttached: Boolean) {
         tracker.trackOnDownloadError(reason)
-    }
 
+        if (!isAttached) {
+            showToast(R.string.download_attachment_error)
+            supportFinishAfterTransition()
+        }
+    }
+    
     override fun onCloseOnError() {
         finishBookDownload(-1, false)
     }

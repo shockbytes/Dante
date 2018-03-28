@@ -140,6 +140,7 @@
     <string name="percentage_formatter" translatable="false">%d%%</string>
     <string name="prefs_page_overlay_title">Page Overlay</string>
     <string name="prefs_page_overlay_summary">Show an overlay with the current page on each reading book</string>
+    <string name="download_attachment_error">Oh, something terribly went wrong!</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

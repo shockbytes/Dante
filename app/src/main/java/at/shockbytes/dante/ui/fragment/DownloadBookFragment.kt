@@ -3,8 +3,10 @@ package at.shockbytes.dante.ui.fragment
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
+import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -25,6 +27,9 @@ import butterknife.OnClick
 import com.crashlytics.android.Crashlytics
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import kotterknife.bindViews
 import javax.inject.Inject
@@ -39,7 +44,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
         fun onCancelDownload()
 
-        fun onErrorDownload(reason: String)
+        fun onErrorDownload(reason: String, isAttached: Boolean)
 
         fun onCloseOnError()
 
@@ -48,7 +53,13 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     }
 
-    private val animViews: List<View> by bindViews(R.id.fragment_download_book_btn_upcoming,
+    private val drawableResList = listOf(
+            R.drawable.ic_pick_upcoming,
+            R.drawable.ic_pick_current,
+            R.drawable.ic_pick_done)
+
+    private val animViews: List<AppCompatButton> by bindViews(
+            R.id.fragment_download_book_btn_upcoming,
             R.id.fragment_download_book_btn_current,
             R.id.fragment_download_book_btn_done,
             R.id.fragment_download_book_btn_not_my_book)
@@ -88,7 +99,17 @@ class DownloadBookFragment : BaseFragment(), Callback,
         appComponent.inject(this)
     }
 
-    override fun setupViews() { }
+    override fun setupViews() {
+        Single.fromCallable {
+            drawableResList.mapTo(mutableListOf<Drawable>()) {
+                DanteUtils.vector2Drawable(context!!, it)
+            }.toList()
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { list ->
+            list.forEachIndexed { index, drawable ->
+                animViews[index].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -193,13 +214,13 @@ class DownloadBookFragment : BaseFragment(), Callback,
                 setTitleAndIcon(selectedBook)
                 setupOtherSuggestionsRecyclerView(suggestion.otherSuggestions)
             } else {
-                listener?.onErrorDownload("no suggestions")
+                listener?.onErrorDownload("no suggestions", isAdded)
                 showErrorLayout(getString(R.string.download_book_json_error))
             }
         }) { throwable ->
             throwable.printStackTrace()
             showErrorLayout(throwable)
-            listener?.onErrorDownload(throwable.localizedMessage)
+            listener?.onErrorDownload(throwable.localizedMessage, isAdded)
         }
     }
 
@@ -216,7 +237,8 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
         if (!mainBook?.thumbnailAddress.isNullOrEmpty()) {
             Picasso.with(context).load(mainBook?.thumbnailAddress)
-                    .placeholder(R.drawable.ic_placeholder).into(imgViewCover, this)
+                    .placeholder(DanteUtils.vector2Drawable(context!!, R.drawable.ic_placeholder))
+                    .into(imgViewCover, this)
         } else {
             imgViewCover.setImageResource(R.drawable.ic_placeholder)
         }
@@ -232,9 +254,11 @@ class DownloadBookFragment : BaseFragment(), Callback,
     }
 
     private fun showErrorLayout(error: Throwable) {
-        val cause = getString(R.string.download_code_error)
-        showErrorLayout(cause)
         Crashlytics.logException(error)
+        if (isAdded) {
+            val cause = getString(R.string.download_code_error)
+            showErrorLayout(cause)
+        }
     }
 
     private fun showErrorLayout(cause: String) {

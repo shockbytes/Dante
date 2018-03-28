@@ -4,8 +4,10 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
+import android.support.v7.widget.AppCompatDrawableManager
 import android.support.v7.widget.CardView
 import android.support.v7.widget.PopupMenu
 import android.view.HapticFeedbackConstants
@@ -30,6 +32,9 @@ import at.shockbytes.dante.util.tracking.Tracker
 import butterknife.OnClick
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotterknife.bindView
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
@@ -65,9 +70,24 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     private val txtEndDate: TextView by bindView(R.id.activity_detail_txt_end_date)
 
     private lateinit var popupBookCover: PopupMenu
+
     private val animationList: List<View> by lazy {
         listOf(btnPublished, btnRating, sbPages, btnPages, btnNotes)
     }
+
+    private val vectorViewList: List<TextView> by lazy {
+        listOf(btnPublished, btnRating, btnPages, btnNotes,
+                txtWishlistDate, txtStartDate, txtEndDate)
+    }
+
+    private val drawableResList = listOf(
+            R.drawable.ic_published_date,
+            R.drawable.ic_rating,
+            R.drawable.ic_pages,
+            R.drawable.ic_notes,
+            R.drawable.ic_popup_upcoming,
+            R.drawable.ic_popup_current,
+            R.drawable.ic_popup_done)
 
     private lateinit var book: Book
 
@@ -121,7 +141,28 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
         setupNotes()
         setupPageComponents()
         setupBookCoverChange()
-        startComponentAnimations()
+        loadIcons()
+    }
+
+    private fun loadIcons() {
+        Observable.fromCallable {
+            drawableResList.mapTo(mutableListOf<Drawable>()) {
+                AppCompatDrawableManager.get().getDrawable(this, it)
+            }.toList()
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe ({ list ->
+            list.forEachIndexed { index, drawable ->
+                if (index < 4) {
+                    vectorViewList[index].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+                } else {
+                    vectorViewList[index].setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+                }
+            }
+        }, { throwable ->
+            throwable.printStackTrace()
+        }, {
+            // In the end start the component animations
+            startComponentAnimations()
+        })
     }
 
     private fun initializeTimeCard() {
@@ -226,23 +267,23 @@ class DetailActivity : TintableBackNavigableActivity(), Callback,
     }
 
     private fun setupBookCoverChange() {
-    /* TODO Enable in V3.0
-    popupBookCover = PopupMenu(this, imgViewThumb)
-    popupBookCover.menuInflater.inflate(R.menu.popup_item_book_cover, popupBookCover.menu)
-    popupBookCover.setOnMenuItemClickListener {
+        /* TODO Enable in V3.0
+        popupBookCover = PopupMenu(this, imgViewThumb)
+        popupBookCover.menuInflater.inflate(R.menu.popup_item_book_cover, popupBookCover.menu)
+        popupBookCover.setOnMenuItemClickListener {
 
-        val source = DanteUtils.getImagePickerSourceByItemId(it.itemId)
-        RxImagePicker.with(this).requestImage(source)
-                .bindToLifecycle(this)
-                .subscribe {
-                    manager.updateBookCover(book, it.toString())
-                    Log.wtf("Dante", it.toString())
-                    loadImage(it.toString())
-                }
-        true
-    }
-    DanteUtils.tryShowIconsInPopupMenu(popupBookCover)
-    */
+            val source = DanteUtils.getImagePickerSourceByItemId(it.itemId)
+            RxImagePicker.with(this).requestImage(source)
+                    .bindToLifecycle(this)
+                    .subscribe {
+                        manager.updateBookCover(book, it.toString())
+                        Log.wtf("Dante", it.toString())
+                        loadImage(it.toString())
+                    }
+            true
+        }
+        DanteUtils.tryShowIconsInPopupMenu(popupBookCover)
+        */
     }
 
     private fun setupNotes() {

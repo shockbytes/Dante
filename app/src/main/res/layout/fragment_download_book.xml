@@ -77,7 +77,6 @@
                 android:scaleY="0.5"
                 android:alpha="0"
                 android:drawablePadding="8dp"
-                android:drawableTop="@drawable/ic_pick_upcoming"
                 android:maxLines="1"
                 android:text="@string/tab_upcoming"
                 android:textColor="@color/tabcolor_upcoming" />
@@ -92,7 +91,6 @@
                 android:scaleX="0.5"
                 android:scaleY="0.5"
                 android:alpha="0"
-                android:drawableTop="@drawable/ic_pick_current"
                 android:maxLines="1"
                 android:text="@string/tab_current"
                 android:textColor="@color/tabcolor_current" />
@@ -107,7 +105,6 @@
                 android:scaleX="0.5"
                 android:scaleY="0.5"
                 android:alpha="0"
-                android:drawableTop="@drawable/ic_pick_done"
                 android:maxLines="1"
                 android:text="@string/tab_done"
                 android:textColor="@color/tabcolor_done" />

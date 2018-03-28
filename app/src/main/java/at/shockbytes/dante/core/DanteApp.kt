@@ -1,6 +1,7 @@
 package at.shockbytes.dante.core
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
+import android.support.v7.app.AppCompatDelegate
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.dagger.*
 import com.crashlytics.android.Crashlytics
@@ -13,7 +14,13 @@ import net.danlew.android.joda.JodaTimeAndroid
  * Date: 13.02.2017.
  */
 
-class DanteApp : Application() {
+class DanteApp : MultiDexApplication() {
+
+    companion object {
+        init {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+        }
+    }
 
     lateinit var appComponent: AppComponent
         private set

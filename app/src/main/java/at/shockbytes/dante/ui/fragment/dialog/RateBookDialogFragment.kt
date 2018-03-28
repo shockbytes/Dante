@@ -9,6 +9,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
+import com.crashlytics.android.Crashlytics
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxRatingBar
 import com.squareup.picasso.Picasso
@@ -51,10 +52,15 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
         }
 
         RxRatingBar.ratingChanges(ratingBar).distinctUntilChanged()
-                .subscribe {
+                .subscribe ({
                     val rating = it.toInt() - 1 // -1 because rating starts with 1
-                    txtRatings.text = context!!.resources.getStringArray(R.array.ratings)[rating]
-                }
+                    if (rating in 1..5) { // Error can somehow occur, therefore check!
+                        txtRatings.text = context!!.resources.getStringArray(R.array.ratings)[rating]
+                    }
+                }, {throwable ->
+                    throwable.printStackTrace()
+                    Crashlytics.logException(throwable)
+                })
         if (previousRating > 0) {
             ratingBar.rating = previousRating.toFloat()
         }

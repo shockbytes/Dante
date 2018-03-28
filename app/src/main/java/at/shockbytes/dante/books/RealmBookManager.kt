@@ -49,14 +49,14 @@ class RealmBookManager(private val bookDownloader: BookDownloader,
     override val allBooks: Observable<List<Book>>
         get() {
             return Observable.fromCallable {
-                realm.where(bookClass)
-                        .findAllAsync()
-                        .sort("id", Sort.DESCENDING).toList()
-            }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                val managedModel = realm.where(bookClass)
+                        .findAll().sort("id", Sort.DESCENDING).toList()
+                realm.copyFromRealm(managedModel)
+            }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         }
 
     override val allBooksSync: List<Book>
-        get() = realm.where(bookClass).findAll().sort("id", Sort.DESCENDING)
+        get() = realm.where(bookClass).findAll().sort("id", Sort.DESCENDING).toList()
 
     /**
      * This must always be called inside a transaction

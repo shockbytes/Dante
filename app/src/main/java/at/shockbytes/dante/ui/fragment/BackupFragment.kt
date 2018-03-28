@@ -67,8 +67,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     @OnClick(R.id.activity_backup_btn_backup)
     protected fun onClickBackup() {
-
-        backupManager.backup(bookManager.allBooksSync).subscribe({
+        backupManager.backup(bookManager.allBooks).subscribe({
             showSnackbar(getString(R.string.backup_created))
             updateLastBackupTime()
             loadBackupList()
@@ -84,7 +83,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         updateLastBackupTime()
 
         adapter = BackupEntryAdapter(context!!, ArrayList())
-        rvBackups.layoutManager = LinearLayoutManager(context)
+        rvBackups.layoutManager = LinearLayoutManager(context!!)
         adapter.onItemClickListener = this
         adapter.onItemMoveListener = this
         val callback = BaseItemTouchHelper(adapter, true,
@@ -98,7 +97,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     }
 
     override fun onItemClick(t: BackupEntry, v: View) {
-
         RestoreStrategyDialogFragment.newInstance()
                 .setOnRestoreStrategySelectedListener { strategy ->
                     backupManager.restoreBackup(t, bookManager, strategy)
@@ -120,7 +118,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     override fun onItemMoveFinished() {}
 
     override fun onItemDismissed(t: BackupEntry, position: Int) {
-
         backupManager.removeBackupEntry(t)
                 .subscribe({
                     adapter.deleteEntity(position)
@@ -134,6 +131,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     private fun loadBackupList() {
         backupManager.backupList.subscribe({ backupEntries ->
             adapter.data = backupEntries.toMutableList()
+            rvBackups.scrollToPosition(0)
         }) { throwable ->
             throwable.printStackTrace()
             Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()

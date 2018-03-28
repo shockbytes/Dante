@@ -76,18 +76,19 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun backup(books: List<Book>): Completable {
-
-        if (books.isEmpty()) {
-            return Completable.error(BackupException("No books to backup"))
-        }
-
-        // Must be outside the observable, because otherwise this will cause a RealmException
-        val content = gson.toJson(books)
-        val filename = createFilename(books.size)
-
+    override fun backup(booksObservable: Observable<List<Book>>): Completable {
         return Completable.fromAction {
-            createFile(filename, content)
+
+            val books = booksObservable.blockingFirst()
+            if (books.isNotEmpty()) {
+                // Must be outside the observable, because otherwise this will cause a RealmException
+                val content = gson.toJson(books)
+                val filename = createFilename(books.size)
+
+                createFile(filename, content)
+            } else {
+                Completable.error(BackupException("No books to backup"))
+            }
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 

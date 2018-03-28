@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">2.8.1</string>
+    <string name="app_version" translatable="false">2.8.2</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>

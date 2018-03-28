@@ -81,10 +81,8 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
 
             val books = booksObservable.blockingFirst()
             if (books.isNotEmpty()) {
-                // Must be outside the observable, because otherwise this will cause a RealmException
                 val content = gson.toJson(books)
                 val filename = createFilename(books.size)
-
                 createFile(filename, content)
             } else {
                 Completable.error(BackupException("No books to backup"))

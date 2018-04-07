@@ -14,15 +14,17 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Add book manually (FAB menu)
 - [ ] Include Amazon books API?
 - [ ] Tablet optimization
-
-### Version 3.1
 - [ ] Use Firebase Data for book recommendations
-
-### Version 3.0 - CAMPING WITH FIREBASE
 - [ ] Firebase as Backend!
 - [ ] Change book cover and store data in Firebase Cloud Storage
 - [ ] Add advertisement API (Add AdView in list)
 - [ ] Redesign login flow with Firebase login
+
+### Version 2.8.3
+- [ ] Change dates after insertion
+- [ ] Add current books to statistics (read pages to read, other pages to waiting)
+- [ ] Change Analytics backend (Keen -> Google/Firebase)
+- [ ] General code improvements
 
 ### Version 2.8 - PAGES, POSITION, PROGUARD
 * Include Proguard

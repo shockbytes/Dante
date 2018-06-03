@@ -78,7 +78,7 @@
                     android:drawableStart="@drawable/compat_ic_search"
                     android:padding="16dp"
                     android:text="@string/search_online"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/actionBarItemColor"
                     app:backgroundTint="@color/colorPrimary" />
             </LinearLayout>
         </RelativeLayout>

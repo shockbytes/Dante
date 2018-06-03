@@ -114,7 +114,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     override fun onItemClick(t: BookSearchSuggestion, v: View) {
         DanteUtils.hideKeyboard(activity)
         if (t.bookId > -1) {
-            startActivity(DetailActivity.newIntent(context!!, t.bookId))
+            startActivity(DetailActivity.newIntent(context!!, t.bookId, t.title))
         }
     }
 

@@ -88,7 +88,7 @@
     <string name="signin_no_account">You don\'t have a valid account</string>
     <string name="menu_main_google_login" translatable="false">Google Login</string>
     <string name="login" translatable="false">Login</string>
-    <string name="Logout" translatable="false">Logout</string>
+    <string name="logout" translatable="false">Logout</string>
     <string name="signin_welcome">Welcome back %s</string>
     <string name="error_load_books">Cannot load books</string>
     <string name="backup_info">Choose <b>merge</b> if you want to preserve the books on your device and complement the collection with the missing books in the backup. Or choose <b>overwrite</b> to completely delete all books on your device and replace them by the books in the backup file.</string>
@@ -141,6 +141,8 @@
     <string name="prefs_page_overlay_title">Page Overlay</string>
     <string name="prefs_page_overlay_summary">Show an overlay with the current page on each reading book</string>
     <string name="download_attachment_error">Oh, something terribly went wrong!</string>
+    <string name="tab_suggestions">Suggestions</string>
+    <string name="menu_main_sort">Sort books</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

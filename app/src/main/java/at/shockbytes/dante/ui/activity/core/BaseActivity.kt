@@ -8,7 +8,7 @@ import android.transition.Slide
 import android.view.Gravity
 import android.view.Window
 import android.widget.Toast
-import at.shockbytes.dante.core.DanteApp
+import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder

@@ -41,4 +41,8 @@ interface AppComponent {
 
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 
+    fun inject(suggestionsFragment: SuggestionsFragment)
+
+    fun inject(fragment: BookDetailFragment)
+
 }

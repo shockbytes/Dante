@@ -121,7 +121,7 @@
     <string name="preview_failed">Kamera kann nicht geöffnet werden. Ein Neustart könnte helfen!</string>
     <string name="add">Hinzufügen</string>
     <string name="search_online">Online suchen</string>
-    <string name="search_online_hint">Keine Treffer in deiner Bibliothek gefunden. Sollen wir online suchen?</string>
+    <string name="search_online_hint">Kein Treffer in deiner Bibliothek. Sollen wir online suchen?</string>
     <string name="search_invalid_query">Ungültige Sucheingabe</string>
     <string name="no_internet_connection">Zurzeit keine Internetverbindung möglich</string>
     <string name="popup_item_book_cover_camera">Kamera</string>
@@ -129,6 +129,8 @@
     <string name="prefs_page_overlay_title">Seiten-Overlay</string>
     <string name="prefs_page_overlay_summary">Zeige ein Overlay mit der aktuellen Seitenzahl auf jeden Buch</string>
     <string name="download_attachment_error">Oh, da ist was mächtig schiefgelaufen!</string>
+    <string name="tab_suggestions">Vorschläge</string>
+    <string name="menu_main_sort">Bücher sortieren</string>
 
 
 </resources>

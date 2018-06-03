@@ -47,7 +47,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     override fun connect(activity: FragmentActivity) {
         this.activity = activity
 
-        val account = signInManager.getAccount(activity)
+        val account = signInManager.getGoogleAccount(activity)
         if (account != null) {
             client = Drive.getDriveResourceClient(activity, account)
         }

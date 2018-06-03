@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".core.DanteApp"
+        android:name=".DanteApp"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"

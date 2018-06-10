@@ -1,17 +1,17 @@
-package at.shockbytes.dante.core
+package at.shockbytes.dante
 
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
-import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.dagger.*
 import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.answers.Answers
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
 
 /**
- * @author Martin Macheiner
- * Date: 13.02.2017.
+ * @author  Martin Macheiner
+ * Date:    13.02.2017.
  */
 
 class DanteApp : MultiDexApplication() {
@@ -31,10 +31,13 @@ class DanteApp : MultiDexApplication() {
         Realm.init(this)
         JodaTimeAndroid.init(this)
 
-        Fabric.with(Fabric.Builder(this)
-                .kits(Crashlytics())
-                .debuggable(BuildConfig.DEBUG)
-                .build())
+        // Only use Crashlytics if not debug build
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(Fabric.Builder(this)
+                    .kits(Crashlytics(), Answers())
+                    .debuggable(BuildConfig.DEBUG)
+                    .build())
+        }
 
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule())

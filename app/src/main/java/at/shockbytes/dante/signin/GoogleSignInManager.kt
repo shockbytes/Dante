@@ -2,9 +2,8 @@ package at.shockbytes.dante.signin
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.net.Uri
 import android.support.v4.app.FragmentActivity
+import at.shockbytes.dante.util.toDanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -12,22 +11,21 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Tasks
-import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
- * @author Martin Macheiner
- * Date: 30.12.2017.
+ * @author  Martin Macheiner
+ * Date:    30.12.2017.
  *
  * Use This class to signin with Firebase
  * https://firebase.google.com/docs/auth/android/google-signin
  *
  */
 
-class GoogleSignInManager(private val prefs: SharedPreferences) {
+class GoogleSignInManager(private val prefs: SharedPreferences): SignInManager {
 
     private var client: GoogleSignInClient? = null
 
@@ -42,7 +40,7 @@ class GoogleSignInManager(private val prefs: SharedPreferences) {
     val signInIntent: Intent?
         get() = client?.signInIntent
 
-    fun setup(activity: FragmentActivity) {
+    override fun setup(activity: FragmentActivity) {
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestScopes(Scope(Scopes.DRIVE_APPFOLDER), Scope(Scopes.DRIVE_FILE))
@@ -50,32 +48,30 @@ class GoogleSignInManager(private val prefs: SharedPreferences) {
         client = GoogleSignIn.getClient(activity, signInOptions)
     }
 
-    fun signIn(data: Intent): Single<GoogleSignInAccount?> {
+    override fun signIn(data: Intent): Single<DanteUser?> {
         return Single.fromCallable {
-            Tasks.await(GoogleSignIn.getSignedInAccountFromIntent(data))
+            Tasks.await(GoogleSignIn.getSignedInAccountFromIntent(data))?.toDanteUser()
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 
-    fun signOut(): Completable {
+    override fun signOut(): Completable {
         return Completable.fromAction {
             Tasks.await(client?.signOut()!!)
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 
-    fun isSignedIn(activity: FragmentActivity): Single<Boolean> {
+    override fun isSignedIn(activity: FragmentActivity): Single<Boolean> {
         return Single.defer { Single.just(getAccount(activity) != null) }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
     }
 
-    fun getAccount(activity: FragmentActivity): GoogleSignInAccount? {
-        return GoogleSignIn.getLastSignedInAccount(activity)
+    override fun getAccount(activity: FragmentActivity): DanteUser? {
+        return GoogleSignIn.getLastSignedInAccount(activity)?.toDanteUser()
     }
 
-    fun loadAccountImage(activity: FragmentActivity, photoUrl: Uri): Single<Bitmap> {
-        return Single.fromCallable {
-            Picasso.with(activity).load(photoUrl).get()
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+    fun getGoogleAccount(activity: FragmentActivity): GoogleSignInAccount? {
+        return GoogleSignIn.getLastSignedInAccount(activity)
     }
 
     companion object {

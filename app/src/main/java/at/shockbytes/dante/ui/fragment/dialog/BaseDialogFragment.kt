@@ -2,7 +2,7 @@ package at.shockbytes.dante.ui.fragment.dialog
 
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import at.shockbytes.dante.core.DanteApp
+import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
 
 /**

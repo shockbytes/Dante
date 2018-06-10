@@ -23,7 +23,7 @@ import at.shockbytes.dante.util.DanteUtils
 
 abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
-    private val abDefColor = R.color.colorPrimary
+    private val abDefColor = R.color.actionBarItemColor
     private val abTextDefColor = android.R.color.white
     private val sbDefColor = R.color.colorPrimaryDark
 
@@ -46,12 +46,17 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
     fun tintSystemBarsWithText(@ColorInt actionBarColor: Int?, @ColorInt actionBarTextColor: Int?,
                                @ColorInt statusBarColor: Int?, title: String?,
-                               animated: Boolean = false) {
+                               animated: Boolean = false,
+                               useSameColorsForBoth: Boolean = true) {
 
         // Default initialize if not set
         val abColor = actionBarColor ?: ContextCompat.getColor(applicationContext, abDefColor)
         val abtColor = actionBarTextColor ?: ContextCompat.getColor(applicationContext, abTextDefColor)
-        val sbColor = statusBarColor ?: ContextCompat.getColor(applicationContext, sbDefColor)
+        var sbColor = statusBarColor ?: ContextCompat.getColor(applicationContext, sbDefColor)
+
+        if (useSameColorsForBoth) {
+           sbColor = abColor
+        }
 
         // Set and tint text of action bar
         val text = SpannableString(title)

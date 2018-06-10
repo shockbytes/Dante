@@ -3,18 +3,12 @@ package at.shockbytes.dante.ui.fragment
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
-import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
@@ -23,15 +17,13 @@ import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
-import butterknife.OnClick
 import com.crashlytics.android.Crashlytics
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotterknife.bindView
-import kotterknife.bindViews
+import kotlinx.android.synthetic.main.fragment_download_book.*
 import javax.inject.Inject
 
 
@@ -53,39 +45,27 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     }
 
-    private val drawableResList = listOf(
-            R.drawable.ic_pick_upcoming,
-            R.drawable.ic_pick_current,
-            R.drawable.ic_pick_done)
+    private val drawableResList: List<Pair<Int, TextView>> by lazy {
+        listOf(Pair(R.drawable.ic_pick_upcoming, btnDownloadFragmentUpcoming),
+                Pair(R.drawable.ic_pick_current, btnDownloadFragmentCurrent),
+                Pair(R.drawable.ic_pick_done, btnDownloadFragmentDone))
+    }
 
-    private val animViews: List<AppCompatButton> by bindViews(
-            R.id.fragment_download_book_btn_upcoming,
-            R.id.fragment_download_book_btn_current,
-            R.id.fragment_download_book_btn_done,
-            R.id.fragment_download_book_btn_not_my_book)
-
-    private val imgViewCover: ImageView by bindView(R.id.fragment_download_book_imgview_cover)
-    private val txtTitle: TextView by bindView(R.id.fragment_download_book_txt_title)
-    private val rvOtherSuggestions: RecyclerView by bindView(R.id.fragment_download_book_rv_other_suggestions)
-    private val txtOtherSuggestions: TextView by bindView(R.id.fragment_download_book_txt_other_suggestions)
-    private val btnNotMyBook: Button by bindView(R.id.fragment_download_book_btn_not_my_book)
-    private val progressBar: ProgressBar by bindView(R.id.fragment_download_book_progressbar)
-    private val mainView: View by bindView(R.id.fragment_download_book_main_view)
-    private val errorView: View by bindView(R.id.fragment_download_book_error_view)
-    private val txtErrorCause: TextView by bindView(R.id.fragment_download_book_txt_error_cause)
+    private val animViews: List<View> by lazy {
+        listOf(btnDownloadFragmentUpcoming,
+                btnDownloadFragmentCurrent,
+                btnDownloadFragmentDone,
+                btnDownloadFragmentNotMyBook)
+    }
 
     @Inject
     protected lateinit var bookManager: BookManager
 
     private var bookAdapter: BookAdapter? = null
-
-    private var query: String? = null
-
     private var listener: OnBookDownloadedListener? = null
-
     private var selectedBook: Book? = null
-
     private var isOtherSuggestionsShowing: Boolean = false
+    private var query: String? = null
 
     override val layoutId = R.layout.fragment_download_book
 
@@ -100,20 +80,25 @@ class DownloadBookFragment : BaseFragment(), Callback,
     }
 
     override fun setupViews() {
-        Single.fromCallable {
-            drawableResList.mapTo(mutableListOf<Drawable>()) {
-                DanteUtils.vector2Drawable(context!!, it)
-            }.toList()
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { list ->
-            list.forEachIndexed { index, drawable ->
-                animViews[index].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
-            }
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        loadIcons()
         downloadBook()
+
+        btnDownloadFragmentErrorClose.setOnClickListener {
+            listener?.onCloseOnError()
+        }
+        btnDownloadFragmentNotMyBook.setOnClickListener {
+            showOtherSuggestions()
+        }
+        btnDownloadFragmentUpcoming.setOnClickListener {
+            finishBookDownload(Book.State.READ_LATER)
+        }
+        btnDownloadFragmentCurrent.setOnClickListener {
+            finishBookDownload(Book.State.READING)
+        }
+        btnDownloadFragmentDone.setOnClickListener {
+            finishBookDownload(Book.State.READ)
+        }
+
     }
 
     override fun onAttach(context: Context?) {
@@ -122,13 +107,12 @@ class DownloadBookFragment : BaseFragment(), Callback,
     }
 
     override fun onSuccess() {
-        val bm = (imgViewCover.drawable as? BitmapDrawable)?.bitmap
-        if (bm != null) {
-            Palette.from(bm).generate(this)
+        (imgViewDownloadFragmentCover.drawable as? BitmapDrawable)?.bitmap?.let {
+            Palette.from(it).generate(this)
         }
     }
 
-    override fun onError() { }
+    override fun onError() {}
 
     override fun onGenerated(palette: Palette) {
 
@@ -137,82 +121,60 @@ class DownloadBookFragment : BaseFragment(), Callback,
         val statusBarColor = palette.darkMutedSwatch?.rgb
 
         listener?.colorSystemBars(actionBarColor, actionBarTextColor,
-                        statusBarColor, selectedBook?.title)
+                statusBarColor, selectedBook?.title)
     }
 
     override fun onItemClick(t: Book, v: View) {
-        val index = bookAdapter?.getLocation(t)
+        val index = bookAdapter?.getLocation(t) ?: return
         bookAdapter?.deleteEntity(t)
-        bookAdapter?.addEntity(index!!, selectedBook!!)
+        bookAdapter?.addEntity(index, selectedBook!!)
 
         selectedBook = t
         setTitleAndIcon(selectedBook)
-        rvOtherSuggestions.scrollToPosition(0)
+        recyclerViewDownloadFragmentOtherSuggestions.scrollToPosition(0)
     }
 
+    // --------------------------------------------------------------------
 
-    @OnClick(R.id.fragment_download_book_btn_error_close)
-    fun onClickCloseError() {
-        listener?.onCloseOnError()
-    }
-
-    @OnClick(R.id.fragment_download_book_btn_not_my_book)
-    fun onClickNotMyBook() {
+    private fun showOtherSuggestions() {
 
         if (!isOtherSuggestionsShowing) {
 
-            txtTitle.animate().translationY(0f).setDuration(500)
-                    .setInterpolator(AccelerateDecelerateInterpolator())
+            txtDownloadFragmentTitle.animate().translationY(0f).setDuration(300)
+                    .setInterpolator(AnticipateInterpolator())
                     .withEndAction {
-                        rvOtherSuggestions.animate().alpha(1f).start()
-                        txtOtherSuggestions.animate().alpha(1f).start()
+                        recyclerViewDownloadFragmentOtherSuggestions.animate().alpha(1f).start()
+                        txtDownloadFragmentOtherSuggestions.animate().alpha(1f).start()
                     }.start()
-            imgViewCover.animate().translationY(0f).setDuration(500)
-                    .setInterpolator(AccelerateDecelerateInterpolator())
+            imgViewDownloadFragmentCover.animate().translationY(0f).setDuration(300)
+                    .setInterpolator(AnticipateInterpolator())
                     .start()
 
-            btnNotMyBook.setText(R.string.download_suggestions_none)
+            btnDownloadFragmentNotMyBook.setText(R.string.download_suggestions_none)
 
             isOtherSuggestionsShowing = true
         } else {
             listener?.onCancelDownload()
         }
-
-    }
-
-    @OnClick(R.id.fragment_download_book_btn_upcoming)
-    fun onClickUpcoming() {
-        finishBookDownload(Book.State.READ_LATER)
-    }
-
-    @OnClick(R.id.fragment_download_book_btn_current)
-    fun onClickCurrent() {
-        finishBookDownload(Book.State.READING)
-    }
-
-    @OnClick(R.id.fragment_download_book_btn_done)
-    fun onClickDone() {
-        finishBookDownload(Book.State.READ)
     }
 
     private fun finishBookDownload(bookState: Book.State) {
-
-        if (selectedBook != null) {
+        selectedBook?.let { book ->
             // Set the state and store it in database
-            selectedBook?.state = bookState
-            selectedBook = bookManager.addBook(selectedBook!!) // Return the object with set ID
-            listener?.onBookDownloaded(selectedBook!!)
+            book.state = bookState
+            selectedBook = bookManager.addBook(book) // Return the object with set ID
+            listener?.onBookDownloaded(book)
         }
     }
 
     private fun downloadBook() {
-
         bookManager.downloadBook(query).subscribe({ suggestion ->
             animateBookViews()
             if (suggestion != null && suggestion.hasSuggestions) {
                 selectedBook = suggestion.mainSuggestion
                 setTitleAndIcon(selectedBook)
                 setupOtherSuggestionsRecyclerView(suggestion.otherSuggestions)
+                activity?.actionBar?.title = selectedBook?.title
             } else {
                 listener?.onErrorDownload("no suggestions", isAdded)
                 showErrorLayout(getString(R.string.download_book_json_error))
@@ -224,23 +186,42 @@ class DownloadBookFragment : BaseFragment(), Callback,
         }
     }
 
-    private fun animateBookViews() {
+    private fun loadIcons() {
+        Single.fromCallable {
+            drawableResList.mapNotNull {(drawableRes, view) ->
+                context?.let { ctx ->
+                    val drawable = DanteUtils.vector2Drawable(ctx, drawableRes)
+                    Pair(drawable, view)
+                }
+            }
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { list ->
+            list.forEach{ (drawable, view) ->
+                view.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+            }
+        }
+    }
 
+    private fun animateBookViews() {
         // Hide progressbar smoothly
-        progressBar.animate().alpha(0f).scaleY(0.5f).scaleX(0.5f).setDuration(500).start()
+        progressBarDownloadFragment.animate()
+                .alpha(0f)
+                .scaleY(0.5f)
+                .scaleX(0.5f)
+                .setDuration(500)
+                .start()
         DanteUtils.listPopAnimation(animViews, 250, interpolator = OvershootInterpolator(4f))
     }
 
     private fun setTitleAndIcon(mainBook: Book?) {
 
-        txtTitle.text = mainBook?.title
+        txtDownloadFragmentTitle.text = mainBook?.title
 
         if (!mainBook?.thumbnailAddress.isNullOrEmpty()) {
             Picasso.with(context).load(mainBook?.thumbnailAddress)
                     .placeholder(DanteUtils.vector2Drawable(context!!, R.drawable.ic_placeholder))
-                    .into(imgViewCover, this)
+                    .into(imgViewDownloadFragmentCover, this)
         } else {
-            imgViewCover.setImageResource(R.drawable.ic_placeholder)
+            imgViewDownloadFragmentCover.setImageResource(R.drawable.ic_placeholder)
         }
     }
 
@@ -248,9 +229,9 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
         bookAdapter = BookAdapter(context!!, books, Book.State.READ,
                 null, false)
-        rvOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this
-        rvOtherSuggestions.adapter = bookAdapter
+        recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
     }
 
     private fun showErrorLayout(error: Throwable) {
@@ -263,10 +244,10 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     private fun showErrorLayout(cause: String) {
         if (isAdded) {
-            mainView.visibility = View.GONE
-            errorView.visibility = View.VISIBLE
-            errorView.animate().alpha(1f).start()
-            txtErrorCause.text = cause
+            layoutDownloadFragmentMain.visibility = View.GONE
+            layoutDownloadFragmentError.visibility = View.VISIBLE
+            layoutDownloadFragmentError.animate().alpha(1f).start()
+            txtDownloadFragmentErrorCause.text = cause
         } else {
             showToast(cause, true)
             // Log this message, because this should not happen
@@ -274,6 +255,8 @@ class DownloadBookFragment : BaseFragment(), Callback,
         }
 
     }
+
+    // --------------------------------------------------------------------
 
     companion object {
 

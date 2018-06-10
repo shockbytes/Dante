@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/transparent"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/bottomSheetMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="-16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="24dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="24dp">
+
+            <ImageView
+                android:id="@+id/imageViewMenuUser"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_user_template_dark" />
+
+            <TextView
+                android:id="@+id/txtMenuUserName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="0dp"
+                android:fontFamily="sans-serif-light"
+                tools:text="Martin Macheiner"
+                android:textColor="@android:color/primary_text_light"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
+                app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
+                app:layout_constraintTop_toTopOf="@+id/imageViewMenuUser" />
+
+            <TextView
+                android:id="@+id/txtMenuUserMail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="sans-serif-light"
+                tools:text="mescht93@gmail.com"
+                android:textColor="@android:color/secondary_text_light"
+                app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
+                app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
+                app:layout_constraintTop_toBottomOf="@+id/txtMenuUserName" />
+
+            <View
+                android:id="@+id/viewMenuSeparator"
+                android:layout_width="match_parent"
+                android:layout_height="0.25dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/empty"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewMenuUser" />
+
+            <Button
+                android:id="@+id/btnMenuStatistics"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_stats"
+                android:drawablePadding="24dp"
+                android:drawableStart="@drawable/ic_stats"
+                android:gravity="start|center_vertical"
+                android:padding="8dp"
+                android:text="@string/menu_main_stats"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/viewMenuSeparator" />
+
+            <Button
+                android:id="@+id/btnMenuSortStrategy"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/ic_sort"
+                android:drawablePadding="24dp"
+                android:drawableStart="@drawable/ic_sort"
+                android:gravity="start|center_vertical"
+                android:padding="8dp"
+                android:text="@string/menu_main_sort"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMenuStatistics" />
+
+            <Button
+                android:id="@+id/btnMenuBackup"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/ic_backup"
+                android:drawablePadding="24dp"
+                android:drawableStart="@drawable/ic_backup"
+                android:gravity="start|center_vertical"
+                android:padding="8dp"
+                android:text="@string/menu_main_backup"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMenuSortStrategy" />
+
+            <Button
+                android:id="@+id/btnMenuSettings"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:drawableLeft="@drawable/ic_settings"
+                android:drawablePadding="24dp"
+                android:drawableStart="@drawable/ic_settings"
+                android:gravity="start|center_vertical"
+                android:padding="8dp"
+                android:text="@string/settings"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMenuBackup" />
+
+            <Button
+                android:id="@+id/btnMenuLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/dante_button"
+                android:text="@string/logout"
+                android:textColor="@color/colorAccent"
+                app:layout_constraintBottom_toTopOf="@+id/viewMenuSeparator"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

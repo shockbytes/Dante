@@ -4,23 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
-    android:padding="16dp"
+    android:padding="8dp"
     tools:context="at.shockbytes.dante.ui.fragment.DownloadBookFragment">
 
     <RelativeLayout
-        android:id="@+id/fragment_download_book_main_view"
+        android:id="@+id/layoutDownloadFragmentMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:id="@+id/fragment_download_book_progressbar"
+            android:id="@+id/progressBarDownloadFragment"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true"
             android:indeterminate="true" />
 
         <ImageView
-            android:id="@+id/fragment_download_book_imgview_cover"
+            android:id="@+id/imgViewDownloadFragmentCover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -29,22 +29,22 @@
             app:srcCompat="@drawable/ic_placeholder" />
 
         <TextView
-            android:id="@+id/fragment_download_book_txt_title"
+            android:id="@+id/txtDownloadFragmentTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="3"
-            android:translationY="60dp"
-            android:text="@string/fragment_download_text_placeholder"
-            android:layout_below="@+id/fragment_download_book_imgview_cover"
-            android:layout_marginTop="8dp"
+            android:layout_below="@+id/imgViewDownloadFragmentCover"
+            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+            android:maxLines="3"
+            android:text="@string/fragment_download_text_placeholder"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:translationY="60dp" />
 
         <TextView
-            android:id="@+id/fragment_download_book_txt_other_suggestions"
+            android:id="@+id/txtDownloadFragmentOtherSuggestions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_download_book_txt_title"
+            android:layout_below="@+id/txtDownloadFragmentTitle"
             android:layout_marginTop="32dp"
             android:alpha="0"
             android:gravity="center"
@@ -52,89 +52,90 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_download_book_rv_other_suggestions"
+            android:id="@+id/recyclerViewDownloadFragmentOtherSuggestions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/fragment_download_book_view_pick_states"
-            android:layout_below="@+id/fragment_download_book_txt_other_suggestions"
+            android:layout_above="@+id/layoutDownloadFragmentPickState"
+            android:layout_below="@+id/txtDownloadFragmentOtherSuggestions"
             android:alpha="0"
             android:padding="4dp" />
 
         <LinearLayout
-            android:id="@+id/fragment_download_book_view_pick_states"
+            android:id="@+id/layoutDownloadFragmentPickState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/fragment_download_book_btn_not_my_book"
+            android:layout_above="@+id/btnDownloadFragmentNotMyBook"
             android:weightSum="1.2">
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/fragment_download_book_btn_upcoming"
+                android:id="@+id/btnDownloadFragmentUpcoming"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
                 android:alpha="0"
                 android:drawablePadding="8dp"
                 android:maxLines="1"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
                 android:text="@string/tab_upcoming"
                 android:textColor="@color/tabcolor_upcoming" />
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/fragment_download_book_btn_current"
+                android:id="@+id/btnDownloadFragmentCurrent"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
+                android:alpha="0"
                 android:drawablePadding="8dp"
+                android:maxLines="1"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:alpha="0"
-                android:maxLines="1"
                 android:text="@string/tab_current"
                 android:textColor="@color/tabcolor_current" />
 
             <android.support.v7.widget.AppCompatButton
-                android:id="@+id/fragment_download_book_btn_done"
+                android:id="@+id/btnDownloadFragmentDone"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.4"
+                android:alpha="0"
                 android:drawablePadding="8dp"
+                android:maxLines="1"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:alpha="0"
-                android:maxLines="1"
                 android:text="@string/tab_done"
                 android:textColor="@color/tabcolor_done" />
 
         </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/fragment_download_book_btn_not_my_book"
+            android:id="@+id/btnDownloadFragmentNotMyBook"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="16dp"
-            android:text="@string/download_suggestion_other"
+            android:alpha="0"
+            android:padding="8dp"
             android:scaleX="0.5"
             android:scaleY="0.5"
-            android:alpha="0"
+            android:text="@string/download_suggestion_other"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/disabled_view" />
 
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/fragment_download_book_error_view"
+        android:id="@+id/layoutDownloadFragmentError"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0"
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/fragment_download_book_imgview_error"
+            android:id="@+id/imgViewDownloadFragmentError"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_centerHorizontal="true"
@@ -142,17 +143,17 @@
             app:srcCompat="@drawable/ic_download_error" />
 
         <TextView
-            android:id="@+id/fragment_download_book_txt_error_cause"
+            android:id="@+id/txtDownloadFragmentErrorCause"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/fragment_download_book_btn_error_close"
-            android:layout_below="@+id/fragment_download_book_imgview_error"
+            android:layout_above="@+id/btnDownloadFragmentErrorClose"
+            android:layout_below="@+id/imgViewDownloadFragmentError"
             android:gravity="center"
             android:padding="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/fragment_download_book_btn_error_close"
+            android:id="@+id/btnDownloadFragmentErrorClose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

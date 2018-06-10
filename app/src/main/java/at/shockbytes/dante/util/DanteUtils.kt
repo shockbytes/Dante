@@ -102,14 +102,14 @@ object DanteUtils {
         }
     }
 
-    /* TODO Enable in V3.0
-    fun getImagePickerSourceByItemId(menuItemId: Int): Sources {
-        return if (menuItemId == R.id.popup_item_book_cover_camera) {
-            Sources.CAMERA
-        } else {
-            Sources.GALLERY
+    fun indexForNavigationItemId(itemId: Int): Int? {
+        return when (itemId) {
+            R.id.menu_navigation_upcoming -> 0
+            R.id.menu_navigation_current -> 1
+            R.id.menu_navigation_done -> 2
+        // TODO Enable later R.id.menu_navigation_suggestions -> 3
+            else -> null
         }
     }
-    */
 
 }

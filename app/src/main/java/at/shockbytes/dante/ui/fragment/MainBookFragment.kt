@@ -113,7 +113,10 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
 
     override fun onItemClick(t: Book, v: View) {
         selectedItem = t
-        startActivity(DetailActivity.newIntent(context!!, t.id), getTransitionBundle(v))
+
+        context?.let { ctx ->
+            startActivity(DetailActivity.newIntent(ctx, t.id, t.title), getTransitionBundle(v))
+        }
     }
 
     override fun onItemDismissed(t: Book, position: Int) {

@@ -11,7 +11,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.util.DanteUtils
 import com.squareup.picasso.Picasso
-import kotterknife.bindView
+import kotterknifex.bindView
 
 /**
  * @author Martin Macheiner

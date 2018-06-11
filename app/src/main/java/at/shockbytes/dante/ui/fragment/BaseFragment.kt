@@ -1,24 +1,20 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
-import butterknife.ButterKnife
-import butterknife.Unbinder
-import com.trello.rxlifecycle2.components.support.RxFragment
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * @author Martin Macheiner
  * Date: 29.11.2017.
  */
-abstract class BaseFragment : RxFragment() {
-
-    private var unbinder: Unbinder? = null
+abstract class BaseFragment : Fragment() {
 
     abstract val layoutId: Int
 
@@ -34,13 +30,7 @@ abstract class BaseFragment : RxFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        unbinder = ButterKnife.bind(this, view)
         setupViews()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder?.unbind()
     }
 
     protected abstract fun setupViews()

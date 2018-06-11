@@ -3,12 +3,12 @@ package at.shockbytes.dante.ui.fragment
 import android.app.DatePickerDialog
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.support.v7.graphics.Palette
-import android.support.v7.widget.AppCompatDrawableManager
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatDrawableManager
+import androidx.palette.graphics.Palette
 import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
@@ -155,11 +155,11 @@ class BookDetailFragment : BaseFragment(), Callback,
 
     override fun onError() {}
 
-    override fun onGenerated(palette: Palette) {
+    override fun onGenerated(palette: Palette?) {
 
-        val actionBarColor = palette.lightMutedSwatch?.rgb
-        val actionBarTextColor = palette.lightMutedSwatch?.titleTextColor
-        val statusBarColor = palette.darkMutedSwatch?.rgb
+        val actionBarColor = palette?.lightMutedSwatch?.rgb
+        val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
+        val statusBarColor = palette?.darkMutedSwatch?.rgb
 
         (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
                 actionBarTextColor, statusBarColor, book.title)

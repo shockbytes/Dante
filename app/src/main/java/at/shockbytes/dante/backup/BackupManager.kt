@@ -1,6 +1,6 @@
 package at.shockbytes.dante.backup
 
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.util.books.Book
 import io.reactivex.Completable

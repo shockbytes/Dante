@@ -10,7 +10,7 @@ import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
-import kotterknife.bindView
+import kotterknifex.bindView
 
 /**
  * @author Martin Macheiner
@@ -36,11 +36,8 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
     internal inner class ViewHolder(itemView: View) : BaseAdapter<BackupEntry>.ViewHolder(itemView) {
 
         private val imgViewProvider: ImageView by bindView(R.id.item_backup_entry_imgview_provider)
-
         private val txtTime: TextView by bindView(R.id.item_backup_entry_txt_time)
-
         private val txtBookAmount: TextView by bindView(R.id.item_backup_entry_txt_books)
-
         private val txtDevice: TextView by bindView(R.id.item_backup_entry_txt_device)
 
         override fun bind(t: BackupEntry) {

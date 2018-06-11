@@ -3,16 +3,16 @@ package at.shockbytes.dante.ui.fragment.dialog
 import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import at.shockbytes.dante.R
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotterknife.bindView
+import kotterknifex.bindView
 
 /**
  * @author Martin Macheiner

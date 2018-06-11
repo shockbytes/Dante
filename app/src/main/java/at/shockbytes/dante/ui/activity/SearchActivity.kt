@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.transition.Fade
 import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookSearchSuggestion
@@ -19,8 +18,8 @@ import at.shockbytes.dante.util.tracking.Tracker
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 03.02.2018.
+ * @author  Martin Macheiner
+ * Date:    03.02.2018
  */
 
 class SearchActivity : ContainerTintableBackNavigableActivity(),
@@ -30,8 +29,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
     @Inject
     protected lateinit var tracker: Tracker
 
-    override val displayFragment: Fragment
-        get() = SearchFragment.newInstance()
+    override val displayFragment = SearchFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

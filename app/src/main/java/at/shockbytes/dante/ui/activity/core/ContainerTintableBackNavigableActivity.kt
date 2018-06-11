@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.activity.core
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
 /**
  * @author Martin Macheiner

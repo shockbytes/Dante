@@ -11,7 +11,7 @@ import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import com.squareup.picasso.Picasso
-import kotterknife.bindView
+import kotterknifex.bindView
 
 /**
  * @author Martin Macheiner

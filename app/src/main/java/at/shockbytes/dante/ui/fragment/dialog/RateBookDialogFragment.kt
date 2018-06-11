@@ -13,7 +13,7 @@ import com.crashlytics.android.Crashlytics
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxRatingBar
 import com.squareup.picasso.Picasso
-import kotterknife.bindView
+import kotterknifex.bindView
 
 /**
  * @author Martin Macheiner

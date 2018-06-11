@@ -1,13 +1,13 @@
 package at.shockbytes.dante.adapter
 
 import android.content.Context
-import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.PopupMenu
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
@@ -16,7 +16,7 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import com.crashlytics.android.Crashlytics
 import com.squareup.picasso.Picasso
-import kotterknife.bindView
+import kotterknifex.bindView
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import java.util.*
 import kotlin.math.roundToInt
@@ -83,7 +83,7 @@ class BookAdapter(context: Context, extData: List<Book>,
 
     fun onItemMayChanged(book: Book?) {
 
-        // In case the user disabled the page overlay in the settings
+        // In case the userEvent disabled the page overlay in the settings
         // and the adapter is by now not aware of the fact
         if (settings?.pageOverlayEnabled != drawOverlay) {
             notifyDataSetChanged()
@@ -138,7 +138,7 @@ class BookAdapter(context: Context, extData: List<Book>,
         override fun onMenuItemClick(item: MenuItem): Boolean {
 
             return if (content != null) {
-                // Do not delete book from adapter when user just wants to share it!
+                // Do not delete book from adapter when userEvent just wants to share it!
                 if (item.itemId != R.id.popup_item_share) {
                     deleteEntity(content!!)
                 }

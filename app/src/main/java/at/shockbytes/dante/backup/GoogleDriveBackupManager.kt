@@ -2,8 +2,8 @@ package at.shockbytes.dante.backup
 
 import android.content.SharedPreferences
 import android.os.Build
-import android.support.v4.app.FragmentActivity
 import android.util.Log
+import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.util.books.Book
@@ -40,21 +40,17 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
 
-    private var activity: FragmentActivity? = null
-
     private var client: DriveResourceClient? = null
 
     override fun connect(activity: FragmentActivity) {
-        this.activity = activity
 
-        val account = signInManager.getGoogleAccount(activity)
+        val account = signInManager.getGoogleAccount(activity.applicationContext)
         if (account != null) {
             client = Drive.getDriveResourceClient(activity, account)
         }
     }
 
     override fun close(books: List<Book>?) {
-        activity = null
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {

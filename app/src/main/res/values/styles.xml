@@ -22,4 +22,9 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>
 
+    <!-- Required for AAPT2 to not throw an build error -->
+    <style name="Widget.Support.CoordinatorLayout" parent="android:Widget">
+        <item name="statusBarBackground">@color/black</item>
+    </style>
+
 </resources>

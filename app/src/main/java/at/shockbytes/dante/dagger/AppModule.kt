@@ -9,6 +9,7 @@ import at.shockbytes.dante.books.BookSuggestion
 import at.shockbytes.dante.network.google.gson.BookBackupSerializer
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import at.shockbytes.dante.signin.GoogleSignInManager
+import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.tracking.KeenTracker
@@ -37,6 +38,12 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideSharedPreferences(): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(app.applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApplication(): Application {
+        return app
     }
 
     @Provides
@@ -93,14 +100,15 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideBackupManager(preferences: SharedPreferences,
-                             signInManager: GoogleSignInManager,
+                             signInManager: SignInManager,
                              @Named("gsonBackup") gson: Gson): BackupManager {
-        return GoogleDriveBackupManager(preferences, signInManager, gson)
+        // TODO Remove this ugly cast, but for now this is the only supported SignInManager
+        return GoogleDriveBackupManager(preferences, signInManager as GoogleSignInManager, gson)
     }
 
     @Provides
     @Singleton
-    fun provideGoogleSignInManager(prefs: SharedPreferences): GoogleSignInManager {
+    fun provideSignInManager(prefs: SharedPreferences): SignInManager {
         return GoogleSignInManager(prefs)
     }
 

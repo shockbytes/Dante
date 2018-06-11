@@ -1,16 +1,18 @@
 package at.shockbytes.dante.util
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Handler
 import android.support.annotation.ColorInt
-import android.support.design.widget.FloatingActionButton
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.view.inputmethod.InputMethodManager
 import at.shockbytes.dante.signin.DanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Picasso
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -51,4 +53,12 @@ fun GoogleSignInAccount.toDanteUser() : DanteUser {
     return DanteUser(this.givenName, this.displayName,
             this.email, this.photoUrl, "google",
             this.idToken)
+}
+
+fun Activity.hideKeyboard() {
+    val view = this.currentFocus
+    if (view != null) {
+        val imm = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 }

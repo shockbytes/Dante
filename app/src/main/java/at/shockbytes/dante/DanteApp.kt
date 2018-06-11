@@ -1,7 +1,7 @@
 package at.shockbytes.dante
 
-import android.support.multidex.MultiDexApplication
-import android.support.v7.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
 import at.shockbytes.dante.dagger.*
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
@@ -28,6 +28,7 @@ class DanteApp : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
+        // MultiDex.install(this)
         Realm.init(this)
         JodaTimeAndroid.init(this)
 

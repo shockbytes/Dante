@@ -3,13 +3,14 @@ package at.shockbytes.dante.ui.fragment
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.graphics.Palette
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
+import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.books.BookManager
@@ -114,11 +115,11 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     override fun onError() {}
 
-    override fun onGenerated(palette: Palette) {
+    override fun onGenerated(palette: Palette?) {
 
-        val actionBarColor = palette.lightMutedSwatch?.rgb
-        val actionBarTextColor = palette.lightMutedSwatch?.titleTextColor
-        val statusBarColor = palette.darkMutedSwatch?.rgb
+        val actionBarColor = palette?.lightMutedSwatch?.rgb
+        val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
+        val statusBarColor = palette?.darkMutedSwatch?.rgb
 
         listener?.colorSystemBars(actionBarColor, actionBarTextColor,
                 statusBarColor, selectedBook?.title)
@@ -188,17 +189,18 @@ class DownloadBookFragment : BaseFragment(), Callback,
 
     private fun loadIcons() {
         Single.fromCallable {
-            drawableResList.mapNotNull {(drawableRes, view) ->
+            drawableResList.mapNotNull { (drawableRes, view) ->
                 context?.let { ctx ->
                     val drawable = DanteUtils.vector2Drawable(ctx, drawableRes)
                     Pair(drawable, view)
                 }
             }
-        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { list ->
-            list.forEach{ (drawable, view) ->
-                view.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
-            }
-        }
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe { list: List<Pair<Drawable, TextView>> ->
+                    list.forEach { (drawable, view) ->
+                        view.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+                    }
+                }
     }
 
     private fun animateBookViews() {

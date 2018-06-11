@@ -9,10 +9,10 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
-import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
 
@@ -37,7 +37,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         upIndicator = indicator // Store for next time if just tinting is necessary
         if (tint) {
             val drawable = DanteUtils.vector2Drawable(applicationContext, indicator)
-            drawable?.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
+            drawable.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
             supportActionBar?.setHomeAsUpIndicator(drawable)
         } else {
             supportActionBar?.setHomeAsUpIndicator(indicator)

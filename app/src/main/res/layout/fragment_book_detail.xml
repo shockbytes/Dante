@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:transitionName="@string/transition_name_card">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -130,7 +130,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txtDetailFragmentAuthor"
             tools:text="5 Stars" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -196,14 +196,14 @@
             app:layout_constraintTop_toTopOf="@+id/circleSeekbarDetailFragmentPages"
             tools:text="1000 / 1000" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.Guideline
             android:id="@+id/horizontalGuideline1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.4" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.Guideline
             android:id="@+id/horizontalGuideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -275,7 +275,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/circleSeekbarDetailFragmentPages" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.ConstraintLayout>
 
-
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

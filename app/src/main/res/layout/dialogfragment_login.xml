@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp">
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/dialogfragment_login_sign_in_button"
+        android:id="@+id/btnDialogFragmentLoginSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dialogfragment_login_txt_headline" />
 
     <Button
-        android:id="@+id/dialogfragment_login_btn_later"
+        android:id="@+id/btnDialogFragmentLoginLater"
         style="?attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +52,6 @@
         android:textColor="@android:color/tertiary_text_light"
         android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/dialogfragment_login_sign_in_button" />
+        app:layout_constraintTop_toTopOf="@+id/btnDialogFragmentLoginSignIn" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.ConstraintLayout>

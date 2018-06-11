@@ -20,9 +20,11 @@ class DetailActivity : TintableBackNavigableActivity() {
         supportActionBar?.title = title
 
         detailFragment = BookDetailFragment.newInstance(id)
-        supportFragmentManager.beginTransaction()
-                .replace(android.R.id.content, detailFragment)
-                .commit()
+                .also {
+                    supportFragmentManager.beginTransaction()
+                            .replace(android.R.id.content, it)
+                            .commit()
+                }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

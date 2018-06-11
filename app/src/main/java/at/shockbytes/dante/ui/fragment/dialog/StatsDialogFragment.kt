@@ -3,18 +3,18 @@ package at.shockbytes.dante.ui.fragment.dialog
 import android.app.Dialog
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.AppCompatDrawableManager
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatDrawableManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotterknife.bindViews
+import kotterknifex.bindViews
 import javax.inject.Inject
 
 
@@ -24,7 +24,7 @@ import javax.inject.Inject
  */
 class StatsDialogFragment : BaseDialogFragment() {
 
-    private val statsViews: List<TextView>by bindViews(
+    private val statsViews: List<TextView> by bindViews(
             R.id.dialogfragment_stats_txt_pages_read,
             R.id.dialogfragment_stats_txt_pages_waiting,
             R.id.dialogfragment_stats_txt_books_read,

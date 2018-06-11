@@ -2,29 +2,26 @@ package at.shockbytes.dante.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.books.BookSearchSuggestion
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
-import butterknife.OnClick
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
-import com.trello.rxlifecycle2.android.FragmentEvent
-import com.trello.rxlifecycle2.kotlin.bindUntilEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
-import kotterknife.bindView
+import kotterknifex.bindView
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -49,7 +46,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     }
 
     private val addClickedListener: (BookSearchSuggestion) -> Unit = { suggestion ->
-        DanteUtils.hideKeyboard(activity)
+        activity?.hideKeyboard()
         searchView.setSearchFocused(false)
         downloadClickListener?.onBookSuggestionClicked(suggestion)
     }
@@ -77,6 +74,11 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
         rvResults.addItemDecoration(dividerItemDecoration)
 
         emptyView.visibility = View.GONE
+
+        btnSearchOnline.setOnClickListener {
+            activity?.hideKeyboard()
+            showBooks(searchView.query, false)
+        }
 
         searchView.setOnHomeActionClickListener {
             activity?.supportFinishAfterTransition()
@@ -112,16 +114,10 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     }
 
     override fun onItemClick(t: BookSearchSuggestion, v: View) {
-        DanteUtils.hideKeyboard(activity)
+        activity?.hideKeyboard()
         if (t.bookId > -1) {
             startActivity(DetailActivity.newIntent(context!!, t.bookId, t.title))
         }
-    }
-
-    @OnClick(R.id.fragment_search_btn_search_online)
-    protected fun onClickOnlineSearch() {
-        DanteUtils.hideKeyboard(activity)
-        showBooks(searchView.query, false)
     }
 
     private fun showBooks(query: String, keepLocal: Boolean) {
@@ -131,8 +127,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
             btnSearchOnline.isEnabled = false
 
             val source = if (keepLocal) localSearch(query) else onlineSearch(query)
-            source.bindUntilEvent(this, FragmentEvent.DESTROY)
-                    .subscribe({
+            source.subscribe({
 
                         val emptyViewVisibility: Int
                         if (it.isNotEmpty()) {

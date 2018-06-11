@@ -19,7 +19,7 @@
         android:layout_marginTop="16dp"
         android:weightSum="1">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dialogfragment_restore_strategy_btn_merge"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -32,7 +32,7 @@
             android:textColor="@android:color/white"
             app:backgroundTint="@color/nice_color" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/dialogfragment_restore_strategy_btn_overwrite"
             android:layout_width="0dp"
             android:layout_height="match_parent"

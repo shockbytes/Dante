@@ -3,14 +3,13 @@ package at.shockbytes.dante.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
 
 
 class BackupActivity : ContainerBackNavigableActivity(), BackupFragment.OnBackupRestoreListener {
 
-    override val displayFragment: Fragment = BackupFragment.newInstance()
+    override val displayFragment = BackupFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

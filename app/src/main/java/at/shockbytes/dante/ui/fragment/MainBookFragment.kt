@@ -3,15 +3,14 @@ package at.shockbytes.dante.ui.fragment
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.util.Pair
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.Log
 import android.view.View
-import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.books.BookListener
@@ -22,7 +21,7 @@ import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
 
 
@@ -34,9 +33,6 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
 
     @Inject
     protected lateinit var settings: DanteSettings
-
-    private val recyclerView: RecyclerView by bindView(R.id.fragment_book_main_rv)
-    private val emptyView: TextView by bindView(R.id.fragment_book_main_empty_view)
 
     private lateinit var bookState: Book.State
     private var bookAdapter: BookAdapter? = null
@@ -95,20 +91,20 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
     override fun setupViews() {
 
         // Initialize text for empty indicator
-        emptyView.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
+        layoutMainBookFragmentEmpty.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         // Initialize RecyclerView
         bookAdapter = BookAdapter(context!!, listOf(), bookState,
                 popupItemSelectedListener, true, settings)
-        recyclerView.layoutManager = layoutManager
+        recyclerViewMainBookFragment.layoutManager = layoutManager
         bookAdapter?.onItemClickListener = this
         bookAdapter?.onItemMoveListener = this
-        recyclerView.adapter = bookAdapter
+        recyclerViewMainBookFragment.adapter = bookAdapter
 
         // Setup RecyclerView's ItemTouchHelper
         val itemTouchHelper = ItemTouchHelper(BaseItemTouchHelper(bookAdapter!!, // Safe to call, because it is created above
                 false, BaseItemTouchHelper.DragAccess.VERTICAL))
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(recyclerViewMainBookFragment)
     }
 
     override fun onItemClick(t: Book, v: View) {
@@ -134,7 +130,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
     override fun onBookAdded(book: Book) {
         if (book.state == bookState) {
             bookAdapter?.addEntityAtFirst(book)
-            recyclerView.scrollToPosition(0)
+            recyclerViewMainBookFragment.scrollToPosition(0)
             animateEmptyView(false)
         }
     }
@@ -179,12 +175,12 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Book>,
     private fun animateEmptyView(animate: Boolean) {
 
         if (animate) {
-            emptyView.animate()
+            layoutMainBookFragmentEmpty.animate()
                     .alpha((if ((bookAdapter?.itemCount ?: 0) > 0) 0f else 1f))
                     .setDuration(450)
                     .start()
         } else {
-            emptyView.alpha = (if ((bookAdapter?.itemCount ?: 0) > 0) 0f else 1f)
+            layoutMainBookFragmentEmpty.alpha = (if ((bookAdapter?.itemCount ?: 0) > 0) 0f else 1f)
         }
     }
 

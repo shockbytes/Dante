@@ -2,12 +2,12 @@ package at.shockbytes.dante.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BackupEntryAdapter
 import at.shockbytes.dante.backup.BackupEntry
@@ -20,8 +20,8 @@ import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
-import butterknife.OnClick
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.activity_backup.*
+import kotterknifex.bindView
 import java.util.*
 import javax.inject.Inject
 
@@ -65,19 +65,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         backupRestoreListener = context as? OnBackupRestoreListener
     }
 
-    @OnClick(R.id.activity_backup_btn_backup)
-    protected fun onClickBackup() {
-        backupManager.backup(bookManager.allBooks).subscribe({
-            showSnackbar(getString(R.string.backup_created))
-            updateLastBackupTime()
-            loadBackupList()
-            tracker.trackOnBackupMade()
-        }) { throwable ->
-            throwable.printStackTrace()
-            showSnackbar(getString(R.string.backup_not_created))
-        }
-    }
-
     override fun setupViews() {
 
         updateLastBackupTime()
@@ -92,6 +79,10 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         touchHelper.attachToRecyclerView(rvBackups)
         rvBackups.adapter = adapter
         rvBackups.addItemDecoration(EqualSpaceItemDecoration(8))
+
+        btnActivityBackupBackup.setOnClickListener {
+            backup()
+        }
 
         loadBackupList()
     }
@@ -135,6 +126,18 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         }) { throwable ->
             throwable.printStackTrace()
             Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun backup() {
+        backupManager.backup(bookManager.allBooks).subscribe({
+            showSnackbar(getString(R.string.backup_created))
+            updateLastBackupTime()
+            loadBackupList()
+            tracker.trackOnBackupMade()
+        }) { throwable ->
+            throwable.printStackTrace()
+            showSnackbar(getString(R.string.backup_not_created))
         }
     }
 

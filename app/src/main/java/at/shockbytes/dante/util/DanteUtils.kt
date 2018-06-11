@@ -1,20 +1,18 @@
 package at.shockbytes.dante.util
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.*
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
-import android.support.v7.view.menu.MenuPopupHelper
-import android.support.v7.widget.AppCompatDrawableManager
-import android.support.v7.widget.PopupMenu
 import android.util.Log
 import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
-import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.AppCompatDrawableManager
+import androidx.appcompat.widget.PopupMenu
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.books.Book
 import java.text.SimpleDateFormat
@@ -31,15 +29,6 @@ object DanteUtils {
     const val rcAddBook = 0x2512
     const val extraBookId = "extra_book_downloaded"
     const val maxFetchAmount = 10
-
-
-    fun hideKeyboard(activity: Activity?) {
-        val view = activity?.currentFocus
-        if (view != null) {
-            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
 
     fun formatTimestamp(timeMillis: Long): String {
         return SimpleDateFormat("dd. MMM yyy - kk:mm", Locale.getDefault())

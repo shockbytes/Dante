@@ -31,8 +31,6 @@ import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
 import com.google.android.material.snackbar.Snackbar
-import icepick.Icepick
-import icepick.State
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -54,9 +52,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
 
-    @State
-    @JvmField
-    protected var tabId: Int = 0
+    protected var tabId: Int = R.id.menu_navigation_current
 
     private lateinit var pagerAdapter: BookPagerAdapter
 
@@ -68,10 +64,10 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        // TODO Handle savedInstanceState
 
         setupObserver()
         setSupportActionBar(toolbar)
-        setupIcepick(savedInstanceState)
         initializeNavigation()
         setupUI()
     }
@@ -112,7 +108,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        Icepick.saveInstanceState(this, outState)
+        // TODO Handle savedInstanceState
     }
 
     override fun onDelete(b: Book) {
@@ -199,10 +195,6 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                 }
             }
 
-
-
-
-
         })
 
     }
@@ -266,12 +258,6 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
     private fun showFabAwareSnackbar(text: String) {
         Snackbar.make(findViewById(R.id.main_content), text, Snackbar.LENGTH_SHORT).show()
-    }
-
-    private fun setupIcepick(savedInstanceState: Bundle?) {
-        // Fields will be overwritten by icepick if they have already a value
-        tabId = R.id.menu_navigation_current
-        Icepick.restoreInstanceState(this, savedInstanceState)
     }
 
     private fun showGoogleWelcomeScreen(account: DanteUser) {

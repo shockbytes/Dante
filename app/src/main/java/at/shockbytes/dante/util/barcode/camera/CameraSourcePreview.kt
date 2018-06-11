@@ -18,7 +18,7 @@ package at.shockbytes.dante.util.barcode.camera
 import android.Manifest
 import android.content.Context
 import android.content.res.Configuration
-import android.support.annotation.RequiresPermission
+import androidx.annotation.RequiresPermission
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView

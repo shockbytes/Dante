@@ -5,7 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Handler
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan

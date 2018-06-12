@@ -143,6 +143,8 @@
     <string name="download_attachment_error">Oh, something terribly went wrong!</string>
     <string name="tab_suggestions">Suggestions</string>
     <string name="menu_main_sort">Sort books</string>
+    <string name="anonymous_user">Anonymous bookworm</string>
+    <string name="menu_main_supporter">Supporter badge</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

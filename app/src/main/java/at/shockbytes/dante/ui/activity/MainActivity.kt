@@ -1,6 +1,9 @@
 package at.shockbytes.dante.ui.activity
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -11,24 +14,20 @@ import android.view.MenuItem
 import at.shockbytes.dante.R
 import at.shockbytes.dante.adapter.BookAdapter
 import at.shockbytes.dante.adapter.BookPagerAdapter
-import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.signin.DanteUser
-import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
+import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.loadBitmap
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
-import com.crashlytics.android.Crashlytics
-import icepick.Icepick
-import icepick.State
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -39,39 +38,32 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     protected lateinit var bookManager: BookManager
 
     @Inject
-    protected lateinit var backupManager: BackupManager
-
-    @Inject
-    protected lateinit var signInManager: GoogleSignInManager
-
-    @Inject
     protected lateinit var tracker: Tracker
 
-    @State
-    @JvmField
-    protected var tabId: Int = 0
+    @Inject
+    protected lateinit var vmFactory: ViewModelProvider.Factory
+
+    protected var tabId: Int = R.id.menu_navigation_current
 
     private lateinit var pagerAdapter: BookPagerAdapter
-
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        setupIcepick(savedInstanceState)
-        setupGoogleServices()
-        initializeNavigation()
+
+        viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        tabId = savedInstanceState?.getInt("tabId") ?: R.id.menu_navigation_current
+
         setupUI()
+        initializeNavigation()
+        setupObserver()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    override fun onDestroy() {
-        backupManager.close()
-        super.onDestroy()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,22 +79,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                     }
                 }
             }
-            GoogleSignInManager.rcSignIn -> {
-                if (data != null) {
-                    signInManager.signIn(data).subscribe({ account ->
-                        if (account != null) {
-                            showFabAwareSnackbar(getString(R.string.signin_welcome, account.givenName))
-                            connectToGoogleServices()
-                            showGoogleWelcomeScreen(account)
-                        } else {
-                            showFabAwareSnackbar(getString(R.string.signin_no_account))
-                        }
-                    }, { throwable: Throwable ->
-                        throwable.printStackTrace()
-                        Crashlytics.logException(throwable)
-                        showFabAwareSnackbar(getString(R.string.error_google_login))
-                    })
-                }
+            DanteUtils.rcSignIn -> {
+                data?.let { viewModel.signIn(it) }
             }
             BackupActivity.rcBackupRestored -> {
                 if (resultCode == Activity.RESULT_OK) {
@@ -113,37 +91,9 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        // TODO Put this into the view Model!
-        signInManager.isSignedIn(this).subscribe { isSignedIn ->
-
-            if (isSignedIn) {
-                signInManager.signOut().subscribe({
-                    tryPersonalizeMenu()
-                    showFabAwareSnackbar(getString(R.string.signin_goodbye))
-                }, { throwable: Throwable ->
-                    throwable.printStackTrace()
-                    Crashlytics.logException(throwable)
-                    showFabAwareSnackbar(getString(R.string.error_google_logout))
-                })
-            } else {
-                GoogleSignInDialogFragment.newInstance()
-                        .setSignInListener {
-                            startActivityForResult(signInManager.signInIntent,
-                                    GoogleSignInManager.rcSignIn)
-                        }
-                        .setMaybeLaterListener { signInManager.maybeLater = true }
-                        .show(supportFragmentManager, "sign-in-fragment")
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
-        Icepick.saveInstanceState(this, outState)
+        outState?.putInt("tabId", tabId)
     }
 
     override fun onDelete(b: Book) {
@@ -188,7 +138,51 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     override fun onPageScrollStateChanged(state: Int) {}
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
-// ---------------------------------------------------
+    // ---------------------------------------------------
+
+    private fun setupObserver() {
+
+        viewModel.userEvent.observe(this, Observer { event ->
+
+            when(event) {
+
+                is MainViewModel.UserEvent.SuccessEvent -> {
+
+                    if (event.user != null) {
+                        event.user.photoUrl?.let { photoUrl ->
+                            photoUrl.loadBitmap(this).subscribe({ bm ->
+                                imgButtonMainToolbarMore.setImageDrawable(AppUtils.createRoundedBitmap(this, bm))
+                            }, { throwable: Throwable ->
+                                throwable.printStackTrace()
+                            })
+                        }
+
+                        showFabAwareSnackbar(getString(R.string.signin_welcome, event.user.givenName))
+                        showGoogleWelcomeScreen(event.user, event.showWelcomeScreen)
+                    } else {
+                        showFabAwareSnackbar(getString(R.string.signin_goodbye))
+                        imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
+                    }
+                }
+
+                is MainViewModel.UserEvent.LoginEvent -> {
+                    imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
+
+                    GoogleSignInDialogFragment.newInstance()
+                            .setSignInListener {
+                                startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                            }
+                            .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
+                            .show(supportFragmentManager, "sign-in-fragment")
+                }
+
+                is MainViewModel.UserEvent.ErrorEvent -> {
+                    showFabAwareSnackbar(getString(event.errorMsg))
+                }
+            }
+        })
+
+    }
 
     private fun setupUI() {
 
@@ -207,8 +201,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         }
 
         imgButtonMainToolbarMore.setOnClickListener {
-            MenuFragment.newInstance(signInManager.getAccount(this))
-                    .show(supportFragmentManager, "menu-fragment")
+            MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
         }
     }
 
@@ -232,50 +225,13 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         mainBottomNavigation.selectedItemId = tabId
     }
 
-    private fun setupGoogleServices() {
-
-        signInManager.setup(this)
-        signInManager.isSignedIn(this).subscribe { isSignedIn ->
-
-            if (isSignedIn) { // <- User signed in, TOP!
-                connectToGoogleServices()
-            } else if (!signInManager.maybeLater) { // <- user not signed in and did not opt-out
-                GoogleSignInDialogFragment.newInstance()
-                        .setSignInListener {
-                            startActivityForResult(signInManager.signInIntent,
-                                    GoogleSignInManager.rcSignIn)
-                        }
-                        .setMaybeLaterListener { signInManager.maybeLater = true }
-                        .show(supportFragmentManager, "sign-in-fragment")
-            }
-        }
-    }
-
-    private fun connectToGoogleServices() {
-        backupManager.connect(this)
-        tryPersonalizeMenu()
-    }
-
-    private fun tryPersonalizeMenu() {
-
-        val account = signInManager.getAccount(this)
-
-        account?.photoUrl?.let { photoUrl ->
-            photoUrl.loadBitmap(this).subscribe({ bm ->
-                imgButtonMainToolbarMore.setImageDrawable(AppUtils.createRoundedBitmap(this, bm))
-            }, { throwable: Throwable ->
-                throwable.printStackTrace()
-            })
-        }
-    }
-
     private fun colorNavigationItems(item: MenuItem) {
 
         val stateListRes: Int = when (item.itemId) {
             R.id.menu_navigation_upcoming -> R.drawable.navigation_item_upcoming
             R.id.menu_navigation_current -> R.drawable.navigation_item_current
             R.id.menu_navigation_done -> R.drawable.navigation_item_done
-            // TODO Enable later R.id.menu_navigation_suggestions -> R.drawable.navigation_item_suggestions
+        // TODO Enable later R.id.menu_navigation_suggestions -> R.drawable.navigation_item_suggestions
             else -> 0
         }
 
@@ -288,18 +244,12 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         Snackbar.make(findViewById(R.id.main_content), text, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun setupIcepick(savedInstanceState: Bundle?) {
-        // Fields will be overwritten by icepick if they have already a value
-        tabId = R.id.menu_navigation_current
-        Icepick.restoreInstanceState(this, savedInstanceState)
-    }
-
-    private fun showGoogleWelcomeScreen(account: DanteUser) {
-        if (signInManager.showWelcomeScreen) {
+    private fun showGoogleWelcomeScreen(account: DanteUser, showWelcomeScreen: Boolean) {
+        if (showWelcomeScreen) {
             GoogleWelcomeScreenDialogFragment
                     .newInstance(account.givenName, account.photoUrl)
                     .setOnAcknowledgedListener {
-                        signInManager.showWelcomeScreen = false
+                        viewModel.showSignInWelcomeScreen(false)
                     }
                     .show(supportFragmentManager, "google_welcome_dialog_fragment")
         }

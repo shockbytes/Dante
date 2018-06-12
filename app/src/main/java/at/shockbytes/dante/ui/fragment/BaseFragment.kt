@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,12 @@ import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import com.trello.rxlifecycle2.components.support.RxFragment
 
 /**
  * @author Martin Macheiner
  * Date: 29.11.2017.
  */
-abstract class BaseFragment : RxFragment() {
-
-    private var unbinder: Unbinder? = null
+abstract class BaseFragment : Fragment() {
 
     abstract val layoutId: Int
 
@@ -34,13 +32,7 @@ abstract class BaseFragment : RxFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        unbinder = ButterKnife.bind(this, view)
         setupViews()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        unbinder?.unbind()
     }
 
     protected abstract fun setupViews()
@@ -50,9 +42,9 @@ abstract class BaseFragment : RxFragment() {
     @JvmOverloads
     protected fun showSnackbar(text: String, actionText: String,
                                showIndefinite: Boolean = false,  action: () -> Unit) {
-        if (view != null) {
+        view?.let { v ->
             val duration = if (showIndefinite) Snackbar.LENGTH_INDEFINITE else Snackbar.LENGTH_LONG
-            Snackbar.make(view!!, text, duration)
+            Snackbar.make(v, text, duration)
                     .setAction(actionText) {
                         action()
                     }.show()
@@ -61,9 +53,9 @@ abstract class BaseFragment : RxFragment() {
 
     @JvmOverloads
     protected fun showSnackbar(text: String, showLong: Boolean = true) {
-        if (view != null) {
+        view?.let { v ->
             val duration = if (showLong) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
-            Snackbar.make(view!!, text, duration).show()
+            Snackbar.make(v, text, duration).show()
         }
     }
 

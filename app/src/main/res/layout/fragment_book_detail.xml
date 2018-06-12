@@ -273,7 +273,7 @@
             android:background="@color/empty"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circleSeekbarDetailFragmentPages" />
+            app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline2" />
 
     </android.support.constraint.ConstraintLayout>
 

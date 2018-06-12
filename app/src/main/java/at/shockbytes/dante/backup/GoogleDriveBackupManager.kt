@@ -40,21 +40,16 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
 
-    private var activity: FragmentActivity? = null
-
     private var client: DriveResourceClient? = null
 
     override fun connect(activity: FragmentActivity) {
-        this.activity = activity
 
-        val account = signInManager.getGoogleAccount(activity)
-        if (account != null) {
+        signInManager.getGoogleAccount()?.let { account ->
             client = Drive.getDriveResourceClient(activity, account)
         }
     }
 
     override fun close(books: List<Book>?) {
-        activity = null
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {

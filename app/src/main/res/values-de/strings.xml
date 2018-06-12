@@ -131,6 +131,8 @@
     <string name="download_attachment_error">Oh, da ist was mächtig schiefgelaufen!</string>
     <string name="tab_suggestions">Vorschläge</string>
     <string name="menu_main_sort">Bücher sortieren</string>
+    <string name="anonymous_user">Unbekannter Bücherwurm</string>
+    <string name="menu_main_supporter">Supprter Badge</string>
 
 
 </resources>

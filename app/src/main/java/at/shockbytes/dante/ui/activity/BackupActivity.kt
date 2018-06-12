@@ -4,21 +4,37 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
+import javax.inject.Inject
 
 
 class BackupActivity : ContainerBackNavigableActivity(), BackupFragment.OnBackupRestoreListener {
 
     override val displayFragment: Fragment = BackupFragment.newInstance()
 
+    @Inject
+    protected lateinit var backupManager: BackupManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setResult(RESULT_CANCELED, Intent())
+        backupManager.connect(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        backupManager.close()
     }
 
     override fun onBackupRestored() {
         setResult(RESULT_OK, Intent())
+    }
+
+    override fun injectToGraph(appComponent: AppComponent) {
+        appComponent.inject(this)
     }
 
     companion object {

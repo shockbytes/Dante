@@ -1,9 +1,6 @@
 package at.shockbytes.dante.dagger
 
-import at.shockbytes.dante.ui.activity.BookRetrievalActivity
-import at.shockbytes.dante.ui.activity.DetailActivity
-import at.shockbytes.dante.ui.activity.MainActivity
-import at.shockbytes.dante.ui.activity.SearchActivity
+import at.shockbytes.dante.ui.activity.*
 import at.shockbytes.dante.ui.fragment.*
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
@@ -16,7 +13,12 @@ import javax.inject.Singleton
  */
 
 @Singleton
-@Component(modules = [(NetworkModule::class), (AppModule::class), (BookModule::class)])
+@Component(modules = [
+    (NetworkModule::class),
+    (AppModule::class),
+    (BookModule::class),
+    (ViewModelModule::class)
+])
 interface AppComponent {
 
     fun inject(activity: MainActivity)
@@ -26,6 +28,8 @@ interface AppComponent {
     fun inject(activity: BookRetrievalActivity)
 
     fun inject(activity: SearchActivity)
+
+    fun inject(activity: BackupActivity)
 
     fun inject(fragment: MainBookFragment)
 
@@ -44,5 +48,7 @@ interface AppComponent {
     fun inject(suggestionsFragment: SuggestionsFragment)
 
     fun inject(fragment: BookDetailFragment)
+
+    fun inject(fragment: MenuFragment)
 
 }

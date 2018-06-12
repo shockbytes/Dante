@@ -1,8 +1,8 @@
 package at.shockbytes.dante.signin
 
 import android.content.Intent
-import android.support.v4.app.FragmentActivity
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -12,14 +12,20 @@ import io.reactivex.Single
 
 interface SignInManager {
 
-    fun setup(activity: FragmentActivity)
+    var maybeLater: Boolean
+
+    var showWelcomeScreen: Boolean
+
+    val signInIntent: Intent?
+
+    fun setup()
 
     fun signIn(data: Intent): Single<DanteUser?>
 
     fun signOut(): Completable
 
-    fun isSignedIn(activity: FragmentActivity): Single<Boolean>
+    fun isSignedIn(): Observable<Boolean>
 
-    fun getAccount(activity: FragmentActivity): DanteUser?
+    fun getAccount(): DanteUser?
 
 }

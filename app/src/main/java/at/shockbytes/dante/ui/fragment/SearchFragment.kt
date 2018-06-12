@@ -16,12 +16,11 @@ import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
 import butterknife.OnClick
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
-import com.trello.rxlifecycle2.android.FragmentEvent
-import com.trello.rxlifecycle2.kotlin.bindUntilEvent
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import kotterknife.bindView
@@ -49,7 +48,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     }
 
     private val addClickedListener: (BookSearchSuggestion) -> Unit = { suggestion ->
-        DanteUtils.hideKeyboard(activity)
+        activity?.hideKeyboard()
         searchView.setSearchFocused(false)
         downloadClickListener?.onBookSuggestionClicked(suggestion)
     }
@@ -112,7 +111,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     }
 
     override fun onItemClick(t: BookSearchSuggestion, v: View) {
-        DanteUtils.hideKeyboard(activity)
+        activity?.hideKeyboard()
         if (t.bookId > -1) {
             startActivity(DetailActivity.newIntent(context!!, t.bookId, t.title))
         }
@@ -120,7 +119,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     @OnClick(R.id.fragment_search_btn_search_online)
     protected fun onClickOnlineSearch() {
-        DanteUtils.hideKeyboard(activity)
+        activity?.hideKeyboard()
         showBooks(searchView.query, false)
     }
 
@@ -131,30 +130,29 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
             btnSearchOnline.isEnabled = false
 
             val source = if (keepLocal) localSearch(query) else onlineSearch(query)
-            source.bindUntilEvent(this, FragmentEvent.DESTROY)
-                    .subscribe({
+            source.subscribe({
 
-                        val emptyViewVisibility: Int
-                        if (it.isNotEmpty()) {
-                            rvAdapter.data = it.toMutableList()
-                            rvResults.scrollToPosition(0)
-                            emptyViewVisibility = View.GONE
-                        } else {
-                            rvAdapter.clear()
-                            emptyViewVisibility = View.VISIBLE
-                        }
-                        emptyView.visibility = emptyViewVisibility
-                        searchView.hideProgress()
-                        btnSearchOnline.isEnabled = true
-                    }, {
+                val emptyViewVisibility: Int
+                if (it.isNotEmpty()) {
+                    rvAdapter.data = it.toMutableList()
+                    rvResults.scrollToPosition(0)
+                    emptyViewVisibility = View.GONE
+                } else {
+                    rvAdapter.clear()
+                    emptyViewVisibility = View.VISIBLE
+                }
+                emptyView.visibility = emptyViewVisibility
+                searchView.hideProgress()
+                btnSearchOnline.isEnabled = true
+            }, {
 
-                        showToast(message4SearchException(it))
+                showToast(message4SearchException(it))
 
-                        searchView.clearQuery()
-                        emptyView.visibility = View.GONE
-                        searchView.hideProgress()
-                        btnSearchOnline.isEnabled = true
-                    })
+                searchView.clearQuery()
+                emptyView.visibility = View.GONE
+                searchView.hideProgress()
+                btnSearchOnline.isEnabled = true
+            })
         }
     }
 

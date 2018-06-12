@@ -1,22 +1,18 @@
 package at.shockbytes.dante.ui.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
 import android.content.Intent
 import at.shockbytes.dante.R
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInManager
 import com.crashlytics.android.Crashlytics
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**
  * @author  Martin Macheiner
  * Date:    10.06.2018
  */
-class MainViewModel @Inject constructor(private val signInManager: SignInManager) : ViewModel() {
-
-    private val compositeDisposable = CompositeDisposable()
+class MainViewModel @Inject constructor(private val signInManager: SignInManager) : BaseViewModel() {
 
     sealed class UserEvent {
         data class SuccessEvent(val user: DanteUser?, val showWelcomeScreen: Boolean) : UserEvent()
@@ -24,20 +20,13 @@ class MainViewModel @Inject constructor(private val signInManager: SignInManager
         data class ErrorEvent(val errorMsg: Int) : UserEvent()
     }
 
-
     val userEvent = MutableLiveData<UserEvent>()
 
     init {
         poke()
     }
 
-    override fun onCleared() {
-        compositeDisposable.clear()
-        super.onCleared()
-    }
-
-
-    private fun poke() {
+    override fun poke() {
         signInManager.setup()
         compositeDisposable.add(signInManager.isSignedIn().subscribe { isSignedIn ->
 

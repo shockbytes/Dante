@@ -1,4 +1,4 @@
-package at.shockbytes.dante.adapter
+package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
 import android.view.View

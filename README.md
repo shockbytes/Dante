@@ -17,14 +17,18 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Use Firebase Data for book recommendations
 - [ ] Firebase as Backend!
 - [ ] Change book cover and store data in Firebase Cloud Storage
-- [ ] Add advertisement API (Add AdView in list)
 - [ ] Redesign login flow with Firebase login
+- [ ] Supporting badge (in-app purchases)
 
-### Version 2.8.3
+### Version 3.0
+- [ ] Sort book list
 - [ ] Change dates after insertion
-- [ ] Add current books to statistics (read pages to read, other pages to waiting)
-- [ ] Change Analytics backend (Keen -> Google/Firebase)
-- [ ] General code improvements
+- [ ] Fix 'backup overwrites wrong dates' bug
+- [x] General Architecture redesign (abstract Realm to exchange it)
+- [x] Fix backup mechanism
+- [x] Fresh and new UI
+- [x] Add current books to statistics (read pages to read, other pages to waiting)
+- [x] Change Analytics backend (Keen -> Google/Firebase)
 
 ### Version 2.8 - PAGES, POSITION, PROGUARD
 * Include Proguard

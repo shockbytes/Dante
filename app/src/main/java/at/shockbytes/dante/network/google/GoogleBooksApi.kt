@@ -1,6 +1,6 @@
 package at.shockbytes.dante.network.google
 
-import at.shockbytes.dante.books.BookSuggestion
+import at.shockbytes.dante.book.BookSuggestion
 import io.reactivex.Observable
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.activity
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
@@ -12,33 +11,22 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import at.shockbytes.dante.R
-import at.shockbytes.dante.adapter.BookAdapter
-import at.shockbytes.dante.adapter.BookPagerAdapter
-import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.ui.activity.core.BaseActivity
+import at.shockbytes.dante.ui.adapter.BookPagerAdapter
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.loadBitmap
 import at.shockbytes.dante.util.toggle
-import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener,
-        ViewPager.OnPageChangeListener {
-
-    @Inject
-    protected lateinit var bookManager: BookManager
-
-    @Inject
-    protected lateinit var tracker: Tracker
+class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
@@ -71,22 +59,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
 
         when (requestCode) {
 
-            DanteUtils.rcAddBook -> {
-                if (resultCode == RESULT_OK) {
-                    val bookId = data?.getLongExtra(DanteUtils.extraBookId, -1) ?: -1
-                    if (bookId > -1) {
-                        pagerAdapter.listener?.onBookAdded(bookManager.getBook(bookId))
-                    }
-                }
-            }
             DanteUtils.rcSignIn -> {
                 data?.let { viewModel.signIn(it) }
-            }
-            BackupActivity.rcBackupRestored -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    // Backup is restored, data no longer valid --> refresh
-                    initializeNavigation()
-                }
             }
         }
     }
@@ -94,36 +68,6 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     override fun onSaveInstanceState(outState: Bundle?) {
         super.onSaveInstanceState(outState)
         outState?.putInt("tabId", tabId)
-    }
-
-    override fun onDelete(b: Book) {
-        pagerAdapter.listener?.onBookDeleted(b)
-        bookManager.removeBook(b.id)
-    }
-
-    override fun onShare(b: Book) {
-
-        val sendIntent = DanteUtils.createSharingIntent(this, b)
-        startActivity(Intent.createChooser(sendIntent, resources.getText(R.string.send_to)))
-
-        tracker.trackOnBookShared()
-    }
-
-    override fun onMoveToUpcoming(b: Book) {
-        bookManager.updateBookState(b, Book.State.READ_LATER)
-        pagerAdapter.listener?.onBookStateChanged(b, Book.State.READ_LATER)
-    }
-
-    override fun onMoveToCurrent(b: Book) {
-        bookManager.updateBookState(b, Book.State.READING)
-        pagerAdapter.listener?.onBookStateChanged(b, Book.State.READING)
-    }
-
-    override fun onMoveToDone(b: Book) {
-        bookManager.updateBookState(b, Book.State.READ)
-        pagerAdapter.listener?.onBookStateChanged(b, Book.State.READ)
-
-        tracker.trackOnBookMovedToDone(b)
     }
 
     override fun onPageSelected(position: Int) {
@@ -156,8 +100,6 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                                 throwable.printStackTrace()
                             })
                         }
-
-                        showFabAwareSnackbar(getString(R.string.signin_welcome, event.user.givenName))
                         showGoogleWelcomeScreen(event.user, event.showWelcomeScreen)
                     } else {
                         showFabAwareSnackbar(getString(R.string.signin_goodbye))
@@ -177,7 +119,7 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
                 }
 
                 is MainViewModel.UserEvent.ErrorEvent -> {
-                    showFabAwareSnackbar(getString(event.errorMsg))
+                    showToast(getString(event.errorMsg))
                 }
             }
         })
@@ -187,16 +129,12 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
     private fun setupUI() {
 
         fab.setOnClickListener {
-            tracker.trackOnScanBook()
-
-            startActivityForResult(BookRetrievalActivity.newIntent(this),
-                    DanteUtils.rcAddBook,
+            startActivity(BookRetrievalActivity.newIntent(this),
                     ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
         }
 
         imgButtonMainToolbarSearch.setOnClickListener {
-            startActivityForResult(SearchActivity.newIntent(this),
-                    DanteUtils.rcAddBook,
+            startActivity(SearchActivity.newIntent(this),
                     ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
         }
 
@@ -215,10 +153,8 @@ class MainActivity : BaseActivity(), BookAdapter.OnBookPopupItemSelectedListener
         viewPager.offscreenPageLimit = 2
 
         mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
-
             colorNavigationItems(item)
             DanteUtils.indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
-
             true
         }
 

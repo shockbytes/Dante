@@ -8,9 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupManager
-import butterknife.ButterKnife
-import butterknife.OnClick
-import butterknife.Unbinder
 
 /**
  * @author Martin Macheiner
@@ -20,14 +17,12 @@ class RestoreStrategyDialogFragment : DialogFragment() {
 
     private var strategyListener: ((BackupManager.RestoreStrategy) -> Unit)? = null
 
-    private var unbinder: Unbinder? = null
-
     private val strategyView: View
         get() {
-            val v = LayoutInflater.from(context)
+            val view = LayoutInflater.from(context)
                     .inflate(R.layout.dialogfragment_restore_strategy, null, false)
-            unbinder = ButterKnife.bind(this, v)
-            return v
+            setupViews(view)
+            return view
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -38,21 +33,16 @@ class RestoreStrategyDialogFragment : DialogFragment() {
                 .create()
     }
 
-    override fun onDestroyView() {
-        unbinder?.unbind()
-        super.onDestroyView()
-    }
+    private fun setupViews(view: View) {
+        view.findViewById<View>(R.id.dialogfragment_restore_strategy_btn_merge).setOnClickListener {
+            strategyListener?.invoke(BackupManager.RestoreStrategy.MERGE)
+            dismiss()
+        }
 
-    @OnClick(R.id.dialogfragment_restore_strategy_btn_merge)
-    protected fun onClickMerge() {
-        strategyListener?.invoke(BackupManager.RestoreStrategy.MERGE)
-        dismiss()
-    }
-
-    @OnClick(R.id.dialogfragment_restore_strategy_btn_overwrite)
-    protected fun onClickOverwrite() {
-        strategyListener?.invoke(BackupManager.RestoreStrategy.OVERWRITE)
-        dismiss()
+        view.findViewById<View>(R.id.dialogfragment_restore_strategy_btn_overwrite).setOnClickListener {
+            strategyListener?.invoke(BackupManager.RestoreStrategy.OVERWRITE)
+            dismiss()
+        }
     }
 
     fun setOnRestoreStrategySelectedListener(listener: (BackupManager.RestoreStrategy) -> Unit)

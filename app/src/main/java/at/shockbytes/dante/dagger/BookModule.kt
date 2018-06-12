@@ -1,8 +1,10 @@
 package at.shockbytes.dante.dagger
 
-import at.shockbytes.dante.books.BookManager
-import at.shockbytes.dante.books.RealmBookManager
+import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.data.RealmBookEntityDao
 import at.shockbytes.dante.network.BookDownloader
+import at.shockbytes.dante.network.google.GoogleBooksApi
+import at.shockbytes.dante.network.google.GoogleBooksDownloader
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm
@@ -18,8 +20,14 @@ class BookModule {
 
     @Provides
     @Singleton
-    fun provideBookManager(bookDownloader: BookDownloader, realm: Realm): BookManager {
-        return RealmBookManager(bookDownloader, realm)
+    fun provideBookDao(realm: Realm): BookEntityDao {
+        return RealmBookEntityDao(realm)
+    }
+
+    @Provides
+    @Singleton
+    fun provideBookDownloader(api: GoogleBooksApi): BookDownloader {
+        return GoogleBooksDownloader(api)
     }
 
 }

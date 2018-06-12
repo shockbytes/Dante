@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -8,13 +7,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.transition.Fade
 import at.shockbytes.dante.R
-import at.shockbytes.dante.books.BookSearchSuggestion
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.book.BookSearchSuggestion
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
-import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
 import javax.inject.Inject
 
@@ -53,14 +51,14 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
         showDownloadFragment(s.isbn)
     }
 
-    override fun onBookDownloaded(book: Book) {
+    override fun onBookDownloaded(book: BookEntity) {
         tracker.trackOnBookScanned(book, true)
-        finishBookDownload(book.id, true)
+        finishBookDownload()
     }
 
     override fun onCancelDownload() {
         tracker.trackOnFoundBookCanceled()
-        finishBookDownload(-1, false)
+        finishBookDownload()
     }
 
     override fun onErrorDownload(reason: String, isAttached: Boolean) {
@@ -73,7 +71,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
     }
     
     override fun onCloseOnError() {
-        finishBookDownload(-1, false)
+        finishBookDownload()
     }
 
     override fun colorSystemBars(actionBarColor: Int?, actionBarTextColor: Int?,
@@ -89,9 +87,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
 
     }
 
-    private fun finishBookDownload(bookId: Long, isSuccessful: Boolean) {
-        val resultCode = if (isSuccessful) Activity.RESULT_OK else Activity.RESULT_CANCELED
-        setResult(resultCode, Intent().putExtra(DanteUtils.extraBookId, bookId))
+    private fun finishBookDownload() {
         supportFinishAfterTransition()
     }
 

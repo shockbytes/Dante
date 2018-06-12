@@ -11,7 +11,7 @@ import at.shockbytes.dante.ui.fragment.BackupFragment
 import javax.inject.Inject
 
 
-class BackupActivity : ContainerBackNavigableActivity(), BackupFragment.OnBackupRestoreListener {
+class BackupActivity : ContainerBackNavigableActivity() {
 
     override val displayFragment: Fragment = BackupFragment.newInstance()
 
@@ -20,7 +20,6 @@ class BackupActivity : ContainerBackNavigableActivity(), BackupFragment.OnBackup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setResult(RESULT_CANCELED, Intent())
         backupManager.connect(this)
     }
 
@@ -29,17 +28,11 @@ class BackupActivity : ContainerBackNavigableActivity(), BackupFragment.OnBackup
         backupManager.close()
     }
 
-    override fun onBackupRestored() {
-        setResult(RESULT_OK, Intent())
-    }
-
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
     companion object {
-
-        const val rcBackupRestored = 0x7592
 
         fun newIntent(context: Context): Intent {
             return Intent(context, BackupActivity::class.java)

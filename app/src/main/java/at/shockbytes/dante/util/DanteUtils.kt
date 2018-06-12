@@ -1,9 +1,9 @@
 package at.shockbytes.dante.util
 
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v7.view.menu.MenuPopupHelper
@@ -14,7 +14,12 @@ import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.book.BookStatistics
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -27,23 +32,10 @@ import java.util.*
 object DanteUtils {
 
     const val rcSignIn = 0x8944
-    const val rcAddBook = 0x2512
-    const val extraBookId = "extra_book_downloaded"
-    const val maxFetchAmount = 10
-
 
     fun formatTimestamp(timeMillis: Long): String {
         return SimpleDateFormat("dd. MMM yyy - kk:mm", Locale.getDefault())
                 .format(Date(timeMillis))
-    }
-
-    fun createSharingIntent(c: Context, b: Book): Intent {
-
-        val msg = c.getString(R.string.share_template, b.title, b.googleBooksLink)
-        return Intent()
-                .setAction(Intent.ACTION_SEND)
-                .putExtra(Intent.EXTRA_TEXT, msg)
-                .setType("text/plain")
     }
 
     fun tintImage(context: Context, @DrawableRes image: Int, @ColorInt tintColor: Int): Bitmap {
@@ -79,7 +71,7 @@ object DanteUtils {
         return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
     }
 
-    fun vector2Drawable(c: Context, res: Int) = AppCompatDrawableManager.get().getDrawable(c, res)
+    fun vector2Drawable(c: Context, res: Int): Drawable = AppCompatDrawableManager.get().getDrawable(c, res)
 
     fun tryShowIconsInPopupMenu(menu: PopupMenu) {
 
@@ -91,6 +83,28 @@ object DanteUtils {
         } catch (e: Exception) {
             Log.d("Dante", "Cannot force to show icons in popupmenu")
         }
+    }
+
+    fun buildStatistics(books: List<BookEntity>): Single<BookStatistics> {
+        return Single.fromCallable {
+
+            val upcoming = books.filter { it.state == BookState.READ_LATER }
+            val done = books.filter { it.state == BookState.READ }
+            val reading = books.filter { it.state == BookState.READING }
+
+            // Add pages in the currently read book to read pages
+            val pagesRead = done.sumBy { it.pageCount } + reading.sumBy { it.currentPage }
+            // Add pages waiting in the current book to waiting pages
+            val pagesWaiting = upcoming.sumBy { it.pageCount } + reading.sumBy { it.pageCount - it.currentPage }
+            val (fastestBook, slowestBook) = BookStatistics.bookDurations(done)
+            val avgBooksPerMonth = BookStatistics.averageBooksPerMonth(done)
+            val mostReadingMonth = BookStatistics.mostReadingMonth(done)
+
+            BookStatistics(pagesRead, pagesWaiting,
+                    done.size, upcoming.size,
+                    fastestBook, slowestBook,
+                    avgBooksPerMonth, mostReadingMonth)
+        }.subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
     }
 
     fun indexForNavigationItemId(itemId: Int): Int? {

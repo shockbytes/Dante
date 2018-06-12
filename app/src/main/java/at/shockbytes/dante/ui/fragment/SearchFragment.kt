@@ -9,13 +9,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.Button
 import at.shockbytes.dante.R
-import at.shockbytes.dante.adapter.BookSearchSuggestionAdapter
-import at.shockbytes.dante.books.BookManager
-import at.shockbytes.dante.books.BookSearchSuggestion
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
+import at.shockbytes.dante.book.BookSearchSuggestion
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.activity.DetailActivity
-import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
 import butterknife.OnClick
@@ -41,9 +41,12 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     }
 
     @Inject
-    protected lateinit var manager: BookManager
+    protected lateinit var bookDownloader: BookDownloader
 
-    private val bookTransform: (Book) -> BookSearchSuggestion = { b ->
+    @Inject
+    protected lateinit var bookDao: BookEntityDao
+
+    private val bookTransform: (BookEntity) -> BookSearchSuggestion = { b ->
         BookSearchSuggestion(b.id, b.title, b.author, b.thumbnailAddress, b.isbn)
     }
 
@@ -157,12 +160,12 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     }
 
     private fun localSearch(query: String): Flowable<List<BookSearchSuggestion>> {
-        return manager.searchBooks(query)
+        return bookDao.search(query)
                 .map { it.map { b -> bookTransform(b) } }
     }
 
     private fun onlineSearch(query: String): Flowable<List<BookSearchSuggestion>> {
-        return manager.downloadBook(query)
+        return bookDownloader.downloadBook(query)
                 .map { b ->
                     val list = mutableListOf<BookSearchSuggestion>()
                     if (b.hasSuggestions) {

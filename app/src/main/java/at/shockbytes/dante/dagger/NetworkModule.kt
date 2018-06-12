@@ -1,10 +1,8 @@
 package at.shockbytes.dante.dagger
 
 import at.shockbytes.dante.BuildConfig
-import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.network.amazon.AmazonItemLookupApi
 import at.shockbytes.dante.network.google.GoogleBooksApi
-import at.shockbytes.dante.network.google.GoogleBooksDownloader
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -60,12 +58,6 @@ class NetworkModule {
                 .baseUrl(AmazonItemLookupApi.SERVICE_ENDPOINT)
                 .build()
                 .create(AmazonItemLookupApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideBookDownloader(api: GoogleBooksApi): BookDownloader {
-        return GoogleBooksDownloader(api)
     }
 
 }

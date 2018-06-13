@@ -1,6 +1,6 @@
 package at.shockbytes.dante.network
 
-import at.shockbytes.dante.books.BookSuggestion
+import at.shockbytes.dante.book.BookSuggestion
 import io.reactivex.Observable
 
 /**
@@ -10,6 +10,10 @@ import io.reactivex.Observable
 
 interface BookDownloader {
 
-    fun downloadBookSuggestion(isbn: String): Observable<BookSuggestion>
+    fun downloadBook(isbn: String): Observable<BookSuggestion>
 
+    companion object {
+
+        const val MAX_FETCH_AMOUNT = 10
+    }
 }

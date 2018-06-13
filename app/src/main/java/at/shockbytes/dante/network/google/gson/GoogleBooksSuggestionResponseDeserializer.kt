@@ -1,9 +1,8 @@
 package at.shockbytes.dante.network.google.gson
 
-import at.shockbytes.dante.books.BookFactory
-import at.shockbytes.dante.books.BookSuggestion
-import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.book.BookSuggestion
+import at.shockbytes.dante.network.BookDownloader.Companion.MAX_FETCH_AMOUNT
 import com.google.gson.*
 import java.lang.reflect.Type
 
@@ -30,7 +29,7 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
 
                 // Look for main suggestion and check for fetching size
                 val mainSuggestion = grabBook(volumeInfoMain)
-                size = if (size >= DanteUtils.maxFetchAmount) DanteUtils.maxFetchAmount else size
+                size = if (size >= MAX_FETCH_AMOUNT) MAX_FETCH_AMOUNT else size
 
                 // Because the data of other books is already fetched, let's convert them into objects
                 val otherSuggestions = (1 until size).map { idx ->
@@ -44,7 +43,7 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
         return null
     }
 
-    private fun grabBook(volumeInfo: JsonObject): Book {
+    private fun grabBook(volumeInfo: JsonObject): BookEntity {
 
         val title = volumeInfo.get("title").asString
         val subtitle = getSubtitle(volumeInfo)
@@ -56,8 +55,9 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
         val googleBooksLink = getGoogleBooksLink(volumeInfo)
         val language = getLanguage(volumeInfo)
 
-        return BookFactory.resolve(title, subtitle, author, pageCount, publishedDate, isbn,
-                thumbnailAddress, googleBooksLink, language)
+        return BookEntity(title = title, subTitle = subtitle, author = author, pageCount = pageCount,
+                publishedDate = publishedDate, isbn =  isbn, thumbnailAddress = thumbnailAddress,
+                googleBooksLink = googleBooksLink, language = language)
     }
 
     private fun getPublishedDate(volumeInfo: JsonObject): String {

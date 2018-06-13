@@ -1,7 +1,7 @@
 package at.shockbytes.dante.network.amazon
 
 import at.shockbytes.dante.network.BookDownloader
-import at.shockbytes.dante.books.BookSuggestion
+import at.shockbytes.dante.book.BookSuggestion
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -16,7 +16,7 @@ class AmazonBookDownloader(private val api: AmazonItemLookupApi) : BookDownloade
     private val accessKey = "TODO"
     private val associateTag = "TODO"
 
-    override fun downloadBookSuggestion(isbn: String): Observable<BookSuggestion> {
+    override fun downloadBook(isbn: String): Observable<BookSuggestion> {
         return api.downloadBookSuggestion("AWSECommerceService", "ItemLookup", "Large",
                 "All", "ISBN", isbn, accessKey, associateTag, createTimestamp(),
                 createSignature())

@@ -11,11 +11,13 @@ import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.adapter.BookAdapter
-import at.shockbytes.dante.books.BookManager
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.network.BookDownloader
+import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.adapter.BaseAdapter
 import com.crashlytics.android.Crashlytics
 import com.squareup.picasso.Callback
@@ -28,11 +30,11 @@ import javax.inject.Inject
 
 
 class DownloadBookFragment : BaseFragment(), Callback,
-        Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<Book> {
+        Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
 
     interface OnBookDownloadedListener {
 
-        fun onBookDownloaded(book: Book)
+        fun onBookDownloaded(book: BookEntity)
 
         fun onCancelDownload()
 
@@ -59,11 +61,14 @@ class DownloadBookFragment : BaseFragment(), Callback,
     }
 
     @Inject
-    protected lateinit var bookManager: BookManager
+    protected lateinit var bookDownloader: BookDownloader
+
+    @Inject
+    protected lateinit var bookDao: BookEntityDao
 
     private var bookAdapter: BookAdapter? = null
     private var listener: OnBookDownloadedListener? = null
-    private var selectedBook: Book? = null
+    private var selectedBook: BookEntity? = null
     private var isOtherSuggestionsShowing: Boolean = false
     private var query: String? = null
 
@@ -90,13 +95,13 @@ class DownloadBookFragment : BaseFragment(), Callback,
             showOtherSuggestions()
         }
         btnDownloadFragmentUpcoming.setOnClickListener {
-            finishBookDownload(Book.State.READ_LATER)
+            finishBookDownload(BookState.READ_LATER)
         }
         btnDownloadFragmentCurrent.setOnClickListener {
-            finishBookDownload(Book.State.READING)
+            finishBookDownload(BookState.READING)
         }
         btnDownloadFragmentDone.setOnClickListener {
-            finishBookDownload(Book.State.READ)
+            finishBookDownload(BookState.READ)
         }
 
     }
@@ -124,7 +129,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
                 statusBarColor, selectedBook?.title)
     }
 
-    override fun onItemClick(t: Book, v: View) {
+    override fun onItemClick(t: BookEntity, v: View) {
         val index = bookAdapter?.getLocation(t) ?: return
         bookAdapter?.deleteEntity(t)
         bookAdapter?.addEntity(index, selectedBook!!)
@@ -158,31 +163,33 @@ class DownloadBookFragment : BaseFragment(), Callback,
         }
     }
 
-    private fun finishBookDownload(bookState: Book.State) {
+    private fun finishBookDownload(bookState: BookState) {
         selectedBook?.let { book ->
             // Set the state and store it in database
-            book.state = bookState
-            selectedBook = bookManager.addBook(book) // Return the object with set ID
+            book.updateState(bookState)
+            bookDao.create(book)
             listener?.onBookDownloaded(book)
         }
     }
 
     private fun downloadBook() {
-        bookManager.downloadBook(query).subscribe({ suggestion ->
-            animateBookViews()
-            if (suggestion != null && suggestion.hasSuggestions) {
-                selectedBook = suggestion.mainSuggestion
-                setTitleAndIcon(selectedBook)
-                setupOtherSuggestionsRecyclerView(suggestion.otherSuggestions)
-                activity?.actionBar?.title = selectedBook?.title
-            } else {
-                listener?.onErrorDownload("no suggestions", isAdded)
-                showErrorLayout(getString(R.string.download_book_json_error))
+        query?.let { q ->
+            bookDownloader.downloadBook(q).subscribe({ suggestion ->
+                animateBookViews()
+                if (suggestion != null && suggestion.hasSuggestions) {
+                    selectedBook = suggestion.mainSuggestion
+                    setTitleAndIcon(selectedBook)
+                    setupOtherSuggestionsRecyclerView(suggestion.otherSuggestions)
+                    activity?.actionBar?.title = selectedBook?.title
+                } else {
+                    listener?.onErrorDownload("no suggestions", isAdded)
+                    showErrorLayout(getString(R.string.download_book_json_error))
+                }
+            }) { throwable ->
+                throwable.printStackTrace()
+                showErrorLayout(throwable)
+                listener?.onErrorDownload(throwable.localizedMessage, isAdded)
             }
-        }) { throwable ->
-            throwable.printStackTrace()
-            showErrorLayout(throwable)
-            listener?.onErrorDownload(throwable.localizedMessage, isAdded)
         }
     }
 
@@ -212,7 +219,7 @@ class DownloadBookFragment : BaseFragment(), Callback,
         DanteUtils.listPopAnimation(animViews, 250, interpolator = OvershootInterpolator(4f))
     }
 
-    private fun setTitleAndIcon(mainBook: Book?) {
+    private fun setTitleAndIcon(mainBook: BookEntity?) {
 
         txtDownloadFragmentTitle.text = mainBook?.title
 
@@ -225,10 +232,9 @@ class DownloadBookFragment : BaseFragment(), Callback,
         }
     }
 
-    private fun setupOtherSuggestionsRecyclerView(books: List<Book>) {
+    private fun setupOtherSuggestionsRecyclerView(books: List<BookEntity>) {
 
-        bookAdapter = BookAdapter(context!!, books, Book.State.READ,
-                null, false)
+        bookAdapter = BookAdapter(context!!, books, BookState.READ, null, false)
         recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this
         recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter

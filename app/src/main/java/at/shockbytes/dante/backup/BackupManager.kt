@@ -1,10 +1,10 @@
 package at.shockbytes.dante.backup
 
 import android.support.v4.app.FragmentActivity
-import at.shockbytes.dante.books.BookManager
-import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.data.BookEntityDao
 import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -24,15 +24,15 @@ interface BackupManager {
     
     fun connect(activity: FragmentActivity)
 
-    fun close(books: List<Book>? = null)
+    fun close(books: List<BookEntity>? = null)
 
     fun removeBackupEntry(entry: BackupEntry): Completable
 
     fun removeAllBackupEntries(): Completable
 
-    fun backup(booksObservable: Observable<List<Book>>): Completable
+    fun backup(booksObservable: Flowable<List<BookEntity>>): Completable
 
-    fun restoreBackup(entry: BackupEntry, bookManager: BookManager,
+    fun restoreBackup(entry: BackupEntry, bookDao: BookEntityDao,
                       strategy: RestoreStrategy): Completable
 
 }

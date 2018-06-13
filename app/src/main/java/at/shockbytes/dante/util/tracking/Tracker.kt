@@ -1,6 +1,6 @@
 package at.shockbytes.dante.util.tracking
 
-import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.book.BookEntity
 
 /**
  * @author Martin Macheiner
@@ -23,9 +23,9 @@ interface Tracker {
 
     fun trackOnBackupRestored()
 
-    fun trackOnBookScanned(b: Book, viaSearchInterface: Boolean = false)
+    fun trackOnBookScanned(b: BookEntity, viaSearchInterface: Boolean = false)
 
-    fun trackOnBookMovedToDone(b: Book)
+    fun trackOnBookMovedToDone(b: BookEntity)
 
     fun trackOnDownloadError(reason: String)
 

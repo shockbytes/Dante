@@ -10,8 +10,10 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.books.BookManager
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
@@ -19,7 +21,6 @@ import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.books.Book
 import at.shockbytes.dante.util.tracking.Tracker
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -42,7 +43,7 @@ class BookDetailFragment : BaseFragment(), Callback,
     override val layoutId = R.layout.fragment_book_detail
 
     @Inject
-    protected lateinit var manager: BookManager
+    protected lateinit var bookDao: BookEntityDao
 
     @Inject
     protected lateinit var settings: DanteSettings
@@ -67,14 +68,16 @@ class BookDetailFragment : BaseFragment(), Callback,
                 Pair(R.drawable.ic_popup_done, btnDetailFragmentEndDate))
     }
 
-    private lateinit var book: Book
+    private lateinit var book: BookEntity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val bookId = arguments?.getLong(ARG_BOOK_ID)
         if (bookId != null) {
-            book = manager.getBook(bookId)
+            bookDao.get(bookId)?.let {
+                book = it
+            }
         } else {
             showToast(R.string.error_load_book)
             activity?.supportFinishAfterTransition()
@@ -89,7 +92,10 @@ class BookDetailFragment : BaseFragment(), Callback,
             val showCurrentPage = settings.pageTrackingEnabled and book.reading
             PageEditDialogFragment.newInstance(book.currentPage, book.pageCount, showCurrentPage)
                     .setOnPageEditedListener { current, pages ->
-                        manager.updateBookPages(book, current, pages)
+
+                        book.currentPage = current
+                        book.pageCount = pages
+                        bookDao.update(book)
                         setupPageComponents()
                     }.show(fragmentManager, "pages-dialogfragment")
         }
@@ -106,7 +112,9 @@ class BookDetailFragment : BaseFragment(), Callback,
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             NotesDialogFragment.newInstance(book.title, book.thumbnailAddress, book.notes ?: "")
                     .setOnApplyListener { notes ->
-                        manager.updateBookNotes(book, notes)
+
+                        book.notes = notes
+                        bookDao.update(book)
                         setupNotes()
                     }.show(fragmentManager, "notes-dialogfragment")
         }
@@ -114,7 +122,9 @@ class BookDetailFragment : BaseFragment(), Callback,
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             RateBookDialogFragment.newInstance(book.title, book.thumbnailAddress, book.rating)
                     .setOnApplyListener { rating ->
-                        manager.updateBookRating(book, rating)
+
+                        book.rating = rating
+                        bookDao.update(book)
                         tracker.trackRatingEvent(rating)
                         btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                     }.show(fragmentManager, "rating-dialogfragment")
@@ -169,12 +179,15 @@ class BookDetailFragment : BaseFragment(), Callback,
 
     override fun onEndScrolling(endValue: Int) {
 
-        manager.updateCurrentBookPage(book, endValue)
+        book.currentPage = endValue
+        bookDao.update(book)
         if (book.currentPage == book.pageCount) {
             SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, book.title),
                     getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
                     .setOnAcceptListener {
-                        manager.updateBookState(book, Book.State.READ)
+
+                        book.updateState(BookState.READ)
+                        bookDao.update(book)
                         activity?.supportFinishAfterTransition()
                     }
                     .show(fragmentManager, "book-finished-dialogfragment")
@@ -285,7 +298,7 @@ class BookDetailFragment : BaseFragment(), Callback,
             }
 
             // Show pages as button text
-            val pages = if (book.state == Book.State.READING)
+            val pages = if (book.state == BookState.READING)
                 getString(R.string.detail_pages, book.currentPage, book.pageCount)
             else
                 book.pageCount.toString()
@@ -321,7 +334,9 @@ class BookDetailFragment : BaseFragment(), Callback,
         val publishedDate = "$y-$mStr-$dStr"
 
         btnDetailFragmentPublished.text = publishedDate
-        manager.updateBookPublishedDate(book, publishedDate)
+
+        book.publishedDate = publishedDate
+        bookDao.update(book)
     }
 
     // --------------------------------------------------------------------

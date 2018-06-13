@@ -49,7 +49,7 @@ fun Uri.loadRoundedBitmap(context: Context): Single<Bitmap> {
     }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
 }
 
-fun GoogleSignInAccount.toDanteUser() : DanteUser {
+fun GoogleSignInAccount.toDanteUser(): DanteUser {
     return DanteUser(this.givenName, this.displayName,
             this.email, this.photoUrl, "google",
             this.idToken)

@@ -4,15 +4,15 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.support.v4.app.FragmentActivity
 import android.util.Log
-import at.shockbytes.dante.books.BookManager
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.signin.GoogleSignInManager
-import at.shockbytes.dante.util.books.Book
 import com.google.android.gms.drive.*
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -49,7 +49,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         }
     }
 
-    override fun close(books: List<Book>?) {
+    override fun close(books: List<BookEntity>?) {
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {
@@ -71,7 +71,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun backup(booksObservable: Observable<List<Book>>): Completable {
+    override fun backup(booksObservable: Flowable<List<BookEntity>>): Completable {
         return Completable.fromAction {
 
             val books = booksObservable.blockingFirst()
@@ -85,13 +85,13 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun restoreBackup(entry: BackupEntry, bookManager: BookManager,
+    override fun restoreBackup(entry: BackupEntry, bookDao: BookEntityDao,
                                strategy: BackupManager.RestoreStrategy): Completable {
 
         return if (client != null) {
             Completable.fromAction {
                 booksFromEntry(entry).subscribe { books ->
-                    bookManager.restoreBackup(books, strategy)
+                    bookDao.restoreBackup(books, strategy)
                 }
             }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         } else {
@@ -133,7 +133,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
 
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Log.wtf("Dante", "Cannot parse file: " + fileName)
+                    Log.wtf("Dante", "Cannot parse file: $fileName")
                 }
 
             }
@@ -154,8 +154,8 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
                 Build.MODEL + ".json"
     }
 
-    private fun booksFromEntry(entry: BackupEntry): Observable<List<Book>> {
-        return Observable.defer {
+    private fun booksFromEntry(entry: BackupEntry): Single<List<BookEntity>> {
+        return Single.fromCallable {
             val file = DriveId.decodeFromString(entry.fileId).asDriveFile()
             val result = client?.openFile(file, DriveFile.MODE_READ_ONLY)
 
@@ -163,22 +163,16 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
             val reader = BufferedReader(InputStreamReader(contents?.inputStream))
             val builder = StringBuilder()
 
-            try {
-
-                for (line in reader.lineSequence()) {
-                    builder.append(line)
-                }
-                val contentsAsString = builder.toString()
-                client?.discardContents(contents) // Close contents
-
-                val list: List<Book> = gson.fromJson(contentsAsString,
-                        object : TypeToken<List<Book>>() {}.type)
-                Observable.just(list)
-
-            } catch (e: IOException) {
-                e.printStackTrace()
-                Observable.just(listOf<Book>()) // Return empty array instead of a null array
+            for (line in reader.lineSequence()) {
+                builder.append(line)
             }
+            val contentsAsString = builder.toString()
+            client?.discardContents(contents) // Close contents
+
+            val list: List<BookEntity> = gson.fromJson(contentsAsString,
+                    object : TypeToken<List<BookEntity>>() {}.type)
+            list
+
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 

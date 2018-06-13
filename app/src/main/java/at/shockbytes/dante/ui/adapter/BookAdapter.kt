@@ -1,6 +1,7 @@
-package at.shockbytes.dante.adapter
+package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
@@ -9,12 +10,13 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
+import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.books.Book
+import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
-import com.crashlytics.android.Crashlytics
 import com.squareup.picasso.Picasso
 import kotterknife.bindView
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
@@ -27,34 +29,31 @@ import kotlin.math.roundToInt
  * Date: 30.12.2017.
  */
 
-class BookAdapter(context: Context, extData: List<Book>,
-                  private val state: Book.State,
+class BookAdapter(context: Context, extData: List<BookEntity>,
+                  private val state: BookState,
                   private val popupListener: OnBookPopupItemSelectedListener? = null,
                   private val showOverflow: Boolean = true,
                   private val settings: DanteSettings? = null)
-    : BaseAdapter<Book>(context, extData.toMutableList()), ItemTouchHelperAdapter {
+    : BaseAdapter<BookEntity>(context, extData.toMutableList()), ItemTouchHelperAdapter {
 
     interface OnBookPopupItemSelectedListener {
 
-        fun onDelete(b: Book)
+        fun onDelete(b: BookEntity)
 
-        fun onShare(b: Book)
+        fun onShare(b: BookEntity)
 
-        fun onMoveToUpcoming(b: Book)
+        fun onMoveToUpcoming(b: BookEntity)
 
-        fun onMoveToCurrent(b: Book)
+        fun onMoveToCurrent(b: BookEntity)
 
-        fun onMoveToDone(b: Book)
+        fun onMoveToDone(b: BookEntity)
     }
 
-    private var drawOverlay: Boolean = settings?.pageOverlayEnabled == true
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<Book>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<BookEntity>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_book, parent, false))
     }
 
     override fun onItemDismiss(position: Int) {
-
         val removed = data.removeAt(position)
         onItemMoveListener?.onItemDismissed(removed, position)
     }
@@ -81,32 +80,16 @@ class BookAdapter(context: Context, extData: List<Book>,
         onItemMoveListener?.onItemMoveFinished()
     }
 
-    fun onItemMayChanged(book: Book?) {
+    fun updateData(books: List<BookEntity>) {
+        val diffResult = DiffUtil.calculateDiff(BookDiffUtilCallback(data, books))
 
-        // In case the user disabled the page overlay in the settings
-        // and the adapter is by now not aware of the fact
-        if (settings?.pageOverlayEnabled != drawOverlay) {
-            notifyDataSetChanged()
-        }
-        // In case the book page for one specific book has changed
-        else if (settings.pageOverlayEnabled) {
-            try {
-                if (book != null && book.isValid) {
-                    val location = getLocation(book)
-                    if (location > -1) {
-                        notifyItemChanged(location)
-                    }
-                }
-            } catch(e: java.lang.IllegalStateException) {
-                e.printStackTrace()
-                Crashlytics.logException(e)
-            }
-        }
+        data.clear()
+        data.addAll(books)
 
-        drawOverlay = settings?.pageOverlayEnabled == true
+        diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class ViewHolder(itemView: View) : BaseAdapter<Book>.ViewHolder(itemView),
+    inner class ViewHolder(itemView: View) : BaseAdapter<BookEntity>.ViewHolder(itemView),
             PopupMenu.OnMenuItemClickListener {
 
         private val txtTitle: TextView by bindView(R.id.item_book_txt_title)
@@ -127,7 +110,7 @@ class BookAdapter(context: Context, extData: List<Book>,
             setupOverflowMenu()
         }
 
-        override fun bind(t: Book) {
+        override fun bind(t: BookEntity) {
             content = t
 
             updateTexts(t)
@@ -137,31 +120,26 @@ class BookAdapter(context: Context, extData: List<Book>,
 
         override fun onMenuItemClick(item: MenuItem): Boolean {
 
-            return if (content != null) {
+            content?.let { bookEntity ->
                 // Do not delete book from adapter when user just wants to share it!
                 if (item.itemId != R.id.popup_item_share) {
-                    deleteEntity(content!!)
+                    deleteEntity(bookEntity)
                 }
 
                 when (item.itemId) {
-
-                    R.id.popup_item_move_to_upcoming -> popupListener?.onMoveToUpcoming(content!!)
-
-                    R.id.popup_item_move_to_current -> popupListener?.onMoveToCurrent(content!!)
-
-                    R.id.popup_item_move_to_done -> popupListener?.onMoveToDone(content!!)
-
-                    R.id.popup_item_share -> popupListener?.onShare(content!!)
-
-                    R.id.popup_item_delete -> popupListener?.onDelete(content!!)
+                    R.id.popup_item_move_to_upcoming -> popupListener?.onMoveToUpcoming(bookEntity)
+                    R.id.popup_item_move_to_current -> popupListener?.onMoveToCurrent(bookEntity)
+                    R.id.popup_item_move_to_done -> popupListener?.onMoveToDone(bookEntity)
+                    R.id.popup_item_share -> popupListener?.onShare(bookEntity)
+                    R.id.popup_item_delete -> popupListener?.onDelete(bookEntity)
+                    else -> { }
                 }
-                true
-            } else {
-                false
             }
+
+            return true
         }
 
-        private fun updatePageOverlay(t: Book) {
+        private fun updatePageOverlay(t: BookEntity) {
 
             if (settings?.pageOverlayEnabled == true && t.reading && t.hasPages) {
                 val currentPage = t.currentPage.toDouble()
@@ -178,7 +156,7 @@ class BookAdapter(context: Context, extData: List<Book>,
             }
         }
 
-        private fun updateImageThumbnail(t: Book) {
+        private fun updateImageThumbnail(t: BookEntity) {
 
             if (!t.thumbnailAddress.isNullOrEmpty()) {
                 Picasso.with(context).load(t.thumbnailAddress)
@@ -190,7 +168,7 @@ class BookAdapter(context: Context, extData: List<Book>,
             }
         }
 
-        private fun updateTexts(t: Book) {
+        private fun updateTexts(t: BookEntity) {
             txtTitle.text = t.title
             txtAuthor.text = t.author
             txtSubTitle.text = t.subTitle
@@ -213,9 +191,9 @@ class BookAdapter(context: Context, extData: List<Book>,
 
             val item = when (state) {
 
-                Book.State.READ_LATER -> popupMenu.menu.findItem(R.id.popup_item_move_to_upcoming)
-                Book.State.READING -> popupMenu.menu.findItem(R.id.popup_item_move_to_current)
-                Book.State.READ -> popupMenu.menu.findItem(R.id.popup_item_move_to_done)
+                BookState.READ_LATER -> popupMenu.menu.findItem(R.id.popup_item_move_to_upcoming)
+                BookState.READING -> popupMenu.menu.findItem(R.id.popup_item_move_to_current)
+                BookState.READ -> popupMenu.menu.findItem(R.id.popup_item_move_to_done)
             }
             item?.isVisible = false
         }

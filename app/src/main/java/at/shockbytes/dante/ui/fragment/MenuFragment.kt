@@ -10,7 +10,6 @@ import android.support.design.widget.BottomSheetDialogFragment
 import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -91,8 +90,7 @@ class MenuFragment : BottomSheetDialogFragment() {
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
             activity?.let { act ->
-                act.startActivityForResult(BackupActivity.newIntent(act),
-                        BackupActivity.rcBackupRestored,
+                act.startActivity(BackupActivity.newIntent(act),
                         ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
             }
             dismiss()

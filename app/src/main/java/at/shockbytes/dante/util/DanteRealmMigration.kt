@@ -12,7 +12,7 @@ import io.realm.RealmSchema
 class DanteRealmMigration : RealmMigration {
 
     enum class Migrations {
-        BASE, DATES, RATING_LANG, PAGES_NOTES
+        BASE, DATES, RATING_LANG, PAGES_NOTES, NAME_REFACTORING
     }
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
@@ -29,6 +29,10 @@ class DanteRealmMigration : RealmMigration {
         }
         if (versionCounter == Migrations.RATING_LANG.v()) {
             migrateBookPageCountAndNotes(schema)
+            versionCounter++
+        }
+        if (versionCounter == Migrations.PAGES_NOTES.v()) {
+            migrateNameRefactoring(schema)
             // versionCounter++
         }
     }
@@ -52,11 +56,16 @@ class DanteRealmMigration : RealmMigration {
                 ?.addField("notes", String::class.java)
     }
 
+    private fun migrateNameRefactoring(schema: RealmSchema) {
+        schema.rename("Book", "RealmBook")
+        schema.rename("BookConfig", "RealmBookConfig")
+    }
+
     companion object {
 
         private fun Migrations.v(): Long = this.ordinal.toLong()
 
-        val migrationVersion = Migrations.PAGES_NOTES.v()
+        val migrationVersion = Migrations.NAME_REFACTORING.v()
     }
 
 }

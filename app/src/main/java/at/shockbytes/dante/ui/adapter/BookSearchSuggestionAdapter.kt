@@ -1,4 +1,4 @@
-package at.shockbytes.dante.adapter
+package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
 import android.view.View
@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.books.BookSearchSuggestion
+import at.shockbytes.dante.book.BookSearchSuggestion
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import com.squareup.picasso.Picasso

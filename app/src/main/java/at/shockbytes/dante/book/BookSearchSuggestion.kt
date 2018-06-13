@@ -1,4 +1,4 @@
-package at.shockbytes.dante.books
+package at.shockbytes.dante.book
 
 import android.annotation.SuppressLint
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion

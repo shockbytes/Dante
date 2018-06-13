@@ -1,7 +1,7 @@
 package at.shockbytes.dante.network.google
 
+import at.shockbytes.dante.book.BookSuggestion
 import at.shockbytes.dante.network.BookDownloader
-import at.shockbytes.dante.books.BookSuggestion
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 
 class GoogleBooksDownloader(private val api: GoogleBooksApi) : BookDownloader {
 
-    override fun downloadBookSuggestion(isbn: String): Observable<BookSuggestion> {
+    override fun downloadBook(isbn: String): Observable<BookSuggestion> {
         return api.downloadBookSuggestion(isbn)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

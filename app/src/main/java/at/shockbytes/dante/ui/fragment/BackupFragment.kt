@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -9,18 +8,18 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import at.shockbytes.dante.R
-import at.shockbytes.dante.adapter.BackupEntryAdapter
 import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.backup.BackupManager
-import at.shockbytes.dante.books.BookManager
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
-import butterknife.OnClick
+import kotlinx.android.synthetic.main.activity_backup.*
 import kotterknife.bindView
 import java.util.*
 import javax.inject.Inject
@@ -33,13 +32,8 @@ import javax.inject.Inject
 class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntry>,
         BaseAdapter.OnItemMoveListener<BackupEntry> {
 
-    interface OnBackupRestoreListener {
-
-        fun onBackupRestored()
-    }
-
     @Inject
-    protected lateinit var bookManager: BookManager
+    protected lateinit var bookDao: BookEntityDao
 
     @Inject
     protected lateinit var backupManager: BackupManager
@@ -48,8 +42,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     protected lateinit var tracker: Tracker
 
     private lateinit var adapter: BackupEntryAdapter
-
-    private var backupRestoreListener: OnBackupRestoreListener? = null
 
     private val rvBackups: RecyclerView by bindView(R.id.activity_backup_rv_backups)
     private val txtLastBackup: TextView by bindView(R.id.activity_backup_txt_last_backup)
@@ -60,14 +52,8 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         appComponent.inject(this)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        backupRestoreListener = context as? OnBackupRestoreListener
-    }
-
-    @OnClick(R.id.activity_backup_btn_backup)
     protected fun onClickBackup() {
-        backupManager.backup(bookManager.allBooks).subscribe({
+        backupManager.backup(bookDao.bookObservable).subscribe({
             showSnackbar(getString(R.string.backup_created))
             updateLastBackupTime()
             loadBackupList()
@@ -93,16 +79,19 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         rvBackups.adapter = adapter
         rvBackups.addItemDecoration(EqualSpaceItemDecoration(8))
 
+        activity_backup_btn_backup.setOnClickListener {
+            onClickBackup()
+        }
+
         loadBackupList()
     }
 
     override fun onItemClick(t: BackupEntry, v: View) {
         RestoreStrategyDialogFragment.newInstance()
                 .setOnRestoreStrategySelectedListener { strategy ->
-                    backupManager.restoreBackup(t, bookManager, strategy)
+                    backupManager.restoreBackup(t, bookDao, strategy)
                             .subscribe({
                                 tracker.trackOnBackupRestored()
-                                backupRestoreListener?.onBackupRestored() // Notify MainActivity
                                 showSnackbar(getString(R.string.backup_restored,
                                         DanteUtils.formatTimestamp(t.timestamp)))
                             }) { throwable ->

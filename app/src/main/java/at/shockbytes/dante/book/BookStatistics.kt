@@ -1,6 +1,5 @@
-package at.shockbytes.dante.books
+package at.shockbytes.dante.book
 
-import at.shockbytes.dante.util.books.Book
 import at.shockbytes.util.AppUtils
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -22,7 +21,7 @@ data class BookStatistics(val pagesRead: Int, val pagesWaiting: Int,
 
     companion object {
 
-        fun averageBooksPerMonth(booksDone: List<Book>): Double {
+        fun averageBooksPerMonth(booksDone: List<BookEntity>): Double {
 
             val now = System.currentTimeMillis()
             val start = booksDone.map { it.startDate }.sorted().firstOrNull() ?: now
@@ -35,7 +34,7 @@ data class BookStatistics(val pagesRead: Int, val pagesWaiting: Int,
             }
         }
 
-        fun bookDurations(booksDone: List<Book>): Pair<Duration?, Duration?> {
+        fun bookDurations(booksDone: List<BookEntity>): Pair<Duration?, Duration?> {
 
             val durations = booksDone
                     .map { it ->
@@ -43,13 +42,13 @@ data class BookStatistics(val pagesRead: Int, val pagesWaiting: Int,
                         if (days == 0L) {
                             days = 1
                         }
-                        BookStatistics.Duration(it.title, days)
+                        Duration(it.title, days)
                     }
                     .sortedBy { it.days }
             return Pair(durations.firstOrNull(), durations.lastOrNull())
         }
 
-        fun mostReadingMonth(booksDone: List<Book>): MostReadingMonth? {
+        fun mostReadingMonth(booksDone: List<BookEntity>): MostReadingMonth? {
 
             val maxMonth = booksDone
                     .map { DateTime(it.endDate).monthOfYear() }

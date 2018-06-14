@@ -140,11 +140,22 @@
     <string name="percentage_formatter" translatable="false">%d%%</string>
     <string name="prefs_page_overlay_title">Page Overlay</string>
     <string name="prefs_page_overlay_summary">Show an overlay with the current page on each reading book</string>
+    <string name="prefs_sort_strategy_key" translatable="false">prefs_sort_strategy_key</string>
     <string name="download_attachment_error">Oh, something terribly went wrong!</string>
     <string name="tab_suggestions">Suggestions</string>
     <string name="menu_main_sort">Sort books</string>
     <string name="anonymous_user">Anonymous bookworm</string>
     <string name="menu_main_supporter">Supporter badge</string>
+    <string name="sort_strategy_default">Default</string>
+    <string name="sort_strategy_author">Author</string>
+    <string name="sort_strategy_title">Title</string>
+    <string name="sort_strategy_progress">Progress</string>
+    <string name="sort_strategy_default_hint">Books are automatically inserted after scanning. You can rearrange your books by drag and drop.</string>
+    <string name="sort_strategy_author_hint">Books are sorted by the name of the author. Manually rearranging your books will fall back to default sort.</string>
+    <string name="sort_strategy_title_hint">Books are sorted by the book title. Manually rearranging your books will fall back to default sort.</string>
+    <string name="sort_strategy_progress_hint">Books are sorted by your reading progress. Manually rearranging your books will fall back to default strategy.</string>
+    <string name="dialogfragment_sort_by">Sort by</string>
+    <string name="scan_network_not_available">Please enable network connectivity, in order to scan books!</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

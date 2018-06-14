@@ -17,9 +17,9 @@ import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
-import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
+import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.createSharingIntent
@@ -152,6 +152,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
                 if (books.isNotEmpty()) {
                     bookAdapter?.updateData(books)
                     updateEmptyView(false)
+                    recyclerView.scrollToPosition(0)
                 }
             }
         })

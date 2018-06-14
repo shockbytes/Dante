@@ -133,6 +133,16 @@
     <string name="menu_main_sort">Bücher sortieren</string>
     <string name="anonymous_user">Unbekannter Bücherwurm</string>
     <string name="menu_main_supporter">Supprter Badge</string>
+    <string name="sort_strategy_default">Standard</string>
+    <string name="sort_strategy_author">Autor</string>
+    <string name="sort_strategy_title">Buchtitel</string>
+    <string name="sort_strategy_progress">Lesefortschritt</string>
+    <string name="dialogfragment_sort_by">Sortieren nach</string>
+    <string name="sort_strategy_default_hint">Die Bücher werden nach dem Scannen automatisch eingefügt. Du kannst die Reihenfolge beliebig ändern.</string>
+    <string name="sort_strategy_author_hint">Die Bücher werden sortiert nach dem Namen des Autors.  Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
+    <string name="sort_strategy_progress_hint">Die Bücher werden nach deinem Lesefortschritt sortiert. Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
+    <string name="sort_strategy_title_hint">Die Bücher werden nach dem Buchtitel sortiert. Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
+    <string name="scan_network_not_available">Bitte schalte deine Internetverbindung ein, wenn du Bücher scannen willst!</string>
 
 
 </resources>

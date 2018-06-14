@@ -3,6 +3,7 @@ package at.shockbytes.dante.dagger
 import at.shockbytes.dante.ui.activity.*
 import at.shockbytes.dante.ui.fragment.*
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -43,12 +44,13 @@ interface AppComponent {
 
     fun inject(fragment: SearchFragment)
 
-    fun inject(dialogFragment: GoogleSignInDialogFragment)
-
-    fun inject(suggestionsFragment: SuggestionsFragment)
+    fun inject(fragment: SuggestionsFragment)
 
     fun inject(fragment: BookDetailFragment)
 
     fun inject(fragment: MenuFragment)
 
+    fun inject(dialogFragment: GoogleSignInDialogFragment)
+
+    fun inject(dialogFragment: SortStrategyDialogFragment)
 }

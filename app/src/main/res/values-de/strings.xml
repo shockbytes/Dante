@@ -143,6 +143,9 @@
     <string name="sort_strategy_progress_hint">Die Bücher werden nach deinem Lesefortschritt sortiert. Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
     <string name="sort_strategy_title_hint">Die Bücher werden nach dem Buchtitel sortiert. Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
     <string name="scan_network_not_available">Bitte schalte deine Internetverbindung ein, wenn du Bücher scannen willst!</string>
+    <string name="invalid_time_range_wishlist">Datum der Wunschliste muss vor den anderen Daten liegen...</string>
+    <string name="invalid_time_range_start">Das Startdatum muss zwischen den anderen Daten liegen...</string>
+    <string name="invalid_time_range_end">Das Enddatum muss später sein als die anderen Daten...</string>
 
 
 </resources>

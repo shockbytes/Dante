@@ -89,7 +89,7 @@
 
         <Button
             android:id="@+id/btnDetailFragmentPublished"
-            style="?attr/borderlessButtonStyle"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -111,7 +111,7 @@
 
         <Button
             android:id="@+id/btnDetailFragmentRating"
-            style="?attr/borderlessButtonStyle"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -139,7 +139,7 @@
 
         <Button
             android:id="@+id/btnDetailFragmentNotes"
-            style="?attr/borderlessButtonStyle"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="8dp"
@@ -177,7 +177,7 @@
 
         <Button
             android:id="@+id/btnDetailFragmentPages"
-            style="?attr/borderlessButtonStyle"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -230,6 +230,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
+                android:lines="2"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textColor="@android:color/secondary_text_light"
@@ -244,6 +245,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
+                android:lines="2"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textColor="@android:color/secondary_text_light"
@@ -258,6 +260,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
+                android:lines="2"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
                 android:textColor="@android:color/secondary_text_light"
@@ -276,6 +279,5 @@
             app:layout_constraintTop_toBottomOf="@+id/horizontalGuideline2" />
 
     </android.support.constraint.ConstraintLayout>
-
 
 </android.support.v7.widget.CardView>

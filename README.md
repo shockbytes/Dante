@@ -11,19 +11,25 @@ can simply keep track of your progress of all your books and their current state
 ## Versions
 
 ### Backlog
-- [ ] Add book manually (FAB menu)
 - [ ] Include Amazon books API?
-- [ ] Tablet optimization
-- [ ] Use Firebase Data for book recommendations
-- [ ] Firebase as Backend!
 - [ ] Change book cover and store data in Firebase Cloud Storage
+
+### Version 3.3
+- [ ] Use Firebase Data for book recommendations
+
+### Version 3.2
+- [ ] Firebase as Online Backend
 - [ ] Redesign login flow with Firebase login
+
+### Version 3.1
 - [ ] Supporting badge (in-app purchases)
+- [ ] Add book manually (FAB menu -> Camera, By title, Manual)
+- [ ] Tablet optimization
 
 ### Version 3.0
-- [ ] Change dates after insertion
-- [ ] Fix 'backup overwrites wrong dates' bug
-- [ ] Refactor detail view
+- [x] Fix 'wrong dates' bug
+- [x] Change dates after insertion
+- [x] Refactor detail view
 - [x] Sort book list
 - [x] General Architecture redesign (abstract Realm to exchange it)
 - [x] Fix backup mechanism

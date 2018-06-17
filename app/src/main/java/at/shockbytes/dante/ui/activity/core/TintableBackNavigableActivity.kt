@@ -37,7 +37,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         upIndicator = indicator // Store for next time if just tinting is necessary
         if (tint) {
             val drawable = DanteUtils.vector2Drawable(applicationContext, indicator)
-            drawable?.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
+            drawable.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
             supportActionBar?.setHomeAsUpIndicator(drawable)
         } else {
             supportActionBar?.setHomeAsUpIndicator(indicator)
@@ -45,7 +45,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
     }
 
     fun tintSystemBarsWithText(@ColorInt actionBarColor: Int?, @ColorInt actionBarTextColor: Int?,
-                               @ColorInt statusBarColor: Int?, title: String?,
+                               @ColorInt statusBarColor: Int?, title: String? = null,
                                animated: Boolean = false,
                                useSameColorsForBoth: Boolean = true) {
 
@@ -59,7 +59,8 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         }
 
         // Set and tint text of action bar
-        val text = SpannableString(title)
+        val newTitle = title ?: supportActionBar?.title
+        val text = SpannableString(newTitle)
         text.setSpan(ForegroundColorSpan(abtColor), 0, text.length,
                 Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         supportActionBar?.title = text

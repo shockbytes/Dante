@@ -16,6 +16,8 @@
 #   public *;
 #}
 
+-keep public class android.app.ActivityTransitionCoordinator
+
 # Picasso
 -dontwarn com.squareup.okhttp.**
 
@@ -58,12 +60,3 @@
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
-
-# Icepick
--dontwarn icepick.**
--keep class icepick.** { *; }
--keep class **$$Icepick { *; }
--keepclasseswithmembernames class * {
-    @icepick.* <fields>;
-}
--keepnames class * { @icepick.State *;}

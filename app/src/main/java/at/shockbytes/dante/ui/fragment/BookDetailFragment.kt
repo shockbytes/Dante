@@ -1,5 +1,7 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.app.DatePickerDialog
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
@@ -14,6 +16,11 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
+import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
@@ -24,7 +31,9 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_book_detail.*
+import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -68,12 +77,11 @@ class BookDetailFragment : BaseFragment(), Callback,
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
 
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId ->
-            viewModel.bookId = bookId
-        }
+        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.bookId = bookId }
     }
 
     override fun setupViews() {
+        setupViewListener()
         setupObserver()
     }
 
@@ -100,31 +108,14 @@ class BookDetailFragment : BaseFragment(), Callback,
         val actionBarTextColor = palette.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette.darkMutedSwatch?.rgb
 
-        /* TODO
         (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
-                actionBarTextColor, statusBarColor, book.title)
-        */
+                actionBarTextColor, statusBarColor)
     }
 
     override fun onStartScrolling(startValue: Int) {}
 
     override fun onEndScrolling(endValue: Int) {
-
-        /* TODO
-        book.currentPage = endValue
-        bookDao.update(book)
-        if (book.currentPage == book.pageCount) {
-            SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, book.title),
-                    getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
-                    .setOnAcceptListener {
-
-                        book.updateState(BookState.READ)
-                        bookDao.update(book)
-                        activity?.supportFinishAfterTransition()
-                    }
-                    .show(fragmentManager, "book-finished-dialogfragment")
-        }
-        */
+        viewModel.updateCurrentPage(endValue)
     }
 
     // --------------------------------------------------------------------
@@ -139,79 +130,93 @@ class BookDetailFragment : BaseFragment(), Callback,
 
         viewModel.book.observe(this, android.arch.lifecycle.Observer {
 
-            // TODO Fix this!
-            initializeBookInformation()
-            initializeTimeInformation()
-            setupViewListener()
+            it?.let { book ->
+
+                activity?.title = book.title
+                initializeBookInformation(book)
+                initializeTimeInformation(book)
+            }
         })
+
+        viewModel.showBookFinishedDialog.observe(this, Observer { title ->
+            SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
+                    getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
+                    .setOnAcceptListener {
+                        viewModel.moveBookToDone()
+                        activity?.supportFinishAfterTransition()
+                    }
+                    .show(fragmentManager, "book-finished-dialogfragment")
+        })
+
+        viewModel.showPagesDialog.observe(this, Observer { data ->
+            data?.let { (currentPage, pageCount, isReading) ->
+                // Only show current page in dialog if tracking is enabled and book is in reading state
+                val showCurrent = settings.pageTrackingEnabled and isReading
+                PageEditDialogFragment.newInstance(currentPage, pageCount, showCurrent)
+                        .setOnPageEditedListener { current, pages ->
+                            viewModel.updateBookPages(current, pages)
+                        }.show(fragmentManager, "pages-dialogfragment")
+            }
+        })
+
+        viewModel.showNotesDialog.observe(this, Observer { data ->
+            data?.let { (title, thumbnailAddress, notes) ->
+                NotesDialogFragment.newInstance(title, thumbnailAddress, notes)
+                        .setOnApplyListener { updatedNotes ->
+                            viewModel.updateNotes(updatedNotes)
+                            setupNotes(notes.isEmpty())
+                        }.show(fragmentManager, "notes-dialogfragment")
+            }
+        })
+
+        viewModel.showRatingDialog.observe(this, Observer { data ->
+            data?.let { (title, thumbnailAddress, r) ->
+                RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
+                        .setOnApplyListener { rating ->
+                            viewModel.updateRating(rating)
+                            tracker.trackRatingEvent(rating)
+                            btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
+                        }.show(fragmentManager, "rating-dialogfragment")
+            }
+        })
+
     }
 
     private fun setupViewListener() {
-/* TODO
 
-    btnDetailFragmentPages.setOnClickListener { v ->
-        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        // Only show current page in dialog if tracking is enabled and book is in reading state
-        val showCurrentPage = settings.pageTrackingEnabled and book.reading
-        PageEditDialogFragment.newInstance(book.currentPage, book.pageCount, showCurrentPage)
-                .setOnPageEditedListener { current, pages ->
+        btnDetailFragmentPages.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            viewModel.requestPageDialog()
+        }
+        btnDetailFragmentPublished.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            showDatePicker(DATE_TARGET_PUBLISHED_DATE)
+        }
+        btnDetailFragmentNotes.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            viewModel.requestNotesDialog()
+        }
+        btnDetailFragmentRating.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            viewModel.requestRatingDialog()
+        }
 
-                    book.currentPage = current
-                    book.pageCount = pages
-                    bookDao.update(book)
-                    setupPageComponents()
-                }.show(fragmentManager, "pages-dialogfragment")
-    }
-    btnDetailFragmentPublished.setOnClickListener { v ->
-        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-
-        val cal = Calendar.getInstance()
-        DatePickerDialog(activity,
-                { _, y, m, d -> onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) }, // +1 because month starts with 0
-                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
-                .show()
-    }
-    btnDetailFragmentNotes.setOnClickListener { v ->
-        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        NotesDialogFragment.newInstance(book.title, book.thumbnailAddress, book.notes ?: "")
-                .setOnApplyListener { notes ->
-
-                    book.notes = notes
-                    bookDao.update(book)
-                    setupNotes(book)
-                }.show(fragmentManager, "notes-dialogfragment")
-    }
-    btnDetailFragmentRating.setOnClickListener { v ->
-        v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-        RateBookDialogFragment.newInstance(book.title, book.thumbnailAddress, book.rating)
-                .setOnApplyListener { rating ->
-
-                    book.rating = rating
-                    bookDao.update(book)
-                    tracker.trackRatingEvent(rating)
-                    btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
-                }.show(fragmentManager, "rating-dialogfragment")
-    }
-    */
-
-        // TODO Open dates DialogFragment
         btnDetailFragmentWishlistDate.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showToast("Change wishlist date")
+            showDatePicker(DATE_TARGET_WISHLIST_DATE)
         }
         btnDetailFragmentStartDate.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showToast("Change start date")
+            showDatePicker(DATE_TARGET_START_DATE)
         }
         btnDetailFragmentEndDate.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showToast("Change end date")
+            showDatePicker(DATE_TARGET_END_DATE)
         }
     }
 
-    private fun initializeBookInformation() {
+    private fun initializeBookInformation(book: BookEntity) {
 
-        /* TODO
         txtDetailFragmentTitle.text = book.title
         txtDetailFragmentAuthor.text = book.author
 
@@ -232,9 +237,8 @@ class BookDetailFragment : BaseFragment(), Callback,
             loadImage(book.thumbnailAddress)
         }
 
-        setupNotes()
-        setupPageComponents()
-        */
+        setupNotes(book.notes.isNullOrEmpty())
+        setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
     }
 
     private fun loadIcons() {
@@ -255,9 +259,41 @@ class BookDetailFragment : BaseFragment(), Callback,
         })
     }
 
-    private fun initializeTimeInformation() {
+    private fun showDatePicker(target: Int) {
+        val cal = Calendar.getInstance()
+        DatePickerDialog(activity,
+                { _, y, m, d ->
 
-        /* TODO
+                    when (target) {
+                        DATE_TARGET_PUBLISHED_DATE -> {
+                            onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) // +1 because month starts with 0
+                        }
+                        DATE_TARGET_WISHLIST_DATE -> {
+                            val wishlistDate = buildTimestampFromDate(y, m, d)
+                            if (!viewModel.updateWishlistDate(wishlistDate)) {
+                                showToast(R.string.invalid_time_range_wishlist, true)
+                            }
+                        }
+                        DATE_TARGET_START_DATE -> {
+                            val startDate = buildTimestampFromDate(y, m, d)
+                            if (!viewModel.updateStartDate(startDate)) {
+                                showToast(R.string.invalid_time_range_start, true)
+                            }
+                        }
+                        DATE_TARGET_END_DATE -> {
+                            val endDate = buildTimestampFromDate(y, m, d)
+                            if (!viewModel.updateEndDate(endDate)) {
+                                showToast(R.string.invalid_time_range_end, true)
+                            }
+                        }
+                    }
+                },
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+                .show()
+    }
+
+    private fun initializeTimeInformation(book: BookEntity) {
+
         // Hide complete card if no time information is available
         if (!book.isAnyTimeInformationAvailable) {
             layoutDetailFragmentDates.visibility = View.GONE
@@ -287,33 +323,33 @@ class BookDetailFragment : BaseFragment(), Callback,
             } else {
                 btnDetailFragmentEndDate.visibility = View.INVISIBLE
             }
-        } */
-
+        }
     }
 
-    private fun setupPageComponents(book: BookEntity) {
+    private fun setupPageComponents(state: BookState, isReading: Boolean, hasPages: Boolean,
+                                    pageCount: Int, currentPage: Int) {
         // Book must be in reading state and must have a legit page count and overall the feature
         // must be enabled in the settings
-        if (settings.pageTrackingEnabled && book.reading && book.hasPages) {
+        if (settings.pageTrackingEnabled && isReading && hasPages) {
 
-            circleSeekbarDetailFragmentPages.maxValue = book.pageCount
-            circleSeekbarDetailFragmentPages.value = book.currentPage
+            circleSeekbarDetailFragmentPages.maxValue = pageCount
+            circleSeekbarDetailFragmentPages.value = currentPage
             circleSeekbarDetailFragmentPages.setCallback(this)
             circleSeekbarDetailFragmentPages.setOnValueChangedListener { page ->
-                btnDetailFragmentPages.text = getString(R.string.detail_pages, page, book.pageCount)
+                btnDetailFragmentPages.text = getString(R.string.detail_pages, page, pageCount)
             }
 
             // Show pages as button text
-            val pages = if (book.state == BookState.READING)
-                getString(R.string.detail_pages, book.currentPage, book.pageCount)
+            val pages = if (state == BookState.READING)
+                getString(R.string.detail_pages, currentPage, pageCount)
             else
-                book.pageCount.toString()
+                pageCount.toString()
             btnDetailFragmentPages.text = pages
 
         } else {
             circleSeekbarDetailFragmentPages.visibility = View.GONE
             // Show all pages, but disable button clicking
-            btnDetailFragmentPages.text = book.pageCount.toString()
+            btnDetailFragmentPages.text = pageCount.toString()
         }
     }
 
@@ -321,8 +357,8 @@ class BookDetailFragment : BaseFragment(), Callback,
         DanteUtils.listPopAnimation(animationList, 200, 550, AccelerateDecelerateInterpolator())
     }
 
-    private fun setupNotes(book: BookEntity) {
-        val notesId = if (!book.notes.isNullOrEmpty()) R.string.my_notes else R.string.add_notes
+    private fun setupNotes(isNotesEmpty: Boolean) {
+        val notesId = if (!isNotesEmpty) R.string.my_notes else R.string.add_notes
         btnDetailFragmentNotes.text = getString(notesId)
     }
 
@@ -341,14 +377,32 @@ class BookDetailFragment : BaseFragment(), Callback,
 
         btnDetailFragmentPublished.text = publishedDate
 
-        // TODO
-        // book.publishedDate = publishedDate
-        // bookDao.update(book)
+        viewModel.updatePublishedDate(publishedDate)
     }
 
-// --------------------------------------------------------------------
+    private fun buildTimestampFromDate(y: Int, m: Int, d: Int): Long {
+
+        val cal = Calendar.getInstance()
+
+        cal.set(Calendar.YEAR, y)
+        cal.set(Calendar.MONTH, m)
+        cal.set(Calendar.DAY_OF_MONTH, d)
+        cal.set(Calendar.HOUR, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        return cal.timeInMillis
+    }
+
+    // --------------------------------------------------------------------
 
     companion object {
+
+        private const val DATE_TARGET_PUBLISHED_DATE = 1
+        private const val DATE_TARGET_WISHLIST_DATE = 2
+        private const val DATE_TARGET_START_DATE = 3
+        private const val DATE_TARGET_END_DATE = 4
 
         private const val ARG_BOOK_ID = "arg_book_id"
 

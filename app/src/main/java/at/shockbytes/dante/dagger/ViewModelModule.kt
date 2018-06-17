@@ -2,6 +2,7 @@ package at.shockbytes.dante.dagger
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import dagger.Binds
@@ -45,5 +46,9 @@ abstract class ViewModelModule {
     @ViewModelKey(BookListViewModel::class)
     internal abstract fun bookListViewModel(viewModel: BookListViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(BookDetailViewModel::class)
+    internal abstract fun bookDetailViewModel(viewModel: BookDetailViewModel): ViewModel
 
 }

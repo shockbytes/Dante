@@ -34,12 +34,13 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected fun showToast(text: Int) {
-        showToast(getString(text))
+    protected fun showToast(text: Int, showLong: Boolean = false) {
+        showToast(getString(text), showLong)
     }
 
-    protected fun showToast(text: String) {
-        Toast.makeText(applicationContext, text, Toast.LENGTH_SHORT).show()
+    protected fun showToast(text: String, showLong: Boolean = false) {
+        val length = if (showLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+        Toast.makeText(applicationContext, text, length).show()
     }
 
     abstract fun injectToGraph(appComponent: AppComponent)

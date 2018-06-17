@@ -44,8 +44,8 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideDanteSettings(): DanteSettings {
-        return DanteSettings(app.applicationContext)
+    fun provideDanteSettings(sharedPreferences: SharedPreferences): DanteSettings {
+        return DanteSettings(app.applicationContext, sharedPreferences)
     }
 
     @Provides

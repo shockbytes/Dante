@@ -32,6 +32,11 @@ fun String.colored(@ColorInt color: Int): SpannableString {
     return spannable
 }
 
+fun String.removeSpecialChars(): String {
+    return this.replace("(", "")
+            .replace(")", "")
+}
+
 fun FloatingActionButton.toggle(millis: Long = 300) {
     this.hide()
     Handler().postDelayed({ this.show() }, millis)

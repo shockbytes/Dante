@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v7.view.menu.MenuPopupHelper
@@ -22,6 +23,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
+
+
 
 
 /**
@@ -83,6 +86,12 @@ object DanteUtils {
         } catch (e: Exception) {
             Log.d("Dante", "Cannot force to show icons in popupmenu")
         }
+    }
+
+    fun isNetworkAvailable(ctx: Context): Boolean {
+        val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo?.isConnectedOrConnecting ?: false
     }
 
     fun buildStatistics(books: List<BookEntity>): Single<BookStatistics> {

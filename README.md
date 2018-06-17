@@ -21,9 +21,10 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Supporting badge (in-app purchases)
 
 ### Version 3.0
-- [ ] Sort book list
 - [ ] Change dates after insertion
 - [ ] Fix 'backup overwrites wrong dates' bug
+- [ ] Refactor detail view
+- [x] Sort book list
 - [x] General Architecture redesign (abstract Realm to exchange it)
 - [x] Fix backup mechanism
 - [x] Fresh and new UI

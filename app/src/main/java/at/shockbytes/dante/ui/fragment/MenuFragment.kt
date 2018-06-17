@@ -20,6 +20,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
@@ -79,8 +80,11 @@ class MenuFragment : BottomSheetDialogFragment() {
         }
 
         view.findViewById<View>(R.id.btnMenuSortStrategy)?.setOnClickListener {
-            Toast.makeText(context!!, "Show Sort Strategy dialog...", Toast.LENGTH_SHORT).show()
-            dismiss()
+            SortStrategyDialogFragment.newInstance()
+                    .setOnApplyListener {
+                        // dismiss()
+                    }
+                    .show(fragmentManager, "sort-dialog-fragment")
         }
 
         view.findViewById<View>(R.id.btnMenuSupporter)?.setOnClickListener {

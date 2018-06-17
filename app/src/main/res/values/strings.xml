@@ -156,6 +156,9 @@
     <string name="sort_strategy_progress_hint">Books are sorted by your reading progress. Manually rearranging your books will fall back to default strategy.</string>
     <string name="dialogfragment_sort_by">Sort by</string>
     <string name="scan_network_not_available">Please enable network connectivity, in order to scan books!</string>
+    <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others...</string>
+    <string name="invalid_time_range_start">Start date must lie within the range of the other dates...</string>
+    <string name="invalid_time_range_end">End date must be later than the other dates...</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

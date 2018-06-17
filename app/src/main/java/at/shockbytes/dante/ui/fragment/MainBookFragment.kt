@@ -78,6 +78,16 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         appComponent.inject(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        recyclerView.isLayoutFrozen = false
+    }
+
+    override fun onPause() {
+        super.onPause()
+        recyclerView.isLayoutFrozen = true
+    }
+
     override fun setupViews() {
 
         // Initialize text for empty indicator

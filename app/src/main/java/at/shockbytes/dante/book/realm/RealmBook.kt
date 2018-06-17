@@ -32,34 +32,10 @@ open class RealmBook @JvmOverloads constructor(@PrimaryKey var id: Long = -1,
         get() = State.values()[ordinalState]
         set(state) {
             this.ordinalState = state.ordinal
-
-            when (state) {
-                State.READ_LATER -> {
-                    wishlistDate = System.currentTimeMillis()
-                    startDate = 0
-                    endDate = 0
-                }
-                State.READING -> {
-                    startDate = System.currentTimeMillis()
-                    endDate = 0
-                }
-                State.READ -> {
-                    endDate = System.currentTimeMillis()
-                    if (startDate == 0L) {
-                        startDate = endDate
-                    }
-                }
-            }
         }
 
     val reading: Boolean
         get() = state == State.READING
-
-    val hasPages: Boolean
-        get() = pageCount > 0
-
-    val isAnyTimeInformationAvailable: Boolean
-        get() = wishlistDate != 0L || startDate != 0L || endDate != 0L
 
     init {
         ordinalState = State.READ_LATER.ordinal

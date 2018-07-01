@@ -22,20 +22,20 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Redesign login flow with Firebase login
 
 ### Version 3.1
-- [ ] Supporting badge (in-app purchases)
+- [ ] Supporter's badge (in-app purchases)
 - [ ] Add book manually (FAB menu -> Camera, By title, Manual)
 - [ ] Tablet optimization
 
 ### Version 3.0
-- [x] Fix 'wrong dates' bug
-- [x] Change dates after insertion
-- [x] Refactor detail view
-- [x] Sort book list
-- [x] General Architecture redesign (abstract Realm to exchange it)
-- [x] Fix backup mechanism
-- [x] Fresh and new UI
-- [x] Add current books to statistics (read pages to read, other pages to waiting)
-- [x] Change Analytics backend (Keen -> Google/Firebase)
+- * Fix 'wrong dates' bug
+- * Change dates after insertion
+- * Refactor detail view
+- * Sort book list
+- * General Architecture redesign (abstract Realm to exchange it)
+- * Fix backup mechanism
+- * Fresh and new UI
+- * Add current books to statistics (read pages to read, other pages to waiting)
+- * Change Analytics backend (Keen -> Google/Firebase)
 
 ### Version 2.8 - PAGES, POSITION, PROGUARD
 * Include Proguard

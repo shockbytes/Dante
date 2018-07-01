@@ -1,3 +1,5 @@
 /build
 /release
 google-services.json
+
+/src/main/res/values/font_certs.xml

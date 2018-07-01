@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.Button
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
@@ -42,10 +43,9 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
-                .setTitle(getString(R.string.dialog_login_title))
-                .setIcon(R.drawable.ic_google)
                 .setView(loginView)
                 .create()
+                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     override fun onStart() {

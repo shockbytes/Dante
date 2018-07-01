@@ -10,7 +10,8 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookSearchSuggestion
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
 
 /**
@@ -45,8 +46,8 @@ class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSea
             }
 
             if (!t.thumbnailAddress.isNullOrEmpty()) {
-                Picasso.with(context).load(t.thumbnailAddress)
-                        .placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder))
+                Glide.with(context).load(t.thumbnailAddress)
+                        .apply(RequestOptions().placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder)))
                         .into(imgViewCover)
             }
         }

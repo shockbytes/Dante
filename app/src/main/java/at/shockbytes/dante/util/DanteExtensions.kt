@@ -3,6 +3,7 @@ package at.shockbytes.dante.util
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Handler
 import android.support.annotation.ColorInt
@@ -12,12 +13,12 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.inputmethod.InputMethodManager
 import at.shockbytes.dante.signin.DanteUser
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.squareup.picasso.Picasso
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
 
 /**
  * @author  Martin Macheiner
@@ -32,7 +33,7 @@ fun String.colored(@ColorInt color: Int): SpannableString {
     return spannable
 }
 
-fun String.removeSpecialChars(): String {
+fun String.removeBrackets(): String {
     return this.replace("(", "")
             .replace(")", "")
 }
@@ -44,13 +45,13 @@ fun FloatingActionButton.toggle(millis: Long = 300) {
 
 fun Uri.loadBitmap(context: Context): Single<Bitmap> {
     return Single.fromCallable {
-        Picasso.with(context).load(this).get()
+        (Glide.with(context).load(this).submit().get() as BitmapDrawable).bitmap
     }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
 }
 
 fun Uri.loadRoundedBitmap(context: Context): Single<Bitmap> {
     return Single.fromCallable {
-        Picasso.with(context).load(this).transform(CropCircleTransformation()).get()
+        (Glide.with(context).load(this).apply(RequestOptions.circleCropTransform()).submit().get() as BitmapDrawable).bitmap
     }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
 }
 

@@ -64,7 +64,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:text="@string/search_online_hint"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />

@@ -7,11 +7,12 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
 
 /**
@@ -41,13 +42,12 @@ class GoogleWelcomeScreenDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
-                .setTitle(R.string.welcome)
-                .setIcon(R.drawable.ic_google)
                 .setView(welcomeView)
                 .setPositiveButton(getString(R.string.welcome_acknowledge)) { _, _ ->
                     listener?.invoke()
                 }
                 .create()
+                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     override fun onResume() {
@@ -66,10 +66,12 @@ class GoogleWelcomeScreenDialogFragment : DialogFragment() {
         txtName.text = str
 
         if (photoUrlString != null) {
-            Picasso.with(context)
-                    .load(Uri.parse(photoUrlString))
-                    .transform(CropCircleTransformation())
-                    .into(imgView)
+            context?.let { ctx ->
+                Glide.with(ctx)
+                        .load(Uri.parse(photoUrlString))
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(imgView)
+            }
         }
     }
 

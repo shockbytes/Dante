@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/txtDialogFragmentEnterQueryHeader"
+        android:id="@+id/txtDialogFragmentSimpleRequestHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -15,26 +15,14 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:drawableLeft="@drawable/ic_add_dark"
         android:drawablePadding="16dp"
-        android:drawableStart="@drawable/ic_add_dark"
-        android:text="@string/dialogfragment_query_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/menuItemColor" />
 
     <TextView
+        android:id="@+id/txtDialogFragmentSimpleRequestMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:text="@string/dialogfragment_query_message"/>
-
-    <EditText
-        android:id="@+id/dialogfragment_isbn_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:hint="@string/manual_query"
-        android:inputType="text"
-        android:textSize="17sp" />
+        android:layout_margin="4dp"/>
 
 </LinearLayout>

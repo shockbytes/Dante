@@ -49,9 +49,6 @@ data class BookEntity(var id: Long = -1,
             }
             BookState.READ -> {
                 endDate = System.currentTimeMillis()
-                if (startDate == 0L) {
-                    startDate = endDate
-                }
             }
         }
     }

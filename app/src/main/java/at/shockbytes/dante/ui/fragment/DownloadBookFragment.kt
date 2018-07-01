@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.fragment
 
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
 import android.support.v7.widget.LinearLayoutManager
@@ -19,9 +20,13 @@ import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.crashlytics.android.Crashlytics
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -29,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_download_book.*
 import javax.inject.Inject
 
 
-class DownloadBookFragment : BaseFragment(), Callback,
+class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
         Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
 
     interface OnBookDownloadedListener {
@@ -111,13 +116,18 @@ class DownloadBookFragment : BaseFragment(), Callback,
         listener = context as? OnBookDownloadedListener
     }
 
-    override fun onSuccess() {
-        (imgViewDownloadFragmentCover.drawable as? BitmapDrawable)?.bitmap?.let {
-            Palette.from(it).generate(this)
-        }
+
+    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+        return true
     }
 
-    override fun onError() {}
+    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+        (resource as? BitmapDrawable)?.bitmap?.let {
+            Palette.from(it).generate(this)
+        }
+        return false
+    }
+
 
     override fun onGenerated(palette: Palette) {
 
@@ -224,9 +234,12 @@ class DownloadBookFragment : BaseFragment(), Callback,
         txtDownloadFragmentTitle.text = mainBook?.title
 
         if (!mainBook?.thumbnailAddress.isNullOrEmpty()) {
-            Picasso.with(context).load(mainBook?.thumbnailAddress)
-                    .placeholder(DanteUtils.vector2Drawable(context!!, R.drawable.ic_placeholder))
-                    .into(imgViewDownloadFragmentCover, this)
+            context?.let { ctx ->
+                Glide.with(ctx).load(mainBook?.thumbnailAddress)
+                        .apply(RequestOptions().placeholder(DanteUtils.vector2Drawable(context!!, R.drawable.ic_placeholder)))
+                        .listener(this)
+                        .into(imgViewDownloadFragmentCover)
+            }!!
         } else {
             imgViewDownloadFragmentCover.setImageResource(R.drawable.ic_placeholder)
         }

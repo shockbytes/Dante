@@ -1,7 +1,7 @@
 package at.shockbytes.dante.util.sort
 
 import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.util.removeSpecialChars
+import at.shockbytes.dante.util.removeBrackets
 
 /**
  * @author  Martin Macheiner
@@ -30,7 +30,7 @@ class SortComparators {
 
             // Multiple authors
             val primaryAuthor = if (author.contains(",")) {
-                author.split(",")[0].removeSpecialChars()
+                author.split(",")[0].removeBrackets()
             } else author
 
             // Author has several names

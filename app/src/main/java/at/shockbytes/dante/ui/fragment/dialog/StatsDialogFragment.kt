@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatDrawableManager
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
@@ -61,11 +62,10 @@ class StatsDialogFragment : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
-                .setTitle(R.string.label_stats)
-                .setIcon(R.drawable.ic_stats)
                 .setView(statsView)
                 .setCancelable(true)
                 .create()
+                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     override fun onResume() {

@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.EditText
 import android.widget.Toast
 import at.shockbytes.dante.R
@@ -42,8 +43,6 @@ class PageEditDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
                 .setView(pageView)
-                .setTitle(getString(R.string.dialogfragment_paging_title))
-                .setIcon(R.drawable.ic_pages_colored)
                 .setPositiveButton(R.string.apply) { _, _ ->
 
                     if (validateInput()) {
@@ -57,6 +56,7 @@ class PageEditDialogFragment : DialogFragment() {
                 }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> }
                 .create()
+                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     override fun onResume() {

@@ -10,7 +10,8 @@ import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.util.DanteUtils
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
 
 /**
@@ -48,8 +49,11 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
         editNotes.setText(bookNotes)
         txtHeader.text = getString(R.string.dialogfragment_notes_header, bookTitle)
         if (!bookImageLink.isNullOrEmpty()) {
-            Picasso.with(context).load(bookImageLink)
-                    .placeholder(R.drawable.ic_placeholder_white).into(imgViewCover)
+            context?.let { ctx ->
+                Glide.with(ctx).load(bookImageLink)
+                        .apply(RequestOptions().placeholder(R.drawable.ic_placeholder_white))
+                        .into(imgViewCover)
+            }
         }
 
         btnSave.setOnClickListener {

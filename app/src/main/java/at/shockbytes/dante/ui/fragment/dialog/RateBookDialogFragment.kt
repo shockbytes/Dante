@@ -9,10 +9,11 @@ import android.widget.RatingBar
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.crashlytics.android.Crashlytics
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxRatingBar
-import com.squareup.picasso.Picasso
 import kotterknife.bindView
 
 /**
@@ -47,17 +48,21 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
 
         txtTitle.text = getString(R.string.dialogfragment_rating_title, bookTitle)
         if (!bookImageLink.isNullOrEmpty()) {
-            Picasso.with(context).load(bookImageLink)
-                    .placeholder(R.drawable.ic_placeholder_white).into(imgViewCover)
+            context?.let { ctx ->
+                Glide.with(ctx)
+                        .load(bookImageLink)
+                        .apply(RequestOptions().placeholder(R.drawable.ic_placeholder_white))
+                        .into(imgViewCover)
+            }
         }
 
         RxRatingBar.ratingChanges(ratingBar).distinctUntilChanged()
-                .subscribe ({
+                .subscribe({
                     val rating = it.toInt() - 1 // -1 because rating starts with 1
                     if (rating in 1..5) { // Error can somehow occur, therefore check!
                         txtRatings.text = context!!.resources.getStringArray(R.array.ratings)[rating]
                     }
-                }, {throwable ->
+                }, { throwable ->
                     throwable.printStackTrace()
                     Crashlytics.logException(throwable)
                 })

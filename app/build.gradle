@@ -19,6 +19,7 @@ def retrofitVersion = "2.4.0"
 def shockUtilVersion = "2.1.2"
 def keenVersion = "5.2.0"
 def crashlyticsVersion = "2.9.1"
+def glideVersion = "4.7.1"
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
@@ -89,11 +90,12 @@ kapt {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.android.support:appcompat-v7:$supportVersion"
-    implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:design:$supportVersion"
-    implementation "com.android.support:cardview-v7:$supportVersion"
+    implementation "com.android.support:support-v4:$supportVersion"
     implementation "com.android.support:palette-v7:$supportVersion"
+    implementation "com.android.support:cardview-v7:$supportVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:support-compat:$supportVersion"
     implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     implementation 'com.android.support:multidex:1.0.3'
 
@@ -117,8 +119,10 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
     implementation "com.github.shockbytes:ShockUtil:$shockUtilVersion"
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'jp.wasabeef:picasso-transformations:2.1.2'
+
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'

@@ -23,7 +23,7 @@
     <string name="dismiss">Ausblenden</string>
     <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
     <string name="dialogfragment_query_title">Manuelle Suche</string>
-    <string name="dialogfragment_query_message">Wenn die Kamera den ISBN nicht erkennt, kannst du hier nach dem Titel suchen oder den ISBN manuell eingeben</string>
+    <string name="dialogfragment_query_message">Wenn die Kamera den ISBN nicht erkennt, kannst du hier nach dem Titel suchen oder den ISBN manuell eingeben.</string>
     <string name="book_finished">%s fertig</string>
     <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.</string>
     <string name="detail_wishlist_date">Auf der Wunschliste seit %s</string>
@@ -42,9 +42,9 @@
     <string name="backup_strategy_merge">Zusammenfügen</string>
     <string name="backup_strategy_overwrite">Überschreiben</string>
     <string name="backup_created">Backup erstellt</string>
-    <string name="backup_not_created">Backup konnte nicht erstellt werden</string>
+    <string name="backup_not_created">Backup konnte nicht erstellt werden.</string>
     <string name="backup_removed">Backup gelöscht</string>
-    <string name="backup_restore_strategy_title">Wiederherstellungsoption</string>
+    <string name="backup_restore_strategy_title">Wiederherstellung</string>
     <string name="backup_restored">Backup vom %s hergestellt</string>
     <string name="backup_restore_error">Fehler beim Wiederherstellen</string>
     <string name="download_suggestion_header_other">Eines von denen?</string>
@@ -99,7 +99,7 @@
     </plurals>
     <string name="add_notes">Notizen hinzufügen</string>
     <string name="apply">Übernehmen</string>
-    <string name="dialogfragment_paging_title">Seiten manuell eingeben</string>
+    <string name="dialogfragment_paging_title">Seiten eingeben</string>
     <string name="dialogfragment_paging_current_page">Aktuelle Seite</string>
     <string name="dialogfragment_paging_pages">Buchseiten</string>
     <string name="save">Speichern</string>

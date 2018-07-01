@@ -6,12 +6,13 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupManager
 
 /**
- * @author Martin Macheiner
- * Date: 30.08.2016.
+ * @author  Martin Macheiner
+ * Date:    30.08.2016
  */
 class RestoreStrategyDialogFragment : DialogFragment() {
 
@@ -27,10 +28,9 @@ class RestoreStrategyDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
-                .setTitle(R.string.backup_restore_strategy_title)
-                .setIcon(R.drawable.ic_google_drive)
                 .setView(strategyView)
                 .create()
+                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     private fun setupViews(view: View) {

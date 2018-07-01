@@ -17,7 +17,8 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import java.util.*
@@ -132,7 +133,8 @@ class BookAdapter(context: Context, extData: List<BookEntity>,
                     R.id.popup_item_move_to_done -> popupListener?.onMoveToDone(bookEntity)
                     R.id.popup_item_share -> popupListener?.onShare(bookEntity)
                     R.id.popup_item_delete -> popupListener?.onDelete(bookEntity)
-                    else -> { }
+                    else -> {
+                    }
                 }
             }
 
@@ -159,13 +161,12 @@ class BookAdapter(context: Context, extData: List<BookEntity>,
         private fun updateImageThumbnail(t: BookEntity) {
 
             if (!t.thumbnailAddress.isNullOrEmpty()) {
-                Picasso.with(context).load(t.thumbnailAddress)
-                        .placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder))
+                Glide.with(context).load(t.thumbnailAddress)
+                        .apply(RequestOptions().placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder)))
                         .into(imgViewThumb)
-            } else {
-                // Books with no image will recycle another cover if not cleared here
+            } else
+            // Books with no image will recycle another cover if not cleared here
                 imgViewThumb.setImageResource(R.drawable.ic_placeholder)
-            }
         }
 
         private fun updateTexts(t: BookEntity) {

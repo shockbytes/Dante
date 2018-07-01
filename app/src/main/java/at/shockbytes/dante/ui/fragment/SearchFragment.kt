@@ -10,15 +10,14 @@ import android.view.View
 import android.widget.Button
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.book.BookSearchSuggestion
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.activity.DetailActivity
+import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
-import butterknife.OnClick
 import com.arlib.floatingsearchview.FloatingSearchView
 import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import io.reactivex.BackpressureStrategy
@@ -102,6 +101,10 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
             }
         })
         searchView.setSearchFocused(true)
+
+        btnSearchOnline.setOnClickListener {
+            onClickOnlineSearch()
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -120,7 +123,6 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
         }
     }
 
-    @OnClick(R.id.fragment_search_btn_search_online)
     protected fun onClickOnlineSearch() {
         activity?.hideKeyboard()
         showBooks(searchView.query, false)

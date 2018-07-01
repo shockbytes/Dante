@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.EditText
 import at.shockbytes.dante.R
 import kotterknife.bindView
@@ -27,9 +28,6 @@ class QueryDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
-                .setTitle(R.string.dialogfragment_query_title)
-                .setIcon(R.mipmap.ic_launcher)
-                .setMessage(R.string.dialogfragment_query_message)
                 .setView(queryView)
                 .setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
                 .setPositiveButton(android.R.string.search_go) { _, _ ->
@@ -38,6 +36,7 @@ class QueryDialogFragment : DialogFragment() {
                     queryListener?.invoke(query)
                 }
                 .create()
+                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     fun setOnQueryEnteredListener(listener: (String) -> Unit): QueryDialogFragment {

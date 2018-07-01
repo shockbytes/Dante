@@ -42,7 +42,7 @@
     <string name="dismiss">Dismiss</string>
     <string name="help_scan">Focus the ISBN until the app automatically recognizes it</string>
     <string name="dialogfragment_query_title">Manual search</string>
-    <string name="dialogfragment_query_message">If the camera cannot capture the ISBN, you can search for the title or enter the ISBN here manually</string>
+    <string name="dialogfragment_query_message">If the camera cannot capture the ISBN, you can search for the title or enter the ISBN here manually.</string>
     <string name="manual_query" >Title or ISBN</string>
     <string name="book_finished">%s finished</string>
     <string name="download_book_json_error">Cannot find any corresponding entry in Googles book database.</string>
@@ -67,7 +67,7 @@
     <string name="backup_created">Backup created</string>
     <string name="backup_not_created">Cannot create backup</string>
     <string name="backup_removed">Backup removed</string>
-    <string name="backup_restore_strategy_title">backup_restore_strategy_title</string>
+    <string name="backup_restore_strategy_title">Restore strategy</string>
     <string name="backup_restored">Backup from %s restored</string>
     <string name="backup_restore_error">Error while restoring backup</string>
     <string name="download_suggestions_none">None of them</string>
@@ -108,7 +108,7 @@
     <string name="dialogfragment_rating_title">How do you like %s?</string>
     <string name="add_notes">Add notes</string>
     <string name="apply">Apply</string>
-    <string name="dialogfragment_paging_title">Enter pages manually</string>
+    <string name="dialogfragment_paging_title">Enter pages</string>
     <string name="dialogfragment_paging_current_page">Current page</string>
     <string name="dialogfragment_paging_pages">Pages</string>
     <string name="dialogfragment_paging_separator" translatable="false">/</string>
@@ -156,9 +156,9 @@
     <string name="sort_strategy_progress_hint">Books are sorted by your reading progress. Manually rearranging your books will fall back to default strategy.</string>
     <string name="dialogfragment_sort_by">Sort by</string>
     <string name="scan_network_not_available">Please enable network connectivity, in order to scan books!</string>
-    <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others...</string>
-    <string name="invalid_time_range_start">Start date must lie within the range of the other dates...</string>
-    <string name="invalid_time_range_end">End date must be later than the other dates...</string>
+    <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others…</string>
+    <string name="invalid_time_range_start">Start date must lie within the range of the other dates…</string>
+    <string name="invalid_time_range_end">End date must be later than the other dates…</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

@@ -6,6 +6,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDarkPre23</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:windowSharedElementEnterTransition">@transition/hero_transition</item>
         <item name="android:windowSharedElementExitTransition">@transition/hero_transition</item>
     </style>

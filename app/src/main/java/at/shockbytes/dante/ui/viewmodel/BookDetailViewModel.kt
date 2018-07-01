@@ -134,17 +134,17 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
     private fun checkDateBoundaries(wishlist: Long, start: Long, end: Long): Boolean {
 
         // Wishlist specific cases
-        if ((wishlist < start || start == 0L) && (wishlist < end || end == 0L)) {
+        if ((wishlist <= start || start == 0L) && (wishlist <= end || end == 0L)) {
             return true
         }
 
         // Start specific cases
-        if((start > wishlist || wishlist == 0L) && (start < end || end == 0L)) {
+        if((start >= wishlist || wishlist == 0L) && (start <= end || end == 0L)) {
             return true
         }
 
         // End specific cases
-        if ((end < start || start == 0L) && (end < wishlist || wishlist == 0L)) {
+        if ((end <= start || start == 0L) && (end <= wishlist || wishlist == 0L)) {
             return false
         }
 

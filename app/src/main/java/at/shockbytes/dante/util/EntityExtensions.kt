@@ -7,8 +7,8 @@ import at.shockbytes.dante.book.BookEntity
 import com.google.gson.JsonObject
 
 /**
- * @author Martin Macheiner
- * Date: 12-Jun-18.
+ * @author  Martin Macheiner
+ * Date:    12.06.2018
  */
 
 fun BookEntity.toJson(): JsonObject {
@@ -42,7 +42,18 @@ fun BookEntity.createSharingIntent(c: Context): Intent {
 }
 
 
-// The only visible update is the page count, so just check page count
+/**
+ * The only visible update is the page count, but check the dates as well,
+ * because this prevents an error of not overriding newly set dates in the main list.
+ * To be sure check basically everything what can change!
+ */
 fun BookEntity.isContentSame(other: BookEntity): Boolean {
-    return (this.id == other.id) && (this.currentPage == other.currentPage)
+    return (this.id == other.id)
+            && (this.currentPage == other.currentPage)
+            && (this.pageCount == other.pageCount)
+            && (this.wishlistDate == other.wishlistDate)
+            && (this.startDate == other.startDate)
+            && (this.endDate == other.endDate)
+            && (this.rating == other.rating)
+            && (this.notes == other.notes)
 }

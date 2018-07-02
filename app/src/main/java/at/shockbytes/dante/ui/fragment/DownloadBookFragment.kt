@@ -12,6 +12,7 @@ import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import at.shockbytes.dante.R
+import at.shockbytes.dante.R.id.*
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
@@ -117,11 +118,14 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
     }
 
 
-    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+    override fun onLoadFailed(e: GlideException?, model: Any?,
+                              target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
         return true
     }
 
-    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+    override fun onResourceReady(resource: Drawable?, model: Any?,
+                                 target: Target<Drawable>?, dataSource: DataSource?,
+                                 isFirstResource: Boolean): Boolean {
         (resource as? BitmapDrawable)?.bitmap?.let {
             Palette.from(it).generate(this)
         }
@@ -129,11 +133,11 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
     }
 
 
-    override fun onGenerated(palette: Palette) {
+    override fun onGenerated(palette: Palette?) {
 
-        val actionBarColor = palette.lightMutedSwatch?.rgb
-        val actionBarTextColor = palette.lightMutedSwatch?.titleTextColor
-        val statusBarColor = palette.darkMutedSwatch?.rgb
+        val actionBarColor = palette?.lightMutedSwatch?.rgb
+        val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
+        val statusBarColor = palette?.darkMutedSwatch?.rgb
 
         listener?.colorSystemBars(actionBarColor, actionBarTextColor,
                 statusBarColor, selectedBook?.title)
@@ -195,10 +199,10 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
                     listener?.onErrorDownload("no suggestions", isAdded)
                     showErrorLayout(getString(R.string.download_book_json_error))
                 }
-            }) { throwable ->
-                throwable.printStackTrace()
+            }) { throwable: Throwable? ->
+                throwable?.printStackTrace()
                 showErrorLayout(throwable)
-                listener?.onErrorDownload(throwable.localizedMessage, isAdded)
+                listener?.onErrorDownload(throwable?.localizedMessage ?: "Error message not available", isAdded)
             }
         }
     }
@@ -253,8 +257,11 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
         recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
     }
 
-    private fun showErrorLayout(error: Throwable) {
-        Crashlytics.logException(error)
+    private fun showErrorLayout(error: Throwable?) {
+        if (error != null) {
+            Crashlytics.logException(error)
+        }
+
         if (isAdded) {
             val cause = getString(R.string.download_code_error)
             showErrorLayout(cause)

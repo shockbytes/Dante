@@ -33,9 +33,6 @@
   public *;
 }
 
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
-
 # Realm
 -keep class io.realm.annotations.RealmModule
 -keep @io.realm.annotations.RealmModule class *
@@ -50,6 +47,9 @@
 -dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
 -keepattributes Exceptions
+
+# Gson
+-keepclassmembers enum * { *; }
 
 # ButterKnife
 -keep class butterknife.*

@@ -30,7 +30,7 @@ import javax.inject.Inject
 
 /**
  * @author  Martin Macheiner
- * Date:    06-Jun-18.
+ * Date:    06.06.2018
  */
 class MenuFragment : BottomSheetDialogFragment() {
 

@@ -66,7 +66,7 @@ class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
     override fun delete(id: Long) {
         realm.executeTransaction {
             realm.where(bookClass)
-                    .equalTo("id", id).findFirst()!!.deleteFromRealm()
+                    .equalTo("id", id).findFirst()?.deleteFromRealm()
         }
     }
 

@@ -26,7 +26,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Add book manually (FAB menu -> Camera, By title, Manual)
 - [ ] Tablet optimization
 
-### Version 3.0
+### Version 3.0 - FRESH FUN
 - * Fix 'wrong dates' bug
 - * Change dates after insertion
 - * Refactor detail view

@@ -102,7 +102,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                         }
                         showGoogleWelcomeScreen(event.user, event.showWelcomeScreen)
                     } else {
-                        showFabAwareSnackbar(getString(R.string.signin_goodbye))
                         imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                     }
                 }

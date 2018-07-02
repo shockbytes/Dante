@@ -14,7 +14,7 @@ class RealmBookEntityMapper : Mapper<RealmBook, BookEntity>() {
         val book = RealmBook(data.id, data.title, data.subTitle, data.author,
                 data.pageCount, data.publishedDate, data.position, data.isbn,
                 data.thumbnailAddress, data.googleBooksLink,
-                data.startDate, data.endDate, data.wishlistDate, data.language,
+                data.startDate, data.endDate, data.wishlistDate, data.language ?: "NA",
                 data.rating, data.currentPage, data.notes)
         book.state = RealmBook.State.values()[data.state.ordinal]
         return book

@@ -15,9 +15,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:drawableLeft="@drawable/ic_add_dark"
+        android:drawableLeft="@drawable/compat_ic_add_dark"
         android:drawablePadding="16dp"
-        android:drawableStart="@drawable/ic_add_dark"
+        android:drawableStart="@drawable/compat_ic_add_dark"
         android:text="@string/dialogfragment_query_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/menuItemColor" />

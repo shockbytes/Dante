@@ -110,11 +110,11 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
         return false
     }
 
-    override fun onGenerated(palette: Palette) {
+    override fun onGenerated(palette: Palette?) {
 
-        val actionBarColor = palette.lightMutedSwatch?.rgb
-        val actionBarTextColor = palette.lightMutedSwatch?.titleTextColor
-        val statusBarColor = palette.darkMutedSwatch?.rgb
+        val actionBarColor = palette?.lightMutedSwatch?.rgb
+        val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
+        val statusBarColor = palette?.darkMutedSwatch?.rgb
 
         (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
                 actionBarTextColor, statusBarColor)

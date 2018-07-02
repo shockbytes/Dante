@@ -7,6 +7,7 @@ import android.util.Log
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.signin.GoogleSignInManager
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.drive.*
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
@@ -90,9 +91,10 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
 
         return if (client != null) {
             Completable.fromAction {
-                booksFromEntry(entry).subscribe { books ->
+                booksFromEntry(entry)
+                        .subscribe ({ books ->
                     bookDao.restoreBackup(books, strategy)
-                }
+                }, {throwable -> Crashlytics.logException(throwable) })
             }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         } else {
             Completable.error(NullPointerException("DriveClient is null!"))

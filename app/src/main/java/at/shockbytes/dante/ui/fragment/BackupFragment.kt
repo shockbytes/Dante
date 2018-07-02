@@ -68,22 +68,26 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
         updateLastBackupTime()
 
-        adapter = BackupEntryAdapter(context!!, ArrayList())
-        rvBackups.layoutManager = LinearLayoutManager(context!!)
-        adapter.onItemClickListener = this
-        adapter.onItemMoveListener = this
-        val callback = BaseItemTouchHelper(adapter, true,
-                BaseItemTouchHelper.DragAccess.NONE)
-        val touchHelper = ItemTouchHelper(callback)
-        touchHelper.attachToRecyclerView(rvBackups)
-        rvBackups.adapter = adapter
-        rvBackups.addItemDecoration(EqualSpaceItemDecoration(8))
+        context?.let { ctx ->
 
-        activity_backup_btn_backup.setOnClickListener {
-            onClickBackup()
+            adapter = BackupEntryAdapter(ctx, ArrayList())
+            rvBackups.layoutManager = LinearLayoutManager(ctx)
+            adapter.onItemClickListener = this
+            adapter.onItemMoveListener = this
+            val callback = BaseItemTouchHelper(adapter, true,
+                    BaseItemTouchHelper.DragAccess.NONE)
+            val touchHelper = ItemTouchHelper(callback)
+            touchHelper.attachToRecyclerView(rvBackups)
+            rvBackups.adapter = adapter
+            rvBackups.addItemDecoration(EqualSpaceItemDecoration(8))
+
+            activity_backup_btn_backup.setOnClickListener {
+                onClickBackup()
+            }
+
+            loadBackupList()
         }
 
-        loadBackupList()
     }
 
     override fun onItemClick(t: BackupEntry, v: View) {
@@ -111,6 +115,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 .subscribe({
                     adapter.deleteEntity(position)
                     showSnackbar(getString(R.string.backup_removed))
+                    activityBackupTxtRestore.text = "${getString(R.string.restore)} (${adapter.itemCount})"
                 }) { throwable ->
                     throwable.printStackTrace()
                     showSnackbar(throwable.localizedMessage)
@@ -121,6 +126,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         backupManager.backupList.subscribe({ backupEntries ->
             adapter.data = backupEntries.toMutableList()
             rvBackups.scrollToPosition(0)
+            activityBackupTxtRestore.text = "${getString(R.string.restore)} (${backupEntries.size})"
         }) { throwable ->
             throwable.printStackTrace()
             Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()

@@ -47,7 +47,7 @@ class FirebaseTracker(context: Context): Tracker {
     override fun trackOnBookScanned(b: BookEntity, viaSearchInterface: Boolean) {
         val data = createTrackEventData(
                 Pair("author", b.author),
-                Pair("language", b.language),
+                Pair("language", b.language ?: "NA"),
                 Pair("pages", b.pageCount),
                 Pair("viaSearch", viaSearchInterface))
         trackEvent("bookScanned", data)

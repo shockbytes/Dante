@@ -53,8 +53,8 @@ class SimpleRequestDialogFragment : DialogFragment() {
         super.onResume()
 
         txtHeader.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
-        txtHeader.setText(title)
-        txtMessage.setText(message)
+        txtHeader.text = title
+        txtMessage.text = message
     }
 
     fun setOnAcceptListener(listener: () -> Unit): SimpleRequestDialogFragment {

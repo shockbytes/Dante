@@ -91,7 +91,7 @@ object DanteUtils {
     fun isNetworkAvailable(ctx: Context): Boolean {
         val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        return activeNetworkInfo?.isConnectedOrConnecting ?: false
+        return activeNetworkInfo?.isConnected ?: false
     }
 
     fun buildStatistics(books: List<BookEntity>): Single<BookStatistics> {

@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
-import butterknife.ButterKnife
-import butterknife.Unbinder
 
 /**
  * @author Martin Macheiner

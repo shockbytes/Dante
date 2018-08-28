@@ -44,8 +44,8 @@ class MainViewModel @Inject constructor(private val signInManager: SignInManager
         })
     }
 
-    fun signIn(data: Intent) {
-        signInManager.signIn(data).subscribe({ account ->
+    fun signIn(data: Intent, signInToBackend: Boolean) {
+        signInManager.signIn(data, signInToBackend).subscribe({ account ->
             userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
         }, { throwable: Throwable ->
             throwable.printStackTrace()

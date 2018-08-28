@@ -13,29 +13,30 @@ can simply keep track of your progress of all your books and their current state
 ### Backlog
 - [ ] Include Amazon books API?
 - [ ] Change book cover and store data in Firebase Cloud Storage
-
-### Version 3.3
-- [ ] Use Firebase Data for book recommendations
-
-### Version 3.2
-- [ ] Firebase as Online Backend
-- [ ] Redesign login flow with Firebase login
-
-### Version 3.1
-- [ ] Supporter's badge (in-app purchases)
-- [ ] Add book manually (FAB menu -> Camera, By title, Manual)
 - [ ] Tablet optimization
 
+
+### Version 3.2 - CAMPING WITH FIREBASE
+- [ ] Firebase as Online Backend
+- [ ] (Redesign login flow with Firebase login)
+- [ ] Use Firebase Data for book suggestions
+
+### Version 3.1 - SUPPORT, SUGGEST, STATISTICS
+- [ ] Supporter's badge (in-app purchases)
+- [ ] Statistics fixes
+- [ ] Add book manually (FAB menu -> Camera, By title, Manual)
+- [ ] Integrate feature flagging and config platform
+
 ### Version 3.0 - FRESH FUN
-- * Fix 'wrong dates' bug
-- * Change dates after insertion
-- * Refactor detail view
-- * Sort book list
-- * General Architecture redesign (abstract Realm to exchange it)
-- * Fix backup mechanism
-- * Fresh and new UI
-- * Add current books to statistics (read pages to read, other pages to waiting)
-- * Change Analytics backend (Keen -> Google/Firebase)
+* Fix 'wrong dates' bug
+* Change dates after insertion
+* Refactor detail view
+* Sort book list
+* General Architecture redesign (abstract Realm to exchange it)
+* Fix backup mechanism
+* Fresh and new UI
+* Add current books to statistics (read pages to read, other pages to waiting)
+* Change Analytics backend (Keen -> Google/Firebase)
 
 ### Version 2.8 - PAGES, POSITION, PROGUARD
 * Include Proguard

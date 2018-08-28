@@ -33,7 +33,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
         get() = LayoutInflater.from(context)
                 .inflate(R.layout.dialogfragment_login, null, false)
 
-    private var signInListener: (() -> Unit)? = null
+    private var signInListener: ((Boolean) -> Unit)? = null
 
     private var maybeLaterListener: (() -> Unit)? = null
 
@@ -53,7 +53,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
         setupViews()
     }
 
-    fun setSignInListener(listener: () -> Unit): GoogleSignInDialogFragment {
+    fun setSignInListener(listener: (Boolean) -> Unit): GoogleSignInDialogFragment {
         signInListener = listener
         return this
     }
@@ -67,9 +67,12 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
 
         RxView.clicks(signInButton).subscribe {
             tracker.trackGoogleLogin(true)
-            signInListener?.invoke()
+            signInListener?.invoke(false)
             dismiss()
         }
+
+        // TODO Add a online sign in check box!!!
+
         RxView.clicks(laterButton).subscribe {
             tracker.trackGoogleLogin(false)
             maybeLaterListener?.invoke()

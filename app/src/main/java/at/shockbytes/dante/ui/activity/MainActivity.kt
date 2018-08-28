@@ -60,7 +60,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         when (requestCode) {
 
             DanteUtils.rcSignIn -> {
-                data?.let { viewModel.signIn(it) }
+                data?.let { d ->
+                    val onlineBackend = d.getBooleanExtra("onlineBackend", false)
+                    viewModel.signIn(d, signInToBackend = onlineBackend)
+                }
             }
         }
     }
@@ -110,8 +113,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
 
                     GoogleSignInDialogFragment.newInstance()
-                            .setSignInListener {
-                                startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                            .setSignInListener { withOnlineBackend ->
+                                startActivityForResult(event.signInIntent
+                                        ?.putExtra("onlineBackend", withOnlineBackend), DanteUtils.rcSignIn)
                             }
                             .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
                             .show(supportFragmentManager, "sign-in-fragment")

@@ -61,7 +61,7 @@ class GoogleSignInManager(private val prefs: SharedPreferences,
         }
     }
 
-    override fun signIn(data: Intent): Single<DanteUser?> {
+    override fun signIn(data: Intent, signInToOnlineBackend: Boolean): Single<DanteUser?> {
         return Single.fromCallable {
             Tasks.await(GoogleSignIn.getSignedInAccountFromIntent(data))?.toDanteUser()
         }.observeOn(AndroidSchedulers.mainThread())

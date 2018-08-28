@@ -11,6 +11,7 @@ import android.support.design.widget.FloatingActionButton
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import at.shockbytes.dante.signin.DanteUser
 import com.bumptech.glide.Glide
@@ -67,4 +68,9 @@ fun Activity.hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
+}
+
+fun View.setVisible(isVisible: Boolean) {
+    val visibility = if (isVisible) View.VISIBLE else View.GONE
+    this.visibility = visibility
 }

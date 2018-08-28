@@ -18,7 +18,8 @@ import javax.inject.Singleton
     (NetworkModule::class),
     (AppModule::class),
     (BookModule::class),
-    (ViewModelModule::class)
+    (ViewModelModule::class),
+    (FirebaseModule::class)
 ])
 interface AppComponent {
 

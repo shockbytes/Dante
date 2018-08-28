@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
-import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.book.BookStatistics
@@ -24,12 +23,9 @@ import io.reactivex.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-
-
 /**
- * @author Martin Macheiner
- * Date: 30.04.2017.
+ * @author  Martin Macheiner
+ * Date:    30.04.2017.
  */
 
 object DanteUtils {
@@ -114,16 +110,6 @@ object DanteUtils {
                     fastestBook, slowestBook,
                     avgBooksPerMonth, mostReadingMonth)
         }.subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
-    }
-
-    fun indexForNavigationItemId(itemId: Int): Int? {
-        return when (itemId) {
-            R.id.menu_navigation_upcoming -> 0
-            R.id.menu_navigation_current -> 1
-            R.id.menu_navigation_done -> 2
-        // TODO Enable later R.id.menu_navigation_suggestions -> 3
-            else -> null
-        }
     }
 
 }

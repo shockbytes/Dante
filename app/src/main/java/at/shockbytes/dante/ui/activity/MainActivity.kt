@@ -20,6 +20,7 @@ import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.loadBitmap
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.util.AppUtils
@@ -30,6 +31,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
+
+    @Inject
+    protected lateinit var featureFlagging: FeatureFlagging
 
     protected var tabId: Int = R.id.menu_navigation_current
 
@@ -91,7 +95,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         viewModel.userEvent.observe(this, Observer { event ->
 
-            when(event) {
+            when (event) {
 
                 is MainViewModel.UserEvent.SuccessEvent -> {
 
@@ -149,7 +153,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun initializeNavigation() {
 
         // Setup the ViewPager
-        pagerAdapter = BookPagerAdapter(applicationContext, false, supportFragmentManager)
+        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging.showBookSuggestions,
+                supportFragmentManager)
         viewPager.adapter = pagerAdapter
         viewPager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
         viewPager.addOnPageChangeListener(this)
@@ -157,9 +162,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
             colorNavigationItems(item)
-            DanteUtils.indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
+            indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
             true
         }
+        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging.showBookSuggestions
 
         mainBottomNavigation.selectedItemId = tabId
     }
@@ -170,7 +176,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             R.id.menu_navigation_upcoming -> R.drawable.navigation_item_upcoming
             R.id.menu_navigation_current -> R.drawable.navigation_item_current
             R.id.menu_navigation_done -> R.drawable.navigation_item_done
-        // TODO Enable later R.id.menu_navigation_suggestions -> R.drawable.navigation_item_suggestions
+            R.id.menu_navigation_suggestions -> R.drawable.navigation_item_suggestions
             else -> 0
         }
 
@@ -191,6 +197,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                         viewModel.showSignInWelcomeScreen(false)
                     }
                     .show(supportFragmentManager, "google_welcome_dialog_fragment")
+        }
+    }
+
+    private fun indexForNavigationItemId(itemId: Int): Int? {
+        return when (itemId) {
+            R.id.menu_navigation_upcoming -> 0
+            R.id.menu_navigation_current -> 1
+            R.id.menu_navigation_done -> 2
+            R.id.menu_navigation_suggestions -> 3
+            else -> null
         }
     }
 

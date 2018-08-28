@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.0.2</string>
+    <string name="app_version" translatable="false">3.1</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
@@ -159,6 +159,13 @@
     <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others…</string>
     <string name="invalid_time_range_start">Start date must lie within the range of the other dates…</string>
     <string name="invalid_time_range_end">End date must be later than the other dates…</string>
+
+    <string name="supporter_badge_rationale">Hi, my name is Martin and I am the developer of this small, yet handy book tracking app. I strongly believe in ad-free apps. I also believe that everyone should have access to software. Hence I am not a fan of premium app versions as well. However, if you still like the app and want to support me, you can purchase a supporter\'s badge in order to appreciate further development.\n\nDisclaimer: You will receive no additional features by buying a supporter\'s badge.</string>
+    <string name="in_app_price_standard">%1$s %2$s / STANDARD BADGE</string>
+    <string name="in_app_price_premium">%1$s %2$s / PREMIUM BADGE</string>
+    <string name="supporter_badge_premium_default">--- / premium badge</string>
+    <string name="supporter_badge_standard_default">--- / standard badge</string>
+    <string name="in_app_purchase_thanks">Thank you for your support ;)</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

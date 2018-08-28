@@ -4,6 +4,8 @@ import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialogFragment
@@ -14,19 +16,23 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
+import at.shockbytes.dante.billing.DantePurchase
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SupporterBadgeDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.loadRoundedBitmap
 import at.shockbytes.dante.util.setVisible
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieProperty
+import com.airbnb.lottie.model.KeyPath
 import javax.inject.Inject
 
 
@@ -95,9 +101,9 @@ class MenuFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.btnMenuSupporter).let { supporterView ->
 
             supporterView.setVisible(featureFlagging.showSupportersBadge)
-
             supporterView.setOnClickListener {
-                Toast.makeText(context!!, "Supporter badge...", Toast.LENGTH_SHORT).show()
+                SupporterBadgeDialogFragment.newInstance()
+                        .show(fragmentManager, "supporter-badge-fragment")
                 dismiss()
             }
         }
@@ -160,6 +166,42 @@ class MenuFragment : BottomSheetDialogFragment() {
                 }
 
             }
+        })
+
+        viewModel.purchaseState.observe(this, Observer { purchase ->
+
+            val supportBadgeView = view.findViewById<LottieAnimationView>(R.id.imageViewMenuSupportBadge)
+
+            supportBadgeView.progress = 0f
+            supportBadgeView.repeatCount = 0
+            var lottieColor = 0
+            var visibility = View.GONE
+
+            when (purchase) {
+                is DantePurchase.NoPurchase -> {
+                    visibility = View.GONE
+                }
+                is DantePurchase.StandardPurchase -> {
+                    visibility = View.VISIBLE
+                    lottieColor = R.color.support_badge_standard
+                }
+                is DantePurchase.PremiumPurchase -> {
+                    visibility = View.VISIBLE
+                    lottieColor = R.color.support_badge_premium
+                }
+            }
+
+            supportBadgeView.addValueCallback(KeyPath("**"), LottieProperty.COLOR_FILTER) {
+                PorterDuffColorFilter(
+                        ContextCompat.getColor(context!!, lottieColor),
+                        PorterDuff.Mode.SRC_ATOP)
+            }
+
+            supportBadgeView.visibility = visibility
+            if (supportBadgeView.visibility == View.VISIBLE) {
+                supportBadgeView.playAnimation()
+            }
+
         })
     }
 

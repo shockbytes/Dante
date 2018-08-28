@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.GoogleDriveBackupManager
+import at.shockbytes.dante.billing.GoogleInAppBillingService
+import at.shockbytes.dante.billing.InAppBillingService
 import at.shockbytes.dante.book.BookSuggestion
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import at.shockbytes.dante.signin.GoogleSignInManager
@@ -94,5 +96,12 @@ class AppModule(private val app: Application) {
     fun provideFeatureFlagging(remoteConfig: FirebaseRemoteConfig): FeatureFlagging {
         return FirebaseFeatureFlagging(remoteConfig)
     }
+
+    @Provides
+    @Singleton
+    fun provideInAppBillingService(): InAppBillingService {
+        return GoogleInAppBillingService()
+    }
+
 
 }

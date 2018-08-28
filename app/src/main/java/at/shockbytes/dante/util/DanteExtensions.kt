@@ -20,6 +20,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * @author  Martin Macheiner
@@ -73,4 +75,14 @@ fun Activity.hideKeyboard() {
 fun View.setVisible(isVisible: Boolean) {
     val visibility = if (isVisible) View.VISIBLE else View.GONE
     this.visibility = visibility
+}
+
+fun Double.roundDouble(digits: Int): Double {
+
+    if (this == 0.0 || digits < 0 || this == Double.POSITIVE_INFINITY
+            || this == Double.NaN || this == Double.NEGATIVE_INFINITY) {
+        return 0.00
+    }
+
+    return BigDecimal(this).setScale(digits, RoundingMode.HALF_UP).toDouble()
 }

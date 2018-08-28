@@ -22,10 +22,11 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Use Firebase Data for book suggestions
 
 ### Version 3.1 - SUPPORT, SUGGEST, STATISTICS
-- [ ] Supporter's badge (in-app purchases)
+- [ ] Test In-app purchases
 - [ ] Statistics fixes
 - [ ] Add book manually (FAB menu -> Camera, By title, Manual)
-- [ ] Integrate feature flagging and config platform
+- [x] Supporter's badge
+- [x] Integrate feature flagging and config platform
 
 ### Version 3.0 - FRESH FUN
 * Fix 'wrong dates' bug

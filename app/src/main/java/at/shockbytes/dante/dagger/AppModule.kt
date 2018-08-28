@@ -11,8 +11,11 @@ import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.flagging.FeatureFlagging
+import at.shockbytes.dante.util.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.util.tracking.FirebaseTracker
 import at.shockbytes.dante.util.tracking.Tracker
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -84,6 +87,12 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideGoogleSignInManager(prefs: SharedPreferences): SignInManager {
         return GoogleSignInManager(prefs, app.applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFeatureFlagging(remoteConfig: FirebaseRemoteConfig): FeatureFlagging {
+        return FirebaseFeatureFlagging(remoteConfig)
     }
 
 }

@@ -186,7 +186,6 @@
                 android:padding="8dp"
                 android:text="@string/menu_main_supporter"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuBackup" />

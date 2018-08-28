@@ -24,7 +24,9 @@ import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.loadRoundedBitmap
+import at.shockbytes.dante.util.setVisible
 import javax.inject.Inject
 
 
@@ -47,6 +49,9 @@ class MenuFragment : BottomSheetDialogFragment() {
 
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
+
+    @Inject
+    protected lateinit var featureFlagging: FeatureFlagging
 
     private lateinit var viewModel: MainViewModel
 
@@ -87,9 +92,14 @@ class MenuFragment : BottomSheetDialogFragment() {
                     .show(fragmentManager, "sort-dialog-fragment")
         }
 
-        view.findViewById<View>(R.id.btnMenuSupporter)?.setOnClickListener {
-            Toast.makeText(context!!, "Supporter badge...", Toast.LENGTH_SHORT).show()
-            dismiss()
+        view.findViewById<View>(R.id.btnMenuSupporter).let { supporterView ->
+
+            supporterView.setVisible(featureFlagging.showSupportersBadge)
+
+            supporterView.setOnClickListener {
+                Toast.makeText(context!!, "Supporter badge...", Toast.LENGTH_SHORT).show()
+                dismiss()
+            }
         }
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
@@ -151,7 +161,6 @@ class MenuFragment : BottomSheetDialogFragment() {
 
             }
         })
-
     }
 
 

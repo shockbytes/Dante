@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>supporters_badge</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>book_suggestions</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>

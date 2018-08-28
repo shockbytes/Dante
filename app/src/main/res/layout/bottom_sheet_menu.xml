@@ -58,8 +58,8 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="4dp"
                 android:layout_marginStart="16dp"
-                android:textSize="13sp"
                 android:textColor="@android:color/secondary_text_light"
+                android:textSize="13sp"
                 app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
                 app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
                 app:layout_constraintTop_toBottomOf="@+id/txtMenuUserName"
@@ -129,8 +129,8 @@
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:text="@string/menu_main_backup"
-                android:visibility="gone"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuSortStrategy" />
@@ -189,6 +189,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuBackup" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/imageViewMenuSupportBadge"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/viewMenuSeparator"
+                app:layout_constraintEnd_toStartOf="@+id/txtMenuUserMail"
+                app:lottie_rawRes="@raw/lottie_supporter_badge" />
 
         </android.support.constraint.ConstraintLayout>
 

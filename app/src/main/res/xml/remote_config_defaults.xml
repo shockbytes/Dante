@@ -2,7 +2,7 @@
 <defaultsMap>
     <entry>
         <key>supporters_badge</key>
-        <value>false</value>
+        <value>true</value>
     </entry>
     <entry>
         <key>book_suggestions</key>

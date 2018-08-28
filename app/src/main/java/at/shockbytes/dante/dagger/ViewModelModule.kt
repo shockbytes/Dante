@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
+import at.shockbytes.dante.ui.viewmodel.SupporterBadgeViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -50,5 +51,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(BookDetailViewModel::class)
     internal abstract fun bookDetailViewModel(viewModel: BookDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SupporterBadgeViewModel::class)
+    internal abstract fun supporterBadgeViewModel(viewModel: SupporterBadgeViewModel): ViewModel
 
 }

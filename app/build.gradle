@@ -131,6 +131,10 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
+    implementation "com.leinardi.android:speed-dial:1.0.2"
+    implementation 'com.mlsdev.rximagepicker:library:2.1.5'
+    implementation "com.hootsuite.android:nachos:1.1.2"
+
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'

@@ -13,6 +13,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.viewmodel.SupporterBadgeViewModel
 import at.shockbytes.dante.util.roundDouble
+import at.shockbytes.dante.util.tracking.Tracker
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
@@ -30,6 +31,9 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
 
+    @Inject
+    protected lateinit var tracker: Tracker
+
     private lateinit var viewModel: SupporterBadgeViewModel
 
     private val imgViewDeveloper: ImageView by bindView(R.id.supporterBadgeImageViewDeveloper)
@@ -39,6 +43,8 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[SupporterBadgeViewModel::class.java]
+
+        tracker.trackOnClickSupporterBadgePage()
     }
 
     override fun setupViews() {
@@ -52,10 +58,12 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
         }
 
         btnStandardPrice.setOnClickListener {
+            tracker.trackBuySupporterBadge("standard")
             viewModel.purchaseStandardBadge()
         }
 
         btnPremiumPrice.setOnClickListener {
+            tracker.trackBuySupporterBadge("premium")
             viewModel.purchasePremiumBadge()
         }
 

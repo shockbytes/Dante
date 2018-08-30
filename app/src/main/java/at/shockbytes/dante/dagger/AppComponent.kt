@@ -52,6 +52,8 @@ interface AppComponent {
 
     fun inject(fragment: MenuFragment)
 
+    fun inject(fragment: ManualAddFragment)
+
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 
     fun inject(dialogFragment: SortStrategyDialogFragment)

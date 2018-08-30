@@ -12,11 +12,13 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.view.inputmethod.InputMethodManager
 import at.shockbytes.dante.signin.DanteUser
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.leinardi.android.speeddial.SpeedDialView
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -44,6 +46,27 @@ fun String.removeBrackets(): String {
 fun FloatingActionButton.toggle(millis: Long = 300) {
     this.hide()
     Handler().postDelayed({ this.show() }, millis)
+}
+
+fun SpeedDialView.toggleVisibility(millis: Long = 300) {
+
+    if (this.isOpen) {
+        this.close()
+    }
+
+    this.mainFab.animate().setDuration(millis)
+            .setInterpolator(OvershootInterpolator())
+            .alpha(0f)
+            .scaleX(0.7f)
+            .scaleY(0.7f).withEndAction {
+
+                this.mainFab.animate().setDuration(millis)
+                        .setInterpolator(OvershootInterpolator())
+                        .alpha(1f)
+                        .scaleX(1f)
+                        .scaleY(1f)
+    }
+
 }
 
 fun Uri.loadBitmap(context: Context): Single<Bitmap> {

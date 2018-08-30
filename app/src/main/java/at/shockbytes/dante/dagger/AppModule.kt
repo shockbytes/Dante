@@ -15,7 +15,8 @@ import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.flagging.FirebaseFeatureFlagging
-import at.shockbytes.dante.util.tracking.FirebaseTracker
+import at.shockbytes.dante.util.tracking.DefaultTracker
+import at.shockbytes.dante.util.tracking.FirebaseTrackingBackend
 import at.shockbytes.dante.util.tracking.Tracker
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
@@ -65,7 +66,7 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideTracker(): Tracker {
-        return FirebaseTracker(app.applicationContext)
+        return DefaultTracker(FirebaseTrackingBackend(app.applicationContext))
     }
 
     @Provides

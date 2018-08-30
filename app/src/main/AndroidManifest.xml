@@ -44,6 +44,9 @@
             android:name=".ui.activity.SearchActivity"
             android:label="@string/search"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ManualAddActivity"
+            android:label="" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

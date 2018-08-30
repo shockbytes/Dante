@@ -29,6 +29,9 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
     private var upIndicator: Int = R.drawable.ic_back_arrow
 
+    @ColorInt
+    private var textColor: Int = Color.parseColor("#212121")
+
     @JvmOverloads
     fun tintHomeAsUpIndicator(@DrawableRes indicator: Int = upIndicator,
                               tint: Boolean = false,
@@ -44,6 +47,13 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         }
     }
 
+    fun tintTitle(title: String) {
+        val text = SpannableString(title)
+        text.setSpan(ForegroundColorSpan(textColor), 0, text.length,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        supportActionBar?.title = text
+    }
+
     fun tintSystemBarsWithText(@ColorInt actionBarColor: Int?, @ColorInt actionBarTextColor: Int?,
                                @ColorInt statusBarColor: Int?, title: String? = null,
                                animated: Boolean = false,
@@ -51,8 +61,9 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
         // Default initialize if not set
         val abColor = actionBarColor ?: ContextCompat.getColor(applicationContext, abDefColor)
-        val abtColor = actionBarTextColor ?: ContextCompat.getColor(applicationContext, abTextDefColor)
         var sbColor = statusBarColor ?: ContextCompat.getColor(applicationContext, sbDefColor)
+        val abtColor = actionBarTextColor ?: ContextCompat.getColor(applicationContext, abTextDefColor)
+        textColor = actionBarTextColor ?: textColor
 
         if (useSameColorsForBoth) {
            sbColor = abColor
@@ -60,10 +71,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
         // Set and tint text of action bar
         val newTitle = title ?: supportActionBar?.title
-        val text = SpannableString(newTitle)
-        text.setSpan(ForegroundColorSpan(abtColor), 0, text.length,
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-        supportActionBar?.title = text
+        tintTitle(newTitle?.toString() ?: "")
 
         if (animated) {
             tintSystemBarsAnimated(abColor, sbColor)

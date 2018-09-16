@@ -10,12 +10,6 @@ can simply keep track of your progress of all your books and their current state
 
 ## Versions
 
-### Backlog
-- [ ] Include Amazon books API?
-- [ ] Change book cover and store data in Firebase Cloud Storage
-- [ ] Tablet optimization
-
-
 ### Version 3.2 - CAMPING WITH FIREBASE
 - [ ] Firebase as Online Backend
 - [ ] (Redesign login flow with Firebase login)

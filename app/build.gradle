@@ -8,8 +8,8 @@ apply plugin: 'io.fabric'
 
 
 def archVersion = "1.1.1"
-def designSupportVersion = "28.0.0-rc01"
-def supportVersion = "28.0.0-rc02"
+def designSupportVersion = "28.0.0"
+def supportVersion = "28.0.0"
 def daggerVersion = "2.16"
 def rxJavaVersion = "2.1.14"
 def rxAndroidVersion = "2.0.2"

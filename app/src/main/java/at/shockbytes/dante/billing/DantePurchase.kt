@@ -6,7 +6,7 @@ package at.shockbytes.dante.billing
  */
 
 sealed class DantePurchase {
-    class NoPurchase(): DantePurchase()
-    class StandardPurchase(): DantePurchase()
-    class PremiumPurchase(): DantePurchase()
+    object NoPurchase : DantePurchase()
+    object StandardPurchase : DantePurchase()
+    object PremiumPurchase : DantePurchase()
 }

@@ -10,7 +10,7 @@ import io.reactivex.Single
 class GoogleInAppBillingService : InAppBillingService {
 
     // TODO Remove later
-    private var purchase: DantePurchase = DantePurchase.NoPurchase()
+    private var purchase: DantePurchase = DantePurchase.NoPurchase
 
     override fun retrieveStandardPrice(): Single<Price> {
         return Single.fromCallable {
@@ -29,7 +29,7 @@ class GoogleInAppBillingService : InAppBillingService {
     override fun purchaseStandardBadge(): Completable {
         return Completable.fromCallable {
             // TODO Purchase standard badge
-            purchase = DantePurchase.StandardPurchase()
+            purchase = DantePurchase.StandardPurchase
             Unit
         }
     }
@@ -37,7 +37,7 @@ class GoogleInAppBillingService : InAppBillingService {
     override fun purchasePremiumBadge(): Completable {
         return Completable.fromCallable {
             // TODO Purchase premium badge
-            purchase = DantePurchase.PremiumPurchase()
+            purchase = DantePurchase.PremiumPurchase
             Unit
         }
     }

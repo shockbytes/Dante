@@ -25,6 +25,7 @@ import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -34,6 +35,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_book_detail.*
 import org.joda.time.DateTime
@@ -49,6 +51,8 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
         Palette.PaletteAsyncListener, CircleSeekBar.Callback {
 
     override val layoutId = R.layout.fragment_book_detail
+
+    private val compositeDisposable = CompositeDisposable()
 
     @Inject
     protected lateinit var settings: DanteSettings
@@ -93,6 +97,11 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
     override fun onResume() {
         super.onResume()
         loadIcons()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -264,40 +273,42 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
         }, { throwable -> throwable.printStackTrace() }, {
             // In the end start the component animations
             startComponentAnimations()
-        })
+        }).addTo(compositeDisposable)
     }
 
     private fun showDatePicker(target: Int) {
-        val cal = Calendar.getInstance()
-        DatePickerDialog(activity,
-                { _, y, m, d ->
+        context?.let { ctx ->
+            val cal = Calendar.getInstance()
+            DatePickerDialog(ctx,
+                    { _, y, m, d ->
 
-                    when (target) {
-                        DATE_TARGET_PUBLISHED_DATE -> {
-                            onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) // +1 because month starts with 0
-                        }
-                        DATE_TARGET_WISHLIST_DATE -> {
-                            val wishlistDate = buildTimestampFromDate(y, m, d)
-                            if (!viewModel.updateWishlistDate(wishlistDate)) {
-                                showToast(R.string.invalid_time_range_wishlist, true)
+                        when (target) {
+                            DATE_TARGET_PUBLISHED_DATE -> {
+                                onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) // +1 because month starts with 0
+                            }
+                            DATE_TARGET_WISHLIST_DATE -> {
+                                val wishlistDate = buildTimestampFromDate(y, m, d)
+                                if (!viewModel.updateWishlistDate(wishlistDate)) {
+                                    showToast(R.string.invalid_time_range_wishlist, true)
+                                }
+                            }
+                            DATE_TARGET_START_DATE -> {
+                                val startDate = buildTimestampFromDate(y, m, d)
+                                if (!viewModel.updateStartDate(startDate)) {
+                                    showToast(R.string.invalid_time_range_start, true)
+                                }
+                            }
+                            DATE_TARGET_END_DATE -> {
+                                val endDate = buildTimestampFromDate(y, m, d)
+                                if (!viewModel.updateEndDate(endDate)) {
+                                    showToast(R.string.invalid_time_range_end, true)
+                                }
                             }
                         }
-                        DATE_TARGET_START_DATE -> {
-                            val startDate = buildTimestampFromDate(y, m, d)
-                            if (!viewModel.updateStartDate(startDate)) {
-                                showToast(R.string.invalid_time_range_start, true)
-                            }
-                        }
-                        DATE_TARGET_END_DATE -> {
-                            val endDate = buildTimestampFromDate(y, m, d)
-                            if (!viewModel.updateEndDate(endDate)) {
-                                showToast(R.string.invalid_time_range_end, true)
-                            }
-                        }
-                    }
-                },
-                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
-                .show()
+                    },
+                    cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+                    .show()
+        }
     }
 
     private fun initializeTimeInformation(book: BookEntity) {

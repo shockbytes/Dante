@@ -21,6 +21,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.leinardi.android.speeddial.SpeedDialView
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -108,4 +110,8 @@ fun Double.roundDouble(digits: Int): Double {
     }
 
     return BigDecimal(this).setScale(digits, RoundingMode.HALF_UP).toDouble()
+}
+
+fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
+    compositeDisposable.add(this)
 }

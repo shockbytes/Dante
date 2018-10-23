@@ -37,7 +37,7 @@ class GoogleSignInManager(private val prefs: SharedPreferences,
     override var maybeLater: Boolean
         get() = prefs.getBoolean(prefsMaybeLater, false)
         set(value) {
-            prefs.edit().putBoolean(prefsMaybeLater, true).apply()
+            prefs.edit().putBoolean(prefsMaybeLater, value).apply()
         }
 
     override var showWelcomeScreen: Boolean

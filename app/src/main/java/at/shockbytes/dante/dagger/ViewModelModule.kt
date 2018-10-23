@@ -17,6 +17,7 @@ import kotlin.reflect.KClass
  * Date:    12.06.2018
  */
 
+@Suppress("UNCHECKED_CAST")
 @Singleton
 class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
 

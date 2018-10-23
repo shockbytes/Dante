@@ -9,9 +9,9 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.SingleLiveEvent
+import at.shockbytes.dante.util.addTo
 import com.mlsdev.rximagepicker.RxImagePicker
 import com.mlsdev.rximagepicker.Sources
-import io.reactivex.Completable
 import javax.inject.Inject
 
 /**
@@ -47,7 +47,7 @@ class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao)
         RxImagePicker.with(c).requestImage(Sources.GALLERY).subscribe { uri ->
             thumbnailAddress = uri
             imageEvent.postValue(uri)
-        }
+        }.addTo(compositeDisposable)
     }
 
     fun storeBook(title: String?, author: String?, pageCount: Int?, state: BookState,

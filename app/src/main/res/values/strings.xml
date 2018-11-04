@@ -43,7 +43,7 @@
     <string name="help_scan">Focus the ISBN until the app automatically recognizes it</string>
     <string name="dialogfragment_query_title">Search by title</string>
     <string name="dialogfragment_query_message">Please enter the title or the ISBN of your book.</string>
-    <string name="manual_query" >Title or ISBN</string>
+    <string name="manual_query">Title or ISBN</string>
     <string name="book_finished">%s finished</string>
     <string name="download_book_json_error">Cannot find any corresponding entry in Googles book database.</string>
 
@@ -146,14 +146,21 @@
     <string name="menu_main_sort">Sort books</string>
     <string name="anonymous_user">Anonymous bookworm</string>
     <string name="menu_main_supporter">Supporter badge</string>
+
+
+    <!-- Sorting -->
     <string name="sort_strategy_default">Default</string>
     <string name="sort_strategy_author">Author</string>
     <string name="sort_strategy_title">Title</string>
     <string name="sort_strategy_progress">Progress</string>
+    <string name="sort_strategy_pages">Pages</string>
+
     <string name="sort_strategy_default_hint">Books are automatically inserted after scanning. You can rearrange your books by drag and drop.</string>
     <string name="sort_strategy_author_hint">Books are sorted by the name of the author. Manually rearranging your books will fall back to default sort.</string>
     <string name="sort_strategy_title_hint">Books are sorted by the book title. Manually rearranging your books will fall back to default sort.</string>
     <string name="sort_strategy_progress_hint">Books are sorted by your reading progress. Manually rearranging your books will fall back to default strategy.</string>
+    <string name="sort_strategy_pages_hint">Sort your books by the ascending number of pages.</string>
+
     <string name="dialogfragment_sort_by">Sort by</string>
     <string name="scan_network_not_available">Please enable network connectivity, in order to scan books!</string>
     <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others…</string>

@@ -3,11 +3,9 @@ package at.shockbytes.dante.backup
 import android.content.SharedPreferences
 import android.os.Build
 import android.support.v4.app.FragmentActivity
-import android.util.Log
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.signin.GoogleSignInManager
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.drive.*
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
@@ -17,6 +15,7 @@ import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.io.*
 import java.util.*
 import javax.inject.Named
@@ -94,7 +93,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
                 booksFromEntry(entry)
                         .subscribe ({ books ->
                     bookDao.restoreBackup(books, strategy)
-                }, {throwable -> Crashlytics.logException(throwable) })
+                }, {throwable -> Timber.e(throwable) })
             }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         } else {
             Completable.error(NullPointerException("DriveClient is null!"))
@@ -134,8 +133,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
                             books, timestamp, isAutoBackup))
 
                 } catch (e: Exception) {
-                    e.printStackTrace()
-                    Log.wtf("Dante", "Cannot parse file: $fileName")
+                    Timber.e(e, "Cannot parse file: $fileName")
                 }
 
             }

@@ -9,6 +9,7 @@ import android.view.Window
 import android.widget.Button
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
 import com.google.android.gms.common.SignInButton
 import com.jakewharton.rxbinding2.view.RxView
@@ -69,7 +70,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
             tracker.trackGoogleLogin(true)
             signInListener?.invoke(false)
             dismiss()
-        }
+        }.addTo(compositeDisposable)
 
         // TODO Add a online sign in check box!!!
 
@@ -77,7 +78,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
             tracker.trackGoogleLogin(false)
             maybeLaterListener?.invoke()
             dismiss()
-        }
+        }.addTo(compositeDisposable)
     }
 
     companion object {

@@ -16,6 +16,7 @@ import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
 import com.arlib.floatingsearchview.FloatingSearchView
@@ -23,6 +24,7 @@ import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import kotterknife.bindView
+import timber.log.Timber
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -150,14 +152,14 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
                 searchView.hideProgress()
                 btnSearchOnline.isEnabled = true
             }, {
-
+                Timber.e(it)
                 showToast(message4SearchException(it))
 
                 searchView.clearQuery()
                 emptyView.visibility = View.GONE
                 searchView.hideProgress()
                 btnSearchOnline.isEnabled = true
-            })
+            }).addTo(compositeDisposable)
         }
     }
 
@@ -174,8 +176,9 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
                         // Save to call !! because hasSuggestions already checks nullability
                         list.add(bookTransform(b.mainSuggestion!!))
                         b.otherSuggestions
+                                .asSequence()
                                 .filter { it.isbn.isNotEmpty() }
-                                .mapTo(list, { book -> bookTransform(book) })
+                                .mapTo(list) { book -> bookTransform(book) }
                     }
                     list.toList()
                 }

@@ -133,7 +133,8 @@ dependencies {
 
     implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.mlsdev.rximagepicker:library:2.1.5'
-    implementation "com.hootsuite.android:nachos:1.1.2"
+    //implementation "com.hootsuite.android:nachos:1.1.2"
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'

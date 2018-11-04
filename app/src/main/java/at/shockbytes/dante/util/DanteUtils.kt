@@ -20,6 +20,7 @@ import at.shockbytes.dante.book.BookStatistics
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,7 +81,7 @@ object DanteUtils {
             val popup = fieldPopup.get(menu) as MenuPopupHelper
             popup.setForceShowIcon(true)
         } catch (e: Exception) {
-            Log.d("Dante", "Cannot force to show icons in popupmenu")
+            Timber.e("Cannot force to show icons in popupmenu")
         }
     }
 
@@ -90,26 +91,5 @@ object DanteUtils {
         return activeNetworkInfo?.isConnected ?: false
     }
 
-    fun buildStatistics(books: List<BookEntity>): Single<BookStatistics> {
-        return Single.fromCallable {
-
-            val upcoming = books.filter { it.state == BookState.READ_LATER }
-            val done = books.filter { it.state == BookState.READ }
-            val reading = books.filter { it.state == BookState.READING }
-
-            // Add pages in the currently read book to read pages
-            val pagesRead = done.sumBy { it.pageCount } + reading.sumBy { it.currentPage }
-            // Add pages waiting in the current book to waiting pages
-            val pagesWaiting = upcoming.sumBy { it.pageCount } + reading.sumBy { it.pageCount - it.currentPage }
-            val (fastestBook, slowestBook) = BookStatistics.bookDurations(done)
-            val avgBooksPerMonth = BookStatistics.averageBooksPerMonth(done)
-            val mostReadingMonth = BookStatistics.mostReadingMonth(done)
-
-            BookStatistics(pagesRead, pagesWaiting,
-                    done.size, upcoming.size,
-                    fastestBook, slowestBook,
-                    avgBooksPerMonth, mostReadingMonth)
-        }.subscribeOn(Schedulers.computation()).observeOn(AndroidSchedulers.mainThread())
-    }
 
 }

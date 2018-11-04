@@ -9,12 +9,13 @@ import android.widget.RatingBar
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.util.addTo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.crashlytics.android.Crashlytics
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxRatingBar
 import kotterknife.bindView
+import timber.log.Timber
 
 /**
  * @author Martin Macheiner
@@ -62,10 +63,8 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
                     if (rating in 1..5) { // Error can somehow occur, therefore check!
                         txtRatings.text = context!!.resources.getStringArray(R.array.ratings)[rating]
                     }
-                }, { throwable ->
-                    throwable.printStackTrace()
-                    Crashlytics.logException(throwable)
-                })
+                }, { throwable -> Timber.e(throwable) })
+                .addTo(compositeDisposable)
         if (previousRating > 0) {
             ratingBar.rating = previousRating.toFloat()
         }
@@ -74,7 +73,7 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
                 .subscribe {
                     applyListener?.invoke(ratingBar.rating.toInt())
                     dismiss()
-                }
+                }.addTo(compositeDisposable)
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

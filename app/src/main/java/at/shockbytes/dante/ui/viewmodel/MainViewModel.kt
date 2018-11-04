@@ -7,7 +7,8 @@ import at.shockbytes.dante.billing.DantePurchase
 import at.shockbytes.dante.billing.InAppBillingService
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInManager
-import com.crashlytics.android.Crashlytics
+import at.shockbytes.dante.util.addTo
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -57,16 +58,15 @@ class MainViewModel @Inject constructor(private val inAppBillingService: InAppBi
         signInManager.signIn(data, signInToBackend).subscribe({ account ->
             userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
         }, { throwable: Throwable ->
-            throwable.printStackTrace()
-            Crashlytics.logException(throwable)
+            Timber.e(throwable)
             userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
-        })
+        }).addTo(compositeDisposable)
     }
 
     fun loginLogout() {
 
         if (signInManager.getAccount() != null) {
-            signInManager.signOut().subscribe { }
+            signInManager.signOut().subscribe { }.addTo(compositeDisposable)
         } else {
             userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
         }

@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
+import com.airbnb.lottie.model.layer.CompositionLayer
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * @author Martin Macheiner
@@ -17,6 +19,8 @@ import at.shockbytes.dante.dagger.AppComponent
 abstract class BaseFragment : Fragment() {
 
     abstract val layoutId: Int
+
+    protected val compositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,5 +70,11 @@ abstract class BaseFragment : Fragment() {
     protected fun showToast(text: Int, showLong: Boolean = true) {
         showToast(getString(text), showLong)
     }
+
+    override fun onPause() {
+        compositeDisposable.clear()
+        super.onPause()
+    }
+
 
 }

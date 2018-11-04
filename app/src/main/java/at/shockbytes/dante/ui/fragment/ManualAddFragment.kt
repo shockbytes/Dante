@@ -15,6 +15,7 @@ import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
+import at.shockbytes.dante.util.addTo
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -58,8 +59,8 @@ class ManualAddFragment : BaseFragment(), RequestListener<Drawable> {
             override fun afterTextChanged(p0: Editable?) {}
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                p0?.let { title ->
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                s?.let { title ->
                     (activity as? TintableBackNavigableActivity)?.tintTitle(title.toString())
                 }
             }
@@ -111,23 +112,25 @@ class ManualAddFragment : BaseFragment(), RequestListener<Drawable> {
     private fun setupObserver() {
 
         viewModel.imageEvent.observe(this, Observer { uri ->
-            Glide.with(context!!).load(uri)
-                    .listener(this)
-                    .into(imgViewManualAdd)
+            context?.let { ctx ->
+                Glide.with(ctx).load(uri)
+                        .listener(this)
+                        .into(imgViewManualAdd)
+            }
         })
 
-        viewModel.addEvent.observe(this, Observer { event ->
+        viewModel.addEvent.subscribe { event ->
 
             when (event) {
                 is ManualAddViewModel.AddEvent.SuccessEvent -> {
-                    activity?.supportFinishAfterTransition()
+                    activity?.onBackPressed()
                 }
                 is ManualAddViewModel.AddEvent.ErrorEvent -> {
                     showSnackbar(getString(R.string.manual_add_error),
                             getString(android.R.string.ok), true) { this.dismiss() }
                 }
             }
-        })
+        }.addTo(compositeDisposable)
     }
 
     private fun storeBook(state: BookState) {
@@ -138,7 +141,8 @@ class ManualAddFragment : BaseFragment(), RequestListener<Drawable> {
         val pageCount = editTextManualAddPages.text?.toString()?.toIntOrNull()
         val publishedDate = editTextManualAddPublishedDate.text?.toString()
         val isbn = editTextManualAddIsbn.text?.toString()
-        val language = spinnerManualAddLanguage.selectedItem as? String
+        //val language = spinnerManualAddLanguage.selectedItem as? String
+        val language = "NA" // TODO Change to spinner value
 
         viewModel.storeBook(title, authors, pageCount, state, subTitle, publishedDate, isbn, language)
     }

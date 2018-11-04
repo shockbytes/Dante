@@ -12,6 +12,7 @@ import at.shockbytes.dante.util.SingleLiveEvent
 import at.shockbytes.dante.util.addTo
 import com.mlsdev.rximagepicker.RxImagePicker
 import com.mlsdev.rximagepicker.Sources
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 /**
@@ -24,7 +25,7 @@ class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao)
 
     private var thumbnailAddress: Uri? = null
 
-    val addEvent = SingleLiveEvent<AddEvent>()
+    val addEvent = PublishSubject.create<AddEvent>()
 
     init {
         poke()
@@ -58,9 +59,9 @@ class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao)
 
         if (entity != null) {
             bookDao.create(entity)
-            addEvent.postValue(AddEvent.SuccessEvent())
+            addEvent.onNext(AddEvent.SuccessEvent)
         } else {
-            addEvent.postValue(AddEvent.ErrorEvent())
+            addEvent.onNext(AddEvent.ErrorEvent)
         }
     }
 
@@ -88,8 +89,8 @@ class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao)
 
     sealed class AddEvent {
 
-        class SuccessEvent : AddEvent()
-        class ErrorEvent : AddEvent()
+        object SuccessEvent : AddEvent()
+        object ErrorEvent : AddEvent()
     }
 
 }

@@ -36,6 +36,11 @@ class DetailActivity : TintableBackNavigableActivity() {
         detailFragment?.backwardAnimation()
     }
 
+    override fun onBackStackPopped() {
+        super.onBackStackPopped()
+        detailFragment?.backwardAnimation()
+    }
+
 
     companion object {
 

@@ -131,7 +131,7 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
-    implementation "com.leinardi.android:speed-dial:2.0.0"
+    implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.mlsdev.rximagepicker:library:2.1.5'
     implementation "com.hootsuite.android:nachos:1.1.2"
 

@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
@@ -171,14 +172,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         mainFabMenu.setOnActionSelectedListener { item ->
 
-
-            // TODO Find this ugly display bug!!!
             when (item.id) {
 
                 R.id.menu_fab_add_camera -> {
                     tracker.trackOnScanBook()
 
-                    mainFabMenu.overlayLayout?.hide() // Hide in order to avoid display bugs
                     startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.CAMERA, null),
                             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
                     false
@@ -197,7 +195,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 R.id.menu_fab_add_manually -> {
                     tracker.trackOnBookAddManually()
 
-                    mainFabMenu.overlayLayout?.hide() // Hide in order to avoid display bugs
                     startActivity(ManualAddActivity.newIntent(this),
                             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
                     false

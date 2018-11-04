@@ -237,6 +237,7 @@
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:singleLine="true"
+                            android:maxLength="13"
                             android:layout_height="wrap_content"
                             android:hint="@string/isbn" />
                     </android.support.design.widget.TextInputLayout>
@@ -244,6 +245,7 @@
                     <Spinner
                         android:id="@+id/spinnerManualAddLanguage"
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_marginLeft="16dp"

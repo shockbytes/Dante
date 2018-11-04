@@ -52,8 +52,6 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
 
     override val layoutId = R.layout.fragment_book_detail
 
-    private val compositeDisposable = CompositeDisposable()
-
     @Inject
     protected lateinit var settings: DanteSettings
 
@@ -138,7 +136,10 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
     // --------------------------------------------------------------------
 
     fun backwardAnimation() {
-        animationList.forEach { it.alpha = 0f }
+        animationList.forEach {
+            it.clearAnimation()
+            it.alpha = 0f
+        }
     }
 
     // --------------------------------------------------------------------

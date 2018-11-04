@@ -77,12 +77,14 @@
         android:layout_below="@+id/appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+    <!--
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/mainFabMenuOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:clickable_overlay="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+-->
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/mainFabMenu"
@@ -95,8 +97,8 @@
         app:sdUseReverseAnimationOnClose="true"
         app:sdMainFabAnimationRotateAngle="90"
         app:sdMainFabClosedSrc="@drawable/ic_add"
-        app:sdMainFabOpenedSrc="@drawable/ic_close"
-        app:sdOverlayLayout="@id/mainFabMenuOverlay" />
+        app:sdMainFabOpenedSrc="@drawable/ic_close" />
+    <!-- app:sdOverlayLayout="@id/mainFabMenuOverlay" -->
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/mainBottomNavigation"

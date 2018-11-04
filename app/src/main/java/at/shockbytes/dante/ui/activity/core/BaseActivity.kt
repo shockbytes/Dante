@@ -1,8 +1,11 @@
 package at.shockbytes.dante.ui.activity.core
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.transition.Explode
 import android.transition.Slide
@@ -11,6 +14,7 @@ import android.view.Window
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.ui.activity.ManualAddActivity
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -41,6 +45,12 @@ abstract class BaseActivity : AppCompatActivity() {
     protected fun showToast(text: String, showLong: Boolean = false) {
         val length = if (showLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         Toast.makeText(applicationContext, text, length).show()
+    }
+
+    fun startActivityDelayed(intent: Intent, bundle: Bundle?, delay: Long) {
+        Handler().postDelayed ( {
+            startActivity(intent, bundle)
+        }, delay)
     }
 
     abstract fun injectToGraph(appComponent: AppComponent)

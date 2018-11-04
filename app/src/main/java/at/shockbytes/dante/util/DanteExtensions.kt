@@ -51,24 +51,8 @@ fun FloatingActionButton.toggle(millis: Long = 300) {
 }
 
 fun SpeedDialView.toggleVisibility(millis: Long = 300) {
-
-    if (this.isOpen) {
-        this.close()
-    }
-
-    this.mainFab.animate().setDuration(millis)
-            .setInterpolator(OvershootInterpolator())
-            .alpha(0f)
-            .scaleX(0.7f)
-            .scaleY(0.7f).withEndAction {
-
-                this.mainFab.animate().setDuration(millis)
-                        .setInterpolator(OvershootInterpolator())
-                        .alpha(1f)
-                        .scaleX(1f)
-                        .scaleY(1f)
-    }
-
+    this.hide()
+    Handler().postDelayed({ this.show() }, millis)
 }
 
 fun Uri.loadBitmap(context: Context): Single<Bitmap> {

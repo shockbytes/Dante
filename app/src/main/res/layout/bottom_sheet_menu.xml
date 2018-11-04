@@ -156,6 +156,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuSupporter" />
 
             <Button
+                style="@style/AppTheme.RoundedButton"
                 android:id="@+id/btnMenuLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -163,9 +164,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/dante_button"
                 android:text="@string/login"
-                android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toTopOf="@+id/viewMenuSeparator"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

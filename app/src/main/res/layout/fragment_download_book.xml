@@ -112,17 +112,22 @@
         </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
+            style="@style/AppTheme.RoundedButton"
             android:id="@+id/btnDownloadFragmentNotMyBook"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="16dp"
             android:alpha="0"
-            android:padding="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:scaleX="0.5"
             android:scaleY="0.5"
             android:text="@string/download_suggestion_other"
-            android:textColor="@android:color/white"
             app:backgroundTint="@color/disabled_view" />
 
     </RelativeLayout>

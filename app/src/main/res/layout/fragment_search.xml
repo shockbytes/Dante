@@ -70,7 +70,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <android.support.v7.widget.AppCompatButton
-                    style="@style/AppTheme.RoundedButton"
+                    style="@style/AppTheme.RoundedButton.Outlined"
                     android:id="@+id/fragment_search_btn_search_online"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

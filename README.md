@@ -19,6 +19,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Include book description in Download
 - [ ] Replace preferences UI
 - [ ] Reading history in statistics
+- [ ] Dark mode
 
 ### Version 3.1 - SUPPORT STATISTICS!
 - [ ] Test In-app purchases

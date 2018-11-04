@@ -28,7 +28,7 @@ import at.shockbytes.dante.ui.fragment.dialog.SupporterBadgeDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.flagging.FeatureFlagging
-import at.shockbytes.dante.util.loadRoundedBitmap
+import at.shockbytes.dante.ui.image.GlideImageLoader.loadRoundedBitmap
 import at.shockbytes.dante.util.setVisible
 import com.airbnb.lottie.LottieAnimationView
 import com.airbnb.lottie.LottieProperty

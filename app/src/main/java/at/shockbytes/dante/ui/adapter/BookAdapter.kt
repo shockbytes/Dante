@@ -12,17 +12,12 @@ import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
-import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import java.util.*
@@ -36,6 +31,7 @@ import kotlin.math.roundToInt
 
 class BookAdapter(context: Context, extData: List<BookEntity>,
                   private val state: BookState,
+                  private val imageLoader: ImageLoader,
                   private val popupListener: OnBookPopupItemSelectedListener? = null,
                   private val showOverflow: Boolean = true,
                   private val settings: DanteSettings? = null)
@@ -165,11 +161,9 @@ class BookAdapter(context: Context, extData: List<BookEntity>,
         private fun updateImageThumbnail(t: BookEntity) {
 
             if (!t.thumbnailAddress.isNullOrEmpty()) {
-                Glide.with(context).load(t.thumbnailAddress)
-                        .apply(RequestOptions()
-                                .placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder))
-                                .transforms(CenterInside(), RoundedCorners(context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt())))
-                        .into(imgViewThumb)
+                val corners = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                imageLoader.loadImageWithCornerRadius(context, t.thumbnailAddress!!, imgViewThumb,
+                        cornerDimension = corners)
             } else
             // Books with no image will recycle another cover if not cleared here
                 imgViewThumb.setImageResource(R.drawable.ic_placeholder)

@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.fragment.dialog
 import android.app.Dialog
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
@@ -11,16 +10,17 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.ui.image.ImageLoader
 import kotterknife.bindView
+import javax.inject.Inject
 
 /**
  * @author Martin Macheiner
  * Date: 01.01.2018.
  */
 
-class GoogleWelcomeScreenDialogFragment : DialogFragment() {
+class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
 
     private val txtName: TextView by bindView(R.id.dialogfragment_google_welcome_txt_headline)
     private val imgView: ImageView by bindView(R.id.dialogfragment_google_welcome_imgview)
@@ -33,6 +33,9 @@ class GoogleWelcomeScreenDialogFragment : DialogFragment() {
     private var photoUrlString: String? = null
 
     private var listener: (() -> Unit)? = null
+
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,10 @@ class GoogleWelcomeScreenDialogFragment : DialogFragment() {
                 .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
+    override fun injectToGraph(appComponent: AppComponent) {
+        appComponent.inject(this)
+    }
+
     override fun onResume() {
         super.onResume()
         setupViews()
@@ -65,12 +72,9 @@ class GoogleWelcomeScreenDialogFragment : DialogFragment() {
         val str = if (name != null) getString(R.string.welcome_with_name, name) else getString(R.string.login_title)
         txtName.text = str
 
-        if (photoUrlString != null) {
+        photoUrlString?.let { url ->
             context?.let { ctx ->
-                Glide.with(ctx)
-                        .load(Uri.parse(photoUrlString))
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(imgView)
+                imageLoader.loadImageUri(ctx, Uri.parse(url), imgView, circular = true)
             }
         }
     }

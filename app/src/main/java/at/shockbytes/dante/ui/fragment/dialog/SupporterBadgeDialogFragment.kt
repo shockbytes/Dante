@@ -11,11 +11,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.SupporterBadgeViewModel
 import at.shockbytes.dante.util.roundDouble
 import at.shockbytes.dante.util.tracking.Tracker
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -34,6 +33,9 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
     @Inject
     protected lateinit var tracker: Tracker
 
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
+
     private lateinit var viewModel: SupporterBadgeViewModel
 
     private val imgViewDeveloper: ImageView by bindView(R.id.supporterBadgeImageViewDeveloper)
@@ -50,11 +52,8 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
     override fun setupViews() {
 
         context?.let { ctx ->
-            Glide.with(ctx)
-                    .load(R.drawable.ic_developer)
-                    .apply(RequestOptions.circleCropTransform()
-                            .placeholder(R.drawable.ic_user_template_dark))
-                    .into(imgViewDeveloper)
+            imageLoader.loadImageResource(ctx, R.drawable.ic_developer,
+                    imgViewDeveloper, R.drawable.ic_user_template_dark)
         }
 
         btnStandardPrice.setOnClickListener {

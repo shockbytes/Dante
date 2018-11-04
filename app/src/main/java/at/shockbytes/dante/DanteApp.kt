@@ -3,11 +3,13 @@ package at.shockbytes.dante
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import at.shockbytes.dante.dagger.*
-import com.crashlytics.android.Crashlytics
+import at.shockbytes.dante.util.CrashlyticsReportingTree
 import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.core.CrashlyticsCore
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
+import timber.log.Timber
 
 /**
  * @author  Martin Macheiner
@@ -31,13 +33,8 @@ class DanteApp : MultiDexApplication() {
         Realm.init(this)
         JodaTimeAndroid.init(this)
 
-        // Only use Crashlytics if not debug build
-        if (!BuildConfig.DEBUG) {
-            Fabric.with(Fabric.Builder(this)
-                    .kits(Crashlytics(), Answers())
-                    .debuggable(BuildConfig.DEBUG)
-                    .build())
-        }
+        configureFabric()
+        configureLogging()
 
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule())
@@ -45,4 +42,29 @@ class DanteApp : MultiDexApplication() {
                 .appModule(AppModule(this))
                 .build()
     }
+
+    private fun configureLogging() {
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        } else {
+            Timber.plant(CrashlyticsReportingTree())
+        }
+    }
+
+    private fun configureFabric() {
+
+        // Configure Crashlytics anyway
+        Fabric.with(Fabric.Builder(this)
+                .kits(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build(), Answers())
+                .debuggable(BuildConfig.DEBUG)
+                .build())
+
+        // to catch and send crash report to crashlytics when app crashes
+        val defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { t, e ->
+            Timber.e(e, "uncaught exception")
+            defaultExceptionHandler.uncaughtException(t, e)
+        }
+    }
+
 }

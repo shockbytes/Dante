@@ -10,9 +10,11 @@ import android.view.View
 import android.view.Window
 import android.widget.TextView
 import at.shockbytes.dante.R
+import at.shockbytes.dante.book.BookStatistics
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.addTo
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -50,8 +52,6 @@ class StatsDialogFragment : BaseDialogFragment() {
     @Inject
     protected lateinit var bookDao: BookEntityDao
 
-    private val compositeDisposable = CompositeDisposable()
-
     private val statsView: View
         get() = LayoutInflater.from(context)
                 .inflate(R.layout.dialogfragment_stats, null, false)
@@ -86,52 +86,55 @@ class StatsDialogFragment : BaseDialogFragment() {
      */
     private fun loadIcons() {
         Single.fromCallable {
-            drawableResList.mapTo(mutableListOf<Drawable>()) {
+            drawableResList.asSequence().mapTo(mutableListOf<Drawable>()) {
                 AppCompatDrawableManager.get().getDrawable(context!!, it)
             }.toList()
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { list ->
             list.forEachIndexed { index, drawable ->
                 statsViews[index].setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
-        }
+        }.addTo(compositeDisposable)
     }
 
     private fun showStats() {
-        compositeDisposable.add(bookDao.bookObservable.subscribe {
-            compositeDisposable.add(DanteUtils.buildStatistics(it).subscribe { stats ->
+        bookDao.bookObservable.subscribe { books ->
+            BookStatistics.from(books)
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { stats ->
 
-                statsViews[0].text = getString(R.string.stats_pages_read, stats.pagesRead)
-                statsViews[1].text = getString(R.string.stats_pages_waiting, stats.pagesWaiting)
-                statsViews[2].text = getString(R.string.stats_books_read, stats.booksRead)
-                statsViews[3].text = getString(R.string.stats_books_waiting, stats.booksWaiting)
+                        statsViews[0].text = getString(R.string.stats_pages_read, stats.pagesRead)
+                        statsViews[1].text = getString(R.string.stats_pages_waiting, stats.pagesWaiting)
+                        statsViews[2].text = getString(R.string.stats_books_read, stats.booksRead)
+                        statsViews[3].text = getString(R.string.stats_books_waiting, stats.booksWaiting)
 
-                val textFastestBook = if (stats.fastestBook != null) {
-                    getString(R.string.stats_duration_book,
-                            stats.fastestBook.days, stats.fastestBook.bookName)
-                } else {
-                    getString(R.string.stats_book_duration_default)
-                }
-                statsViews[4].text = textFastestBook
+                        val textFastestBook = if (stats.fastestBook != null) {
+                            getString(R.string.stats_duration_book,
+                                    stats.fastestBook.days, stats.fastestBook.bookName)
+                        } else {
+                            getString(R.string.stats_book_duration_default)
+                        }
+                        statsViews[4].text = textFastestBook
 
-                val textSlowestBook = if (stats.slowestBook != null) {
-                    getString(R.string.stats_duration_book,
-                            stats.slowestBook.days, stats.slowestBook.bookName)
-                } else {
-                    getString(R.string.stats_book_duration_default)
-                }
-                statsViews[5].text = textSlowestBook
+                        val textSlowestBook = if (stats.slowestBook != null) {
+                            getString(R.string.stats_duration_book,
+                                    stats.slowestBook.days, stats.slowestBook.bookName)
+                        } else {
+                            getString(R.string.stats_book_duration_default)
+                        }
+                        statsViews[5].text = textSlowestBook
 
-                statsViews[6].text = getString(R.string.stats_avg_books_per_month,
-                        stats.avgBooksPerMonth.toString())
-                val textMostReadingMonth = if (stats.mostReadingMonth != null) {
-                    getString(R.string.stats_most_reading_month,
-                            stats.mostReadingMonth.finishedBooks, stats.mostReadingMonth.monthAsString)
-                } else {
-                    getString(R.string.stats_book_duration_default)
-                }
-                statsViews[7].text = textMostReadingMonth
-            })
-        })
+                        statsViews[6].text = getString(R.string.stats_avg_books_per_month,
+                                stats.avgBooksPerMonth.toString())
+                        val textMostReadingMonth = if (stats.mostReadingMonth != null) {
+                            getString(R.string.stats_most_reading_month,
+                                    stats.mostReadingMonth.finishedBooks, stats.mostReadingMonth.monthAsString)
+                        } else {
+                            getString(R.string.stats_book_duration_default)
+                        }
+                        statsViews[7].text = textMostReadingMonth
+                    }.addTo(compositeDisposable)
+        }.addTo(compositeDisposable)
     }
 
     companion object {

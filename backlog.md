@@ -10,9 +10,8 @@ Put everything that is not related to a fixed version in here
 
 ## Technical related tickets
 
-- Use Timber with Crashlytics Tree and increase logging
 - Vastly improve tracking capabilities
-- Refactor navigation with the Android Navigation Architecture Component libraray
+- Refactor navigation with the Android Navigation Architecture Component library
 
 ## Product related tickets
 

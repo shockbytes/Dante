@@ -15,12 +15,14 @@ import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import kotlinx.android.synthetic.main.activity_backup.*
 import kotterknife.bindView
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -59,9 +61,9 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
             loadBackupList()
             tracker.trackOnBackupMade()
         }) { throwable ->
-            throwable.printStackTrace()
+            Timber.e(throwable)
             showSnackbar(getString(R.string.backup_not_created))
-        }
+        }.addTo(compositeDisposable)
     }
 
     override fun setupViews() {
@@ -99,7 +101,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                                 showSnackbar(getString(R.string.backup_restored,
                                         DanteUtils.formatTimestamp(t.timestamp)))
                             }) { throwable ->
-                                throwable.printStackTrace()
+                                Timber.e(throwable)
                                 showSnackbar(getString(R.string.backup_restore_error))
                             }
                 }
@@ -117,9 +119,9 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                     showSnackbar(getString(R.string.backup_removed))
                     activityBackupTxtRestore.text = "${getString(R.string.restore)} (${adapter.itemCount})"
                 }) { throwable ->
-                    throwable.printStackTrace()
+                    Timber.e(throwable)
                     showSnackbar(throwable.localizedMessage)
-                }
+                }.addTo(compositeDisposable)
     }
 
     private fun loadBackupList() {
@@ -128,9 +130,9 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
             rvBackups.scrollToPosition(0)
             activityBackupTxtRestore.text = "${getString(R.string.restore)} (${backupEntries.size})"
         }) { throwable ->
-            throwable.printStackTrace()
+            Timber.e(throwable)
             Toast.makeText(context, throwable.toString(), Toast.LENGTH_LONG).show()
-        }
+        }.addTo(compositeDisposable)
     }
 
     private fun updateLastBackupTime() {

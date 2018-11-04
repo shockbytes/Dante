@@ -261,7 +261,7 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
 
     private fun loadIcons() {
         Observable.fromCallable {
-            drawableResList.mapNotNull { (drawableRes, view) ->
+            drawableResList.asSequence().mapNotNull { (drawableRes, view) ->
                 context?.let { ctx ->
                     val drawable = AppCompatDrawableManager.get().getDrawable(ctx, drawableRes)
                     Pair(drawable, view)

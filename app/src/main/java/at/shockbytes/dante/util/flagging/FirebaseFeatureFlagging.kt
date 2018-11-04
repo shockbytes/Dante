@@ -2,6 +2,7 @@ package at.shockbytes.dante.util.flagging
 
 import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import timber.log.Timber
 
 /**
  * @author  Martin Macheiner
@@ -17,9 +18,9 @@ class FirebaseFeatureFlagging(private val remoteConfig: FirebaseRemoteConfig) : 
                 // Once the config is successfully fetched
                 // it must be activated before newly fetched values are returned.
                 remoteConfig.activateFetched()
-                Log.d("Dante", "RemoteConfig fetch successful!")
+                Timber.d("RemoteConfig fetch successful!")
             } else {
-                Log.d("Dante", "RemoteConfig fetch failed!")
+                Timber.d("RemoteConfig fetch failed!")
             }
         }
     }

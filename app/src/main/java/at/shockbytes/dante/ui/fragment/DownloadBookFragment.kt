@@ -19,6 +19,7 @@ import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.util.adapter.BaseAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -26,11 +27,11 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import com.crashlytics.android.Crashlytics
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_download_book.*
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -218,7 +219,7 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
             list.forEach{ (drawable, view) ->
                 view.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
-        }
+        }.addTo(compositeDisposable)
     }
 
     private fun animateBookViews() {
@@ -257,8 +258,8 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
     }
 
     private fun showErrorLayout(error: Throwable?) {
-        if (error != null) {
-            Crashlytics.logException(error)
+        error?.let {
+            Timber.e(it)
         }
 
         if (isAdded) {
@@ -276,7 +277,7 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
         } else {
             showToast(cause, true)
             // Log this message, because this should not happen
-            Crashlytics.logException(IllegalArgumentException("Cannot show error layout, because DownloadBookFragment is not attached to Activity"))
+            Timber.e(IllegalArgumentException("Cannot show error layout, because DownloadBookFragment is not attached to Activity"))
         }
 
     }

@@ -1,6 +1,7 @@
 package at.shockbytes.dante.book
 
 import at.shockbytes.util.AppUtils
+import io.reactivex.Single
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.joda.time.Months
@@ -37,6 +38,7 @@ data class BookStatistics(val pagesRead: Int, val pagesWaiting: Int,
         fun bookDurations(booksDone: List<BookEntity>): Pair<Duration?, Duration?> {
 
             val durations = booksDone
+                    .asSequence()
                     .map { it ->
                         var days = Duration(it.endDate - it.startDate).standardDays
                         if (days == 0L) {
@@ -51,6 +53,7 @@ data class BookStatistics(val pagesRead: Int, val pagesWaiting: Int,
         fun mostReadingMonth(booksDone: List<BookEntity>): MostReadingMonth? {
 
             val maxMonth = booksDone
+                    .asSequence()
                     .map { DateTime(it.endDate).monthOfYear() }
                     .groupBy { it }
                     .maxBy { it.value.size }
@@ -60,6 +63,28 @@ data class BookStatistics(val pagesRead: Int, val pagesWaiting: Int,
                 MostReadingMonth(d.toString("MMM yyyy"), maxMonth.value.size)
             } else {
                 null
+            }
+        }
+
+        fun from(books: List<BookEntity>): Single<BookStatistics> {
+            return Single.fromCallable {
+
+                val upcoming = books.filter { it.state == BookState.READ_LATER }
+                val done = books.filter { it.state == BookState.READ }
+                val reading = books.filter { it.state == BookState.READING }
+
+                // Add pages in the currently read book to read pages
+                val pagesRead = done.sumBy { it.pageCount } + reading.sumBy { it.currentPage }
+                // Add pages waiting in the current book to waiting pages
+                val pagesWaiting = upcoming.sumBy { it.pageCount } + reading.sumBy { it.pageCount - it.currentPage }
+                val (fastestBook, slowestBook) = BookStatistics.bookDurations(done)
+                val avgBooksPerMonth = BookStatistics.averageBooksPerMonth(done)
+                val mostReadingMonth = BookStatistics.mostReadingMonth(done)
+
+                BookStatistics(pagesRead, pagesWaiting,
+                        done.size, upcoming.size,
+                        fastestBook, slowestBook,
+                        avgBooksPerMonth, mostReadingMonth)
             }
         }
 

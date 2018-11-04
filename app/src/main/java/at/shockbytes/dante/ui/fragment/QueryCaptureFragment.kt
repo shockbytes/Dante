@@ -158,8 +158,9 @@ class QueryCaptureFragment : BaseFragment(),
     private fun showSnackbarInfo() {
 
         if (prefs.getBoolean("show_scan_snackbar", true)) {
-            showSnackbar(getString(R.string.help_scan), getString(R.string.dismiss), true,
-                    { prefs.edit().putBoolean("show_scan_snackbar", false).apply() })
+            showSnackbar(getString(R.string.help_scan), getString(R.string.dismiss), true) {
+                prefs.edit().putBoolean("show_scan_snackbar", false).apply()
+            }
         }
     }
 

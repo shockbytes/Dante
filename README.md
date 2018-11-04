@@ -16,7 +16,8 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.1 - SUPPORT STATISTICS!
 - [ ] Test In-app purchases
 - [ ] Statistics fixes and Redesign
-- [ ] Add book manually
+- [x] Use Timber with Crashlytics Tree and increase logging
+- [x] Add book manually
 - [x] Supporter's badge
 - [x] Integrate feature flagging and config platform
 

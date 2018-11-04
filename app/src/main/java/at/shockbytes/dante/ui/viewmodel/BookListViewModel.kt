@@ -46,8 +46,10 @@ class BookListViewModel @Inject constructor(private val bookDao: BookEntityDao,
 
     private fun updateBooks() {
         books.postValue(allBooks
+                .asSequence()
                 .filter { it.state == state }
-                .sortedWith(sortComparator))
+                .sortedWith(sortComparator)
+                .toList())
     }
 
     fun deleteBook(book: BookEntity) {

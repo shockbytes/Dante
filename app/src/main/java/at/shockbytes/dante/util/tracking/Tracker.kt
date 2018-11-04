@@ -33,4 +33,10 @@ interface Tracker {
 
     fun trackRatingEvent(rating: Int)
 
+    fun trackOnClickSupporterBadgePage()
+
+    fun trackBuySupporterBadge(badgeType: String)
+
+    fun trackOnBookAddManually()
+
 }

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.shockbytes.dante.util.barcode
+package at.shockbytes.dante.ui.custom.barcode
 
-import at.shockbytes.dante.util.barcode.camera.GraphicOverlay
+import at.shockbytes.dante.ui.custom.barcode.camera.GraphicOverlay
 import com.google.android.gms.vision.MultiProcessor
 import com.google.android.gms.vision.Tracker
 import com.google.android.gms.vision.barcode.Barcode

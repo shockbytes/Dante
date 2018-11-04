@@ -22,7 +22,6 @@ abstract class BackNavigableActivity : BaseActivity() {
 
     override fun onBackPressed() {
         back()
-        //super.onBackPressed()
     }
 
     private fun back() {
@@ -31,7 +30,7 @@ abstract class BackNavigableActivity : BaseActivity() {
             supportFragmentManager.popBackStack()
             onBackStackPopped()
         } else {
-            supportFinishAfterTransition()
+            super.onBackPressed()
         }
     }
 

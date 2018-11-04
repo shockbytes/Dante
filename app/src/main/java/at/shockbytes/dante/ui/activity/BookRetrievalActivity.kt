@@ -30,9 +30,16 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
         // Set this, otherwise this will trigger a Kotlin Exception
         setResult(Activity.RESULT_CANCELED, Intent())
 
-        tracker.trackOnScanBook()
+        val type = (intent.getSerializableExtra(ARG_EXTRA_RETRIEVAL_TYPE) as RetrievalType)
+        when (type) {
 
-        showQueryFragment()
+            BookRetrievalActivity.RetrievalType.CAMERA -> showQueryFragment()
+
+            BookRetrievalActivity.RetrievalType.TITLE -> {
+                val query = intent.getStringExtra(ARG_EXTRA_RETRIEVAL_TITLE)
+                onQueryAvailable(query)
+            }
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -100,9 +107,17 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
 
     companion object {
 
-        fun newIntent(context: Context): Intent {
-            return Intent(context, BookRetrievalActivity::class.java)
-        }
+        private const val ARG_EXTRA_RETRIEVAL_TYPE = "arg_retrieval_type"
+        private const val ARG_EXTRA_RETRIEVAL_TITLE = "arg_retrieval_title"
 
+        fun newIntent(context: Context, retrievalType: RetrievalType, bookTitle: String?): Intent {
+            return Intent(context, BookRetrievalActivity::class.java)
+                    .putExtra(ARG_EXTRA_RETRIEVAL_TYPE, retrievalType)
+                    .putExtra(ARG_EXTRA_RETRIEVAL_TITLE, bookTitle)
+        }
+    }
+
+    enum class RetrievalType {
+        CAMERA, TITLE
     }
 }

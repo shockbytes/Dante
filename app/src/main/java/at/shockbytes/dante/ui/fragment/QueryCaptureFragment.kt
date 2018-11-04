@@ -9,17 +9,13 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.view.HapticFeedbackConstants
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
+import at.shockbytes.dante.ui.custom.barcode.BarcodeGraphic
+import at.shockbytes.dante.ui.custom.barcode.BarcodeTrackerFactory
+import at.shockbytes.dante.ui.custom.barcode.camera.CameraSourcePreview
+import at.shockbytes.dante.ui.custom.barcode.camera.GraphicOverlay
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
-import at.shockbytes.dante.util.barcode.BarcodeGraphic
-import at.shockbytes.dante.util.barcode.BarcodeTrackerFactory
-import at.shockbytes.dante.util.barcode.camera.CameraSourcePreview
-import at.shockbytes.dante.util.barcode.camera.GraphicOverlay
 import at.shockbytes.dante.util.tracking.Tracker
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -62,11 +58,6 @@ class QueryCaptureFragment : BaseFragment(),
 
     override val layoutId = R.layout.fragment_query_capture
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun setupViews() {
         previewView = view?.findViewById(R.id.fragment_query_capture_preview)
         graphicOverlay = view?.findViewById(R.id.fragment_query_capture_graphic_overlay)
@@ -80,25 +71,6 @@ class QueryCaptureFragment : BaseFragment(),
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         callback = context as? QueryCaptureCallback
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater?.inflate(R.menu.menu_add, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        if (item.itemId == R.id.menu_new_add_isbn) {
-            QueryDialogFragment.newInstance()
-                    .setOnQueryEnteredListener { query ->
-                        tracker.trackOnBookManuallyEntered()
-                        sendResultToActivity(query)
-                    }
-                    .show(fragmentManager, "query-dialog-fragment")
-        }
-
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onStart() {

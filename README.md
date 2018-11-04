@@ -1,7 +1,5 @@
 # Dante - Book Tracker
 
-<a href='https://play.google.com/store/apps/details?id=at.shockbytes.dante&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' /></a>
-
 Dante lets you manage all your books by simply scanning the ISBN barcode of the book. 
 It will automatically grab all information from Googles book database. 
 The app let's you arrange your books into 3 different categories, whether you 
@@ -15,10 +13,10 @@ can simply keep track of your progress of all your books and their current state
 - [ ] (Redesign login flow with Firebase login)
 - [ ] Use Firebase Data for book suggestions
 
-### Version 3.1 - SUPPORT, SUGGEST, STATISTICS
+### Version 3.1 - SUPPORT STATISTICS!
 - [ ] Test In-app purchases
-- [ ] Statistics fixes
-- [ ] Add book manually (FAB menu -> Camera, By title, Manual)
+- [ ] Statistics fixes and Redesign
+- [ ] Add book manually
 - [x] Supporter's badge
 - [x] Integrate feature flagging and config platform
 

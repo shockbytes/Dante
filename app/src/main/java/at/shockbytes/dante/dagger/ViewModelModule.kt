@@ -2,10 +2,7 @@ package at.shockbytes.dante.dagger
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
-import at.shockbytes.dante.ui.viewmodel.BookListViewModel
-import at.shockbytes.dante.ui.viewmodel.MainViewModel
-import at.shockbytes.dante.ui.viewmodel.SupporterBadgeViewModel
+import at.shockbytes.dante.ui.viewmodel.*
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -20,6 +17,7 @@ import kotlin.reflect.KClass
  * Date:    12.06.2018
  */
 
+@Suppress("UNCHECKED_CAST")
 @Singleton
 class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
 
@@ -56,5 +54,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SupporterBadgeViewModel::class)
     internal abstract fun supporterBadgeViewModel(viewModel: SupporterBadgeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ManualAddViewModel::class)
+    internal abstract fun manualAddViewModel(viewModel: ManualAddViewModel): ViewModel
 
 }

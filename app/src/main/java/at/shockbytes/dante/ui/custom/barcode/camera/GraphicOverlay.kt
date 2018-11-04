@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package at.shockbytes.dante.util.barcode.camera
+package at.shockbytes.dante.ui.custom.barcode.camera
 
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.View
-import at.shockbytes.dante.util.barcode.camera.GraphicOverlay.Graphic
+import at.shockbytes.dante.ui.custom.barcode.camera.GraphicOverlay.Graphic
 import com.google.android.gms.vision.CameraSource
 import java.util.*
 

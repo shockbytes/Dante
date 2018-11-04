@@ -5,10 +5,12 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v7.view.menu.MenuBuilder
 import android.view.MenuItem
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
@@ -18,14 +20,19 @@ import at.shockbytes.dante.ui.adapter.BookPagerAdapter
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.loadBitmap
-import at.shockbytes.dante.util.toggle
+import at.shockbytes.dante.util.toggleVisibility
+import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
+import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+
+
 
 class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
@@ -34,6 +41,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     protected lateinit var featureFlagging: FeatureFlagging
+
+    @Inject
+    protected lateinit var tracker: Tracker
 
     protected var tabId: Int = R.id.menu_navigation_current
 
@@ -83,7 +93,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mainBottomNavigation.selectedItemId = tabId
 
         appBar.setExpanded(true, true)
-        fab.toggle()
+        mainFabMenu.toggleVisibility()
     }
 
     override fun onPageScrollStateChanged(state: Int) {}
@@ -135,11 +145,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun setupUI() {
 
-        fab.setOnClickListener {
-            startActivity(BookRetrievalActivity.newIntent(this),
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
-        }
-
         imgButtonMainToolbarSearch.setOnClickListener {
             startActivity(SearchActivity.newIntent(this),
                     ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
@@ -147,6 +152,56 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         imgButtonMainToolbarMore.setOnClickListener {
             MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
+        }
+
+        setupFabMenu()
+    }
+
+    private fun setupFabMenu() {
+
+        val menu = MenuBuilder(this)
+        menuInflater.inflate(R.menu.menu_fab, menu)
+
+        val bgColors = listOf(R.color.tabcolor_upcoming, R.color.tabcolor_done, R.color.color_error)
+        menu.visibleItems.forEachIndexed { idx, item ->
+            mainFabMenu.addActionItem(SpeedDialActionItem.Builder(item.itemId, item.icon)
+                    .setLabel(item.title.toString())
+                    .setFabBackgroundColor(ContextCompat.getColor(this, bgColors[idx]))
+                    .create())
+        }
+
+        mainFabMenu.setOnActionSelectedListener { item ->
+
+            when (item.id) {
+
+                R.id.menu_fab_add_camera -> {
+                    tracker.trackOnScanBook()
+
+                    startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.CAMERA, null),
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+                    false
+                }
+                R.id.menu_fab_add_title -> {
+                    QueryDialogFragment.newInstance()
+                            .setOnQueryEnteredListener { query ->
+                                tracker.trackOnBookManuallyEntered()
+
+                                startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.TITLE, query),
+                                        ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+                            }
+                            .show(supportFragmentManager, "query-dialog-fragment")
+                    false
+                }
+                R.id.menu_fab_add_manually -> {
+                    tracker.trackOnBookAddManually()
+
+                    startActivity(ManualAddActivity.newIntent(this),
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+                    false
+                }
+                else -> true
+            }
+
         }
     }
 

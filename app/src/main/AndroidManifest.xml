@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="at.shockbytes.dante">
 
     <uses-feature android:name="android.hardware.camera" />
@@ -18,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
@@ -44,6 +46,10 @@
             android:name=".ui.activity.SearchActivity"
             android:label="@string/search"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.ManualAddActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:label="" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

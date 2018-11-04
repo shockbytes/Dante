@@ -77,19 +77,28 @@
         android:layout_below="@+id/appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <!--
+    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+        android:id="@+id/mainFabMenuOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:clickable_overlay="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+-->
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/mainFabMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_anchor="@+id/mainBottomNavigation"
-        app:layout_anchorGravity="top|right|end"
-        app:layout_behavior="at.shockbytes.util.view.ScrollAwareFloatingActionButtonBehavior"
-        app:srcCompat="@drawable/ic_add" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="2dp"
+        app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
+        app:sdExpansionMode="top"
+        app:sdUseReverseAnimationOnClose="true"
+        app:sdMainFabAnimationRotateAngle="90"
+        app:sdMainFabClosedSrc="@drawable/ic_add"
+        app:sdMainFabOpenedSrc="@drawable/ic_close" />
+    <!-- app:sdOverlayLayout="@id/mainFabMenuOverlay" -->
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/mainBottomNavigation"

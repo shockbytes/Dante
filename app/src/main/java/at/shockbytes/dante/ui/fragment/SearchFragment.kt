@@ -117,6 +117,14 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
         appComponent.inject(this)
     }
 
+    override fun bindViewModel() {
+        // Not needed...
+    }
+
+    override fun unbindViewModel() {
+        // Not needed...
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         downloadClickListener = context as? OnBookSuggestionDownloadClickListener

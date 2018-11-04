@@ -7,14 +7,16 @@ import org.joda.time.Duration
 import org.joda.time.Months
 
 /**
- * @author Martin Macheiner
- * Date: 03.02.2018.
+ * @author  Martin Macheiner
+ * Date:    03.02.2018
  */
 
 data class BookStatistics(val pagesRead: Int, val pagesWaiting: Int,
                           val booksRead: Int, val booksWaiting: Int,
                           val fastestBook: Duration?, val slowestBook: Duration?,
                           val avgBooksPerMonth: Double, val mostReadingMonth: MostReadingMonth?) {
+
+    // TODO Fix calculation and structure
 
     data class Duration(val bookName: String, val days: Long)
 

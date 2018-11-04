@@ -88,7 +88,13 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
 
     override fun setupViews() {
         setupViewListener()
+    }
+
+    override fun bindViewModel() {
         setupObserver()
+    }
+
+    override fun unbindViewModel() {
     }
 
     override fun onResume() {

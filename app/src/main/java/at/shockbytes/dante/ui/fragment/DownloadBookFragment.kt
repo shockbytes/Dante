@@ -129,6 +129,13 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         }
     }
 
+    override fun bindViewModel() {
+        // Not needed...
+    }
+
+    override fun unbindViewModel() {
+        // Not needed...
+    }
 
     override fun onGenerated(palette: Palette?) {
 

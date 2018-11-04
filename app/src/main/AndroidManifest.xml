@@ -51,6 +51,9 @@
             android:windowSoftInputMode="adjustResize"
             android:label="" />
 
+        <activity android:name=".ui.activity.StatisticsActivity"
+            android:label="@string/label_stats"/>
+
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
             android:value="false" />

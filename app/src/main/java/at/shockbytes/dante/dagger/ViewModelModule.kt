@@ -60,4 +60,8 @@ abstract class ViewModelModule {
     @ViewModelKey(ManualAddViewModel::class)
     internal abstract fun manualAddViewModel(viewModel: ManualAddViewModel): ViewModel
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(StatisticsViewModel::class)
+    internal abstract fun statisticsViewModel(viewModel: StatisticsViewModel): ViewModel
 }

@@ -92,6 +92,14 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         recyclerView.isLayoutFrozen = true
     }
 
+    override fun bindViewModel() {
+        setupObserver()
+    }
+
+    override fun unbindViewModel() {
+        // Not needed...
+    }
+
     override fun setupViews() {
 
         // Initialize text for empty indicator
@@ -108,8 +116,6 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         val itemTouchHelper = ItemTouchHelper(BaseItemTouchHelper(bookAdapter!!, // Safe to call, because it is created above
                 false, BaseItemTouchHelper.DragAccess.VERTICAL))
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
-        setupObserver()
     }
 
     override fun onItemClick(t: BookEntity, v: View) {

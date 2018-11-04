@@ -80,12 +80,18 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ)
         }
-
-        setupObserver()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
+    }
+
+    override fun bindViewModel() {
+        setupObserver()
+    }
+
+    override fun unbindViewModel() {
+        // Not needed...
     }
 
     override fun onImageLoadingFailed(e: Exception?) {

@@ -21,6 +21,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.billing.DantePurchase
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
+import at.shockbytes.dante.ui.activity.StatisticsActivity
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
@@ -86,7 +87,10 @@ class MenuFragment : BottomSheetDialogFragment() {
     private fun setupViews(view: View) {
 
         view.findViewById<View>(R.id.btnMenuStatistics)?.setOnClickListener {
-            StatsDialogFragment.newInstance().show(fragmentManager, "stats-dialog-fragment")
+            activity?.let { act ->
+                act.startActivity(StatisticsActivity.newIntent(act),
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
+            }
             dismiss()
         }
 

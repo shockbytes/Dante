@@ -22,23 +22,23 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Dark mode
 
 
-### TODO Before release
-- [ ] Fix ripple colors of buttons
-- [ ] Fix nasty view bug when entering and exiting other activities
-- [ ] Fix thumbnail overlay not rounded corners bug
-- [ ] Translate strings!
-- [ ] Translate to italian
-
 ### Version 3.1 - SUPPORT STATISTICS!
 - [ ] Test In-app purchases
 - [ ] Statistics fixes and Redesign
-- [ ] Abstract Glide usage with interface and object class
+- [x] Abstract Glide usage with interface and object class
 - [x] Sort by pages
 - [x] Flatten UI
 - [x] Use Timber with Crashlytics Tree and increase logging
 - [x] Add book manually
 - [x] Supporter's badge
 - [x] Integrate feature flagging and config platform
+
+#### TODO Before 3.1 release
+- [ ] Fix ripple colors of buttons
+- [ ] Fix nasty view bug when entering and exiting other activities
+- [ ] Fix thumbnail overlay not rounded corners bug
+- [ ] Translate strings!
+- [ ] Translate to italian
 
 ### Version 3.0 - FRESH FUN
 * Fix 'wrong dates' bug

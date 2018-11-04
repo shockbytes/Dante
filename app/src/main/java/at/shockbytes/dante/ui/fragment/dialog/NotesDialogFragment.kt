@@ -9,10 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.util.DanteUtils
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
+import javax.inject.Inject
 
 /**
  * @author Martin Macheiner
@@ -34,6 +34,9 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
     private lateinit var bookNotes: String
     private var bookImageLink: String? = null
 
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,9 +53,7 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
         txtHeader.text = getString(R.string.dialogfragment_notes_header, bookTitle)
         if (!bookImageLink.isNullOrEmpty()) {
             context?.let { ctx ->
-                Glide.with(ctx).load(bookImageLink)
-                        .apply(RequestOptions().placeholder(R.drawable.ic_placeholder_white))
-                        .into(imgViewCover)
+                imageLoader.loadImage(ctx, bookImageLink!!, imgViewCover, R.drawable.ic_placeholder_white)
             }
         }
 
@@ -66,9 +67,8 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
-        // Not needed
+        appComponent.inject(this)
     }
-
 
     companion object {
 

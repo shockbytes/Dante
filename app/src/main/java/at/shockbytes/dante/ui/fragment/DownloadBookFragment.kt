@@ -18,13 +18,11 @@ import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.adapter.BookAdapter
+import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.ui.image.ImageLoadingCallback
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.util.adapter.BaseAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import io.reactivex.Single
@@ -35,7 +33,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
+class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
 
     interface OnBookDownloadedListener {
@@ -71,6 +69,9 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
 
     @Inject
     protected lateinit var bookDao: BookEntityDao
+
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
 
     private var bookAdapter: BookAdapter? = null
     private var listener: OnBookDownloadedListener? = null
@@ -118,18 +119,14 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
     }
 
 
-    override fun onLoadFailed(e: GlideException?, model: Any?,
-                              target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-        return true
+    override fun onImageLoadingFailed(e: Exception?) {
+        Timber.e(e)
     }
 
-    override fun onResourceReady(resource: Drawable?, model: Any?,
-                                 target: Target<Drawable>?, dataSource: DataSource?,
-                                 isFirstResource: Boolean): Boolean {
+    override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let {
             Palette.from(it).generate(this)
         }
-        return false
     }
 
 
@@ -202,21 +199,22 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
             }) { throwable: Throwable? ->
                 throwable?.printStackTrace()
                 showErrorLayout(throwable)
-                listener?.onErrorDownload(throwable?.localizedMessage ?: "Error message not available", isAdded)
+                listener?.onErrorDownload(throwable?.localizedMessage
+                        ?: "Error message not available", isAdded)
             }
         }
     }
 
     private fun loadIcons() {
         Single.fromCallable {
-            drawableResList.mapNotNull {(drawableRes, view) ->
+            drawableResList.mapNotNull { (drawableRes, view) ->
                 context?.let { ctx ->
                     val drawable = DanteUtils.vector2Drawable(ctx, drawableRes)
                     Pair(drawable, view)
                 }
             }
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { list ->
-            list.forEach{ (drawable, view) ->
+            list.forEach { (drawable, view) ->
                 view.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
             }
         }.addTo(compositeDisposable)
@@ -237,13 +235,12 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
 
         txtDownloadFragmentTitle.text = mainBook?.title
 
-        if (!mainBook?.thumbnailAddress.isNullOrEmpty()) {
+        val address = mainBook?.thumbnailAddress
+        if (!address.isNullOrEmpty()) {
             context?.let { ctx ->
-                Glide.with(ctx).load(mainBook?.thumbnailAddress)
-                        .apply(RequestOptions().placeholder(DanteUtils.vector2Drawable(context!!, R.drawable.ic_placeholder)))
-                        .listener(this)
-                        .into(imgViewDownloadFragmentCover)
-            }!!
+                imageLoader.loadImage(ctx, address!!, imgViewDownloadFragmentCover,
+                        callback = this, callbackHandleValues = Pair(false, true))
+            }
         } else {
             imgViewDownloadFragmentCover.setImageResource(R.drawable.ic_placeholder)
         }
@@ -251,7 +248,7 @@ class DownloadBookFragment : BaseFragment(), RequestListener<Drawable>,
 
     private fun setupOtherSuggestionsRecyclerView(books: List<BookEntity>) {
 
-        bookAdapter = BookAdapter(context!!, books, BookState.READ, null, false)
+        bookAdapter = BookAdapter(context!!, books, BookState.READ, imageLoader,null, false)
         recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this
         recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter

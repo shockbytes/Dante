@@ -14,28 +14,27 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
+import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.ui.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.util.addTo
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.fragment_manual_add.*
-import java.security.acl.Owner
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * @author  Martin Macheiner
  * Date:    30.08.2018
  */
-class ManualAddFragment : BaseFragment(), RequestListener<Drawable> {
+class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     override val layoutId = R.layout.fragment_manual_add
 
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
 
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
 
     private lateinit var viewModel: ManualAddViewModel
 
@@ -89,11 +88,11 @@ class ManualAddFragment : BaseFragment(), RequestListener<Drawable> {
         appComponent.inject(this)
     }
 
-    override fun onLoadFailed(e: GlideException?, model: Any?,
-                              target: Target<Drawable>?, isFirstResource: Boolean): Boolean = true
+    override fun onImageLoadingFailed(e: Exception?) {
+        Timber.e(e)
+    }
 
-    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?,
-                                 dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+    override fun onImageResourceReady(resource: Drawable?) {
 
         (resource as? BitmapDrawable)?.bitmap?.let { bm ->
             Palette.from(bm).generate { palette ->
@@ -106,16 +105,16 @@ class ManualAddFragment : BaseFragment(), RequestListener<Drawable> {
                         actionBarTextColor, statusBarColor)
             }
         }
-        return false
     }
 
     private fun setupObserver() {
 
-        viewModel.imageEvent.observe(this, Observer { uri ->
+        viewModel.imageEvent.observe(this, Observer {
             context?.let { ctx ->
-                Glide.with(ctx).load(uri)
-                        .listener(this)
-                        .into(imgViewManualAdd)
+                it?.let { uri ->
+                    imageLoader.loadImageUri(ctx, uri, imgViewManualAdd, R.drawable.ic_placeholder,
+                            false,this, Pair(false, true))
+                }
             }
         })
 

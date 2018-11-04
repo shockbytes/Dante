@@ -11,6 +11,8 @@ import at.shockbytes.dante.book.BookSuggestion
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.ui.image.GlideImageLoader
+import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.flagging.FeatureFlagging
@@ -104,5 +106,10 @@ class AppModule(private val app: Application) {
         return GoogleInAppBillingService()
     }
 
+    @Provides
+    @Singleton
+    fun provideImageLoader(): ImageLoader {
+        return GlideImageLoader
+    }
 
 }

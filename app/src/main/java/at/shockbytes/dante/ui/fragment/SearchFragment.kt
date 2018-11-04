@@ -16,6 +16,7 @@ import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
+import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
@@ -47,6 +48,9 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     @Inject
     protected lateinit var bookDao: BookEntityDao
 
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
+
     private val bookTransform: (BookEntity) -> BookSearchSuggestion = { b ->
         BookSearchSuggestion(b.id, b.title, b.author, b.thumbnailAddress, b.isbn)
     }
@@ -70,7 +74,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun setupViews() {
 
-        rvAdapter = BookSearchSuggestionAdapter(context!!, mutableListOf(), addClickedListener)
+        rvAdapter = BookSearchSuggestionAdapter(context!!, mutableListOf(), imageLoader, addClickedListener)
         rvAdapter.onItemClickListener = this
         rvResults.layoutManager = LinearLayoutManager(context)
         rvResults.adapter = rvAdapter

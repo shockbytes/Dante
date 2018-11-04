@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
@@ -24,7 +23,7 @@ import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.flagging.FeatureFlagging
-import at.shockbytes.dante.util.loadBitmap
+import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils

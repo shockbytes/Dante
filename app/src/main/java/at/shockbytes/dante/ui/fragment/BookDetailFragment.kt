@@ -22,26 +22,20 @@ import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
+import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.ui.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_book_detail.*
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -49,7 +43,7 @@ import javax.inject.Inject
  * @author  Martin Macheiner
  * Date:    08-Jun-18.
  */
-class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
+class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
         Palette.PaletteAsyncListener, CircleSeekBar.Callback {
 
     override val layoutId = R.layout.fragment_book_detail
@@ -62,6 +56,9 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
 
     @Inject
     protected lateinit var tracker: Tracker
+
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
 
     private val animationList: List<View> by lazy {
         listOf(btnDetailFragmentPublished, btnDetailFragmentRating,
@@ -108,15 +105,14 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
         appComponent.inject(this)
     }
 
-    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-        return true
+    override fun onImageLoadingFailed(e: Exception?) {
+        Timber.e(e)
     }
 
-    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+    override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let { bm ->
             Palette.from(bm).generate(this)
         }
-        return false
     }
 
     override fun onGenerated(palette: Palette?) {
@@ -385,14 +381,12 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
     }
 
     private fun loadImage(address: String?) {
-        activity?.let { ctx ->
-            Glide.with(ctx)
-                    .load(address)
-                    .apply(RequestOptions()
-                            .placeholder(R.drawable.ic_placeholder)
-                            .transforms(CenterInside(), RoundedCorners(ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt())))
-                    .listener(this)
-                    .into(imgViewDetailFragmentThumbnail)
+        address?.let { url ->
+            activity?.let { ctx ->
+                imageLoader.loadImageWithCornerRadius(ctx, url, imgViewDetailFragmentThumbnail,
+                        cornerDimension = ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
+                        callback = this, callbackHandleValues = Pair(false, true))
+            }
         }
     }
 

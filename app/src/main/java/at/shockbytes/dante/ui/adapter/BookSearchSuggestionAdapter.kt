@@ -8,10 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookSearchSuggestion
-import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.util.adapter.BaseAdapter
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
 
 /**
@@ -20,6 +18,7 @@ import kotterknife.bindView
  */
 
 class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSearchSuggestion>,
+                                  private val imageLoader: ImageLoader,
                                   private val addClickedListener: (BookSearchSuggestion) -> Unit)
     : BaseAdapter<BookSearchSuggestion>(context, extData) {
 
@@ -45,10 +44,10 @@ class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSea
                 addClickedListener.invoke(t)
             }
 
-            if (!t.thumbnailAddress.isNullOrEmpty()) {
-                Glide.with(context).load(t.thumbnailAddress)
-                        .apply(RequestOptions().placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder)))
-                        .into(imgViewCover)
+            t.thumbnailAddress?.let { address ->
+                if (address.isNotEmpty()) {
+                    imageLoader.loadImage(context, address, imgViewCover, R.drawable.ic_placeholder)
+                }
             }
         }
 

@@ -20,6 +20,7 @@ import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.adapter.BookAdapter
+import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.createSharingIntent
@@ -41,6 +42,9 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     @Inject
     protected lateinit var tracker: Tracker
+
+    @Inject
+    protected lateinit var imageLoader: ImageLoader
 
     private val recyclerView: RecyclerView by bindView(R.id.fragment_book_main_rv)
     private val emptyView: TextView by bindView(R.id.fragment_book_main_empty_view)
@@ -94,7 +98,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         emptyView.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         // Initialize RecyclerView
-        bookAdapter = BookAdapter(context!!, listOf(), bookState, this, true, settings)
+        bookAdapter = BookAdapter(context!!, listOf(), bookState, imageLoader, this, true, settings)
         recyclerView.layoutManager = layoutManager
         bookAdapter?.onItemClickListener = this
         bookAdapter?.onItemMoveListener = this

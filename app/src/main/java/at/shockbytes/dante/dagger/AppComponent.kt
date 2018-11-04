@@ -2,10 +2,7 @@ package at.shockbytes.dante.dagger
 
 import at.shockbytes.dante.ui.activity.*
 import at.shockbytes.dante.ui.fragment.*
-import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.SupporterBadgeDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.*
 import dagger.Component
 import javax.inject.Singleton
 
@@ -59,4 +56,10 @@ interface AppComponent {
     fun inject(dialogFragment: SortStrategyDialogFragment)
 
     fun inject(dialogFragment: SupporterBadgeDialogFragment)
+
+    fun inject(dialogFragment: NotesDialogFragment)
+
+    fun inject(dialogFragment: RateBookDialogFragment)
+
+    fun inject(dialogFragment: GoogleWelcomeScreenDialogFragment)
 }

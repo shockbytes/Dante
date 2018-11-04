@@ -9,13 +9,13 @@ import at.shockbytes.dante.util.removeBrackets
  */
 class SortComparators {
 
-    private class PositionComparator: Comparator<BookEntity> {
+    private class PositionComparator : Comparator<BookEntity> {
         override fun compare(o1: BookEntity?, o2: BookEntity?): Int {
             return o1?.position?.compareTo(o2?.position ?: 0) ?: 0
         }
     }
 
-    private class AuthorComparator: Comparator<BookEntity> {
+    private class AuthorComparator : Comparator<BookEntity> {
         override fun compare(o1: BookEntity?, o2: BookEntity?): Int {
 
             val author1 = o1?.author ?: return 0
@@ -41,7 +41,7 @@ class SortComparators {
 
     }
 
-    private class TitleComparator: Comparator<BookEntity> {
+    private class TitleComparator : Comparator<BookEntity> {
         override fun compare(o1: BookEntity?, o2: BookEntity?): Int {
             return o1?.title?.compareTo(o2?.title ?: "") ?: 0
         }
@@ -50,9 +50,15 @@ class SortComparators {
     /**
      * Here compare o2 with o1, because we want descending sorting
      */
-    private class ProgressComparator: Comparator<BookEntity> {
+    private class ProgressComparator : Comparator<BookEntity> {
         override fun compare(o1: BookEntity?, o2: BookEntity?): Int {
             return o2?.currentPage?.compareTo(o1?.currentPage ?: 0) ?: 0
+        }
+    }
+
+    private class PagesComparator : Comparator<BookEntity> {
+        override fun compare(o1: BookEntity?, o2: BookEntity?): Int {
+            return o1?.pageCount?.compareTo(o2?.pageCount ?: 0) ?: 0
         }
     }
 
@@ -64,6 +70,8 @@ class SortComparators {
                 SortStrategy.AUTHOR -> AuthorComparator()
                 SortStrategy.TITLE -> TitleComparator()
                 SortStrategy.PROGRESS -> ProgressComparator()
+                SortStrategy.PAGES -> PagesComparator()
+                else -> PositionComparator() // For Java compatibility reasons always include this
             }
         }
     }

@@ -8,7 +8,7 @@
 
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
-    <color name="mainBackground">#EDEDED</color>
+    <color name="mainBackground">#F5F5F5</color>
     <color name="recycler_divider">#DDD</color>
 
     <color name="colorPrimaryDarkPre23">#CCC</color>
@@ -25,9 +25,9 @@
     <color name="color_error">#F44336</color>
 
     <color name="nice_color">#00dd99</color>
-    <color name="iconColor">#535353</color>
+    <color name="iconColor">#646464</color>
     <color name="white">#FFF</color>
-    <color name="placeholder">#555</color>
+    <color name="placeholder">@color/iconColor</color>
     <color name="actionBarItemColor">#212121</color>
     <color name="navigationBarItemDisabled">#464646</color>
 

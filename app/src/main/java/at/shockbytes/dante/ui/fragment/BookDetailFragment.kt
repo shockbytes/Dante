@@ -30,6 +30,8 @@ import at.shockbytes.dante.util.tracking.Tracker
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterInside
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
@@ -386,7 +388,9 @@ class BookDetailFragment : BaseFragment(), RequestListener<Drawable>,
         activity?.let { ctx ->
             Glide.with(ctx)
                     .load(address)
-                    .apply(RequestOptions().placeholder(R.drawable.ic_placeholder))
+                    .apply(RequestOptions()
+                            .placeholder(R.drawable.ic_placeholder)
+                            .transforms(CenterInside(), RoundedCorners(ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt())))
                     .listener(this)
                     .into(imgViewDetailFragmentThumbnail)
         }

@@ -8,14 +8,25 @@ can simply keep track of your progress of all your books and their current state
 
 ## Versions
 
-### Version 3.2 - CAMPING WITH FIREBASE
+### Version 4.0 - ALL IN THE CLOUD
 - [ ] Firebase as Online Backend
-- [ ] (Redesign login flow with Firebase login)
+
+### Version 3.3 - CAMPING WITH FIREBASE
+- [ ] Redesign login flow with Firebase login
 - [ ] Use Firebase Data for book suggestions
+
+### Version 3.2 -
+- [ ] Include book description in Download
+- [ ] Replace preferences UI
+- [ ] Reading history in statistics
+- [ ] Dark mode
 
 ### Version 3.1 - SUPPORT STATISTICS!
 - [ ] Test In-app purchases
 - [ ] Statistics fixes and Redesign
+- [ ] Abstract Glide usage with interface and object class
+- [ ] Sort by pages
+- [ ] Flatten UI
 - [x] Use Timber with Crashlytics Tree and increase logging
 - [x] Add book manually
 - [x] Supporter's badge

@@ -39,14 +39,13 @@
 
     <Button
         android:id="@+id/item_book_search_suggestion_btn_add"
-        style="?android:attr/borderlessButtonStyle"
+        style="@style/AppTheme.RoundedButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/dante_button"
         android:paddingEnd="8dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"

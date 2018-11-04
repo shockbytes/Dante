@@ -120,7 +120,7 @@
 
             <me.zhanghai.android.materialprogressbar.MaterialProgressBar
                 android:id="@+id/item_book_pb_page_overlay"
-                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
+                style="@style/AppTheme.ThumbnailOverlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"

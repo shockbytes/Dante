@@ -19,6 +19,8 @@ import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import kotterknife.bindView
@@ -165,8 +167,8 @@ class BookAdapter(context: Context, extData: List<BookEntity>,
             if (!t.thumbnailAddress.isNullOrEmpty()) {
                 Glide.with(context).load(t.thumbnailAddress)
                         .apply(RequestOptions()
-                                .placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder)))
-                                // .transform(RoundedCorners(AppUtils.convertDpInPixel(4, context))))
+                                .placeholder(DanteUtils.vector2Drawable(context, R.drawable.ic_placeholder))
+                                .transforms(CenterInside(), RoundedCorners(context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt())))
                         .into(imgViewThumb)
             } else
             // Books with no image will recycle another cover if not cleared here

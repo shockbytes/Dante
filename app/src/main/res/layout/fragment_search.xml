@@ -27,6 +27,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.CardView
+        style="@style/AppTheme.CardLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
@@ -69,6 +70,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 <android.support.v7.widget.AppCompatButton
+                    style="@style/AppTheme.RoundedButton"
                     android:id="@+id/fragment_search_btn_search_online"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

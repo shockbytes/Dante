@@ -2,20 +2,20 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppTheme.CardLayout"
     android:id="@+id/item_book_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="@dimen/item_book_horizontal_spacing"
-    android:layout_marginLeft="@dimen/item_book_horizontal_spacing"
-    android:layout_marginRight="@dimen/item_book_horizontal_spacing"
     android:layout_marginStart="@dimen/item_book_horizontal_spacing"
-    android:layout_marginTop="8dp"
+    android:layout_marginLeft="@dimen/item_book_horizontal_spacing"
+    android:layout_marginTop="6dp"
+    android:layout_marginEnd="@dimen/item_book_horizontal_spacing"
+    android:layout_marginRight="@dimen/item_book_horizontal_spacing"
+    android:layout_marginBottom="6dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="80dp"
     android:padding="2dp"
-    android:transitionName="@string/transition_name_card"
-    app:cardElevation="4dp">
+    android:transitionName="@string/transition_name_card">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,8 +26,8 @@
             android:id="@+id/item_book_img_thumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:contentDescription="@string/contentdesc_listitem_img_thumb"
             android:transitionName="@string/transition_name_thumb"
@@ -42,9 +42,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
             android:contentDescription="@string/contentdesc_listitem_img_overflow"
             android:scaleType="center"
             app:layout_constraintEnd_toEndOf="parent"
@@ -55,12 +55,11 @@
             android:id="@+id/item_book_txt_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="8dp"
             android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            tools:text="Title"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -68,46 +67,47 @@
             app:layout_constraintBottom_toTopOf="@+id/item_book_txt_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/item_book_txt_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="8dp"
             android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginTop="2dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:maxLines="3"
-            tools:text="Subtitle"
             android:textColor="@color/colorSecondaryText"
             android:textSize="14sp"
             android:transitionName="@string/transition_name_subtitle"
             app:layout_constraintBottom_toTopOf="@+id/item_book_txt_author"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
-            app:layout_constraintTop_toBottomOf="@+id/item_book_txt_title" />
+            app:layout_constraintTop_toBottomOf="@+id/item_book_txt_title"
+            tools:text="Subtitle" />
 
         <TextView
             android:id="@+id/item_book_txt_author"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_book_txt_subtitle"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="8dp"
             android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="4dp"
-            tools:text="Author"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
             android:textColor="@color/colorSecondaryText"
             android:textSize="15sp"
             android:transitionName="@string/transition_name_author"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
-            app:layout_constraintTop_toBottomOf="@+id/item_book_txt_subtitle" />
+            app:layout_constraintTop_toBottomOf="@+id/item_book_txt_subtitle"
+            tools:text="Author" />
 
         <FrameLayout
             android:id="@+id/item_book_container_page_overlay"
@@ -137,8 +137,8 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:rotation="-45"
-                tools:text="100%"
-                android:textColor="@color/overlay_progress_text_color" />
+                android:textColor="@color/overlay_progress_text_color"
+                tools:text="100%" />
 
         </FrameLayout>
 

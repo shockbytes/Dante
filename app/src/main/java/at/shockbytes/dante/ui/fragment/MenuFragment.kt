@@ -24,7 +24,6 @@ import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.StatsDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SupporterBadgeDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils

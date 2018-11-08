@@ -118,14 +118,7 @@
     <string name="dialogfragment_notes_hint">Your thoughts belong in here&#8230;</string>
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>
-    <string name="stats_pages_read">%d pages read</string>
-    <string name="stats_pages_waiting">%d pages waiting</string>
-    <string name="stats_books_read">%d books read</string>
-    <string name="stats_books_waiting">%d books waiting</string>
-    <string name="stats_avg_books_per_month">%s books per month</string>
-    <string name="stats_book_duration_default">No data available</string>
-    <string name="stats_duration_book">%d days for\n%s</string>
-    <string name="stats_most_reading_month">%d books read in %s</string>
+
     <string name="search">Search</string>
     <string name="search_hint">Search…</string>
     <string name="preview_failed">Cannot open the camera. Restarting your phone may help!</string>
@@ -183,8 +176,27 @@
     <string name="manual_add_subtitle">Subtitle</string>
     <string name="language">Language</string>
     <string name="manual_add_published_date">Published date (yyyy-MM-dd)</string>
-    <string name="isbn">ISBN</string>
+    <string name="isbn" translatable="false">ISBN</string>
     <string name="manual_add_error">Please specify at least title, authors and amount of pages.</string>
+
+    <!-- Statistics -->
+    <string name="statistics_header_pages"><![CDATA[Pages & Books]]></string>
+    <string name="statistics_header_time">Reading time</string>
+    <string name="statistics_header_favs">Favourites</string>
+    <string name="statistics_header_other">Others</string>
+
+    <string name="statistics_pages_read">%s pages already read</string>
+    <string name="statistics_pages_waiting">%s pages are waiting</string>
+    <string name="statistics_books_read">%s books already read</string>
+    <string name="statistics_books_waiting">%s books are waiting</string>
+
+    <string name="statistics_favourite_author">Favourite author: %s</string>
+    <string name="statistics_first_five_star">First 5 star book: %s</string>
+
+    <string name="statistics_avg_books_per_month">%s books per month</string>
+    <string name="statistics_book_duration_default">No data available</string>
+    <string name="statistics_duration_book">%s days for %s</string>
+    <string name="statistics_most_reading_month">%s books read in %s</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

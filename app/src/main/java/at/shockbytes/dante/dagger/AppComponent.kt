@@ -33,8 +33,6 @@ interface AppComponent {
 
     fun inject(fragment: MainBookFragment)
 
-    fun inject(fragment: StatsDialogFragment)
-
     fun inject(fragment: DownloadBookFragment)
 
     fun inject(fragment: BackupFragment)

@@ -25,9 +25,9 @@ def lottieVersion = "2.5.6"
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
 // keystore.properties file, in the rootProject folder.
-// def keystorePropertiesFile = rootProject.file("keystore.properties")
-// def keystoreProperties = new Properties()
-//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def keystorePropertiesFile = rootProject.file("./keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 28
@@ -37,8 +37,8 @@ android {
         applicationId "at.shockbytes.dante"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 18
-        versionName "3.0.2"
+        versionCode 19
+        versionName "3.1"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -50,20 +50,19 @@ android {
         proguard_debug {
             // default
         }
-        /*
         release {
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
-            storeFile file(STORE_FILE)
-            storePassword STORE_PASSWORD
+            keyAlias keystoreProperties.getProperty('KEY_ALIAS')
+            keyPassword keystoreProperties.getProperty('KEY_PASSWORD')
+            storeFile file(keystoreProperties.getProperty('STORE_FILE'))
+            storePassword keystoreProperties.getProperty('STORE_PASSWORD')
         }
-        */
     }
     buildTypes {
         release {
             useProguard true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         // Use this build type in order to avoid, that release build type will be signed with the release key
         proguard_debug {
@@ -127,7 +126,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
     implementation "com.github.shockbytes:ShockUtil:$shockUtilVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
-    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
 

@@ -40,8 +40,7 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
         private val imgViewIconEnd by bindView<ImageView>(R.id.item_statistics_data_icon_end)
         private val txtTitle by bindView<TextView>(R.id.item_statistics_data_txt_title)
 
-        override fun bind(t: StatisticsDisplayItem) {
-            content = t
+        override fun bindToView(t: StatisticsDisplayItem) {
             t as StatisticsDisplayItem.StatisticsDataItem
 
             if (t.align == StatisticsDisplayItem.Align.START) {
@@ -54,9 +53,7 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
                 txtTitle.gravity = Gravity.END or Gravity.CENTER_VERTICAL
             }
 
-
             when (t.messageArgs.size) {
-                0 -> txtTitle.text = context.getString(t.title)
                 1 -> txtTitle.text = context.getString(t.title, t.messageArgs[0])
                 2 -> txtTitle.text = context.getString(t.title, t.messageArgs[0], t.messageArgs[1])
             }
@@ -68,8 +65,7 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
         private val imgViewIcon by bindView<ImageView>(R.id.item_statistics_header_icon)
         private val txtTitle by bindView<TextView>(R.id.item_statistics_header_title)
 
-        override fun bind(t: StatisticsDisplayItem) {
-            content = t
+        override fun bindToView(t: StatisticsDisplayItem) {
             t as StatisticsDisplayItem.StatisticsHeaderItem
             imgViewIcon.setImageResource(t.icon)
             txtTitle.text = context.getString(t.title)

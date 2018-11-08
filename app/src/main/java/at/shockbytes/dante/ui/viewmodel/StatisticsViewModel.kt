@@ -68,11 +68,12 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         // Other book information
         items.add(StatisticsDisplayItem.StatisticsHeaderItem(R.string.statistics_header_other, R.drawable.ic_other))
 
+
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_avg_books_per_month,
                 R.drawable.ic_popup_current, StatisticsDisplayItem.Align.START, s.avgBooksPerMonth.toString()))
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_most_reading_month,
                 R.drawable.ic_books, StatisticsDisplayItem.Align.END,
-                s.mostReadingMonth?.finishedBooks?.toString() ?: "---",
+                s.mostReadingMonth?.finishedBooks?.toString() ?: "0",
                 s.mostReadingMonth?.monthAsString ?: "---"))
 
         return items

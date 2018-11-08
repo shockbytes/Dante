@@ -33,9 +33,7 @@ class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSea
         private val btnAdd: Button by bindView(R.id.item_book_search_suggestion_btn_add)
         private val imgViewCover: ImageView by bindView(R.id.item_book_search_suggestion_imgview_cover)
 
-        override fun bind(t: BookSearchSuggestion) {
-            content = t
-
+        override fun bindToView(t: BookSearchSuggestion) {
             txtTitle.text = t.title
             txtAuthor.text = t.author
 

@@ -67,6 +67,10 @@
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
 
+# gms
+-keep class com.google.android.gms.** { *; }
+-dontwarn com.google.android.gms.**
+
 # Crashlytics
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable

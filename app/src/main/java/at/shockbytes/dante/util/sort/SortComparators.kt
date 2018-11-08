@@ -71,7 +71,6 @@ class SortComparators {
                 SortStrategy.TITLE -> TitleComparator()
                 SortStrategy.PROGRESS -> ProgressComparator()
                 SortStrategy.PAGES -> PagesComparator()
-                else -> PositionComparator() // For Java compatibility reasons always include this
             }
         }
     }

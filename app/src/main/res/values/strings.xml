@@ -161,8 +161,8 @@
     <string name="invalid_time_range_end">End date must be later than the other dates…</string>
 
     <string name="supporter_badge_rationale">Hi, my name is Martin and I am the developer of this small, yet handy book tracking app. I strongly believe in ad-free apps. I also believe that everyone should have access to software. Hence I am not a fan of premium app versions as well. However, if you still like the app and want to support me, you can purchase a supporter\'s badge in order to appreciate further development.  Disclaimer: You will receive no additional features by buying a supporter\'s badge.</string>
-    <string name="in_app_price_standard" translatable="false">Donate %1$s %2$s</string>
-    <string name="in_app_price_premium" translatable="false">Donate %1$s %2$s</string>
+    <string name="in_app_price_standard">Donate %1$s %2$s</string>
+    <string name="in_app_price_premium">Donate %1$s %2$s</string>
     <string name="supporter_badge_premium_default" translatable="false">--- / premium</string>
     <string name="supporter_badge_standard_default" translatable="false">--- / standard</string>
     <string name="in_app_purchase_thanks">Thank you for your support!</string>

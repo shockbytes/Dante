@@ -245,7 +245,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         val address = mainBook?.thumbnailAddress
         if (!address.isNullOrEmpty()) {
             context?.let { ctx ->
-                imageLoader.loadImage(ctx, address!!, imgViewDownloadFragmentCover,
+                imageLoader.loadImage(ctx, address, imgViewDownloadFragmentCover,
                         callback = this, callbackHandleValues = Pair(false, true))
             }
         } else {

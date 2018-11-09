@@ -30,6 +30,7 @@
         app:layout_goneMarginRight="16dp"
         android:layout_marginRight="16dp"
         tools:text="Some text"
+        android:maxLines="2"
         android:gravity="center_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/item_statistics_data_icon_start"
         app:layout_constraintEnd_toStartOf="@+id/item_statistics_data_icon_end"

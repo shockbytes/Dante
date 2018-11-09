@@ -25,8 +25,6 @@ data class BookStatistics(val pagesRead: Int,                           // Pages
                           val firstFiveStarBook: StatsBookDisplayItem?  // Favourites
 ) {
 
-    // TODO Fix calculations
-
     data class Duration(val bookName: String, val days: Long)
 
     data class MostReadingMonth(val monthAsString: String, val finishedBooks: Int)
@@ -38,24 +36,30 @@ data class BookStatistics(val pagesRead: Int,                           // Pages
         private fun averageBooksPerMonth(booksDone: List<BookEntity>): Double {
 
             val now = System.currentTimeMillis()
-            val start = booksDone.map { it.startDate }.sorted().firstOrNull() ?: now
-            val monthsWhileReading = Months.monthsBetween(DateTime(start), DateTime(now)).months
+            val start = booksDone
+                    .filter { it.startDate > 0 }
+                    .map { it.startDate }
+                    .sorted()
+                    .firstOrNull() ?: now
+            val monthsReading = Months.monthsBetween(DateTime(start), DateTime(now)).months
 
-            return if (monthsWhileReading == 0) {
+            return if (monthsReading == 0) {
                 booksDone.size.toDouble()
             } else {
-                AppUtils.roundDouble(booksDone.size / monthsWhileReading.toDouble(), 2)
+                AppUtils.roundDouble(booksDone.size / monthsReading.toDouble(), 2)
             }
         }
 
         private fun bookDurations(booksDone: List<BookEntity>): Pair<Duration?, Duration?> {
             val durations = booksDone
                     .asSequence()
+                    .filter {
+                        // Only take books where the start date is set
+                        it.startDate > 0
+                    }
                     .map { it ->
                         var days = Duration(it.endDate - it.startDate).standardDays
-                        if (days == 0L) {
-                            days = 1
-                        }
+                        if (days == 0L) days = 1
                         Duration(it.title, days)
                     }
                     .sortedBy { it.days }
@@ -63,16 +67,15 @@ data class BookStatistics(val pagesRead: Int,                           // Pages
         }
 
         private fun mostReadingMonth(booksDone: List<BookEntity>): MostReadingMonth? {
-            val maxMonth = booksDone
+            return booksDone
                     .asSequence()
-                    .map { DateTime(it.endDate).monthOfYear() }
-                    .groupBy { it }
+                    .map { DateTime(it.endDate) }
+                    .groupBy { it.monthOfYear * it.year }
                     .maxBy { it.value.size }
-
-            return if (maxMonth != null) {
-                val d = maxMonth.key.dateTime
-                MostReadingMonth(d.toString("MMM yyyy"), maxMonth.value.size)
-            } else null
+                    ?.let { maxMonth ->
+                        val m = maxMonth.value.first()
+                        MostReadingMonth(m.toString("MMM yyyy"), maxMonth.value.size)
+                    }
         }
 
         private fun averageBookRating(books: List<BookEntity>): Double {
@@ -119,17 +122,9 @@ data class BookStatistics(val pagesRead: Int,                           // Pages
                 val mostReadAuthor = mostReadAuthor(done)
                 val firstFiveStarBook = firstFiveStar(books)
 
-                BookStatistics(pagesRead,
-                        pagesWaiting,
-                        done.size,
-                        upcoming.size,
-                        fastestBook,
-                        slowestBook,
-                        avgBooksPerMonth,
-                        mostReadingMonth,
-                        mostReadAuthor,
-                        averageBookRating,
-                        firstFiveStarBook)
+                BookStatistics(pagesRead, pagesWaiting, done.size, upcoming.size,
+                        fastestBook, slowestBook, avgBooksPerMonth, mostReadingMonth, mostReadAuthor,
+                        averageBookRating, firstFiveStarBook)
             }
         }
 

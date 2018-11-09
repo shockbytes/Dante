@@ -1,13 +1,13 @@
 <resources>
 
-    <style name="AppTheme" parent="Base.Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkPre23</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/montserrat</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -32,7 +32,6 @@
     </style>
 
     <style name="AppTheme.ThumbnailOverlay" parent="Base.Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:background">@drawable/thumbnail_overlay_background</item>
     </style>
 
     <style name="AppTheme.RoundedButton" parent="Base.Widget.AppCompat.Button">

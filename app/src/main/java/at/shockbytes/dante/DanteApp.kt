@@ -1,5 +1,6 @@
 package at.shockbytes.dante
 
+import android.preference.PreferenceManager
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import at.shockbytes.dante.dagger.*
@@ -36,11 +37,22 @@ class DanteApp : MultiDexApplication() {
         configureFabric()
         configureLogging()
 
+        enableDarkMode(isDarkModeEnabled())
+
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule())
                 .bookModule(BookModule())
                 .appModule(AppModule(this))
                 .build()
+    }
+
+    fun enableDarkMode(isEnabled: Boolean) {
+        val mode = if (isEnabled) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     private fun configureLogging() {
@@ -65,6 +77,11 @@ class DanteApp : MultiDexApplication() {
             Timber.e(e, "uncaught exception")
             defaultExceptionHandler.uncaughtException(t, e)
         }
+    }
+
+    private fun isDarkModeEnabled(): Boolean {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(getString(R.string.prefs_dark_mode_key), true)
     }
 
 }

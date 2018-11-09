@@ -8,7 +8,9 @@
 
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
+    <color name="colorTertiaryText">#323232</color>
     <color name="mainBackground">#F5F5F5</color>
+
     <color name="recycler_divider">#DDD</color>
 
     <color name="colorPrimaryDarkPre23">#CCC</color>

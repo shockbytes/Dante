@@ -14,17 +14,17 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.3 - CAMPING WITH FIREBASE
 - [ ] Redesign login flow with Firebase login
 - [ ] Use Firebase Data for book suggestions
+- [ ] Reading history in statistics
 
-### Version 3.2 -
+### Version 3.2 - MAMMA MIA, PURCHASES!
 - [ ] Include book description in Download
 - [ ] Replace preferences UI
-- [ ] Reading history in statistics
-- [ ] Dark mode
-
+- [ ] Test In-app purchases
+- [ ] Italian language support
 
 ### Version 3.1 - SUPPORT STATISTICS!
-- [ ] Test In-app purchases
-- [ ] Statistics fixes and Redesign
+- [x] Dark mode
+- [x] Statistics fixes and Redesign
 - [x] Abstract Glide usage with interface and object class
 - [x] Sort by pages
 - [x] Flatten UI
@@ -34,11 +34,8 @@ can simply keep track of your progress of all your books and their current state
 - [x] Integrate feature flagging and config platform
 
 #### TODO Before 3.1 release
-- [ ] Fix ripple colors of buttons
-- [ ] Fix nasty view bug when entering and exiting other activities
-- [ ] Fix thumbnail overlay not rounded corners bug
-- [ ] Translate strings!
-- [ ] Translate to italian
+- Fix ripple colors of buttons
+- Fix nasty view bug when entering and exiting other activities
 
 ### Version 3.0 - FRESH FUN
 * Fix 'wrong dates' bug

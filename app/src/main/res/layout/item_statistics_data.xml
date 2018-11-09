@@ -13,6 +13,8 @@
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_statistics_data_txt_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars[1]" />
@@ -20,22 +22,21 @@
     <TextView
         android:id="@+id/item_statistics_data_txt_title"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_goneMarginEnd="16dp"
-        app:layout_goneMarginStart="16dp"
-        app:layout_goneMarginLeft="16dp"
-        app:layout_goneMarginRight="16dp"
         android:layout_marginRight="16dp"
-        tools:text="Some text"
-        android:maxLines="2"
         android:gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/item_statistics_data_icon_start"
+        android:maxLines="2"
         app:layout_constraintEnd_toStartOf="@+id/item_statistics_data_icon_end"
         app:layout_constraintStart_toEndOf="@+id/item_statistics_data_icon_start"
-        app:layout_constraintTop_toTopOf="@+id/item_statistics_data_icon_start" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="16dp"
+        app:layout_goneMarginLeft="16dp"
+        app:layout_goneMarginRight="16dp"
+        app:layout_goneMarginStart="16dp"
+        tools:text="Some text" />
 
     <ImageView
         android:id="@+id/item_statistics_data_icon_end"
@@ -44,6 +45,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_statistics_data_txt_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars[5]" />

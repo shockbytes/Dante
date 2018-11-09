@@ -2,8 +2,8 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/AppTheme.CardLayout"
     android:id="@+id/item_book_card"
+    style="@style/AppTheme.CardLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/item_book_horizontal_spacing"
@@ -109,39 +109,47 @@
             app:layout_constraintTop_toBottomOf="@+id/item_book_txt_subtitle"
             tools:text="Author" />
 
-        <FrameLayout
+
+        <android.support.v7.widget.CardView
             android:id="@+id/item_book_container_page_overlay"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:cardCornerRadius="@dimen/thumbnail_rounded_corner"
             app:layout_constraintBottom_toBottomOf="@+id/item_book_img_thumb"
             app:layout_constraintEnd_toEndOf="@+id/item_book_img_thumb"
             app:layout_constraintStart_toStartOf="@+id/item_book_img_thumb"
-            app:layout_constraintTop_toTopOf="@+id/item_book_img_thumb">
+            app:layout_constraintTop_toTopOf="@+id/item_book_img_thumb"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardElevation="0dp">
 
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                android:id="@+id/item_book_pb_page_overlay"
-                style="@style/AppTheme.ThumbnailOverlay"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:indeterminate="false"
-                android:progress="60"
-                app:mpb_progressStyle="horizontal"
-                app:mpb_progressTint="@color/overlay_progress"
-                app:mpb_showProgressBackground="true"
-                app:mpb_useIntrinsicPadding="false" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/item_book_txt_page_overlay"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:rotation="-45"
-                android:textColor="@color/overlay_progress_text_color"
-                tools:text="100%" />
+                <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                    android:id="@+id/item_book_pb_page_overlay"
+                    style="@style/AppTheme.ThumbnailOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:indeterminate="false"
+                    android:progress="60"
+                    app:mpb_progressStyle="horizontal"
+                    app:mpb_progressTint="@color/overlay_progress"
+                    app:mpb_showProgressBackground="true"
+                    app:mpb_useIntrinsicPadding="false" />
 
-        </FrameLayout>
+                <TextView
+                    android:id="@+id/item_book_txt_page_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:rotation="-45"
+                    android:textColor="@color/overlay_progress_text_color"
+                    tools:text="100%" />
 
+            </FrameLayout>
+        </android.support.v7.widget.CardView>
 
     </android.support.constraint.ConstraintLayout>
 

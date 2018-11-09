@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="@string/prefs_category_books_general">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/prefs_dark_mode_key"
+            android:title="@string/prefs_dark_mode_title"
+            android:summary="@string/prefs_dark_mode_summary"/>
+    </PreferenceCategory>
+
+
     <PreferenceCategory android:title="@string/prefs_category_books_title">
 
         <SwitchPreference
             android:defaultValue="true"
-            android:title="@string/prefs_page_tracking_title"
-            android:key="@string/prefs_page_tracking_key"/>
+            android:key="@string/prefs_page_tracking_key"
+            android:title="@string/prefs_page_tracking_title" />
 
         <SwitchPreference
             android:defaultValue="true"
-            android:title="@string/prefs_page_overlay_title"
-            android:summary="@string/prefs_page_overlay_summary"
+            android:dependency="@string/prefs_page_tracking_key"
             android:key="@string/prefs_page_overlay_key"
-            android:dependency="@string/prefs_page_tracking_key"/>
+            android:summary="@string/prefs_page_overlay_summary"
+            android:title="@string/prefs_page_overlay_title" />
 
     </PreferenceCategory>
 

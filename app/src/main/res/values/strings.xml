@@ -198,6 +198,10 @@
     <string name="statistics_duration_book">%s days for %s</string>
     <string name="statistics_most_reading_month">%s books read in %s</string>
     <string name="statistics_average_rating">Average rating: %s</string>
+    <string name="prefs_category_books_general">General</string>
+    <string name="prefs_dark_mode_key">prefs_night_mode_key</string>
+    <string name="prefs_dark_mode_title">Dark mode</string>
+    <string name="prefs_dark_mode_summary">Enable a dark theme for the app</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

@@ -17,6 +17,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.math.BigDecimal
 import java.math.RoundingMode
+import kotlin.Double.Companion.NaN
 
 /**
  * @author  Martin Macheiner
@@ -67,8 +68,7 @@ fun View.setVisible(isVisible: Boolean) {
 
 fun Double.roundDouble(digits: Int): Double {
 
-    if (this == 0.0 || digits < 0 || this == Double.POSITIVE_INFINITY
-            || this == Double.NaN || this == Double.NEGATIVE_INFINITY) {
+    if (this == 0.0 || digits < 0 || this == Double.POSITIVE_INFINITY || this == NaN || this == Double.NaN || this == Double.NEGATIVE_INFINITY) {
         return 0.00
     }
 

@@ -7,6 +7,7 @@ import at.shockbytes.dante.book.statistics.BookStatistics
 import at.shockbytes.dante.book.statistics.StatisticsDisplayItem
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.roundDouble
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -65,6 +66,9 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_first_five_star,
                 R.drawable.ic_five_star, StatisticsDisplayItem.Align.END, s.firstFiveStarBook?.title ?: "---"))
 
+        val avgRating = if(s.averageBookRating != 0.0) s.averageBookRating.roundDouble(2).toString() else "---"
+        items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_average_rating,
+                R.drawable.ic_rating_colored, StatisticsDisplayItem.Align.START, avgRating))
         // Other book information
         items.add(StatisticsDisplayItem.StatisticsHeaderItem(R.string.statistics_header_other, R.drawable.ic_other))
 

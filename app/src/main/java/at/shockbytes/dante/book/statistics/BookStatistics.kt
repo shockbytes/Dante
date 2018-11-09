@@ -49,7 +49,6 @@ data class BookStatistics(val pagesRead: Int,                           // Pages
         }
 
         private fun bookDurations(booksDone: List<BookEntity>): Pair<Duration?, Duration?> {
-
             val durations = booksDone
                     .asSequence()
                     .map { it ->
@@ -64,7 +63,6 @@ data class BookStatistics(val pagesRead: Int,                           // Pages
         }
 
         private fun mostReadingMonth(booksDone: List<BookEntity>): MostReadingMonth? {
-
             val maxMonth = booksDone
                     .asSequence()
                     .map { DateTime(it.endDate).monthOfYear() }
@@ -74,17 +72,16 @@ data class BookStatistics(val pagesRead: Int,                           // Pages
             return if (maxMonth != null) {
                 val d = maxMonth.key.dateTime
                 MostReadingMonth(d.toString("MMM yyyy"), maxMonth.value.size)
-            } else {
-                null
-            }
+            } else null
         }
 
         private fun averageBookRating(books: List<BookEntity>): Double {
-            return books
-                    .asSequence()
-                    .filter { it.rating > 0}
-                    .map { it.rating.toDouble() }
-                    .average()
+            val booksWithRating = books.filter { it.rating > 0 }
+            return if (booksWithRating.isNotEmpty()) {
+                booksWithRating
+                        .map { it.rating.toDouble() }
+                        .average()
+            } else 0.0
         }
 
         private fun mostReadAuthor(done: List<BookEntity>): String? {

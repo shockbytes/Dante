@@ -103,8 +103,7 @@ class QueryCaptureFragment : BaseFragment(),
     }
 
     override fun onFirstGraphicAvailable(graphic: BarcodeGraphic) {
-        val barcode = graphic.barcode
-        if (barcode != null) {
+        graphic.barcode?.let { barcode ->
             graphicOverlay?.removeGraphicListener()
             sendResultToActivity(barcode.displayValue)
         }

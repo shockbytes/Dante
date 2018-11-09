@@ -197,6 +197,7 @@
     <string name="statistics_book_duration_default">No data available</string>
     <string name="statistics_duration_book">%s days for %s</string>
     <string name="statistics_most_reading_month">%s books read in %s</string>
+    <string name="statistics_average_rating">Average rating: %s</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

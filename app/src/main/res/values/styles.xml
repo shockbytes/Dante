@@ -28,6 +28,7 @@
 
     <style name="AppTheme.RoundedButton.Outlined" parent="Base.Widget.AppCompat.Button">
         <item name="android:background">@drawable/rounded_button_outlined</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.ThumbnailOverlay" parent="Base.Widget.AppCompat.ProgressBar.Horizontal">

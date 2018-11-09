@@ -156,7 +156,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuSupporter" />
 
             <Button
-                style="@style/AppTheme.RoundedButton"
+                style="@style/AppTheme.RoundedButton.Outlined"
                 android:id="@+id/btnMenuLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

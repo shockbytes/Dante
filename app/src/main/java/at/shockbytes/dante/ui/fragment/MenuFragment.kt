@@ -96,7 +96,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.btnMenuSortStrategy)?.setOnClickListener { _ ->
             SortStrategyDialogFragment.newInstance()
                     .setOnApplyListener {
-                        // dismiss()
+                        dismiss()
                     }
                     .show(fragmentManager, "sort-dialog-fragment")
         }

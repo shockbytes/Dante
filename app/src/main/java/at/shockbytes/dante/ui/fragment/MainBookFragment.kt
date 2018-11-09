@@ -13,7 +13,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
-import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
@@ -27,7 +26,7 @@ import at.shockbytes.dante.util.createSharingIntent
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
 
 
@@ -46,11 +45,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     @Inject
     protected lateinit var imageLoader: ImageLoader
 
-    private val recyclerView: RecyclerView by bindView(R.id.fragment_book_main_rv)
-    private val emptyView: TextView by bindView(R.id.fragment_book_main_empty_view)
-
-    private var bookAdapter: BookAdapter? = null
-
+    private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
 
     private val layoutManager: RecyclerView.LayoutManager
@@ -84,16 +79,27 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     override fun onResume() {
         super.onResume()
-        recyclerView.isLayoutFrozen = false
+        fragment_book_main_rv.isLayoutFrozen = false
     }
 
     override fun onPause() {
         super.onPause()
-        recyclerView.isLayoutFrozen = true
+        fragment_book_main_rv.isLayoutFrozen = true
     }
 
     override fun bindViewModel() {
-        setupObserver()
+        viewModel.getBooks().observe(this, Observer {
+            it?.let { books ->
+                if (books.isNotEmpty()) {
+                    updateEmptyView(true, false )
+                    bookAdapter.updateData(books)
+                    fragment_book_main_rv.scrollToPosition(0)
+                } else {
+                    updateEmptyView(false, true)
+                }
+            }
+        })
+
     }
 
     override fun unbindViewModel() {
@@ -103,19 +109,21 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     override fun setupViews() {
 
         // Initialize text for empty indicator
-        emptyView.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
+        fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         // Initialize RecyclerView
-        bookAdapter = BookAdapter(context!!, listOf(), bookState, imageLoader, this, true, settings)
-        recyclerView.layoutManager = layoutManager
-        bookAdapter?.onItemClickListener = this
-        bookAdapter?.onItemMoveListener = this
-        recyclerView.adapter = bookAdapter
+        context?.let { ctx ->
+            bookAdapter = BookAdapter(ctx, mutableListOf(), bookState, imageLoader, this, true, settings)
+            fragment_book_main_rv.layoutManager = layoutManager
+            bookAdapter.onItemClickListener = this
+            bookAdapter.onItemMoveListener = this
+            fragment_book_main_rv.adapter = bookAdapter
+        }
 
         // Setup RecyclerView's ItemTouchHelper
-        val itemTouchHelper = ItemTouchHelper(BaseItemTouchHelper(bookAdapter!!, // Safe to call, because it is created above
+        val itemTouchHelper = ItemTouchHelper(BaseItemTouchHelper(bookAdapter,
                 false, BaseItemTouchHelper.DragAccess.VERTICAL))
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(fragment_book_main_rv)
     }
 
     override fun onItemClick(t: BookEntity, v: View) {
@@ -133,9 +141,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     }
 
     override fun onItemMoveFinished() {
-        bookAdapter?.data?.let {
-            viewModel.updateBookPositions(it)
-        }
+        viewModel.updateBookPositions(bookAdapter.data)
     }
 
     override fun onDelete(b: BookEntity) {
@@ -164,46 +170,34 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     // --------------------------------------------------------------
 
-    private fun setupObserver() {
-
-        viewModel.books.observe(this, Observer { b ->
-
-            b?.let { books ->
-                if (books.isNotEmpty()) {
-                    bookAdapter?.updateData(books)
-                    updateEmptyView(false)
-                    recyclerView.scrollToPosition(0)
-                }
-            }
-        })
-
-    }
-
     private fun getTransitionBundle(v: View): Bundle? {
-        return ActivityOptionsCompat
-                .makeSceneTransitionAnimation(activity!!,
-                        Pair(v.findViewById(R.id.item_book_card),
-                                getString(R.string.transition_name_card)),
-                        Pair(v.findViewById(R.id.item_book_img_thumb),
-                                getString(R.string.transition_name_thumb)),
-                        Pair(v.findViewById(R.id.item_book_txt_title),
-                                getString(R.string.transition_name_title)),
-                        Pair(v.findViewById(R.id.item_book_txt_subtitle),
-                                getString(R.string.transition_name_subtitle)),
-                        Pair(v.findViewById(R.id.item_book_txt_author),
-                                getString(R.string.transition_name_author))
-                ).toBundle()
+        return activity?.let {
+            ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(it,
+                            Pair(v.findViewById(R.id.item_book_card),
+                                    getString(R.string.transition_name_card)),
+                            Pair(v.findViewById(R.id.item_book_img_thumb),
+                                    getString(R.string.transition_name_thumb)),
+                            Pair(v.findViewById(R.id.item_book_txt_title),
+                                    getString(R.string.transition_name_title)),
+                            Pair(v.findViewById(R.id.item_book_txt_subtitle),
+                                    getString(R.string.transition_name_subtitle)),
+                            Pair(v.findViewById(R.id.item_book_txt_author),
+                                    getString(R.string.transition_name_author))
+                    ).toBundle()
+        }
     }
 
-    private fun updateEmptyView(animate: Boolean) {
+    private fun updateEmptyView(hide: Boolean, animate: Boolean) {
 
+        val alpha = if (hide) 0f else 1f
         if (animate) {
-            emptyView.animate()
-                    .alpha((if ((bookAdapter?.itemCount ?: 0) > 0) 0f else 1f))
+            fragment_book_main_empty_view.animate()
+                    .alpha(alpha)
                     .setDuration(450)
                     .start()
         } else {
-            emptyView.alpha = (if ((bookAdapter?.itemCount ?: 0) > 0) 0f else 1f)
+            fragment_book_main_empty_view.alpha = (alpha)
         }
     }
 

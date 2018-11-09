@@ -23,7 +23,7 @@ def retrofitVersion = "2.4.0"
 def shockUtilVersion = "4.0"
 def keenVersion = "5.2.0"
 def crashlyticsVersion = "2.9.5"
-def glideVersion = "4.7.1"
+def glideVersion = "4.8.0"
 def lottieVersion = "2.5.6"
 
 // Create a variable called keystorePropertiesFile, and initialize it to your

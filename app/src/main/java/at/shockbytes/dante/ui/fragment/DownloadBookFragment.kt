@@ -23,8 +23,6 @@ import at.shockbytes.dante.ui.image.ImageLoadingCallback
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.util.adapter.BaseAdapter
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -255,16 +253,14 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
 
     private fun setupOtherSuggestionsRecyclerView(books: List<BookEntity>) {
 
-        bookAdapter = BookAdapter(context!!, books, BookState.READ, imageLoader,null, false)
+        bookAdapter = BookAdapter(context!!, books.toMutableList(), BookState.READ, imageLoader,null, false)
         recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this
         recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
     }
 
     private fun showErrorLayout(error: Throwable?) {
-        error?.let {
-            Timber.e(it)
-        }
+        Timber.e(error)
 
         if (isAdded) {
             val cause = getString(R.string.download_code_error)

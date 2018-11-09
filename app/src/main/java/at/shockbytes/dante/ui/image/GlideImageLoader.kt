@@ -36,7 +36,7 @@ object GlideImageLoader : ImageLoader {
                            callback: ImageLoadingCallback?,
                            callbackHandleValues: Pair<Boolean, Boolean>?) {
 
-        val request = Glide.with(context).load(url)
+        val request = Glide.with(context).load(checkUrl(url))
                 .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
@@ -73,7 +73,7 @@ object GlideImageLoader : ImageLoader {
                                            @Dimension cornerDimension: Int,
                                            callback: ImageLoadingCallback?,
                                            callbackHandleValues: Pair<Boolean, Boolean>?) {
-        val request = Glide.with(context).load(url)
+        val request = Glide.with(context).load(checkUrl(url))
                 .apply(RequestOptions()
                         .placeholder(DanteUtils.vector2Drawable(context, placeholder))
                         .transforms(CenterInside(), RoundedCorners(cornerDimension)))
@@ -135,6 +135,12 @@ object GlideImageLoader : ImageLoader {
             options = options.placeholder(DanteUtils.vector2Drawable(context, placeholder))
         }
         return options
+    }
+
+    private fun checkUrl(url: String): String {
+        return if(url.startsWith("http://")) {
+            url.replace("http://", "https://")
+        } else url
     }
 
 }

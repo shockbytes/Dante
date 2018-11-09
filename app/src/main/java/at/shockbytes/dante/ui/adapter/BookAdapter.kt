@@ -29,13 +29,14 @@ import kotlin.math.roundToInt
  * Date: 30.12.2017.
  */
 
-class BookAdapter(context: Context, extData: List<BookEntity>,
+class BookAdapter(context: Context,
+                  extData: MutableList<BookEntity> = mutableListOf(),
                   private val state: BookState,
                   private val imageLoader: ImageLoader,
                   private val popupListener: OnBookPopupItemSelectedListener? = null,
                   private val showOverflow: Boolean = true,
                   private val settings: DanteSettings? = null)
-    : BaseAdapter<BookEntity>(context, extData.toMutableList()), ItemTouchHelperAdapter {
+    : BaseAdapter<BookEntity>(context, extData), ItemTouchHelperAdapter {
 
     interface OnBookPopupItemSelectedListener {
 
@@ -119,21 +120,18 @@ class BookAdapter(context: Context, extData: List<BookEntity>,
 
         override fun onMenuItemClick(item: MenuItem): Boolean {
 
-            content?.let { bookEntity ->
-                // Do not delete book from adapter when user just wants to share it!
-                if (item.itemId != R.id.popup_item_share) {
-                    deleteEntity(bookEntity)
-                }
+            // Do not delete book from adapter when user just wants to share it!
+            if (item.itemId != R.id.popup_item_share) {
+                deleteEntity(content)
+            }
 
-                when (item.itemId) {
-                    R.id.popup_item_move_to_upcoming -> popupListener?.onMoveToUpcoming(bookEntity)
-                    R.id.popup_item_move_to_current -> popupListener?.onMoveToCurrent(bookEntity)
-                    R.id.popup_item_move_to_done -> popupListener?.onMoveToDone(bookEntity)
-                    R.id.popup_item_share -> popupListener?.onShare(bookEntity)
-                    R.id.popup_item_delete -> popupListener?.onDelete(bookEntity)
-                    else -> {
-                    }
-                }
+            when (item.itemId) {
+                R.id.popup_item_move_to_upcoming -> popupListener?.onMoveToUpcoming(content)
+                R.id.popup_item_move_to_current -> popupListener?.onMoveToCurrent(content)
+                R.id.popup_item_move_to_done -> popupListener?.onMoveToDone(content)
+                R.id.popup_item_share -> popupListener?.onShare(content)
+                R.id.popup_item_delete -> popupListener?.onDelete(content)
+                else -> { }
             }
 
             return true

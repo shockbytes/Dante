@@ -1,12 +1,15 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 /**
@@ -17,14 +20,8 @@ class BookListViewModel @Inject constructor(private val bookDao: BookEntityDao,
                                             private val settings: DanteSettings) : BaseViewModel() {
 
     var state: BookState = BookState.READING
-        set(value) {
-            field = value
-            updateBooks()
-        }
 
-    val books = MutableLiveData<List<BookEntity>>()
-
-    private val allBooks = mutableListOf<BookEntity>()
+    private val books = MutableLiveData<List<BookEntity>>()
 
     private var sortComparator: Comparator<BookEntity> = SortComparators.of(settings.sortStrategy)
 
@@ -33,24 +30,24 @@ class BookListViewModel @Inject constructor(private val bookDao: BookEntityDao,
     }
 
     override fun poke() {
-        compositeDisposable.add(bookDao.bookObservable.subscribe { books ->
-            allBooks.clear()
-            allBooks.addAll(books)
-            updateBooks()
-        })
-        compositeDisposable.add(settings.observeSortStrategy().subscribe {
-            sortComparator = SortComparators.of(settings.sortStrategy)
-            updateBooks()
-        })
+        bookDao.bookObservable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { fetchedBooks ->
+                    val displayBooks = fetchedBooks
+                            .filter { it.state == state }
+                            .sortedWith(sortComparator)
+                    books.value = displayBooks
+                }.addTo(compositeDisposable)
+
+        settings.observeSortStrategy()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    sortComparator = SortComparators.of(it)
+                    books.value = books.value?.sortedWith(sortComparator)
+                }.addTo(compositeDisposable)
     }
 
-    private fun updateBooks() {
-        books.postValue(allBooks
-                .asSequence()
-                .filter { it.state == state }
-                .sortedWith(sortComparator)
-                .toList())
-    }
+    fun getBooks(): LiveData<List<BookEntity>> = books
 
     fun deleteBook(book: BookEntity) {
         bookDao.delete(book.id)

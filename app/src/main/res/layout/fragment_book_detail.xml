@@ -100,7 +100,7 @@
             android:drawablePadding="8dp"
             android:gravity="top|center"
             android:padding="8dp"
-            android:textColor="@android:color/secondary_text_light"
+            android:textColor="@color/colorTertiaryText"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
@@ -120,7 +120,7 @@
             android:drawablePadding="8dp"
             android:gravity="top|center"
             android:padding="8dp"
-            android:textColor="@android:color/secondary_text_light"
+            android:textColor="@color/colorTertiaryText"
             android:textSize="15sp"
             app:layout_constraintBottom_toTopOf="@+id/horizontalGuideline1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -147,7 +147,7 @@
             android:maxLines="1"
             android:text="@string/add_notes"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:textColor="@android:color/secondary_text_light"
+            android:textColor="@color/colorTertiaryText"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/btnDetailFragmentPages"
             app:layout_constraintEnd_toEndOf="parent"
@@ -184,7 +184,7 @@
             android:layout_marginTop="8dp"
             android:drawablePadding="8dp"
             android:gravity="center"
-            android:textColor="@android:color/secondary_text_light"
+            android:textColor="@color/colorTertiaryText"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="@+id/circleSeekbarDetailFragmentPages"
             app:layout_constraintEnd_toEndOf="@+id/circleSeekbarDetailFragmentPages"
@@ -228,7 +228,7 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="27. March 2018" />
 
@@ -242,7 +242,7 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="06. May 2018" />
 
@@ -256,7 +256,7 @@
                 android:lines="2"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="04. June 2018" />
 

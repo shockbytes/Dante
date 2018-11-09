@@ -104,7 +104,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="27. March 2018" />
 
@@ -117,7 +117,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="06. May 2018" />
 
@@ -130,7 +130,7 @@
                 android:gravity="center"
                 android:maxLines="2"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="04. June 2018" />
 
@@ -169,7 +169,7 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:padding="8dp"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="2017-11-09" />
 
@@ -183,7 +183,7 @@
                 android:drawablePadding="8dp"
                 android:gravity="center"
                 android:padding="8dp"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp"
                 tools:text="5 Stars" />
 
@@ -201,7 +201,7 @@
                     android:layout_gravity="center"
                     android:drawablePadding="8dp"
                     android:gravity="center"
-                    android:textColor="@android:color/secondary_text_light"
+                    android:textColor="@color/colorTertiaryText"
                     android:textSize="15sp"
                     tools:text="1000 / 1000" />
 
@@ -230,7 +230,7 @@
                 android:maxLines="1"
                 android:text="@string/add_notes"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@android:color/secondary_text_light"
+                android:textColor="@color/colorTertiaryText"
                 android:textSize="15sp" />
 
         </LinearLayout>

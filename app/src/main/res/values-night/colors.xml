@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="mainBackground">#323232</color>
+    <color name="colorPrimary">#424242</color>
+    <color name="colorPrimaryDarkPre23">#323232</color>
+    <color name="colorAccent">#2196F3</color>
+    <color name="iconColor">#BBB</color>
+    <color name="actionBarItemColor">#FFF</color>
+    <color name="colorPrimaryText">#BBB</color>
+    <color name="colorTertiaryText">#BBB</color>
+
+</resources>

@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.view.menu.MenuBuilder
 import android.view.MenuItem
 import at.shockbytes.dante.R

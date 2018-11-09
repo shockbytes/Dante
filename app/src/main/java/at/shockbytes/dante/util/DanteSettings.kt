@@ -10,8 +10,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
- * @author Martin Macheiner
- * Date: 11.02.2018.
+ * Author:  Martin Macheiner
+ * Date:    11.02.2018
  */
 
 class DanteSettings(private val context: Context,
@@ -32,6 +32,14 @@ class DanteSettings(private val context: Context,
         set(value) {
             prefs.edit()
                     .putBoolean(context.getString(R.string.prefs_page_overlay_key), value)
+                    .apply()
+        }
+
+    var darkModeEnabled: Boolean
+        get() = prefs.getBoolean(context.getString(R.string.prefs_dark_mode_key), true)
+        set(value) {
+            prefs.edit()
+                    .putBoolean(context.getString(R.string.prefs_dark_mode_key), value)
                     .apply()
         }
 

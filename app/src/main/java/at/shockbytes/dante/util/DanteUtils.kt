@@ -10,16 +10,9 @@ import android.support.annotation.DrawableRes
 import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.AppCompatDrawableManager
 import android.support.v7.widget.PopupMenu
-import android.util.Log
 import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
-import at.shockbytes.dante.book.BookStatistics
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*

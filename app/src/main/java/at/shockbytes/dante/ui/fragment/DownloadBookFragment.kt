@@ -129,6 +129,13 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         }
     }
 
+    override fun bindViewModel() {
+        // Not needed...
+    }
+
+    override fun unbindViewModel() {
+        // Not needed...
+    }
 
     override fun onGenerated(palette: Palette?) {
 
@@ -238,7 +245,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         val address = mainBook?.thumbnailAddress
         if (!address.isNullOrEmpty()) {
             context?.let { ctx ->
-                imageLoader.loadImage(ctx, address!!, imgViewDownloadFragmentCover,
+                imageLoader.loadImage(ctx, address, imgViewDownloadFragmentCover,
                         callback = this, callbackHandleValues = Pair(false, true))
             }
         } else {

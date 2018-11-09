@@ -20,6 +20,14 @@ class SuggestionsFragment: BaseFragment() {
         appComponent.inject(this)
     }
 
+    override fun bindViewModel() {
+        // Not needed...
+    }
+
+    override fun unbindViewModel() {
+        // Not needed...
+    }
+
 
     companion object {
 

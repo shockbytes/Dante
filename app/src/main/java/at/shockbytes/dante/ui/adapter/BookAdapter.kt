@@ -111,9 +111,7 @@ class BookAdapter(context: Context, extData: List<BookEntity>,
             setupOverflowMenu()
         }
 
-        override fun bind(t: BookEntity) {
-            content = t
-
+        override fun bindToView(t: BookEntity) {
             updateTexts(t)
             updateImageThumbnail(t)
             updatePageOverlay(t)

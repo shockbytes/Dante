@@ -43,8 +43,7 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
 
         private val txtDevice: TextView by bindView(R.id.item_backup_entry_txt_device)
 
-        override fun bind(t: BackupEntry) {
-            content = t
+        override fun bindToView(t: BackupEntry) {
 
             if (t.storageProvider == "gdrive") {
                 imgViewProvider.setImageResource(R.drawable.ic_google_drive)

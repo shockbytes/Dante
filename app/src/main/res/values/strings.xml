@@ -8,11 +8,11 @@
     <string name="tab_done">Done</string>
 
     <string name="label_settings">Settings</string>
-    <string name="label_stats">Your stats</string>
+    <string name="label_stats">Your statistics</string>
 
     <string name="error_load_book">Oops, cannot load the book!</string>
 
-    <string name="menu_main_stats">Stats</string>
+    <string name="menu_main_stats">Statistics</string>
     <string name="settings">Settings</string>
     <string name="action_move_to_upcoming">Move to read later</string>
     <string name="action_move_to_reading">Move to reading</string>
@@ -118,14 +118,7 @@
     <string name="dialogfragment_notes_hint">Your thoughts belong in here&#8230;</string>
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>
-    <string name="stats_pages_read">%d pages read</string>
-    <string name="stats_pages_waiting">%d pages waiting</string>
-    <string name="stats_books_read">%d books read</string>
-    <string name="stats_books_waiting">%d books waiting</string>
-    <string name="stats_avg_books_per_month">%s books per month</string>
-    <string name="stats_book_duration_default">No data available</string>
-    <string name="stats_duration_book">%d days for\n%s</string>
-    <string name="stats_most_reading_month">%d books read in %s</string>
+
     <string name="search">Search</string>
     <string name="search_hint">Search…</string>
     <string name="preview_failed">Cannot open the camera. Restarting your phone may help!</string>
@@ -167,12 +160,12 @@
     <string name="invalid_time_range_start">Start date must lie within the range of the other dates…</string>
     <string name="invalid_time_range_end">End date must be later than the other dates…</string>
 
-    <string name="supporter_badge_rationale">Hi, my name is Martin and I am the developer of this small, yet handy book tracking app. I strongly believe in ad-free apps. I also believe that everyone should have access to software. Hence I am not a fan of premium app versions as well. However, if you still like the app and want to support me, you can purchase a supporter\'s badge in order to appreciate further development.\n\nDisclaimer: You will receive no additional features by buying a supporter\'s badge.</string>
-    <string name="in_app_price_standard" translatable="false">%1$s %2$s / STANDARD</string>
-    <string name="in_app_price_premium" translatable="false">%1$s %2$s / PREMIUM</string>
+    <string name="supporter_badge_rationale">Hi, my name is Martin and I am the developer of this small, yet handy book tracking app. I strongly believe in ad-free apps. I also believe that everyone should have access to software. Hence I am not a fan of premium app versions as well. However, if you still like the app and want to support me, you can purchase a supporter\'s badge in order to appreciate further development.  Disclaimer: You will receive no additional features by buying a supporter\'s badge.</string>
+    <string name="in_app_price_standard">Donate %1$s %2$s</string>
+    <string name="in_app_price_premium">Donate %1$s %2$s</string>
     <string name="supporter_badge_premium_default" translatable="false">--- / premium</string>
     <string name="supporter_badge_standard_default" translatable="false">--- / standard</string>
-    <string name="in_app_purchase_thanks">Thank you for your support ;)</string>
+    <string name="in_app_purchase_thanks">Thank you for your support!</string>
     <string name="menu_fab_scan">Scan ISBN</string>
     <string name="menu_fab_title">Search by title</string>
     <string name="menu_fab_manual">Add book manually</string>
@@ -183,8 +176,28 @@
     <string name="manual_add_subtitle">Subtitle</string>
     <string name="language">Language</string>
     <string name="manual_add_published_date">Published date (yyyy-MM-dd)</string>
-    <string name="isbn">ISBN</string>
+    <string name="isbn" translatable="false">ISBN</string>
     <string name="manual_add_error">Please specify at least title, authors and amount of pages.</string>
+
+    <!-- Statistics -->
+    <string name="statistics_header_pages"><![CDATA[Pages & Books]]></string>
+    <string name="statistics_header_time">Reading time</string>
+    <string name="statistics_header_favs">Favourites</string>
+    <string name="statistics_header_other">Others</string>
+
+    <string name="statistics_pages_read">%s pages already read</string>
+    <string name="statistics_pages_waiting">%s pages are waiting</string>
+    <string name="statistics_books_read">%s books already read</string>
+    <string name="statistics_books_waiting">%s books are waiting</string>
+
+    <string name="statistics_favourite_author">Favourite author: %s</string>
+    <string name="statistics_first_five_star">First 5 star book: %s</string>
+
+    <string name="statistics_avg_books_per_month">%s books per month</string>
+    <string name="statistics_book_duration_default">No data available</string>
+    <string name="statistics_duration_book">%s days for %s</string>
+    <string name="statistics_most_reading_month">%s books read in %s</string>
+    <string name="statistics_average_rating">Average rating: %s</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>
@@ -204,6 +217,5 @@
         <item quantity="one">%d star</item>
         <item quantity="other">%d stars</item>
     </plurals>
-
 
 </resources>

@@ -124,6 +124,14 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 }.addTo(compositeDisposable)
     }
 
+    override fun bindViewModel() {
+        // Not needed...
+    }
+
+    override fun unbindViewModel() {
+        // Not needed...
+    }
+
     private fun loadBackupList() {
         backupManager.backupList.subscribe({ backupEntries ->
             adapter.data = backupEntries.toMutableList()

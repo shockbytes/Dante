@@ -41,6 +41,10 @@ abstract class BaseFragment : Fragment() {
 
     protected abstract fun injectToGraph(appComponent: AppComponent)
 
+    protected abstract fun bindViewModel()
+
+    protected abstract fun unbindViewModel()
+
     @JvmOverloads
     protected fun showSnackbar(text: String, actionText: String,
                                showIndefinite: Boolean = false, action: Snackbar.() -> Unit) {
@@ -72,9 +76,14 @@ abstract class BaseFragment : Fragment() {
     }
 
     override fun onPause() {
+        unbindViewModel()
         compositeDisposable.clear()
         super.onPause()
     }
 
+    override fun onResume() {
+        bindViewModel()
+        super.onResume()
+    }
 
 }

@@ -33,8 +33,6 @@ interface AppComponent {
 
     fun inject(fragment: MainBookFragment)
 
-    fun inject(fragment: StatsDialogFragment)
-
     fun inject(fragment: DownloadBookFragment)
 
     fun inject(fragment: BackupFragment)
@@ -50,6 +48,8 @@ interface AppComponent {
     fun inject(fragment: MenuFragment)
 
     fun inject(fragment: ManualAddFragment)
+
+    fun inject(fragment: StatisticsFragment)
 
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 

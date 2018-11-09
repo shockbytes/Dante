@@ -53,7 +53,7 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
 
         context?.let { ctx ->
             imageLoader.loadImageResource(ctx, R.drawable.ic_developer,
-                    imgViewDeveloper, R.drawable.ic_user_template_dark)
+                    imgViewDeveloper, R.drawable.ic_user_template_dark, circular = true)
         }
 
         btnStandardPrice.setOnClickListener {

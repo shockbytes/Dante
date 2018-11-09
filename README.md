@@ -22,7 +22,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Test In-app purchases
 - [ ] Italian language support
 
-### Version 3.1 - SUPPORT STATISTICS!
+### Version 3.1 - DARK STATISTICS FIXES
 - [x] Dark mode
 - [x] Statistics fixes and Redesign
 - [x] Abstract Glide usage with interface and object class
@@ -34,7 +34,6 @@ can simply keep track of your progress of all your books and their current state
 - [x] Integrate feature flagging and config platform
 
 #### TODO Before 3.1 release
-- Fix ripple colors of buttons
 - Fix nasty view bug when entering and exiting other activities
 
 ### Version 3.0 - FRESH FUN

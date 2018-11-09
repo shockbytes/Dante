@@ -11,7 +11,6 @@ Put everything that is not related to a fixed version in here
 ## Technical related tickets
 
 - Vastly improve tracking capabilities
-- Refactor navigation with the Android Navigation Architecture Component library
 
 ## Product related tickets
 

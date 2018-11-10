@@ -1,10 +1,12 @@
 package at.shockbytes.dante
 
+import android.os.StrictMode
 import android.preference.PreferenceManager
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import at.shockbytes.dante.dagger.*
 import at.shockbytes.dante.util.CrashlyticsReportingTree
+import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
 import com.crashlytics.android.core.CrashlyticsCore
 import io.fabric.sdk.android.Fabric
@@ -30,6 +32,7 @@ class DanteApp : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        setStrictMode()
 
         Realm.init(this)
         JodaTimeAndroid.init(this)
@@ -37,22 +40,11 @@ class DanteApp : MultiDexApplication() {
         configureFabric()
         configureLogging()
 
-        enableDarkMode(isDarkModeEnabled())
-
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule())
                 .bookModule(BookModule())
                 .appModule(AppModule(this))
                 .build()
-    }
-
-    fun enableDarkMode(isEnabled: Boolean) {
-        val mode = if (isEnabled) {
-            AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            AppCompatDelegate.MODE_NIGHT_NO
-        }
-        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
     private fun configureLogging() {
@@ -67,7 +59,7 @@ class DanteApp : MultiDexApplication() {
 
         // Configure Crashlytics anyway
         Fabric.with(Fabric.Builder(this)
-                .kits(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build(), Answers())
+                .kits(Crashlytics(), Answers())
                 .debuggable(BuildConfig.DEBUG)
                 .build())
 
@@ -79,9 +71,19 @@ class DanteApp : MultiDexApplication() {
         }
     }
 
-    private fun isDarkModeEnabled(): Boolean {
-        return PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(getString(R.string.prefs_dark_mode_key), true)
+    private fun setStrictMode() {
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .penaltyLog()
+                    .build())
+
+            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build())
+        }
     }
 
 }

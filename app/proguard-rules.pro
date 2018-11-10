@@ -16,7 +16,27 @@
 #   public *;
 #}
 
+# Contains rules for
+# - Picasso
+# - Okhttp
+# - Glide
+# - Retrofit
+# - Realm
+# - Gson
+# - Butterknife
+# - Jackson
+# - GMS
+# - Crashlytics
+# - Timber
+# - Firebase
+# - SpeedDialView
+
 -keep public class android.app.ActivityTransitionCoordinator
+
+# Never obfuscate model classes
+-keepclassmembers class at.shockbytes.book.** {
+  *;
+}
 
 # Picasso
 -dontwarn com.squareup.okhttp.**
@@ -77,3 +97,6 @@
 -keep public class * extends java.lang.Exception
 -keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
+
+# Timber
+-dontwarn org.jetbrains.annotations.**

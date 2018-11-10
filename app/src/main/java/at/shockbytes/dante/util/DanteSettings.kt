@@ -64,4 +64,11 @@ class DanteSettings(private val context: Context,
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun observeDarkModeEnabled(): Observable<Boolean> {
+        return rxPrefs.getBoolean(context.getString(R.string.prefs_dark_mode_key))
+                .asObservable()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
 }

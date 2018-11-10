@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
@@ -25,14 +26,14 @@ import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
+import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-
-
 
 class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
@@ -41,6 +42,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     protected lateinit var featureFlagging: FeatureFlagging
+
+    @Inject
+    protected lateinit var danteSettings: DanteSettings
 
     @Inject
     protected lateinit var tracker: Tracker
@@ -62,6 +66,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setupUI()
         initializeNavigation()
         setupObserver()
+        setupDarkMode()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -102,7 +107,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     // ---------------------------------------------------
 
     private fun setupObserver() {
-
         viewModel.userEvent.observe(this, Observer { event ->
 
             when (event) {
@@ -140,20 +144,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 }
             }
         })
-
     }
 
     private fun setupUI() {
-
         imgButtonMainToolbarSearch.setOnClickListener {
             startActivity(SearchActivity.newIntent(this),
                     ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
         }
-
         imgButtonMainToolbarMore.setOnClickListener {
             MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
         }
-
         setupFabMenu()
     }
 
@@ -240,10 +240,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mainBottomNavigation.itemTextColor = stateList
     }
 
-    private fun showFabAwareSnackbar(text: String) {
-        Snackbar.make(findViewById(R.id.main_content), text, Snackbar.LENGTH_SHORT).show()
-    }
-
     private fun showGoogleWelcomeScreen(account: DanteUser, showWelcomeScreen: Boolean) {
         if (showWelcomeScreen) {
             GoogleWelcomeScreenDialogFragment
@@ -263,6 +259,22 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             R.id.menu_navigation_suggestions -> 3
             else -> null
         }
+    }
+
+    private fun setupDarkMode() {
+        enableDarkMode(danteSettings.darkModeEnabled)
+        danteSettings.observeDarkModeEnabled().subscribe { isDarkModeEnabled ->
+            enableDarkMode(isDarkModeEnabled)
+        }.addTo(compositeDisposable)
+    }
+
+    private fun enableDarkMode(isEnabled: Boolean) {
+        val mode = if (isEnabled) {
+            AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            AppCompatDelegate.MODE_NIGHT_NO
+        }
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 
 }

@@ -35,8 +35,13 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     override val backupList: Single<List<BackupEntry>>
         get() {
             return Single.fromCallable {
-                val appFolder = Tasks.await(client?.appFolder!!)
-                fromMetadataToBackupEntries(Tasks.await(client?.listChildren(appFolder)!!))
+                client?.let { client ->
+                    client.appFolder?.let { folder ->
+                        val appFolder = Tasks.await(folder)
+                        return@fromCallable fromMetadataToBackupEntries(Tasks.await(client.listChildren(appFolder)))
+                    }
+                }
+                listOf<BackupEntry>()
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
 
@@ -91,9 +96,9 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         return if (client != null) {
             Completable.fromAction {
                 booksFromEntry(entry)
-                        .subscribe ({ books ->
-                    bookDao.restoreBackup(books, strategy)
-                }, {throwable -> Timber.e(throwable) })
+                        .subscribe({ books ->
+                            bookDao.restoreBackup(books, strategy)
+                        }, { throwable -> Timber.e(throwable) })
             }.subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread())
         } else {
             Completable.error(NullPointerException("DriveClient is null!"))
@@ -114,31 +119,28 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
 
         val entries = ArrayList<BackupEntry>()
 
-        if (result != null) {
-            for (buffer in result) {
+        result?.forEach { buffer ->
 
-                val fileId = buffer.driveId.encodeToString()
-                val fileName = buffer.title
+            val fileId = buffer.driveId.encodeToString()
+            val fileName = buffer.title
+            try {
 
-                try {
+                val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                val storageProvider = data[0]
+                val device = data[4].substring(0, data[4].lastIndexOf("."))
+                val isAutoBackup = data[1] == "auto"
+                val timestamp = java.lang.Long.parseLong(data[2])
+                val books = Integer.parseInt(data[3])
 
-                    val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                    val storageProvider = data[0]
-                    val device = data[4].substring(0, data[4].lastIndexOf("."))
-                    val isAutoBackup = data[1] == "auto"
-                    val timestamp = java.lang.Long.parseLong(data[2])
-                    val books = Integer.parseInt(data[3])
+                entries.add(BackupEntry(fileId, fileName, device, storageProvider,
+                        books, timestamp, isAutoBackup))
 
-                    entries.add(BackupEntry(fileId, fileName, device, storageProvider,
-                            books, timestamp, isAutoBackup))
-
-                } catch (e: Exception) {
-                    Timber.e(e, "Cannot parse file: $fileName")
-                }
-
+            } catch (e: Exception) {
+                Timber.e(e, "Cannot parse file: $fileName")
             }
-            result.release()
         }
+
+        result?.release()
         return entries
     }
 

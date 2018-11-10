@@ -14,11 +14,13 @@ import android.view.Window
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.activity.ManualAddActivity
+import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity : AppCompatActivity() {
 
     open val enableActivityTransition: Boolean = true
+
+    protected val compositeDisposable: CompositeDisposable =  CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,11 @@ abstract class BaseActivity : AppCompatActivity() {
         if (!text.isEmpty()) {
             Snackbar.make(findViewById(android.R.id.content), text, Snackbar.LENGTH_LONG).show()
         }
+    }
+
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
     }
 
     protected fun showToast(text: Int, showLong: Boolean = false) {

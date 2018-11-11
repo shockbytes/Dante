@@ -14,7 +14,6 @@ import javax.inject.Inject
 
 /**
  * TODO Issues:
- * - Show empty view when user dismisses last item
  * - Disable swipe to dismiss
  */
 class BackupViewModel @Inject constructor(

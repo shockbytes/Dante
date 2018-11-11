@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.signin.GoogleSignInManager
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.android.gms.drive.*
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
@@ -21,13 +22,14 @@ import java.util.*
 import javax.inject.Named
 
 /**
- * @author Martin Macheiner
- * Date: 30.04.2017.
+ * Author:  Martin Macheiner
+ * Date:    30.04.2017
  */
-
 class GoogleDriveBackupManager(private val preferences: SharedPreferences,
                                private val signInManager: GoogleSignInManager,
-                               @param:Named("backup_gson") private val gson: Gson) : BackupManager {
+                               private val schedulers: SchedulerFacade,
+                               @param:Named("backup_gson") private val gson: Gson
+) : BackupManager {
 
     override val lastBackupTime: Long
         get() = preferences.getLong(LAST_BACKUP, 0)
@@ -48,7 +50,6 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
     private var client: DriveResourceClient? = null
 
     override fun connect(activity: FragmentActivity) {
-
         signInManager.getGoogleAccount()?.let { account ->
             client = Drive.getDriveResourceClient(activity, account)
         }

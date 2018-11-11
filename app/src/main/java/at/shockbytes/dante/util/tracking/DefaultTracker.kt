@@ -1,6 +1,7 @@
 package at.shockbytes.dante.util.tracking
 
 import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.util.tracking.backend.TrackingBackend
 
 /**
  * @author  Martin Macheiner

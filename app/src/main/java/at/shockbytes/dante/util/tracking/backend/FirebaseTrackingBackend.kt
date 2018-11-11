@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util.tracking
+package at.shockbytes.dante.util.tracking.backend
 
 import android.content.Context
 import android.os.Bundle

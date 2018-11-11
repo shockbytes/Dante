@@ -3,6 +3,7 @@ package at.shockbytes.dante.dagger
 import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.GoogleDriveBackupManager
 import at.shockbytes.dante.billing.GoogleInAppBillingService
@@ -17,9 +18,13 @@ import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.flagging.FirebaseFeatureFlagging
+import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.tracking.DefaultTracker
-import at.shockbytes.dante.util.tracking.FirebaseTrackingBackend
+import at.shockbytes.dante.util.tracking.backend.FirebaseTrackingBackend
 import at.shockbytes.dante.util.tracking.Tracker
+import at.shockbytes.dante.util.tracking.backend.DebugTrackingBackend
+import at.shockbytes.dante.util.tracking.backend.TrackingBackend
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -31,8 +36,8 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 /**
- * @author Martin Macheiner
- * Date: 13.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    13.02.2017
  */
 
 @Module
@@ -73,6 +78,17 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
+    fun provideTrackerBackend(): TrackingBackend {
+        return if (BuildConfig.DEBUG) {
+            DebugTrackingBackend()
+        } else {
+            FirebaseTrackingBackend(app.applicationContext)
+        }
+    }
+
+
+    @Provides
+    @Singleton
     fun provideRealm(): Realm {
         return Realm.getInstance(RealmConfiguration.Builder()
                 .schemaVersion(DanteRealmMigration.migrationVersion)
@@ -83,9 +99,13 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideBackupManager(preferences: SharedPreferences,
-                             signInManager: SignInManager): BackupManager {
+                             signInManager: SignInManager,
+                             schedulerFacade: SchedulerFacade): BackupManager {
         // TODO Remove this ugly cast, but for now this is the only supported SignInManager
-        return GoogleDriveBackupManager(preferences, signInManager as GoogleSignInManager, Gson())
+        return GoogleDriveBackupManager(preferences,
+                signInManager as GoogleSignInManager,
+                schedulerFacade,
+                Gson())
     }
 
     @Provides
@@ -110,6 +130,12 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideImageLoader(): ImageLoader {
         return GlideImageLoader
+    }
+
+    @Provides
+    @Singleton
+    fun provideSchedulerFacade(): SchedulerFacade {
+        return AppSchedulerFacade()
     }
 
 }

@@ -56,7 +56,7 @@
     <string name="send_to">Share your book</string>
     <string name="label_backup">Manage backups</string>
     <string name="backup_label_auto">Auto backups</string>
-    <string name="restore">Restore</string>
+    <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
     <string name="last_backup">Last backup: %s</string>
     <string name="backup_books_amount">Books: %d</string>
@@ -202,6 +202,7 @@
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Enable a dark theme for the app</string>
+    <string name="backup_no_backups">You haven\'t made any backups.</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

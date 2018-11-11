@@ -64,4 +64,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StatisticsViewModel::class)
     internal abstract fun statisticsViewModel(viewModel: StatisticsViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BackupViewModel::class)
+    internal abstract fun backupViewModel(viewModel: BackupViewModel): ViewModel
+
 }

@@ -33,7 +33,7 @@
     <string name="send_to">Teile dein Buch</string>
     <string name="label_backup">Backups verwalten</string>
     <string name="last_backup">Letzte Sicherung: %s</string>
-    <string name="restore">Wiederherstellen</string>
+    <string name="restore">Wiederherstellen (%d)</string>
     <string name="backup_now">Jetzt sichern</string>
     <string name="backup_label_auto">Autom. Backups</string>
     <string name="backup_books_amount">Bücher: %d</string>
@@ -173,5 +173,6 @@
     <string name="prefs_category_books_general">Allgemein</string>
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Verwende ein dunkles Thema für die App</string>
+    <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
 
 </resources>

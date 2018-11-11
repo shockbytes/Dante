@@ -101,6 +101,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:visibility="gone"
+        android:scrollbars="vertical"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

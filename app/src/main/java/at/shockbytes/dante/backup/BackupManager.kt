@@ -18,10 +18,11 @@ interface BackupManager {
         MERGE, OVERWRITE
     }
 
-    val lastBackupTime: Long
+    var lastBackupTime: Long
 
     val backupList: Single<List<BackupEntry>>
-    
+
+    @Throws(BackupServiceConnectionException::class)
     fun connect(activity: FragmentActivity)
 
     fun close(books: List<BookEntity>? = null)

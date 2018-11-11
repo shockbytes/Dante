@@ -174,5 +174,6 @@
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Verwende ein dunkles Thema für die App</string>
     <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
+    <string name="backup_connection_error_google_drive">Keine Verbindung zu Google Drive möglich!</string>
 
 </resources>

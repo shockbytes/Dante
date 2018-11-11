@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
 import android.widget.Toast
 import at.shockbytes.dante.R
@@ -17,7 +16,6 @@ import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import at.shockbytes.util.adapter.BaseItemTouchHelper
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup.*
@@ -27,8 +25,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    31.12.2017
  */
-class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntry>,
-        BaseAdapter.OnItemMoveListener<BackupEntry> {
+class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntry> {
 
     override val layoutId = R.layout.fragment_backup
 
@@ -51,11 +48,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
             val adapter = BackupEntryAdapter(ctx, listOf())
             fragment_backup_rv.layoutManager = LinearLayoutManager(ctx)
             adapter.onItemClickListener = this
-            adapter.onItemMoveListener = this
-            val callback = BaseItemTouchHelper(adapter, true,
-                    BaseItemTouchHelper.DragAccess.NONE)
-            val touchHelper = ItemTouchHelper(callback)
-            touchHelper.attachToRecyclerView(fragment_backup_rv)
+            adapter.onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }
             fragment_backup_rv.adapter = adapter
             fragment_backup_rv.addItemDecoration(EqualSpaceItemDecoration(8))
 
@@ -71,15 +64,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                     viewModel.applyBackup(t, strategy)
                 }
                 .show(fragmentManager, "restore-strategy-dialog-fragment")
-    }
-
-    override fun onItemMove(t: BackupEntry, from: Int, to: Int) {}
-
-    override fun onItemMoveFinished() {}
-
-    override fun onItemDismissed(t: BackupEntry, position: Int) {
-        val currentItems = fragment_backup_rv.adapter?.itemCount ?: -1
-        viewModel.deleteItem(t, position, currentItems)
     }
 
     override fun bindViewModel() {
@@ -171,6 +155,11 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     override fun unbindViewModel() {
         // Not needed...
+    }
+
+    private fun onItemDismissed(t: BackupEntry, position: Int) {
+        val currentItems = fragment_backup_rv.adapter?.itemCount ?: -1
+        viewModel.deleteItem(t, position, currentItems)
     }
 
     private fun showLoadingView(show: Boolean) {

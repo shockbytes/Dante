@@ -13,12 +13,13 @@ import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotterknife.bindView
 
 /**
- * @author Martin Macheiner
- * Date: 22.04.2017.
+ * Author:  Martin Macheiner
+ * Date:    22.04.2017.
  */
-
 class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
     : BaseAdapter<BackupEntry>(cxt, data.toMutableList()), ItemTouchHelperAdapter {
+
+    var onItemDeleteClickListener: ((BackupEntry, Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): BaseAdapter<BackupEntry>.ViewHolder {
@@ -35,13 +36,11 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
 
     internal inner class ViewHolder(itemView: View) : BaseAdapter<BackupEntry>.ViewHolder(itemView) {
 
-        private val imgViewProvider: ImageView by bindView(R.id.item_backup_entry_imgview_provider)
-
-        private val txtTime: TextView by bindView(R.id.item_backup_entry_txt_time)
-
-        private val txtBookAmount: TextView by bindView(R.id.item_backup_entry_txt_books)
-
-        private val txtDevice: TextView by bindView(R.id.item_backup_entry_txt_device)
+        private val imgViewProvider by bindView<ImageView>(R.id.item_backup_entry_imgview_provider)
+        private val txtTime by bindView<TextView>(R.id.item_backup_entry_txt_time)
+        private val txtBookAmount by bindView<TextView>(R.id.item_backup_entry_txt_books)
+        private val txtDevice by bindView<TextView>(R.id.item_backup_entry_txt_device)
+        private val imgViewDelete by bindView<ImageView>(R.id.item_backup_entry_btn_delete)
 
         override fun bindToView(t: BackupEntry) {
 
@@ -52,8 +51,11 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
             txtTime.text = DanteUtils.formatTimestamp(t.timestamp)
             txtBookAmount.text = context.getString(R.string.backup_books_amount, t.books)
             txtDevice.text = t.device
-        }
 
+            imgViewDelete.setOnClickListener {
+                onItemDeleteClickListener?.invoke(t, getLocation(t))
+            }
+        }
     }
 
 

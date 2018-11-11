@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.BackupServiceConnectionException
 import at.shockbytes.dante.dagger.AppComponent
@@ -22,7 +23,12 @@ class BackupActivity : ContainerBackNavigableActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        backupManager.connect(this)
+        try {
+            backupManager.connect(this)
+        } catch (e: BackupServiceConnectionException) {
+            Timber.e(e)
+            showToast(R.string.backup_connection_error_google_drive, showLong = true)
+        }
     }
 
     override fun onDestroy() {

@@ -13,8 +13,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * TODO Issues:
- * - Disable swipe to dismiss
+ * Author:  Martin Macheiner
+ * Date:    10.11.2018
  */
 class BackupViewModel @Inject constructor(
         private val bookDao: BookEntityDao,
@@ -38,8 +38,8 @@ class BackupViewModel @Inject constructor(
     }
 
     fun getBackupState(): LiveData<LoadBackupState> = loadBackupState
-    fun getLastBackupTime(): LiveData<String> = lastBackupTime
 
+    fun getLastBackupTime(): LiveData<String> = lastBackupTime
 
     fun applyBackup(t: BackupEntry, strategy: BackupManager.RestoreStrategy) {
         backupManager.restoreBackup(t, bookDao, strategy)
@@ -70,6 +70,11 @@ class BackupViewModel @Inject constructor(
                 .subscribe({
                     val wasLastEntry = (currentItems - 1) == 0
                     deleteBackupEvent.onNext(DeleteBackupState.Success(position, wasLastEntry))
+
+                    if (wasLastEntry) {
+                        updateLastBackupTime(true)
+                    }
+
                 }) { throwable ->
                     Timber.e(throwable)
                     deleteBackupEvent.onNext(DeleteBackupState.Error(throwable))
@@ -95,7 +100,13 @@ class BackupViewModel @Inject constructor(
         }.addTo(compositeDisposable)
     }
 
-    private fun updateLastBackupTime() {
+    private fun updateLastBackupTime(resetValue: Boolean = false) {
+
+        // Reset the value if the last item was dismissed
+        if (resetValue) {
+            backupManager.lastBackupTime = 0
+        }
+
         val lastBackupMillis = backupManager.lastBackupTime
         val lastBackup = if (lastBackupMillis > 0)
             DanteUtils.formatTimestamp(lastBackupMillis)

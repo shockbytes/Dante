@@ -203,6 +203,7 @@
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Enable a dark theme for the app</string>
     <string name="backup_no_backups">You haven\'t made any backups.</string>
+    <string name="backup_connection_error_google_drive">Cannot connect to Google Drive!</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

@@ -11,7 +11,7 @@
     <color name="colorTertiaryText">#BBB</color>
 
 
-    <color name="snackbarBackground">@color/white</color>
+    <color name="snackbarBackground">#EEEEEE</color>
     <color name="snackbarForeground">#323232</color>
 
 </resources>

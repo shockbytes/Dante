@@ -78,7 +78,8 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     override fun onItemMoveFinished() {}
 
     override fun onItemDismissed(t: BackupEntry, position: Int) {
-        viewModel.deleteItem(t, position)
+        val currentItems = fragment_backup_rv.adapter?.itemCount ?: -1
+        viewModel.deleteItem(t, position, currentItems)
     }
 
     override fun bindViewModel() {
@@ -158,6 +159,8 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                             adapter.deleteEntity(state.deleteIndex)
                             showSnackbar(getString(R.string.backup_removed))
                             fragment_backup_txt_restore.text = getString(R.string.restore, adapter.itemCount)
+
+                            showEmptyStateView(state.isBackupListEmpty)
                         }
                         is BackupViewModel.DeleteBackupState.Error -> {
                             showSnackbar(state.throwable.localizedMessage)

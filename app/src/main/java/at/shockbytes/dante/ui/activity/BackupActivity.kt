@@ -5,9 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.backup.BackupServiceConnectionException
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 

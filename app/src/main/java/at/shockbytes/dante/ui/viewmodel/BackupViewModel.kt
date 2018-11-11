@@ -66,10 +66,11 @@ class BackupViewModel @Inject constructor(
         }.addTo(compositeDisposable)
     }
 
-    fun deleteItem(t: BackupEntry, position: Int) {
+    fun deleteItem(t: BackupEntry, position: Int, currentItems: Int) {
         backupManager.removeBackupEntry(t)
                 .subscribe({
-                    deleteBackupEvent.onNext(DeleteBackupState.Success(position))
+                    val wasLastEntry = (currentItems - 1) == 0
+                    deleteBackupEvent.onNext(DeleteBackupState.Success(position, wasLastEntry))
                 }) { throwable ->
                     Timber.e(throwable)
                     deleteBackupEvent.onNext(DeleteBackupState.Error(throwable))
@@ -113,7 +114,7 @@ class BackupViewModel @Inject constructor(
     }
 
     sealed class DeleteBackupState {
-        data class Success(val deleteIndex: Int) : DeleteBackupState()
+        data class Success(val deleteIndex: Int, val isBackupListEmpty: Boolean) : DeleteBackupState()
         data class Error(val throwable: Throwable) : DeleteBackupState()
     }
 

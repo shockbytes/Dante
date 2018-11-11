@@ -49,4 +49,7 @@
     <color name="support_badge_premium">#FFC107</color>
     <color name="support_badge_standard">#8BC34A</color>
 
+    <color name="snackbarBackground">#323232</color>
+    <color name="snackbarForeground">@color/white</color>
+
 </resources>

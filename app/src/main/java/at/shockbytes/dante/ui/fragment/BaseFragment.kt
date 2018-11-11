@@ -1,16 +1,23 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.support.annotation.ColorRes
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
+import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
-import com.airbnb.lottie.model.layer.CompositionLayer
 import io.reactivex.disposables.CompositeDisposable
+import android.text.Spanned
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import at.shockbytes.dante.util.colored
+
 
 /**
  * @author Martin Macheiner
@@ -57,10 +64,18 @@ abstract class BaseFragment : Fragment() {
     }
 
     @JvmOverloads
-    protected fun showSnackbar(text: String, showLong: Boolean = true) {
+    protected fun showSnackbar(text: String,
+                               showLong: Boolean = true,
+                               @ColorRes fgColor: Int = R.color.snackbarForeground,
+                               @ColorRes bgColor: Int = R.color.snackbarBackground) {
         view?.let { v ->
+
+            val sbText = text.colored(ContextCompat.getColor(v.context, fgColor))
             val duration = if (showLong) Snackbar.LENGTH_LONG else Snackbar.LENGTH_SHORT
-            Snackbar.make(v, text, duration).show()
+
+            val snackbar = Snackbar.make(v, sbText, duration)
+            snackbar.view.setBackgroundColor(ContextCompat.getColor(v.context, bgColor))
+            snackbar.show()
         }
     }
 

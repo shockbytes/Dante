@@ -16,7 +16,6 @@ import javax.inject.Inject
  * TODO Issues:
  * - Show empty view when user dismisses last item
  * - Disable swipe to dismiss
- * - Snackbars not working on dark theme...
  */
 class BackupViewModel @Inject constructor(
         private val bookDao: BookEntityDao,

@@ -18,10 +18,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 14.01.2018.
+ * Author:  Martin Macheiner
+ * Date:    14.01.2018
  */
-
 class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
 
     private val btnRate: Button by bindView(R.id.dialogfragment_rating_btn_rate)
@@ -60,11 +59,14 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
         RxRatingBar.ratingChanges(ratingBar).distinctUntilChanged()
                 .subscribe({
                     val rating = it.toInt() - 1 // -1 because rating starts with 1
-                    if (rating in 1..5) { // Error can somehow occur, therefore check!
-                        txtRatings.text = context!!.resources.getStringArray(R.array.ratings)[rating]
+                    if (rating in 0..4) { // Error can somehow occur, therefore check!
+                        context?.let { ctx ->
+                            txtRatings.text = ctx.resources.getStringArray(R.array.ratings)[rating]
+                        }
                     }
                 }, { throwable -> Timber.e(throwable) })
                 .addTo(compositeDisposable)
+
         if (previousRating > 0) {
             ratingBar.rating = previousRating.toFloat()
         }

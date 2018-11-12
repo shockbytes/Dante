@@ -14,4 +14,7 @@
     <color name="snackbarBackground">#EEEEEE</color>
     <color name="snackbarForeground">#323232</color>
 
+    <color name="ratingBackground">#323232</color>
+    <color name="notesBackground">#323232</color>
+
 </resources>

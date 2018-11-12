@@ -52,4 +52,7 @@
     <color name="snackbarBackground">#323232</color>
     <color name="snackbarForeground">@color/white</color>
 
+    <color name="ratingBackground">@color/tabcolor_upcoming</color>
+    <color name="notesBackground">@color/tabcolor_current</color>
+
 </resources>

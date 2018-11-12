@@ -45,11 +45,11 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
 
             if (t.align == StatisticsDisplayItem.Align.START) {
                 imgViewIconStart.setImageResource(t.icon)
-                imgViewIconEnd.visibility = View.INVISIBLE
+                imgViewIconEnd.visibility = View.GONE
                 txtTitle.gravity = Gravity.START or Gravity.CENTER_VERTICAL
             } else {
                 imgViewIconEnd.setImageResource(t.icon)
-                imgViewIconStart.visibility = View.INVISIBLE
+                imgViewIconStart.visibility = View.GONE
                 txtTitle.gravity = Gravity.END or Gravity.CENTER_VERTICAL
             }
 

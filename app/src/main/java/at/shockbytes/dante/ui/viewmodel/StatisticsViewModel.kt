@@ -42,11 +42,11 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_pages_waiting,
                 R.drawable.ic_pages_colored, StatisticsDisplayItem.Align.START, s.pagesWaiting.toString()))
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_pages_read,
-                R.drawable.ic_pages, StatisticsDisplayItem.Align.END, s.pagesRead.toString()))
+                R.drawable.ic_pages, StatisticsDisplayItem.Align.START, s.pagesRead.toString()))
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_books_waiting,
                 R.drawable.ic_popup_upcoming, StatisticsDisplayItem.Align.START, s.booksWaiting.toString()))
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_books_read,
-                R.drawable.ic_popup_done, StatisticsDisplayItem.Align.END, s.booksRead.toString()))
+                R.drawable.ic_popup_done, StatisticsDisplayItem.Align.START, s.booksRead.toString()))
 
         // Time category
         items.add(StatisticsDisplayItem.StatisticsHeaderItem(R.string.statistics_header_time, R.drawable.ic_time))
@@ -55,7 +55,7 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
                 R.drawable.ic_stats_fast, StatisticsDisplayItem.Align.START,
                 s.fastestBook?.days?.toString() ?: "---", s.fastestBook?.bookName ?: "---"))
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_duration_book,
-                R.drawable.ic_stats_slow, StatisticsDisplayItem.Align.END,
+                R.drawable.ic_stats_slow, StatisticsDisplayItem.Align.START,
                 s.slowestBook?.days?.toString() ?: "---", s.slowestBook?.bookName ?: "---"))
 
         // Favourites
@@ -64,7 +64,7 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_favourite_author,
                 R.drawable.ic_fav_author, StatisticsDisplayItem.Align.START, s.mostReadAuthor ?: "---"))
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_first_five_star,
-                R.drawable.ic_five_star, StatisticsDisplayItem.Align.END, s.firstFiveStarBook?.title ?: "---"))
+                R.drawable.ic_five_star, StatisticsDisplayItem.Align.START, s.firstFiveStarBook?.title ?: "---"))
 
         val avgRating = if(s.averageBookRating != 0.0) s.averageBookRating.roundDouble(2).toString() else "---"
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_average_rating,
@@ -76,7 +76,7 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_avg_books_per_month,
                 R.drawable.ic_popup_current, StatisticsDisplayItem.Align.START, s.avgBooksPerMonth.toString()))
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_most_reading_month,
-                R.drawable.ic_books, StatisticsDisplayItem.Align.END,
+                R.drawable.ic_books, StatisticsDisplayItem.Align.START,
                 s.mostReadingMonth?.finishedBooks?.toString() ?: "0",
                 s.mostReadingMonth?.monthAsString ?: "---"))
 

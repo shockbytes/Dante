@@ -12,12 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
+        <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/progressBarDownloadFragment"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true"
-            android:indeterminate="true" />
+            android:indeterminate="true"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/lottie_loading" />
 
         <ImageView
             android:id="@+id/imgViewDownloadFragmentCover"
@@ -112,18 +115,18 @@
         </LinearLayout>
 
         <android.support.v7.widget.AppCompatButton
-            style="@style/AppTheme.RoundedButton"
             android:id="@+id/btnDownloadFragmentNotMyBook"
+            style="@style/AppTheme.RoundedButton"
             android:layout_width="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
-            android:alpha="0"
             android:layout_marginBottom="8dp"
+            android:alpha="0"
             android:paddingStart="32dp"
-            android:paddingEnd="32dp"
             android:paddingTop="8dp"
+            android:paddingEnd="32dp"
             android:paddingBottom="8dp"
             android:scaleX="0.5"
             android:scaleY="0.5"

@@ -22,6 +22,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Enable language selection for manual add
 - [ ] Include book description in Download
 - [ ] Replace preferences UI
+- [ ] Come up with custom Search UI (do not rely on 3rd party library)
 
 ### Version 3.1 - DARK STATISTICS FIXES
 * Dark mode

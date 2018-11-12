@@ -93,13 +93,12 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
                 if (books.isNotEmpty()) {
                     updateEmptyView(true, false )
                     bookAdapter.updateData(books)
-                    fragment_book_main_rv.scrollToPosition(0)
+                    fragment_book_main_rv.smoothScrollToPosition(0)
                 } else {
                     updateEmptyView(false, true)
                 }
             }
         })
-
     }
 
     override fun unbindViewModel() {

@@ -20,11 +20,9 @@ import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import at.shockbytes.dante.util.tracking.DefaultTracker
-import at.shockbytes.dante.util.tracking.backend.FirebaseTrackingBackend
+import at.shockbytes.dante.util.tracking.FirebaseTracker
+import at.shockbytes.dante.util.tracking.DebugTracker
 import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.backend.DebugTrackingBackend
-import at.shockbytes.dante.util.tracking.backend.TrackingBackend
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -73,19 +71,12 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideTracker(): Tracker {
-        return DefaultTracker(FirebaseTrackingBackend(app.applicationContext))
-    }
-
-    @Provides
-    @Singleton
-    fun provideTrackerBackend(): TrackingBackend {
         return if (BuildConfig.DEBUG) {
-            DebugTrackingBackend()
+            DebugTracker()
         } else {
-            FirebaseTrackingBackend(app.applicationContext)
+            FirebaseTracker(app.applicationContext)
         }
     }
-
 
     @Provides
     @Singleton
@@ -101,7 +92,6 @@ class AppModule(private val app: Application) {
     fun provideBackupManager(preferences: SharedPreferences,
                              signInManager: SignInManager,
                              schedulerFacade: SchedulerFacade): BackupManager {
-        // TODO Remove this ugly cast, but for now this is the only supported SignInManager
         return GoogleDriveBackupManager(preferences,
                 signInManager as GoogleSignInManager,
                 schedulerFacade,

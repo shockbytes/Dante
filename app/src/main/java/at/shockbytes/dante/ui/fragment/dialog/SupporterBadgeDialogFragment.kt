@@ -15,6 +15,7 @@ import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.SupporterBadgeViewModel
 import at.shockbytes.dante.util.roundDouble
 import at.shockbytes.dante.util.tracking.Tracker
+import at.shockbytes.dante.util.tracking.event.TrackingEvent
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -46,7 +47,7 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[SupporterBadgeViewModel::class.java]
 
-        tracker.trackOnClickSupporterBadgePage()
+        tracker.trackEvent(TrackingEvent.ShowSupporterBadgePage())
     }
 
     override fun setupViews() {
@@ -57,12 +58,12 @@ class SupporterBadgeDialogFragment : InteractiveViewDialogFragment<Unit>() {
         }
 
         btnStandardPrice.setOnClickListener {
-            tracker.trackBuySupporterBadge("standard")
+            tracker.trackEvent(TrackingEvent.BuySupporterBadgeEvent("standard"))
             viewModel.purchaseStandardBadge()
         }
 
         btnPremiumPrice.setOnClickListener {
-            tracker.trackBuySupporterBadge("premium")
+            tracker.trackEvent(TrackingEvent.BuySupporterBadgeEvent("premium"))
             viewModel.purchasePremiumBadge()
         }
 

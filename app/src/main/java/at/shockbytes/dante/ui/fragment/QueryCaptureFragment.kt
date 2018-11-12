@@ -26,8 +26,8 @@ import java.io.IOException
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 01.01.2018.
+ * Author:  Martin Macheiner
+ * Date:    01.01.2018
  */
 class QueryCaptureFragment : BaseFragment(),
         GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic> {
@@ -49,9 +49,6 @@ class QueryCaptureFragment : BaseFragment(),
     private var cameraSource: CameraSource? = null
     private var previewView: CameraSourcePreview? = null
     private var graphicOverlay: GraphicOverlay<BarcodeGraphic>? = null
-
-    @Inject
-    protected lateinit var tracker: Tracker
 
     @Inject
     protected lateinit var prefs: SharedPreferences

@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="@string/prefs_category_books_general">
         <SwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="@string/prefs_dark_mode_key"
             android:title="@string/prefs_dark_mode_title"
             android:summary="@string/prefs_dark_mode_summary"/>

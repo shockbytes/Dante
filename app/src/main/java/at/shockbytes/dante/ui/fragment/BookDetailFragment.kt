@@ -29,6 +29,7 @@ import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
+import at.shockbytes.dante.util.tracking.event.TrackingEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -41,7 +42,7 @@ import javax.inject.Inject
 
 /**
  * @author  Martin Macheiner
- * Date:    08-Jun-18.
+ * Date:    08.06.2018
  */
 class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
         Palette.PaletteAsyncListener, CircleSeekBar.Callback {
@@ -196,7 +197,7 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
                 RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
                         .setOnApplyListener { rating ->
                             viewModel.updateRating(rating)
-                            tracker.trackRatingEvent(rating)
+                            tracker.trackEvent(TrackingEvent.RatingEvent(rating))
                             btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                         }.show(fragmentManager, "rating-dialogfragment")
             }

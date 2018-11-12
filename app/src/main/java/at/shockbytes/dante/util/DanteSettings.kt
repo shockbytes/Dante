@@ -36,7 +36,7 @@ class DanteSettings(private val context: Context,
         }
 
     var darkModeEnabled: Boolean
-        get() = prefs.getBoolean(context.getString(R.string.prefs_dark_mode_key), true)
+        get() = prefs.getBoolean(context.getString(R.string.prefs_dark_mode_key), false)
         set(value) {
             prefs.edit()
                     .putBoolean(context.getString(R.string.prefs_dark_mode_key), value)

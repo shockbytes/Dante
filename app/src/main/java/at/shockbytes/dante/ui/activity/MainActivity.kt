@@ -5,8 +5,6 @@ import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -30,6 +28,7 @@ import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.dante.util.tracking.Tracker
+import at.shockbytes.dante.util.tracking.event.TrackingEvent
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -175,7 +174,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             when (item.id) {
 
                 R.id.menu_fab_add_camera -> {
-                    tracker.trackOnScanBook()
+                    tracker.trackEvent(TrackingEvent.ScanBookEvent())
 
                     startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.CAMERA, null),
                             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
@@ -184,7 +183,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 R.id.menu_fab_add_title -> {
                     QueryDialogFragment.newInstance()
                             .setOnQueryEnteredListener { query ->
-                                tracker.trackOnBookManuallyEntered()
+                                tracker.trackEvent(TrackingEvent.AddByTitleEvent())
 
                                 startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.TITLE, query),
                                         ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
@@ -193,7 +192,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     false
                 }
                 R.id.menu_fab_add_manually -> {
-                    tracker.trackOnBookAddManually()
+                    tracker.trackEvent(TrackingEvent.OpenManualAddViewEvent())
 
                     startActivity(ManualAddActivity.newIntent(this),
                             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())

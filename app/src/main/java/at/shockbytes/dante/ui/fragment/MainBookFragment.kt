@@ -24,11 +24,11 @@ import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.createSharingIntent
 import at.shockbytes.dante.util.tracking.Tracker
+import at.shockbytes.dante.util.tracking.event.TrackingEvent
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
-
 
 class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEntity>,
         BaseAdapter.OnItemMoveListener<BookEntity>, BookAdapter.OnBookPopupItemSelectedListener {
@@ -150,7 +150,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     override fun onShare(b: BookEntity) {
         context?.let { ctx ->
-            tracker.trackOnBookShared()
+            tracker.trackEvent(TrackingEvent.BookSharedEvent())
             val sendIntent = b.createSharingIntent(ctx)
             startActivity(Intent.createChooser(sendIntent, resources.getText(R.string.send_to)))
         }

@@ -17,12 +17,13 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Reading history in statistics
 
 ### Version 3.2 - MAMMA MIA, PURCHASES!
-- [ ] In-app purchases
-- [ ] Italian language support
-- [ ] Enable language selection for manual add
 - [ ] Include book description in Download
-- [ ] Replace preferences UI
 - [ ] Come up with custom Search UI (do not rely on 3rd party library)
+- [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
+- [ ] Enable language selection for manual add
+- [ ] In-app purchases
+- [ ] Replace preferences UI
+- [ ] Italian language support
 
 ### Version 3.1 - DARK STATISTICS FIXES
 * Dark mode

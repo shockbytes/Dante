@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.preference.Preference
 import android.preference.PreferenceFragment
 import android.preference.SwitchPreference
+import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.tracking.Tracker
@@ -30,17 +31,24 @@ class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceChangeList
         prefsDarkMode = findPreference(getString(R.string.prefs_dark_mode_key)) as SwitchPreference
 
         prefsTracking.onPreferenceChangeListener = this
-        prefsOverlay.onPreferenceChangeListener = this }
+        prefsOverlay.onPreferenceChangeListener = this
+        prefsDarkMode.onPreferenceChangeListener = this
+    }
 
     override fun onPreferenceChange(pref: Preference?, newValue: Any?): Boolean {
 
         if (pref?.key == getString(R.string.prefs_page_tracking_key) && !(newValue as Boolean)) {
             prefsOverlay.isChecked = false
         }
-        if (pref?.key == getString(R.string.prefs_dark_mode_key) && !(newValue as Boolean)) {
+        if (pref?.key == getString(R.string.prefs_dark_mode_key) && (newValue is Boolean)) {
             tracker.trackEvent(TrackingEvent.DarkModeChangeEvent(!newValue, newValue))
+            showDarkModeToast()
         }
         return true
+    }
+
+    private fun showDarkModeToast() {
+        Toast.makeText(activity, R.string.dark_mode_applied, Toast.LENGTH_LONG).show()
     }
 
     companion object {

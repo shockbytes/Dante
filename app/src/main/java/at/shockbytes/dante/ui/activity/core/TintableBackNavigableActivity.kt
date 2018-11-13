@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
+import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
@@ -17,10 +18,9 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
 
 /**
- * @author Martin Macheiner
- * Date: 02.01.2018.
+ * Author:  Martin Macheiner
+ * Date:    02.01.2018
  */
-
 abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
     private val abDefColor = R.color.actionBarItemColor
@@ -30,7 +30,12 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
     private var upIndicator: Int = R.drawable.ic_back_arrow
 
     @ColorInt
-    private var textColor: Int = Color.parseColor("#212121")
+    private var textColor: Int = 0 // Will be initialized in the onCreate method
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        textColor = ContextCompat.getColor(this, R.color.colorPrimaryText)
+    }
 
     @JvmOverloads
     fun tintHomeAsUpIndicator(@DrawableRes indicator: Int = upIndicator,

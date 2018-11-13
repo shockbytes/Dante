@@ -115,7 +115,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     private fun setupObserver() {
 
-        viewModel.imageEvent.observe(this, Observer {
+        viewModel.thumbnailUrl.observe(this, Observer {
             context?.let { ctx ->
                 it?.let { uri ->
                     imageLoader.loadImageUri(ctx, uri, imgViewManualAdd, R.drawable.ic_placeholder,

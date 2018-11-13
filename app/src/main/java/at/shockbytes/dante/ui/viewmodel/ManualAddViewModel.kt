@@ -2,13 +2,11 @@ package at.shockbytes.dante.ui.viewmodel
 
 
 import android.app.FragmentManager
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
-import at.shockbytes.dante.util.SingleLiveEvent
 import at.shockbytes.dante.util.addTo
 import com.mlsdev.rximagepicker.RxImagePicker
 import com.mlsdev.rximagepicker.Sources
@@ -21,9 +19,7 @@ import javax.inject.Inject
  */
 class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
 
-    val imageEvent = MutableLiveData<Uri>()
-
-    private var thumbnailAddress: Uri? = null
+    val thumbnailUrl = MutableLiveData<Uri>()
 
     val addEvent = PublishSubject.create<AddEvent>()
 
@@ -40,14 +36,13 @@ class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao)
      * ViewModel usage
      */
     fun reset() {
-        thumbnailAddress = null
+        thumbnailUrl.value = null
     }
 
     fun pickImage(c: FragmentManager) {
 
         RxImagePicker.with(c).requestImage(Sources.GALLERY).subscribe { uri ->
-            thumbnailAddress = uri
-            imageEvent.postValue(uri)
+            thumbnailUrl.postValue(uri)
         }.addTo(compositeDisposable)
     }
 
@@ -55,7 +50,7 @@ class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao)
                   subTitle: String?, publishedDate: String?, isbn: String?, language: String?) {
 
         val entity = createEntity(title, author, pageCount, state, subTitle,
-                publishedDate, isbn, thumbnailAddress?.toString(), language)
+                publishedDate, isbn, thumbnailUrl.value?.toString(), language)
 
         if (entity != null) {
             bookDao.create(entity)

@@ -7,7 +7,7 @@ import timber.log.Timber
 class DebugTracker : Tracker {
 
     override fun trackEvent(event: TrackingEvent) {
-        Timber.d("Event: $event - ${createTrackEventData(event.props)}")
+        Timber.d("Event: ${event.name} - ${createTrackEventData(event.props)}")
     }
 
     private fun createTrackEventData(props: List<TrackingProperty>): Map<String, Any> {

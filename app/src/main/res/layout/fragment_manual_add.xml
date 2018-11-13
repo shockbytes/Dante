@@ -41,7 +41,7 @@
                     android:layout_height="match_parent"
                     android:padding="8dp">
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageButton
                         android:id="@+id/imgViewManualAdd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

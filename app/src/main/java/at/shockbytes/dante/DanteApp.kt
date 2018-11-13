@@ -1,24 +1,21 @@
 package at.shockbytes.dante
 
 import android.os.StrictMode
-import android.preference.PreferenceManager
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import at.shockbytes.dante.dagger.*
 import at.shockbytes.dante.util.CrashlyticsReportingTree
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.core.CrashlyticsCore
 import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
 
 /**
- * @author  Martin Macheiner
- * Date:    13.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    13.02.2017
  */
-
 class DanteApp : MultiDexApplication() {
 
     companion object {

@@ -16,7 +16,6 @@ import at.shockbytes.dante.ui.custom.barcode.BarcodeTrackerFactory
 import at.shockbytes.dante.ui.custom.barcode.camera.CameraSourcePreview
 import at.shockbytes.dante.ui.custom.barcode.camera.GraphicOverlay
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
-import at.shockbytes.dante.util.tracking.Tracker
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.vision.CameraSource

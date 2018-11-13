@@ -1,11 +1,10 @@
 package at.shockbytes.dante.util.flagging
 
-import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import timber.log.Timber
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    28.08.2018
  */
 class FirebaseFeatureFlagging(private val remoteConfig: FirebaseRemoteConfig) : FeatureFlagging {

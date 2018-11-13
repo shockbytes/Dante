@@ -13,9 +13,6 @@ import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import io.reactivex.disposables.CompositeDisposable
-import android.text.Spanned
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
 import at.shockbytes.dante.util.colored
 
 

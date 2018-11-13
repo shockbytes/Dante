@@ -9,10 +9,9 @@ import java.lang.reflect.Type
 
 
 /**
- * @author Martin Macheiner
- * Date: 13.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    13.02.2017
  */
-
 class BookBackupSerializer : JsonSerializer<BookEntity> {
 
     override fun serialize(src: BookEntity, typeOfSrc: Type,

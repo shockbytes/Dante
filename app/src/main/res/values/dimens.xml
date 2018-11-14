@@ -12,5 +12,6 @@
     <dimen name="thumbnail_rounded_corner">6dp</dimen>
     <dimen name="dimen_statistics_margin">8dp</dimen>
     <dimen name="max_width">480dp</dimen>
+    <dimen name="main_padding">0dp</dimen>
 
 </resources>

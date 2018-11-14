@@ -18,7 +18,7 @@ can simply keep track of your progress of all your books and their current state
 
 ### Version 3.2 - MAMMA MIA, PURCHASES!
 - [ ] Include book description in Download
-- [ ] Come up with custom Search UI (do not rely on 3rd party library)
+- [ ] Improve search view (https://github.com/Ferfalk/SimpleSearchView)
 - [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 - [ ] Enable language selection for manual add
 - [ ] In-app purchases

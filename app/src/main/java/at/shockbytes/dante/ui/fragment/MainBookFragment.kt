@@ -33,6 +33,8 @@ import javax.inject.Inject
 class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEntity>,
         BaseAdapter.OnItemMoveListener<BookEntity>, BookAdapter.OnBookPopupItemSelectedListener {
 
+    override val layoutId = R.layout.fragment_book_main
+
     @Inject
     protected lateinit var vmFactory: ViewModelProvider.Factory
 
@@ -45,6 +47,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     @Inject
     protected lateinit var imageLoader: ImageLoader
 
+    private lateinit var bookState: BookState
     private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
 
@@ -53,7 +56,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             else
-                StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL)
+                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         } else {
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -61,15 +64,11 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
 
-    private lateinit var bookState: BookState
-
-    override val layoutId = R.layout.fragment_book_main
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookListViewModel::class.java]
 
-        bookState = arguments?.getSerializable(argState) as BookState
+        bookState = arguments?.getSerializable(ARG_STATE) as BookState
         viewModel.state = bookState
     }
 
@@ -202,14 +201,14 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     companion object {
 
-        private const val argState = "arg_state"
+        private const val ARG_STATE = "arg_state"
 
         fun newInstance(state: BookState): MainBookFragment {
-            val fragment = MainBookFragment()
-            val args = Bundle(1)
-            args.putSerializable(argState, state)
-            fragment.arguments = args
-            return fragment
+            return MainBookFragment().apply {
+                this.arguments = Bundle().apply {
+                    putSerializable(ARG_STATE, state)
+                }
+            }
         }
     }
 }

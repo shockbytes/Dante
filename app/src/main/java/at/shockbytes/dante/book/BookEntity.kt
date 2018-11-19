@@ -1,7 +1,7 @@
 package at.shockbytes.dante.book
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
 
@@ -22,7 +22,9 @@ data class BookEntity(var id: Long = -1,
                       var language: String? = "NA",
                       var rating: Int = 0,
                       var currentPage: Int = 0,
-                      var notes: String? = null) {
+                      var notes: String? = null,
+                      var summary: String? = null,
+                      var labels: List<String> = listOf()) {
 
 
     val reading: Boolean

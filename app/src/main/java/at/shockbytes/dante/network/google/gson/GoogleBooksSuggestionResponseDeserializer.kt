@@ -8,8 +8,8 @@ import java.lang.reflect.Type
 
 
 /**
- * @author Martin Macheiner
- * Date: 13.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    13.02.2017
  */
 
 class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestion> {
@@ -54,10 +54,11 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
         val thumbnailAddress = getImageLink(volumeInfo)
         val googleBooksLink = getGoogleBooksLink(volumeInfo)
         val language = getLanguage(volumeInfo)
+        val summary = getSummary(volumeInfo)
 
         return BookEntity(title = title, subTitle = subtitle, author = author, pageCount = pageCount,
                 publishedDate = publishedDate, isbn =  isbn, thumbnailAddress = thumbnailAddress,
-                googleBooksLink = googleBooksLink, language = language)
+                googleBooksLink = googleBooksLink, language = language, summary = summary)
     }
 
     private fun getPublishedDate(volumeInfo: JsonObject): String {
@@ -114,6 +115,12 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
         return if (volumeInfo.get("imageLinks") != null) {
             volumeInfo.get("imageLinks").asJsonObject
                     .get("thumbnail").asString
+        } else null
+    }
+
+    private fun getSummary(volumeInfo: JsonObject): String? {
+        return if (volumeInfo.get("description") != null) {
+            volumeInfo.get("description").asString
         } else null
     }
 

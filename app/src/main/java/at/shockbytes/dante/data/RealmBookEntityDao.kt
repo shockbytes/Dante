@@ -11,8 +11,8 @@ import io.realm.Realm
 import io.realm.Sort
 
 /**
- * @author Martin Macheiner
- * Date: 12-Jun-18.
+ * Author:  Martin Macheiner
+ * Date:    12.06.2018
  */
 class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
 

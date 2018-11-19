@@ -5,14 +5,14 @@ import io.realm.RealmMigration
 import io.realm.RealmSchema
 
 /**
- * @author Martin Macheiner
- * Date: 13.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    13.02.2017
  */
 
 class DanteRealmMigration : RealmMigration {
 
     enum class Migrations {
-        BASE, DATES, RATING_LANG, PAGES_NOTES, NAME_REFACTORING
+        BASE, DATES, RATING_LANG, PAGES_NOTES, NAME_REFACTORING, SUMMARY_AND_LABELS
     }
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
@@ -33,7 +33,10 @@ class DanteRealmMigration : RealmMigration {
         }
         if (versionCounter == Migrations.PAGES_NOTES.v()) {
             migrateNameRefactoring(schema)
-            // versionCounter++
+            versionCounter++
+        }
+        if (versionCounter == Migrations.NAME_REFACTORING.v()) {
+            migrateSummaryAndLabels(schema)
         }
     }
 
@@ -61,11 +64,17 @@ class DanteRealmMigration : RealmMigration {
         schema.rename("BookConfig", "RealmBookConfig")
     }
 
+    private fun migrateSummaryAndLabels(schema: RealmSchema) {
+        schema.get("RealmBook")
+                ?.addField("summary", String::class.java)
+                ?.addRealmListField("labels", String::class.java)
+    }
+
     companion object {
 
         private fun Migrations.v(): Long = this.ordinal.toLong()
 
-        val migrationVersion = Migrations.NAME_REFACTORING.v()
+        val migrationVersion = Migrations.SUMMARY_AND_LABELS.v()
     }
 
 }

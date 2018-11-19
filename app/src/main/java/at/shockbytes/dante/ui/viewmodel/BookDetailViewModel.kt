@@ -5,10 +5,11 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.SingleLiveEvent
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    13.06.2018
  */
 class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
@@ -35,7 +36,10 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
     }
 
     private fun fetchBook() {
-        bookDao.get(bookId)?.let { book.postValue(it) }
+        bookDao.get(bookId)?.let { entity ->
+            Timber.d(entity.toString())
+            book.postValue(entity)
+        }
     }
 
 

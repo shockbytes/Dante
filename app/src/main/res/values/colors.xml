@@ -55,4 +55,6 @@
     <color name="ratingBackground">@color/tabcolor_upcoming</color>
     <color name="notesBackground">@color/tabcolor_current</color>
 
+    <color name="navigationBarColor">@color/white</color>
+
 </resources>

@@ -227,7 +227,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun colorNavigationItems(item: MenuItem) {
 
         val stateListRes: Int = when (item.itemId) {
-            R.id.menu_navigation_upcoming -> R.drawable.navigation_item_upcoming
+            R.id.menu_navigation_upcoming -> R.drawable.navigation_item
             R.id.menu_navigation_current -> R.drawable.navigation_item_current
             R.id.menu_navigation_done -> R.drawable.navigation_item_done
             R.id.menu_navigation_suggestions -> R.drawable.navigation_item_suggestions

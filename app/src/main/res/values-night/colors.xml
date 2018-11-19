@@ -2,8 +2,8 @@
 <resources>
 
     <color name="mainBackground">#323232</color>
-    <color name="colorPrimary">#424242</color>
-    <color name="colorPrimaryDarkPre23">#323232</color>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDarkPre23">#212121</color>
     <color name="colorAccent">#2196F3</color>
     <color name="iconColor">#BBB</color>
     <color name="actionBarItemColor">#FFF</color>
@@ -16,5 +16,8 @@
 
     <color name="ratingBackground">#323232</color>
     <color name="notesBackground">#323232</color>
+
+    <color name="navigationBarColor">@color/colorPrimary</color>
+    <color name="navigationBarItemDisabled">@color/white</color>
 
 </resources>

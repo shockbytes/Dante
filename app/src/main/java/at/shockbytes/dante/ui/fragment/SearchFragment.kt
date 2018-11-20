@@ -1,115 +1,87 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.content.Context
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.Button
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookSearchSuggestion
+import at.shockbytes.dante.book.BookSearchItem
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.data.BookEntityDao
-import at.shockbytes.dante.network.BookDownloader
+import at.shockbytes.dante.dagger.ViewModelFactory
 import at.shockbytes.dante.ui.activity.DetailActivity
+import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
-import com.arlib.floatingsearchview.FloatingSearchView
-import com.arlib.floatingsearchview.suggestions.model.SearchSuggestion
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
-import kotterknife.bindView
-import timber.log.Timber
+import kotlinx.android.synthetic.main.fragment_search.*
 import java.net.UnknownHostException
 import javax.inject.Inject
 
 
 /**
- * @author Martin Macheiner
- * Date: 03.02.2018.
+ * Author:  Martin Macheiner
+ * Date:    03.02.2018
  */
+class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearchItem> {
 
-class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearchSuggestion> {
-
-    interface OnBookSuggestionDownloadClickListener {
-
-        fun onBookSuggestionClicked(s: BookSearchSuggestion)
-    }
-
-    @Inject
-    protected lateinit var bookDownloader: BookDownloader
-
-    @Inject
-    protected lateinit var bookDao: BookEntityDao
+    override val layoutId = R.layout.fragment_search
 
     @Inject
     protected lateinit var imageLoader: ImageLoader
 
-    private val bookTransform: (BookEntity) -> BookSearchSuggestion = { b ->
-        BookSearchSuggestion(b.id, b.title, b.author, b.thumbnailAddress, b.isbn)
-    }
+    @Inject
+    protected lateinit var vmFactory: ViewModelFactory
 
-    private val addClickedListener: (BookSearchSuggestion) -> Unit = { suggestion ->
+    private lateinit var viewModel: SearchViewModel
+
+    private val addClickedListener: ((BookSearchItem) -> Unit) = { item ->
         activity?.hideKeyboard()
-        searchView.setSearchFocused(false)
-        downloadClickListener?.onBookSuggestionClicked(suggestion)
+        fragment_search_searchview.setSearchFocused(false)
+        viewModel.requestBookDownload(item)
     }
-
-    private val searchView: FloatingSearchView by bindView(R.id.fragment_search_search_view)
-    private val rvResults: RecyclerView by bindView(R.id.fragment_search_rv)
-    private val emptyView: View by bindView(R.id.fragment_search_empty_view)
-    private val btnSearchOnline: Button by bindView(R.id.fragment_search_btn_search_online)
 
     private lateinit var rvAdapter: BookSearchSuggestionAdapter
 
-    private var downloadClickListener: OnBookSuggestionDownloadClickListener? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override val layoutId = R.layout.fragment_search
+        viewModel = ViewModelProviders.of(activity as SearchActivity, vmFactory)[SearchViewModel::class.java]
+    }
 
     override fun setupViews() {
 
-        rvAdapter = BookSearchSuggestionAdapter(context!!, mutableListOf(), imageLoader, addClickedListener)
+        rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, mutableListOf(), imageLoader, addClickedListener)
         rvAdapter.onItemClickListener = this
-        rvResults.layoutManager = LinearLayoutManager(context)
-        rvResults.adapter = rvAdapter
-        val dividerItemDecoration = DividerItemDecoration(rvResults.context,
+        fragment_search_rv.layoutManager = LinearLayoutManager(context)
+        fragment_search_rv.adapter = rvAdapter
+        val dividerItemDecoration = DividerItemDecoration(fragment_search_rv.context,
                 DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.recycler_divider)!!)
-        rvResults.addItemDecoration(dividerItemDecoration)
+        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(fragment_search_rv.context, R.drawable.recycler_divider)!!)
+        fragment_search_rv.addItemDecoration(dividerItemDecoration)
 
-        emptyView.visibility = View.GONE
+        fragment_search_empty_view.visibility = View.GONE
 
-        searchView.setOnHomeActionClickListener {
+        fragment_search_searchview.homeActionClickListener = {
             activity?.supportFinishAfterTransition()
         }
-        searchView.setOnQueryChangeListener { oldQuery, newQuery ->
-            if (oldQuery != "" && newQuery == "") {
-                searchView.clearSuggestions()
+        fragment_search_searchview.queryListener = { newQuery ->
+            if (newQuery.toString() == "") {
                 rvAdapter.clear()
+                viewModel.requestInitialState()
             } else {
-                showBooks(newQuery, true)
+                viewModel.showBooks(newQuery, true)
             }
         }
-        searchView.setOnSearchListener(object : FloatingSearchView.OnSearchListener {
-            override fun onSearchAction(currentQuery: String?) {
-                if (currentQuery != null && !currentQuery.isNullOrEmpty()) {
-                    showBooks(currentQuery, true)
-                }
-            }
+        fragment_search_searchview.setSearchFocused(true)
 
-            override fun onSuggestionClicked(s: SearchSuggestion?) {
-            }
-        })
-        searchView.setSearchFocused(true)
-
-        btnSearchOnline.setOnClickListener {
-            onClickOnlineSearch()
+        fragment_search_btn_search_online.setOnClickListener {
+            activity?.hideKeyboard()
+            viewModel.showBooks(fragment_search_searchview.currentQuery, false)
         }
     }
 
@@ -118,83 +90,53 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     }
 
     override fun bindViewModel() {
-        // Not needed...
+
+        viewModel.getSearchState().observe(this, Observer { searchState ->
+            when (searchState) {
+                is SearchViewModel.SearchState.LoadingState -> {
+                    fragment_search_searchview.showProgress(true)
+                    fragment_search_btn_search_online.isEnabled = false
+                }
+                is SearchViewModel.SearchState.EmptyState -> {
+                    fragment_search_searchview.showProgress(false)
+                    rvAdapter.clear()
+                    fragment_search_empty_view.visibility = View.VISIBLE
+                    fragment_search_btn_search_online.isEnabled = true
+                }
+                is SearchViewModel.SearchState.SuccessState -> {
+                    fragment_search_searchview.showProgress(false)
+                    rvAdapter.data = searchState.items.toMutableList()
+                    fragment_search_rv.scrollToPosition(0)
+                    fragment_search_empty_view.visibility = View.GONE
+                    fragment_search_btn_search_online.isEnabled = true
+                }
+                is SearchViewModel.SearchState.ErrorState -> {
+                    showToast(message4SearchException(searchState.throwable))
+                    fragment_search_searchview.clearQuery()
+                    fragment_search_searchview.showProgress(false)
+                    fragment_search_empty_view.visibility = View.GONE
+                    fragment_search_btn_search_online.isEnabled = true
+                }
+                is SearchViewModel.SearchState.InitialState -> {
+                    fragment_search_searchview.showProgress(false)
+                    fragment_search_empty_view.visibility = View.GONE
+                    fragment_search_btn_search_online.isEnabled = false
+                }
+            }
+        })
     }
 
     override fun unbindViewModel() {
         // Not needed...
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        downloadClickListener = context as? OnBookSuggestionDownloadClickListener
-    }
-
-    override fun onItemClick(t: BookSearchSuggestion, v: View) {
+    override fun onItemClick(t: BookSearchItem, v: View) {
         activity?.hideKeyboard()
         if (t.bookId > -1) {
-            startActivity(DetailActivity.newIntent(context!!, t.bookId, t.title))
+            context?.let { ctx ->
+                startActivity(DetailActivity.newIntent(ctx, t.bookId, t.title))
+            }
         }
-    }
-
-    protected fun onClickOnlineSearch() {
-        activity?.hideKeyboard()
-        showBooks(searchView.query, false)
-    }
-
-    private fun showBooks(query: String, keepLocal: Boolean) {
-
-        if (!query.isEmpty()) {
-            searchView.showProgress()
-            btnSearchOnline.isEnabled = false
-
-            val source = if (keepLocal) localSearch(query) else onlineSearch(query)
-            source.subscribe({
-
-                val emptyViewVisibility: Int
-                if (it.isNotEmpty()) {
-                    rvAdapter.data = it.toMutableList()
-                    rvResults.scrollToPosition(0)
-                    emptyViewVisibility = View.GONE
-                } else {
-                    rvAdapter.clear()
-                    emptyViewVisibility = View.VISIBLE
-                }
-                emptyView.visibility = emptyViewVisibility
-                searchView.hideProgress()
-                btnSearchOnline.isEnabled = true
-            }, {
-                Timber.e(it)
-                showToast(message4SearchException(it))
-
-                searchView.clearQuery()
-                emptyView.visibility = View.GONE
-                searchView.hideProgress()
-                btnSearchOnline.isEnabled = true
-            }).addTo(compositeDisposable)
-        }
-    }
-
-    private fun localSearch(query: String): Flowable<List<BookSearchSuggestion>> {
-        return bookDao.search(query)
-                .map { it.map { b -> bookTransform(b) } }
-    }
-
-    private fun onlineSearch(query: String): Flowable<List<BookSearchSuggestion>> {
-        return bookDownloader.downloadBook(query)
-                .map { b ->
-                    val list = mutableListOf<BookSearchSuggestion>()
-                    if (b.hasSuggestions) {
-                        // Save to call !! because hasSuggestions already checks nullability
-                        list.add(bookTransform(b.mainSuggestion!!))
-                        b.otherSuggestions
-                                .asSequence()
-                                .filter { it.isbn.isNotEmpty() }
-                                .mapTo(list) { book -> bookTransform(book) }
-                    }
-                    list.toList()
-                }
-                .toFlowable(BackpressureStrategy.BUFFER)
     }
 
     private fun message4SearchException(t: Throwable): String {
@@ -207,12 +149,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     companion object {
 
         fun newInstance(): SearchFragment {
-            val fragment = SearchFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
+            return SearchFragment()
         }
-
     }
-
 }

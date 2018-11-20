@@ -16,7 +16,6 @@ import kotlin.reflect.KClass
  * @author  Martin Macheiner
  * Date:    12.06.2018
  */
-
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
@@ -70,5 +69,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(BackupViewModel::class)
     internal abstract fun backupViewModel(viewModel: BackupViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    internal abstract fun searchViewModel(viewModel: SearchViewModel): ViewModel
 
 }

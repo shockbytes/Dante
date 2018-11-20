@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.activity
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -8,32 +9,42 @@ import android.support.v4.app.Fragment
 import android.transition.Fade
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookSearchSuggestion
+import at.shockbytes.dante.book.BookSearchItem
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.dagger.ViewModelFactory
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
+import at.shockbytes.dante.ui.viewmodel.SearchViewModel
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 03.02.2018.
+ * Author:  Martin Macheiner
+ * Date:    03.02.2018
  */
-
-class SearchActivity : ContainerTintableBackNavigableActivity(),
-        SearchFragment.OnBookSuggestionDownloadClickListener,
-        DownloadBookFragment.OnBookDownloadedListener {
+class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFragment.OnBookDownloadedListener {
 
     @Inject
     protected lateinit var tracker: Tracker
+
+    @Inject
+    protected lateinit var vmFactory: ViewModelFactory
+
+    private lateinit var viewModel: SearchViewModel
 
     override val displayFragment: Fragment
         get() = SearchFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this, vmFactory)[SearchViewModel::class.java]
+        bindViewModel()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.exitTransition = Fade()
             window.enterTransition = Fade()
@@ -41,15 +52,11 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
         supportActionBar?.title = ""
         supportActionBar?.setShowHideAnimationEnabled(true)
         supportActionBar?.hide()
+
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    override fun onBookSuggestionClicked(s: BookSearchSuggestion) {
-        supportActionBar?.show()
-        showDownloadFragment(s.isbn)
     }
 
     override fun onBookDownloaded(book: BookEntity) {
@@ -70,7 +77,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
             supportFinishAfterTransition()
         }
     }
-    
+
     override fun onCloseOnError() {
         finishBookDownload()
     }
@@ -86,6 +93,17 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
         // Use default colors and default title
         tintSystemBarsWithText(null, null, null, "", true)
 
+    }
+
+    private fun bindViewModel() {
+
+        viewModel.bookDownloadEvent
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { item ->
+                    supportActionBar?.show()
+                    showDownloadFragment(item.isbn)
+                }
+                .addTo(compositeDisposable)
     }
 
     private fun finishBookDownload() {
@@ -106,6 +124,5 @@ class SearchActivity : ContainerTintableBackNavigableActivity(),
         fun newIntent(context: Context): Intent {
             return Intent(context, SearchActivity::class.java)
         }
-
     }
 }

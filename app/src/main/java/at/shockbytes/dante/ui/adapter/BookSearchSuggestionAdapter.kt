@@ -7,7 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookSearchSuggestion
+import at.shockbytes.dante.book.BookSearchItem
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
@@ -17,23 +17,23 @@ import kotterknife.bindView
  * Date: 03.02.2018.
  */
 
-class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSearchSuggestion>,
+class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSearchItem>,
                                   private val imageLoader: ImageLoader,
-                                  private val addClickedListener: (BookSearchSuggestion) -> Unit)
-    : BaseAdapter<BookSearchSuggestion>(context, extData) {
+                                  private val addClickedListener: (BookSearchItem) -> Unit)
+    : BaseAdapter<BookSearchItem>(context, extData) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_book_search_suggestion, parent, false))
     }
 
-    inner class ViewHolder(itemView: View) : BaseAdapter<BookSearchSuggestion>.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : BaseAdapter<BookSearchItem>.ViewHolder(itemView) {
 
         private val txtTitle: TextView by bindView(R.id.item_book_search_suggestion_txt_title)
         private val txtAuthor: TextView by bindView(R.id.item_book_search_suggestion_txt_author)
         private val btnAdd: Button by bindView(R.id.item_book_search_suggestion_btn_add)
         private val imgViewCover: ImageView by bindView(R.id.item_book_search_suggestion_imgview_cover)
 
-        override fun bindToView(t: BookSearchSuggestion) {
+        override fun bindToView(t: BookSearchItem) {
             txtTitle.text = t.title
             txtAuthor.text = t.author
 

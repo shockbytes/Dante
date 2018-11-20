@@ -15,13 +15,15 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Redesign login flow with Firebase login
 - [ ] Use Firebase Data for book suggestions
 - [ ] Reading history in statistics
-
-### Version 3.2 - MAMMA MIA, PURCHASES!
-- [ ] Include book description in Download
-- [ ] Improve search view (https://github.com/Ferfalk/SimpleSearchView)
-- [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 - [ ] Enable language selection for manual add
 - [ ] In-app purchases
+- [ ] Get rid off Kotterknife
+
+### Version 3.2 - SMALL, STEADY IMPROVEMENTS
+- [x] Include book description in Download
+- [x] Improve dark mode
+- [x] Improve search view (refactor with ViewModel)
+- [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 - [ ] Replace preferences UI
 - [ ] Italian language support
 

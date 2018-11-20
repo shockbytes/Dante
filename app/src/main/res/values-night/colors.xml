@@ -19,5 +19,6 @@
 
     <color name="navigationBarColor">@color/colorPrimary</color>
     <color name="navigationBarItemDisabled">@color/white</color>
+    <color name="searchBarColor">#424242</color>
 
 </resources>

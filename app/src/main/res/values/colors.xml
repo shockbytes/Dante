@@ -56,5 +56,6 @@
     <color name="notesBackground">@color/tabcolor_current</color>
 
     <color name="navigationBarColor">@color/white</color>
+    <color name="searchBarColor">@color/white</color>
 
 </resources>

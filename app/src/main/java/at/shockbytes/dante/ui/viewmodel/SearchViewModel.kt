@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.view.View
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookSearchItem
 import at.shockbytes.dante.data.BookEntityDao
@@ -72,8 +71,8 @@ class SearchViewModel @Inject constructor(
                 .map { b ->
                     val list = mutableListOf<BookSearchItem>()
                     if (b.hasSuggestions) {
-                        b.mainSuggestion?.let {
-                            list.add(bookTransform(b.mainSuggestion))
+                        b.mainSuggestion?.let { mainSuggestion ->
+                            list.add(bookTransform(mainSuggestion))
                             b.otherSuggestions
                                     .asSequence()
                                     .filter { it.isbn.isNotEmpty() }

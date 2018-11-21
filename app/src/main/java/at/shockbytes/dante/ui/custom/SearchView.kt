@@ -19,7 +19,6 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
 
     var homeActionClickListener: (() -> Unit)? = null
 
-
     init {
         inflate(context, R.layout.search_view, this)
         showProgress(false)
@@ -40,13 +39,36 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
 
     fun showProgress(showProgress: Boolean) {
 
-        // TODO smooth animation between both
         if (showProgress) {
-            search_view_pb.setVisible(true)
-            search_view_imgbtn_home.visibility = View.INVISIBLE
+
+            search_view_pb.visibility = View.VISIBLE
+            search_view_pb.animate()
+                    .translationX(0f)
+                    .alpha(1f)
+                    .start()
+
+            search_view_imgbtn_home.animate()
+                    .scaleX(0.4f)
+                    .scaleY(0.4f)
+                    .alpha(0f)
+                    .withEndAction { search_view_imgbtn_home.visibility = View.INVISIBLE }
+                    .start()
         } else {
-            search_view_pb.setVisible(false)
+
+            search_view_pb.animate()
+                    .alpha(0f)
+                    .withEndAction {
+                        search_view_pb.visibility = View.INVISIBLE
+                        search_view_pb.translationX = -80f
+                    }
+                    .start()
+
             search_view_imgbtn_home.visibility = View.VISIBLE
+            search_view_imgbtn_home.animate()
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .alpha(1f)
+                    .start()
         }
     }
 
@@ -77,12 +99,22 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
     }
 
     private fun setupHomeView() {
+
+        search_view_pb.alpha = 0f
+        search_view_pb.translationX = -80f
+        search_view_pb.visibility = View.INVISIBLE
+
         search_view_imgbtn_home.setOnClickListener {
             homeActionClickListener?.invoke()
         }
     }
 
     private fun setupCancelView() {
+
+        search_view_imgbtn_cancel.alpha = 0f
+        search_view_imgbtn_cancel.translationX = 30f
+        search_view_imgbtn_cancel.visibility = View.INVISIBLE
+
         search_view_imgbtn_cancel.setOnClickListener {
             search_view_edit_query.setText("")
         }
@@ -90,11 +122,19 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
 
     private fun updateCancelButton() {
 
-        // TODO Smooth animation
         if (currentQuery.isNotEmpty()) {
-            search_view_imgbtn_cancel.setVisible(true)
+
+            search_view_imgbtn_cancel.visibility = View.VISIBLE
+            search_view_imgbtn_cancel.animate()
+                    .translationX(0f)
+                    .alpha(1f)
+                    .start()
         } else {
-            search_view_imgbtn_cancel.setVisible(false)
+            search_view_imgbtn_cancel.animate()
+                    .translationX(30f)
+                    .alpha(0f)
+                    .withEndAction { search_view_imgbtn_cancel.visibility = View.INVISIBLE }
+                    .start()
         }
     }
 

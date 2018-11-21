@@ -11,12 +11,18 @@ can simply keep track of your progress of all your books and their current state
 ### Version 4.0 - ALL IN THE CLOUD
 - [ ] Firebase as Online Backend
 
-### Version 3.3 - CAMPING WITH FIREBASE
+### Version 3.5 - CAMPING WITH FIREBASE
 - [ ] Redesign login flow with Firebase login
 - [ ] Use Firebase Data for book suggestions
+
+
+### Version 3.4 - HISTORY OF MONEY
 - [ ] Reading history in statistics
 - [ ] Enable language selection for manual add
 - [ ] In-app purchases
+
+### Version 3.3 - DETAILS & DEBTS
+- [ ] Improve details page
 - [ ] Get rid off Kotterknife
 
 ### Version 3.2 - SMALL, STEADY IMPROVEMENTS
@@ -24,7 +30,7 @@ can simply keep track of your progress of all your books and their current state
 - [x] Improve dark mode
 - [x] Improve search view (refactor with ViewModel)
 - [x] Improve preferences UI
-- [ ] Fix layout bugs of MainActivity
+- [x] Fix layout bugs of MainActivity
 - [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 - [ ] Italian language support
 

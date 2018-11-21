@@ -91,6 +91,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         outState?.putInt("tabId", tabId)
     }
 
+    override fun onStart() {
+        super.onStart()
+        setupFabMenu()
+    }
+
     override fun onPageSelected(position: Int) {
 
         tabId = mainBottomNavigation.menu.getItem(position).itemId
@@ -153,7 +158,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         imgButtonMainToolbarMore.setOnClickListener {
             MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
         }
-        setupFabMenu()
     }
 
     private fun setupFabMenu() {

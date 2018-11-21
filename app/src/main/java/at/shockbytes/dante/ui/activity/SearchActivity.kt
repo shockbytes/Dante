@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment
 import android.transition.Fade
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookSearchItem
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.dagger.ViewModelFactory
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity

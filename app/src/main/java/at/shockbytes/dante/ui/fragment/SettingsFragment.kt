@@ -1,9 +1,9 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
-import android.preference.Preference
-import android.preference.PreferenceFragment
-import android.preference.SwitchPreference
+import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
+import android.support.v7.preference.SwitchPreferenceCompat
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
@@ -12,23 +12,26 @@ import at.shockbytes.dante.util.tracking.event.TrackingEvent
 import javax.inject.Inject
 
 
-class SettingsFragment : PreferenceFragment(), Preference.OnPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
-    private lateinit var prefsTracking: SwitchPreference
-    private lateinit var prefsOverlay: SwitchPreference
-    private lateinit var prefsDarkMode: SwitchPreference
+    private lateinit var prefsTracking: SwitchPreferenceCompat
+    private lateinit var prefsOverlay: SwitchPreferenceCompat
+    private lateinit var prefsDarkMode: SwitchPreferenceCompat
 
     @Inject
     protected lateinit var tracker: Tracker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity.application as DanteApp).appComponent.inject(this)
+        (activity?.application as? DanteApp)?.appComponent?.inject(this)
+    }
+
+    override fun onCreatePreferences(bundle: Bundle?, s: String?) {
         addPreferencesFromResource(R.xml.settings)
 
-        prefsTracking = findPreference(getString(R.string.prefs_page_tracking_key)) as SwitchPreference
-        prefsOverlay = findPreference(getString(R.string.prefs_page_overlay_key)) as SwitchPreference
-        prefsDarkMode = findPreference(getString(R.string.prefs_dark_mode_key)) as SwitchPreference
+        prefsTracking = findPreference(getString(R.string.prefs_page_tracking_key)) as SwitchPreferenceCompat
+        prefsOverlay = findPreference(getString(R.string.prefs_page_overlay_key)) as SwitchPreferenceCompat
+        prefsDarkMode = findPreference(getString(R.string.prefs_dark_mode_key)) as SwitchPreferenceCompat
 
         prefsTracking.onPreferenceChangeListener = this
         prefsOverlay.onPreferenceChangeListener = this

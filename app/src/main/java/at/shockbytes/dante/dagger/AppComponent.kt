@@ -7,10 +7,9 @@ import dagger.Component
 import javax.inject.Singleton
 
 /**
- * @author Martin Macheiner
- * Date: 19.01.2017.
+ * Author:  Martin Macheiner
+ * Date:    19.01.2017
  */
-
 @Singleton
 @Component(modules = [
     (NetworkModule::class),

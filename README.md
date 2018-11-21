@@ -23,8 +23,9 @@ can simply keep track of your progress of all your books and their current state
 - [x] Include book description in Download
 - [x] Improve dark mode
 - [x] Improve search view (refactor with ViewModel)
+- [x] Improve preferences UI
+- [ ] Fix layout bugs of MainActivity
 - [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
-- [ ] Replace preferences UI
 - [ ] Italian language support
 
 ### Version 3.1 - DARK STATISTICS FIXES

@@ -1,45 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/prefs_category_books_general">
-        <SwitchPreference
+    <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_books_general">
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
+            android:icon="@drawable/ic_settings_dark_mode"
             android:key="@string/prefs_dark_mode_key"
-            android:title="@string/prefs_dark_mode_title"
-            android:summary="@string/prefs_dark_mode_summary"/>
-    </PreferenceCategory>
+            android:summary="@string/prefs_dark_mode_summary"
+            android:title="@string/prefs_dark_mode_title" />
+    </android.support.v7.preference.PreferenceCategory>
 
 
-    <PreferenceCategory android:title="@string/prefs_category_books_title">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_books_title">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
+            android:icon="@drawable/ic_settings_page_tracking"
             android:key="@string/prefs_page_tracking_key"
             android:title="@string/prefs_page_tracking_title" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:dependency="@string/prefs_page_tracking_key"
+            android:icon="@drawable/ic_settings_overlay"
             android:key="@string/prefs_page_overlay_key"
             android:summary="@string/prefs_page_overlay_summary"
             android:title="@string/prefs_page_overlay_title" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/prefs_category_about">
+    <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
-        <Preference
+        <android.support.v7.preference.Preference
+            android:icon="@drawable/ic_settings_developer"
             android:summary="@string/prefs_developer_summary"
             android:title="@string/prefs_developer_title" />
 
-        <Preference
+        <android.support.v7.preference.Preference
+            android:icon="@drawable/ic_settings_icons"
             android:summary="@string/prefs_icons_summary"
             android:title="@string/prefs_icons_title" />
 
-        <Preference
+        <android.support.v7.preference.Preference
+            android:icon="@drawable/ic_settings_version"
             android:summary="@string/app_version"
             android:title="@string/prefs_app_version_title" />
 
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

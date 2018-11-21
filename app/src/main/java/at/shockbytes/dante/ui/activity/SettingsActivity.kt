@@ -2,27 +2,19 @@ package at.shockbytes.dante.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.activity.core.BackNavigableActivity
+import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.SettingsFragment
 
-class SettingsActivity : BackNavigableActivity() {
+class SettingsActivity : ContainerBackNavigableActivity() {
 
-    public override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        fragmentManager
-                .beginTransaction()
-                .replace(android.R.id.content, SettingsFragment.newInstance())
-                .commit()
-    }
+    override val displayFragment = SettingsFragment.newInstance()
 
-    override fun injectToGraph(appComponent: AppComponent) { }
+    override fun injectToGraph(appComponent: AppComponent) = Unit
 
     companion object {
 
-        fun newIntent(context: Context): Intent {
-            return Intent(context, SettingsActivity::class.java)
-        }
+        fun newIntent(context: Context) = Intent(context, SettingsActivity::class.java)
+
     }
 }

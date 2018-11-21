@@ -13,7 +13,7 @@ import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
 @Suppress("UNCHECKED_CAST")

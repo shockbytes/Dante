@@ -2,6 +2,8 @@ package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
 import android.support.v7.util.DiffUtil
+import android.support.v7.view.menu.MenuBuilder
+import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
@@ -14,7 +16,6 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.util.DanteSettings
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
@@ -25,10 +26,9 @@ import kotlin.math.roundToInt
 
 
 /**
- * @author Martin Macheiner
- * Date: 30.12.2017.
+ * Author:  Martin Macheiner
+ * Date:    30.12.2017
  */
-
 class BookAdapter(context: Context,
                   extData: MutableList<BookEntity> = mutableListOf(),
                   private val state: BookState,
@@ -104,11 +104,8 @@ class BookAdapter(context: Context,
         private val pbPageOverlay: MaterialProgressBar by bindView(R.id.item_book_pb_page_overlay)
         private val txtPageOverlay: TextView by bindView(R.id.item_book_txt_page_overlay)
 
-        private val popupMenu: PopupMenu
 
         init {
-            // Initialize first to avoid using a lateinit var
-            popupMenu = PopupMenu(context, imgBtnOverflow)
             setupOverflowMenu()
         }
 
@@ -173,24 +170,29 @@ class BookAdapter(context: Context,
 
         private fun setupOverflowMenu() {
 
+            val popupMenu = PopupMenu(context, imgBtnOverflow)
+
             val visibilityOverflow = if (showOverflow) View.VISIBLE else View.GONE
             imgBtnOverflow.visibility = visibilityOverflow
 
             popupMenu.menuInflater.inflate(R.menu.popup_item, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(this)
-            DanteUtils.tryShowIconsInPopupMenu(popupMenu)
-            hideSelectedPopupItem()
 
-            imgBtnOverflow.setOnClickListener { popupMenu.show() }
+            val menuHelper =  MenuPopupHelper(context, popupMenu.menu as MenuBuilder, imgBtnOverflow);
+            menuHelper.setForceShowIcon(true)
+
+            popupMenu.hideSelectedPopupItem()
+
+            imgBtnOverflow.setOnClickListener { menuHelper.show() }
         }
 
-        private fun hideSelectedPopupItem() {
+        private fun PopupMenu.hideSelectedPopupItem() {
 
             val item = when (state) {
 
-                BookState.READ_LATER -> popupMenu.menu.findItem(R.id.popup_item_move_to_upcoming)
-                BookState.READING -> popupMenu.menu.findItem(R.id.popup_item_move_to_current)
-                BookState.READ -> popupMenu.menu.findItem(R.id.popup_item_move_to_done)
+                BookState.READ_LATER -> this.menu.findItem(R.id.popup_item_move_to_upcoming)
+                BookState.READING -> this.menu.findItem(R.id.popup_item_move_to_current)
+                BookState.READ -> this.menu.findItem(R.id.popup_item_move_to_done)
             }
             item?.isVisible = false
         }

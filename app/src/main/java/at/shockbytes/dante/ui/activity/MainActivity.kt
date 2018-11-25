@@ -105,8 +105,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mainFabMenu.toggleVisibility()
     }
 
-    override fun onPageScrollStateChanged(state: Int) {}
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+    override fun onPageScrollStateChanged(state: Int) = Unit
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
 
     // ---------------------------------------------------
 

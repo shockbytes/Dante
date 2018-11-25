@@ -22,18 +22,18 @@ can simply keep track of your progress of all your books and their current state
 - [ ] In-app purchases
 
 ### Version 3.3 - DETAILS & DEBTS
-- [ ] Improve details page
+- [ ] New details page design
 - [ ] Get rid off Kotterknife
 - [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 
 ### Version 3.2 - SMALL, STEADY IMPROVEMENTS
-- [x] Include book description in Download
-- [x] Improve dark mode
-- [x] Improve search view (refactor with ViewModel)
-- [x] Improve preferences UI
-- [x] Fix layout bugs of MainActivity
-- [x] Abstract usage of ImagePicker
-- [ ] Fix images for overflow menu
+* Include book description in Download
+* Improve dark mode
+* Improve search view (refactor with ViewModel)
+* Improve preferences UI
+* Fix layout bugs of MainActivity
+* Abstract usage of ImagePicker
+* Fix images for overflow menu
 
 ### Version 3.1 - DARK STATISTICS FIXES
 * Dark mode

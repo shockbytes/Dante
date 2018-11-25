@@ -1,23 +1,25 @@
 package at.shockbytes.dante.ui.viewmodel
 
 
-import android.app.FragmentManager
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
+import android.support.v4.app.FragmentActivity
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.util.addTo
-import com.mlsdev.rximagepicker.RxImagePicker
-import com.mlsdev.rximagepicker.Sources
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    30.08.2018
  */
-class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
+class ManualAddViewModel @Inject constructor(
+        private val bookDao: BookEntityDao,
+        private val imagePicker: ImagePicker) : BaseViewModel() {
 
     val thumbnailUrl = MutableLiveData<Uri>()
 
@@ -39,11 +41,12 @@ class ManualAddViewModel @Inject constructor(private val bookDao: BookEntityDao)
         thumbnailUrl.value = null
     }
 
-    fun pickImage(c: FragmentManager) {
-
-        RxImagePicker.with(c).requestImage(Sources.GALLERY).subscribe { uri ->
+    fun pickImage(activity: FragmentActivity) {
+        imagePicker.openGallery(activity).subscribe({ uri ->
             thumbnailUrl.postValue(uri)
-        }.addTo(compositeDisposable)
+        }, { throwable ->
+            Timber.e(throwable)
+        }).addTo(compositeDisposable)
     }
 
     fun storeBook(title: String?, author: String?, pageCount: Int?, state: BookState,

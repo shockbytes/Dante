@@ -14,7 +14,7 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.5 - CAMPING WITH FIREBASE
 - [ ] Redesign login flow with Firebase login
 - [ ] Use Firebase Data for book suggestions
-
+- [ ] Italian language support
 
 ### Version 3.4 - HISTORY OF MONEY
 - [ ] Reading history in statistics
@@ -24,6 +24,7 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.3 - DETAILS & DEBTS
 - [ ] Improve details page
 - [ ] Get rid off Kotterknife
+- [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 
 ### Version 3.2 - SMALL, STEADY IMPROVEMENTS
 - [x] Include book description in Download
@@ -31,8 +32,8 @@ can simply keep track of your progress of all your books and their current state
 - [x] Improve search view (refactor with ViewModel)
 - [x] Improve preferences UI
 - [x] Fix layout bugs of MainActivity
-- [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
-- [ ] Italian language support
+- [x] Abstract usage of ImagePicker
+- [ ] Fix images for overflow menu
 
 ### Version 3.1 - DARK STATISTICS FIXES
 * Dark mode

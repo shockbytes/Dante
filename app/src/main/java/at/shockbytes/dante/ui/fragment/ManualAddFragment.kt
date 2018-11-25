@@ -23,7 +23,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    30.08.2018
  */
 class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
@@ -49,8 +49,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
         imgViewManualAdd.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            activity?.fragmentManager?.let { fragmentManager ->
-                viewModel.pickImage(fragmentManager)
+            activity?.let { a ->
+                viewModel.pickImage(a)
             }
         }
 

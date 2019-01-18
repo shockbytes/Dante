@@ -8,7 +8,7 @@ import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import javax.inject.Inject
 
 
@@ -44,7 +44,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             prefsOverlay.isChecked = false
         }
         if (pref?.key == getString(R.string.prefs_dark_mode_key) && (newValue is Boolean)) {
-            tracker.trackEvent(TrackingEvent.DarkModeChangeEvent(!newValue, newValue))
+            tracker.trackEvent(DanteTrackingEvent.DarkModeChangeEvent(!newValue, newValue))
             showDarkModeToast()
         }
         return true

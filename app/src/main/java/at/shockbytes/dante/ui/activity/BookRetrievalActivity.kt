@@ -11,7 +11,7 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
 import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import javax.inject.Inject
 
 /**
@@ -61,17 +61,17 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
     }
 
     override fun onBookDownloaded(book: BookEntity) {
-        tracker.trackEvent(TrackingEvent.BookScannedEvent(book))
+        tracker.trackEvent(DanteTrackingEvent.BookScannedEvent(book))
         finishBookDownload()
     }
 
     override fun onCancelDownload() {
-        tracker.trackEvent(TrackingEvent.FoundBookCanceledEvent())
+        tracker.trackEvent(DanteTrackingEvent.FoundBookCanceledEvent())
         finishBookDownload()
     }
 
     override fun onErrorDownload(reason: String, isAttached: Boolean) {
-        tracker.trackEvent(TrackingEvent.BookDownloadErrorEvent(reason))
+        tracker.trackEvent(DanteTrackingEvent.BookDownloadErrorEvent(reason))
 
         if (!isAttached) {
             showToast(R.string.download_attachment_error)

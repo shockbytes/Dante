@@ -29,7 +29,7 @@ import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -197,7 +197,7 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
                 RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
                         .setOnApplyListener { rating ->
                             viewModel.updateRating(rating)
-                            tracker.trackEvent(TrackingEvent.RatingEvent(rating))
+                            tracker.trackEvent(DanteTrackingEvent.RatingEvent(rating))
                             btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                         }.show(fragmentManager, "rating-dialogfragment")
             }

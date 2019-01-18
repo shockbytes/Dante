@@ -8,22 +8,26 @@ can simply keep track of your progress of all your books and their current state
 
 ## Versions
 
-### Version 4.0 - ALL IN THE CLOUD
-- [ ] Firebase as Online Backend
 
-### Version 3.5 - CAMPING WITH FIREBASE
-- [ ] Redesign login flow with Firebase login
+### Version 4.0 - SUGGESTIONS
 - [ ] Use Firebase Data for book suggestions
 - [ ] Italian language support
 
-### Version 3.4 - HISTORY OF MONEY
-- [ ] Reading history in statistics
-- [ ] Enable language selection for manual add
-- [ ] In-app purchases
+### Version 3.9 - ALL IN THE CLOUD
+- [ ] Firebase as Online Backend
+- [ ] Remove backup functionality / Replace it with online sync
 
-### Version 3.3 - DETAILS & DEBTS
+### Version 3.6 - START A CAMPFIRE
+- [ ] Redesign login flow with Firebase login
+- [ ] Some sort of onboarding
+
+### Version 3.4 - DETAILS & DEBTS
 - [ ] New details page design
+- [ ] Streamline Realm and move querying off the main thread (Provider pattern)
+- [ ] Fix most pressing bugs
+- [ ] Enable language selection for manual add
 - [ ] Get rid off Kotterknife
+- [ ] Remove In-app purchases logic (or encapsulate it properly)
 - [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 
 ### Version 3.2 - SMALL, STEADY IMPROVEMENTS

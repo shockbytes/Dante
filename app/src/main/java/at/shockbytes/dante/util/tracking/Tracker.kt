@@ -1,6 +1,6 @@
 package at.shockbytes.dante.util.tracking
 
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 
 /**
  * Author:  Martin Macheiner
@@ -8,5 +8,5 @@ import at.shockbytes.dante.util.tracking.event.TrackingEvent
  */
 interface Tracker {
 
-    fun trackEvent(event: TrackingEvent)
+    fun trackEvent(event: DanteTrackingEvent)
 }

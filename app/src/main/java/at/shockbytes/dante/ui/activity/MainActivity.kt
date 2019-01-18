@@ -28,7 +28,7 @@ import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -178,7 +178,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             when (item.id) {
 
                 R.id.menu_fab_add_camera -> {
-                    tracker.trackEvent(TrackingEvent.ScanBookEvent())
+                    tracker.trackEvent(DanteTrackingEvent.ScanBookEvent())
 
                     startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.CAMERA, null),
                             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
@@ -187,7 +187,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 R.id.menu_fab_add_title -> {
                     QueryDialogFragment.newInstance()
                             .setOnQueryEnteredListener { query ->
-                                tracker.trackEvent(TrackingEvent.AddByTitleEvent())
+                                tracker.trackEvent(DanteTrackingEvent.AddByTitleEvent())
 
                                 startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.TITLE, query),
                                         ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
@@ -196,7 +196,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     false
                 }
                 R.id.menu_fab_add_manually -> {
-                    tracker.trackEvent(TrackingEvent.OpenManualAddViewEvent())
+                    tracker.trackEvent(DanteTrackingEvent.OpenManualAddViewEvent())
 
                     startActivity(ManualAddActivity.newIntent(this),
                             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())

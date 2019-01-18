@@ -2,7 +2,7 @@ package at.shockbytes.dante.util.tracking
 
 import android.content.Context
 import android.os.Bundle
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import at.shockbytes.dante.util.tracking.event.TrackingProperty
 import com.google.firebase.analytics.FirebaseAnalytics
 
@@ -14,7 +14,7 @@ class FirebaseTracker(context: Context) : Tracker {
 
     private val fbAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 
-    override fun trackEvent(event: TrackingEvent) {
+    override fun trackEvent(event: DanteTrackingEvent) {
         fbAnalytics.logEvent(event.name, createTrackEventData(event.props))
     }
 

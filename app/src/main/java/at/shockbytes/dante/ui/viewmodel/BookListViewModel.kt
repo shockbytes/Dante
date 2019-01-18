@@ -10,7 +10,7 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
 import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -80,7 +80,7 @@ class BookListViewModel @Inject constructor(private val bookDao: BookEntityDao,
         book.updateState(BookState.READ)
         bookDao.update(book)
 
-        tracker.trackEvent(TrackingEvent.BookFinishedEvent(book))
+        tracker.trackEvent(DanteTrackingEvent.BookFinishedEvent(book))
     }
 
 }

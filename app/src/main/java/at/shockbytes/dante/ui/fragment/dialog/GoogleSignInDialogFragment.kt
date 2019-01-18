@@ -11,7 +11,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.TrackingEvent
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import com.google.android.gms.common.SignInButton
 import com.jakewharton.rxbinding2.view.RxView
 import kotterknife.bindView
@@ -67,7 +67,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
     private fun setupViews() {
 
         RxView.clicks(signInButton).subscribe {
-            tracker.trackEvent(TrackingEvent.GoogleLoginEvent(true))
+            tracker.trackEvent(DanteTrackingEvent.GoogleLoginEvent(true))
             signInListener?.invoke(false)
             dismiss()
         }.addTo(compositeDisposable)
@@ -75,7 +75,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
         // TODO Add a online sign in check box!!!
 
         RxView.clicks(laterButton).subscribe {
-            tracker.trackEvent(TrackingEvent.GoogleLoginEvent(false))
+            tracker.trackEvent(DanteTrackingEvent.GoogleLoginEvent(false))
             maybeLaterListener?.invoke()
             dismiss()
         }.addTo(compositeDisposable)

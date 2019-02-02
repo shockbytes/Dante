@@ -45,7 +45,7 @@ class DetailActivity : TintableBackNavigableActivity() {
         detailFragment?.onBackwardAnimation()
     }
 
-    private fun pickDetailFragment(id: Long) : BackAnimatable {
+    private fun pickDetailFragment(id: Long): BackAnimatable {
 
         val fragment: Fragment = if (featureFlagging[FeatureFlag.UpdatedDetailPage]) {
             BookDetailFragment.newInstance(id)

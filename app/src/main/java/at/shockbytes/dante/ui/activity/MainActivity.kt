@@ -14,6 +14,7 @@ import android.view.MenuItem
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.signin.DanteUser
+import at.shockbytes.dante.ui.activity.core.ActivityNavigation
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.adapter.BookPagerAdapter
 import at.shockbytes.dante.ui.fragment.MenuFragment
@@ -153,8 +154,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun setupUI() {
         imgButtonMainToolbarSearch.setOnClickListener {
-            startActivity(SearchActivity.newIntent(this),
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+            ActivityNavigation.navigateTo(
+                    this,
+                    ActivityNavigation.Destination.Search,
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+            )
         }
         imgButtonMainToolbarMore.setOnClickListener {
             MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
@@ -181,8 +185,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 R.id.menu_fab_add_camera -> {
                     tracker.trackEvent(DanteTrackingEvent.ScanBookEvent())
 
-                    startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.CAMERA, null),
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+                    ActivityNavigation.navigateTo(
+                            this,
+                            ActivityNavigation.Destination.Retrieval(BookRetrievalActivity.RetrievalType.CAMERA, null),
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                    )
                     false
                 }
                 R.id.menu_fab_add_title -> {
@@ -190,8 +197,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                             .setOnQueryEnteredListener { query ->
                                 tracker.trackEvent(DanteTrackingEvent.AddByTitleEvent())
 
-                                startActivity(BookRetrievalActivity.newIntent(this, BookRetrievalActivity.RetrievalType.TITLE, query),
-                                        ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+                                ActivityNavigation.navigateTo(
+                                        this,
+                                        ActivityNavigation.Destination.Retrieval(BookRetrievalActivity.RetrievalType.TITLE, query),
+                                        ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                                )
                             }
                             .show(supportFragmentManager, "query-dialog-fragment")
                     false
@@ -199,8 +209,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 R.id.menu_fab_add_manually -> {
                     tracker.trackEvent(DanteTrackingEvent.OpenManualAddViewEvent())
 
-                    startActivity(ManualAddActivity.newIntent(this),
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle())
+                    ActivityNavigation.navigateTo(
+                            this,
+                            ActivityNavigation.Destination.ManualAdd,
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                    )
                     false
                 }
                 else -> true

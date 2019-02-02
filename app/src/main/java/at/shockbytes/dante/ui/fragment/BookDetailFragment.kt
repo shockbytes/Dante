@@ -50,7 +50,6 @@ class BookDetailFragment : BaseFragment(), BackAnimatable {
     }
 
     override fun bindViewModel() {
-
     }
 
     override fun unbindViewModel() {
@@ -70,6 +69,5 @@ class BookDetailFragment : BaseFragment(), BackAnimatable {
                 }
             }
         }
-
     }
 }

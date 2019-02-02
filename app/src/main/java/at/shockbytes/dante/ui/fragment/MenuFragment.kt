@@ -17,9 +17,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
-import at.shockbytes.dante.ui.activity.BackupActivity
-import at.shockbytes.dante.ui.activity.SettingsActivity
-import at.shockbytes.dante.ui.activity.StatisticsActivity
+import at.shockbytes.dante.ui.activity.core.ActivityNavigation
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
@@ -73,11 +71,16 @@ class MenuFragment : BottomSheetDialogFragment() {
 
     private fun setupViews(view: View) {
 
+        val sceneTransition = activity?.let {
+            ActivityOptionsCompat.makeSceneTransitionAnimation(it)
+        }?.toBundle()
+
         view.findViewById<View>(R.id.btnMenuStatistics)?.setOnClickListener {
-            activity?.let { act ->
-                act.startActivity(StatisticsActivity.newIntent(act),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
-            }
+            ActivityNavigation.navigateTo(
+                    activity,
+                    ActivityNavigation.Destination.Statistics,
+                    sceneTransition
+            )
             dismiss()
         }
 
@@ -90,10 +93,11 @@ class MenuFragment : BottomSheetDialogFragment() {
         }
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
-            activity?.let { act ->
-                act.startActivity(BackupActivity.newIntent(act),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
-            }
+            ActivityNavigation.navigateTo(
+                    activity,
+                    ActivityNavigation.Destination.Backup,
+                    sceneTransition
+            )
             dismiss()
         }
 
@@ -102,10 +106,11 @@ class MenuFragment : BottomSheetDialogFragment() {
         }
 
         view.findViewById<View>(R.id.btnMenuSettings)?.setOnClickListener {
-            activity?.let { act ->
-                startActivity(SettingsActivity.newIntent(act),
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(act).toBundle())
-            }
+            ActivityNavigation.navigateTo(
+                    activity,
+                    ActivityNavigation.Destination.Statistics,
+                    sceneTransition
+            )
             dismiss()
         }
 

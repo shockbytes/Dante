@@ -21,7 +21,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Redesign login flow with Firebase login
 - [ ] Some sort of onboarding
 
-### Version 3.4 - DETAILS & DEBTS
+### Version 3.3 - DETAILS & DEBTS
 - [ ] Fix BaseAdapter bug
 - [ ] Enable language selection for manual add
 - [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker

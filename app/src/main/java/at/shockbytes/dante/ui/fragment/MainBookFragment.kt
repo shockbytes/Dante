@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.fragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
@@ -17,11 +16,10 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.activity.DetailActivity
+import at.shockbytes.dante.ui.activity.core.ActivityNavigation
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
-import at.shockbytes.dante.util.createSharingIntent
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import at.shockbytes.util.adapter.BaseAdapter
@@ -128,9 +126,11 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     }
 
     override fun onItemClick(t: BookEntity, v: View) {
-        context?.let { ctx ->
-            startActivity(DetailActivity.newIntent(ctx, t.id, t.title), getTransitionBundle(v))
-        }
+        ActivityNavigation.navigateTo(
+                context,
+                ActivityNavigation.Destination.BookDetail(t.id, t.title),
+                getTransitionBundle(v)
+        )
     }
 
     override fun onItemDismissed(t: BookEntity, position: Int) {
@@ -150,11 +150,8 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     }
 
     override fun onShare(b: BookEntity) {
-        context?.let { ctx ->
-            tracker.trackEvent(DanteTrackingEvent.BookSharedEvent())
-            val sendIntent = b.createSharingIntent(ctx)
-            startActivity(Intent.createChooser(sendIntent, resources.getText(R.string.send_to)))
-        }
+        tracker.trackEvent(DanteTrackingEvent.BookSharedEvent())
+        ActivityNavigation.navigateTo(context, ActivityNavigation.Destination.Share(b))
     }
 
     override fun onMoveToUpcoming(b: BookEntity) {

@@ -8,7 +8,7 @@ import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivi
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    30.08.2018
  */
 class ManualAddActivity : ContainerTintableBackNavigableActivity() {
@@ -23,7 +23,5 @@ class ManualAddActivity : ContainerTintableBackNavigableActivity() {
         fun newIntent(context: Context): Intent {
             return Intent(context, ManualAddActivity::class.java)
         }
-
     }
-
 }

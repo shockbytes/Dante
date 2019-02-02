@@ -27,5 +27,4 @@ interface SignInManager {
     fun isSignedIn(): Observable<Boolean>
 
     fun getAccount(): DanteUser?
-
 }

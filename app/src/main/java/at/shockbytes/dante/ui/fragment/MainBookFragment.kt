@@ -21,7 +21,6 @@ import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
-import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.createSharingIntent
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
@@ -36,16 +35,13 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     override val layoutId = R.layout.fragment_book_main
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     @Inject
-    protected lateinit var settings: DanteSettings
+    lateinit var tracker: Tracker
 
     @Inject
-    protected lateinit var tracker: Tracker
-
-    @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     private lateinit var bookState: BookState
     private lateinit var bookAdapter: BookAdapter
@@ -90,11 +86,11 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         viewModel.getBooks().observe(this, Observer {
             it?.let { books ->
                 if (books.isNotEmpty()) {
-                    updateEmptyView(true, false )
+                    updateEmptyView(hide = true, animate = false)
                     bookAdapter.updateData(books)
                     fragment_book_main_rv.smoothScrollToPosition(0)
                 } else {
-                    updateEmptyView(false, true)
+                    updateEmptyView(hide = false, animate = true)
                 }
             }
         })
@@ -111,7 +107,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
         // Initialize RecyclerView
         context?.let { ctx ->
-            bookAdapter = BookAdapter(ctx, mutableListOf(), bookState, imageLoader, this, true, settings)
+            bookAdapter = BookAdapter(ctx, mutableListOf(), bookState, imageLoader, this, true)
             fragment_book_main_rv.layoutManager = layoutManager
             bookAdapter.onItemClickListener = this
             bookAdapter.onItemMoveListener = this

@@ -153,7 +153,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnMenuSupporter" />
+                app:layout_constraintTop_toBottomOf="@+id/btnMenuBackup" />
 
             <Button
                 style="@style/AppTheme.RoundedButton.Outlined"
@@ -168,38 +168,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/viewMenuSeparator"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btnMenuSupporter"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="16dp"
-                android:drawableLeft="@drawable/compat_ic_supporter_badge"
-                android:drawablePadding="24dp"
-                android:drawableStart="@drawable/compat_ic_supporter_badge"
-                android:gravity="start|center_vertical"
-                android:padding="8dp"
-                android:text="@string/menu_main_supporter"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnMenuBackup" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/imageViewMenuSupportBadge"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toTopOf="@+id/viewMenuSeparator"
-                app:layout_constraintEnd_toStartOf="@+id/txtMenuUserMail"
-                app:lottie_rawRes="@raw/lottie_supporter_badge" />
 
         </android.support.constraint.ConstraintLayout>
 

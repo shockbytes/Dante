@@ -11,10 +11,9 @@ import at.shockbytes.dante.R
 import kotterknife.bindView
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    02.01.2018
  */
-
 class SimpleRequestDialogFragment : DialogFragment() {
 
     private val txtHeader: TextView by bindView(R.id.txtDialogFragmentSimpleRequestHeader)
@@ -74,8 +73,12 @@ class SimpleRequestDialogFragment : DialogFragment() {
         private const val argIcon = "icon"
         private const val argPositiveText = "positive_text"
 
-        fun newInstance(title: String, message: String, icon: Int,
-                        positiveText: Int = android.R.string.yes): SimpleRequestDialogFragment {
+        fun newInstance(
+            title: String,
+            message: String,
+            icon: Int,
+            positiveText: Int = android.R.string.yes
+        ): SimpleRequestDialogFragment {
             val fragment = SimpleRequestDialogFragment()
             val args = Bundle(4)
             args.putString(argTitle, title)
@@ -86,6 +89,4 @@ class SimpleRequestDialogFragment : DialogFragment() {
             return fragment
         }
     }
-
-
 }

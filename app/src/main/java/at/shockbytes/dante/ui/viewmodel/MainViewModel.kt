@@ -3,8 +3,6 @@ package at.shockbytes.dante.ui.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import at.shockbytes.dante.R
-import at.shockbytes.dante.billing.DantePurchase
-import at.shockbytes.dante.billing.InAppBillingService
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.util.addTo
@@ -12,11 +10,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    10.06.2018
  */
-class MainViewModel @Inject constructor(private val inAppBillingService: InAppBillingService,
-                                        private val signInManager: SignInManager) : BaseViewModel() {
+class MainViewModel @Inject constructor(private val signInManager: SignInManager) : BaseViewModel() {
 
     sealed class UserEvent {
         data class SuccessEvent(val user: DanteUser?, val showWelcomeScreen: Boolean) : UserEvent()
@@ -26,15 +23,13 @@ class MainViewModel @Inject constructor(private val inAppBillingService: InAppBi
 
     val userEvent = MutableLiveData<UserEvent>()
 
-    val purchaseState = MutableLiveData<DantePurchase>()
-
     init {
         poke()
     }
 
     override fun poke() {
         signInManager.setup()
-        compositeDisposable.add(signInManager.isSignedIn().subscribe { isSignedIn ->
+        signInManager.isSignedIn().subscribe { isSignedIn ->
 
             if (isSignedIn) { // <- User signed in, TOP!
                 userEvent.postValue(UserEvent.SuccessEvent(
@@ -47,11 +42,8 @@ class MainViewModel @Inject constructor(private val inAppBillingService: InAppBi
             if (!isSignedIn && !signInManager.maybeLater) {
                 userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
             }
-        })
-
-        compositeDisposable.add(inAppBillingService.getPurchase().subscribe { purchase ->
-            purchaseState.postValue(purchase)
-        })
+        }
+        .addTo(compositeDisposable)
     }
 
     fun signIn(data: Intent, signInToBackend: Boolean) {
@@ -79,5 +71,4 @@ class MainViewModel @Inject constructor(private val inAppBillingService: InAppBi
     fun showSignInWelcomeScreen(showWelcomeScreen: Boolean) {
         signInManager.showWelcomeScreen = showWelcomeScreen
     }
-
 }

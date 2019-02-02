@@ -31,9 +31,6 @@
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.ThumbnailOverlay" parent="Base.Widget.AppCompat.ProgressBar.Horizontal">
-    </style>
-
     <style name="AppTheme.RoundedButton" parent="Base.Widget.AppCompat.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/rounded_button</item>

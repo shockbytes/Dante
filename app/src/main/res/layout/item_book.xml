@@ -20,7 +20,9 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="2dp">
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:paddingBottom="2dp">
 
         <ImageView
             android:id="@+id/item_book_img_thumb"
@@ -32,7 +34,7 @@
             android:contentDescription="@string/contentdesc_listitem_img_thumb"
             android:transitionName="@string/transition_name_thumb"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_book_pb"
             app:srcCompat="@drawable/ic_placeholder" />
 
         <ImageButton
@@ -40,8 +42,6 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
@@ -67,7 +67,7 @@
             app:layout_constraintBottom_toTopOf="@+id/item_book_txt_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_book_pb"
             tools:text="Title" />
 
         <TextView
@@ -109,47 +109,34 @@
             app:layout_constraintTop_toBottomOf="@+id/item_book_txt_subtitle"
             tools:text="Author" />
 
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/item_book_container_page_overlay"
+        <ProgressBar
+            android:id="@+id/item_book_pb"
+            android:progress="50"
+            style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:cardCornerRadius="@dimen/thumbnail_rounded_corner"
-            app:layout_constraintBottom_toBottomOf="@+id/item_book_img_thumb"
-            app:layout_constraintEnd_toEndOf="@+id/item_book_img_thumb"
-            app:layout_constraintStart_toStartOf="@+id/item_book_img_thumb"
-            app:layout_constraintTop_toTopOf="@+id/item_book_img_thumb"
-            app:cardBackgroundColor="@android:color/transparent"
-            app:cardElevation="0dp">
+            android:layout_height="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/item_book_tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:textSize="13sp"
+            android:textColor="@color/colorSecondaryText"
+            android:layout_marginBottom="8dp"
+            tools:text="50%"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-                <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                    android:id="@+id/item_book_pb_page_overlay"
-                    style="@style/AppTheme.ThumbnailOverlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:indeterminate="false"
-                    android:progress="60"
-                    app:mpb_progressStyle="horizontal"
-                    app:mpb_progressTint="@color/overlay_progress"
-                    app:mpb_showProgressBackground="true"
-                    app:mpb_useIntrinsicPadding="false" />
-
-                <TextView
-                    android:id="@+id/item_book_txt_page_overlay"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:rotation="-45"
-                    android:textColor="@color/overlay_progress_text_color"
-                    tools:text="100%" />
-
-            </FrameLayout>
-        </android.support.v7.widget.CardView>
+        <android.support.constraint.Group
+            android:id="@+id/item_book_group_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="item_book_tv_progress, item_book_pb" />
 
     </android.support.constraint.ConstraintLayout>
 

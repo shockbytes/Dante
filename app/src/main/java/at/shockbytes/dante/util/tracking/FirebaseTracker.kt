@@ -7,7 +7,7 @@ import at.shockbytes.dante.util.tracking.event.TrackingProperty
 import com.google.firebase.analytics.FirebaseAnalytics
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
 class FirebaseTracker(context: Context) : Tracker {

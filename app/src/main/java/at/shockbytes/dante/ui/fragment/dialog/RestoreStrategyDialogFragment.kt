@@ -11,7 +11,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupManager
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    30.08.2016
  */
 class RestoreStrategyDialogFragment : DialogFragment() {
@@ -45,8 +45,9 @@ class RestoreStrategyDialogFragment : DialogFragment() {
         }
     }
 
-    fun setOnRestoreStrategySelectedListener(listener: (BackupManager.RestoreStrategy) -> Unit)
-            : RestoreStrategyDialogFragment {
+    fun setOnRestoreStrategySelectedListener(
+        listener: (BackupManager.RestoreStrategy) -> Unit
+    ): RestoreStrategyDialogFragment {
         this.strategyListener = listener
         return this
     }

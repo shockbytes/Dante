@@ -76,5 +76,4 @@ class DanteRealmMigration : RealmMigration {
 
         val migrationVersion = Migrations.SUMMARY_AND_LABELS.v()
     }
-
 }

@@ -7,11 +7,10 @@ import at.shockbytes.dante.dagger.AppComponent
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * @author Martin Macheiner
+ * Author: Martin Macheiner
  * Date: 30.12.2017.
  */
-
-abstract class BaseDialogFragment: DialogFragment() {
+abstract class BaseDialogFragment : DialogFragment() {
 
     protected val compositeDisposable = CompositeDisposable()
 
@@ -26,5 +25,4 @@ abstract class BaseDialogFragment: DialogFragment() {
     }
 
     abstract fun injectToGraph(appComponent: AppComponent)
-
 }

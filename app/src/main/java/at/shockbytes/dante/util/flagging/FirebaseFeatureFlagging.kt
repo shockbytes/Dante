@@ -24,10 +24,12 @@ class FirebaseFeatureFlagging(private val remoteConfig: FirebaseRemoteConfig) : 
         }
     }
 
-    override val showSupportersBadge: Boolean
-        get() = remoteConfig.getBoolean("supporters_badge")
+    override fun get(flag: FeatureFlag): Boolean {
+        return remoteConfig.getBoolean(flag.key)
+    }
 
-    override val showBookSuggestions: Boolean
-        get() = remoteConfig.getBoolean("book_suggestions")
-
+    override fun updateFlag(key: String, value: Boolean) {
+        val msg = "Cannot update feature flags in FirebaseFeatureFlagging implementation!"
+        throw UnsupportedOperationException(msg)
+    }
 }

@@ -21,7 +21,6 @@ import android.util.AttributeSet
 import android.view.View
 import at.shockbytes.dante.ui.custom.barcode.camera.GraphicOverlay.Graphic
 import com.google.android.gms.vision.CameraSource
-import java.util.*
 
 /**
  * A view which renders a series of custom graphics to be overlayed on top of an associated preview
@@ -67,7 +66,6 @@ class GraphicOverlay<T : GraphicOverlay.Graphic>(context: Context, attrs: Attrib
         get() = synchronized(mLock) {
             return mFirstGraphic
         }
-
 
     interface OnGraphicAvailableListener<in T> {
 

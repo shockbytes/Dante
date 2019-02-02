@@ -1,7 +1,7 @@
 package at.shockbytes.dante.data
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
 abstract class Mapper<In, Out> {
@@ -17,5 +17,4 @@ abstract class Mapper<In, Out> {
     fun mapFrom(data: List<Out>): List<In> {
         return data.map { mapFrom(it) }
     }
-
 }

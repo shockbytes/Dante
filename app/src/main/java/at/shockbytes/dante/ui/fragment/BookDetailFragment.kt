@@ -1,7 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.app.DatePickerDialog
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
@@ -37,11 +36,11 @@ import kotlinx.android.synthetic.main.fragment_book_detail.*
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
 import timber.log.Timber
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    08.06.2018
  */
 class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
@@ -50,16 +49,16 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
     override val layoutId = R.layout.fragment_book_detail
 
     @Inject
-    protected lateinit var settings: DanteSettings
+    lateinit var settings: DanteSettings
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     @Inject
-    protected lateinit var tracker: Tracker
+    lateinit var tracker: Tracker
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     private val animationList: List<View> by lazy {
         listOf(btnDetailFragmentPublished, btnDetailFragmentRating,
@@ -154,55 +153,64 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
         viewModel.book.observe(this, android.arch.lifecycle.Observer {
 
             it?.let { book ->
-
                 activity?.title = book.title
                 initializeBookInformation(book)
                 initializeTimeInformation(book)
             }
         })
 
-        viewModel.showBookFinishedDialog.observe(this, Observer { title ->
-            SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
-                    getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
-                    .setOnAcceptListener {
-                        viewModel.moveBookToDone()
-                        activity?.supportFinishAfterTransition()
+        viewModel.showBookFinishedDialog
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { title ->
+                    SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
+                            getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
+                            .setOnAcceptListener {
+                                viewModel.moveBookToDone()
+                                activity?.supportFinishAfterTransition()
+                            }
+                            .show(fragmentManager, "book-finished-dialogfragment")
+                }
+                .addTo(compositeDisposable)
+
+        viewModel.showPagesDialog
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { data ->
+                    data?.let { (currentPage, pageCount, _) ->
+                        // Only show current page in dialog if tracking is enabled and book is in reading state
+                        PageEditDialogFragment.newInstance(currentPage, pageCount)
+                                .setOnPageEditedListener { current, pages ->
+                                    viewModel.updateBookPages(current, pages)
+                                }.show(fragmentManager, "pages-dialogfragment")
                     }
-                    .show(fragmentManager, "book-finished-dialogfragment")
-        })
+                }
+                .addTo(compositeDisposable)
 
-        viewModel.showPagesDialog.observe(this, Observer { data ->
-            data?.let { (currentPage, pageCount, isReading) ->
-                // Only show current page in dialog if tracking is enabled and book is in reading state
-                val showCurrent = settings.pageTrackingEnabled and isReading
-                PageEditDialogFragment.newInstance(currentPage, pageCount, showCurrent)
-                        .setOnPageEditedListener { current, pages ->
-                            viewModel.updateBookPages(current, pages)
-                        }.show(fragmentManager, "pages-dialogfragment")
-            }
-        })
+        viewModel.showNotesDialog
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { data ->
+                    data?.let { (title, thumbnailAddress, notes) ->
+                        NotesDialogFragment.newInstance(title, thumbnailAddress, notes)
+                                .setOnApplyListener { updatedNotes ->
+                                    viewModel.updateNotes(updatedNotes)
+                                    setupNotes(notes.isEmpty())
+                                }.show(fragmentManager, "notes-dialogfragment")
+                    }
+                }
+                .addTo(compositeDisposable)
 
-        viewModel.showNotesDialog.observe(this, Observer { data ->
-            data?.let { (title, thumbnailAddress, notes) ->
-                NotesDialogFragment.newInstance(title, thumbnailAddress, notes)
-                        .setOnApplyListener { updatedNotes ->
-                            viewModel.updateNotes(updatedNotes)
-                            setupNotes(notes.isEmpty())
-                        }.show(fragmentManager, "notes-dialogfragment")
-            }
-        })
-
-        viewModel.showRatingDialog.observe(this, Observer { data ->
-            data?.let { (title, thumbnailAddress, r) ->
-                RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
-                        .setOnApplyListener { rating ->
-                            viewModel.updateRating(rating)
-                            tracker.trackEvent(DanteTrackingEvent.RatingEvent(rating))
-                            btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
-                        }.show(fragmentManager, "rating-dialogfragment")
-            }
-        })
-
+        viewModel.showRatingDialog
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { data ->
+                    data?.let { (title, thumbnailAddress, r) ->
+                        RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
+                                .setOnApplyListener { rating ->
+                                    viewModel.updateRating(rating)
+                                    tracker.trackEvent(DanteTrackingEvent.RatingEvent(rating))
+                                    btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
+                                }.show(fragmentManager, "rating-dialogfragment")
+                    }
+                }
+                .addTo(compositeDisposable)
     }
 
     private fun setupViewListener() {
@@ -351,11 +359,16 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
         }
     }
 
-    private fun setupPageComponents(state: BookState, isReading: Boolean, hasPages: Boolean,
-                                    pageCount: Int, currentPage: Int) {
+    private fun setupPageComponents(
+        state: BookState,
+        isReading: Boolean,
+        hasPages: Boolean,
+        pageCount: Int,
+        currentPage: Int
+    ) {
         // Book must be in reading state and must have a legit page count and overall the feature
         // must be enabled in the settings
-        if (settings.pageTrackingEnabled && isReading && hasPages) {
+        if (isReading && hasPages) {
 
             circleSeekbarDetailFragmentPages.maxValue = pageCount
             circleSeekbarDetailFragmentPages.value = currentPage
@@ -370,7 +383,6 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
             else
                 pageCount.toString()
             btnDetailFragmentPages.text = pages
-
         } else {
             circleSeekbarDetailFragmentPages.visibility = View.GONE
             // Show all pages, but disable button clicking
@@ -392,7 +404,7 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
             activity?.let { ctx ->
                 imageLoader.loadImageWithCornerRadius(ctx, url, imgViewDetailFragmentThumbnail,
                         cornerDimension = ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
-                        callback = this, callbackHandleValues = Pair(false, true))
+                        callback = this, callbackHandleValues = Pair(first = false, second = true))
             }
         }
     }
@@ -441,7 +453,5 @@ class BookDetailFragment : BaseFragment(), ImageLoadingCallback,
             fragment.arguments = args
             return fragment
         }
-
     }
-
 }

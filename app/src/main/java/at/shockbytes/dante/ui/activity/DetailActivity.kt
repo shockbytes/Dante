@@ -41,7 +41,6 @@ class DetailActivity : TintableBackNavigableActivity() {
         detailFragment?.backwardAnimation()
     }
 
-
     companion object {
 
         private const val ARG_ID = "arg_id"
@@ -53,5 +52,4 @@ class DetailActivity : TintableBackNavigableActivity() {
                     .putExtra(ARG_TITLE, title)
         }
     }
-
 }

@@ -21,8 +21,10 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
 
     var onItemDeleteClickListener: ((BackupEntry, Int) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): BaseAdapter<BackupEntry>.ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseAdapter<BackupEntry>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_backup_entry, parent, false))
     }
 
@@ -57,6 +59,4 @@ class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
             }
         }
     }
-
-
 }

@@ -3,7 +3,11 @@ package at.shockbytes.dante
 import android.os.StrictMode
 import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
-import at.shockbytes.dante.dagger.*
+import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.dagger.AppModule
+import at.shockbytes.dante.dagger.BookModule
+import at.shockbytes.dante.dagger.DaggerAppComponent
+import at.shockbytes.dante.dagger.NetworkModule
 import at.shockbytes.dante.util.CrashlyticsReportingTree
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
@@ -82,5 +86,4 @@ class DanteApp : MultiDexApplication() {
                     .build())
         }
     }
-
 }

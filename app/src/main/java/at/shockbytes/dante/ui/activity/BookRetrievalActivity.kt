@@ -18,12 +18,11 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    01.01.2018
  */
-
-class BookRetrievalActivity: TintableBackNavigableActivity(),
+class BookRetrievalActivity : TintableBackNavigableActivity(),
         QueryCaptureFragment.QueryCaptureCallback, DownloadBookFragment.OnBookDownloadedListener {
 
     @Inject
-    protected lateinit var tracker: Tracker
+    lateinit var tracker: Tracker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,8 +82,12 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
         finishBookDownload()
     }
 
-    override fun colorSystemBars(actionBarColor: Int?, actionBarTextColor: Int?,
-                                 statusBarColor: Int?, title: String?) {
+    override fun colorSystemBars(
+        actionBarColor: Int?,
+        actionBarTextColor: Int?,
+        statusBarColor: Int?,
+        title: String?
+    ) {
         tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, title, true)
     }
 
@@ -104,7 +107,6 @@ class BookRetrievalActivity: TintableBackNavigableActivity(),
                 .replace(android.R.id.content, DownloadBookFragment.newInstance(query))
                 .commit()
     }
-
 
     companion object {
 

@@ -66,12 +66,11 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_first_five_star,
                 R.drawable.ic_five_star, StatisticsDisplayItem.Align.START, s.firstFiveStarBook?.title ?: "---"))
 
-        val avgRating = if(s.averageBookRating != 0.0) s.averageBookRating.roundDouble(2).toString() else "---"
+        val avgRating = if (s.averageBookRating != 0.0) s.averageBookRating.roundDouble(2).toString() else "---"
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_average_rating,
                 R.drawable.ic_rating_colored, StatisticsDisplayItem.Align.START, avgRating))
         // Other book information
         items.add(StatisticsDisplayItem.StatisticsHeaderItem(R.string.statistics_header_other, R.drawable.ic_other))
-
 
         items.add(StatisticsDisplayItem.StatisticsDataItem(R.string.statistics_avg_books_per_month,
                 R.drawable.ic_popup_current, StatisticsDisplayItem.Align.START, s.avgBooksPerMonth.toString()))
@@ -82,5 +81,4 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
 
         return items
     }
-
 }

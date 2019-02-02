@@ -25,7 +25,6 @@ class QueryDialogFragment : DialogFragment() {
         get() = LayoutInflater.from(context)
                 .inflate(R.layout.dialogfragment_enter_query, null, false)
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
                 .setView(queryView)

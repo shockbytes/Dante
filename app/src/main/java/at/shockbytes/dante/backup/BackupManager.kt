@@ -33,7 +33,9 @@ interface BackupManager {
 
     fun backup(booksObservable: Flowable<List<BookEntity>>): Completable
 
-    fun restoreBackup(entry: BackupEntry, bookDao: BookEntityDao,
-                      strategy: RestoreStrategy): Completable
-
+    fun restoreBackup(
+        entry: BackupEntry,
+        bookDao: BookEntityDao,
+        strategy: RestoreStrategy
+    ): Completable
 }

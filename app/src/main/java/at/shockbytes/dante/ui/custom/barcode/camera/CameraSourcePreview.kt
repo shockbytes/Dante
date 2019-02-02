@@ -114,7 +114,6 @@ class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewG
             } catch (se: SecurityException) {
                 se.printStackTrace()
             }
-
         }
 
         override fun surfaceDestroyed(surface: SurfaceHolder) {
@@ -170,11 +169,8 @@ class CameraSourcePreview(private val cxt: Context, attrs: AttributeSet) : ViewG
     }
 
     private fun checkForRuntimeException(e: Exception) {
-
         if (e is RuntimeException) {
             Toast.makeText(context, R.string.preview_failed, Toast.LENGTH_LONG).show()
         }
-
     }
-
 }

@@ -15,8 +15,9 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-        private val bookDownloader: BookDownloader,
-        private val bookDao: BookEntityDao) : BaseViewModel() {
+    private val bookDownloader: BookDownloader,
+    private val bookDao: BookEntityDao
+) : BaseViewModel() {
 
     private val bookTransform: ((BookEntity) -> BookSearchItem) = { b ->
         BookSearchItem(b.id, b.title, b.author, b.thumbnailAddress, b.isbn)
@@ -93,11 +94,10 @@ class SearchViewModel @Inject constructor(
     }
 
     sealed class SearchState {
-        object InitialState: SearchState()
+        object InitialState : SearchState()
         object LoadingState : SearchState()
         object EmptyState : SearchState()
         class ErrorState(val throwable: Throwable) : SearchState()
         class SuccessState(val items: List<BookSearchItem>) : SearchState()
     }
-
 }

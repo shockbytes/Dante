@@ -2,7 +2,13 @@ package at.shockbytes.dante.dagger
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import at.shockbytes.dante.ui.viewmodel.*
+import at.shockbytes.dante.ui.viewmodel.BackupViewModel
+import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
+import at.shockbytes.dante.ui.viewmodel.BookListViewModel
+import at.shockbytes.dante.ui.viewmodel.MainViewModel
+import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
+import at.shockbytes.dante.ui.viewmodel.SearchViewModel
+import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -51,11 +57,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SupporterBadgeViewModel::class)
-    internal abstract fun supporterBadgeViewModel(viewModel: SupporterBadgeViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(ManualAddViewModel::class)
     internal abstract fun manualAddViewModel(viewModel: ManualAddViewModel): ViewModel
 
@@ -63,7 +64,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(StatisticsViewModel::class)
     internal abstract fun statisticsViewModel(viewModel: StatisticsViewModel): ViewModel
-
 
     @Binds
     @IntoMap
@@ -74,5 +74,4 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
     internal abstract fun searchViewModel(viewModel: SearchViewModel): ViewModel
-
 }

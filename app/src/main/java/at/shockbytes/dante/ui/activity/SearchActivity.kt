@@ -28,10 +28,10 @@ import javax.inject.Inject
 class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFragment.OnBookDownloadedListener {
 
     @Inject
-    protected lateinit var tracker: Tracker
+    lateinit var tracker: Tracker
 
     @Inject
-    protected lateinit var vmFactory: ViewModelFactory
+    lateinit var vmFactory: ViewModelFactory
 
     private lateinit var viewModel: SearchViewModel
 
@@ -51,7 +51,6 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
         supportActionBar?.title = ""
         supportActionBar?.setShowHideAnimationEnabled(true)
         supportActionBar?.hide()
-
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -81,8 +80,12 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
         finishBookDownload()
     }
 
-    override fun colorSystemBars(actionBarColor: Int?, actionBarTextColor: Int?,
-                                 statusBarColor: Int?, title: String?) {
+    override fun colorSystemBars(
+        actionBarColor: Int?,
+        actionBarTextColor: Int?,
+        statusBarColor: Int?,
+        title: String?
+    ) {
         tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, title, true)
     }
 
@@ -91,7 +94,6 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
         supportActionBar?.hide()
         // Use default colors and default title
         tintSystemBarsWithText(null, null, null, "", true)
-
     }
 
     private fun bindViewModel() {

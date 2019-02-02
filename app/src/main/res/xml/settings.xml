@@ -10,25 +10,6 @@
             android:title="@string/prefs_dark_mode_title" />
     </android.support.v7.preference.PreferenceCategory>
 
-
-    <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_books_title">
-
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:icon="@drawable/ic_settings_page_tracking"
-            android:key="@string/prefs_page_tracking_key"
-            android:title="@string/prefs_page_tracking_title" />
-
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="true"
-            android:dependency="@string/prefs_page_tracking_key"
-            android:icon="@drawable/ic_settings_overlay"
-            android:key="@string/prefs_page_overlay_key"
-            android:summary="@string/prefs_page_overlay_summary"
-            android:title="@string/prefs_page_overlay_title" />
-
-    </android.support.v7.preference.PreferenceCategory>
-
     <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
         <android.support.v7.preference.Preference

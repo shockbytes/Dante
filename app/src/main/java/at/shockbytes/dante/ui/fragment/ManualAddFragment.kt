@@ -31,10 +31,10 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     override val layoutId = R.layout.fragment_manual_add
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     private lateinit var viewModel: ManualAddViewModel
 
@@ -63,7 +63,6 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                     (activity as? TintableBackNavigableActivity)?.tintTitle(title.toString())
                 }
             }
-
         })
 
         btnManualAddUpcoming.setOnClickListener {
@@ -118,8 +117,15 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         viewModel.thumbnailUrl.observe(this, Observer {
             context?.let { ctx ->
                 it?.let { uri ->
-                    imageLoader.loadImageUri(ctx, uri, imgViewManualAdd, R.drawable.ic_placeholder,
-                            false,this, Pair(false, true))
+                    imageLoader.loadImageUri(
+                        ctx,
+                        uri,
+                        imgViewManualAdd,
+                        R.drawable.ic_placeholder,
+                        false,
+                        this,
+                        Pair(first = false, second = true)
+                    )
                 }
             }
         })
@@ -146,7 +152,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val pageCount = editTextManualAddPages.text?.toString()?.toIntOrNull()
         val publishedDate = editTextManualAddPublishedDate.text?.toString()
         val isbn = editTextManualAddIsbn.text?.toString()
-        //val language = spinnerManualAddLanguage.selectedItem as? String
+        // val language = spinnerManualAddLanguage.selectedItem as? String
         val language = "NA" // TODO Change to spinner value
 
         viewModel.storeBook(title, authors, pageCount, state, subTitle, publishedDate, isbn, language)
@@ -157,7 +163,5 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         fun newInstance(): ManualAddFragment {
             return ManualAddFragment()
         }
-
     }
-
 }

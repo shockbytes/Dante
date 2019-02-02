@@ -10,19 +10,27 @@ import io.realm.annotations.PrimaryKey
  * Author:  Martin Macheiner
  * Date:    27.08.2016
  */
-open class RealmBook @JvmOverloads constructor(@PrimaryKey var id: Long = -1,
-                                               var title: String = "", var subTitle: String = "",
-                                               var author: String = "", var pageCount: Int = 0,
-                                               var publishedDate: String = "", var position: Int = 0,
-                                               var isbn: String = "", var thumbnailAddress: String? = null,
-                                               var googleBooksLink: String? = null, // Version 1
-                                               var startDate: Long = 0, var endDate: Long = 0,
-                                               var wishlistDate: Long = 0, var language: String = "NA", // Version 2
-                                               var rating: Int = 0, // 1 - 5
-                                               var currentPage: Int = 0, // Version 3
-                                               var notes: String? = null,
-                                               var summary: String? = null, // Version 4
-                                               var labels: RealmList<String> = RealmList()) : RealmObject(), Gsonify {
+open class RealmBook @JvmOverloads constructor(
+    @PrimaryKey var id: Long = -1,
+    var title: String = "",
+    var subTitle: String = "",
+    var author: String = "",
+    var pageCount: Int = 0,
+    var publishedDate: String = "",
+    var position: Int = 0,
+    var isbn: String = "",
+    var thumbnailAddress: String? = null,
+    var googleBooksLink: String? = null, // Version 1
+    var startDate: Long = 0,
+    var endDate: Long = 0,
+    var wishlistDate: Long = 0,
+    var language: String = "NA", // Version 2
+    var rating: Int = 0, // 1 - 5
+    var currentPage: Int = 0, // Version 3
+    var notes: String? = null,
+    var summary: String? = null, // Version 4
+    var labels: RealmList<String> = RealmList()
+) : RealmObject(), Gsonify {
 
     enum class State {
         READ_LATER, READING, READ
@@ -66,5 +74,4 @@ open class RealmBook @JvmOverloads constructor(@PrimaryKey var id: Long = -1,
     }
 
     override fun toString() = toJson().toString()
-
 }

@@ -7,7 +7,12 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import com.google.android.gms.drive.*
+import com.google.android.gms.drive.Drive
+import com.google.android.gms.drive.DriveFile
+import com.google.android.gms.drive.DriveId
+import com.google.android.gms.drive.DriveResourceClient
+import com.google.android.gms.drive.MetadataBuffer
+import com.google.android.gms.drive.MetadataChangeSet
 import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -15,16 +20,22 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import timber.log.Timber
-import java.io.*
+import java.io.BufferedReader
+import java.io.BufferedWriter
+import java.io.IOException
+import java.io.InputStreamReader
+import java.io.OutputStreamWriter
 
 /**
  * Author:  Martin Macheiner
  * Date:    30.04.2017
  */
-class GoogleDriveBackupManager(private val preferences: SharedPreferences,
-                               private val signInManager: GoogleSignInManager,
-                               private val schedulers: SchedulerFacade,
-                               private val gson: Gson) : BackupManager {
+class GoogleDriveBackupManager(
+    private val preferences: SharedPreferences,
+    private val signInManager: GoogleSignInManager,
+    private val schedulers: SchedulerFacade,
+    private val gson: Gson
+) : BackupManager {
 
     override var lastBackupTime: Long
         get() = preferences.getLong(LAST_BACKUP, 0)
@@ -85,8 +96,11 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         }.subscribeOn(schedulers.io).observeOn(schedulers.ui)
     }
 
-    override fun restoreBackup(entry: BackupEntry, bookDao: BookEntityDao,
-                               strategy: BackupManager.RestoreStrategy): Completable {
+    override fun restoreBackup(
+        entry: BackupEntry,
+        bookDao: BookEntityDao,
+        strategy: BackupManager.RestoreStrategy
+    ): Completable {
         return Completable.fromAction {
             booksFromEntry(entry)
                     .subscribe({ books ->
@@ -96,9 +110,7 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
                     })
         }.subscribeOn(schedulers.ui).observeOn(schedulers.ui)
     }
-
     // -----------------------------------------------------------------------------
-
 
     private fun deleteDriveFile(driveId: DriveId): Boolean {
         return client.delete(driveId.asDriveResource())?.isSuccessful ?: false
@@ -122,7 +134,6 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
 
                 entries.add(BackupEntry(fileId, fileName, device, storageProvider,
                         books, timestamp, isAutoBackup))
-
             } catch (e: Exception) {
                 Timber.e(e, "Cannot parse file: $fileName")
             }
@@ -162,7 +173,6 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
             val list: List<BookEntity> = gson.fromJson(contentsAsString,
                     object : TypeToken<List<BookEntity>>() {}.type)
             list
-
         }.subscribeOn(schedulers.io).observeOn(schedulers.ui)
     }
 
@@ -208,5 +218,4 @@ class GoogleDriveBackupManager(private val preferences: SharedPreferences,
         private const val STORAGE_TYPE = "gdrive"
         private const val MIME_JSON = "application/json"
     }
-
 }

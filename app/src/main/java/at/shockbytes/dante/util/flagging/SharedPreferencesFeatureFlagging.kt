@@ -3,14 +3,16 @@ package at.shockbytes.dante.util.flagging
 import android.content.SharedPreferences
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    28.08.2018
  */
-class SharedPreferencesFeatureFlagging(private val preferences: SharedPreferences): FeatureFlagging {
+class SharedPreferencesFeatureFlagging(private val preferences: SharedPreferences) : FeatureFlagging {
 
-    override val showSupportersBadge: Boolean
-        get() = preferences.getBoolean("supporters_badge_flag", false)
+    override fun get(flag: FeatureFlag): Boolean {
+        return preferences.getBoolean(flag.key, flag.defaultValue)
+    }
 
-    override val showBookSuggestions: Boolean
-        get() = preferences.getBoolean("show_suggestions_flag", false)
+    override fun updateFlag(key: String, value: Boolean) {
+        preferences.edit().putBoolean(key, value).apply()
+    }
 }

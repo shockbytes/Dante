@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.2</string>
+    <string name="app_version" translatable="false">3.3</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
@@ -9,8 +9,6 @@
 
     <string name="label_settings">Settings</string>
     <string name="label_stats">Your statistics</string>
-
-    <string name="error_load_book">Oops, cannot load the book!</string>
 
     <string name="menu_main_stats">Statistics</string>
     <string name="settings">Settings</string>
@@ -31,13 +29,12 @@
     <string name="prefs_category_about">About</string>
     <string name="prefs_app_version_title">App version</string>
     <string name="prefs_developer_title">Developer</string>
-    <string name="prefs_developer_summary" translatable="false">Shockbytes Studio &#169; 2016-2018</string>
+    <string name="prefs_developer_summary" translatable="false">Shockbytes Studio &#169; 2016-2019</string>
     <string name="prefs_icons_title" translatable="false">Icons</string>
     <string name="prefs_icons_summary" translatable="false">www.icons8.com\nwww.flaticon.com</string>
 
     <string name="detail_pages" translatable="false">%1$d / %2$d</string>
     <string name="action_share">Share</string>
-    <string name="action_add_isbn">Add ISBN manually</string>
     <string name="label_capture">Capture book</string>
     <string name="dismiss">Dismiss</string>
     <string name="help_scan">Focus the ISBN until the app automatically recognizes it</string>
@@ -49,13 +46,9 @@
 
     <string name="contentdesc_listitem_img_thumb" translatable="false">Thumbnail for book cover</string>
     <string name="contentdesc_listitem_img_overflow" translatable="false">Overflow icon for list item</string>
-    <string name="detail_wishlist_date">On the wishlist since %s</string>
-    <string name="detail_start_date">Started reading on %s</string>
-    <string name="detail_end_date">Finished since %s</string>
     <string name="share_template">Hey, I\'m currently reading %1$s and it\'s awesome!\nCheck it out: %2$s</string>
     <string name="send_to">Share your book</string>
     <string name="label_backup">Manage backups</string>
-    <string name="backup_label_auto">Auto backups</string>
     <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
     <string name="last_backup">Last backup: %s</string>
@@ -76,21 +69,13 @@
     <string name="download_btn_error">Okay, got it</string>
     <string name="download_code_error">Sorry! An unexpected error occurred.</string>
     <string name="fragment_download_text_placeholder" translatable="false">&#8230;</string>
-    <string name="prefs_page_tracking_title">Page tracking</string>
-    <string name="prefs_category_books_title">Books</string>
-    <string name="prefs_page_tracking_key" translatable="false">prefs_page_tracking_key</string>
     <string name="book_finished_move_to_done_question">You have finished your book. Would you like to add it to the done list?</string>
     <string name="login_title">Hello!</string>
     <string name="login_rationale">Thank you for using Dante. In order to provide a better experience we will need access to your Google Account. Furthermore you can also create Google Drive backups. You can also login anytime later if you do not need these features now.</string>
     <string name="login_later">Maybe later</string>
     <string name="dialog_login_title">Login to Dante</string>
-    <string name="signin_goodbye">Bye for now!</string>
-    <string name="signin_no_account">You don\'t have a valid account</string>
-    <string name="menu_main_google_login" translatable="false">Google Login</string>
     <string name="login" translatable="false">Login</string>
     <string name="logout" translatable="false">Logout</string>
-    <string name="signin_welcome">Welcome back %s</string>
-    <string name="error_load_books">Cannot load books</string>
     <string name="backup_info">Choose <b>merge</b> if you want to preserve the books on your device and complement the collection with the missing books in the backup. Or choose <b>overwrite</b> to completely delete all books on your device and replace them by the books in the backup file.</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_acknowledge">OKAY, GOT IT</string>
@@ -98,9 +83,6 @@
     <string name="google_welcome_rationale">You can manage all your Google related activities when your are clicking the symbol above in the app bar. Click on this icon if you want to create a <b>backup</b>.</string>
     <string name="camera_permission_title">Camera</string>
     <string name="scanner_not_operational">The app is currently being configured</string>
-    <string name="error_google_photo">Cannot load your profile image</string>
-    <string name="error_google_logout">Oh. Something went wrong!</string>
-    <string name="error_google_login">Oh. I cannot log into your account!</string>
     <string name="rate_book">Rate book</string>
     <string name="rate">Rate</string>
 
@@ -126,20 +108,13 @@
     <string name="search_online">Search online</string>
     <string name="search_online_hint">No books found in your library. Do you want to search online?</string>
     <string name="search_invalid_query">Invalid search query</string>
-    <string name="popup_item_book_cover_gallery">Gallery</string>
-    <string name="popup_item_book_cover_camera">Camera</string>
     <string name="no_internet_connection">No internet connection at the moment</string>
-    <string name="prefs_page_overlay_key" translatable="false">prefs_page_overlay_key</string>
     <string name="percentage_formatter" translatable="false">%d%%</string>
-    <string name="prefs_page_overlay_title">Page Overlay</string>
-    <string name="prefs_page_overlay_summary">Show an overlay with the current page on each reading book</string>
     <string name="prefs_sort_strategy_key" translatable="false">prefs_sort_strategy_key</string>
     <string name="download_attachment_error">Oh, something terribly went wrong!</string>
     <string name="tab_suggestions">Suggestions</string>
     <string name="menu_main_sort">Sort books</string>
     <string name="anonymous_user">Anonymous bookworm</string>
-    <string name="menu_main_supporter">Supporter badge</string>
-
 
     <!-- Sorting -->
     <string name="sort_strategy_default">Default</string>
@@ -155,17 +130,10 @@
     <string name="sort_strategy_pages_hint">Sort your books by the ascending number of pages.</string>
 
     <string name="dialogfragment_sort_by">Sort by</string>
-    <string name="scan_network_not_available">Please enable network connectivity, in order to scan books!</string>
     <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others…</string>
     <string name="invalid_time_range_start">Start date must lie within the range of the other dates…</string>
     <string name="invalid_time_range_end">End date must be later than the other dates…</string>
 
-    <string name="supporter_badge_rationale">Hi, my name is Martin and I am the developer of this small, yet handy book tracking app. I strongly believe in ad-free apps. I also believe that everyone should have access to software. Hence I am not a fan of premium app versions as well. However, if you still like the app and want to support me, you can purchase a supporter\'s badge in order to appreciate further development.  Disclaimer: You will receive no additional features by buying a supporter\'s badge.</string>
-    <string name="in_app_price_standard">Donate %1$s %2$s</string>
-    <string name="in_app_price_premium">Donate %1$s %2$s</string>
-    <string name="supporter_badge_premium_default" translatable="false">--- / premium</string>
-    <string name="supporter_badge_standard_default" translatable="false">--- / standard</string>
-    <string name="in_app_purchase_thanks">Thank you for your support!</string>
     <string name="menu_fab_scan">Scan ISBN</string>
     <string name="menu_fab_title">Search by title</string>
     <string name="menu_fab_manual">Add book manually</string>
@@ -194,7 +162,6 @@
     <string name="statistics_first_five_star">First 5 star book: %s</string>
 
     <string name="statistics_avg_books_per_month">%s books per month</string>
-    <string name="statistics_book_duration_default">No data available</string>
     <string name="statistics_duration_book">%s days for %s</string>
     <string name="statistics_most_reading_month">%s books read in %s</string>
     <string name="statistics_average_rating">Average rating: %s</string>
@@ -205,6 +172,7 @@
     <string name="backup_no_backups">You haven\'t made any backups.</string>
     <string name="backup_connection_error_google_drive">Cannot connect to Google Drive!</string>
     <string name="dark_mode_applied">The theme will change next restart.</string>
+    <string name="error_google_login">We cannot log you into your Google Account!</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

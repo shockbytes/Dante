@@ -3,20 +3,25 @@ package at.shockbytes.dante.network.google.gson
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookSuggestion
 import at.shockbytes.dante.network.BookDownloader.Companion.MAX_FETCH_AMOUNT
-import com.google.gson.*
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
+import com.google.gson.JsonParseException
 import java.lang.reflect.Type
-
 
 /**
  * Author:  Martin Macheiner
  * Date:    13.02.2017
  */
-
 class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestion> {
 
     @Throws(JsonParseException::class)
-    override fun deserialize(json: JsonElement, typeOfT: Type,
-                             context: JsonDeserializationContext): BookSuggestion? {
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        context: JsonDeserializationContext
+    ): BookSuggestion? {
 
         if (json.asJsonObject.getAsJsonArray("items") != null) {
 
@@ -57,7 +62,7 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
         val summary = getSummary(volumeInfo)
 
         return BookEntity(title = title, subTitle = subtitle, author = author, pageCount = pageCount,
-                publishedDate = publishedDate, isbn =  isbn, thumbnailAddress = thumbnailAddress,
+                publishedDate = publishedDate, isbn = isbn, thumbnailAddress = thumbnailAddress,
                 googleBooksLink = googleBooksLink, language = language, summary = summary)
     }
 
@@ -123,5 +128,4 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
             volumeInfo.get("description").asString
         } else null
     }
-
 }

@@ -37,7 +37,7 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
     private var previousRating: Int = 0
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,15 +82,17 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
         appComponent.inject(this)
     }
 
-
     companion object {
 
         private const val ARG_TITLE = "arg_title"
         private const val ARG_IMAGE = "arg_image"
         private const val ARG_PREV_RATING = "arg_prev_rating"
 
-        fun newInstance(title: String, imageLink: String?,
-                        previousRating: Int): RateBookDialogFragment {
+        fun newInstance(
+            title: String,
+            imageLink: String?,
+            previousRating: Int
+        ): RateBookDialogFragment {
             val fragment = RateBookDialogFragment()
             val args = Bundle()
             args.putString(ARG_TITLE, title)
@@ -99,7 +101,5 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
             fragment.arguments = args
             return fragment
         }
-
     }
-
 }

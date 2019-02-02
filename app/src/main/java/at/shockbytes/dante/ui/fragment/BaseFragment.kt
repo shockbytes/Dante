@@ -15,10 +15,9 @@ import at.shockbytes.dante.dagger.AppComponent
 import io.reactivex.disposables.CompositeDisposable
 import at.shockbytes.dante.util.colored
 
-
 /**
- * @author Martin Macheiner
- * Date: 29.11.2017.
+ * Author: Martin Macheiner
+ * Date: 29.11.2017
  */
 abstract class BaseFragment : Fragment() {
 
@@ -31,8 +30,11 @@ abstract class BaseFragment : Fragment() {
         injectToGraph((activity?.application as DanteApp).appComponent)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(layoutId, container, false)
     }
 
@@ -50,8 +52,12 @@ abstract class BaseFragment : Fragment() {
     protected abstract fun unbindViewModel()
 
     @JvmOverloads
-    protected fun showSnackbar(text: String, actionText: String,
-                               showIndefinite: Boolean = false, action: Snackbar.() -> Unit) {
+    protected fun showSnackbar(
+        text: String,
+        actionText: String,
+        showIndefinite: Boolean = false,
+        action: Snackbar.() -> Unit
+    ) {
         view?.let { v ->
             val duration = if (showIndefinite) Snackbar.LENGTH_INDEFINITE else Snackbar.LENGTH_LONG
             val snackBar = Snackbar.make(v, text, duration)
@@ -61,10 +67,12 @@ abstract class BaseFragment : Fragment() {
     }
 
     @JvmOverloads
-    protected fun showSnackbar(text: String,
-                               showLong: Boolean = true,
-                               @ColorRes fgColor: Int = R.color.snackbarForeground,
-                               @ColorRes bgColor: Int = R.color.snackbarBackground) {
+    protected fun showSnackbar(
+        text: String,
+        showLong: Boolean = true,
+        @ColorRes fgColor: Int = R.color.snackbarForeground,
+        @ColorRes bgColor: Int = R.color.snackbarBackground
+    ) {
         view?.let { v ->
 
             val sbText = text.colored(ContextCompat.getColor(v.context, fgColor))
@@ -97,5 +105,4 @@ abstract class BaseFragment : Fragment() {
         bindViewModel()
         super.onResume()
     }
-
 }

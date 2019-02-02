@@ -35,7 +35,7 @@ class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
     private var listener: (() -> Unit)? = null
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,5 +93,4 @@ class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
             return fragment
         }
     }
-
 }

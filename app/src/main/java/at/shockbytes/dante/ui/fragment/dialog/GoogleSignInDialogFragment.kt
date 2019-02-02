@@ -24,7 +24,7 @@ import javax.inject.Inject
 class GoogleSignInDialogFragment : BaseDialogFragment() {
 
     @Inject
-    protected lateinit var tracker: Tracker
+    lateinit var tracker: Tracker
 
     private val signInButton: SignInButton by bindView(R.id.dialogfragment_login_sign_in_button)
 
@@ -89,7 +89,5 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
             fragment.arguments = args
             return fragment
         }
-
     }
-
 }

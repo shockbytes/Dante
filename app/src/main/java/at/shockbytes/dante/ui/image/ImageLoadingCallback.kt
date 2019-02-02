@@ -7,5 +7,4 @@ interface ImageLoadingCallback {
     fun onImageResourceReady(resource: Drawable?)
 
     fun onImageLoadingFailed(e: Exception?)
-
 }

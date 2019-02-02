@@ -30,7 +30,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     override val layoutId = R.layout.fragment_backup
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: BackupViewModel
 
@@ -117,7 +117,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                             showSnackbar(getString(R.string.backup_not_created))
                         }
                     }
-
                 }.addTo(compositeDisposable)
 
         viewModel.applyBackupEvent
@@ -131,7 +130,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                             showSnackbar(getString(R.string.backup_restore_error))
                         }
                     }
-
                 }.addTo(compositeDisposable)
 
         viewModel.deleteBackupEvent
@@ -183,5 +181,4 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
             return fragment
         }
     }
-
 }

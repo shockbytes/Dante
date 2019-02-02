@@ -7,7 +7,7 @@ import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.StatisticsFragment
 
-class StatisticsActivity: ContainerBackNavigableActivity() {
+class StatisticsActivity : ContainerBackNavigableActivity() {
 
     override val displayFragment: Fragment
         get() = StatisticsFragment.newInstance()
@@ -21,5 +21,4 @@ class StatisticsActivity: ContainerBackNavigableActivity() {
             return Intent(context, StatisticsActivity::class.java)
         }
     }
-
 }

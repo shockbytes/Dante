@@ -18,9 +18,10 @@ import javax.inject.Inject
  * Date:    10.11.2018
  */
 class BackupViewModel @Inject constructor(
-        private val bookDao: BookEntityDao,
-        private val backupManager: BackupManager,
-        private val tracker: Tracker) : BaseViewModel() {
+    private val bookDao: BookEntityDao,
+    private val backupManager: BackupManager,
+    private val tracker: Tracker
+) : BaseViewModel() {
 
     private val loadBackupState = MutableLiveData<LoadBackupState>()
     private val lastBackupTime = MutableLiveData<String>()
@@ -75,7 +76,6 @@ class BackupViewModel @Inject constructor(
                     if (wasLastEntry) {
                         updateLastBackupTime(true)
                     }
-
                 }) { throwable ->
                     Timber.e(throwable)
                     deleteBackupEvent.onNext(DeleteBackupState.Error(throwable))

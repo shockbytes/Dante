@@ -37,8 +37,10 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideGoogleBooksApi(client: OkHttpClient,
-                              @Named("gsonDownload") gson: Gson): GoogleBooksApi {
+    fun provideGoogleBooksApi(
+        client: OkHttpClient,
+        @Named("gsonDownload") gson: Gson
+    ): GoogleBooksApi {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
@@ -59,5 +61,4 @@ class NetworkModule {
                 .build()
                 .create(AmazonItemLookupApi::class.java)
     }
-
 }

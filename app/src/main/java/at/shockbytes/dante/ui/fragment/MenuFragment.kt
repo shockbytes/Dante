@@ -4,8 +4,7 @@ import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
+
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.BottomSheetDialogFragment
@@ -18,26 +17,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
-import at.shockbytes.dante.billing.DantePurchase
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.SupporterBadgeDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadRoundedBitmap
-import at.shockbytes.dante.util.setVisible
-import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieProperty
-import com.airbnb.lottie.model.KeyPath
 import javax.inject.Inject
 
-
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
 class MenuFragment : BottomSheetDialogFragment() {
@@ -54,10 +45,7 @@ class MenuFragment : BottomSheetDialogFragment() {
     }
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
-
-    @Inject
-    protected lateinit var featureFlagging: FeatureFlagging
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: MainViewModel
 
@@ -99,16 +87,6 @@ class MenuFragment : BottomSheetDialogFragment() {
                         dismiss()
                     }
                     .show(fragmentManager, "sort-dialog-fragment")
-        }
-
-        view.findViewById<View>(R.id.btnMenuSupporter).let { supporterView ->
-
-            supporterView.setVisible(featureFlagging.showSupportersBadge)
-            supporterView.setOnClickListener {
-                SupporterBadgeDialogFragment.newInstance()
-                        .show(fragmentManager, "supporter-badge-fragment")
-                dismiss()
-            }
         }
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
@@ -167,47 +145,9 @@ class MenuFragment : BottomSheetDialogFragment() {
                             .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
                             .show(fragmentManager, "sign-in-fragment")
                 }
-
             }
-        })
-
-        viewModel.purchaseState.observe(this, Observer { purchase ->
-
-            val supportBadgeView = view.findViewById<LottieAnimationView>(R.id.imageViewMenuSupportBadge)
-
-            supportBadgeView.progress = 0f
-            supportBadgeView.repeatCount = 0
-            var lottieColor = 0
-            var visibility = View.GONE
-
-            when (purchase) {
-                is DantePurchase.NoPurchase -> {
-                    visibility = View.GONE
-                }
-                is DantePurchase.StandardPurchase -> {
-                    visibility = View.VISIBLE
-                    lottieColor = R.color.support_badge_standard
-                }
-                is DantePurchase.PremiumPurchase -> {
-                    visibility = View.VISIBLE
-                    lottieColor = R.color.support_badge_premium
-                }
-            }
-
-            supportBadgeView.addValueCallback(KeyPath("**"), LottieProperty.COLOR_FILTER) {
-                PorterDuffColorFilter(
-                        ContextCompat.getColor(context!!, lottieColor),
-                        PorterDuff.Mode.SRC_ATOP)
-            }
-
-            supportBadgeView.visibility = visibility
-            if (supportBadgeView.visibility == View.VISIBLE) {
-                supportBadgeView.playAnimation()
-            }
-
         })
     }
-
 
     companion object {
 
@@ -217,7 +157,5 @@ class MenuFragment : BottomSheetDialogFragment() {
             fragment.arguments = args
             return fragment
         }
-
     }
-
 }

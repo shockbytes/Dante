@@ -38,10 +38,11 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
     }
 
     @JvmOverloads
-    fun tintHomeAsUpIndicator(@DrawableRes indicator: Int = upIndicator,
-                              tint: Boolean = false,
-                              @ColorInt tintColor: Int = Color.WHITE) {
-
+    fun tintHomeAsUpIndicator(
+        @DrawableRes indicator: Int = upIndicator,
+        tint: Boolean = false,
+        @ColorInt tintColor: Int = Color.WHITE
+    ) {
         upIndicator = indicator // Store for next time if just tinting is necessary
         if (tint) {
             val drawable = DanteUtils.vector2Drawable(applicationContext, indicator)
@@ -59,10 +60,14 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         supportActionBar?.title = text
     }
 
-    fun tintSystemBarsWithText(@ColorInt actionBarColor: Int?, @ColorInt actionBarTextColor: Int?,
-                               @ColorInt statusBarColor: Int?, title: String? = null,
-                               animated: Boolean = false,
-                               useSameColorsForBoth: Boolean = true) {
+    fun tintSystemBarsWithText(
+        @ColorInt actionBarColor: Int?,
+        @ColorInt actionBarTextColor: Int?,
+        @ColorInt statusBarColor: Int?,
+        title: String? = null,
+        animated: Boolean = false,
+        useSameColorsForBoth: Boolean = true
+    ) {
 
         // Default initialize if not set
         val abColor = actionBarColor ?: ContextCompat.getColor(applicationContext, abDefColor)
@@ -71,7 +76,7 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         textColor = actionBarTextColor ?: textColor
 
         if (useSameColorsForBoth) {
-           sbColor = abColor
+            sbColor = abColor
         }
 
         // Set and tint text of action bar
@@ -112,5 +117,4 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
         set.playTogether(animatorToolbar, colorAnimation)
         set.start()
     }
-
 }

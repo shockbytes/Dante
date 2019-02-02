@@ -13,27 +13,12 @@ import io.reactivex.schedulers.Schedulers
  * Author:  Martin Macheiner
  * Date:    11.02.2018
  */
-
-class DanteSettings(private val context: Context,
-                    private val prefs: SharedPreferences) {
+class DanteSettings(
+    private val context: Context,
+    private val prefs: SharedPreferences
+) {
 
     private val rxPrefs: RxSharedPreferences = RxSharedPreferences.create(prefs)
-
-    var pageTrackingEnabled: Boolean
-        get() = prefs.getBoolean(context.getString(R.string.prefs_page_tracking_key), true)
-        set(value) {
-            prefs.edit()
-                    .putBoolean(context.getString(R.string.prefs_page_tracking_key), value)
-                    .apply()
-        }
-
-    var pageOverlayEnabled: Boolean
-        get() = prefs.getBoolean(context.getString(R.string.prefs_page_overlay_key), true)
-        set(value) {
-            prefs.edit()
-                    .putBoolean(context.getString(R.string.prefs_page_overlay_key), value)
-                    .apply()
-        }
 
     var darkModeEnabled: Boolean
         get() = prefs.getBoolean(context.getString(R.string.prefs_dark_mode_key), false)
@@ -70,5 +55,4 @@ class DanteSettings(private val context: Context,
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
     }
-
 }

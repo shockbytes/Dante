@@ -50,7 +50,7 @@ class QueryCaptureFragment : BaseFragment(),
     private var graphicOverlay: GraphicOverlay<BarcodeGraphic>? = null
 
     @Inject
-    protected lateinit var prefs: SharedPreferences
+    lateinit var prefs: SharedPreferences
 
     override val layoutId = R.layout.fragment_query_capture
 
@@ -105,10 +105,11 @@ class QueryCaptureFragment : BaseFragment(),
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>,
-                                            grantResults: IntArray) {
-
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         if (requestCode != rcHandleCameraPermission) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             return
@@ -213,7 +214,5 @@ class QueryCaptureFragment : BaseFragment(),
             fragment.arguments = args
             return fragment
         }
-
     }
-
 }

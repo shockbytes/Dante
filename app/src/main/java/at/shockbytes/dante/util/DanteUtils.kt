@@ -2,26 +2,29 @@ package at.shockbytes.dante.util
 
 import android.content.Context
 import android.content.res.Configuration
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
-import android.support.v7.view.menu.MenuPopupHelper
 import android.support.v7.widget.AppCompatDrawableManager
-import android.support.v7.widget.PopupMenu
 import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
-import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import java.util.Date
+import kotlin.math.roundToInt
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    30.04.2017.
  */
-
 object DanteUtils {
 
     const val rcSignIn = 0x8944
@@ -43,8 +46,12 @@ object DanteUtils {
         return bitmapResult
     }
 
-    fun listPopAnimation(animationList: List<View>, duration: Long = 300, initialDelay: Long = 300,
-                         interpolator: Interpolator = OvershootInterpolator(2f)) {
+    fun listPopAnimation(
+        animationList: List<View>,
+        duration: Long = 300,
+        initialDelay: Long = 300,
+        interpolator: Interpolator = OvershootInterpolator(2f)
+    ) {
 
         animationList.forEach {
             it.alpha = 0f; it.scaleX = 0.3f; it.scaleY = 0.3f
@@ -60,29 +67,21 @@ object DanteUtils {
         }
     }
 
+    fun computePercentage(x: Double, total: Double): Int {
+        return if (total > 0) {
+            ((x / total) * 100).roundToInt()
+        } else 0
+    }
+
     fun isPortrait(context: Context?): Boolean {
         return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
     }
 
     fun vector2Drawable(c: Context, res: Int): Drawable = AppCompatDrawableManager.get().getDrawable(c, res)
 
-    fun tryShowIconsInPopupMenu(menu: PopupMenu) {
-
-        try {
-            val fieldPopup = menu.javaClass.getDeclaredField("mPopup")
-            fieldPopup.isAccessible = true
-            val popup = fieldPopup.get(menu) as MenuPopupHelper
-            popup.setForceShowIcon(true)
-        } catch (e: Exception) {
-            Timber.e("Cannot force to show icons in popupmenu")
-        }
-    }
-
     fun isNetworkAvailable(ctx: Context): Boolean {
         val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo?.isConnected ?: false
     }
-
-
 }

@@ -35,7 +35,7 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
     private var bookImageLink: String? = null
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,5 +86,4 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
             return fragment
         }
     }
-
 }

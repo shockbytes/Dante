@@ -110,5 +110,4 @@ class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
 
         backupBooks.forEach { create(it) }
     }
-
 }

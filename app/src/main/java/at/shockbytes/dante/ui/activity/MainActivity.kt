@@ -26,6 +26,7 @@ import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.flagging.FeatureFlag
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
@@ -37,18 +38,18 @@ import javax.inject.Inject
 class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     @Inject
-    protected lateinit var featureFlagging: FeatureFlagging
+    lateinit var featureFlagging: FeatureFlagging
 
     @Inject
-    protected lateinit var danteSettings: DanteSettings
+    lateinit var danteSettings: DanteSettings
 
     @Inject
-    protected lateinit var tracker: Tracker
+    lateinit var tracker: Tracker
 
-    protected var tabId: Int = R.id.menu_navigation_current
+    private var tabId: Int = R.id.menu_navigation_current
 
     private lateinit var pagerAdapter: BookPagerAdapter
     private lateinit var viewModel: MainViewModel
@@ -204,14 +205,13 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 }
                 else -> true
             }
-
         }
     }
 
     private fun initializeNavigation() {
 
         // Setup the ViewPager
-        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging.showBookSuggestions,
+        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BookSuggestions],
                 supportFragmentManager)
         viewPager.adapter = pagerAdapter
         viewPager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
@@ -223,7 +223,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
             true
         }
-        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging.showBookSuggestions
+        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging[FeatureFlag.BookSuggestions]
 
         mainBottomNavigation.selectedItemId = tabId
     }
@@ -279,5 +279,4 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
         AppCompatDelegate.setDefaultNightMode(mode)
     }
-
 }

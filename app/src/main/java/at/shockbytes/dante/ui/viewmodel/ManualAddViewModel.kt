@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.viewmodel
 
-
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import android.support.v4.app.FragmentActivity
@@ -18,8 +17,9 @@ import javax.inject.Inject
  * Date:    30.08.2018
  */
 class ManualAddViewModel @Inject constructor(
-        private val bookDao: BookEntityDao,
-        private val imagePicker: ImagePicker) : BaseViewModel() {
+    private val bookDao: BookEntityDao,
+    private val imagePicker: ImagePicker
+) : BaseViewModel() {
 
     val thumbnailUrl = MutableLiveData<Uri>()
 
@@ -49,9 +49,16 @@ class ManualAddViewModel @Inject constructor(
         }).addTo(compositeDisposable)
     }
 
-    fun storeBook(title: String?, author: String?, pageCount: Int?, state: BookState,
-                  subTitle: String?, publishedDate: String?, isbn: String?, language: String?) {
-
+    fun storeBook(
+        title: String?,
+        author: String?,
+        pageCount: Int?,
+        state: BookState,
+        subTitle: String?,
+        publishedDate: String?,
+        isbn: String?,
+        language: String?
+    ) {
         val entity = createEntity(title, author, pageCount, state, subTitle,
                 publishedDate, isbn, thumbnailUrl.value?.toString(), language)
 
@@ -63,9 +70,17 @@ class ManualAddViewModel @Inject constructor(
         }
     }
 
-    private fun createEntity(title: String?, author: String?, pageCount: Int?, state: BookState,
-                             subTitle: String?, publishedDate: String?, isbn: String?,
-                             thumbnailAddress: String?, language: String?): BookEntity? {
+    private fun createEntity(
+        title: String?,
+        author: String?,
+        pageCount: Int?,
+        state: BookState,
+        subTitle: String?,
+        publishedDate: String?,
+        isbn: String?,
+        thumbnailAddress: String?,
+        language: String?
+    ): BookEntity? {
 
         // Check if author, title and pages are null, these values must always be set
         return if (title == null || author == null || pageCount == null) {
@@ -90,5 +105,4 @@ class ManualAddViewModel @Inject constructor(
         object SuccessEvent : AddEvent()
         object ErrorEvent : AddEvent()
     }
-
 }

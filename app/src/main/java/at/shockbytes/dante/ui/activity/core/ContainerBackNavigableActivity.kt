@@ -23,5 +23,4 @@ abstract class ContainerBackNavigableActivity : BackNavigableActivity() {
     override fun injectToGraph(appComponent: AppComponent) {
         // Do nothing, nothings needs to be injected
     }
-
 }

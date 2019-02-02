@@ -19,16 +19,17 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    30.12.2017.
  *
  * If migrating to firebase, use this docs
  * https://firebase.google.com/docs/auth/android/google-signin
  *
  */
-
-class GoogleSignInManager(private val prefs: SharedPreferences,
-                          private val context: Context) : SignInManager {
+class GoogleSignInManager(
+    private val prefs: SharedPreferences,
+    private val context: Context
+) : SignInManager {
 
     private var client: GoogleSignInClient? = null
 
@@ -95,6 +96,4 @@ class GoogleSignInManager(private val prefs: SharedPreferences,
         private const val prefsMaybeLater = "prefs_google_login_maybe_later"
         private const val prefsShowWelcomeScreen = "prefs_google_show_welcome_screen"
     }
-
-
 }

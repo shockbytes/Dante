@@ -15,6 +15,5 @@ class SettingsActivity : ContainerBackNavigableActivity() {
     companion object {
 
         fun newIntent(context: Context) = Intent(context, SettingsActivity::class.java)
-
     }
 }

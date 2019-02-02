@@ -41,5 +41,4 @@ abstract class BackNavigableActivity : BaseActivity() {
     fun setHomeAsUpIndicator(@DrawableRes indicator: Int) {
         supportActionBar?.setHomeAsUpIndicator(indicator)
     }
-
 }

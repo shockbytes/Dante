@@ -14,11 +14,9 @@
     <string name="tab_upcoming">Für später</string>
     <string name="tab_done">Gelesen</string>
     <string name="tab_current">Lesen</string>
-    <string name="error_load_book">Ups, das Buch konnte nicht geladen werden!</string>
     <string name="permission_camera_rationale">Die App benötigt den Zugang zu deiner Kamera, um die Barcodes deiner Bücher zu scannen.</string>
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>
-    <string name="action_add_isbn">ISBN manuell hinzufügen</string>
     <string name="label_capture">Buch scannen</string>
     <string name="dismiss">Ausblenden</string>
     <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
@@ -26,16 +24,12 @@
     <string name="dialogfragment_query_message">Gib den Titel oder den ISBN deines Buches ein.</string>
     <string name="book_finished">%s fertig</string>
     <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.</string>
-    <string name="detail_wishlist_date">Auf der Wunschliste seit %s</string>
-    <string name="detail_start_date">Begonnen am %s</string>
-    <string name="detail_end_date">Fertig gelesen am %s</string>
     <string name="share_template">Hey, ich lese gerade %1$s und es ist fantastisch!\nSieh es dir selbst an: %2$s</string>
     <string name="send_to">Teile dein Buch</string>
     <string name="label_backup">Backups verwalten</string>
     <string name="last_backup">Letzte Sicherung: %s</string>
     <string name="restore">Wiederherstellen (%d)</string>
     <string name="backup_now">Jetzt sichern</string>
-    <string name="backup_label_auto">Autom. Backups</string>
     <string name="backup_books_amount">Bücher: %d</string>
     <string name="backup">Backup</string>
     <string name="menu_main_backup">Backup</string>
@@ -54,16 +48,10 @@
     <string name="book_finished_move_to_done_question">Soll das Buch auf die Liste der gelesenen Büchern?</string>
     <string name="download_btn_error">Okay, verstanden</string>
     <string name="download_code_error">Sorry! Ein unerwarteter Fehler ist aufgetreten.</string>
-    <string name="prefs_category_books_title">Bücher</string>
-    <string name="prefs_page_tracking_title">Seitentracking</string>
     <string name="login_title">Hallo!</string>
     <string name="login_later">Später</string>
     <string name="login_rationale">Danke, dass du Dante benützt. Um ein besseres Erlebnis zu bieten benötigen wir Zugang zu deinem Google Account. Damit kannst du unter anderem Google Drive Backups erstellen. Du kannst dich auch jederzeit später mit deinem Google Account verbinden.</string>
     <string name="dialog_login_title">Login bei Dante</string>
-    <string name="signin_goodbye">Bis bald!</string>
-    <string name="signin_no_account">Kein gültiger Account!</string>
-    <string name="signin_welcome">Willkommen zurück %s</string>
-    <string name="error_load_books">Ladefehler</string>
     <string name="backup_info">Wähle <b>zusammenfügen</b> um die gespeicherten Bücher beizubehalten und die Sammlung durch fehlende Bücher im Backup zu vervollständigen. Oder wähle <b>überschreiben</b> um alle Bücher am Gerät zu löschen und durch die komplette Sammlung des Backups zu ersetzen.</string>
     <string name="welcome">Willkommen</string>
     <string name="welcome_acknowledge">ALLES KLAR</string>
@@ -71,9 +59,6 @@
     <string name="google_welcome_rationale">Klicke auf das angezeigte Icon in der Appbar, um alle deine Google-verbundenen Dienste zu vewalten. Klicke auch auf das Icon, wenn du ein <b>Backup</b> erstellen willst.</string>
     <string name="camera_permission_title">Kamera</string>
     <string name="scanner_not_operational">Die App wird gerade noch konfiguriert</string>
-    <string name="error_google_photo">Profilbild konnte nicht geladen werden</string>
-    <string name="error_google_logout">Oh, da ist was schiefgelaufen!</string>
-    <string name="error_google_login">Oh, ich kann mich nicht in den Account einloggen!</string>
     <string name="rate_book">Buch bewerten</string>
     <string name="rate">Bewerten</string>
     <string name="ratings_default">Es ist okay!</string>
@@ -116,15 +101,10 @@
     <string name="search_online_hint">Kein Treffer in deiner Bibliothek. Sollen wir online suchen?</string>
     <string name="search_invalid_query">Ungültige Sucheingabe</string>
     <string name="no_internet_connection">Zurzeit keine Internetverbindung möglich</string>
-    <string name="popup_item_book_cover_camera">Kamera</string>
-    <string name="popup_item_book_cover_gallery">Gallery</string>
-    <string name="prefs_page_overlay_title">Seiten-Overlay</string>
-    <string name="prefs_page_overlay_summary">Zeige ein Overlay mit der aktuellen Seitenzahl auf jeden Buch</string>
     <string name="download_attachment_error">Oh, da ist was mächtig schiefgelaufen!</string>
     <string name="tab_suggestions">Vorschläge</string>
     <string name="menu_main_sort">Bücher sortieren</string>
     <string name="anonymous_user">Unbekannter Bücherwurm</string>
-    <string name="menu_main_supporter">Unterstützer-Badge</string>
     <string name="sort_strategy_default">Standard</string>
     <string name="sort_strategy_author">Autor</string>
     <string name="sort_strategy_title">Buchtitel</string>
@@ -134,7 +114,6 @@
     <string name="sort_strategy_author_hint">Die Bücher werden sortiert nach dem Namen des Autors.  Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
     <string name="sort_strategy_progress_hint">Die Bücher werden nach deinem Lesefortschritt sortiert. Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
     <string name="sort_strategy_title_hint">Die Bücher werden nach dem Buchtitel sortiert. Ein manuelles Ändern der Reihenfolge stellt die Sortierstrategie auf Standard zurück.</string>
-    <string name="scan_network_not_available">Bitte schalte deine Internetverbindung ein, wenn du Bücher scannen willst!</string>
     <string name="invalid_time_range_wishlist">Datum der Wunschliste muss vor den anderen Daten liegen…</string>
     <string name="invalid_time_range_start">Das Startdatum muss zwischen den anderen Daten liegen…</string>
     <string name="invalid_time_range_end">Das Enddatum muss später sein als die anderen Daten…</string>
@@ -143,7 +122,6 @@
     <string name="menu_fab_manual">Manuell eingeben</string>
     <string name="sort_strategy_pages">Seiten</string>
     <string name="sort_strategy_pages_hint">Die Bücher werden aufsteigend nach Seitenzahl sortiert.</string>
-    <string name="in_app_purchase_thanks">Danke für deine Unterstützung!</string>
     <string name="manual_add_title">Titel</string>
     <string name="manual_add_authors">Autor(en)</string>
     <string name="manual_add_pages">Seitenzahl</string>
@@ -159,7 +137,6 @@
     <string name="statistics_first_five_star">Erstes 5-Sterne Buch: %s</string>
     <string name="statistics_most_reading_month">%s Bücher in %s gelesen</string>
     <string name="statistics_duration_book">%s Tage für %s benötigt</string>
-    <string name="statistics_book_duration_default">Keine Daten verfügbar</string>
     <string name="statistics_avg_books_per_month">%s Bücher pro Monat</string>
     <string name="statistics_favourite_author">Lieblingsautor: %s</string>
     <string name="statistics_books_waiting">%s Bücher warten auf dich</string>
@@ -167,14 +144,13 @@
     <string name="statistics_pages_waiting">%s Seiten warten auf dich</string>
     <string name="statistics_pages_read">%s Seiten schon gelesen</string>
     <string name="statistics_average_rating">Durchschnittliche Bewertung: %s</string>
-    <string name="supporter_badge_rationale">Hi, mein Name ist Martin und ich bin der Entwickler dieser kleinen, aber doch praktischen Buchtracking App. Ich bin der Überzeugung, dass jeder Zugang zu Software haben sollte und seien wir uns ehrlich, Werbung nervt! So bin ich auch kein Freund von Premium Versionen. Falls du mich trotzdem unterstützen möchtest kannst du einen Unterstützer-Badge erwerben. Klarstellung: Du wirst keine zusätzlichen Features erhalten, wenn du einen Badge erwirbst.</string>
-    <string name="in_app_price_premium">Spende %1$s %2$s</string>
-    <string name="in_app_price_standard">Spende %1$s %2$s</string>
+
     <string name="prefs_category_books_general">Allgemein</string>
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Verwende ein dunkles Thema für die App</string>
     <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
     <string name="backup_connection_error_google_drive">Keine Verbindung zu Google Drive möglich!</string>
     <string name="dark_mode_applied">Das Thema wird beim nächsten Start aktiviert.</string>
+    <string name="error_google_login">Wir können dich leider nicht einloggen!</string>
 
 </resources>

@@ -27,5 +27,4 @@ class FirebaseModule {
         remoteConfig.setDefaults(R.xml.remote_config_defaults)
         return remoteConfig
     }
-
 }

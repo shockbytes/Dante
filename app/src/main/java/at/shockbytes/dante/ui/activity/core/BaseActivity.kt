@@ -19,7 +19,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open val enableActivityTransition: Boolean = true
 
-    protected val compositeDisposable: CompositeDisposable =  CompositeDisposable()
+    protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,11 +54,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun startActivityDelayed(intent: Intent, bundle: Bundle?, delay: Long) {
-        Handler().postDelayed ( {
+        Handler().postDelayed({
             startActivity(intent, bundle)
         }, delay)
     }
 
     abstract fun injectToGraph(appComponent: AppComponent)
-
 }

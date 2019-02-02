@@ -70,7 +70,7 @@ class BarcodeGraphic(overlay: GraphicOverlay<*>) : GraphicOverlay.Graphic(overla
         rect.top = translateY(rect.top)
         rect.right = translateX(rect.right)
         rect.bottom = translateY(rect.bottom)
-        //canvas.drawRect(rect, mRectPaint);
+        // canvas.drawRect(rect, mRectPaint);
 
         val x = ((rect.right - rect.left) / 12).toInt()
 

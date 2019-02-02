@@ -8,14 +8,13 @@ import android.view.View
 import at.shockbytes.dante.R
 
 /**
- * @author Martin Macheiner
- * Date: 16.01.2018.
+ * Author: Martin Macheiner
+ * Date: 16.01.2018
  *
  * DialogFragment without usual frame and DialogFragment specific buttons
  *
  */
-
-abstract class InteractiveViewDialogFragment<T>: BaseDialogFragment() {
+abstract class InteractiveViewDialogFragment<T> : BaseDialogFragment() {
 
     protected var applyListener: ((T) -> Unit)? = null
 
@@ -37,12 +36,10 @@ abstract class InteractiveViewDialogFragment<T>: BaseDialogFragment() {
         return this
     }
 
-
     override fun onResume() {
         super.onResume()
         setupViews()
     }
 
     abstract fun setupViews()
-
 }

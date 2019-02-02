@@ -5,11 +5,10 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 
 /**
- * @author  Martin Macheiner
- * Date:    06-Jun-18.
+ * Author:  Martin Macheiner
+ * Date:    06.06.2018
  */
-
-class SuggestionsFragment: BaseFragment() {
+class SuggestionsFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_suggestions
 
@@ -28,7 +27,6 @@ class SuggestionsFragment: BaseFragment() {
         // Not needed...
     }
 
-
     companion object {
 
         fun newInstance(): SuggestionsFragment {
@@ -37,8 +35,5 @@ class SuggestionsFragment: BaseFragment() {
             fragment.arguments = args
             return fragment
         }
-
-
     }
-
 }

@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.fragment
 
-
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -30,7 +29,6 @@ import kotlinx.android.synthetic.main.fragment_download_book.*
 import timber.log.Timber
 import javax.inject.Inject
 
-
 class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
 
@@ -44,9 +42,12 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
 
         fun onCloseOnError()
 
-        fun colorSystemBars(actionBarColor: Int?, actionBarTextColor: Int?,
-                            statusBarColor: Int?, title: String?)
-
+        fun colorSystemBars(
+            actionBarColor: Int?,
+            actionBarTextColor: Int?,
+            statusBarColor: Int?,
+            title: String?
+        )
     }
 
     private val drawableResList: List<Pair<Int, TextView>> by lazy {
@@ -63,13 +64,13 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
     }
 
     @Inject
-    protected lateinit var bookDownloader: BookDownloader
+    lateinit var bookDownloader: BookDownloader
 
     @Inject
-    protected lateinit var bookDao: BookEntityDao
+    lateinit var bookDao: BookEntityDao
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     private var bookAdapter: BookAdapter? = null
     private var listener: OnBookDownloadedListener? = null
@@ -108,14 +109,12 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         btnDownloadFragmentDone.setOnClickListener {
             finishBookDownload(BookState.READ)
         }
-
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         listener = context as? OnBookDownloadedListener
     }
-
 
     override fun onImageLoadingFailed(e: Exception?) {
         Timber.e(e)
@@ -244,7 +243,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         if (!address.isNullOrEmpty()) {
             context?.let { ctx ->
                 imageLoader.loadImage(ctx, address, imgViewDownloadFragmentCover,
-                        callback = this, callbackHandleValues = Pair(false, true))
+                        callback = this, callbackHandleValues = Pair(first = false, second = true))
             }
         } else {
             imgViewDownloadFragmentCover.setImageResource(R.drawable.ic_placeholder)
@@ -253,7 +252,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
 
     private fun setupOtherSuggestionsRecyclerView(books: List<BookEntity>) {
 
-        bookAdapter = BookAdapter(context!!, books.toMutableList(), BookState.READ, imageLoader,null, false)
+        bookAdapter = BookAdapter(context!!, books.toMutableList(), BookState.READ, imageLoader, null, false)
         recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         bookAdapter?.onItemClickListener = this
         recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
@@ -279,7 +278,6 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
             // Log this message, because this should not happen
             Timber.e(IllegalArgumentException("Cannot show error layout, because DownloadBookFragment is not attached to Activity"))
         }
-
     }
 
     // --------------------------------------------------------------------
@@ -296,6 +294,4 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
             return fragment
         }
     }
-
-
 }

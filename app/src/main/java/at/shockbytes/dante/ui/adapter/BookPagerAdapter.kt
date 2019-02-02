@@ -9,14 +9,15 @@ import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 
-
 /**
  * Author:  Martin Macheiner
  * Date:    30.08.2016
  */
-class BookPagerAdapter(private val context: Context,
-                       private val enableSuggestions: Boolean = false,
-                       fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class BookPagerAdapter(
+    private val context: Context,
+    private val enableSuggestions: Boolean = false,
+    fm: FragmentManager
+) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         return if (position < COUNT_STANDARD) {
@@ -44,5 +45,4 @@ class BookPagerAdapter(private val context: Context,
         private const val COUNT_STANDARD = 3
         private const val COUNT_SUGGESTIONS = 4
     }
-
 }

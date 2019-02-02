@@ -31,5 +31,4 @@ class AmazonBookDownloader(private val api: AmazonItemLookupApi) : BookDownloade
     private fun createSignature(): String {
         return ""
     }
-
 }

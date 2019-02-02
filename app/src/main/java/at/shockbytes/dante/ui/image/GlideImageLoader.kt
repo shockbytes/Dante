@@ -28,51 +28,57 @@ import io.reactivex.schedulers.Schedulers
  */
 object GlideImageLoader : ImageLoader {
 
-    override fun loadImage(context: Context,
-                           url: String,
-                           target: ImageView,
-                           @DrawableRes placeholder: Int,
-                           circular: Boolean,
-                           callback: ImageLoadingCallback?,
-                           callbackHandleValues: Pair<Boolean, Boolean>?) {
-
+    override fun loadImage(
+        context: Context,
+        url: String,
+        target: ImageView,
+        @DrawableRes placeholder: Int,
+        circular: Boolean,
+        callback: ImageLoadingCallback?,
+        callbackHandleValues: Pair<Boolean, Boolean>?
+    ) {
         val request = Glide.with(context).load(checkUrl(url))
                 .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
 
-    override fun loadImageResource(context: Context,
-                                   @DrawableRes resource: Int,
-                                   target: ImageView,
-                                   @DrawableRes placeholder: Int,
-                                   circular: Boolean,
-                                   callback: ImageLoadingCallback?,
-                                   callbackHandleValues: Pair<Boolean, Boolean>?) {
+    override fun loadImageResource(
+        context: Context,
+        @DrawableRes resource: Int,
+        target: ImageView,
+        @DrawableRes placeholder: Int,
+        circular: Boolean,
+        callback: ImageLoadingCallback?,
+        callbackHandleValues: Pair<Boolean, Boolean>?
+    ) {
         val request = Glide.with(context).load(resource)
                 .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
 
-    override fun loadImageUri(context: Context,
-                              uri: Uri,
-                              target: ImageView,
-                              placeholder: Int,
-                              circular: Boolean,
-                              callback: ImageLoadingCallback?,
-                              callbackHandleValues: Pair<Boolean, Boolean>?) {
-
+    override fun loadImageUri(
+        context: Context,
+        uri: Uri,
+        target: ImageView,
+        placeholder: Int,
+        circular: Boolean,
+        callback: ImageLoadingCallback?,
+        callbackHandleValues: Pair<Boolean, Boolean>?
+    ) {
         val request = Glide.with(context).load(uri)
                 .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
 
-    override fun loadImageWithCornerRadius(context: Context,
-                                           url: String,
-                                           target: ImageView,
-                                           @DrawableRes placeholder: Int,
-                                           @Dimension cornerDimension: Int,
-                                           callback: ImageLoadingCallback?,
-                                           callbackHandleValues: Pair<Boolean, Boolean>?) {
+    override fun loadImageWithCornerRadius(
+        context: Context,
+        url: String,
+        target: ImageView,
+        @DrawableRes placeholder: Int,
+        @Dimension cornerDimension: Int,
+        callback: ImageLoadingCallback?,
+        callbackHandleValues: Pair<Boolean, Boolean>?
+    ) {
         val request = Glide.with(context).load(checkUrl(url))
                 .apply(RequestOptions()
                         .placeholder(DanteUtils.vector2Drawable(context, placeholder))
@@ -93,39 +99,49 @@ object GlideImageLoader : ImageLoader {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
     }
 
-
     // --------------------------------------------------------------------------------------------
 
-    private fun executeRequest(requestCopy: RequestBuilder<Drawable>,
-                               target: ImageView,
-                               callback: ImageLoadingCallback?,
-                               callbackHandleValues: Pair<Boolean, Boolean>?) {
-
+    private fun executeRequest(
+        requestCopy: RequestBuilder<Drawable>,
+        target: ImageView,
+        callback: ImageLoadingCallback?,
+        callbackHandleValues: Pair<Boolean, Boolean>?
+    ) {
         var request = requestCopy
         if (callback != null && callbackHandleValues != null) {
             val (handleReady, handleError) = callbackHandleValues
 
             request = request.listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?,
-                                          target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
                     callback.onImageLoadingFailed(e)
                     return handleError
                 }
 
-                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?,
-                                             dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
                     callback.onImageResourceReady(resource)
                     return handleReady
                 }
             })
         }
-
         request.into(target)
     }
 
-    private fun getRequestOptions(context: Context,
-                                  isCircular: Boolean,
-                                  placeholder: Int): RequestOptions {
+    private fun getRequestOptions(
+        context: Context,
+        isCircular: Boolean,
+        placeholder: Int
+    ): RequestOptions {
         var options = RequestOptions()
 
         if (isCircular) {
@@ -138,9 +154,8 @@ object GlideImageLoader : ImageLoader {
     }
 
     private fun checkUrl(url: String): String {
-        return if(url.startsWith("http://")) {
+        return if (url.startsWith("http://")) {
             url.replace("http://", "https://")
         } else url
     }
-
 }

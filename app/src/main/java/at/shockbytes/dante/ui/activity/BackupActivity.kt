@@ -13,13 +13,12 @@ import at.shockbytes.dante.ui.fragment.BackupFragment
 import timber.log.Timber
 import javax.inject.Inject
 
-
 class BackupActivity : ContainerBackNavigableActivity() {
 
     override val displayFragment: Fragment = BackupFragment.newInstance()
 
     @Inject
-    protected lateinit var backupManager: BackupManager
+    lateinit var backupManager: BackupManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +45,4 @@ class BackupActivity : ContainerBackNavigableActivity() {
             return Intent(context, BackupActivity::class.java)
         }
     }
-
-
 }

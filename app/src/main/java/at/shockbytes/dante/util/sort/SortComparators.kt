@@ -4,7 +4,7 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.util.removeBrackets
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    14.06.2018
  */
 class SortComparators {
@@ -38,7 +38,6 @@ class SortComparators {
                 primaryAuthor.split(" ").last()
             } else primaryAuthor
         }
-
     }
 
     private class TitleComparator : Comparator<BookEntity> {

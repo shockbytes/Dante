@@ -14,12 +14,12 @@ import at.shockbytes.util.view.EqualSpaceItemDecoration
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import javax.inject.Inject
 
-class StatisticsFragment: BaseFragment() {
+class StatisticsFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_statistics
 
     @Inject
-    protected lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: StatisticsViewModel
 
@@ -59,5 +59,4 @@ class StatisticsFragment: BaseFragment() {
             return StatisticsFragment()
         }
     }
-
 }

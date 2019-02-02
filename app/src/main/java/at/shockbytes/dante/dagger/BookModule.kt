@@ -29,5 +29,4 @@ class BookModule {
     fun provideBookDownloader(api: GoogleBooksApi): BookDownloader {
         return GoogleBooksDownloader(api)
     }
-
 }

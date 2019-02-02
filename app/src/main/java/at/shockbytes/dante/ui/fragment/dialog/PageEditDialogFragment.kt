@@ -19,7 +19,6 @@ import kotterknife.bindView
 
 class PageEditDialogFragment : DialogFragment() {
 
-    private val separator: View by bindView(R.id.dialogfragment_paging_separator)
     private val editPages: EditText by bindView(R.id.dialogfragment_paging_edit_pages)
     private val editCurrentPages: EditText by bindView(R.id.dialogfragment_paging_edit_current_page)
 
@@ -27,7 +26,6 @@ class PageEditDialogFragment : DialogFragment() {
 
     private var currentPage: Int = 0
     private var pages: Int = 0
-    private var showCurrentPage: Boolean = true
 
     private val pageView: View
         get() = LayoutInflater.from(context)
@@ -37,7 +35,6 @@ class PageEditDialogFragment : DialogFragment() {
         super.onCreate(savedInstanceState)
         pages = arguments?.getInt(ARG_PAGES) ?: 0
         currentPage = arguments?.getInt(ARG_CURRENT_PAGE) ?: 0
-        showCurrentPage = arguments?.getBoolean(ARG_PAGE_TRACKING) ?: true
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -82,33 +79,22 @@ class PageEditDialogFragment : DialogFragment() {
     }
 
     private fun setupViews() {
-
-        if (showCurrentPage) {
-            editCurrentPages.setText(currentPage.toString())
-        } else {
-            editCurrentPages.visibility = View.GONE
-            separator.visibility = View.GONE
-        }
+        editCurrentPages.setText(currentPage.toString())
         editPages.setText(pages.toString())
     }
 
     companion object {
 
-        private const val ARG_PAGE_TRACKING = "arg_page_tracking"
         private const val ARG_CURRENT_PAGE = "arg_current_page"
         private const val ARG_PAGES = "arg_pages"
 
-        fun newInstance(current: Int, pages: Int,
-                        showCurrentPage: Boolean): PageEditDialogFragment {
+        fun newInstance(current: Int, pages: Int): PageEditDialogFragment {
             val fragment = PageEditDialogFragment()
             val args = Bundle()
             args.putInt(ARG_CURRENT_PAGE, current)
             args.putInt(ARG_PAGES, pages)
-            args.putBoolean(ARG_PAGE_TRACKING, showCurrentPage)
             fragment.arguments = args
             return fragment
         }
-
     }
-
 }

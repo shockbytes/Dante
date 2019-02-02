@@ -137,5 +137,4 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
                     .start()
         }
     }
-
 }

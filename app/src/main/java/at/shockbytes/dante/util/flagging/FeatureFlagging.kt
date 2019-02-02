@@ -1,13 +1,12 @@
 package at.shockbytes.dante.util.flagging
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    28.08.2018
  */
 interface FeatureFlagging {
 
-    val showSupportersBadge: Boolean
+    operator fun get(flag: FeatureFlag): Boolean
 
-    val showBookSuggestions: Boolean
-
+    fun updateFlag(key: String, value: Boolean)
 }

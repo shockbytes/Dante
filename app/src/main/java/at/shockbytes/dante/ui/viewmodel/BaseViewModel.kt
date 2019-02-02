@@ -4,10 +4,10 @@ import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     protected val compositeDisposable = CompositeDisposable()
 
@@ -17,5 +17,4 @@ abstract class BaseViewModel: ViewModel() {
         super.onCleared()
         compositeDisposable.clear()
     }
-
 }

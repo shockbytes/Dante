@@ -13,7 +13,7 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    14.06.2018
  */
 class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit>() {
@@ -22,7 +22,7 @@ class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit>() {
         get() = LayoutInflater.from(context).inflate(R.layout.dialogfragment_sort, null, false)
 
     @Inject
-    protected lateinit var settings: DanteSettings
+    lateinit var settings: DanteSettings
 
     private val posIdMap = mapOf(Pair(0, R.id.radioBtnDialogFragmentSortDefault),
             Pair(1, R.id.radioBtnDialogFragmentSortAuthor),
@@ -75,5 +75,4 @@ class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit>() {
             return SortStrategyDialogFragment()
         }
     }
-
 }

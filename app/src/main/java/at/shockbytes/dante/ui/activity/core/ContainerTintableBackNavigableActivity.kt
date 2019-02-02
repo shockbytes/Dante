@@ -18,5 +18,4 @@ abstract class ContainerTintableBackNavigableActivity : TintableBackNavigableAct
                 .replace(android.R.id.content, displayFragment)
                 .commit()
     }
-
 }

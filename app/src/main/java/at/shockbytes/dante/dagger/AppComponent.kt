@@ -1,8 +1,26 @@
 package at.shockbytes.dante.dagger
 
-import at.shockbytes.dante.ui.activity.*
-import at.shockbytes.dante.ui.fragment.*
-import at.shockbytes.dante.ui.fragment.dialog.*
+import at.shockbytes.dante.ui.activity.BackupActivity
+import at.shockbytes.dante.ui.activity.BookRetrievalActivity
+import at.shockbytes.dante.ui.activity.DetailActivity
+import at.shockbytes.dante.ui.activity.MainActivity
+import at.shockbytes.dante.ui.activity.SearchActivity
+import at.shockbytes.dante.ui.fragment.BackupFragment
+import at.shockbytes.dante.ui.fragment.BookDetailFragment
+import at.shockbytes.dante.ui.fragment.DownloadBookFragment
+import at.shockbytes.dante.ui.fragment.MainBookFragment
+import at.shockbytes.dante.ui.fragment.ManualAddFragment
+import at.shockbytes.dante.ui.fragment.MenuFragment
+import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
+import at.shockbytes.dante.ui.fragment.SearchFragment
+import at.shockbytes.dante.ui.fragment.SettingsFragment
+import at.shockbytes.dante.ui.fragment.StatisticsFragment
+import at.shockbytes.dante.ui.fragment.SuggestionsFragment
+import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -55,8 +73,6 @@ interface AppComponent {
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 
     fun inject(dialogFragment: SortStrategyDialogFragment)
-
-    fun inject(dialogFragment: SupporterBadgeDialogFragment)
 
     fun inject(dialogFragment: NotesDialogFragment)
 

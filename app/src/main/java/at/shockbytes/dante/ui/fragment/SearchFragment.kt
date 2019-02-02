@@ -22,7 +22,6 @@ import kotlinx.android.synthetic.main.fragment_search.*
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-
 /**
  * Author:  Martin Macheiner
  * Date:    03.02.2018
@@ -32,10 +31,10 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
     override val layoutId = R.layout.fragment_search
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     @Inject
-    protected lateinit var vmFactory: ViewModelFactory
+    lateinit var vmFactory: ViewModelFactory
 
     private lateinit var viewModel: SearchViewModel
 

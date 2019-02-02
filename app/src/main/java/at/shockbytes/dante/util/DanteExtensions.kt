@@ -20,11 +20,9 @@ import java.math.RoundingMode
 import kotlin.Double.Companion.NaN
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    06-Jun-18.
  */
-
-
 fun String.colored(@ColorInt color: Int): SpannableString {
     val spannable = SpannableString(this)
     spannable.setSpan(ForegroundColorSpan(color),

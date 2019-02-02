@@ -26,8 +26,10 @@ import com.google.android.gms.vision.barcode.Barcode
  * to an overlay, update the graphics as the item changes, and remove the graphics when the item
  * goes away.
  */
-class BarcodeGraphicTracker(private val mOverlay: GraphicOverlay<BarcodeGraphic>,
-                                     private val mGraphic: BarcodeGraphic) : Tracker<Barcode>() {
+class BarcodeGraphicTracker(
+    private val mOverlay: GraphicOverlay<BarcodeGraphic>,
+    private val mGraphic: BarcodeGraphic
+) : Tracker<Barcode>() {
 
     /**
      * Start tracking the detected item instance within the item overlay.

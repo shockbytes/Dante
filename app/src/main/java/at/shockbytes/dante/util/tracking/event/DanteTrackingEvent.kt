@@ -47,16 +47,9 @@ sealed class DanteTrackingEvent(val name: String, val props: List<TrackingProper
     class RatingEvent(rating: Int) : DanteTrackingEvent("bookRating",
             listOf(TrackingProperty("rated", rating)))
 
-    class ShowSupporterBadgePage : DanteTrackingEvent("showSupporterBadge",
-            listOf(TrackingProperty("supporterBadgeClick", 1)))
-
-    class BuySupporterBadgeEvent(badgeType: String) : DanteTrackingEvent("buySupporterBadge",
-            listOf(TrackingProperty("badgeType", badgeType)))
-
     class OpenManualAddViewEvent : DanteTrackingEvent("bookAddManually",
             listOf(TrackingProperty("bookAddManually", 1)))
 
     class DarkModeChangeEvent(from: Boolean, to: Boolean) : DanteTrackingEvent("darkModeChanged",
             listOf(TrackingProperty("from", from), TrackingProperty("to", to)))
-
 }

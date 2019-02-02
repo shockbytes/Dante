@@ -1,6 +1,8 @@
 package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
+import android.os.Build
+import android.support.constraint.Group
 import android.support.v7.util.DiffUtil
 import android.support.v7.view.menu.MenuBuilder
 import android.support.v7.view.menu.MenuPopupHelper
@@ -10,33 +12,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotterknife.bindView
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import java.util.*
-import kotlin.math.roundToInt
-
+import java.util.Collections
 
 /**
  * Author:  Martin Macheiner
  * Date:    30.12.2017
  */
-class BookAdapter(context: Context,
-                  extData: MutableList<BookEntity> = mutableListOf(),
-                  private val state: BookState,
-                  private val imageLoader: ImageLoader,
-                  private val popupListener: OnBookPopupItemSelectedListener? = null,
-                  private val showOverflow: Boolean = true,
-                  private val settings: DanteSettings? = null)
-    : BaseAdapter<BookEntity>(context, extData), ItemTouchHelperAdapter {
+class BookAdapter(
+    context: Context,
+    extData: MutableList<BookEntity> = mutableListOf(),
+    private val state: BookState,
+    private val imageLoader: ImageLoader,
+    private val popupListener: OnBookPopupItemSelectedListener? = null,
+    private val showOverflow: Boolean = true
+) : BaseAdapter<BookEntity>(context, extData), ItemTouchHelperAdapter {
 
     interface OnBookPopupItemSelectedListener {
 
@@ -94,16 +95,15 @@ class BookAdapter(context: Context,
     inner class ViewHolder(itemView: View) : BaseAdapter<BookEntity>.ViewHolder(itemView),
             PopupMenu.OnMenuItemClickListener {
 
-        private val txtTitle: TextView by bindView(R.id.item_book_txt_title)
-        private val txtSubTitle: TextView by bindView(R.id.item_book_txt_subtitle)
-        private val txtAuthor: TextView by bindView(R.id.item_book_txt_author)
-        private val imgViewThumb: ImageView by bindView(R.id.item_book_img_thumb)
-        private val imgBtnOverflow: ImageButton by bindView(R.id.item_book_img_overflow)
+        private val txtTitle by bindView<TextView>(R.id.item_book_txt_title)
+        private val txtSubTitle by bindView<TextView>(R.id.item_book_txt_subtitle)
+        private val txtAuthor by bindView<TextView>(R.id.item_book_txt_author)
+        private val imgViewThumb by bindView<ImageView>(R.id.item_book_img_thumb)
+        private val imgBtnOverflow by bindView<ImageButton>(R.id.item_book_img_overflow)
 
-        private val containerPageOverlay: View by bindView(R.id.item_book_container_page_overlay)
-        private val pbPageOverlay: MaterialProgressBar by bindView(R.id.item_book_pb_page_overlay)
-        private val txtPageOverlay: TextView by bindView(R.id.item_book_txt_page_overlay)
-
+        private val groupProgress by bindView<Group>(R.id.item_book_group_progress)
+        private val pbProgress by bindView<ProgressBar>(R.id.item_book_pb)
+        private val txtProgress by bindView<TextView>(R.id.item_book_tv_progress)
 
         init {
             setupOverflowMenu()
@@ -112,7 +112,7 @@ class BookAdapter(context: Context,
         override fun bindToView(t: BookEntity) {
             updateTexts(t)
             updateImageThumbnail(t)
-            updatePageOverlay(t)
+            updateProgress(t)
         }
 
         override fun onMenuItemClick(item: MenuItem): Boolean {
@@ -128,27 +128,30 @@ class BookAdapter(context: Context,
                 R.id.popup_item_move_to_done -> popupListener?.onMoveToDone(content)
                 R.id.popup_item_share -> popupListener?.onShare(content)
                 R.id.popup_item_delete -> popupListener?.onDelete(content)
-                else -> { }
+                else -> Unit
             }
 
             return true
         }
 
-        private fun updatePageOverlay(t: BookEntity) {
+        private fun updateProgress(t: BookEntity) {
 
-            if (settings?.pageOverlayEnabled == true && t.reading && t.hasPages) {
-                val currentPage = t.currentPage.toDouble()
-                val pages = t.pageCount.toDouble()
-                val pagePercentage: Int = if (pages > 0) {
-                    ((currentPage / pages) * 100).roundToInt()
-                } else 0
+            val showProgress = t.reading && t.hasPages
 
-                pbPageOverlay.progress = pagePercentage
-                txtPageOverlay.text = context.getString(R.string.percentage_formatter, pagePercentage)
-                containerPageOverlay.visibility = View.VISIBLE
-            } else {
-                containerPageOverlay.visibility = View.GONE
+            if (showProgress) {
+                val progress = DanteUtils.computePercentage(
+                        t.currentPage.toDouble(),
+                        t.pageCount.toDouble()
+                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    pbProgress.setProgress(progress, true)
+                } else {
+                    pbProgress.progress = progress
+                }
+                txtProgress.text = context.getString(R.string.percentage_formatter, progress)
             }
+
+            groupProgress.setVisible(showProgress)
         }
 
         private fun updateImageThumbnail(t: BookEntity) {
@@ -157,9 +160,10 @@ class BookAdapter(context: Context,
                 val corners = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                 imageLoader.loadImageWithCornerRadius(context, t.thumbnailAddress!!, imgViewThumb,
                         cornerDimension = corners)
-            } else
-            // Books with no image will recycle another cover if not cleared here
+            } else {
+                // Books with no image will recycle another cover if not cleared here
                 imgViewThumb.setImageResource(R.drawable.ic_placeholder)
+            }
         }
 
         private fun updateTexts(t: BookEntity) {
@@ -178,7 +182,7 @@ class BookAdapter(context: Context,
             popupMenu.menuInflater.inflate(R.menu.popup_item, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener(this)
 
-            val menuHelper =  MenuPopupHelper(context, popupMenu.menu as MenuBuilder, imgBtnOverflow);
+            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, imgBtnOverflow)
             menuHelper.setForceShowIcon(true)
 
             popupMenu.hideSelectedPopupItem()
@@ -196,7 +200,5 @@ class BookAdapter(context: Context,
             }
             item?.isVisible = false
         }
-
     }
-
 }

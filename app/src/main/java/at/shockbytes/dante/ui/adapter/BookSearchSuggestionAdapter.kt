@@ -13,14 +13,15 @@ import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 
 /**
- * @author Martin Macheiner
+ * Author: Martin Macheiner
  * Date: 03.02.2018.
  */
-
-class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSearchItem>,
-                                  private val imageLoader: ImageLoader,
-                                  private val addClickedListener: (BookSearchItem) -> Unit)
-    : BaseAdapter<BookSearchItem>(context, extData) {
+class BookSearchSuggestionAdapter(
+    context: Context,
+    extData: MutableList<BookSearchItem>,
+    private val imageLoader: ImageLoader,
+    private val addClickedListener: (BookSearchItem) -> Unit
+) : BaseAdapter<BookSearchItem>(context, extData) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_book_search_suggestion, parent, false))
@@ -38,7 +39,7 @@ class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSea
             txtAuthor.text = t.author
 
             btnAdd.visibility = if (t.bookId < 0) View.VISIBLE else View.GONE
-            btnAdd.setOnClickListener{
+            btnAdd.setOnClickListener {
                 addClickedListener.invoke(t)
             }
 
@@ -48,7 +49,5 @@ class BookSearchSuggestionAdapter(context: Context, extData: MutableList<BookSea
                 }
             }
         }
-
     }
-
 }

@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
-import at.shockbytes.dante.util.SingleLiveEvent
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,10 +22,10 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
 
     val book = MutableLiveData<BookEntity>()
 
-    val showBookFinishedDialog = SingleLiveEvent<String>()
-    val showPagesDialog = SingleLiveEvent<Triple<Int, Int, Boolean>>()
-    val showNotesDialog = SingleLiveEvent<Triple<String, String?, String>>()
-    val showRatingDialog = SingleLiveEvent<Triple<String, String?, Int>>()
+    val showBookFinishedDialog = PublishSubject.create<String>()
+    val showPagesDialog = PublishSubject.create<Triple<Int, Int, Boolean>>()
+    val showNotesDialog = PublishSubject.create<Triple<String, String?, String>>()
+    val showRatingDialog = PublishSubject.create<Triple<String, String?, Int>>()
 
     init {
         poke()
@@ -42,21 +42,20 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
         }
     }
 
-
     fun requestNotesDialog() {
         val instance = book.value ?: return
-        showNotesDialog.postValue(Triple(instance.title, instance.thumbnailAddress, instance.notes
+        showNotesDialog.onNext(Triple(instance.title, instance.thumbnailAddress, instance.notes
                 ?: ""))
     }
 
     fun requestRatingDialog() {
         val instance = book.value ?: return
-        showRatingDialog.postValue(Triple(instance.title, instance.thumbnailAddress, instance.rating))
+        showRatingDialog.onNext(Triple(instance.title, instance.thumbnailAddress, instance.rating))
     }
 
     fun requestPageDialog() {
         val instance = book.value ?: return
-        showPagesDialog.postValue(Triple(instance.currentPage, instance.pageCount, instance.reading))
+        showPagesDialog.onNext(Triple(instance.currentPage, instance.pageCount, instance.reading))
     }
 
     // ------------------------------------------------------------
@@ -82,7 +81,7 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
         updateDaoAndObserver(copy)
 
         if (copy.currentPage == copy.pageCount) {
-            showBookFinishedDialog.postValue(copy.title)
+            showBookFinishedDialog.onNext(copy.title)
         }
     }
 
@@ -143,7 +142,7 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
         }
 
         // Start specific cases
-        if((start >= wishlist || wishlist == 0L) && (start <= end || end == 0L)) {
+        if ((start >= wishlist || wishlist == 0L) && (start <= end || end == 0L)) {
             return true
         }
 
@@ -159,5 +158,4 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
         bookDao.update(b)
         book.postValue(b)
     }
-
 }

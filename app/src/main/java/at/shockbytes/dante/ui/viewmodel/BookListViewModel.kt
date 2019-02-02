@@ -15,12 +15,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 /**
- * @author  Martin Macheiner
+ * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-class BookListViewModel @Inject constructor(private val bookDao: BookEntityDao,
-                                            private val settings: DanteSettings,
-                                            private val tracker: Tracker) : BaseViewModel() {
+class BookListViewModel @Inject constructor(
+    private val bookDao: BookEntityDao,
+    private val settings: DanteSettings,
+    private val tracker: Tracker
+) : BaseViewModel() {
 
     var state: BookState = BookState.READING
 
@@ -82,5 +84,4 @@ class BookListViewModel @Inject constructor(private val bookDao: BookEntityDao,
 
         tracker.trackEvent(DanteTrackingEvent.BookFinishedEvent(book))
     }
-
 }

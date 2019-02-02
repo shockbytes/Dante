@@ -7,11 +7,12 @@ import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
-import io.reactivex.android.schedulers.AndroidSchedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -21,38 +22,72 @@ import javax.inject.Inject
 class BookListViewModel @Inject constructor(
     private val bookDao: BookEntityDao,
     private val settings: DanteSettings,
-    private val tracker: Tracker
+    private val tracker: Tracker,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     var state: BookState = BookState.READING
+        set(value) {
+            field = value
+            loadBooks()
+        }
 
-    private val books = MutableLiveData<List<BookEntity>>()
+    sealed class BookLoadingState {
+
+        data class Success(val books: List<BookEntity>) : BookLoadingState()
+
+        data class Error(val throwable: Throwable) : BookLoadingState()
+
+        object Empty : BookLoadingState()
+    }
+
+    private val books = MutableLiveData<BookLoadingState>()
 
     private var sortComparator: Comparator<BookEntity> = SortComparators.of(settings.sortStrategy)
 
     init {
-        poke()
+        listenToSettings()
     }
 
-    override fun poke() {
+    override fun poke() = Unit
+
+    private fun loadBooks() {
         bookDao.bookObservable
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { fetchedBooks ->
-                    val displayBooks = fetchedBooks
+                .map { fetchedBooks ->
+                    fetchedBooks
                             .filter { it.state == state }
                             .sortedWith(sortComparator)
-                    books.value = displayBooks
-                }.addTo(compositeDisposable)
+                }
+                .subscribe({ displayBooks ->
+                    if (displayBooks.isNotEmpty()) {
+                        books.postValue(BookLoadingState.Success(displayBooks))
+                    } else {
+                        books.postValue(BookLoadingState.Empty)
+                    }
+                }, { throwable ->
+                    Timber.e(throwable, "Cannot fecth books from storage!")
+                    books.postValue(BookLoadingState.Error(throwable))
+                })
+                .addTo(compositeDisposable)
+    }
 
+    private fun listenToSettings() {
         settings.observeSortStrategy()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(schedulers.ui)
                 .subscribe {
                     sortComparator = SortComparators.of(it)
-                    books.value = books.value?.sortedWith(sortComparator)
+                    updateIfBooksLoaded()
                 }.addTo(compositeDisposable)
     }
 
-    fun getBooks(): LiveData<List<BookEntity>> = books
+    private fun updateIfBooksLoaded() {
+        val state = books.value
+        if (state is BookLoadingState.Success) {
+            books.postValue(state.copy(books = state.books.sortedWith(sortComparator)))
+        }
+    }
+
+    fun getBooks(): LiveData<BookLoadingState> = books
 
     fun deleteBook(book: BookEntity) {
         bookDao.delete(book.id)

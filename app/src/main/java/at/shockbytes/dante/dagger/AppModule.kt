@@ -7,6 +7,7 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.GoogleDriveBackupManager
 import at.shockbytes.dante.book.BookSuggestion
+import at.shockbytes.dante.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.signin.SignInManager
@@ -28,7 +29,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import io.realm.Realm
 import io.realm.RealmConfiguration
 import javax.inject.Named
 import javax.inject.Singleton
@@ -79,8 +79,8 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun provideRealm(): Realm {
-        return Realm.getInstance(RealmConfiguration.Builder()
+    fun provideRealmInstanceProvider(): RealmInstanceProvider {
+        return RealmInstanceProvider(RealmConfiguration.Builder()
                 .schemaVersion(DanteRealmMigration.migrationVersion)
                 .migration(DanteRealmMigration())
                 .build())

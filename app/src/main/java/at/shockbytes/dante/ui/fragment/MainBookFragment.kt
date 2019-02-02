@@ -83,14 +83,21 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     }
 
     override fun bindViewModel() {
-        viewModel.getBooks().observe(this, Observer {
-            it?.let { books ->
-                if (books.isNotEmpty()) {
+        viewModel.getBooks().observe(this, Observer { state ->
+
+            when (state) {
+                is BookListViewModel.BookLoadingState.Success -> {
                     updateEmptyView(hide = true, animate = false)
-                    bookAdapter.updateData(books)
+                    bookAdapter.updateData(state.books)
                     fragment_book_main_rv.smoothScrollToPosition(0)
-                } else {
+                }
+
+                is BookListViewModel.BookLoadingState.Empty -> {
                     updateEmptyView(hide = false, animate = true)
+                }
+
+                is BookListViewModel.BookLoadingState.Error -> {
+                    showSnackbar(getString(R.string.load_error), showLong = true)
                 }
             }
         })

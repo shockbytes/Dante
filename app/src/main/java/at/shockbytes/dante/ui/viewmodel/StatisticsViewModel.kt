@@ -8,7 +8,7 @@ import at.shockbytes.dante.book.statistics.StatisticsDisplayItem
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.roundDouble
-import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
@@ -20,14 +20,18 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
     }
 
     fun requestStatistics() {
-        bookDao.bookObservable.subscribe { books ->
-            BookStatistics.from(books)
-                    .map { statsToItems(it) }
-                    .subscribeOn(Schedulers.computation())
-                    .subscribe { items ->
-                        statisticsItems.postValue(items)
-                    }.addTo(compositeDisposable)
-        }.addTo(compositeDisposable)
+        bookDao.bookObservable
+                .flatMap { books ->
+                    BookStatistics.from(books)
+                            .map { statsToItems(it) }
+                            .toFlowable()
+                }
+                .subscribe({ items ->
+                    statisticsItems.postValue(items)
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
+                .addTo(compositeDisposable)
     }
 
     fun getStatistics(): LiveData<List<StatisticsDisplayItem>> = statisticsItems

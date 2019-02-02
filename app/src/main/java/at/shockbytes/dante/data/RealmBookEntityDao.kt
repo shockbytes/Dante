@@ -4,17 +4,18 @@ import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.realm.RealmBook
 import at.shockbytes.dante.book.realm.RealmBookConfig
+import at.shockbytes.dante.book.realm.RealmInstanceProvider
 import io.reactivex.Flowable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.realm.Case
-import io.realm.Realm
 import io.realm.Sort
 
 /**
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
+class RealmBookEntityDao(
+    private val realm: RealmInstanceProvider
+) : BookEntityDao {
 
     private val bookClass = RealmBook::class.java
     private val configClass = RealmBookConfig::class.java
@@ -26,21 +27,19 @@ class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
      */
     private val lastId: Long
         get() {
-            val config = realm.where(configClass).findFirst()
-                    ?: realm.createObject(configClass)
+            val config = realm.instance.where(configClass).findFirst()
+                    ?: realm.instance.createObject(configClass)
             return config.getLastPrimaryKey()
         }
 
     override val bookObservable: Flowable<List<BookEntity>>
-        get() = realm.where(bookClass)
+        get() = realm.instance.where(bookClass)
                 .findAllAsync().sort("id", Sort.DESCENDING)
                 .asFlowable()
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
                 .map { mapper.mapTo(it) }
 
     override fun get(id: Long): BookEntity? {
-        val book = realm.where(bookClass).equalTo("id", id).findFirst()
+        val book = realm.instance.where(bookClass).equalTo("id", id).findFirst()
         return if (book != null) {
             mapper.mapTo(book)
         } else null
@@ -48,30 +47,30 @@ class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
 
     override fun create(entity: BookEntity) {
 
-        realm.beginTransaction()
+        realm.instance.beginTransaction()
 
         val id = lastId
         entity.id = id
-        realm.copyToRealm(mapper.mapFrom(entity))
+        realm.instance.copyToRealm(mapper.mapFrom(entity))
 
-        realm.commitTransaction()
+        realm.instance.commitTransaction()
     }
 
     override fun update(entity: BookEntity) {
-        realm.executeTransaction {
+        realm.instance.executeTransaction { realm ->
             realm.copyToRealmOrUpdate(mapper.mapFrom(entity))
         }
     }
 
     override fun delete(id: Long) {
-        realm.executeTransaction {
+        realm.instance.executeTransaction { realm ->
             realm.where(bookClass)
                     .equalTo("id", id).findFirst()?.deleteFromRealm()
         }
     }
 
     override fun search(query: String): Flowable<List<BookEntity>> {
-        return realm.where(bookClass)
+        return realm.instance.where(bookClass)
                 .contains("title", query, Case.INSENSITIVE)
                 .findAll()
                 .asFlowable()
@@ -87,7 +86,7 @@ class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
     }
 
     private fun getBooks(): List<RealmBook> {
-        return realm.where(bookClass).findAll().toList()
+        return realm.instance.where(bookClass).findAll().toList()
     }
 
     private fun mergeBackupRestore(backupBooks: List<BookEntity>) {
@@ -103,10 +102,10 @@ class RealmBookEntityDao(private val realm: Realm) : BookEntityDao {
 
     private fun overwriteBackupRestore(backupBooks: List<BookEntity>) {
 
-        val stored = realm.where(bookClass).findAll()
-        realm.beginTransaction()
+        val stored = realm.instance.where(bookClass).findAll()
+        realm.instance.beginTransaction()
         stored.deleteAllFromRealm()
-        realm.commitTransaction()
+        realm.instance.commitTransaction()
 
         backupBooks.forEach { create(it) }
     }

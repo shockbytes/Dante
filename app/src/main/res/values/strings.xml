@@ -173,6 +173,7 @@
     <string name="backup_connection_error_google_drive">Cannot connect to Google Drive!</string>
     <string name="dark_mode_applied">The theme will change next restart.</string>
     <string name="error_google_login">We cannot log you into your Google Account!</string>
+    <string name="load_error">Cannot load books from storage</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

@@ -152,5 +152,6 @@
     <string name="backup_connection_error_google_drive">Keine Verbindung zu Google Drive möglich!</string>
     <string name="dark_mode_applied">Das Thema wird beim nächsten Start aktiviert.</string>
     <string name="error_google_login">Wir können dich leider nicht einloggen!</string>
+    <string name="load_error">Bücher können nicht geladen werden</string>
 
 </resources>

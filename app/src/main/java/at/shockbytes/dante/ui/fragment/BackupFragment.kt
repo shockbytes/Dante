@@ -45,7 +45,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     override fun setupViews() {
         context?.let { ctx ->
-            val adapter = BackupEntryAdapter(ctx, listOf())
+            val adapter = BackupEntryAdapter(ctx)
             fragment_backup_rv.layoutManager = LinearLayoutManager(ctx)
             adapter.onItemClickListener = this
             adapter.onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }

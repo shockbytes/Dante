@@ -16,8 +16,7 @@ import kotterknife.bindView
  * Author:  Martin Macheiner
  * Date:    22.04.2017.
  */
-class BackupEntryAdapter(cxt: Context, data: List<BackupEntry>)
-    : BaseAdapter<BackupEntry>(cxt, data.toMutableList()), ItemTouchHelperAdapter {
+class BackupEntryAdapter(cxt: Context) : BaseAdapter<BackupEntry>(cxt), ItemTouchHelperAdapter {
 
     var onItemDeleteClickListener: ((BackupEntry, Int) -> Unit)? = null
 

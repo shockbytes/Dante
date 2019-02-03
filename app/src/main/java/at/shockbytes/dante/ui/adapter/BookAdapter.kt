@@ -32,12 +32,11 @@ import java.util.Collections
  */
 class BookAdapter(
     context: Context,
-    extData: MutableList<BookEntity> = mutableListOf(),
     private val state: BookState,
     private val imageLoader: ImageLoader,
     private val popupListener: OnBookPopupItemSelectedListener? = null,
     private val showOverflow: Boolean = true
-) : BaseAdapter<BookEntity>(context, extData), ItemTouchHelperAdapter {
+) : BaseAdapter<BookEntity>(context), ItemTouchHelperAdapter {
 
     interface OnBookPopupItemSelectedListener {
 

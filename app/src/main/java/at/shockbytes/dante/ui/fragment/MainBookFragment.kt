@@ -112,7 +112,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
         // Initialize RecyclerView
         context?.let { ctx ->
-            bookAdapter = BookAdapter(ctx, mutableListOf(), bookState, imageLoader, this, true)
+            bookAdapter = BookAdapter(ctx, bookState, imageLoader, this, true)
             fragment_book_main_rv.layoutManager = layoutManager
             bookAdapter.onItemClickListener = this
             bookAdapter.onItemMoveListener = this

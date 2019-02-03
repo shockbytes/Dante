@@ -252,10 +252,21 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
 
     private fun setupOtherSuggestionsRecyclerView(books: List<BookEntity>) {
 
-        bookAdapter = BookAdapter(context!!, books.toMutableList(), BookState.READ, imageLoader, null, false)
-        recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        bookAdapter?.onItemClickListener = this
-        recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
+        context?.let { ctx ->
+            bookAdapter = BookAdapter(
+                    ctx,
+                    BookState.READ_LATER,
+                    imageLoader
+            ).apply {
+                //
+                this.data = books
+                        .map { it.state = BookState.READ_LATER; it }
+                        .toMutableList()
+            }
+            recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            bookAdapter?.onItemClickListener = this
+            recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
+        }
     }
 
     private fun showErrorLayout(error: Throwable?) {

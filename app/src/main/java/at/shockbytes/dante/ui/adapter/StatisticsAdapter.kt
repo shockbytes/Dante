@@ -12,7 +12,7 @@ import at.shockbytes.util.adapter.BaseAdapter
 import kotterknife.bindView
 import java.lang.IllegalArgumentException
 
-class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(context, mutableListOf()) {
+class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(context) {
 
     override fun getItemViewType(position: Int): Int {
         return if (data[position] is StatisticsDisplayItem.StatisticsHeaderItem) {

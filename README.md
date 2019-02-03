@@ -23,7 +23,7 @@ can simply keep track of your progress of all your books and their current state
 
 ### Version 3.3 - DETAILS & DEBTS
 - [ ] Fix BaseAdapter bug
-- [ ] New details page design
+- [x] New details page design
 - [x] Enable language selection for manual add
 - [x] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 - [x] Streamline Realm and move querying off the main thread (Provider pattern)

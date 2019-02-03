@@ -54,7 +54,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun setupViews() {
 
-        rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, mutableListOf(), imageLoader, addClickedListener)
+        rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, imageLoader, addClickedListener)
         rvAdapter.onItemClickListener = this
         fragment_search_rv.layoutManager = LinearLayoutManager(context)
         fragment_search_rv.adapter = rvAdapter

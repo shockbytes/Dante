@@ -58,7 +58,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
     }
 
     override fun onBookDownloaded(book: BookEntity) {
-        tracker.trackEvent(DanteTrackingEvent.BookScannedEvent(book, true))
+        tracker.trackEvent(DanteTrackingEvent.BookAddedEvent(book, viaSearchInterface = true))
         finishBookDownload()
     }
 

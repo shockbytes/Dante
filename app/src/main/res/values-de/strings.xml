@@ -154,4 +154,26 @@
     <string name="error_google_login">Wir können dich leider nicht einloggen!</string>
     <string name="load_error">Bücher können nicht geladen werden</string>
 
+
+    <string-array name="language_names">
+        <item>Andere</item>
+        <item>Englisch</item>
+        <item>Deutsch</item>
+        <item>Italienisch</item>
+        <item>Französisch</item>
+        <item>Spanisch</item>
+        <item>Portugiesisch</item>
+        <item>Holländisch</item>
+        <item>Chinesisch</item>
+        <item>Russisch</item>
+        <item>Swedisch</item>
+        <item>Norwegisch</item>
+        <item>Polisch</item>
+        <item>Romänisch</item>
+        <item>Kroatisch</item>
+        <item>Ungarisch</item>
+        <item>Indonesisch</item>
+        <item>Thai</item>
+    </string-array>
+
 </resources>

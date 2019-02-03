@@ -13,19 +13,19 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Use Firebase Data for book suggestions
 - [ ] Italian language support
 
-### Version 3.9 - ALL IN THE CLOUD
+### Version 3.5 - ALL IN THE CLOUD
 - [ ] Firebase as Online Backend
 - [ ] Remove backup functionality / Replace it with online sync
 
-### Version 3.6 - START A CAMPFIRE
+### Version 3.4 - START A CAMPFIRE
 - [ ] Redesign login flow with Firebase login
 - [ ] Some sort of onboarding
 
 ### Version 3.3 - DETAILS & DEBTS
 - [ ] Fix BaseAdapter bug
-- [ ] Enable language selection for manual add
-- [ ] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 - [ ] New details page design
+- [x] Enable language selection for manual add
+- [x] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
 - [x] Streamline Realm and move querying off the main thread (Provider pattern)
 - [x] Remove In-app purchases logic (or encapsulate it properly)
 - [x] Adaption of main card

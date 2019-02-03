@@ -183,7 +183,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             when (item.id) {
 
                 R.id.menu_fab_add_camera -> {
-                    tracker.trackEvent(DanteTrackingEvent.ScanBookEvent())
+                    tracker.trackEvent(DanteTrackingEvent.OpenCameraEvent())
 
                     ActivityNavigation.navigateTo(
                             this,
@@ -195,7 +195,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 R.id.menu_fab_add_title -> {
                     QueryDialogFragment.newInstance()
                             .setOnQueryEnteredListener { query ->
-                                tracker.trackEvent(DanteTrackingEvent.AddByTitleEvent())
+                                tracker.trackEvent(DanteTrackingEvent.OpenTitleSearchEvent())
 
                                 ActivityNavigation.navigateTo(
                                         this,

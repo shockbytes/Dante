@@ -14,6 +14,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
+import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
@@ -45,7 +46,6 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     }
 
     override fun setupViews() {
-        // TODO Setup spinner with languages
 
         imgViewManualAdd.setOnClickListener {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -55,8 +55,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         }
 
         editTextManualAddTitle.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) = Unit
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 s?.let { title ->
@@ -79,6 +79,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ)
         }
+
+        setupLanguageSpinner()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -144,6 +146,41 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         }.addTo(compositeDisposable)
     }
 
+    private fun setupLanguageSpinner() {
+        context?.let { ctx ->
+            val data = buildLanguageData()
+            spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(ctx, data, imageLoader)
+        }
+    }
+
+    private fun buildLanguageData(): Array<ManualAddLanguageSpinnerAdapter.LanguageItem> {
+
+        val languageIds = resources.getStringArray(R.array.language_codes)
+        val langNotAvailable = resources.getString(R.string.language_not_available)
+        val langEnglish = resources.getString(R.string.language_english)
+
+        return resources.getStringArray(R.array.language_names)
+                .mapIndexedNotNull { index, s ->
+                    s?.let { language ->
+                        val shortName = languageIds[index]
+
+                        val url = if (shortName == langEnglish) {
+                            buildFlagIconUrl("gb")
+                        } else {
+                            buildFlagIconUrl(shortName)
+                        }
+                        val showFlag = shortName != langNotAvailable
+
+                        ManualAddLanguageSpinnerAdapter.LanguageItem(language, shortName, url, showFlag)
+                    }
+                }
+                .toTypedArray()
+    }
+
+    private fun buildFlagIconUrl(id: String, size: Int = 64): String {
+        return "https://www.countryflags.io/$id/flat/$size.png"
+    }
+
     private fun storeBook(state: BookState) {
 
         val title = editTextManualAddTitle.text?.toString()
@@ -152,8 +189,10 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val pageCount = editTextManualAddPages.text?.toString()?.toIntOrNull()
         val publishedDate = editTextManualAddPublishedDate.text?.toString()
         val isbn = editTextManualAddIsbn.text?.toString()
-        // val language = spinnerManualAddLanguage.selectedItem as? String
-        val language = "NA" // TODO Change to spinner value
+
+        val languages = resources.getStringArray(R.array.language_codes)
+        val lIdx = spinnerManualAddLanguage.selectedItemPosition.coerceIn(0..languages.size)
+        val language = languages[lIdx]
 
         viewModel.storeBook(title, authors, pageCount, state, subTitle, publishedDate, isbn, language)
     }

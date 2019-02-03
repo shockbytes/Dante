@@ -1,6 +1,7 @@
 package at.shockbytes.dante.dagger
 
 import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import at.shockbytes.dante.BuildConfig
@@ -14,11 +15,12 @@ import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.ui.image.GlideImageLoader
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImagePicker
-import at.shockbytes.dante.ui.image.RxLegacyImagePicker
+import at.shockbytes.dante.ui.image.RxDanteImagePicker
 import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.flagging.FirebaseFeatureFlagging
+import at.shockbytes.dante.util.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.tracking.FirebaseTracker
@@ -108,7 +110,12 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideFeatureFlagging(remoteConfig: FirebaseRemoteConfig): FeatureFlagging {
-        return FirebaseFeatureFlagging(remoteConfig)
+        return if (BuildConfig.DEBUG) {
+            val prefs = app.getSharedPreferences("feature_flagging", Context.MODE_PRIVATE)
+            SharedPreferencesFeatureFlagging(prefs)
+        } else {
+            FirebaseFeatureFlagging(remoteConfig)
+        }
     }
 
     @Provides
@@ -126,6 +133,6 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideImagePicker(): ImagePicker {
-        return RxLegacyImagePicker()
+        return RxDanteImagePicker()
     }
 }

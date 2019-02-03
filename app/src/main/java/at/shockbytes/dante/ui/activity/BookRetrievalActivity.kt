@@ -60,7 +60,7 @@ class BookRetrievalActivity : TintableBackNavigableActivity(),
     }
 
     override fun onBookDownloaded(book: BookEntity) {
-        tracker.trackEvent(DanteTrackingEvent.BookScannedEvent(book))
+        tracker.trackEvent(DanteTrackingEvent.BookAddedEvent(book))
         finishBookDownload()
     }
 

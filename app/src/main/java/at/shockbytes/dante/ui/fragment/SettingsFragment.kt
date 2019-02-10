@@ -5,6 +5,7 @@ import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.SwitchPreferenceCompat
 import android.widget.Toast
+import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.tracking.Tracker
@@ -28,6 +29,10 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
         prefsDarkMode = findPreference(getString(R.string.prefs_dark_mode_key)) as SwitchPreferenceCompat
         prefsDarkMode.onPreferenceChangeListener = this
+
+        if (BuildConfig.FEATURE_FLAG_CONFIG_VISIBLE) {
+            findPreference(getString(R.string.prefs_feature_flag_key)).isVisible = true
+        }
     }
 
     override fun onPreferenceChange(pref: Preference?, newValue: Any?): Boolean {

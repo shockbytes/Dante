@@ -171,6 +171,9 @@
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Enable a dark theme for the app</string>
 
+    <string name="prefs_feature_flag_key" translatable="false">prefs_feature_flag_key</string>
+    <string name="prefs_feature_flag_title" translatable="false">Feature Flags</string>
+
     <string name="prefs_show_summary_key" translatable="false">prefs_show_summary_key</string>
     <string name="prefs_show_summary_title">Show book summary</string>
     <string name="prefs_show_summary_summary">Show a summary of the books in the details screen</string>

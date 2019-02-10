@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    app:cardElevation="0dp"
     android:layout_height="match_parent"
-    android:transitionName="@string/transition_name_card">
+    android:transitionName="@string/transition_name_card"
+    app:cardElevation="0dp">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -49,6 +49,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
+                    android:gravity="center"
                     android:textSize="18sp"
                     android:transitionName="@string/transition_name_title"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -66,6 +67,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
+                    android:gravity="center"
                     android:transitionName="@string/transition_name_subtitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -100,10 +102,8 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
                     app:dotColor="@color/colorAccent"
                     app:dotRadius="5dp"
-                    app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_detail_description"
@@ -136,12 +136,15 @@
                     android:id="@+id/linearLayout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:minHeight="100dp"
                     android:orientation="horizontal"
                     android:weightSum="3"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sb_detail_pages"
+                    app:layout_goneMarginTop="32dp">
 
                     <Button
                         android:id="@+id/btn_detail_rate"
@@ -203,7 +206,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_detail_subtitle"
                     tools:text="Author" />
-                
+
             </android.support.constraint.ConstraintLayout>
 
         </ScrollView>

@@ -59,7 +59,7 @@
     <string name="google_welcome_rationale">Klicke auf das angezeigte Icon in der Appbar, um alle deine Google-verbundenen Dienste zu vewalten. Klicke auch auf das Icon, wenn du ein <b>Backup</b> erstellen willst.</string>
     <string name="camera_permission_title">Kamera</string>
     <string name="scanner_not_operational">Die App wird gerade noch konfiguriert</string>
-    <string name="rate_book">Buch bewerten</string>
+    <string name="rate_book">Bewerten</string>
     <string name="rate">Bewerten</string>
     <string name="ratings_default">Es ist okay!</string>
     <string name="dialogfragment_rating_title">Wie gefällt dir %s?</string>
@@ -82,7 +82,7 @@
         <item quantity="one">%d Stern</item>
         <item quantity="other">%d Sterne</item>
     </plurals>
-    <string name="add_notes">Notizen hinzufügen</string>
+    <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>
     <string name="dialogfragment_paging_title">Seiten eingeben</string>
     <string name="dialogfragment_paging_current_page">Aktuelle Seite</string>
@@ -177,5 +177,6 @@
     </string-array>
     <string name="prefs_show_summary_title">Bücherzusammenfassung</string>
     <string name="prefs_show_summary_summary">Zeige Zusammenfassung der Bücher in der Detailansicht</string>
+    <string name="summary">Zusammenfassung</string>
 
 </resources>

@@ -83,12 +83,12 @@
     <string name="google_welcome_rationale">You can manage all your Google related activities when your are clicking the symbol above in the app bar. Click on this icon if you want to create a <b>backup</b>.</string>
     <string name="camera_permission_title">Camera</string>
     <string name="scanner_not_operational">The app is currently being configured</string>
-    <string name="rate_book">Rate book</string>
+    <string name="rate_book">Rate</string>
     <string name="rate">Rate</string>
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
-    <string name="add_notes">Add notes</string>
+    <string name="add_notes">Notes</string>
     <string name="apply">Apply</string>
     <string name="dialogfragment_paging_title">Enter pages</string>
     <string name="dialogfragment_paging_current_page">Current page</string>

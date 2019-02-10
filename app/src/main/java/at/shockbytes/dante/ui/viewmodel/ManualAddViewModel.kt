@@ -28,14 +28,6 @@ class ManualAddViewModel @Inject constructor(
 
     val addEvent = PublishSubject.create<AddEvent>()
 
-    init {
-        poke()
-    }
-
-    override fun poke() {
-        // Do nothing...
-    }
-
     /**
      * Call reset at #onCreate() in order to avoid a already set thumbnailAddress from the previous
      * ViewModel usage

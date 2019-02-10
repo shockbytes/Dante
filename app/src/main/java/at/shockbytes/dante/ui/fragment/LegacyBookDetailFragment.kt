@@ -83,7 +83,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
 
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.bookId = bookId }
+        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.intializeWithBookId(bookId) }
     }
 
     override fun setupViews() {
@@ -148,7 +148,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
 
     private fun setupObserver() {
 
-        viewModel.book.observe(this, android.arch.lifecycle.Observer {
+        viewModel.getBook().observe(this, android.arch.lifecycle.Observer {
 
             it?.let { book ->
                 activity?.title = book.title
@@ -157,7 +157,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
             }
         })
 
-        viewModel.showBookFinishedDialog
+        viewModel.showBookFinishedDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { title ->
                     SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
@@ -170,7 +170,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
                 }
                 .addTo(compositeDisposable)
 
-        viewModel.showPagesDialog
+        viewModel.showPagesDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
                     data?.let { (currentPage, pageCount, _) ->
@@ -183,7 +183,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
                 }
                 .addTo(compositeDisposable)
 
-        viewModel.showNotesDialog
+        viewModel.showNotesDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
                     data?.let { (title, thumbnailAddress, notes) ->
@@ -196,7 +196,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
                 }
                 .addTo(compositeDisposable)
 
-        viewModel.showRatingDialog
+        viewModel.showRatingDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
                     data?.let { (title, thumbnailAddress, r) ->

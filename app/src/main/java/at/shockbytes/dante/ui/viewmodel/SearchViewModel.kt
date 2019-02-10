@@ -30,10 +30,10 @@ class SearchViewModel @Inject constructor(
     val bookDownloadEvent: Observable<BookSearchItem> = bookDownloadSubject
 
     init {
-        poke()
+        initialize()
     }
 
-    override fun poke() {
+    private fun initialize() {
         searchState.postValue(SearchState.InitialState)
     }
 
@@ -90,7 +90,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun requestInitialState() {
-        poke()
+        initialize()
     }
 
     sealed class SearchState {

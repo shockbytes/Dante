@@ -24,10 +24,10 @@ class MainViewModel @Inject constructor(private val signInManager: SignInManager
     val userEvent = MutableLiveData<UserEvent>()
 
     init {
-        poke()
+        initialize()
     }
 
-    override fun poke() {
+    private fun initialize() {
         signInManager.setup()
         signInManager.isSignedIn().subscribe { isSignedIn ->
 

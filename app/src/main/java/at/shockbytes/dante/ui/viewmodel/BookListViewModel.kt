@@ -49,8 +49,6 @@ class BookListViewModel @Inject constructor(
         listenToSettings()
     }
 
-    override fun poke() = Unit
-
     private fun loadBooks() {
         bookDao.bookObservable
                 .map { fetchedBooks ->

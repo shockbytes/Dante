@@ -54,7 +54,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
 
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.bookId = bookId }
+        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.intializeWithBookId(bookId) }
     }
 
     override fun setupViews() {

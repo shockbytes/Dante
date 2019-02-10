@@ -31,10 +31,6 @@ class BackupViewModel @Inject constructor(
     val applyBackupEvent = PublishSubject.create<ApplyBackupState>()
 
     init {
-        poke()
-    }
-
-    override fun poke() {
         loadBackupState()
         updateLastBackupTime()
     }

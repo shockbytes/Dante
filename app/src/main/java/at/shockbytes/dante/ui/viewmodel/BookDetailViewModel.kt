@@ -1,9 +1,11 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -14,28 +16,26 @@ import javax.inject.Inject
  */
 class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
 
-    var bookId: Long = -1
-        set(value) {
-            field = value
-            fetchBook()
-        }
+    private val book = MutableLiveData<BookEntity>()
+    fun getBook(): LiveData<BookEntity> = book
 
-    val book = MutableLiveData<BookEntity>()
+    private val showBookFinishedDialogSubject = PublishSubject.create<String>()
+    val showBookFinishedDialogEvent: Observable<String> = showBookFinishedDialogSubject
 
-    val showBookFinishedDialog = PublishSubject.create<String>()
-    val showPagesDialog = PublishSubject.create<Triple<Int, Int, Boolean>>()
-    val showNotesDialog = PublishSubject.create<Triple<String, String?, String>>()
-    val showRatingDialog = PublishSubject.create<Triple<String, String?, Int>>()
+    private val showPagesDialogSubject = PublishSubject.create<PageInfo>()
+    val showPagesDialogEvent: Observable<PageInfo> = showPagesDialogSubject
 
-    init {
-        poke()
+    private val showNotesDialogSubject = PublishSubject.create<NotesInfo>()
+    val showNotesDialogEvent: Observable<NotesInfo> = showNotesDialogSubject
+
+    private val showRatingDialogSubject = PublishSubject.create<RatingInfo>()
+    val showRatingDialogEvent: Observable<RatingInfo> = showRatingDialogSubject
+
+    fun intializeWithBookId(id: Long) {
+        fetchBook(id)
     }
 
-    override fun poke() {
-        // Do nothing...
-    }
-
-    private fun fetchBook() {
+    private fun fetchBook(bookId: Long) {
         bookDao.get(bookId)?.let { entity ->
             Timber.d(entity.toString())
             book.postValue(entity)
@@ -44,18 +44,18 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
 
     fun requestNotesDialog() {
         val instance = book.value ?: return
-        showNotesDialog.onNext(Triple(instance.title, instance.thumbnailAddress, instance.notes
+        showNotesDialogSubject.onNext(NotesInfo(instance.title, instance.thumbnailAddress, instance.notes
                 ?: ""))
     }
 
     fun requestRatingDialog() {
         val instance = book.value ?: return
-        showRatingDialog.onNext(Triple(instance.title, instance.thumbnailAddress, instance.rating))
+        showRatingDialogSubject.onNext(RatingInfo(instance.title, instance.thumbnailAddress, instance.rating))
     }
 
     fun requestPageDialog() {
         val instance = book.value ?: return
-        showPagesDialog.onNext(Triple(instance.currentPage, instance.pageCount, instance.reading))
+        showPagesDialogSubject.onNext(PageInfo(instance.currentPage, instance.pageCount, instance.reading))
     }
 
     // ------------------------------------------------------------
@@ -81,7 +81,7 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
         updateDaoAndObserver(copy)
 
         if (copy.currentPage == copy.pageCount) {
-            showBookFinishedDialog.onNext(copy.title)
+            showBookFinishedDialogSubject.onNext(copy.title)
         }
     }
 
@@ -158,4 +158,23 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
         bookDao.update(b)
         book.postValue(b)
     }
+
+    data class PageInfo(
+        val currentPage: Int,
+        val pageCount: Int,
+        val isReading: Boolean
+    )
+
+    data class NotesInfo(
+        val title: String,
+        val thumbnailUrl: String?,
+        val notes: String
+    )
+
+    data class RatingInfo(
+        val title: String,
+        val thumbnailUrl: String?,
+        val rating: Int
+    )
+
 }

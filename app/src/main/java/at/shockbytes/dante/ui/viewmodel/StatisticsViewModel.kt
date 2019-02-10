@@ -14,11 +14,7 @@ import javax.inject.Inject
 class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
 
     private val statisticsItems = MutableLiveData<List<StatisticsDisplayItem>>()
-
-    override fun poke() {
-        requestStatistics()
-    }
-
+    
     fun requestStatistics() {
         bookDao.bookObservable
                 .flatMap { books ->

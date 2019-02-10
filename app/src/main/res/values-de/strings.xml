@@ -175,5 +175,7 @@
         <item>Indonesisch</item>
         <item>Thai</item>
     </string-array>
+    <string name="prefs_show_summary_title">Bücherzusammenfassung</string>
+    <string name="prefs_show_summary_summary">Zeige Zusammenfassung der Bücher in der Detailansicht</string>
 
 </resources>

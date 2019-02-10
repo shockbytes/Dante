@@ -8,6 +8,14 @@
             android:key="@string/prefs_dark_mode_key"
             android:summary="@string/prefs_dark_mode_summary"
             android:title="@string/prefs_dark_mode_title" />
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:icon="@drawable/ic_settings_book_summary"
+            android:key="@string/prefs_show_summary_key"
+            android:summary="@string/prefs_show_summary_summary"
+            android:title="@string/prefs_show_summary_title" />
+
     </android.support.v7.preference.PreferenceCategory>
 
     <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_about">

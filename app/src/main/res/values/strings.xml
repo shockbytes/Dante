@@ -165,10 +165,16 @@
     <string name="statistics_duration_book">%s days for %s</string>
     <string name="statistics_most_reading_month">%s books read in %s</string>
     <string name="statistics_average_rating">Average rating: %s</string>
+
     <string name="prefs_category_books_general">General</string>
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Enable a dark theme for the app</string>
+
+    <string name="prefs_show_summary_key" translatable="false">prefs_show_summary_key</string>
+    <string name="prefs_show_summary_title">Show book summary</string>
+    <string name="prefs_show_summary_summary">Show a summary of the books in the details screen</string>
+
     <string name="backup_no_backups">You haven\'t made any backups.</string>
     <string name="backup_connection_error_google_drive">Cannot connect to Google Drive!</string>
     <string name="dark_mode_applied">The theme will change next restart.</string>
@@ -238,5 +244,6 @@
         <item>Indonesian</item>
         <item>Thai</item>
     </string-array>
+    <string name="prefs_category_books_general">General</string>
 
 </resources>

@@ -26,6 +26,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Disable summary in settings
 - [ ] Rework notes screen (give it more space)
 - [ ] Put overflow menu into ActionBar
+- [ ] Allow users to add a summary in the manual add
 - [ ] Change icon color of settings depending if night mode or not
 - [x] Fix BaseAdapter bug
 - [x] Enable language selectiion for manual add

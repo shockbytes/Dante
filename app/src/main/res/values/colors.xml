@@ -53,4 +53,6 @@
     <color name="navigationBarColor">@color/white</color>
     <color name="searchBarColor">@color/white</color>
 
+    <color name="iconColorSettings">@color/colorAccent</color>
+
 </resources>

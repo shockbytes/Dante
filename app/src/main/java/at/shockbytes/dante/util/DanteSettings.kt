@@ -28,7 +28,13 @@ class DanteSettings(
                     .apply()
         }
 
-    var showSummary: Boolean = true
+    var showSummary: Boolean
+        get() = prefs.getBoolean(context.getString(R.string.prefs_show_summary_key), true)
+        set(value) {
+            prefs.edit()
+                    .putBoolean(context.getString(R.string.prefs_show_summary_key), value)
+                    .apply()
+        }
 
     var sortStrategy: SortStrategy
         get() {

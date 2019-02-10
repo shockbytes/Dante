@@ -14,7 +14,7 @@ import javax.inject.Inject
 class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
 
     private val statisticsItems = MutableLiveData<List<StatisticsDisplayItem>>()
-    
+
     fun requestStatistics() {
         bookDao.bookObservable
                 .flatMap { books ->

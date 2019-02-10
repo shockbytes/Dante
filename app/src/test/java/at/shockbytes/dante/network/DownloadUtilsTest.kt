@@ -50,5 +50,4 @@ class DownloadUtilsTest {
             Assert.assertEquals(e.javaClass.name, IllegalArgumentException::class.qualifiedName)
         }
     }
-
 }

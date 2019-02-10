@@ -13,11 +13,10 @@ import android.net.ConnectivityManager
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v7.widget.AppCompatDrawableManager
-import android.view.View
-import android.view.animation.Interpolator
-import android.view.animation.OvershootInterpolator
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
+import java.util.Date
+import java.util.Calendar
 import kotlin.math.roundToInt
 
 /**

@@ -166,7 +166,7 @@ class BookDetailViewModel @Inject constructor(
         return false
     }
 
-    private fun getBookFromLiveData() : BookEntity? {
+    private fun getBookFromLiveData(): BookEntity? {
         return viewState.value?.book
     }
 
@@ -196,5 +196,4 @@ class BookDetailViewModel @Inject constructor(
         val thumbnailUrl: String?,
         val rating: Int
     )
-
 }

@@ -19,7 +19,5 @@ object DownloadUtils {
         return gLink.toCharArray().apply {
             this[idx] = zoomFactor.toString()[0]
         }.joinToString("")
-
     }
-
 }

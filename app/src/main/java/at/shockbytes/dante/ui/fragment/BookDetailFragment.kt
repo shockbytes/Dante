@@ -288,7 +288,6 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                 .addTo(compositeDisposable)
     }
 
-
     private fun startComponentAnimations() {
         AnimationUtils.detailEnterAnimation(animatableViewsList, 200, 550, AccelerateDecelerateInterpolator())
     }
@@ -363,11 +362,11 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     private fun setupPageComponents(
-            state: BookState,
-            isReading: Boolean,
-            hasPages: Boolean,
-            pageCount: Int,
-            currentPage: Int
+        state: BookState,
+        isReading: Boolean,
+        hasPages: Boolean,
+        pageCount: Int,
+        currentPage: Int
     ) {
         // Book must be in reading state and must have a legit page count and overall the feature
         // must be enabled in the settings
@@ -402,7 +401,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
             activity?.let { ctx ->
 
                 // TODO Enable 2 times zoom
-                //val increasedZoomUrl = DownloadUtils.increaseGoogleThumbnailResolutionLink(url, 2)
+                // val increasedZoomUrl = DownloadUtils.increaseGoogleThumbnailResolutionLink(url, 2)
 
                 imageLoader.loadImageWithCornerRadius(
                         ctx,

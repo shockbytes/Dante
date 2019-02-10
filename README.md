@@ -22,12 +22,13 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Some sort of onboarding
 
 ### Version 3.3 - DETAILS & DEBTS
-- [ ] New details page design
-- [ ] Disable summary in settings
 - [ ] Rework notes screen (give it more space)
 - [ ] Put overflow menu into ActionBar
 - [ ] Allow users to add a summary in the manual add
-- [ ] Change icon color of settings depending if night mode or not
+- [ ] Investigate shared element transition missing end anchor
+- [x] New details page design
+- [x] Disable summary in settings
+- [x] Change icon color of settings depending if night mode or not
 - [x] Fix BaseAdapter bug
 - [x] Enable language selectiion for manual add
 - [x] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker

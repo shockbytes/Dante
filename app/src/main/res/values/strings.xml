@@ -244,6 +244,5 @@
         <item>Indonesian</item>
         <item>Thai</item>
     </string-array>
-    <string name="prefs_category_books_general">General</string>
 
 </resources>

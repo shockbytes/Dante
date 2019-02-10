@@ -5,19 +5,30 @@ import android.arch.lifecycle.MutableLiveData
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.tracking.Tracker
+import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
  * Date:    13.06.2018
  */
-class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
+class BookDetailViewModel @Inject constructor(
+    private val bookDao: BookEntityDao,
+    private val tracker: Tracker,
+    private val settings: DanteSettings
+) : BaseViewModel() {
 
-    private val book = MutableLiveData<BookEntity>()
-    fun getBook(): LiveData<BookEntity> = book
+    data class DetailViewState(
+        val book: BookEntity,
+        val showSummary: Boolean
+    )
+
+    private val viewState = MutableLiveData<DetailViewState>()
+    fun getViewState(): LiveData<DetailViewState> = viewState
 
     private val showBookFinishedDialogSubject = PublishSubject.create<String>()
     val showBookFinishedDialogEvent: Observable<String> = showBookFinishedDialogSubject
@@ -31,53 +42,52 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
     private val showRatingDialogSubject = PublishSubject.create<RatingInfo>()
     val showRatingDialogEvent: Observable<RatingInfo> = showRatingDialogSubject
 
-    fun intializeWithBookId(id: Long) {
+    fun initializeWithBookId(id: Long) {
         fetchBook(id)
     }
 
     private fun fetchBook(bookId: Long) {
         bookDao.get(bookId)?.let { entity ->
-            Timber.d(entity.toString())
-            book.postValue(entity)
+            viewState.postValue(craftViewSate(entity))
         }
     }
 
     fun requestNotesDialog() {
-        val instance = book.value ?: return
+        val instance = getBookFromLiveData() ?: return
         showNotesDialogSubject.onNext(NotesInfo(instance.title, instance.thumbnailAddress, instance.notes
                 ?: ""))
     }
 
     fun requestRatingDialog() {
-        val instance = book.value ?: return
+        val instance = getBookFromLiveData() ?: return
         showRatingDialogSubject.onNext(RatingInfo(instance.title, instance.thumbnailAddress, instance.rating))
     }
 
     fun requestPageDialog() {
-        val instance = book.value ?: return
+        val instance = getBookFromLiveData() ?: return
         showPagesDialogSubject.onNext(PageInfo(instance.currentPage, instance.pageCount, instance.reading))
     }
 
     // ------------------------------------------------------------
 
     fun moveBookToDone() {
-        val copy = book.value?.copy() ?: return
+        val copy = getBookFromLiveData()?.copy() ?: return
         copy.updateState(BookState.READ)
         updateDaoAndObserver(copy)
     }
 
     fun updateBookPages(current: Int, pages: Int) {
-        val copy = book.value?.copy(currentPage = current, pageCount = pages) ?: return
+        val copy = getBookFromLiveData()?.copy(currentPage = current, pageCount = pages) ?: return
         updateDaoAndObserver(copy)
     }
 
     fun updatePublishedDate(publishedDate: String) {
-        val copy = book.value?.copy(publishedDate = publishedDate) ?: return
+        val copy = getBookFromLiveData()?.copy(publishedDate = publishedDate) ?: return
         updateDaoAndObserver(copy)
     }
 
     fun updateCurrentPage(currentPage: Int) {
-        val copy = book.value?.copy(currentPage = currentPage) ?: return
+        val copy = getBookFromLiveData()?.copy(currentPage = currentPage) ?: return
         updateDaoAndObserver(copy)
 
         if (copy.currentPage == copy.pageCount) {
@@ -86,18 +96,20 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
     }
 
     fun updateNotes(notes: String) {
-        val copy = book.value?.copy(notes = notes) ?: return
+        val copy = getBookFromLiveData()?.copy(notes = notes) ?: return
         updateDaoAndObserver(copy)
     }
 
     fun updateRating(rating: Int) {
-        val copy = book.value?.copy(rating = rating) ?: return
+        tracker.trackEvent(DanteTrackingEvent.RatingEvent(rating))
+
+        val copy = getBookFromLiveData()?.copy(rating = rating) ?: return
         updateDaoAndObserver(copy)
     }
 
     fun updateWishlistDate(wishlistDate: Long): Boolean {
 
-        val book = book.value ?: return false
+        val book = getBookFromLiveData() ?: return false
         val start = book.startDate
         val end = book.endDate
 
@@ -110,7 +122,7 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
 
     fun updateStartDate(startDate: Long): Boolean {
 
-        val book = book.value ?: return false
+        val book = getBookFromLiveData() ?: return false
         val wishlist = book.wishlistDate
         val end = book.endDate
 
@@ -123,7 +135,7 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
 
     fun updateEndDate(endDate: Long): Boolean {
 
-        val book = book.value ?: return false
+        val book = getBookFromLiveData() ?: return false
         val wishlist = book.wishlistDate
         val start = book.startDate
 
@@ -154,9 +166,17 @@ class BookDetailViewModel @Inject constructor(private val bookDao: BookEntityDao
         return false
     }
 
+    private fun getBookFromLiveData() : BookEntity? {
+        return viewState.value?.book
+    }
+
+    private fun craftViewSate(book: BookEntity): DetailViewState {
+        return DetailViewState(book, settings.showSummary)
+    }
+
     private fun updateDaoAndObserver(b: BookEntity) {
         bookDao.update(b)
-        book.postValue(b)
+        viewState.postValue(craftViewSate(b))
     }
 
     data class PageInfo(

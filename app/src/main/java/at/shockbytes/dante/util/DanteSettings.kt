@@ -28,6 +28,8 @@ class DanteSettings(
                     .apply()
         }
 
+    var showSummary: Boolean = true
+
     var sortStrategy: SortStrategy
         get() {
             val ordinal = prefs.getInt(context.getString(R.string.prefs_sort_strategy_key), 0)

@@ -19,6 +19,7 @@ import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImageLoadingCallback
+import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.util.adapter.BaseAdapter
@@ -232,7 +233,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
                 .scaleX(0.5f)
                 .setDuration(500)
                 .start()
-        DanteUtils.listPopAnimation(animViews, 250, interpolator = OvershootInterpolator(4f))
+        AnimationUtils.detailEnterAnimation(animViews, 250, interpolator = OvershootInterpolator(4f))
     }
 
     private fun setTitleAndIcon(mainBook: BookEntity?) {

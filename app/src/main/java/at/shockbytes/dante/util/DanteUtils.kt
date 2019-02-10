@@ -17,8 +17,7 @@ import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.OvershootInterpolator
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.Date
+import java.util.*
 import kotlin.math.roundToInt
 
 /**
@@ -46,27 +45,6 @@ object DanteUtils {
         return bitmapResult
     }
 
-    fun listPopAnimation(
-        animationList: List<View>,
-        duration: Long = 300,
-        initialDelay: Long = 300,
-        interpolator: Interpolator = OvershootInterpolator(2f)
-    ) {
-
-        animationList.forEach {
-            it.alpha = 0f; it.scaleX = 0.3f; it.scaleY = 0.3f
-        }
-
-        animationList.forEachIndexed { index, view ->
-            view.animate().scaleY(1f).scaleX(1f).alpha(1f)
-                    .setInterpolator(interpolator)
-                    .setStartDelay((initialDelay + (index * 100L)))
-                    .setDuration(duration)
-                    .withEndAction { view.alpha = 1f; view.scaleX = 1f; view.scaleY = 1f } // <-- If anim failed, set it in the end
-                    .start()
-        }
-    }
-
     fun computePercentage(x: Double, total: Double): Int {
         return if (total > 0) {
             ((x / total) * 100).roundToInt()
@@ -83,5 +61,20 @@ object DanteUtils {
         val connectivityManager = ctx.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo?.isConnected ?: false
+    }
+
+    fun buildTimestampFromDate(year: Int, month: Int, day: Int): Long {
+
+        val cal = Calendar.getInstance()
+
+        cal.set(Calendar.YEAR, year)
+        cal.set(Calendar.MONTH, month)
+        cal.set(Calendar.DAY_OF_MONTH, day)
+        cal.set(Calendar.HOUR, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+
+        return cal.timeInMillis
     }
 }

@@ -24,8 +24,8 @@ import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
+import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteSettings
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
@@ -83,7 +83,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
 
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.intializeWithBookId(bookId) }
+        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
     }
 
     override fun setupViews() {
@@ -148,9 +148,9 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
 
     private fun setupObserver() {
 
-        viewModel.getBook().observe(this, android.arch.lifecycle.Observer {
+        viewModel.getViewState().observe(this, android.arch.lifecycle.Observer {
 
-            it?.let { book ->
+            it?.book?.let { book ->
                 activity?.title = book.title
                 initializeBookInformation(book)
                 initializeTimeInformation(book)
@@ -389,7 +389,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
     }
 
     private fun startComponentAnimations() {
-        DanteUtils.listPopAnimation(animationList, 200, 550, AccelerateDecelerateInterpolator())
+        AnimationUtils.detailEnterAnimation(animationList, 200, 550, AccelerateDecelerateInterpolator())
     }
 
     private fun setupNotes(isNotesEmpty: Boolean) {

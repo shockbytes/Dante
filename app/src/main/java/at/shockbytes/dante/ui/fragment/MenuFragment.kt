@@ -108,7 +108,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.btnMenuSettings)?.setOnClickListener {
             ActivityNavigation.navigateTo(
                     activity,
-                    ActivityNavigation.Destination.Statistics,
+                    ActivityNavigation.Destination.Settings,
                     sceneTransition
             )
             dismiss()

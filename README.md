@@ -23,6 +23,10 @@ can simply keep track of your progress of all your books and their current state
 
 ### Version 3.3 - DETAILS & DEBTS
 - [ ] New details page design
+- [ ] Disable summary in settings
+- [ ] Rework notes screen (give it more space)
+- [ ] Put overflow menu into ActionBar
+- [ ] Change icon color of settings depending if night mode or not
 - [x] Fix BaseAdapter bug
 - [x] Enable language selectiion for manual add
 - [x] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker

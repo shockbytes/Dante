@@ -279,9 +279,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun setupDarkMode() {
         enableDarkMode(danteSettings.darkModeEnabled)
-        danteSettings.observeDarkModeEnabled().subscribe { isDarkModeEnabled ->
-            enableDarkMode(isDarkModeEnabled)
-        }.addTo(compositeDisposable)
+        danteSettings.observeDarkModeEnabled()
+                .subscribe { isDarkModeEnabled ->
+                    enableDarkMode(isDarkModeEnabled)
+                }
+                .addTo(compositeDisposable)
     }
 
     private fun enableDarkMode(isEnabled: Boolean) {

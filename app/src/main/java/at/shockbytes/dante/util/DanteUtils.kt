@@ -10,9 +10,13 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
+import android.support.annotation.AnimRes
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.support.v7.widget.AppCompatDrawableManager
+import at.shockbytes.dante.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Date
@@ -21,7 +25,7 @@ import kotlin.math.roundToInt
 
 /**
  * Author:  Martin Macheiner
- * Date:    30.04.2017.
+ * Date:    30.04.2017
  */
 object DanteUtils {
 
@@ -42,6 +46,21 @@ object DanteUtils {
         val canvas = Canvas(bitmapResult)
         canvas.drawBitmap(bm, 0f, 0f, paint)
         return bitmapResult
+    }
+
+    fun addFragmentToActivity(
+        fragmentManager: FragmentManager,
+        fragment: Fragment,
+        frameId: Int,
+        addToBackStack: Boolean,
+        @AnimRes inAnim: Int = R.anim.fade_in,
+        @AnimRes outAnim: Int = R.anim.fade_out
+    ) {
+        val transaction = fragmentManager.beginTransaction()
+        transaction.setCustomAnimations(inAnim, outAnim, inAnim, outAnim)
+        if (addToBackStack) transaction.addToBackStack(fragment.javaClass.name)
+        transaction.add(frameId, fragment)
+        transaction.commit()
     }
 
     fun computePercentage(x: Double, total: Double): Int {

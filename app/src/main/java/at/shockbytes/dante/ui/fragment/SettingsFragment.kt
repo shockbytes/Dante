@@ -8,6 +8,7 @@ import android.widget.Toast
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import javax.inject.Inject
@@ -31,7 +32,19 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         prefsDarkMode.onPreferenceChangeListener = this
 
         if (BuildConfig.FEATURE_FLAG_CONFIG_VISIBLE) {
-            findPreference(getString(R.string.prefs_feature_flag_key)).isVisible = true
+            val featureFlagPreference = findPreference(getString(R.string.prefs_feature_flag_key))
+            featureFlagPreference.isVisible = true
+            featureFlagPreference.setOnPreferenceClickListener {
+                fragmentManager?.let { fm ->
+                    DanteUtils.addFragmentToActivity(
+                            fm,
+                            FeatureFlagConfigFragment.newInstance(),
+                            android.R.id.content,
+                            addToBackStack = true
+                    )
+                }
+                true
+            }
         }
     }
 

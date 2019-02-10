@@ -9,9 +9,11 @@ import at.shockbytes.dante.ui.fragment.BackupFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.LegacyBookDetailFragment
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
+import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
+import at.shockbytes.dante.ui.fragment.NotesFragment
 import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.fragment.SettingsFragment
@@ -72,6 +74,10 @@ interface AppComponent {
     fun inject(fragment: StatisticsFragment)
 
     fun inject(fragment: SettingsFragment)
+
+    fun inject(fragment: NotesFragment)
+
+    fun inject(fragment: FeatureFlagConfigFragment)
 
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 

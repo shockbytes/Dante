@@ -17,7 +17,6 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
-import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
@@ -143,11 +142,17 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
                     data?.let { (title, thumbnailAddress, notes) ->
-                        NotesDialogFragment.newInstance(title, thumbnailAddress, notes)
-                                .setOnApplyListener { updatedNotes ->
-                                    viewModel.updateNotes(updatedNotes)
-                                    setupNotes(notes.isEmpty())
-                                }.show(fragmentManager, "notes-dialogfragment")
+
+                        fragmentManager?.let { fm ->
+                            val fragment = NotesFragment.newInstance(title, thumbnailAddress, notes)
+                                    .apply {
+                                        onSavedClickListener = { updatedNotes ->
+                                            viewModel.updateNotes(updatedNotes)
+                                            setupNotes(notes.isEmpty())
+                                        }
+                                    }
+                            DanteUtils.addFragmentToActivity(fm, fragment, android.R.id.content, true)
+                        }
                     }
                 }
                 .addTo(compositeDisposable)
@@ -282,7 +287,8 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                     v.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
                 }, { throwable ->
                     throwable.printStackTrace()
-                }, { // In the end start the component animations in onComplete()
+                }, {
+                    // In the end start the component animations in onComplete()
                     startComponentAnimations()
                 })
                 .addTo(compositeDisposable)

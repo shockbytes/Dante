@@ -22,9 +22,10 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Some sort of onboarding
 
 ### Version 3.3 - DETAILS & DEBTS
-- [ ] Rework notes screen (give it more space)
-- [ ] Put overflow menu into ActionBar
 - [ ] Investigate shared element transition missing end anchor and check for layout bugs
+- [ ] Put overflow menu into ActionBar
+- [ ] Add UI for Feature flags
+- [x] Rework notes screen (give it more space)
 - [x] Allow users to add a summary in the manual add
 - [x] New details page design
 - [x] Disable summary in settings

@@ -25,6 +25,7 @@
     <color name="disabled_view">#888</color>
     <color name="empty">#767676</color>
     <color name="color_error">#F44336</color>
+    <color name="valid">#8BC34A</color>
 
     <color name="nice_color">#00dd99</color>
     <color name="iconColor">#646464</color>
@@ -54,5 +55,6 @@
     <color name="searchBarColor">@color/white</color>
 
     <color name="iconColorSettings">@color/colorAccent</color>
+    <color name="modal_background">#59000000</color>
 
 </resources>

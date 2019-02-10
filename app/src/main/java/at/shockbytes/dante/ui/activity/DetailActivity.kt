@@ -37,12 +37,18 @@ class DetailActivity : TintableBackNavigableActivity() {
 
     override fun backwardAnimation() {
         super.backwardAnimation()
-        detailFragment?.onBackwardAnimation()
+        performBackwardAnimation()
     }
 
     override fun onBackStackPopped() {
         super.onBackStackPopped()
-        detailFragment?.onBackwardAnimation()
+        performBackwardAnimation()
+    }
+
+    private fun performBackwardAnimation() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            detailFragment?.onBackwardAnimation()
+        }
     }
 
     private fun pickDetailFragment(id: Long): BackAnimatable {

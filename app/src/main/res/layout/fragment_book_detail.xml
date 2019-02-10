@@ -29,7 +29,7 @@
                     android:layout_height="104dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:transitionName="@string/transition_name_thumb"
@@ -98,7 +98,6 @@
                     android:layout_height="150dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginTop="32dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="24dp"
@@ -107,7 +106,6 @@
                     app:layout_constraintBottom_toTopOf="@+id/linearLayout"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_detail_description"
                     app:progressCircleLineColor="@color/colorAccent"
                     app:showCounter="false"
                     app:value="50" />
@@ -204,7 +202,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_detail_subtitle"
                     tools:text="Author" />
-
+                
             </android.support.constraint.ConstraintLayout>
 
         </ScrollView>

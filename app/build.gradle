@@ -40,8 +40,8 @@ android {
         applicationId "at.shockbytes.dante"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 20
-        versionName "3.2"
+        versionCode 21
+        versionName "3.3"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -66,6 +66,11 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "false"
+        }
+        pre_release {
+            initWith(release)
+            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "true"
         }
         // Use this build type in order to avoid, that release build type will be signed with the release key
         proguard_debug {
@@ -73,10 +78,12 @@ android {
             useProguard true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "true"
         }
         debug {
             //applicationIdSuffix ".debug"
             debuggable true
+            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "true"
         }
     }
     lintOptions {

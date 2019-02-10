@@ -189,12 +189,23 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val pageCount = editTextManualAddPages.text?.toString()?.toIntOrNull()
         val publishedDate = editTextManualAddPublishedDate.text?.toString()
         val isbn = editTextManualAddIsbn.text?.toString()
+        val summary = editTextManualAddSummary.text?.toString()
 
         val languages = resources.getStringArray(R.array.language_codes)
         val lIdx = spinnerManualAddLanguage.selectedItemPosition.coerceIn(0..languages.size)
         val language = languages[lIdx]
 
-        viewModel.storeBook(title, authors, pageCount, state, subTitle, publishedDate, isbn, language)
+        viewModel.storeBook(
+                title,
+                authors,
+                pageCount,
+                state,
+                subTitle,
+                publishedDate,
+                isbn,
+                language,
+                summary
+        )
     }
 
     companion object {

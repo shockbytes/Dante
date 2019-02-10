@@ -186,6 +186,7 @@
 
     <string name="language_not_available" translatable="false">na</string>
     <string name="language_english" translatable="false">en</string>
+    <string name="summary">Summary</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

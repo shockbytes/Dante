@@ -24,8 +24,8 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.3 - DETAILS & DEBTS
 - [ ] Rework notes screen (give it more space)
 - [ ] Put overflow menu into ActionBar
-- [ ] Allow users to add a summary in the manual add
-- [ ] Investigate shared element transition missing end anchor
+- [ ] Investigate shared element transition missing end anchor and check for layout bugs
+- [x] Allow users to add a summary in the manual add
 - [x] New details page design
 - [x] Disable summary in settings
 - [x] Change icon color of settings depending if night mode or not

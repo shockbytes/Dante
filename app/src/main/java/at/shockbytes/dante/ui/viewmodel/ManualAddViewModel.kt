@@ -52,10 +52,11 @@ class ManualAddViewModel @Inject constructor(
         subTitle: String?,
         publishedDate: String?,
         isbn: String?,
-        language: String?
+        language: String?,
+        summary: String?
     ) {
         val entity = createEntity(title, author, pageCount, state, subTitle,
-                publishedDate, isbn, thumbnailUrl.value?.toString(), language)
+                publishedDate, isbn, thumbnailUrl.value?.toString(), language, summary)
 
         if (entity != null) {
             bookDao.create(entity)
@@ -75,7 +76,8 @@ class ManualAddViewModel @Inject constructor(
         publishedDate: String?,
         isbn: String?,
         thumbnailAddress: String?,
-        language: String?
+        language: String?,
+        summary: String?
     ): BookEntity? {
 
         // Check if author, title and pages are null, these values must always be set
@@ -83,9 +85,18 @@ class ManualAddViewModel @Inject constructor(
             null
         } else {
 
-            val entity = BookEntity(title = title, author = author, pageCount = pageCount,
-                    state = state, subTitle = subTitle ?: "", publishedDate = publishedDate ?: "",
-                    isbn = isbn ?: "", thumbnailAddress = thumbnailAddress, language = language)
+            val entity = BookEntity(
+                    title = title,
+                    author = author,
+                    pageCount = pageCount,
+                    state = state,
+                    subTitle = subTitle ?: "",
+                    publishedDate = publishedDate ?: "",
+                    isbn = isbn ?: "",
+                    thumbnailAddress = thumbnailAddress,
+                    language = language,
+                    summary = summary
+            )
 
             when (state) {
                 BookState.READ_LATER -> entity.wishlistDate = System.currentTimeMillis()

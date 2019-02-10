@@ -145,7 +145,7 @@
                     <Button
                         android:id="@+id/btn_detail_rate"
                         style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -159,7 +159,7 @@
                     <Button
                         android:id="@+id/btn_detail_notes"
                         style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -173,7 +173,7 @@
                     <Button
                         android:id="@+id/btn_detail_published"
                         style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:gravity="center"
@@ -240,7 +240,7 @@
             <Button
                 android:id="@+id/btn_detail_wishhlist_date"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -254,7 +254,7 @@
             <Button
                 android:id="@+id/btn_detail_start_date"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
@@ -268,7 +268,7 @@
             <Button
                 android:id="@+id/btn_detail_end_date"
                 style="?android:attr/borderlessButtonStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"

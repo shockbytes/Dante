@@ -108,7 +108,8 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.popup_item, menu)
+        // TODO Version 3.4
+        // inflater?.inflate(R.menu.popup_item, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

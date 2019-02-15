@@ -23,21 +23,21 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Android 5 as minSdk
 - [ ] Put overflow menu into ActionBar
 - [ ] Labels for books
+- [ ] Add UI for Feature flags
+- [ ] Investigate shared element transition missing end anchor and check for layout bugs
 
 ### Version 3.3 - DETAILS & DEBTS
-- [ ] Investigate shared element transition missing end anchor and check for layout bugs
-- [ ] Add UI for Feature flags
-- [x] Rework notes screen (give it more space)
-- [x] Allow users to add a summary in the manual add
-- [x] New details page design
-- [x] Disable summary in settings
-- [x] Change icon color of settings depending if night mode or not
-- [x] Fix BaseAdapter bug
-- [x] Enable language selectiion for manual add
-- [x] Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
-- [x] Streamline Realm and move querying off the main thread (Provider pattern)
-- [x] Remove In-app purchases logic (or encapsulate it properly)
-- [x] Adaption of main card
+* Rework notes screen (give it more space)
+* Allow users to add a summary in the manual add
+* New details page design
+* Disable summary in settings
+* Change icon color of settings depending if night mode or not
+* Fix BaseAdapter bug
+* Enable language selectiion for manual add
+* Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
+* Streamline Realm and move querying off the main thread (Provider pattern)
+* Remove In-app purchases logic (or encapsulate it properly)
+* Adaption of main card
 
 ### Version 3.2 - SMALL, STEADY IMPROVEMENTS
 * Include book description in Download

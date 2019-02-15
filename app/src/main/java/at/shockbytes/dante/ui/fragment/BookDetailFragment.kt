@@ -19,7 +19,6 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
-import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.image.ImageLoader

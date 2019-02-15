@@ -6,7 +6,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import kotlinx.android.synthetic.main.fragment_pages.*
 
-class PagesFragment  : BaseFragment() {
+class PagesFragment : BaseFragment() {
 
     override val layoutId = R.layout.fragment_pages
 

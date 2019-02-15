@@ -20,10 +20,12 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.4 - START A CAMPFIRE
 - [ ] Redesign login flow with Firebase login
 - [ ] Some sort of onboarding
+- [ ] Android 5 as minSdk
+- [ ] Put overflow menu into ActionBar
+- [ ] Labels for books
 
 ### Version 3.3 - DETAILS & DEBTS
 - [ ] Investigate shared element transition missing end anchor and check for layout bugs
-- [ ] Put overflow menu into ActionBar
 - [ ] Add UI for Feature flags
 - [x] Rework notes screen (give it more space)
 - [x] Allow users to add a summary in the manual add

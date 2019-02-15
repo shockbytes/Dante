@@ -60,6 +60,7 @@ class DetailActivity : TintableBackNavigableActivity() {
         }
 
         supportFragmentManager.beginTransaction()
+                .setReorderingAllowed(true)
                 .replace(android.R.id.content, fragment)
                 .commit()
 

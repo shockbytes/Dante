@@ -3,6 +3,6 @@
 
     <bool name="light_status_bar">true</bool>
 
-    <integer name="detail_summary_default_lines">4</integer>
+    <integer name="detail_summary_default_lines">2</integer>
 
 </resources>

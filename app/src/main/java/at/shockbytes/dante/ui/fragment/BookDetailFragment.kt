@@ -9,6 +9,8 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.graphics.Palette
 import android.view.HapticFeedbackConstants
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
@@ -57,11 +59,11 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
-            btn_detail_published,
-            btn_detail_rate,
             sb_detail_pages,
             btn_detail_pages,
+            btn_detail_rate,
             btn_detail_notes,
+            btn_detail_published,
             view_detail_date_divider,
             btn_detail_wishhlist_date,
             btn_detail_start_date,
@@ -83,6 +85,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
         arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
     }
@@ -104,10 +107,14 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         appComponent.inject(this)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.popup_item, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun bindViewModel() {
         viewModel.getViewState().observe(this, android.arch.lifecycle.Observer { viewState ->
             viewState?.let {
-                activity?.title = viewState.book.title
                 initializeBookInformation(viewState.book, viewState.showSummary)
                 initializeTimeInformation(viewState.book)
             }
@@ -130,10 +137,14 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
                     data?.let { (currentPage, pageCount, _) ->
-                        PageEditDialogFragment.newInstance(currentPage, pageCount)
-                                .setOnPageEditedListener { current, pages ->
+                        fragmentManager?.let { fm ->
+                            val fragment = PagesFragment.newInstance(currentPage, pageCount).apply {
+                                onPageEditedListener = { current, pages ->
                                     viewModel.updateBookPages(current, pages)
-                                }.show(fragmentManager, "pages-dialogfragment")
+                                }
+                            }
+                            DanteUtils.addFragmentToActivity(fm, fragment, android.R.id.content, true)
+                        }
                     }
                 }
                 .addTo(compositeDisposable)
@@ -392,7 +403,10 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                 pageCount.toString()
             btn_detail_pages.text = pages
         } else {
-            sb_detail_pages.visibility = View.GONE
+            sb_detail_pages.apply {
+                visibility = View.INVISIBLE
+                isEnabled = false
+            }
             btn_detail_pages.text = pageCount.toString()
         }
     }
@@ -403,7 +417,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     private fun loadImage(address: String?) {
-        address?.let { url ->
+        if (address != null) {
             activity?.let { ctx ->
 
                 // TODO Enable 2 times zoom
@@ -411,12 +425,14 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
                 imageLoader.loadImageWithCornerRadius(
                         ctx,
-                        url,
+                        address,
                         iv_detail_image,
                         cornerDimension = ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
                         callback = this,
                         callbackHandleValues = Pair(first = false, second = true))
             }
+        } else {
+            iv_detail_image.setImageResource(R.drawable.ic_placeholder)
         }
     }
 

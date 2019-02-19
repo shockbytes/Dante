@@ -55,6 +55,7 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tilManualAddTitle"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
@@ -81,6 +82,7 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tilManualAddAuthors"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -104,6 +106,7 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tilManualAddPages"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -164,6 +167,7 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tilManualAddSubtitle"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -202,6 +206,7 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tilManualAddPublishedDate"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -225,6 +230,7 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tilManualAddIsbn"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -249,6 +255,7 @@
 
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/tilManualAddSummary"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -267,8 +274,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/summary"
-                            android:maxLines="5"
-                            android:lines="3" />
+                            android:lines="3"
+                            android:maxLines="5" />
                     </android.support.design.widget.TextInputLayout>
 
 

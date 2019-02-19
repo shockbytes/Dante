@@ -19,7 +19,6 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
-import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImageLoadingCallback
@@ -171,12 +170,15 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         viewModel.showRatingDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
-                    data?.let { (title, thumbnailAddress, r) ->
-                        RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
-                                .setOnApplyListener { rating ->
-                                    viewModel.updateRating(rating)
-                                    btn_detail_rate.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
-                                }.show(fragmentManager, "rating-dialogfragment")
+                    fragmentManager?.let { fm ->
+                        val fragment = RateFragment.newInstance(data)
+                                .apply {
+                                    onRateClickListener = { rating ->
+                                        viewModel.updateRating(rating)
+                                        btn_detail_rate?.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
+                                    }
+                                }
+                        DanteUtils.addFragmentToActivity(fm, fragment, android.R.id.content, true)
                     }
                 }
                 .addTo(compositeDisposable)
@@ -306,7 +308,12 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     private fun startComponentAnimations() {
-        AnimationUtils.detailEnterAnimation(animatableViewsList, 200, 550, AccelerateDecelerateInterpolator())
+        AnimationUtils.detailEnterAnimation(
+            animatableViewsList,
+            duration = 200,
+            initialDelay = 550,
+            interpolator = AccelerateDecelerateInterpolator()
+        )
     }
 
     private fun showDatePicker(target: Int) {

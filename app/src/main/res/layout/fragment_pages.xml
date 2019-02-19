@@ -18,6 +18,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         app:cardCornerRadius="12dp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +57,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_pages_current_page"
                 android:layout_width="0dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
                 android:layout_marginLeft="64dp"
@@ -71,13 +74,13 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/dialogfragment_paging_current_page"
                     android:inputType="number"
-                    android:gravity="center"
                     tools:text="30"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_pages_pages"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="64dp"
@@ -95,7 +98,6 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/dialogfragment_paging_pages"
                     android:inputType="number"
-                    android:gravity="center"
                     tools:text="300"
                     android:maxLines="1" />
             </android.support.design.widget.TextInputLayout>

@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.os.Parcelable
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
@@ -10,6 +11,7 @@ import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
 
 /**
@@ -191,9 +193,10 @@ class BookDetailViewModel @Inject constructor(
         val notes: String
     )
 
+    @Parcelize
     data class RatingInfo(
         val title: String,
         val thumbnailUrl: String?,
         val rating: Int
-    )
+    ) : Parcelable
 }

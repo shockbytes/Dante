@@ -46,10 +46,10 @@ class QueryDialogFragment : DialogFragment() {
     companion object {
 
         fun newInstance(): QueryDialogFragment {
-            val fragment = QueryDialogFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
+            return QueryDialogFragment().apply {
+                arguments = Bundle().apply {
+                }
+            }
         }
     }
 }

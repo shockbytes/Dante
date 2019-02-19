@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_notes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:focusable="true"
+    android:background="@color/modal_background"
     android:clickable="true"
-    android:id="@+id/layout_notes"
-    android:background="@color/modal_background">
+    android:focusable="true">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -18,6 +18,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="64dp"
+        android:clickable="true"
+        android:focusable="true"
         app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,8 +79,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/btn_notes_close"
                 tools:srcCompat="@drawable/ic_placeholder_white" />
 
-            <EditText
-                android:id="@+id/et_notes"
+            <android.support.design.widget.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
@@ -87,15 +89,24 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
-                android:ems="10"
-                android:gravity="top"
-                android:hint="@string/dialogfragment_notes_hint"
-                android:inputType="textMultiLine"
-                android:lines="8"
+                android:padding="4dp"
                 app:layout_constraintBottom_toTopOf="@id/btn_notes_clear"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_notes_header" />
+                app:layout_constraintTop_toBottomOf="@id/view_notes_header">
+
+                <EditText
+                    android:id="@+id/et_notes"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ems="10"
+                    android:gravity="top"
+                    android:hint="@string/dialogfragment_notes_hint"
+                    android:inputType="textMultiLine"
+                    android:lines="8" />
+
+
+            </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:id="@+id/txt_notes_header_title"

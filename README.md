@@ -31,13 +31,13 @@ can simply keep track of your progress of all your books and their current state
 * Allow users to add a summary in the manual add
 * New details page design
 * Disable summary in settings
-* Change icon color of settings depending if night mode or not
+* Change icon color of settings depending on if night mode or not
 * Fix BaseAdapter bug
-* Enable language selectiion for manual add
+* Enable language selection for manual add
 * Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
-* Streamline Realm and move querying off the main thread (Provider pattern)
+* Streamline Realm and move the query off the main thread (Provider pattern)
 * Remove In-app purchases logic (or encapsulate it properly)
-* Adaption of main card
+* Adaption of the main card
 
 ### Version 3.2 - SMALL, STEADY IMPROVEMENTS
 * Include book description in Download

@@ -6,7 +6,6 @@ apply plugin: 'realm-android'
 apply plugin: 'io.fabric'
 
 
-
 def archVersion = "1.1.1"
 def designSupportVersion = "28.0.0"
 def supportVersion = "28.0.0"
@@ -20,8 +19,8 @@ def playServicesVersionVision = "17.0.2"
 def playServicesVersionDrive = "16.0.0"
 def playServicesVersionAuth = "16.0.1"
 def retrofitVersion = "2.4.0"
-def shockUtilVersion = "4.0.1"
-def crashlyticsVersion = "2.9.8"
+def shockUtilVersion = "4.0.2"
+def crashlyticsVersion = "2.9.9"
 def glideVersion = "4.8.0"
 def lottieVersion = "2.5.6"
 def rxImagePickerVersion = "2.2.0"
@@ -66,11 +65,9 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "false"
         }
         pre_release {
             initWith(release)
-            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "true"
         }
         // Use this build type in order to avoid, that release build type will be signed with the release key
         proguard_debug {
@@ -78,12 +75,10 @@ android {
             useProguard true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "true"
         }
         debug {
             //applicationIdSuffix ".debug"
             debuggable true
-            buildConfigField "boolean", "FEATURE_FLAG_CONFIG_VISIBLE", "true"
         }
     }
     lintOptions {

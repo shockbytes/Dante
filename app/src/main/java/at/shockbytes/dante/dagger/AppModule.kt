@@ -16,6 +16,7 @@ import at.shockbytes.dante.ui.image.GlideImageLoader
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.ui.image.RxDanteImagePicker
+import at.shockbytes.dante.ui.image.RxLegacyImagePicker
 import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.flagging.FeatureFlagging
@@ -133,6 +134,6 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideImagePicker(): ImagePicker {
-        return RxDanteImagePicker()
+        return RxLegacyImagePicker()
     }
 }

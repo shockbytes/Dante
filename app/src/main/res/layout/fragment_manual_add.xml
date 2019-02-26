@@ -62,6 +62,7 @@
                         android:layout_marginLeft="24dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:hint="@string/manual_add_title"
                         app:layout_constraintBottom_toBottomOf="@+id/imgViewManualAdd"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
@@ -72,7 +73,6 @@
                             android:id="@+id/editTextManualAddTitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/manual_add_title"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:singleLine="true" />
@@ -90,6 +90,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:hint="@string/manual_add_authors"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imgViewManualAdd">
@@ -98,7 +99,6 @@
                             android:id="@+id/editTextManualAddAuthors"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/manual_add_authors"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:singleLine="true" />
@@ -115,6 +115,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
+                        android:hint="@string/manual_add_pages"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -124,7 +125,6 @@
                             android:id="@+id/editTextManualAddPages"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/manual_add_pages"
                             android:imeOptions="actionNext"
                             android:inputType="number"
                             android:maxLines="1"
@@ -175,6 +175,7 @@
                         android:layout_marginTop="24dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:hint="@string/manual_add_subtitle"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txtManualAddOptionalHeader">
@@ -183,7 +184,6 @@
                             android:id="@+id/editTextManualAddSubtitle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/manual_add_subtitle"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:singleLine="true" />
@@ -214,6 +214,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:hint="@string/manual_add_published_date"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tilManualAddSubtitle">
@@ -222,7 +223,6 @@
                             android:id="@+id/editTextManualAddPublishedDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/manual_add_published_date"
                             android:imeOptions="actionNext"
                             android:maxLines="1"
                             android:singleLine="true" />
@@ -238,6 +238,7 @@
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:hint="@string/isbn"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/spinnerManualAddLanguage">
@@ -246,7 +247,6 @@
                             android:id="@+id/editTextManualAddIsbn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/isbn"
                             android:imeOptions="actionNext"
                             android:maxLength="13"
                             android:maxLines="1"
@@ -264,6 +264,7 @@
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="16dp"
+                        android:hint="@string/summary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -273,7 +274,6 @@
                             android:id="@+id/editTextManualAddSummary"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/summary"
                             android:lines="3"
                             android:maxLines="5" />
                     </android.support.design.widget.TextInputLayout>

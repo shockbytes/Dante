@@ -31,6 +31,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:hint="@string/dialogfragment_paging_current_page"
         app:layout_constraintEnd_toStartOf="@+id/paging_guideline_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDialogFragmentEditPagesHeader">
@@ -39,7 +40,6 @@
             android:id="@+id/dialogfragment_paging_edit_current_page"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/dialogfragment_paging_current_page"
             android:imeOptions="actionNext"
             android:inputType="numberDecimal">
 
@@ -85,6 +85,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:hint="@string/dialogfragment_paging_pages"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/paging_guideline_right"
         app:layout_constraintTop_toBottomOf="@+id/txtDialogFragmentEditPagesHeader">
@@ -93,7 +94,6 @@
             android:id="@+id/dialogfragment_paging_edit_pages"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/dialogfragment_paging_pages"
             android:imeOptions="actionDone"
             android:inputType="numberDecimal" />
     </android.support.design.widget.TextInputLayout>

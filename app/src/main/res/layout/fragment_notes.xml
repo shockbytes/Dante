@@ -90,6 +90,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
                 android:padding="4dp"
+                android:hint="@string/dialogfragment_notes_hint"
                 app:layout_constraintBottom_toTopOf="@id/btn_notes_clear"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,10 +102,8 @@
                     android:layout_height="match_parent"
                     android:ems="10"
                     android:gravity="top"
-                    android:hint="@string/dialogfragment_notes_hint"
                     android:inputType="textMultiLine"
                     android:lines="8" />
-
 
             </android.support.design.widget.TextInputLayout>
 

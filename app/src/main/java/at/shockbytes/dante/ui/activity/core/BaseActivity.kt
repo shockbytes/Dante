@@ -22,7 +22,6 @@ abstract class BaseActivity : AppCompatActivity() {
     protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (enableActivityTransition) {
                 window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
@@ -31,6 +30,7 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
         injectToGraph((application as DanteApp).appComponent)
+        super.onCreate(savedInstanceState)
     }
 
     protected fun showSnackbar(text: String) {

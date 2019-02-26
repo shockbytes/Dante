@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.Tasks
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.BufferedReader
@@ -79,7 +78,6 @@ class GoogleDriveBackupManager(
     override fun removeAllBackupEntries(): Completable {
         return Completable
                 .fromAction {
-
                     val appFolder = Tasks.await(client.appFolder)
                     Tasks.await(client.listChildren(appFolder))
                             .all { deleteDriveFile(it.driveId) }
@@ -93,17 +91,16 @@ class GoogleDriveBackupManager(
                 .observeOn(schedulers.ui)
     }
 
-    override fun backup(booksObservable: Flowable<List<BookEntity>>): Completable {
-        return booksObservable
-                .flatMapCompletable { books ->
-                    if (books.isNotEmpty()) {
-                        val content = gson.toJson(books)
-                        val filename = createFilename(books.size)
-                        createFile(filename, content)
-                    } else {
-                        throw BackupException("No books to backup")
-                    }
-                }
+    override fun backup(books: List<BookEntity>): Completable {
+
+        if (books.isEmpty()) {
+            throw BackupException("No books to backup")
+        }
+
+        val content = gson.toJson(books)
+        val filename = createFilename(books.size)
+
+        return createFile(filename, content)
                 .subscribeOn(schedulers.io)
                 .observeOn(schedulers.ui)
     }
@@ -199,38 +196,38 @@ class GoogleDriveBackupManager(
     }
 
     private fun createFile(filename: String, content: String): Completable {
+        return Completable.fromAction {
+            val changeSet = MetadataChangeSet.Builder()
+                    .setTitle(filename)
+                    .setMimeType(MIME_JSON)
+                    .build()
 
-        val changeSet = MetadataChangeSet.Builder()
-                .setTitle(filename)
-                .setMimeType(MIME_JSON)
-                .build()
+            val driveContents = Tasks.await(client.createContents())
 
-        val driveContents = Tasks.await(client.createContents())
+            val out = driveContents?.outputStream
+            val writer = BufferedWriter(OutputStreamWriter(out))
 
-        val out = driveContents?.outputStream
-        val writer = BufferedWriter(OutputStreamWriter(out))
-
-        try {
-            writer.write(content)
-        } catch (e: IOException) {
-            e.printStackTrace()
-            return Completable.error(Throwable(e.localizedMessage))
-        } finally {
             try {
-                writer.close()
+                writer.write(content)
             } catch (e: IOException) {
                 e.printStackTrace()
+                throw e
+            } finally {
+                try {
+                    writer.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
             }
-        }
 
-        val driveFileResult = Tasks.await(client.appFolder)
-        val createResult = Tasks.await(client.createFile(driveFileResult, changeSet, driveContents))
+            val driveFileResult = Tasks.await(client.appFolder)
+            val createResult = Tasks.await(client.createFile(driveFileResult, changeSet, driveContents))
 
-        return if (createResult != null) {
-            lastBackupTime = System.currentTimeMillis()
-            Completable.complete()
-        } else {
-            Completable.error(NullPointerException("Result of backup creation is null!"))
+            if (createResult != null) {
+                lastBackupTime = System.currentTimeMillis()
+            } else {
+                throw NullPointerException("Result of backup creation is null!")
+            }
         }
     }
 

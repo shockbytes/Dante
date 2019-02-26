@@ -35,7 +35,6 @@ class BackupViewModel @Inject constructor(
     val errorSubject = PublishSubject.create<Throwable>()
 
     fun connect(activity: FragmentActivity) {
-
         backupManager.connect(activity)
                 .subscribe({
                     loadBackupState()
@@ -65,15 +64,17 @@ class BackupViewModel @Inject constructor(
     }
 
     fun makeBackup() {
-        backupManager.backup(bookDao.bookObservable).subscribe({
-            updateLastBackupTime()
-            loadBackupState()
-            makeBackupEvent.onNext(State.Success)
-            tracker.trackEvent(DanteTrackingEvent.BackupMadeEvent())
-        }) { throwable ->
-            Timber.e(throwable)
-            makeBackupEvent.onNext(State.Error(throwable))
-        }.addTo(compositeDisposable)
+        backupManager.backup(bookDao.bookObservable.blockingFirst(listOf()))
+                .subscribe({
+                    updateLastBackupTime()
+                    loadBackupState()
+                    makeBackupEvent.onNext(State.Success)
+                    tracker.trackEvent(DanteTrackingEvent.BackupMadeEvent())
+                }) { throwable ->
+                    Timber.e(throwable)
+                    makeBackupEvent.onNext(State.Error(throwable))
+                }
+                .addTo(compositeDisposable)
     }
 
     fun deleteItem(t: BackupEntry, position: Int, currentItems: Int) {
@@ -88,7 +89,8 @@ class BackupViewModel @Inject constructor(
                 }) { throwable ->
                     Timber.e(throwable)
                     deleteBackupEvent.onNext(DeleteBackupState.Error(throwable))
-                }.addTo(compositeDisposable)
+                }
+                .addTo(compositeDisposable)
     }
 
     private fun loadBackupState() {

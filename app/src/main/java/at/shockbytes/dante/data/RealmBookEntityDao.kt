@@ -6,7 +6,7 @@ import at.shockbytes.dante.book.realm.RealmBook
 import at.shockbytes.dante.book.realm.RealmBookConfig
 import at.shockbytes.dante.book.realm.RealmInstanceProvider
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.realm.Case
 import io.realm.Sort
 
@@ -33,11 +33,12 @@ class RealmBookEntityDao(
             return config.getLastPrimaryKey()
         }
 
-    override val bookObservable: Flowable<List<BookEntity>>
+    override val bookObservable: Observable<List<BookEntity>>
         get() = realm.instance.where(bookClass)
                 .findAllAsync().sort("id", Sort.DESCENDING)
                 .asFlowable()
                 .map { mapper.mapTo(it) }
+                .toObservable()
 
     override fun get(id: Long): BookEntity? {
         val book = realm.instance.where(bookClass).equalTo("id", id).findFirst()
@@ -47,14 +48,11 @@ class RealmBookEntityDao(
     }
 
     override fun create(entity: BookEntity) {
-
-        realm.instance.beginTransaction()
-
-        val id = lastId
-        entity.id = id
-        realm.instance.copyToRealm(mapper.mapFrom(entity))
-
-        realm.instance.commitTransaction()
+        realm.instance.executeTransaction { realm ->
+            val id = lastId
+            entity.id = id
+            realm.copyToRealm(mapper.mapFrom(entity))
+        }
     }
 
     override fun update(entity: BookEntity) {
@@ -70,12 +68,13 @@ class RealmBookEntityDao(
         }
     }
 
-    override fun search(query: String): Flowable<List<BookEntity>> {
+    override fun search(query: String): Observable<List<BookEntity>> {
         return realm.instance.where(bookClass)
                 .contains("title", query, Case.INSENSITIVE)
                 .findAll()
                 .asFlowable()
                 .map { mapper.mapTo(it) }
+                .toObservable()
     }
 
     override fun restoreBackup(
@@ -108,10 +107,11 @@ class RealmBookEntityDao(
     private fun overwriteBackupRestore(backupBooks: List<BookEntity>) {
 
         val stored = realm.instance.where(bookClass).findAll()
-        realm.instance.beginTransaction()
-        stored.deleteAllFromRealm()
-        realm.instance.commitTransaction()
+        realm.instance.executeTransaction { realm ->
+            stored.deleteAllFromRealm()
+            realm.commitTransaction()
 
-        backupBooks.forEach { create(it) }
+            backupBooks.forEach { create(it) }
+        }
     }
 }

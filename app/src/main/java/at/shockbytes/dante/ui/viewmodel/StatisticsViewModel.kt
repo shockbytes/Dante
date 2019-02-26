@@ -17,10 +17,9 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
 
     fun requestStatistics() {
         bookDao.bookObservable
-                .flatMap { books ->
+                .flatMapSingle { books ->
                     BookStatistics.from(books)
                             .map { statsToItems(it) }
-                            .toFlowable()
                 }
                 .subscribe({ items ->
                     statisticsItems.postValue(items)

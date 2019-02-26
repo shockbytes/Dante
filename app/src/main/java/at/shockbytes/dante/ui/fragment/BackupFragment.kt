@@ -20,7 +20,6 @@ import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup.*
 import timber.log.Timber
-import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 
 /**
@@ -66,7 +65,8 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     }
 
     override fun onItemClick(t: BackupEntry, v: View) {
-        RestoreStrategyDialogFragment.newInstance()
+        RestoreStrategyDialogFragment
+                .newInstance()
                 .setOnRestoreStrategySelectedListener { strategy ->
                     viewModel.applyBackup(t, strategy)
                 }
@@ -118,7 +118,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 .subscribe { state ->
                     when (state) {
                         is BackupViewModel.State.Success -> {
-                            showSnackbar(getString(R.string.backup_created))
+                            showToast(getString(R.string.backup_created), showLong = false)
                         }
                         is BackupViewModel.State.Error -> {
                             showSnackbar(getString(R.string.backup_not_created))

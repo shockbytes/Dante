@@ -3,7 +3,7 @@ package at.shockbytes.dante.data
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.book.BookEntity
 import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.Observable
 
 /**
  * @author Martin Macheiner
@@ -11,7 +11,7 @@ import io.reactivex.Flowable
  */
 interface BookEntityDao {
 
-    val bookObservable: Flowable<List<BookEntity>>
+    val bookObservable: Observable<List<BookEntity>>
 
     fun get(id: Long): BookEntity?
 
@@ -21,7 +21,7 @@ interface BookEntityDao {
 
     fun delete(id: Long)
 
-    fun search(query: String): Flowable<List<BookEntity>>
+    fun search(query: String): Observable<List<BookEntity>>
 
     fun restoreBackup(
         backupBooks: List<BookEntity>,

@@ -4,7 +4,6 @@ import android.support.v4.app.FragmentActivity
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 
 /**
@@ -31,7 +30,7 @@ interface BackupManager {
 
     fun removeAllBackupEntries(): Completable
 
-    fun backup(booksObservable: Flowable<List<BookEntity>>): Completable
+    fun backup(books: List<BookEntity>): Completable
 
     fun restoreBackup(
         entry: BackupEntry,

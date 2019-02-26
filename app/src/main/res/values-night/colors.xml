@@ -10,6 +10,7 @@
     <color name="colorPrimaryText">#BBB</color>
     <color name="colorTertiaryText">#BBB</color>
 
+    <color name="menuItemColor">#E0E0E0</color>
 
     <color name="snackbarBackground">#EEEEEE</color>
     <color name="snackbarForeground">#323232</color>

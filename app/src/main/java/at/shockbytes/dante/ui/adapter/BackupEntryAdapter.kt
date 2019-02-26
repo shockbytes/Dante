@@ -3,8 +3,6 @@ package at.shockbytes.dante.ui.adapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.util.DanteUtils
@@ -12,13 +10,12 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_backup_entry.*
-import kotterknife.bindView
 
 /**
  * Author:  Martin Macheiner
- * Date:    22.04.2017.
+ * Date:    22.04.2017
  */
-class BackupEntryAdapter(cxt: Context) : BaseAdapter<BackupEntry>(cxt), ItemTouchHelperAdapter {
+class BackupEntryAdapter(ctx: Context) : BaseAdapter<BackupEntry>(ctx), ItemTouchHelperAdapter {
 
     var onItemDeleteClickListener: ((BackupEntry, Int) -> Unit)? = null
 
@@ -31,7 +28,7 @@ class BackupEntryAdapter(cxt: Context) : BaseAdapter<BackupEntry>(cxt), ItemTouc
 
     override fun onItemMove(from: Int, to: Int) = false
 
-    override fun onItemMoveFinished() {}
+    override fun onItemMoveFinished() = Unit
 
     override fun onItemDismiss(position: Int) {
         onItemMoveListener?.onItemDismissed(data[position], position)

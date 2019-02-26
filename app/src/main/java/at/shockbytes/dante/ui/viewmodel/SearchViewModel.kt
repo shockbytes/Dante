@@ -7,8 +7,6 @@ import at.shockbytes.dante.book.BookSearchItem
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.util.addTo
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -45,29 +43,31 @@ class SearchViewModel @Inject constructor(
 
             searchState.postValue(SearchState.LoadingState)
 
-            resolveSource(query.toString(), keepLocal).subscribe({
-                if (it.isNotEmpty()) {
-                    searchState.postValue(SearchState.SuccessState(it))
-                } else {
-                    searchState.postValue(SearchState.EmptyState)
-                }
-            }, {
-                Timber.e(it)
-                searchState.postValue(SearchState.ErrorState(it))
-            }).addTo(compositeDisposable)
+            resolveSource(query.toString(), keepLocal)
+                    .subscribe({
+                        if (it.isNotEmpty()) {
+                            searchState.postValue(SearchState.SuccessState(it))
+                        } else {
+                            searchState.postValue(SearchState.EmptyState)
+                        }
+                    }, {
+                        Timber.e(it)
+                        searchState.postValue(SearchState.ErrorState(it))
+                    })
+                    .addTo(compositeDisposable)
         }
     }
 
-    private fun resolveSource(query: String, keepLocal: Boolean): Flowable<List<BookSearchItem>> {
+    private fun resolveSource(query: String, keepLocal: Boolean): Observable<List<BookSearchItem>> {
         return if (keepLocal) localSearch(query) else onlineSearch(query)
     }
 
-    private fun localSearch(query: String): Flowable<List<BookSearchItem>> {
+    private fun localSearch(query: String): Observable<List<BookSearchItem>> {
         return bookDao.search(query)
                 .map { it.map { b -> bookTransform(b) } }
     }
 
-    private fun onlineSearch(query: String): Flowable<List<BookSearchItem>> {
+    private fun onlineSearch(query: String): Observable<List<BookSearchItem>> {
         return bookDownloader.downloadBook(query)
                 .map { b ->
                     val list = mutableListOf<BookSearchItem>()
@@ -82,7 +82,6 @@ class SearchViewModel @Inject constructor(
                     }
                     list.toList()
                 }
-                .toFlowable(BackpressureStrategy.BUFFER)
     }
 
     fun requestBookDownload(item: BookSearchItem) {

@@ -2,6 +2,7 @@ package at.shockbytes.dante.data
 
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.book.BookEntity
+import io.reactivex.Completable
 import io.reactivex.Flowable
 
 /**
@@ -22,5 +23,8 @@ interface BookEntityDao {
 
     fun search(query: String): Flowable<List<BookEntity>>
 
-    fun restoreBackup(backupBooks: List<BookEntity>, strategy: BackupManager.RestoreStrategy)
+    fun restoreBackup(
+        backupBooks: List<BookEntity>,
+        strategy: BackupManager.RestoreStrategy
+    ): Completable
 }

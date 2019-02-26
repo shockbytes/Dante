@@ -37,63 +37,75 @@ class GoogleDriveBackupManager(
     private val gson: Gson
 ) : BackupManager {
 
+    private lateinit var client: DriveResourceClient
+
     override var lastBackupTime: Long
         get() = preferences.getLong(LAST_BACKUP, 0)
         set(value) = preferences.edit().putLong(LAST_BACKUP, value).apply()
 
     override val backupList: Single<List<BackupEntry>>
-        get() {
-            return Single.fromCallable {
-                client.appFolder?.let { folder ->
-                    val appFolder = Tasks.await(folder)
-                    return@fromCallable fromMetadataToBackupEntries(Tasks.await(client.listChildren(appFolder)))
+        get() =
+            Single
+                .fromCallable {
+                        client.appFolder?.let { folder ->
+                            val appFolder = Tasks.await(folder)
+                            fromMetadataToBackupEntries(Tasks.await(client.listChildren(appFolder)))
+                        } ?: listOf()
                 }
-                listOf<BackupEntry>()
-            }.subscribeOn(schedulers.io).observeOn(schedulers.ui)
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
+
+    override fun connect(activity: FragmentActivity): Completable {
+        return Completable.fromAction {
+            signInManager.getGoogleAccount()?.let { account ->
+                client = Drive.getDriveResourceClient(activity, account)
+            } ?: throw BackupServiceConnectionException("Cannot access Google Account. Account = null")
         }
-
-    private lateinit var client: DriveResourceClient
-
-    @Throws(BackupServiceConnectionException::class)
-    override fun connect(activity: FragmentActivity) {
-        signInManager.getGoogleAccount()?.let { account ->
-            client = Drive.getDriveResourceClient(activity, account)
-        } ?: throw BackupServiceConnectionException("Cannot access Google Account. Account = null")
     }
 
-    override fun close(books: List<BookEntity>?) {}
+    override fun close(books: List<BookEntity>?) = Unit
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {
-        return Completable.fromAction {
-            if (!deleteDriveFile(DriveId.decodeFromString(entry.fileId))) {
-                Completable.error(Throwable(
-                        BackupException("Cannot delete backup entry: " + entry.fileName)))
-            }
-        }.subscribeOn(schedulers.io).observeOn(schedulers.ui)
+        return Completable
+                .fromAction {
+                    if (!deleteDriveFile(DriveId.decodeFromString(entry.fileId))) {
+                        Completable.error(Throwable(BackupException("Cannot delete backup entry: " + entry.fileName)))
+                    }
+                }
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
     }
 
     override fun removeAllBackupEntries(): Completable {
-        return Completable.fromAction {
+        return Completable
+                .fromAction {
 
-            val appFolder = Tasks.await(client.appFolder)
-            Tasks.await(client.listChildren(appFolder))
-                    .filterNot { deleteDriveFile(it.driveId) }
-                    .forEach { Completable.error(Throwable(BackupException("Can't delete backup ${it.originalFilename}"))) }
-        }.subscribeOn(schedulers.io).observeOn(schedulers.ui)
+                    val appFolder = Tasks.await(client.appFolder)
+                    Tasks.await(client.listChildren(appFolder))
+                            .all { deleteDriveFile(it.driveId) }
+                            .let { allDeleted ->
+                                if (!allDeleted) {
+                                    throw BackupException("Cannot remove all backup entries!")
+                                }
+                            }
+                }
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
     }
 
     override fun backup(booksObservable: Flowable<List<BookEntity>>): Completable {
-        return Completable.fromAction {
-
-            val books = booksObservable.blockingFirst()
-            if (books.isNotEmpty()) {
-                val content = gson.toJson(books)
-                val filename = createFilename(books.size)
-                createFile(filename, content)
-            } else {
-                Completable.error(BackupException("No books to backup"))
-            }
-        }.subscribeOn(schedulers.io).observeOn(schedulers.ui)
+        return booksObservable
+                .flatMapCompletable { books ->
+                    if (books.isNotEmpty()) {
+                        val content = gson.toJson(books)
+                        val filename = createFilename(books.size)
+                        createFile(filename, content)
+                    } else {
+                        throw BackupException("No books to backup")
+                    }
+                }
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
     }
 
     override fun restoreBackup(
@@ -101,14 +113,12 @@ class GoogleDriveBackupManager(
         bookDao: BookEntityDao,
         strategy: BackupManager.RestoreStrategy
     ): Completable {
-        return Completable.fromAction {
-            booksFromEntry(entry)
-                    .subscribe({ books ->
-                        bookDao.restoreBackup(books, strategy)
-                    }, { throwable ->
-                        Timber.e(throwable)
-                    })
-        }.subscribeOn(schedulers.ui).observeOn(schedulers.ui)
+        return booksFromEntry(entry)
+                .flatMapCompletable { books ->
+                    bookDao.restoreBackup(books, strategy)
+                }
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
     }
     // -----------------------------------------------------------------------------
 
@@ -118,13 +128,13 @@ class GoogleDriveBackupManager(
 
     private fun fromMetadataToBackupEntries(result: MetadataBuffer?): List<BackupEntry> {
 
-        val entries = mutableListOf<BackupEntry>()
-        result?.forEach { buffer ->
+        val entries = result?.mapNotNullTo(mutableListOf()) { buffer ->
 
             val fileId = buffer.driveId.encodeToString()
             val fileName = buffer.title
             try {
 
+                Timber.i("File name of backup file: $fileName")
                 val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                 val storageProvider = data[0]
                 val device = data[4].substring(0, data[4].lastIndexOf("."))
@@ -132,15 +142,23 @@ class GoogleDriveBackupManager(
                 val timestamp = java.lang.Long.parseLong(data[2])
                 val books = Integer.parseInt(data[3])
 
-                entries.add(BackupEntry(fileId, fileName, device, storageProvider,
-                        books, timestamp, isAutoBackup))
+                BackupEntry(
+                        fileId = fileId,
+                        fileName = fileName,
+                        device = device,
+                        storageProvider = storageProvider,
+                        books = books,
+                        timestamp = timestamp,
+                        isAutoBackup = isAutoBackup
+                )
             } catch (e: Exception) {
                 Timber.e(e, "Cannot parse file: $fileName")
+                null
             }
         }
 
         result?.release()
-        return entries
+        return entries ?: listOf()
     }
 
     private fun createFilename(books: Int): String {
@@ -156,24 +174,28 @@ class GoogleDriveBackupManager(
     }
 
     private fun booksFromEntry(entry: BackupEntry): Single<List<BookEntity>> {
-        return Single.fromCallable {
-            val file = DriveId.decodeFromString(entry.fileId).asDriveFile()
-            val result = client.openFile(file, DriveFile.MODE_READ_ONLY)
+        return Single
+                .fromCallable {
 
-            val contents = Tasks.await(result)
-            val reader = BufferedReader(InputStreamReader(contents?.inputStream))
-            val builder = StringBuilder()
+                    val file = DriveId.decodeFromString(entry.fileId).asDriveFile()
+                    val result = client.openFile(file, DriveFile.MODE_READ_ONLY)
 
-            for (line in reader.lineSequence()) {
-                builder.append(line)
-            }
-            val contentsAsString = builder.toString()
-            client.discardContents(contents) // Close contents
+                    val contents = Tasks.await(result)
+                    val reader = BufferedReader(InputStreamReader(contents?.inputStream))
+                    val builder = StringBuilder()
 
-            val list: List<BookEntity> = gson.fromJson(contentsAsString,
-                    object : TypeToken<List<BookEntity>>() {}.type)
-            list
-        }.subscribeOn(schedulers.io).observeOn(schedulers.ui)
+                    for (line in reader.lineSequence()) {
+                        builder.append(line)
+                    }
+                    val contentsAsString = builder.toString()
+                    client.discardContents(contents) // Close contents
+
+                    val list: List<BookEntity> = gson.fromJson(contentsAsString,
+                            object : TypeToken<List<BookEntity>>() {}.type)
+                    list
+                }
+                .subscribeOn(schedulers.io)
+                .observeOn(schedulers.ui)
     }
 
     private fun createFile(filename: String, content: String): Completable {

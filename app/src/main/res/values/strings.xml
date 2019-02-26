@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.3</string>
+    <string name="app_version" translatable="false">3.3.1</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
@@ -52,7 +52,7 @@
     <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
     <string name="last_backup">Last backup: %s</string>
-    <string name="backup_books_amount">Books: %d</string>
+    <string name="backup_books_amount">%d books</string>
     <string name="menu_main_backup">Backup</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>
@@ -62,7 +62,7 @@
     <string name="backup_removed">Backup removed</string>
     <string name="backup_restore_strategy_title">Restore strategy</string>
     <string name="backup_restored">Backup from %s restored</string>
-    <string name="backup_restore_error">Error while restoring backup</string>
+    <string name="backup_restore_error">Error while restoring backup. Reason: %s</string>
     <string name="download_suggestions_none">None of them</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>
     <string name="download_suggestion_other">Not my book</string>
@@ -179,7 +179,7 @@
     <string name="prefs_show_summary_summary">Show a summary of the books in the details screen</string>
 
     <string name="backup_no_backups">You haven\'t made any backups.</string>
-    <string name="backup_connection_error_google_drive">Cannot connect to Google Drive!</string>
+    <string name="backup_connection_error_google_drive">Cannot connect to Google Drive. Reason: %s</string>
     <string name="dark_mode_applied">The theme will change next restart.</string>
     <string name="error_google_login">We cannot log you into your Google Account!</string>
     <string name="load_error">Cannot load books from storage</string>
@@ -188,6 +188,10 @@
     <string name="language_english" translatable="false">en</string>
     <string name="summary">Summary</string>
     <string name="slash" translatable="false">/</string>
+    <string name="reload">Reload</string>
+
+    <string name="error_msg_execution_exception">Download Error</string>
+    <string name="error_msg_unknown">Unknown</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

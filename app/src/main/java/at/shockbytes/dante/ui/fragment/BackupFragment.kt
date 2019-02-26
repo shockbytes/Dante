@@ -6,7 +6,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.dagger.AppComponent
@@ -17,8 +16,11 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
+import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup.*
+import timber.log.Timber
+import java.util.concurrent.ExecutionException
 import javax.inject.Inject
 
 /**
@@ -54,6 +56,11 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
             fragment_backup_btn_backup.setOnClickListener {
                 viewModel.makeBackup()
+            }
+            fragment_backup_reload.setOnClickListener {
+                activity?.let { act ->
+                    viewModel.connect(act)
+                }
             }
         }
     }
@@ -94,7 +101,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                     showRecyclerView(false)
                 }
                 is BackupViewModel.LoadBackupState.Error -> {
-                    Toast.makeText(context, state.throwable.localizedMessage, Toast.LENGTH_LONG).show()
+                    showSnackbar(state.throwable.localizedMessage, showLong = true)
                     showLoadingView(false)
                     showEmptyStateView(false)
                     showRecyclerView(false)
@@ -117,7 +124,8 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                             showSnackbar(getString(R.string.backup_not_created))
                         }
                     }
-                }.addTo(compositeDisposable)
+                }
+                .addTo(compositeDisposable)
 
         viewModel.applyBackupEvent
                 .observeOn(AndroidSchedulers.mainThread())
@@ -127,10 +135,11 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                             showSnackbar(getString(R.string.backup_restored, state.msg))
                         }
                         is BackupViewModel.ApplyBackupState.Error -> {
-                            showSnackbar(getString(R.string.backup_restore_error))
+                            showSnackbar(getString(R.string.backup_restore_error, state.throwable.localizedMessage), showLong = true)
                         }
                     }
-                }.addTo(compositeDisposable)
+                }
+                .addTo(compositeDisposable)
 
         viewModel.deleteBackupEvent
                 .observeOn(AndroidSchedulers.mainThread())
@@ -145,14 +154,28 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                             showEmptyStateView(state.isBackupListEmpty)
                         }
                         is BackupViewModel.DeleteBackupState.Error -> {
-                            showSnackbar(state.throwable.localizedMessage)
+                            showSnackbar(getErrorMessage(state.throwable))
                         }
                     }
-                }.addTo(compositeDisposable)
+                }
+                .addTo(compositeDisposable)
+
+        viewModel.errorSubject
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ error ->
+                    showToast(getString(R.string.backup_connection_error_google_drive, getErrorMessage(error)), showLong = true)
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
+                .addTo(compositeDisposable)
+
+        activity?.let { act ->
+            viewModel.connect(act)
+        }
     }
 
     override fun unbindViewModel() {
-        // Not needed...
+        viewModel.disconnect()
     }
 
     private fun onItemDismissed(t: BackupEntry, position: Int) {
@@ -172,13 +195,20 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         fragment_backup_rv.setVisible(show)
     }
 
+    private fun getErrorMessage(throwable: Throwable): String {
+        return when (throwable) {
+            is ApiException -> getString(R.string.error_msg_execution_exception)
+            else -> getString(R.string.error_msg_unknown)
+        }
+    }
+
     companion object {
 
         fun newInstance(): BackupFragment {
-            val fragment = BackupFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
+            return BackupFragment().apply {
+                this.arguments = Bundle().apply {
+                }
+            }
         }
     }
 }

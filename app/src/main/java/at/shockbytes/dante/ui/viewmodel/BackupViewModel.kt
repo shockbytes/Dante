@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.support.v4.app.FragmentActivity
 import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.data.BookEntityDao
@@ -24,23 +25,35 @@ class BackupViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     private val loadBackupState = MutableLiveData<LoadBackupState>()
+    fun getBackupState(): LiveData<LoadBackupState> = loadBackupState
     private val lastBackupTime = MutableLiveData<String>()
+    fun getLastBackupTime(): LiveData<String> = lastBackupTime
 
     val makeBackupEvent = PublishSubject.create<State>()
     val deleteBackupEvent = PublishSubject.create<DeleteBackupState>()
     val applyBackupEvent = PublishSubject.create<ApplyBackupState>()
+    val errorSubject = PublishSubject.create<Throwable>()
 
-    init {
-        loadBackupState()
-        updateLastBackupTime()
+    fun connect(activity: FragmentActivity) {
+
+        backupManager.connect(activity)
+                .subscribe({
+                    loadBackupState()
+                    updateLastBackupTime()
+                }, { throwable ->
+                    Timber.e(throwable)
+                    errorSubject.onNext(throwable)
+                })
+                .addTo(compositeDisposable)
     }
 
-    fun getBackupState(): LiveData<LoadBackupState> = loadBackupState
-
-    fun getLastBackupTime(): LiveData<String> = lastBackupTime
+    fun disconnect() {
+        backupManager.close()
+    }
 
     fun applyBackup(t: BackupEntry, strategy: BackupManager.RestoreStrategy) {
-        backupManager.restoreBackup(t, bookDao, strategy)
+        backupManager
+                .restoreBackup(t, bookDao, strategy)
                 .subscribe({
                     val formattedTimestamp = DanteUtils.formatTimestamp(t.timestamp)
                     applyBackupEvent.onNext(ApplyBackupState.Success(formattedTimestamp))

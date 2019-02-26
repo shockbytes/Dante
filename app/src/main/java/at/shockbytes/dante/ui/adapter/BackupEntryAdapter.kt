@@ -10,6 +10,8 @@ import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_backup_entry.*
 import kotterknife.bindView
 
 /**
@@ -35,25 +37,21 @@ class BackupEntryAdapter(cxt: Context) : BaseAdapter<BackupEntry>(cxt), ItemTouc
         onItemMoveListener?.onItemDismissed(data[position], position)
     }
 
-    internal inner class ViewHolder(itemView: View) : BaseAdapter<BackupEntry>.ViewHolder(itemView) {
-
-        private val imgViewProvider by bindView<ImageView>(R.id.item_backup_entry_imgview_provider)
-        private val txtTime by bindView<TextView>(R.id.item_backup_entry_txt_time)
-        private val txtBookAmount by bindView<TextView>(R.id.item_backup_entry_txt_books)
-        private val txtDevice by bindView<TextView>(R.id.item_backup_entry_txt_device)
-        private val imgViewDelete by bindView<ImageView>(R.id.item_backup_entry_btn_delete)
+    inner class ViewHolder(
+        override val containerView: View
+    ) : BaseAdapter<BackupEntry>.ViewHolder(containerView), LayoutContainer {
 
         override fun bindToView(t: BackupEntry) {
 
             if (t.storageProvider == "gdrive") {
-                imgViewProvider.setImageResource(R.drawable.ic_google_drive)
+                item_backup_entry_imgview_provider.setImageResource(R.drawable.ic_google_drive)
             }
 
-            txtTime.text = DanteUtils.formatTimestamp(t.timestamp)
-            txtBookAmount.text = context.getString(R.string.backup_books_amount, t.books)
-            txtDevice.text = t.device
+            item_backup_entry_txt_time.text = DanteUtils.formatTimestamp(t.timestamp)
+            item_backup_entry_txt_books.text = context.getString(R.string.backup_books_amount, t.books)
+            item_backup_entry_txt_device.text = t.device
 
-            imgViewDelete.setOnClickListener {
+            item_backup_entry_btn_delete.setOnClickListener {
                 onItemDeleteClickListener?.invoke(t, getLocation(t))
             }
         }

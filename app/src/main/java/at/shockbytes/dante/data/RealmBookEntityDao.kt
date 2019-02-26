@@ -5,6 +5,7 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.realm.RealmBook
 import at.shockbytes.dante.book.realm.RealmBookConfig
 import at.shockbytes.dante.book.realm.RealmInstanceProvider
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.realm.Case
 import io.realm.Sort
@@ -77,11 +78,15 @@ class RealmBookEntityDao(
                 .map { mapper.mapTo(it) }
     }
 
-    override fun restoreBackup(backupBooks: List<BookEntity>, strategy: BackupManager.RestoreStrategy) {
-
-        when (strategy) {
-            BackupManager.RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
-            BackupManager.RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
+    override fun restoreBackup(
+        backupBooks: List<BookEntity>,
+        strategy: BackupManager.RestoreStrategy
+    ): Completable {
+        return Completable.fromAction {
+            when (strategy) {
+                BackupManager.RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
+                BackupManager.RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
+            }
         }
     }
 

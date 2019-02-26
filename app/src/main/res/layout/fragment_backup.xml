@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -33,20 +33,24 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment_backup_txt_backup_title"
         tools:text="@string/last_backup" />
 
-
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/fragment_backup_btn_backup"
-        style="@style/AppTheme.RoundedButton"
+        style="@style/AppTheme.RoundedButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:padding="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="32dp"
+        android:paddingEnd="32dp"
         android:text="@string/backup_now"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_backup_txt_last_backup" />
-
 
     <View
         android:id="@+id/fragment_backup_view_divider"
@@ -149,6 +153,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="fragment_backup_empty_view_img,fragment_backup_empty_view_txt" />
+        app:constraint_referenced_ids="fragment_backup_empty_view_img,fragment_backup_empty_view_txt,fragment_backup_reload" />
+
+    <Button
+        android:id="@+id/fragment_backup_reload"
+        style="@style/AppTheme.RoundedButton.Outlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingStart="32dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="32dp"
+        android:paddingBottom="16dp"
+        android:text="@string/reload"
+        android:textColor="@color/actionBarItemColor"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_backup_empty_view_txt" />
 
 </android.support.constraint.ConstraintLayout>

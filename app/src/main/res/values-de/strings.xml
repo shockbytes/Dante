@@ -30,7 +30,7 @@
     <string name="last_backup">Letzte Sicherung: %s</string>
     <string name="restore">Wiederherstellen (%d)</string>
     <string name="backup_now">Jetzt sichern</string>
-    <string name="backup_books_amount">Bücher: %d</string>
+    <string name="backup_books_amount">%d Bücher</string>
     <string name="backup">Backup</string>
     <string name="menu_main_backup">Backup</string>
     <string name="backup_strategy_merge">Zusammenfügen</string>
@@ -40,7 +40,7 @@
     <string name="backup_removed">Backup gelöscht</string>
     <string name="backup_restore_strategy_title">Wiederherstellung</string>
     <string name="backup_restored">Backup vom %s hergestellt</string>
-    <string name="backup_restore_error">Fehler beim Wiederherstellen</string>
+    <string name="backup_restore_error">Fehler beim Wiederherstellen. Grund: %s</string>
     <string name="download_suggestion_header_other">Eines von denen?</string>
     <string name="download_suggestion_other">Nicht mein Buch</string>
     <string name="download_suggestions_none">Keines von denen</string>
@@ -149,7 +149,7 @@
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Verwende ein dunkles Thema für die App</string>
     <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
-    <string name="backup_connection_error_google_drive">Keine Verbindung zu Google Drive möglich!</string>
+    <string name="backup_connection_error_google_drive">Keine Verbindung zu Google Drive möglich. Grund: %s</string>
     <string name="dark_mode_applied">Das Thema wird beim nächsten Start aktiviert.</string>
     <string name="error_google_login">Wir können dich leider nicht einloggen!</string>
     <string name="load_error">Bücher können nicht geladen werden</string>
@@ -178,5 +178,9 @@
     <string name="prefs_show_summary_title">Bücherzusammenfassung</string>
     <string name="prefs_show_summary_summary">Zeige Zusammenfassung der Bücher in der Detailansicht</string>
     <string name="summary">Zusammenfassung</string>
+    <string name="reload">Erneut laden</string>
+
+    <string name="error_msg_execution_exception">Downloadfehler</string>
+    <string name="error_msg_unknown">Unbekannt</string>
 
 </resources>

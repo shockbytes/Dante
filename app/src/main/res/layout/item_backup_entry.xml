@@ -39,6 +39,7 @@
             android:layout_marginRight="8dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
             android:layout_toRightOf="@+id/item_backup_entry_imgview_provider"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_delete"
             app:layout_constraintStart_toEndOf="@+id/item_backup_entry_imgview_provider"
@@ -47,42 +48,35 @@
 
         <TextView
             android:id="@+id/item_backup_entry_txt_books"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
-            android:layout_toRightOf="@+id/item_backup_entry_imgview_provider"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_delete"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/item_backup_entry_imgview_provider"
-            app:layout_constraintTop_toBottomOf="@+id/item_backup_entry_txt_time"
-            tools:text="24 Books" />
-
-        <TextView
-            android:id="@+id/item_backup_entry_txt_device"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_backup_entry_txt_books"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
             android:layout_toRightOf="@+id/item_backup_entry_imgview_provider"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_delete"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/item_backup_entry_imgview_provider"
-            app:layout_constraintTop_toBottomOf="@+id/item_backup_entry_txt_books"
-            tools:text="Device: Nexus 5" />
+            app:layout_constraintEnd_toEndOf="@id/item_backup_entry_iv_books"
+            app:layout_constraintStart_toStartOf="@id/item_backup_entry_iv_books"
+            app:layout_constraintTop_toBottomOf="@id/item_backup_entry_iv_books"
+            tools:text="24 Books" />
+
+        <TextView
+            android:id="@+id/item_backup_entry_txt_device"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_backup_entry_txt_books"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
+            android:layout_toRightOf="@+id/item_backup_entry_imgview_provider"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/item_backup_entry_iv_device"
+            app:layout_constraintStart_toStartOf="@id/item_backup_entry_iv_device"
+            app:layout_constraintTop_toBottomOf="@id/item_backup_entry_iv_device"
+            tools:text="Nokia 7.1" />
 
         <ImageButton
             android:id="@+id/item_backup_entry_btn_delete"
@@ -95,6 +89,41 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_close_grayscale" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+        <ImageView
+            android:id="@+id/item_backup_entry_iv_device"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_delete"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
+            app:layout_constraintTop_toBottomOf="@+id/item_backup_entry_txt_time"
+            app:srcCompat="@drawable/ic_phone" />
+
+        <ImageView
+            android:id="@+id/item_backup_entry_iv_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toEndOf="@+id/item_backup_entry_imgview_provider"
+            app:layout_constraintTop_toBottomOf="@+id/item_backup_entry_txt_time"
+            app:srcCompat="@drawable/ic_book_count" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

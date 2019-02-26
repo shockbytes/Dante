@@ -23,7 +23,7 @@ interface BackupManager {
     val backupList: Single<List<BackupEntry>>
 
     @Throws(BackupServiceConnectionException::class)
-    fun connect(activity: FragmentActivity)
+    fun connect(activity: FragmentActivity): Completable
 
     fun close(books: List<BookEntity>? = null)
 

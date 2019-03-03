@@ -17,8 +17,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Firebase as Online Backend
 - [ ] Remove backup functionality / Replace it with online sync
 
-### Version 3.4.1 - CLEAN THE CAMPFIRE
-- [ ] Android 5 as minSdk
+### Version 3.4.1 - CLEAN THE CAMPFIRE BEFORE THE BBQ
 - [ ] Put overflow menu into ActionBar
 - [ ] Labels for books
 - [ ] Add UI for Feature flags
@@ -27,6 +26,7 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.4 - START A CAMPFIRE
 - [ ] Redesign login flow with Firebase login
 - [ ] Some sort of onboarding
+- [ ] Android 5 as minSdk
 
 ### Version 3.3 - DETAILS & DEBTS
 * Rework notes screen (give it more space)

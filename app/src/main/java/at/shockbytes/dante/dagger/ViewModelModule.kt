@@ -6,6 +6,7 @@ import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
+import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
@@ -80,4 +81,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FeatureFlagConfigViewModel::class)
     internal abstract fun featureFlagConfigViewModel(viewModel: FeatureFlagConfigViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    internal abstract fun loginViewModel(viewModel: LoginViewModel): ViewModel
 }

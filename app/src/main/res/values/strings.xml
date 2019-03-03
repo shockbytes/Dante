@@ -192,6 +192,7 @@
 
     <string name="error_msg_execution_exception">Download Error</string>
     <string name="error_msg_unknown">Unknown</string>
+    <string name="welcome_to_dante">Welcome to Dante</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

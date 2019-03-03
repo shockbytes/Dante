@@ -17,7 +17,7 @@ class RateFragment : BaseFragment() {
     override val layoutId = R.layout.fragment_rating
 
     @Inject
-    protected lateinit var imageLoader: ImageLoader
+    lateinit var imageLoader: ImageLoader
 
     var onRateClickListener: ((Int) -> Unit)? = null
 

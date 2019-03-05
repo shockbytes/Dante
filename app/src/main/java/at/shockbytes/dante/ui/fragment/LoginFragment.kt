@@ -40,4 +40,11 @@ class LoginFragment : BaseFragment() {
 
     override fun unbindViewModel() {
     }
+
+    companion object {
+
+        fun newInstance(): LoginFragment {
+            return LoginFragment()
+        }
+    }
 }

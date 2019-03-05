@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
@@ -63,10 +64,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
         tabId = savedInstanceState?.getInt("tabId") ?: R.id.menu_navigation_current
+        val openCamera = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
 
         setupUI()
         initializeNavigation()
-        setupObserver()
+        bindViewModel()
         setupDarkMode()
     }
 
@@ -112,7 +114,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     // ---------------------------------------------------
 
-    private fun setupObserver() {
+    private fun bindViewModel() {
         viewModel.userEvent.observe(this, Observer { event ->
 
             when (event) {
@@ -293,5 +295,15 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             AppCompatDelegate.MODE_NIGHT_NO
         }
         AppCompatDelegate.setDefaultNightMode(mode)
+    }
+
+    companion object {
+
+        private const val ARG_OPEN_CAMERA_AFTER_LAUNCH = "arg_open_camera_after_lunch"
+
+        fun newIntent(context: Context, openCameraAfterLaunch: Boolean): Intent {
+            return Intent(context, MainActivity::class.java)
+                    .putExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, openCameraAfterLaunch)
+        }
     }
 }

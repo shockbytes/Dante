@@ -9,6 +9,13 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
     private val nextOnboardingStep = MutableLiveData<OnboardingStep>()
     fun getNextOnboardingStep(): LiveData<OnboardingStep> = nextOnboardingStep
 
+    private val loginState = MutableLiveData<LoginState>()
+    fun getLoginState(): LiveData<LoginState> = loginState
+
+    fun requestLoginState() {
+        loginState.postValue(LoginState.FirstAppOpen)
+    }
+
     fun login() {
         // TODO log the user in
     }
@@ -28,6 +35,15 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
             is OnboardingStep.CallToAction -> {
             }
         }
+    }
+
+    sealed class LoginState {
+
+        object LoggedIn : LoginState()
+
+        object LoggedOut : LoginState()
+
+        object FirstAppOpen : LoginState()
     }
 
     // TODO Move in appropriate class

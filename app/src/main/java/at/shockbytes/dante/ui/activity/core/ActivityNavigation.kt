@@ -8,6 +8,7 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
+import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
@@ -20,6 +21,7 @@ object ActivityNavigation {
         class BookDetail(val id: Long, val title: String) : Destination()
         class Share(val bookEntity: BookEntity) : Destination()
         class Retrieval(val type: BookRetrievalActivity.RetrievalType, val query: String?) : Destination()
+        class Main(val openCameraAfterLaunch: Boolean = false) : Destination()
 
         object Search : Destination()
         object ManualAdd : Destination()
@@ -41,6 +43,7 @@ object ActivityNavigation {
                 }
                 is Destination.Search -> SearchActivity.newIntent(context)
                 is Destination.Retrieval -> BookRetrievalActivity.newIntent(context, destination.type, destination.query)
+                is Destination.Main -> MainActivity.newIntent(context, destination.openCameraAfterLaunch)
                 ActivityNavigation.Destination.ManualAdd -> ManualAddActivity.newIntent(context)
                 ActivityNavigation.Destination.Statistics -> StatisticsActivity.newIntent(context)
                 ActivityNavigation.Destination.Backup -> BackupActivity.newIntent(context)

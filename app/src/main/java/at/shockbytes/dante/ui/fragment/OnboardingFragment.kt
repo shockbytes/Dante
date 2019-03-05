@@ -35,4 +35,11 @@ class OnboardingFragment : BaseFragment() {
 
     override fun unbindViewModel() {
     }
+
+    companion object {
+
+        fun newInstance(): OnboardingFragment {
+            return OnboardingFragment()
+        }
+    }
 }

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.onboarding.OnboardingContent
+import com.airbnb.lottie.LottieAnimationView
 import com.tbuonomo.creativeviewpager.adapter.CreativePagerAdapter
 
 class OnboardingAdapter(private val context: Context) : CreativePagerAdapter {
@@ -32,7 +33,7 @@ class OnboardingAdapter(private val context: Context) : CreativePagerAdapter {
     override fun instantiateHeaderItem(inflater: LayoutInflater, container: ViewGroup, position: Int): View {
 
         val item = OnboardingContent.values()[position]
-        return when (item) {
+        val view =  when (item) {
             OnboardingContent.WELCOME -> {
                 inflater.inflate(R.layout.item_onboarding_content_generic, container, false)
             }
@@ -52,6 +53,13 @@ class OnboardingAdapter(private val context: Context) : CreativePagerAdapter {
                 inflater.inflate(R.layout.item_onboarding_content_generic, container, false)
             }
         }
+
+        view.findViewById<LottieAnimationView>(R.id.lottie_onboarding_item).apply {
+            setAnimation(item.lottieRes)
+        }
+
+
+        return view
     }
 
     override fun isUpdatingBackgroundColor(): Boolean {

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/mainBackground"
+    android:layout_height="match_parent">
 
     <com.tbuonomo.creativeviewpager.CreativeViewPager
         android:id="@+id/fragment_onboarding_vp"
@@ -11,14 +12,10 @@
         app:contentHorizontalPadding="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:contentItemMargin="8dp"
+        app:headerItemMargin="8dp"
+        app:headerItemSize="92dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <!--
-            app:contentMargin="8dp"
-        app:imagesMargin="8dp"
-        app:imagesSize="92dp"
-        -->
-
 
 </android.support.constraint.ConstraintLayout>

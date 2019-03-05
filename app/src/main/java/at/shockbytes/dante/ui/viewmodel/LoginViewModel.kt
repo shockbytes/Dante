@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import at.shockbytes.dante.onboarding.OnboardingStep
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor() : BaseViewModel() {
@@ -44,30 +45,5 @@ class LoginViewModel @Inject constructor() : BaseViewModel() {
         object LoggedOut : LoginState()
 
         object FirstAppOpen : LoginState()
-    }
-
-    // TODO Move in appropriate class
-    sealed class OnboardingStep {
-
-        enum class LoginMethod {
-            GOOGLE
-        }
-
-        // Initial view, no interaction here
-        object Welcome : OnboardingStep()
-
-        data class Tracking(val enableTracking: Boolean) : OnboardingStep()
-
-        data class NightMode(val enableNightMode: Boolean) : OnboardingStep()
-
-        data class Login(val loginMethod: LoginMethod) : OnboardingStep()
-
-        // This one is disable for now as long as there are no suggestions
-        data class Suggestions(val enableSuggestions: Boolean) : OnboardingStep()
-
-        /**
-         * @param openCamera If true, MainActivity will directly head into the camera view
-         */
-        data class CallToAction(val openCamera: Boolean) : OnboardingStep()
     }
 }

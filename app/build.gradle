@@ -146,6 +146,7 @@ dependencies {
     implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.mlsdev.rximagepicker:library:2.1.5'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
 
     implementation "com.github.qingmei2:rximagepicker:$rxImagePickerVersion"
     implementation "com.github.qingmei2:rximagepicker_support:$rxImagePickerVersion"

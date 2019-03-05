@@ -6,7 +6,9 @@ import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
+import at.shockbytes.dante.ui.adapter.OnboardingAdapter
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import kotlinx.android.synthetic.main.fragment_onboarding.*
 import javax.inject.Inject
 
 class OnboardingFragment : BaseFragment() {
@@ -24,6 +26,9 @@ class OnboardingFragment : BaseFragment() {
     }
 
     override fun setupViews() {
+        context?.let { ctx ->
+            fragment_onboarding_vp.setCreativeViewPagerAdapter(OnboardingAdapter(ctx))
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

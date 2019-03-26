@@ -199,6 +199,8 @@
     <string name="ic_onboarding_login" />
     <string name="ic_onboarding_suggestions" />
     <string name="ic_onboarding_cta" />
+    <string name="prefs_tracking_key" translatable="false">prefs_tracking_key</string>
+    <string name="prefs_last_login" translatable="false">prefs_last_login</string>
 
     <string-array name="empty_indicators">
         <item>Scan some books for later</item>

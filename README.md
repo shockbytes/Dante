@@ -26,6 +26,7 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Investigate shared element transition missing end anchor and check for layout bugs
 - [ ] Redesign login flow with Firebase login
 - [ ] Add onboarding
+- [x] Add +/- buttons for page overlay
 - [x] Android 5 as minSdk
 
 ### Version 3.3 - DETAILS & DEBTS

@@ -1,6 +1,8 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
+import android.view.View
 import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
@@ -19,6 +21,16 @@ class PagesFragment : BaseFragment() {
         }
         arguments?.getInt(ARG_PAGES)?.let { pages ->
             et_pages_pages.setText(pages.toString())
+        }
+
+        img_btn_fragment_pages_inc.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            increasePageNumber(v)
+        }
+
+        img_btn_fragment_pages_dec.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            decreasePageNumber(v)
         }
 
         btn_pages_save.setOnClickListener {
@@ -46,8 +58,29 @@ class PagesFragment : BaseFragment() {
         }
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {
+    private fun increasePageNumber(v: View) {
+
+        val current = et_pages_current_page.text.toString().toIntOrNull() ?: 0
+        val pages = et_pages_pages.text.toString().toIntOrNull() ?: 0
+
+        if (current < pages) {
+            et_pages_current_page.setText(current.inc().toString())
+        } else {
+            v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        }
     }
+
+    private fun decreasePageNumber(v: View) {
+        val current = et_pages_current_page.text.toString().toIntOrNull() ?: 0
+
+        if (current > 0) {
+            et_pages_current_page.setText(current.dec().toString())
+        } else {
+            v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        }
+    }
+
+    override fun injectToGraph(appComponent: AppComponent) = Unit
 
     override fun bindViewModel() = Unit
 

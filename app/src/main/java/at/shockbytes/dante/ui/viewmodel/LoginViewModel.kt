@@ -10,12 +10,11 @@ import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.rxkotlin.addTo
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.math.log
 
 class LoginViewModel @Inject constructor(
-        private val danteSettings: DanteSettings,
-        private val signInManager: SignInManager,
-        private val schedulers: SchedulerFacade
+    private val danteSettings: DanteSettings,
+    private val signInManager: SignInManager,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     private val nextOnboardingStep = MutableLiveData<OnboardingStepAction>()

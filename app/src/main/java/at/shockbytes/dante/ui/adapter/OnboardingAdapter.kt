@@ -33,7 +33,7 @@ class OnboardingAdapter(private val context: Context) : CreativePagerAdapter {
     override fun instantiateHeaderItem(inflater: LayoutInflater, container: ViewGroup, position: Int): View {
 
         val item = OnboardingContent.values()[position]
-        val view =  when (item) {
+        val view = when (item) {
             OnboardingContent.WELCOME -> {
                 inflater.inflate(R.layout.item_onboarding_content_generic, container, false)
             }
@@ -57,7 +57,6 @@ class OnboardingAdapter(private val context: Context) : CreativePagerAdapter {
         view.findViewById<LottieAnimationView>(R.id.lottie_onboarding_item).apply {
             setAnimation(item.lottieRes)
         }
-
 
         return view
     }

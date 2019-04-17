@@ -1,16 +1,16 @@
 package at.shockbytes.dante.ui.activity
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
-import android.support.v7.app.AppCompatDelegate
-import android.support.v7.view.menu.MenuBuilder
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
@@ -37,7 +37,7 @@ import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
+class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory

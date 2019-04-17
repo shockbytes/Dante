@@ -1,16 +1,16 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.util.Pair
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
@@ -45,7 +45,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
 
-    private val layoutManager: RecyclerView.LayoutManager
+    private val rvLayoutManager: RecyclerView.LayoutManager
         get() = if (resources.getBoolean(R.bool.isTablet)) {
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -53,7 +53,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         } else {
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             else
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
@@ -101,9 +101,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         })
     }
 
-    override fun unbindViewModel() {
-        // Not needed...
-    }
+    override fun unbindViewModel() = Unit
 
     override fun setupViews() {
 
@@ -112,11 +110,14 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
         // Initialize RecyclerView
         context?.let { ctx ->
-            bookAdapter = BookAdapter(ctx, bookState, imageLoader, this, true)
-            fragment_book_main_rv.layoutManager = layoutManager
-            bookAdapter.onItemClickListener = this
-            bookAdapter.onItemMoveListener = this
-            fragment_book_main_rv.adapter = bookAdapter
+            bookAdapter = BookAdapter(ctx, bookState, imageLoader, this, true).apply {
+                onItemClickListener = this@MainBookFragment
+                onItemMoveListener = this@MainBookFragment
+            }
+            fragment_book_main_rv.apply {
+                layoutManager = rvLayoutManager
+                adapter = bookAdapter
+            }
         }
 
         // Setup RecyclerView's ItemTouchHelper
@@ -133,13 +134,10 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         )
     }
 
-    override fun onItemDismissed(t: BookEntity, position: Int) {
-        // Not supported
-    }
+    override fun onItemDismissed(t: BookEntity, position: Int) = Unit
 
-    override fun onItemMove(t: BookEntity, from: Int, to: Int) {
-        // Do nothing, only react to move actions in the on item move finished method
-    }
+    // Do nothing, only react to move actions in the on item move finished method
+    override fun onItemMove(t: BookEntity, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() {
         viewModel.updateBookPositions(bookAdapter.data)
@@ -169,20 +167,19 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     // --------------------------------------------------------------
 
     private fun getTransitionBundle(v: View): Bundle? {
-        return activity?.let {
+        return activity?.let { act ->
             ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(it,
-                            Pair(v.findViewById(R.id.item_book_card),
-                                    getString(R.string.transition_name_card)),
-                            Pair(v.findViewById(R.id.item_book_img_thumb),
-                                    getString(R.string.transition_name_thumb)),
-                            Pair(v.findViewById(R.id.item_book_txt_title),
-                                    getString(R.string.transition_name_title)),
-                            Pair(v.findViewById(R.id.item_book_txt_subtitle),
-                                    getString(R.string.transition_name_subtitle)),
-                            Pair(v.findViewById(R.id.item_book_txt_author),
-                                    getString(R.string.transition_name_author))
-                    ).toBundle()
+                .makeSceneTransitionAnimation(act,
+                        Pair(
+                            v.findViewById(R.id.item_book_card),
+                            getString(R.string.transition_name_card)
+                        ),
+                        Pair(v.findViewById(
+                            R.id.item_book_img_thumb),
+                            getString(R.string.transition_name_thumb)
+                        )
+                )
+                .toBundle()
         }
     }
 

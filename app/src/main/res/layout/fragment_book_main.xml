@@ -5,13 +5,13 @@
     android:background="@color/mainBackground"
     tools:context=".ui.fragment.MainBookFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_book_main_rv"
         android:layout_width="match_parent"
         android:padding="@dimen/main_padding"
         android:layout_height="match_parent" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/fragment_book_main_empty_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

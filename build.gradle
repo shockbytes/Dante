@@ -3,7 +3,7 @@ def ktlintVersion = "0.31.0"
 
 buildscript {
 
-    def realmVersion = "5.8.0"
+    def realmVersion = "5.10.0"
     def crashlyticsPluginVersion = "1.28.0"
     ext.kotlin_version = '1.3.21'
 
@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath "io.fabric.tools:gradle:$crashlyticsPluginVersion"
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.4.0'
         classpath 'com.google.gms:google-services:4.2.0'
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

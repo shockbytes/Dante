@@ -1,6 +1,6 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 
 /**

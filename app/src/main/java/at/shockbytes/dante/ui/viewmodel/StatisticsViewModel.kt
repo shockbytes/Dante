@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.statistics.BookStatistics
 import at.shockbytes.dante.book.statistics.StatisticsDisplayItem

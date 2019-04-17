@@ -1,10 +1,9 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.os.Build
 import android.os.Bundle
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.SwitchPreferenceCompat
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import android.widget.Toast
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp

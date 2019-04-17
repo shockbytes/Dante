@@ -5,8 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.annotation.Dimension
-import android.support.annotation.DrawableRes
+import androidx.annotation.Dimension
+import androidx.annotation.DrawableRes
 import android.widget.ImageView
 import at.shockbytes.dante.util.DanteUtils
 import com.bumptech.glide.Glide

@@ -1,7 +1,7 @@
 package at.shockbytes.dante.dagger
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel

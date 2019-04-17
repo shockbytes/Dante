@@ -2,11 +2,11 @@ package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
 import android.os.Build
-import android.support.constraint.Group
-import android.support.v7.util.DiffUtil
-import android.support.v7.view.menu.MenuBuilder
-import android.support.v7.view.menu.MenuPopupHelper
-import android.support.v7.widget.PopupMenu
+import androidx.constraintlayout.widget.Group
+import androidx.recyclerview.widget.DiffUtil
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup

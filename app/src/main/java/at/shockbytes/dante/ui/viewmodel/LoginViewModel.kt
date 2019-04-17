@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.onboarding.LoginMethod
 import at.shockbytes.dante.onboarding.OnboardingStepAction
 import at.shockbytes.dante.signin.SignInManager

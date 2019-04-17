@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.fragment.dialog
 
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.dagger.AppComponent
 import io.reactivex.disposables.CompositeDisposable
@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
  * Author: Martin Macheiner
  * Date: 30.12.2017.
  */
-abstract class BaseDialogFragment : DialogFragment() {
+abstract class BaseDialogFragment : androidx.fragment.app.DialogFragment() {
 
     protected val compositeDisposable = CompositeDisposable()
 

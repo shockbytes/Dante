@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.util.flagging.FeatureFlag
 import at.shockbytes.dante.util.flagging.FeatureFlagItem
 import at.shockbytes.dante.util.flagging.FeatureFlagging
@@ -29,5 +29,4 @@ class FeatureFlagConfigViewModel @Inject constructor(
         }
         featureFlags.postValue(items)
     }
-
 }

@@ -4,8 +4,8 @@ import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.graphics.Palette
-import android.support.v7.widget.LinearLayoutManager
+import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -31,7 +31,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
-        Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
+        androidx.palette.graphics.Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
 
     interface OnBookDownloadedListener {
 
@@ -123,7 +123,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let {
-            Palette.from(it).generate(this)
+            androidx.palette.graphics.Palette.from(it).generate(this)
         }
     }
 
@@ -135,7 +135,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         // Not needed...
     }
 
-    override fun onGenerated(palette: Palette?) {
+    override fun onGenerated(palette: androidx.palette.graphics.Palette?) {
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
@@ -264,7 +264,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
                         .map { it.state = BookState.READ_LATER; it }
                         .toMutableList()
             }
-            recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewDownloadFragmentOtherSuggestions.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
             bookAdapter?.onItemClickListener = this
             recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
         }

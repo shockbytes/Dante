@@ -1,8 +1,8 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.support.v4.app.FragmentActivity
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.BackupEntry
 import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.data.BookEntityDao
@@ -34,7 +34,7 @@ class BackupViewModel @Inject constructor(
     val applyBackupEvent = PublishSubject.create<ApplyBackupState>()
     val errorSubject = PublishSubject.create<Throwable>()
 
-    fun connect(activity: FragmentActivity) {
+    fun connect(activity: androidx.fragment.app.FragmentActivity) {
         backupManager.connect(activity)
                 .subscribe({
                     loadBackupState()

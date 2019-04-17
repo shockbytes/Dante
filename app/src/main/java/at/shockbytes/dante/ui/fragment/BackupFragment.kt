@@ -1,10 +1,10 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupEntry
@@ -47,7 +47,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
     override fun setupViews() {
         context?.let { ctx ->
             val adapter = BackupEntryAdapter(ctx)
-            fragment_backup_rv.layoutManager = LinearLayoutManager(ctx)
+            fragment_backup_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(ctx)
             adapter.onItemClickListener = this
             adapter.onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }
             fragment_backup_rv.adapter = adapter

@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent

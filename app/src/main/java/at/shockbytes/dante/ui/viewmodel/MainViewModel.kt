@@ -1,6 +1,6 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Intent
 import at.shockbytes.dante.R
 import at.shockbytes.dante.signin.DanteUser

@@ -2,8 +2,8 @@ package at.shockbytes.dante.ui.fragment.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -14,7 +14,7 @@ import at.shockbytes.dante.backup.BackupManager
  * Author:  Martin Macheiner
  * Date:    30.08.2016
  */
-class RestoreStrategyDialogFragment : DialogFragment() {
+class RestoreStrategyDialogFragment : androidx.fragment.app.DialogFragment() {
 
     private var strategyListener: ((BackupManager.RestoreStrategy) -> Unit)? = null
 

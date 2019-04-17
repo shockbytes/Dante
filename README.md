@@ -19,6 +19,7 @@ can simply keep track of your progress of all your books and their current state
 
 ### Version 3.6 - CLEAN THE CAMPFIRE BEFORE THE BBQ
 - [ ] Put overflow menu into ActionBar
+- [ ] Labels for books
 
 ### Version 3.5 - START A CAMPFIRE
 - [ ] Redesign login flow with Firebase login
@@ -26,12 +27,11 @@ can simply keep track of your progress of all your books and their current state
     - [ ] Use this for FAB https://github.com/sjwall/MaterialTapTargetPrompt
 
 ### Version 3.4 - SUBTLE SEXY FEATURES
-- [ ] Labels for books
-- [ ] Investigate shared element transition missing end anchor and check for layout bugs
-- [ ] Refactor to Android X
-- [x] Add UI for Feature flags
-- [x] Add +/- buttons for page overlay
-- [x] Android 5 as minSdk
+* Investigate shared element transition missing end anchor and check for layout bugs
+* Refactor to Android X
+* Add UI for Feature flags
+* Add +/- buttons for page overlay
+* Android 5 as minSdk
 
 ### Version 3.3 - DETAILS & DEBTS
 * Rework notes screen (give it more space)

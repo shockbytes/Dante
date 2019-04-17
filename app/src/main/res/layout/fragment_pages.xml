@@ -64,6 +64,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="88dp"
                 android:layout_marginRight="88dp"
+                android:hint="@string/dialogfragment_paging_current_page"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_pages_close">
@@ -72,7 +73,6 @@
                     android:id="@+id/et_pages_current_page"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/dialogfragment_paging_current_page"
                     android:inputType="number"
                     android:maxLines="1"
                     tools:text="30" />
@@ -88,6 +88,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="88dp"
                 android:layout_marginRight="88dp"
+                android:hint="@string/dialogfragment_paging_pages"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_pages_slash">
@@ -96,7 +97,6 @@
                     android:id="@+id/et_pages_pages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/dialogfragment_paging_pages"
                     android:inputType="number"
                     android:maxLines="1"
                     tools:text="300" />

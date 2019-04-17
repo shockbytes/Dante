@@ -7,8 +7,6 @@ import at.shockbytes.dante.onboarding.OnboardingStepAction
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import io.reactivex.rxkotlin.addTo
-import timber.log.Timber
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
@@ -25,6 +23,9 @@ class LoginViewModel @Inject constructor(
 
     fun requestLoginState() {
 
+        loginState.postValue(LoginState.FirstAppOpen)
+        // TODO Enable later
+        /*
         signInManager.isSignedIn()
                 .subscribeOn(schedulers.io)
                 .map { isLoggedIn ->
@@ -42,6 +43,7 @@ class LoginViewModel @Inject constructor(
                     loginState.postValue(LoginState.LoggedOut)
                 })
                 .addTo(compositeDisposable)
+        */
     }
 
     fun login() {

@@ -13,17 +13,17 @@ import org.joda.time.Months
  * Date:    03.02.2018
  */
 data class BookStatistics(
-    val pagesRead: Int,                           // Pages & books
-    val pagesWaiting: Int,                        // Pages & books
-    val booksRead: Int,                           // Pages & books
-    val booksWaiting: Int,                        // Pages & books
-    val fastestBook: Duration?,                   // Time
-    val slowestBook: Duration?,                   // Time
-    val avgBooksPerMonth: Double,                 // Other
-    val mostReadingMonth: MostReadingMonth?,      // Other
-    val mostReadAuthor: String?,                  // Favourites
-    val averageBookRating: Double,                // Other
-    val firstFiveStarBook: StatsBookDisplayItem?  // Favourites
+    val pagesRead: Int, // Pages & books
+    val pagesWaiting: Int, // Pages & books
+    val booksRead: Int, // Pages & books
+    val booksWaiting: Int, // Pages & books
+    val fastestBook: Duration?, // Time
+    val slowestBook: Duration?, // Time
+    val avgBooksPerMonth: Double, // Other
+    val mostReadingMonth: MostReadingMonth?, // Other
+    val mostReadAuthor: String?, // Favourites
+    val averageBookRating: Double, // Other
+    val firstFiveStarBook: StatsBookDisplayItem? // Favourites
 ) {
 
     data class Duration(val bookName: String, val days: Long)

@@ -13,19 +13,22 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Use Firebase Data for book suggestions
 - [ ] Italian language support
 
-### Version 3.5 - ALL IN THE CLOUD
+### Version 3.7 - ALL IN THE CLOUD
 - [ ] Firebase as Online Backend
 - [ ] Remove backup functionality / Replace it with online sync
 
-### Version 3.4.1 - CLEAN THE CAMPFIRE BEFORE THE BBQ
+### Version 3.6 - CLEAN THE CAMPFIRE BEFORE THE BBQ
 - [ ] Put overflow menu into ActionBar
-- [ ] Labels for books
-- [ ] Add UI for Feature flags
 
-### Version 3.4 - START A CAMPFIRE
-- [ ] Investigate shared element transition missing end anchor and check for layout bugs
+### Version 3.5 - START A CAMPFIRE
 - [ ] Redesign login flow with Firebase login
 - [ ] Add onboarding
+    - [ ] Use this for FAB https://github.com/sjwall/MaterialTapTargetPrompt
+
+### Version 3.4 - SUBTLE SEXY FEATURES
+- [ ] Labels for books
+- [ ] Investigate shared element transition missing end anchor and check for layout bugs
+- [x] Add UI for Feature flags
 - [x] Add +/- buttons for page overlay
 - [x] Android 5 as minSdk
 

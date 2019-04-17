@@ -1,5 +1,6 @@
 package at.shockbytes.dante.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -8,15 +9,20 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
+import android.os.Build
 import android.support.annotation.AnimRes
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
+import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.widget.AppCompatDrawableManager
 import at.shockbytes.dante.R
+import at.shockbytes.util.AppUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.Date
@@ -94,5 +100,40 @@ object DanteUtils {
         cal.set(Calendar.MILLISECOND, 0)
 
         return cal.timeInMillis
+    }
+
+    @SuppressLint("RestrictedApi")
+    fun getBitmap(context: Context, drawableId: Int): Bitmap {
+
+        val drawable = AppCompatDrawableManager.get().getDrawable(context, drawableId)
+
+        // Handle special case if drawable is vector drawable, which is only supported in API level 21
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && (drawable is VectorDrawable)) {
+            getBitmap(drawable, AppUtils.convertDpInPixel(24, context))
+        } else {
+            when (drawable) {
+                is BitmapDrawable -> BitmapFactory.decodeResource(context.resources, drawableId)
+                is VectorDrawableCompat -> getBitmap(drawable, AppUtils.convertDpInPixel(24, context))
+                else -> throw IllegalArgumentException("Unsupported drawable type")
+            }
+        }
+    }
+
+    private fun getBitmap(vectorDrawable: VectorDrawableCompat, padding: Int): Bitmap {
+        val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth,
+                vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(padding, padding, canvas.width - padding, canvas.height - padding)
+        vectorDrawable.draw(canvas)
+        return bitmap
+    }
+
+    private fun getBitmap(vectorDrawable: VectorDrawable, padding: Int): Bitmap {
+        val bitmap = Bitmap.createBitmap(vectorDrawable.intrinsicWidth,
+                vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        vectorDrawable.setBounds(padding, padding, canvas.width - padding, canvas.height - padding)
+        vectorDrawable.draw(canvas)
+        return bitmap
     }
 }

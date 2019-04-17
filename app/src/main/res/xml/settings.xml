@@ -20,13 +20,11 @@
 
     <android.support.v7.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
-        <!--
         <android.support.v7.preference.Preference
             android:visible="false"
             android:key="@string/prefs_feature_flag_key"
             android:icon="@drawable/ic_settings_feature_flag"
             android:title="@string/prefs_feature_flag_title" />
-        -->
 
         <android.support.v7.preference.Preference
             android:icon="@drawable/ic_settings_developer"

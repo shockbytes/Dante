@@ -159,6 +159,7 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
     implementation 'com.android.support:recyclerview-v7:28.0.0'
 
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
 
     // Test libraries
     testImplementation 'junit:junit:4.12'

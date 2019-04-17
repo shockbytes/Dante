@@ -54,7 +54,8 @@
             android:name=".ui.activity.StatisticsActivity"
             android:label="@string/label_stats"/>
         <activity
-            android:name=".ui.activity.LoginActivity" />
+            android:name=".ui.activity.LoginActivity"
+            android:exported="true"/>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

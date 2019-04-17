@@ -1,11 +1,11 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.FeatureFlagConfigAdapter
@@ -29,7 +29,6 @@ class FeatureFlagConfigFragment : BaseFragment() {
             }
         } ?: throw IllegalStateException("Context must not be null when lazy loading FlagAdapter!")
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

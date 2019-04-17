@@ -1,11 +1,11 @@
 package at.shockbytes.dante.ui.activity
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.transition.Fade
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
@@ -35,7 +35,7 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
 
     private lateinit var viewModel: SearchViewModel
 
-    override val displayFragment: Fragment
+    override val displayFragment: androidx.fragment.app.Fragment
         get() = SearchFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {

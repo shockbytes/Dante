@@ -28,6 +28,7 @@ can simply keep track of your progress of all your books and their current state
 ### Version 3.4 - SUBTLE SEXY FEATURES
 - [ ] Labels for books
 - [ ] Investigate shared element transition missing end anchor and check for layout bugs
+- [ ] Refactor to Android X
 - [x] Add UI for Feature flags
 - [x] Add +/- buttons for page overlay
 - [x] Android 5 as minSdk

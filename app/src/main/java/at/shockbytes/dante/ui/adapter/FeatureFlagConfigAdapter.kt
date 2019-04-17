@@ -8,7 +8,6 @@ import at.shockbytes.dante.util.flagging.FeatureFlagItem
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_feature_flag.*
-import timber.log.Timber
 
 class FeatureFlagConfigAdapter(
     context: Context,

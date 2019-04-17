@@ -3,8 +3,8 @@ package at.shockbytes.dante.util
 import android.app.Activity
 import android.content.Context
 import android.os.Handler
-import android.support.annotation.ColorInt
-import android.support.design.widget.FloatingActionButton
+import androidx.annotation.ColorInt
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
@@ -21,7 +21,7 @@ import kotlin.Double.Companion.NaN
 
 /**
  * Author:  Martin Macheiner
- * Date:    06-Jun-18.
+ * Date:    06.06.2018
  */
 fun String.colored(@ColorInt color: Int): SpannableString {
     val spannable = SpannableString(this)

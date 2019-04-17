@@ -1,8 +1,8 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.net.Uri
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
@@ -36,7 +36,7 @@ class ManualAddViewModel @Inject constructor(
         thumbnailUrl.value = null
     }
 
-    fun pickImage(activity: FragmentActivity) {
+    fun pickImage(activity: androidx.fragment.app.FragmentActivity) {
         imagePicker.openGallery(activity).subscribe({ uri ->
             thumbnailUrl.postValue(uri)
         }, { throwable ->

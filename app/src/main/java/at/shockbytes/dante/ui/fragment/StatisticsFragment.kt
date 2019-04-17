@@ -1,10 +1,10 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.StatisticsAdapter
@@ -30,7 +30,7 @@ class StatisticsFragment : BaseFragment() {
 
     override fun setupViews() {
         context?.let { ctx ->
-            fragment_statistics_rv.layoutManager = LinearLayoutManager(ctx)
+            fragment_statistics_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(ctx)
             val margin = ctx.resources.getDimension(R.dimen.dimen_statistics_margin).toInt()
             fragment_statistics_rv.addItemDecoration(EqualSpaceItemDecoration(margin))
             fragment_statistics_rv.adapter = StatisticsAdapter(ctx)

@@ -1,17 +1,19 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.util.Pair
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
@@ -88,6 +90,10 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
                     updateEmptyView(hide = true, animate = false)
                     bookAdapter.updateData(state.books)
                     fragment_book_main_rv.smoothScrollToPosition(0)
+
+                    (view?.parent as? ViewGroup)?.doOnPreDraw {
+                        startPostponedEnterTransition()
+                    }
                 }
 
                 is BookListViewModel.BookLoadingState.Empty -> {
@@ -106,6 +112,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     }
 
     override fun setupViews() {
+        postponeEnterTransition()
 
         // Initialize text for empty indicator
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
@@ -133,13 +140,10 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         )
     }
 
-    override fun onItemDismissed(t: BookEntity, position: Int) {
-        // Not supported
-    }
+    override fun onItemDismissed(t: BookEntity, position: Int) = Unit
 
-    override fun onItemMove(t: BookEntity, from: Int, to: Int) {
-        // Do nothing, only react to move actions in the on item move finished method
-    }
+    // Do nothing, only react to move actions in the on item move finished method
+    override fun onItemMove(t: BookEntity, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() {
         viewModel.updateBookPositions(bookAdapter.data)

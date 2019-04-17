@@ -1,7 +1,7 @@
 package at.shockbytes.dante.book.statistics
 
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
 sealed class StatisticsDisplayItem(
     @StringRes val title: Int,

@@ -1,13 +1,13 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.app.DatePickerDialog
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.graphics.Palette
-import android.support.v7.widget.AppCompatDrawableManager
+import androidx.palette.graphics.Palette
+import androidx.appcompat.widget.AppCompatDrawableManager
 import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -44,7 +44,7 @@ import javax.inject.Inject
  * Date:    08.06.2018
  */
 class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
-        Palette.PaletteAsyncListener, CircleSeekBar.Callback {
+        androidx.palette.graphics.Palette.PaletteAsyncListener, CircleSeekBar.Callback {
 
     override val layoutId = R.layout.fragment_book_detail_legacy
 
@@ -117,11 +117,11 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let { bm ->
-            Palette.from(bm).generate(this)
+            androidx.palette.graphics.Palette.from(bm).generate(this)
         }
     }
 
-    override fun onGenerated(palette: Palette?) {
+    override fun onGenerated(palette: androidx.palette.graphics.Palette?) {
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
@@ -148,7 +148,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
 
     private fun setupObserver() {
 
-        viewModel.getViewState().observe(this, android.arch.lifecycle.Observer {
+        viewModel.getViewState().observe(this, androidx.lifecycle.Observer {
 
             it?.book?.let { book ->
                 activity?.title = book.title

@@ -2,7 +2,7 @@ package at.shockbytes.dante.ui.activity
 
 import android.content.Context
 import android.content.Intent
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
@@ -13,7 +13,7 @@ import at.shockbytes.dante.ui.fragment.ManualAddFragment
  */
 class ManualAddActivity : ContainerTintableBackNavigableActivity() {
 
-    override val displayFragment: Fragment
+    override val displayFragment: androidx.fragment.app.Fragment
         get() = ManualAddFragment.newInstance()
 
     override fun injectToGraph(appComponent: AppComponent) {}

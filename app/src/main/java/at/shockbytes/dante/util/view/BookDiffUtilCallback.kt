@@ -1,6 +1,6 @@
 package at.shockbytes.dante.util.view
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.util.isContentSame
 

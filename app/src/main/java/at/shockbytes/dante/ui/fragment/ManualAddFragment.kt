@@ -1,12 +1,12 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.graphics.Palette
+import androidx.palette.graphics.Palette
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
@@ -102,7 +102,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     override fun onImageResourceReady(resource: Drawable?) {
 
         (resource as? BitmapDrawable)?.bitmap?.let { bm ->
-            Palette.from(bm).generate { palette ->
+            androidx.palette.graphics.Palette.from(bm).generate { palette ->
 
                 val actionBarColor = palette?.lightMutedSwatch?.rgb
                 val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor

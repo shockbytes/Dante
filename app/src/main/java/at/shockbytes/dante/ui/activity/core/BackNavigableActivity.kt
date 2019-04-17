@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.activity.core
 
 import android.os.Bundle
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.view.MenuItem
 
 abstract class BackNavigableActivity : BaseActivity() {

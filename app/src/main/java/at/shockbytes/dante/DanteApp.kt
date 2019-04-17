@@ -1,8 +1,8 @@
 package at.shockbytes.dante
 
 import android.os.StrictMode
-import android.support.multidex.MultiDexApplication
-import android.support.v7.app.AppCompatDelegate
+import androidx.multidex.MultiDexApplication
+import androidx.appcompat.app.AppCompatDelegate
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.dagger.AppModule
 import at.shockbytes.dante.dagger.BookModule

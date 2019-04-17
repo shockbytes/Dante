@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.activity.core
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
 /**
  * @author Martin Macheiner
@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment
  */
 abstract class ContainerTintableBackNavigableActivity : TintableBackNavigableActivity() {
 
-    abstract val displayFragment: Fragment
+    abstract val displayFragment: androidx.fragment.app.Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

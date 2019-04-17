@@ -3,8 +3,8 @@ package at.shockbytes.dante.ui.image
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.support.annotation.Dimension
-import android.support.annotation.DrawableRes
+import androidx.annotation.Dimension
+import androidx.annotation.DrawableRes
 import android.widget.ImageView
 import at.shockbytes.dante.R
 import io.reactivex.Single

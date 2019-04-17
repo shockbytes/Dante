@@ -1,13 +1,13 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.app.DatePickerDialog
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.v7.graphics.Palette
+import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
 import android.view.Menu
 import android.view.MenuInflater
@@ -43,7 +43,7 @@ import javax.inject.Inject
  * Date:    02.02.2019
  */
 class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
-        Palette.PaletteAsyncListener, CircleSeekBar.Callback {
+        androidx.palette.graphics.Palette.PaletteAsyncListener, CircleSeekBar.Callback {
 
     override val layoutId = R.layout.fragment_book_detail
 
@@ -112,7 +112,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     override fun bindViewModel() {
-        viewModel.getViewState().observe(this, android.arch.lifecycle.Observer { viewState ->
+        viewModel.getViewState().observe(this, androidx.lifecycle.Observer { viewState ->
             viewState?.let {
                 initializeBookInformation(viewState.book, viewState.showSummary)
                 initializeTimeInformation(viewState.book)
@@ -197,7 +197,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let { bm ->
-            Palette.from(bm).generate(this)
+            androidx.palette.graphics.Palette.from(bm).generate(this)
         }
     }
 
@@ -213,7 +213,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         Timber.d(e)
     }
 
-    override fun onGenerated(palette: Palette?) {
+    override fun onGenerated(palette: androidx.palette.graphics.Palette?) {
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor

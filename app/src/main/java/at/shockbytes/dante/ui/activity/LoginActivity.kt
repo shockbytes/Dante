@@ -1,8 +1,8 @@
 package at.shockbytes.dante.ui.activity
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent

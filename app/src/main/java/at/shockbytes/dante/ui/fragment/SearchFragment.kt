@@ -1,11 +1,11 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookSearchItem
@@ -56,10 +56,10 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
         rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, imageLoader, addClickedListener)
         rvAdapter.onItemClickListener = this
-        fragment_search_rv.layoutManager = LinearLayoutManager(context)
+        fragment_search_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         fragment_search_rv.adapter = rvAdapter
-        val dividerItemDecoration = DividerItemDecoration(fragment_search_rv.context,
-                DividerItemDecoration.VERTICAL)
+        val dividerItemDecoration = androidx.recyclerview.widget.DividerItemDecoration(fragment_search_rv.context,
+            androidx.recyclerview.widget.DividerItemDecoration.VERTICAL)
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(fragment_search_rv.context, R.drawable.recycler_divider)!!)
         fragment_search_rv.addItemDecoration(dividerItemDecoration)
 

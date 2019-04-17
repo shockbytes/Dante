@@ -16,7 +16,13 @@ class FirebaseFeatureFlagging(private val remoteConfig: FirebaseRemoteConfig) : 
             if (task.isSuccessful) {
                 // Once the config is successfully fetched
                 // it must be activated before newly fetched values are returned.
-                remoteConfig.activateFetched()
+                remoteConfig.activate().addOnCompleteListener { activationTask ->
+                    if (activationTask.isSuccessful) {
+                        Timber.d("RemoteConfig activation successful!")
+                    } else {
+                        Timber.d("RemoteConfig activation failed!")
+                    }
+                }
                 Timber.d("RemoteConfig fetch successful!")
             } else {
                 Timber.d("RemoteConfig fetch failed!")

@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.animation.ObjectAnimator
 import android.app.DatePickerDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -12,7 +13,7 @@ import android.view.HapticFeedbackConstants
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
@@ -43,7 +44,7 @@ import javax.inject.Inject
  * Date:    02.02.2019
  */
 class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
-        androidx.palette.graphics.Palette.PaletteAsyncListener, CircleSeekBar.Callback {
+        Palette.PaletteAsyncListener, CircleSeekBar.Callback {
 
     override val layoutId = R.layout.fragment_book_detail
 
@@ -57,6 +58,10 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
+            txt_detail_title,
+            txt_detail_subtitle,
+            txt_detail_author,
+            txt_detail_description,
             sb_detail_pages,
             btn_detail_pages,
             btn_detail_rate,
@@ -97,7 +102,15 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
             val defaultLines = resources.getInteger(R.integer.detail_summary_default_lines)
             var lines = txt_detail_description.maxLines
             lines = if (lines == defaultLines) 100 else defaultLines
-            txt_detail_description.maxLines = lines
+
+            ObjectAnimator.ofInt(
+                txt_detail_description,
+                "maxLines",
+                lines
+            ).apply {
+                duration = 500
+                start()
+            }
         }
     }
 
@@ -106,7 +119,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        // TODO Version 3.4
+        // TODO Version 3.5
         // inflater?.inflate(R.menu.popup_item, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
@@ -197,7 +210,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let { bm ->
-            androidx.palette.graphics.Palette.from(bm).generate(this)
+            Palette.from(bm).generate(this)
         }
     }
 
@@ -213,7 +226,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         Timber.d(e)
     }
 
-    override fun onGenerated(palette: androidx.palette.graphics.Palette?) {
+    override fun onGenerated(palette: Palette?) {
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
@@ -310,9 +323,9 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     private fun startComponentAnimations() {
         AnimationUtils.detailEnterAnimation(
             animatableViewsList,
-            duration = 200,
+            duration = 250,
             initialDelay = 550,
-            interpolator = AccelerateDecelerateInterpolator()
+            interpolator = DecelerateInterpolator(2.5f)
         )
     }
 
@@ -327,8 +340,8 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                                 onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) // +1 because month starts with 0
                             }
                             DATE_TARGET_WISHLIST_DATE -> {
-                                val wishlistDate = DanteUtils.buildTimestampFromDate(y, m, d)
-                                if (!viewModel.updateWishlistDate(wishlistDate)) {
+                                val wishListDate = DanteUtils.buildTimestampFromDate(y, m, d)
+                                if (!viewModel.updateWishlistDate(wishListDate)) {
                                     showToast(R.string.invalid_time_range_wishlist, true)
                                 }
                             }

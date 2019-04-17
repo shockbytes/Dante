@@ -2,7 +2,6 @@ package at.shockbytes.dante.util
 
 import android.view.View
 import android.view.animation.Interpolator
-import android.view.animation.OvershootInterpolator
 
 object AnimationUtils {
 
@@ -10,20 +9,39 @@ object AnimationUtils {
         animationList: List<View>,
         duration: Long = 300,
         initialDelay: Long = 300,
-        interpolator: Interpolator = OvershootInterpolator(2f)
+        durationBetweenAnimations: Long = 50,
+        interpolator: Interpolator
     ) {
 
-        animationList.forEach {
-            it.alpha = 0f; it.scaleX = 0.3f; it.scaleY = 0.3f
+        animationList.forEach { v ->
+            v.apply {
+                alpha = 0f
+                scaleX = 0.3f
+                scaleY = 0.3f
+                translationY = 200f
+            }
         }
 
         animationList.forEachIndexed { index, view ->
-            view.animate().scaleY(1f).scaleX(1f).alpha(1f)
-                    .setInterpolator(interpolator)
-                    .setStartDelay((initialDelay + (index * 100L)))
-                    .setDuration(duration)
-                    .withEndAction { view.alpha = 1f; view.scaleX = 1f; view.scaleY = 1f } // <-- If anim failed, set it in the end
-                    .start()
+            view.animate()
+                .scaleY(1f)
+                .scaleX(1f)
+                .alpha(1f)
+                .translationY(0f)
+                .setInterpolator(interpolator)
+                .setStartDelay((initialDelay + (index * durationBetweenAnimations)))
+                .setDuration(duration)
+                .withEndAction {
+
+                    // If anim failed, set it in the end
+                    view.apply {
+                        alpha = 1f
+                        scaleX = 1f
+                        scaleY = 1f
+                        translationY = 0f
+                    }
+                }
+                .start()
         }
     }
 }

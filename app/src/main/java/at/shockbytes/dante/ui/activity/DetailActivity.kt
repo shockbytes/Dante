@@ -53,7 +53,7 @@ class DetailActivity : TintableBackNavigableActivity() {
 
     private fun pickDetailFragment(id: Long): BackAnimatable {
 
-        val fragment: androidx.fragment.app.Fragment = if (featureFlagging[FeatureFlag.UpdatedDetailPage]) {
+        val fragment: Fragment = if (featureFlagging[FeatureFlag.UpdatedDetailPage]) {
             BookDetailFragment.newInstance(id)
         } else {
             LegacyBookDetailFragment.newInstance(id)

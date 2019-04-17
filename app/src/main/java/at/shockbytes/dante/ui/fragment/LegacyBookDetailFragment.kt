@@ -389,7 +389,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
     }
 
     private fun startComponentAnimations() {
-        AnimationUtils.detailEnterAnimation(animationList, 200, 550, AccelerateDecelerateInterpolator())
+        AnimationUtils.detailEnterAnimation(animationList, 200, 550, 50, AccelerateDecelerateInterpolator())
     }
 
     private fun setupNotes(isNotesEmpty: Boolean) {

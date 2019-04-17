@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.doOnPreDraw
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
@@ -47,7 +45,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
 
-    private val layoutManager: RecyclerView.LayoutManager
+    private val rvLayoutManager: RecyclerView.LayoutManager
         get() = if (resources.getBoolean(R.bool.isTablet)) {
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -55,7 +53,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         } else {
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             else
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
@@ -90,10 +88,6 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
                     updateEmptyView(hide = true, animate = false)
                     bookAdapter.updateData(state.books)
                     fragment_book_main_rv.smoothScrollToPosition(0)
-
-                    (view?.parent as? ViewGroup)?.doOnPreDraw {
-                        startPostponedEnterTransition()
-                    }
                 }
 
                 is BookListViewModel.BookLoadingState.Empty -> {
@@ -107,23 +101,23 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
         })
     }
 
-    override fun unbindViewModel() {
-        // Not needed...
-    }
+    override fun unbindViewModel() = Unit
 
     override fun setupViews() {
-        postponeEnterTransition()
 
         // Initialize text for empty indicator
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         // Initialize RecyclerView
         context?.let { ctx ->
-            bookAdapter = BookAdapter(ctx, bookState, imageLoader, this, true)
-            fragment_book_main_rv.layoutManager = layoutManager
-            bookAdapter.onItemClickListener = this
-            bookAdapter.onItemMoveListener = this
-            fragment_book_main_rv.adapter = bookAdapter
+            bookAdapter = BookAdapter(ctx, bookState, imageLoader, this, true).apply {
+                onItemClickListener = this@MainBookFragment
+                onItemMoveListener = this@MainBookFragment
+            }
+            fragment_book_main_rv.apply {
+                layoutManager = rvLayoutManager
+                adapter = bookAdapter
+            }
         }
 
         // Setup RecyclerView's ItemTouchHelper
@@ -173,20 +167,19 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     // --------------------------------------------------------------
 
     private fun getTransitionBundle(v: View): Bundle? {
-        return activity?.let {
+        return activity?.let { act ->
             ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(it,
-                            Pair(v.findViewById(R.id.item_book_card),
-                                    getString(R.string.transition_name_card)),
-                            Pair(v.findViewById(R.id.item_book_img_thumb),
-                                    getString(R.string.transition_name_thumb)),
-                            Pair(v.findViewById(R.id.item_book_txt_title),
-                                    getString(R.string.transition_name_title)),
-                            Pair(v.findViewById(R.id.item_book_txt_subtitle),
-                                    getString(R.string.transition_name_subtitle)),
-                            Pair(v.findViewById(R.id.item_book_txt_author),
-                                    getString(R.string.transition_name_author))
-                    ).toBundle()
+                .makeSceneTransitionAnimation(act,
+                        Pair(
+                            v.findViewById(R.id.item_book_card),
+                            getString(R.string.transition_name_card)
+                        ),
+                        Pair(v.findViewById(
+                            R.id.item_book_img_thumb),
+                            getString(R.string.transition_name_thumb)
+                        )
+                )
+                .toBundle()
         }
     }
 

@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
-import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
@@ -35,6 +34,7 @@ import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener {
@@ -64,7 +64,10 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
         tabId = savedInstanceState?.getInt("tabId") ?: R.id.menu_navigation_current
-        val openCamera = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
+
+        intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false).let { openCam ->
+            Timber.d("Should open camera: $openCam")
+        }
 
         setupUI()
         initializeNavigation()
@@ -239,7 +242,6 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
             true
         }
         mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging[FeatureFlag.BookSuggestions]
-
         mainBottomNavigation.selectedItemId = tabId
     }
 

@@ -13,6 +13,8 @@ interface BookEntityDao {
 
     val bookObservable: Observable<List<BookEntity>>
 
+    val booksCurrentlyReading: List<BookEntity>
+
     fun get(id: Long): BookEntity?
 
     fun create(entity: BookEntity)

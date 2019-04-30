@@ -35,10 +35,18 @@ class RealmBookEntityDao(
 
     override val bookObservable: Observable<List<BookEntity>>
         get() = realm.instance.where(bookClass)
-                .findAllAsync().sort("id", Sort.DESCENDING)
+                .sort("id", Sort.DESCENDING)
+                .findAllAsync()
                 .asFlowable()
                 .map { mapper.mapTo(it) }
                 .toObservable()
+
+    override val booksCurrentlyReading: List<BookEntity>
+        get() = realm.instance.where(bookClass)
+            .equalTo("ordinalState", RealmBook.State.READING.ordinal)
+            .sort("id", Sort.DESCENDING)
+            .findAll()
+            .map { mapper.mapTo(it) }
 
     override fun get(id: Long): BookEntity? {
         val book = realm.instance.where(bookClass).equalTo("id", id).findFirst()

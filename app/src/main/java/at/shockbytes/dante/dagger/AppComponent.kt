@@ -28,6 +28,8 @@ import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
+import at.shockbytes.dante.ui.widget.DanteAppWidget
+import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
 import dagger.Component
 import javax.inject.Singleton
 
@@ -100,4 +102,8 @@ interface AppComponent {
     fun inject(dialogFragment: RateBookDialogFragment)
 
     fun inject(dialogFragment: GoogleWelcomeScreenDialogFragment)
+
+    fun inject(danteAppWidget: DanteAppWidget)
+
+    fun inject(remoteViewsService: DanteRemoteViewsService)
 }

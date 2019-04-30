@@ -13,18 +13,23 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Use Firebase Data for book suggestions
 - [ ] Italian language support
 
-### Version 3.7 - ALL IN THE CLOUD
+### Version 3.9 - ALL IN THE CLOUD
 - [ ] Firebase as Online Backend
 - [ ] Remove backup functionality / Replace it with online sync
 
-### Version 3.6 - CLEAN THE CAMPFIRE BEFORE THE BBQ
+### Version 3.8 - CLEAN THE CAMPFIRE BEFORE THE BBQ
 - [ ] Put overflow menu into ActionBar
 - [ ] Labels for books
 
-### Version 3.5 - START A CAMPFIRE
+### Version 3.7 - START A CAMPFIRE
+- [ ] Move to Android App Bundles
 - [ ] Redesign login flow with Firebase login
 - [ ] Add onboarding
-    - [ ] Use this for FAB https://github.com/sjwall/MaterialTapTargetPrompt
+
+### Version 3.5
+- [ ] App Widget
+- [ ] App shortcuts
+- [ ] Use this for FAB <https://github.com/sjwall/MaterialTapTargetPrompt>
 
 ### Version 3.4 - SUBTLE SEXY FEATURES
 * Investigate shared element transition missing end anchor and check for layout bugs
@@ -41,7 +46,7 @@ can simply keep track of your progress of all your books and their current state
 * Change icon color of settings depending on if night mode or not
 * Fix BaseAdapter bug
 * Enable language selection for manual add
-* Replace ImagePicker library with https://github.com/qingmei2/RxImagePicker
+* Replace ImagePicker library with <https://github.com/qingmei2/RxImagePicker>
 * Streamline Realm and move the query off the main thread (Provider pattern)
 * Remove In-app purchases logic (or encapsulate it properly)
 * Adaption of the main card

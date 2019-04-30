@@ -25,6 +25,7 @@ import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
+import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.flagging.FeatureFlag
@@ -101,6 +102,11 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     override fun onStart() {
         super.onStart()
         setupFabMenu()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        DanteAppWidgetManager.refresh(this)
     }
 
     override fun onPageSelected(position: Int) {

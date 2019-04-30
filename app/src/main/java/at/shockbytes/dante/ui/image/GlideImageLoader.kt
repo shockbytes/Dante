@@ -9,6 +9,7 @@ import androidx.annotation.Dimension
 import androidx.annotation.DrawableRes
 import android.widget.ImageView
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
@@ -37,7 +38,7 @@ object GlideImageLoader : ImageLoader {
         callback: ImageLoadingCallback?,
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
-        val request = Glide.with(context).load(checkUrl(url))
+        val request = Glide.with(context).load(checkUrlForHttps(url))
                 .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
@@ -79,7 +80,7 @@ object GlideImageLoader : ImageLoader {
         callback: ImageLoadingCallback?,
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
-        val request = Glide.with(context).load(checkUrl(url))
+        val request = Glide.with(context).load(checkUrlForHttps(url))
                 .apply(RequestOptions()
                         .placeholder(DanteUtils.vector2Drawable(context, placeholder))
                         .transforms(CenterInside(), RoundedCorners(cornerDimension)))
@@ -151,11 +152,5 @@ object GlideImageLoader : ImageLoader {
             options = options.placeholder(DanteUtils.vector2Drawable(context, placeholder))
         }
         return options
-    }
-
-    private fun checkUrl(url: String): String {
-        return if (url.startsWith("http://")) {
-            url.replace("http://", "https://")
-        } else url
     }
 }

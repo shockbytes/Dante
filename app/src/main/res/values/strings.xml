@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.4</string>
+    <string name="app_version" translatable="false">3.5</string>
 
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
@@ -9,6 +9,8 @@
 
     <string name="label_settings">Settings</string>
     <string name="label_stats">Your statistics</string>
+
+    <string name="currently_reading">Currently reading</string>
 
     <string name="menu_main_stats">Statistics</string>
     <string name="settings">Settings</string>
@@ -193,12 +195,12 @@
     <string name="error_msg_execution_exception">Download Error</string>
     <string name="error_msg_unknown">Unknown</string>
     <string name="welcome_to_dante">Welcome to Dante</string>
-    <string name="ic_onboarding_welcome" >TODO</string>
-    <string name="ic_onboarding_tracking" >TODO</string>
-    <string name="ic_onboarding_night_mode" >TODO</string>
-    <string name="ic_onboarding_login" >TODO</string>
-    <string name="ic_onboarding_suggestions" >TODO</string>
-    <string name="ic_onboarding_cta" >TODO</string>
+    <string name="ic_onboarding_welcome">TODO</string>
+    <string name="ic_onboarding_tracking">TODO</string>
+    <string name="ic_onboarding_night_mode">TODO</string>
+    <string name="ic_onboarding_login">TODO</string>
+    <string name="ic_onboarding_suggestions">TODO</string>
+    <string name="ic_onboarding_cta">TODO</string>
     <string name="prefs_tracking_key" translatable="false">prefs_tracking_key</string>
     <string name="prefs_last_login" translatable="false">prefs_last_login</string>
 
@@ -262,5 +264,7 @@
         <item>Indonesian</item>
         <item>Thai</item>
     </string-array>
+
+    <string name="widget_empty_placeholder">You do not read any book at the moment. Move books from your <b><i>Read later</i></b> to <b><i>Read now</i></b> list.</string>
 
 </resources>

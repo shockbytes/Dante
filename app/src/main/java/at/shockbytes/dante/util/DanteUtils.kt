@@ -79,6 +79,12 @@ object DanteUtils {
         return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
     }
 
+    fun checkUrlForHttps(url: String): String {
+        return if (url.startsWith("http://")) {
+            url.replace("http://", "https://")
+        } else url
+    }
+
     fun vector2Drawable(c: Context, res: Int): Drawable = AppCompatDrawableManager.get().getDrawable(c, res)
 
     fun isNetworkAvailable(ctx: Context): Boolean {

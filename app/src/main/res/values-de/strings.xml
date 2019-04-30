@@ -189,5 +189,7 @@
     <string name="ic_onboarding_login">TODO</string>
     <string name="ic_onboarding_suggestions">TODO</string>
     <string name="ic_onboarding_cta">TODO</string>
+    <string name="currently_reading">Du liest gerade</string>
+    <string name="widget_empty_placeholder">Du liest im Moment kein Buch. Verschiebe Bücher von deiner Liste <b><i>Für später</i></b> nach <b><i>Lesen</i></b>.</string>
 
 </resources>

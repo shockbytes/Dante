@@ -1,76 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
 
     <ImageView
         android:id="@+id/item_app_widget_icon"
         android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="12dp"
         android:src="@drawable/ic_placeholder" />
 
     <TextView
         android:id="@+id/item_app_widget_title"
-        style="@style/TextSubtitle"
+        style="@style/DanteAppWidget.Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/item_app_widget_icon"
-        android:layout_alignBottom="@+id/item_app_widget_icon"
-        android:layout_marginStart="8dp"
-        android:layout_toStartOf="@+id/item_app_widget_btn_dec"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/item_app_widget_tv_pages"
         android:layout_toEndOf="@+id/item_app_widget_icon"
-        android:gravity="center_vertical"
-        android:maxLines="2"
         android:ellipsize="end"
-        android:lines="2"
+        android:gravity="center_vertical"
+        android:lines="1"
+        android:maxLines="1"
         tools:text="Book title" />
-
-    <ImageButton
-        android:id="@+id/item_app_widget_btn_inc"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/item_app_widget_icon"
-        android:layout_alignBottom="@+id/item_app_widget_icon"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:src="@drawable/ic_add_blue" />
 
     <TextView
         android:id="@+id/item_app_widget_tv_pages"
+        style="@style/DanteAppWidget.Regular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/item_app_widget_icon"
-        android:layout_alignBottom="@+id/item_app_widget_icon"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:layout_toStartOf="@+id/item_app_widget_btn_inc"
-        android:gravity="center"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="end"
         android:minWidth="80dp"
-        tools:text="0 / 100"
         android:paddingStart="4dp"
-        android:paddingEnd="4dp" />
+        android:paddingEnd="4dp"
+        tools:text="0 / 100" />
 
-    <ImageButton
-        android:id="@+id/item_app_widget_btn_dec"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="40dp"
+    <TextView
+        android:id="@+id/item_app_widget_tv_author"
+        style="@style/DanteAppWidget.Small"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/item_app_widget_icon"
-        android:layout_alignBottom="@+id/item_app_widget_icon"
-        android:layout_marginTop="0dp"
+        android:layout_below="@+id/item_app_widget_title"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="12dp"
         android:layout_toStartOf="@+id/item_app_widget_tv_pages"
-        android:src="@drawable/ic_remove_blue" />
+        android:layout_toEndOf="@+id/item_app_widget_icon"
+        tools:text="Author" />
+
+    <TextView
+        android:id="@+id/item_app_widget_tv_progress"
+        style="@style/DanteAppWidget.Small.Italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_app_widget_tv_pages"
+        android:layout_alignTop="@+id/item_app_widget_tv_author"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="0dp"
+        tools:text="100%" />
+
 </RelativeLayout>

@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_widget"
@@ -27,6 +26,7 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:text="@string/currently_reading"
+        android:textColor="@color/colorAccent"
         android:textSize="20sp" />
 
     <TextView
@@ -64,7 +64,6 @@
         android:dividerHeight="0dp"
         android:gravity="center"
         android:overScrollMode="never"
-        android:padding="4dp"
-        android:scrollbars="none" />
+        android:scrollbarThumbVertical="@color/colorAccent" />
 
 </RelativeLayout>

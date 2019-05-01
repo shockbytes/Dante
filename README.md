@@ -28,6 +28,7 @@ can simply keep track of your progress of all your books and their current state
 
 ### Version 3.5
 - [ ] App Widget
+    - [ ] Open book on click
 - [ ] App shortcuts
 - [ ] Use this for FAB <https://github.com/sjwall/MaterialTapTargetPrompt>
 

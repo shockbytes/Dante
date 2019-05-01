@@ -52,4 +52,20 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="DanteAppWidget">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+    </style>
+
+    <style name="DanteAppWidget.Regular" parent="DanteAppWidget">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DanteAppWidget.Small" parent="DanteAppWidget">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="DanteAppWidget.Small.Italic" parent="DanteAppWidget.Small">
+        <item name="android:textStyle">italic</item>
+    </style>
+
 </resources>

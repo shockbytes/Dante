@@ -11,9 +11,7 @@ import io.reactivex.disposables.CompositeDisposable
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps
 import timber.log.Timber
-import android.app.PendingIntent
-import android.appwidget.AppWidgetManager
-import android.content.Intent
+import at.shockbytes.dante.util.DanteUtils
 
 class DanteRemoteViewsFactory(
     private val context: Context,
@@ -57,17 +55,14 @@ class DanteRemoteViewsFactory(
             val pages = context.getString(R.string.detail_pages, book.currentPage, book.pageCount)
             setTextViewText(R.id.item_app_widget_tv_pages, pages)
 
-            setOnClickPendingIntent(R.id.item_app_widget_btn_dec, buildOnClickPendingIntent(book, ACTION_DECREASE))
-            setOnClickPendingIntent(R.id.item_app_widget_btn_inc, buildOnClickPendingIntent(book, ACTION_INCREASE))
-        }
-    }
+            setTextViewText(R.id.item_app_widget_tv_author, book.author)
 
-    private fun buildOnClickPendingIntent(book: BookEntity, action: String): PendingIntent {
-        val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE).apply {
-            this.putExtra("sub_action", action)
-            this.putExtra("book_id", book.id)
+            val progress = DanteUtils.computePercentage(
+                book.currentPage.toDouble(),
+                book.pageCount.toDouble()
+            )
+            setTextViewText(R.id.item_app_widget_tv_progress, context.getString(R.string.percentage_formatter, progress))
         }
-        return PendingIntent.getBroadcast(context, 0, intent, 0)
     }
 
     override fun getCount(): Int = currentBooks.size

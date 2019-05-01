@@ -74,6 +74,8 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
         initializeNavigation()
         bindViewModel()
         setupDarkMode()
+
+        checkForAppShortcut()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -195,36 +197,16 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
                 R.id.menu_fab_add_camera -> {
                     tracker.trackEvent(DanteTrackingEvent.OpenCameraEvent())
-
-                    ActivityNavigation.navigateTo(
-                            this,
-                            ActivityNavigation.Destination.Retrieval(BookRetrievalActivity.RetrievalType.CAMERA, null),
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
-                    )
+                    navigateToCamera()
                     false
                 }
                 R.id.menu_fab_add_title -> {
-                    QueryDialogFragment.newInstance()
-                            .setOnQueryEnteredListener { query ->
-                                tracker.trackEvent(DanteTrackingEvent.OpenTitleSearchEvent())
-
-                                ActivityNavigation.navigateTo(
-                                        this,
-                                        ActivityNavigation.Destination.Retrieval(BookRetrievalActivity.RetrievalType.TITLE, query),
-                                        ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
-                                )
-                            }
-                            .show(supportFragmentManager, "query-dialog-fragment")
+                    showAddByTitleDialog()
                     false
                 }
                 R.id.menu_fab_add_manually -> {
                     tracker.trackEvent(DanteTrackingEvent.OpenManualAddViewEvent())
-
-                    ActivityNavigation.navigateTo(
-                            this,
-                            ActivityNavigation.Destination.ManualAdd,
-                            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
-                    )
+                    navigateToManualAdd()
                     false
                 }
                 else -> true
@@ -287,6 +269,36 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
         }
     }
 
+    private fun navigateToCamera() {
+        ActivityNavigation.navigateTo(
+            this,
+            ActivityNavigation.Destination.Retrieval(BookRetrievalActivity.RetrievalType.CAMERA, null),
+            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+        )
+    }
+
+    private fun navigateToManualAdd() {
+        ActivityNavigation.navigateTo(
+            this,
+            ActivityNavigation.Destination.ManualAdd,
+            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+        )
+    }
+
+    private fun showAddByTitleDialog() {
+        QueryDialogFragment.newInstance()
+            .setOnQueryEnteredListener { query ->
+                tracker.trackEvent(DanteTrackingEvent.OpenTitleSearchEvent())
+
+                ActivityNavigation.navigateTo(
+                    this,
+                    ActivityNavigation.Destination.Retrieval(BookRetrievalActivity.RetrievalType.TITLE, query),
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                )
+            }
+            .show(supportFragmentManager, "query-dialog-fragment")
+    }
+
     private fun setupDarkMode() {
         enableDarkMode(danteSettings.darkModeEnabled)
         danteSettings.observeDarkModeEnabled()
@@ -303,6 +315,20 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
             AppCompatDelegate.MODE_NIGHT_NO
         }
         AppCompatDelegate.setDefaultNightMode(mode)
+    }
+
+    private fun checkForAppShortcut() {
+
+        if (intent.hasExtra("app_shortcut")) {
+            handleAppShortcut(intent.getStringExtra("app_shortcut"))
+        }
+    }
+
+    private fun handleAppShortcut(stringExtra: String) {
+
+        when (stringExtra) {
+            "extra_app_shortcut_title" -> showAddByTitleDialog()
+        }
     }
 
     companion object {

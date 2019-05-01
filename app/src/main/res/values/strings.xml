@@ -137,8 +137,19 @@
     <string name="invalid_time_range_end">End date must be later than the other dates…</string>
 
     <string name="menu_fab_scan">Scan ISBN</string>
+    <string name="menu_fab_scan_long">Scan the ISBN on the back of your book.</string>
+    <string name="menu_fab_scan_disabled">Scanning ISBN is disabled</string>
+
+
     <string name="menu_fab_title">Search by title</string>
-    <string name="menu_fab_manual">Add book manually</string>
+    <string name="menu_fab_title_long">Find your book by entering the title.</string>
+    <string name="menu_fab_title_disabled">Searching book by title is disabled</string>
+
+    <string name="menu_fab_manual">Add manually</string>
+    <string name="menu_fab_manual_long">Add book information manually.</string>
+    <string name="menu_fab_manual_disabled">Adding books manually is disabled</string>
+
+
     <string name="manual_add_title">Title</string>
     <string name="manual_add_authors">Author(s)</string>
     <string name="manual_add_pages">Pages</string>

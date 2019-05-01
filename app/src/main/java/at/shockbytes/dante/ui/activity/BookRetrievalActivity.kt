@@ -30,12 +30,12 @@ class BookRetrievalActivity : TintableBackNavigableActivity(),
         // Set this, otherwise this will trigger a Kotlin Exception
         setResult(Activity.RESULT_CANCELED, Intent())
 
-        val type = (intent.getSerializableExtra(ARG_EXTRA_RETRIEVAL_TYPE) as RetrievalType)
-        when (type) {
+        val typeOrdinal = intent.getIntExtra(ARG_EXTRA_RETRIEVAL_ORDINAL, RetrievalType.CAMERA.ordinal)
+        when (RetrievalType.values()[typeOrdinal]) {
 
-            BookRetrievalActivity.RetrievalType.CAMERA -> showQueryFragment()
+            RetrievalType.CAMERA -> showQueryFragment()
 
-            BookRetrievalActivity.RetrievalType.TITLE -> {
+            RetrievalType.TITLE -> {
                 val query = intent.getStringExtra(ARG_EXTRA_RETRIEVAL_TITLE)
                 onQueryAvailable(query)
             }
@@ -110,12 +110,12 @@ class BookRetrievalActivity : TintableBackNavigableActivity(),
 
     companion object {
 
-        private const val ARG_EXTRA_RETRIEVAL_TYPE = "arg_retrieval_type"
+        private const val ARG_EXTRA_RETRIEVAL_ORDINAL = "arg_retrieval_ordinal"
         private const val ARG_EXTRA_RETRIEVAL_TITLE = "arg_retrieval_title"
 
         fun newIntent(context: Context, retrievalType: RetrievalType, bookTitle: String?): Intent {
             return Intent(context, BookRetrievalActivity::class.java)
-                    .putExtra(ARG_EXTRA_RETRIEVAL_TYPE, retrievalType)
+                    .putExtra(ARG_EXTRA_RETRIEVAL_ORDINAL, retrievalType.ordinal)
                     .putExtra(ARG_EXTRA_RETRIEVAL_TITLE, bookTitle)
         }
     }

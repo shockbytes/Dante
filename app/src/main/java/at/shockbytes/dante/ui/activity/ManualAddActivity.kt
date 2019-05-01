@@ -13,7 +13,7 @@ import at.shockbytes.dante.ui.fragment.ManualAddFragment
  */
 class ManualAddActivity : ContainerTintableBackNavigableActivity() {
 
-    override val displayFragment: androidx.fragment.app.Fragment
+    override val displayFragment: Fragment
         get() = ManualAddFragment.newInstance()
 
     override fun injectToGraph(appComponent: AppComponent) {}

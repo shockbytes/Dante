@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_camera_accent"
+        android:shortcutDisabledMessage="@string/menu_fab_scan_disabled"
+        android:shortcutId="scan_isbn"
+        android:shortcutLongLabel="@string/menu_fab_scan_long"
+        android:shortcutShortLabel="@string/menu_fab_scan">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="at.shockbytes.dante.ui.activity.BookRetrievalActivity"
+            android:targetPackage="at.shockbytes.dante">
+
+            <extra
+                android:name="arg_retrieval_ordinal"
+                android:value="0" />
+
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_search_accent"
+        android:shortcutDisabledMessage="@string/menu_fab_title_disabled"
+        android:shortcutId="search_by_title"
+        android:shortcutLongLabel="@string/menu_fab_title_long"
+        android:shortcutShortLabel="@string/menu_fab_title">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="at.shockbytes.dante.ui.activity.MainActivity"
+            android:targetPackage="at.shockbytes.dante">
+
+            <extra
+                android:name="app_shortcut"
+                android:value="extra_app_shortcut_title" />
+
+        </intent>
+
+    </shortcut>
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_edit_accent"
+        android:shortcutDisabledMessage="@string/menu_fab_manual_disabled"
+        android:shortcutId="add_manually"
+        android:shortcutLongLabel="@string/menu_fab_manual_long"
+        android:shortcutShortLabel="@string/menu_fab_manual">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="at.shockbytes.dante.ui.activity.ManualAddActivity"
+            android:targetPackage="at.shockbytes.dante">
+        </intent>
+
+    </shortcut>
+
+</shortcuts>

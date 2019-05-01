@@ -3,7 +3,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_camera_accent"
+        android:icon="@drawable/ic_shortcut_camera"
         android:shortcutDisabledMessage="@string/menu_fab_scan_disabled"
         android:shortcutId="scan_isbn"
         android:shortcutLongLabel="@string/menu_fab_scan_long"
@@ -22,7 +22,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_search_accent"
+        android:icon="@drawable/ic_shortcut_search"
         android:shortcutDisabledMessage="@string/menu_fab_title_disabled"
         android:shortcutId="search_by_title"
         android:shortcutLongLabel="@string/menu_fab_title_long"
@@ -43,7 +43,7 @@
 
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_edit_accent"
+        android:icon="@drawable/ic_shortcut_edit"
         android:shortcutDisabledMessage="@string/menu_fab_manual_disabled"
         android:shortcutId="add_manually"
         android:shortcutLongLabel="@string/menu_fab_manual_long"
@@ -51,8 +51,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="at.shockbytes.dante.ui.activity.ManualAddActivity"
-            android:targetPackage="at.shockbytes.dante">
-        </intent>
+            android:targetPackage="at.shockbytes.dante" />
 
     </shortcut>
 

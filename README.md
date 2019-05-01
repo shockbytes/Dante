@@ -27,9 +27,10 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Add onboarding
 
 ### Version 3.5
+- [x] App shortcuts
 - [ ] App Widget
     - [ ] Open book on click
-- [ ] App shortcuts
+    - [ ] Use correct font
 - [ ] Use this for FAB <https://github.com/sjwall/MaterialTapTargetPrompt>
 
 ### Version 3.4 - SUBTLE SEXY FEATURES

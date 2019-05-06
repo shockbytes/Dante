@@ -1,6 +1,6 @@
 package at.shockbytes.dante.data
 
-import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.book.BookEntity
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -27,6 +27,6 @@ interface BookEntityDao {
 
     fun restoreBackup(
         backupBooks: List<BookEntity>,
-        strategy: BackupManager.RestoreStrategy
+        strategy: RestoreStrategy
     ): Completable
 }

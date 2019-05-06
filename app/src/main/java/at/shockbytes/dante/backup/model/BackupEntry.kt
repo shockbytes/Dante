@@ -1,15 +1,14 @@
-package at.shockbytes.dante.backup
+package at.shockbytes.dante.backup.model
 
 /**
  * Author: Martin Macheiner
  * Date: 30.04.2017.
  */
 data class BackupEntry(
-    val fileId: String,
+    val id: String,
     val fileName: String,
     val device: String,
-    val storageProvider: String,
+    val storageProvider: BackupStorageProvider,
     val books: Int,
-    val timestamp: Long,
-    val isAutoBackup: Boolean
+    val timestamp: Long
 )

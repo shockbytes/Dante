@@ -2,9 +2,9 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.BackupEntry
+import at.shockbytes.dante.backup.model.BackupEntry
 import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
@@ -50,7 +50,7 @@ class BackupViewModel @Inject constructor(
         backupManager.close()
     }
 
-    fun applyBackup(t: BackupEntry, strategy: BackupManager.RestoreStrategy) {
+    fun applyBackup(t: BackupEntry, strategy: RestoreStrategy) {
         backupManager
                 .restoreBackup(t, bookDao, strategy)
                 .subscribe({

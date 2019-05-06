@@ -4,10 +4,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.BackupEntry
+import at.shockbytes.dante.backup.model.BackupEntry
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment

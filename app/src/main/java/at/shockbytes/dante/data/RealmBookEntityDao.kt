@@ -1,6 +1,7 @@
 package at.shockbytes.dante.data
 
 import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.realm.RealmBook
 import at.shockbytes.dante.book.realm.RealmBookConfig
@@ -87,12 +88,12 @@ class RealmBookEntityDao(
 
     override fun restoreBackup(
         backupBooks: List<BookEntity>,
-        strategy: BackupManager.RestoreStrategy
+        strategy: RestoreStrategy
     ): Completable {
         return Completable.fromAction {
             when (strategy) {
-                BackupManager.RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
-                BackupManager.RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
+                RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
+                RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
             }
         }
     }

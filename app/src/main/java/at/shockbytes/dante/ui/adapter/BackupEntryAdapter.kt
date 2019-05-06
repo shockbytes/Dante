@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.BackupEntry
+import at.shockbytes.dante.backup.model.BackupEntry
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
@@ -40,9 +40,7 @@ class BackupEntryAdapter(ctx: Context) : BaseAdapter<BackupEntry>(ctx), ItemTouc
 
         override fun bindToView(t: BackupEntry) {
 
-            if (t.storageProvider == "gdrive") {
-                item_backup_entry_imgview_provider.setImageResource(R.drawable.ic_google_drive)
-            }
+            item_backup_entry_imgview_provider.setImageResource(t.storageProvider.icon)
 
             item_backup_entry_txt_time.text = DanteUtils.formatTimestamp(t.timestamp)
             item_backup_entry_txt_books.text = context.getString(R.string.backup_books_amount, t.books)

@@ -8,45 +8,45 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.backup.model.RestoreStrategy
 
 /**
  * Author:  Martin Macheiner
  * Date:    30.08.2016
  */
-class RestoreStrategyDialogFragment : androidx.fragment.app.DialogFragment() {
+class RestoreStrategyDialogFragment : DialogFragment() {
 
-    private var strategyListener: ((BackupManager.RestoreStrategy) -> Unit)? = null
+    private var strategyListener: ((RestoreStrategy) -> Unit)? = null
 
     private val strategyView: View
         get() {
             val view = LayoutInflater.from(context)
-                    .inflate(R.layout.dialogfragment_restore_strategy, null, false)
+                .inflate(R.layout.dialogfragment_restore_strategy, null, false)
             setupViews(view)
             return view
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return AlertDialog.Builder(context!!)
-                .setView(strategyView)
-                .create()
-                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
+            .setView(strategyView)
+            .create()
+            .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     private fun setupViews(view: View) {
         view.findViewById<View>(R.id.dialogfragment_restore_strategy_btn_merge).setOnClickListener {
-            strategyListener?.invoke(BackupManager.RestoreStrategy.MERGE)
+            strategyListener?.invoke(RestoreStrategy.MERGE)
             dismiss()
         }
 
         view.findViewById<View>(R.id.dialogfragment_restore_strategy_btn_overwrite).setOnClickListener {
-            strategyListener?.invoke(BackupManager.RestoreStrategy.OVERWRITE)
+            strategyListener?.invoke(RestoreStrategy.OVERWRITE)
             dismiss()
         }
     }
 
     fun setOnRestoreStrategySelectedListener(
-        listener: (BackupManager.RestoreStrategy) -> Unit
+        listener: (RestoreStrategy) -> Unit
     ): RestoreStrategyDialogFragment {
         this.strategyListener = listener
         return this

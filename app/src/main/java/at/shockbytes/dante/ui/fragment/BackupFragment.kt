@@ -75,7 +75,6 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 // TODO display something nicer here!
                 showToast("Inactive resource...")
             }
-
         }
     }
 

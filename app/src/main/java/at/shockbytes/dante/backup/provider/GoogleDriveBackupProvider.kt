@@ -36,7 +36,7 @@ class GoogleDriveBackupProvider(
 
     private lateinit var client: DriveResourceClient
 
-    override val backupStorageProvider: BackupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
+    override val backupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
 
     override fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>> {
         return Single

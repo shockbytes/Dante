@@ -9,6 +9,7 @@ import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.DefaultBackupRepository
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.GoogleDriveBackupProvider
+import at.shockbytes.dante.backup.provider.ShockbytesHerokuServerBackupProvider
 import at.shockbytes.dante.book.BookSuggestion
 import at.shockbytes.dante.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
@@ -111,7 +112,8 @@ class AppModule(private val app: Application) {
                 signInManager as GoogleSignInManager,
                 schedulerFacade,
                 Gson()
-            )
+            ),
+            ShockbytesHerokuServerBackupProvider()
         )
     }
 

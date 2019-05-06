@@ -13,7 +13,7 @@ import io.reactivex.Single
  * @author Martin Macheiner
  * Date: 30.04.2017.
  */
-
+@Deprecated("Use BackupRepository instead")
 interface BackupManager {
 
     var lastBackupTime: Long

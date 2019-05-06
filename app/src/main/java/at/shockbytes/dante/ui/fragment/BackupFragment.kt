@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupEntry
+import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
@@ -25,7 +27,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    31.12.2017
  */
-class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntry> {
+class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntryState> {
 
     override val layoutId = R.layout.fragment_backup
 
@@ -53,7 +55,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
             fragment_backup_rv.addItemDecoration(EqualSpaceItemDecoration(8))
 
             fragment_backup_btn_backup.setOnClickListener {
-                viewModel.makeBackup()
+                viewModel.makeBackup(BackupStorageProvider.GOOGLE_DRIVE) // TODO Replace this with more storage provider
             }
             fragment_backup_reload.setOnClickListener {
                 activity?.let { act ->
@@ -63,13 +65,27 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         }
     }
 
-    override fun onItemClick(t: BackupEntry, v: View) {
+    override fun onItemClick(t: BackupEntryState, v: View) {
+
+        when (t) {
+
+            is BackupEntryState.Active -> showBackupRestoreStrategyModal(t)
+
+            is BackupEntryState.Inactive -> {
+                // TODO display something nicer here!
+                showToast("Inactive resource...")
+            }
+
+        }
+    }
+
+    private fun showBackupRestoreStrategyModal(state: BackupEntryState.Active) {
         RestoreStrategyDialogFragment
-                .newInstance()
-                .setOnRestoreStrategySelectedListener { strategy ->
-                    viewModel.applyBackup(t, strategy)
-                }
-                .show(fragmentManager, "restore-strategy-dialog-fragment")
+            .newInstance()
+            .setOnRestoreStrategySelectedListener { strategy ->
+                viewModel.applyBackup(state.entry, strategy)
+            }
+            .show(fragmentManager, "restore-strategy-dialog-fragment")
     }
 
     override fun bindViewModel() {

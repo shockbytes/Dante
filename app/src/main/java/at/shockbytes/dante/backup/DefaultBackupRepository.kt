@@ -23,19 +23,24 @@ class DefaultBackupRepository(
 
     override fun getBackups(): Single<List<BackupEntryState>> {
 
-        val backupSources = backupProvider.map { it.getBackupEntries() }
-        return Single.merge(backupSources)
+        return Single.merge(backupProvider.map { it.getBackupEntries() })
             .collect(
                 { mutableListOf() },
                 { container: MutableList<BackupEntryState>, value: List<BackupEntryState> ->
                     container.addAll(value)
                 }
             )
-            .map { it.toList() }
+            .map { entries ->
+                entries
+                    .sortedByDescending {
+                        it.entry.timestamp
+                    }
+                    .toList()
+            }
     }
 
     override fun initialize(activity: FragmentActivity): Completable {
-        return Completable.concat(backupProvider.map { it.initialize() })
+        return Completable.concat(backupProvider.map { it.initialize(activity) })
     }
 
     override fun close(): Completable {

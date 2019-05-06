@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import at.shockbytes.dante.BuildConfig
-import at.shockbytes.dante.backup.BackupManager
-import at.shockbytes.dante.backup.GoogleDriveBackupManager
+import at.shockbytes.dante.backup.BackupRepository
+import at.shockbytes.dante.backup.DefaultBackupRepository
+import at.shockbytes.dante.backup.provider.BackupProvider
+import at.shockbytes.dante.backup.provider.GoogleDriveBackupProvider
 import at.shockbytes.dante.book.BookSuggestion
 import at.shockbytes.dante.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
@@ -31,6 +33,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
+import dagger.Reusable
 import io.realm.RealmConfiguration
 import javax.inject.Named
 import javax.inject.Singleton
@@ -89,16 +92,27 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @Singleton
-    fun provideBackupManager(
-        preferences: SharedPreferences,
-        signInManager: SignInManager,
-        schedulerFacade: SchedulerFacade
-    ): BackupManager {
-        return GoogleDriveBackupManager(preferences,
+    @Reusable
+    fun provideBackupRepository(
+        backupProvider: Array<BackupProvider>,
+        preferences: SharedPreferences
+    ): BackupRepository {
+        return DefaultBackupRepository(backupProvider.toList(), preferences)
+    }
+
+    @Provides
+    @Reusable
+    fun provideBackupProvider(
+        schedulerFacade: SchedulerFacade,
+        signInManager: SignInManager
+    ): Array<BackupProvider> {
+        return arrayOf(
+            GoogleDriveBackupProvider(
                 signInManager as GoogleSignInManager,
                 schedulerFacade,
-                Gson())
+                Gson()
+            )
+        )
     }
 
     @Provides

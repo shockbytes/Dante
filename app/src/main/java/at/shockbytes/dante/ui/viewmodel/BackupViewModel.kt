@@ -1,9 +1,12 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.BackupManager
+import at.shockbytes.dante.backup.BackupRepository
+import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.DanteUtils
@@ -20,7 +23,7 @@ import javax.inject.Inject
  */
 class BackupViewModel @Inject constructor(
     private val bookDao: BookEntityDao,
-    private val backupManager: BackupManager,
+    private val backupRepository: BackupRepository,
     private val tracker: Tracker
 ) : BaseViewModel() {
 
@@ -34,70 +37,71 @@ class BackupViewModel @Inject constructor(
     val applyBackupEvent = PublishSubject.create<ApplyBackupState>()
     val errorSubject = PublishSubject.create<Throwable>()
 
-    fun connect(activity: androidx.fragment.app.FragmentActivity) {
-        backupManager.connect(activity)
-                .subscribe({
-                    loadBackupState()
-                    updateLastBackupTime()
-                }, { throwable ->
-                    Timber.e(throwable)
-                    errorSubject.onNext(throwable)
-                })
-                .addTo(compositeDisposable)
+    fun connect(activity: FragmentActivity) {
+        backupRepository.initialize(activity)
+            .subscribe({
+                loadBackupState()
+                updateLastBackupTime()
+            }, { throwable ->
+                Timber.e(throwable)
+                errorSubject.onNext(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun disconnect() {
-        backupManager.close()
+        backupRepository.close()
     }
 
     fun applyBackup(t: BackupEntry, strategy: RestoreStrategy) {
-        backupManager
-                .restoreBackup(t, bookDao, strategy)
-                .subscribe({
-                    val formattedTimestamp = DanteUtils.formatTimestamp(t.timestamp)
-                    applyBackupEvent.onNext(ApplyBackupState.Success(formattedTimestamp))
-                    tracker.trackEvent(DanteTrackingEvent.BackupRestoredEvent())
-                }) { throwable ->
-                    Timber.e(throwable)
-                    applyBackupEvent.onNext(ApplyBackupState.Error(throwable))
-                }.addTo(compositeDisposable)
+        backupRepository
+            .restoreBackup(t, bookDao, strategy)
+            .subscribe({
+                val formattedTimestamp = DanteUtils.formatTimestamp(t.timestamp)
+                applyBackupEvent.onNext(ApplyBackupState.Success(formattedTimestamp))
+                tracker.trackEvent(DanteTrackingEvent.BackupRestoredEvent())
+            }) { throwable ->
+                Timber.e(throwable)
+                applyBackupEvent.onNext(ApplyBackupState.Error(throwable))
+            }
+            .addTo(compositeDisposable)
     }
 
-    fun makeBackup() {
-        backupManager.backup(bookDao.bookObservable.blockingFirst(listOf()))
-                .subscribe({
-                    updateLastBackupTime()
-                    loadBackupState()
-                    makeBackupEvent.onNext(State.Success)
-                    tracker.trackEvent(DanteTrackingEvent.BackupMadeEvent())
-                }) { throwable ->
-                    Timber.e(throwable)
-                    makeBackupEvent.onNext(State.Error(throwable))
-                }
-                .addTo(compositeDisposable)
+    fun makeBackup(backupStorageProvider: BackupStorageProvider) {
+        backupRepository.backup(bookDao.bookObservable.blockingFirst(listOf()), backupStorageProvider)
+            .subscribe({
+                updateLastBackupTime()
+                loadBackupState()
+                makeBackupEvent.onNext(State.Success)
+                tracker.trackEvent(DanteTrackingEvent.BackupMadeEvent())
+            }) { throwable ->
+                Timber.e(throwable)
+                makeBackupEvent.onNext(State.Error(throwable))
+            }
+            .addTo(compositeDisposable)
     }
 
     fun deleteItem(t: BackupEntry, position: Int, currentItems: Int) {
-        backupManager.removeBackupEntry(t)
-                .subscribe({
-                    val wasLastEntry = (currentItems - 1) == 0
-                    deleteBackupEvent.onNext(DeleteBackupState.Success(position, wasLastEntry))
+        backupRepository.removeBackupEntry(t)
+            .subscribe({
+                val wasLastEntry = (currentItems - 1) == 0
+                deleteBackupEvent.onNext(DeleteBackupState.Success(position, wasLastEntry))
 
-                    if (wasLastEntry) {
-                        updateLastBackupTime(true)
-                    }
-                }) { throwable ->
-                    Timber.e(throwable)
-                    deleteBackupEvent.onNext(DeleteBackupState.Error(throwable))
+                if (wasLastEntry) {
+                    updateLastBackupTime(true)
                 }
-                .addTo(compositeDisposable)
+            }) { throwable ->
+                Timber.e(throwable)
+                deleteBackupEvent.onNext(DeleteBackupState.Error(throwable))
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun loadBackupState() {
 
         // First show loading screen
         loadBackupState.postValue(LoadBackupState.Loading)
-        backupManager.backupList.subscribe({ backupEntries ->
+        backupRepository.getBackups().subscribe({ backupEntries ->
 
             // Check if backups are empty. One could argue that we can evaluate this in the fragment,
             // this solution seems cleaner, because it doesn't bother the view with even the simplest logic
@@ -116,10 +120,10 @@ class BackupViewModel @Inject constructor(
 
         // Reset the value if the last item was dismissed
         if (resetValue) {
-            backupManager.lastBackupTime = 0
+            backupRepository.lastBackupTime = 0
         }
 
-        val lastBackupMillis = backupManager.lastBackupTime
+        val lastBackupMillis = backupRepository.lastBackupTime
         val lastBackup = if (lastBackupMillis > 0)
             DanteUtils.formatTimestamp(lastBackupMillis)
         else "---"
@@ -129,7 +133,7 @@ class BackupViewModel @Inject constructor(
     // -------------------------- State classes --------------------------
 
     sealed class LoadBackupState {
-        data class Success(val backups: List<BackupEntry>) : LoadBackupState()
+        data class Success(val backups: List<BackupEntryState>) : LoadBackupState()
         object Empty : LoadBackupState()
         object Loading : LoadBackupState()
         data class Error(val throwable: Throwable) : LoadBackupState()

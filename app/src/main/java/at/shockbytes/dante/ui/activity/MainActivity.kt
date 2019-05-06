@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
@@ -36,6 +37,7 @@ import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
 class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener {
 
@@ -70,8 +72,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
         initializeNavigation()
         bindViewModel()
         setupDarkMode()
-
-        checkForAppShortcut()
+        checkForOnboardingHints()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -165,12 +166,12 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
         val bookDetailInfo: ActivityNavigation.Destination.BookDetail.BookDetailInfo? = intent.getParcelableExtra(ARG_OPEN_BOOK_DETAIL_FOR_ID)
         val openCameraAfterLaunch = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
+        val hasAppShortcutExtra = intent.hasExtra("app_shortcut")
 
-        if (bookDetailInfo != null) {
-            navigateToBookDetailScreen(bookDetailInfo)
-        } else if (openCameraAfterLaunch) {
-            // Only check the camera parameter if the book detail parameter is not set
-            showToast("Open camera right now...")
+        when {
+            bookDetailInfo != null -> navigateToBookDetailScreen(bookDetailInfo)
+            openCameraAfterLaunch -> showToast("Open camera right now...")
+            hasAppShortcutExtra -> checkForAppShortcut()
         }
     }
 
@@ -227,6 +228,31 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
                 else -> true
             }
         }
+    }
+
+    private fun checkForOnboardingHints() {
+
+        // It has to be delayed, otherwise it will appear on the wrong
+        // position on top of the BottomNavigationBar
+        Handler().postDelayed({
+            if (danteSettings.isFirstAppOpen) {
+                danteSettings.isFirstAppOpen = false
+                showOnboardingHintViews()
+            }
+        }, 1500)
+    }
+
+    private fun showOnboardingHintViews() {
+
+        MaterialTapTargetPrompt.Builder(this)
+            .setTarget(R.id.mainFabMenu)
+            .setFocalColour(ContextCompat.getColor(this, android.R.color.transparent))
+            .setPrimaryTextColour(ContextCompat.getColor(this, R.color.colorPrimaryTextLight))
+            .setSecondaryTextColour(ContextCompat.getColor(this, R.color.colorSecondaryTextLight))
+            .setBackgroundColour(ContextCompat.getColor(this, R.color.iconColorSettings))
+            .setPrimaryText(R.string.fab_hint_prompt)
+            .setSecondaryText(R.string.fab_hint_prompt_message)
+            .show()
     }
 
     private fun initializeNavigation() {
@@ -316,7 +342,9 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
     private fun setupDarkMode() {
         enableDarkMode(danteSettings.darkModeEnabled)
-        danteSettings.observeDarkModeEnabled()
+
+        danteSettings
+            .observeDarkModeEnabled()
                 .subscribe { isDarkModeEnabled ->
                     enableDarkMode(isDarkModeEnabled)
                 }
@@ -333,10 +361,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     }
 
     private fun checkForAppShortcut() {
-
-        if (intent.hasExtra("app_shortcut")) {
-            handleAppShortcut(intent.getStringExtra("app_shortcut"))
-        }
+        handleAppShortcut(intent.getStringExtra("app_shortcut"))
     }
 
     private fun handleAppShortcut(stringExtra: String) {

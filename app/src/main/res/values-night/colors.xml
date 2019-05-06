@@ -7,8 +7,12 @@
     <color name="colorAccent">#2196F3</color>
     <color name="iconColor">#BBB</color>
     <color name="actionBarItemColor">#FFF</color>
+
     <color name="colorPrimaryText">#BBB</color>
     <color name="colorTertiaryText">#BBB</color>
+    <color name="colorPrimaryTextLight">#424242</color>
+    <color name="colorSecondaryTextLight">#767676</color>
+
 
     <color name="menuItemColor">#E0E0E0</color>
 

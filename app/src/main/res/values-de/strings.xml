@@ -197,5 +197,7 @@
     <string name="menu_fab_title_long">Finde dein Buch beim Namen.</string>
     <string name="menu_fab_scan_long">Finde dein Buch mithilfe des ISBN-Codes.</string>
     <string name="menu_fab_manual_long">Gib die Buchinformationen manuell ein.</string>
+    <string name="fab_hint_prompt">Scanne dein erstes Buch</string>
+    <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
 
 </resources>

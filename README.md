@@ -27,12 +27,9 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Add onboarding
 
 ### Version 3.5
-- [x] App shortcuts
-- [x] App Widget
-    - [x] Update list on app close 
-    - [x] Do not show scrollbar on rounded corner
-    - [x] Open book on click
-- [ ] Use this for FAB <https://github.com/sjwall/MaterialTapTargetPrompt>
+* App shortcuts
+* App Widget
+* Use this for FAB <https://github.com/sjwall/MaterialTapTargetPrompt>
 
 ### Version 3.4 - SUBTLE SEXY FEATURES
 * Investigate shared element transition missing end anchor and check for layout bugs

@@ -28,7 +28,7 @@ def retrofitVersion = "2.4.0"
 def shockUtilVersion = "4.0.2"
 def crashlyticsVersion = "2.9.9"
 def glideVersion = "4.8.0"
-def lottieVersion = "2.5.6"
+def lottieVersion = "3.0.1"
 def rxImagePickerVersion = "2.2.0"
 
 // Create a variable called keystorePropertiesFile, and initialize it to your
@@ -154,6 +154,7 @@ dependencies {
     implementation 'com.mlsdev.rximagepicker:library:2.1.5'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
 
     implementation "com.github.qingmei2:rximagepicker:$rxImagePickerVersion"
     implementation "com.github.qingmei2:rximagepicker_support:$rxImagePickerVersion"
@@ -170,7 +171,7 @@ dependencies {
     // Test libraries
     testImplementation 'junit:junit:4.12'
     testImplementation 'androidx.test:core:1.1.0'
-    testImplementation 'org.mockito:mockito-core:2.16.0'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
     androidTestImplementation 'androidx.test:core:1.1.0'
 
     // AndroidJUnitRunner and JUnit Rules

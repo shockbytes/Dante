@@ -23,6 +23,7 @@ class DanteRemoteViewsFactory(
     private var currentBooks = listOf<BookEntity>()
 
     override fun onCreate() {
+        Timber.d("appwidget - remoteviews factory onCreate()")
     }
 
     override fun getLoadingView(): RemoteViews? {
@@ -35,7 +36,7 @@ class DanteRemoteViewsFactory(
     override fun onDataSetChanged() {
         currentBooks = ArrayList(bookEntityDao.booksCurrentlyReading)
 
-        Timber.d("onDataSetChanged() - New book size: ${currentBooks.size}")
+        Timber.d("appwidget - remoteviews factory - onDataSetChanged() - books: ${currentBooks.size}")
     }
 
     override fun hasStableIds(): Boolean = true
@@ -71,10 +72,5 @@ class DanteRemoteViewsFactory(
 
     override fun onDestroy() {
         compositeDisposable.clear()
-    }
-
-    companion object {
-        const val ACTION_DECREASE = "ACTION_PAGES_DEC"
-        const val ACTION_INCREASE = "ACTION_PAGES_INC"
     }
 }

@@ -9,11 +9,14 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.VectorDrawable
 import android.net.ConnectivityManager
 import android.os.Build
+import android.text.SpannableStringBuilder
+import android.text.Spanned
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -52,6 +55,13 @@ object DanteUtils {
         val canvas = Canvas(bitmapResult)
         canvas.drawBitmap(bm, 0f, 0f, paint)
         return bitmapResult
+    }
+
+    fun applyCustomFontToText(text: String, fontName: String = "Montserrat"): CharSequence {
+        return SpannableStringBuilder(text).apply {
+            val font = Typeface.create(fontName, Typeface.NORMAL)
+            this.setSpan(FontSpan(font), 4, this.length, Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        }
     }
 
     fun addFragmentToActivity(

@@ -1,3 +1,3 @@
-package at.shockbytes.dante.backup.provider
+package at.shockbytes.dante.backup.model
 
 class BackupStorageProviderNotAvailableException : Exception()

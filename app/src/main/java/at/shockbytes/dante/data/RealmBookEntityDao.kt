@@ -1,6 +1,5 @@
 package at.shockbytes.dante.data
 
-import at.shockbytes.dante.backup.BackupManager
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.realm.RealmBook

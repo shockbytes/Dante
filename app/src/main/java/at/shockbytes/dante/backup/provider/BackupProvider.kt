@@ -1,5 +1,6 @@
 package at.shockbytes.dante.backup.provider
 
+import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupEntry
 import at.shockbytes.dante.backup.model.BackupEntryState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -11,7 +12,7 @@ interface BackupProvider {
 
     val backupStorageProvider: BackupStorageProvider
 
-    fun initialize(): Completable
+    fun initialize(activity: FragmentActivity? = null): Completable
 
     fun backup(books: List<BookEntity>): Completable
 
@@ -24,5 +25,4 @@ interface BackupProvider {
     fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>>
 
     fun teardown(): Completable
-
 }

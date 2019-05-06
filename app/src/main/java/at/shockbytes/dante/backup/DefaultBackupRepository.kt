@@ -7,7 +7,7 @@ import at.shockbytes.dante.backup.model.BackupEntryState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
-import at.shockbytes.dante.backup.provider.BackupStorageProviderNotAvailableException
+import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesLongPropertyDelegate
@@ -52,7 +52,11 @@ class DefaultBackupRepository(
     }
 
     override fun backup(books: List<BookEntity>, backupStorageProvider: BackupStorageProvider): Completable {
-        return getBackupProvider(backupStorageProvider)?.backup(books)
+        return getBackupProvider(backupStorageProvider)
+            ?.backup(books)
+            ?.doOnComplete {
+                lastBackupTime = System.currentTimeMillis()
+            }
             ?: Completable.error(BackupStorageProviderNotAvailableException())
     }
 

@@ -44,5 +44,4 @@ interface BackupRepository {
     companion object {
         const val KEY_LAST_BACKUP = "key_last_backup"
     }
-
 }

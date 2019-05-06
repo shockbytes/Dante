@@ -129,7 +129,9 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     override fun onItemClick(t: BookEntity, v: View) {
         ActivityNavigation.navigateTo(
                 context,
-                ActivityNavigation.Destination.BookDetail(t.id, t.title),
+                ActivityNavigation.Destination.BookDetail(
+                    ActivityNavigation.Destination.BookDetail.BookDetailInfo(t.id, t.title)
+                ),
                 getTransitionBundle(v)
         )
     }

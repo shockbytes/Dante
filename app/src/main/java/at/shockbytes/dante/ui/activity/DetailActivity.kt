@@ -26,9 +26,12 @@ class DetailActivity : TintableBackNavigableActivity() {
         val id = intent.getLongExtra(ARG_ID, -1)
         val title = intent.getStringExtra(ARG_TITLE)
 
-        supportActionBar?.title = title
-
-        detailFragment = pickDetailFragment(id)
+        if (id != -1L) {
+            supportActionBar?.title = title
+            detailFragment = pickDetailFragment(id)
+        } else {
+            supportFinishAfterTransition()
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

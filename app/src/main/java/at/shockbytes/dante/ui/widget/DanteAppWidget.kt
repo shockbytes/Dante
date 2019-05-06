@@ -9,15 +9,47 @@ import at.shockbytes.dante.R
 import android.content.ComponentName
 import at.shockbytes.dante.DanteApp
 import timber.log.Timber
+import android.app.PendingIntent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import at.shockbytes.dante.ui.activity.core.ActivityNavigation
 
 class DanteAppWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         super.onReceive(context, intent)
 
-        Timber.d(intent?.action)
+        when (intent?.action) {
 
-        val shouldUpdate = intent?.getBooleanExtra("should_update", false) ?: false
+            ACTION_BOOK_CLICKED -> handleOnBookClickedEvent(context, intent)
+            AppWidgetManager.ACTION_APPWIDGET_UPDATE -> handleAppWidgetUpdate(context, intent)
+        }
+    }
+
+    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        (context.applicationContext as DanteApp).appComponent.inject(this)
+
+        // There may be multiple widgets active, so update all of them
+        appWidgetIds.forEach { appWidgetId ->
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
+    }
+
+    override fun onEnabled(context: Context) = Unit
+    override fun onDisabled(context: Context) = Unit
+
+    private fun handleOnBookClickedEvent(context: Context?, intent: Intent) {
+
+        val bookId = intent.getLongExtra(EXTRA_BOOK_ID, -1L)
+        val bookTitle = intent.getStringExtra(EXTRA_BOOK_TITLE)
+        ActivityNavigation.navigateTo(
+            context,
+            ActivityNavigation.Destination.Main(ActivityNavigation.Destination.BookDetail.BookDetailInfo(bookId, bookTitle)),
+            intentFlags = FLAG_ACTIVITY_NEW_TASK
+        )
+    }
+
+    private fun handleAppWidgetUpdate(context: Context?, intent: Intent) {
+        val shouldUpdate = intent.getBooleanExtra("should_update", false)
 
         if (shouldUpdate) {
 
@@ -29,23 +61,6 @@ class DanteAppWidget : AppWidgetProvider() {
                 this.onUpdate(context, AppWidgetManager.getInstance(context), ids)
             }
         }
-    }
-
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        (context.applicationContext as DanteApp).appComponent.inject(this)
-
-        // There may be multiple widgets active, so update all of them
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId)
-        }
-    }
-
-    override fun onEnabled(context: Context) {
-        // Enter relevant functionality for when the first widget is created
-    }
-
-    override fun onDisabled(context: Context) {
-        // Enter relevant functionality for when the last widget is disabled
     }
 
     private fun updateAppWidget(
@@ -62,8 +77,22 @@ class DanteAppWidget : AppWidgetProvider() {
         val intent = Intent(context, DanteRemoteViewsService::class.java)
         views.setRemoteAdapter(R.id.app_widget_lv_content, intent)
 
+        views.setPendingIntentTemplate(R.id.app_widget_lv_content, createPendingIntentTemplate(context))
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views)
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.app_widget_lv_content)
+    }
+
+    private fun createPendingIntentTemplate(context: Context): PendingIntent {
+        val openIntent = Intent(context, this::class.java).setAction(ACTION_BOOK_CLICKED)
+        return PendingIntent.getBroadcast(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    companion object {
+
+        const val EXTRA_BOOK_ID = "extra_book_id"
+        const val EXTRA_BOOK_TITLE = "extra_book_title"
+        private const val ACTION_BOOK_CLICKED = "action_book_clicked"
     }
 }

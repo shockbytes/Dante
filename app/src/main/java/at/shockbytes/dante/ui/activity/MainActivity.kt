@@ -35,7 +35,6 @@ import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener {
@@ -66,10 +65,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
         viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
         tabId = savedInstanceState?.getInt("tabId") ?: R.id.menu_navigation_current
 
-        intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false).let { openCam ->
-            Timber.d("Should open camera: $openCam")
-        }
-
+        handleIntentExtras()
         setupUI()
         initializeNavigation()
         bindViewModel()
@@ -163,6 +159,25 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
                 }
             }
         })
+    }
+
+    private fun handleIntentExtras() {
+
+        val bookDetailInfo: ActivityNavigation.Destination.BookDetail.BookDetailInfo? = intent.getParcelableExtra(ARG_OPEN_BOOK_DETAIL_FOR_ID)
+        val openCameraAfterLaunch = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
+
+        if (bookDetailInfo != null) {
+            navigateToBookDetailScreen(bookDetailInfo)
+        } else if (openCameraAfterLaunch) {
+            // Only check the camera parameter if the book detail parameter is not set
+            showToast("Open camera right now...")
+        }
+    }
+
+    private fun navigateToBookDetailScreen(
+        bookDetailInfo: ActivityNavigation.Destination.BookDetail.BookDetailInfo
+    ) {
+        ActivityNavigation.navigateTo(this, ActivityNavigation.Destination.BookDetail(bookDetailInfo))
     }
 
     private fun setupUI() {
@@ -334,10 +349,16 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     companion object {
 
         private const val ARG_OPEN_CAMERA_AFTER_LAUNCH = "arg_open_camera_after_lunch"
+        private const val ARG_OPEN_BOOK_DETAIL_FOR_ID = "arg_open_book_detail_for_id"
 
-        fun newIntent(context: Context, openCameraAfterLaunch: Boolean): Intent {
+        fun newIntent(
+            context: Context,
+            bookDetailInfo: ActivityNavigation.Destination.BookDetail.BookDetailInfo? = null,
+            openCameraAfterLaunch: Boolean = false
+        ): Intent {
             return Intent(context, MainActivity::class.java)
-                    .putExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, openCameraAfterLaunch)
+                .putExtra(ARG_OPEN_BOOK_DETAIL_FOR_ID, bookDetailInfo)
+                .putExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, openCameraAfterLaunch)
         }
     }
 }

@@ -28,10 +28,10 @@ can simply keep track of your progress of all your books and their current state
 
 ### Version 3.5
 - [x] App shortcuts
-- [ ] App Widget
+- [x] App Widget
     - [x] Update list on app close 
     - [x] Do not show scrollbar on rounded corner
-    - [ ] Open book on click
+    - [x] Open book on click
 - [ ] Use this for FAB <https://github.com/sjwall/MaterialTapTargetPrompt>
 
 ### Version 3.4 - SUBTLE SEXY FEATURES

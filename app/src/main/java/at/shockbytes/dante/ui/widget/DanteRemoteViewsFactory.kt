@@ -12,6 +12,7 @@ import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps
 import timber.log.Timber
 import at.shockbytes.dante.util.DanteUtils
+import android.content.Intent
 
 class DanteRemoteViewsFactory(
     private val context: Context,
@@ -58,6 +59,8 @@ class DanteRemoteViewsFactory(
 
             setTextViewText(R.id.item_app_widget_tv_author, book.author)
 
+            setOnClickFillInIntent(R.id.item_app_widget_layout, createFillInIntent(book))
+
             val progress = DanteUtils.computePercentage(
                 book.currentPage.toDouble(),
                 book.pageCount.toDouble()
@@ -72,5 +75,11 @@ class DanteRemoteViewsFactory(
 
     override fun onDestroy() {
         compositeDisposable.clear()
+    }
+
+    private fun createFillInIntent(book: BookEntity): Intent {
+        return Intent()
+            .putExtra(DanteAppWidget.EXTRA_BOOK_ID, book.id)
+            .putExtra(DanteAppWidget.EXTRA_BOOK_TITLE, book.title)
     }
 }

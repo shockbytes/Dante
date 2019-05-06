@@ -1,5 +1,3 @@
 package at.shockbytes.dante.backup.provider
 
-class ShockbytesHerokuServerBackupProvider: BackupProvider {
-
-}
+class ShockbytesHerokuServerBackupProvider : BackupProvider

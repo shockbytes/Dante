@@ -27,7 +27,7 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.flagging.FeatureFlag
 import at.shockbytes.dante.util.toggleVisibility

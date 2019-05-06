@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.onboarding.LoginMethod
 import at.shockbytes.dante.onboarding.OnboardingStepAction
 import at.shockbytes.dante.signin.SignInManager
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import javax.inject.Inject
 

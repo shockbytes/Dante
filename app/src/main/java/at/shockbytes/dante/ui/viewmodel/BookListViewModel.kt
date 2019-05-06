@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators

@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util.delegate
+package at.shockbytes.dante.util.settings.delegate
 
 import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty

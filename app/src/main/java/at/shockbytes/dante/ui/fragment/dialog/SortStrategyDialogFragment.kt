@@ -7,7 +7,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.sort.SortStrategy
 import kotterknife.bindView
 import javax.inject.Inject

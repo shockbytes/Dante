@@ -6,7 +6,7 @@ import android.os.Parcelable
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable

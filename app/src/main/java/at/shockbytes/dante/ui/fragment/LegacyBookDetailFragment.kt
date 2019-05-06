@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.palette.graphics.Palette
 import androidx.appcompat.widget.AppCompatDrawableManager
 import android.view.HapticFeedbackConstants
 import android.view.View
@@ -25,7 +24,7 @@ import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.tracking.Tracker
 import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent

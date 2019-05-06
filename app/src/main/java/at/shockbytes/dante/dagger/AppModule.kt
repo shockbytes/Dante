@@ -17,7 +17,7 @@ import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.ui.image.RxLegacyImagePicker
 import at.shockbytes.dante.util.DanteRealmMigration
-import at.shockbytes.dante.util.DanteSettings
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.flagging.FeatureFlagging
 import at.shockbytes.dante.util.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.util.flagging.SharedPreferencesFeatureFlagging

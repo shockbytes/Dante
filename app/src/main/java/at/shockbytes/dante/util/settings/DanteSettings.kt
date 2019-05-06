@@ -1,9 +1,9 @@
-package at.shockbytes.dante.util
+package at.shockbytes.dante.util.settings
 
 import android.content.Context
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.delegate.SharedPreferencesBoolPropertyDelegate
+import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
 import at.shockbytes.dante.util.sort.SortStrategy
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
@@ -23,21 +23,11 @@ class DanteSettings(
 
     var isFirstAppOpen: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_first_app_open_key), defaultValue = true)
 
-    var darkModeEnabled: Boolean
-        get() = prefs.getBoolean(context.getString(R.string.prefs_dark_mode_key), false)
-        set(value) {
-            prefs.edit()
-                    .putBoolean(context.getString(R.string.prefs_dark_mode_key), value)
-                    .apply()
-        }
+    var darkModeEnabled: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_dark_mode_key), defaultValue = false)
 
-    var showSummary: Boolean
-        get() = prefs.getBoolean(context.getString(R.string.prefs_show_summary_key), true)
-        set(value) {
-            prefs.edit()
-                    .putBoolean(context.getString(R.string.prefs_show_summary_key), value)
-                    .apply()
-        }
+    var showSummary: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_show_summary_key), defaultValue = true)
+
+    var trackingEnabled: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_tracking_key), defaultValue = false)
 
     var sortStrategy: SortStrategy
         get() {
@@ -47,14 +37,6 @@ class DanteSettings(
         set(value) {
             prefs.edit()
                     .putInt(context.getString(R.string.prefs_sort_strategy_key), value.ordinal)
-                    .apply()
-        }
-
-    var trackingEnabled: Boolean
-        get() = prefs.getBoolean(context.getString(R.string.prefs_tracking_key), false)
-        set(value) {
-            prefs.edit()
-                    .putBoolean(context.getString(R.string.prefs_tracking_key), value)
                     .apply()
         }
 

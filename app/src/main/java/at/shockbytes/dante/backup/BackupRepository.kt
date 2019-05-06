@@ -3,6 +3,7 @@ package at.shockbytes.dante.backup
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupEntry
 import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider

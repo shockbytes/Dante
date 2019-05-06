@@ -4,6 +4,8 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupEntry
+import at.shockbytes.dante.backup.model.BackupException
+import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.book.BookEntity

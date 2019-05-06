@@ -1,4 +1,4 @@
-package at.shockbytes.dante.backup
+package at.shockbytes.dante.backup.model
 
 /**
  * Author:  Martin Macheiner

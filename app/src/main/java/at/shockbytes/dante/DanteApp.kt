@@ -42,7 +42,7 @@ class DanteApp : MultiDexApplication() {
         configureLogging()
 
         appComponent = DaggerAppComponent.builder()
-                .networkModule(NetworkModule())
+                .networkModule(NetworkModule(this))
                 .bookModule(BookModule())
                 .appModule(AppModule(this))
                 .build()

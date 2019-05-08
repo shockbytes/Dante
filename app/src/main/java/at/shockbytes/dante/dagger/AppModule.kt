@@ -8,8 +8,10 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.DefaultBackupRepository
 import at.shockbytes.dante.backup.provider.BackupProvider
-import at.shockbytes.dante.backup.provider.GoogleDriveBackupProvider
-import at.shockbytes.dante.backup.provider.ShockbytesHerokuServerBackupProvider
+import at.shockbytes.dante.backup.provider.shockbytes.ShockbytesHerokuServerBackupProvider
+import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
+import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
+import at.shockbytes.dante.backup.provider.shockbytes.storage.SharedPreferencesInactiveShockbytesBackupStorage
 import at.shockbytes.dante.book.BookSuggestion
 import at.shockbytes.dante.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
@@ -94,6 +96,14 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Reusable
+    fun provideInactiveShockbytesBackupStorage(
+        preferences: SharedPreferences
+    ): InactiveShockbytesBackupStorage {
+        return SharedPreferencesInactiveShockbytesBackupStorage(preferences)
+    }
+
+    @Provides
+    @Reusable
     fun provideBackupRepository(
         backupProvider: Array<BackupProvider>,
         preferences: SharedPreferences
@@ -105,15 +115,21 @@ class AppModule(private val app: Application) {
     @Reusable
     fun provideBackupProvider(
         schedulerFacade: SchedulerFacade,
-        signInManager: SignInManager
+        signInManager: SignInManager,
+        shockbytesHerokuApi: ShockbytesHerokuApi,
+        inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage
     ): Array<BackupProvider> {
         return arrayOf(
-            GoogleDriveBackupProvider(
+            /*GoogleDriveBackupProvider(
                 signInManager as GoogleSignInManager,
                 schedulerFacade,
                 Gson()
             ),
-            ShockbytesHerokuServerBackupProvider()
+            */
+            ShockbytesHerokuServerBackupProvider(
+                shockbytesHerokuApi,
+                inactiveShockbytesBackupStorage
+            )
         )
     }
 

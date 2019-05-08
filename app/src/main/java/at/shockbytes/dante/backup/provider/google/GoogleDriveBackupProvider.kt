@@ -1,4 +1,4 @@
-package at.shockbytes.dante.backup.provider
+package at.shockbytes.dante.backup.provider.google
 
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
@@ -7,6 +7,7 @@ import at.shockbytes.dante.backup.model.BackupEntryState
 import at.shockbytes.dante.backup.model.BackupException
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
+import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade

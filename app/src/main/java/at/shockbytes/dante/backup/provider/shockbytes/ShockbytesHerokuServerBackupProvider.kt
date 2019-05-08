@@ -1,14 +1,22 @@
-package at.shockbytes.dante.backup.provider
+package at.shockbytes.dante.backup.provider.shockbytes
 
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupEntry
 import at.shockbytes.dante.backup.model.BackupEntryState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
+import at.shockbytes.dante.backup.provider.BackupProvider
+import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
+import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
 import at.shockbytes.dante.book.BookEntity
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
-class ShockbytesHerokuServerBackupProvider : BackupProvider {
+class ShockbytesHerokuServerBackupProvider(
+    private val shockbytesHerokuApi: ShockbytesHerokuApi,
+    private val inactiveBackupStorage: InactiveShockbytesBackupStorage
+) : BackupProvider {
 
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 
@@ -22,38 +30,21 @@ class ShockbytesHerokuServerBackupProvider : BackupProvider {
     }
 
     override fun getBackupEntries(): Single<List<BackupEntryState>> {
-        return Single.just(listOf(
-            BackupEntryState.Active(
-                BackupEntry(
-                    id = "id1",
-                    fileName = "file_name_1",
-                    device = "Nexus 5",
-                    storageProvider = BackupStorageProvider.SHOCKBYTES_SERVER,
-                    books = 100,
-                    timestamp = System.currentTimeMillis()
-                )
-            ),
-            BackupEntryState.Inactive(
-                BackupEntry(
-                    id = "id3",
-                    fileName = "file_name_3",
-                    device = "Sony Ericsson X10 Mini",
-                    storageProvider = BackupStorageProvider.SHOCKBYTES_SERVER,
-                    books = 10,
-                    timestamp = 1546810565000L
-                )
-            ),
-            BackupEntryState.Inactive(
-                BackupEntry(
-                    id = "id2",
-                    fileName = "file_name_2",
-                    device = "Nexus 4",
-                    storageProvider = BackupStorageProvider.SHOCKBYTES_SERVER,
-                    books = 40,
-                    timestamp = 1430948165000L
-                )
-            )
-        ))
+        return shockbytesHerokuApi.listBackups("this is just a test token")
+            .map { entries ->
+                val entryStates: List<BackupEntryState> = entries.map { entry ->
+                    BackupEntryState.Active(entry)
+                }
+                entryStates
+            }
+            .subscribeOn(Schedulers.io())
+            .doOnSuccess { activeItems ->
+                inactiveBackupStorage.storeInactiveItems(activeItems)
+            }
+            .onErrorReturn { throwable ->
+                Timber.e(throwable)
+                inactiveBackupStorage.getInactiveItems()
+            }
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {

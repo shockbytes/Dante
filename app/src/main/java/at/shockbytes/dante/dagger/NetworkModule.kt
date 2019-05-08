@@ -1,6 +1,9 @@
 package at.shockbytes.dante.dagger
 
+import android.content.Context
 import at.shockbytes.dante.BuildConfig
+import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
+import at.shockbytes.dante.network.SelfSigningClientBuilder
 import at.shockbytes.dante.network.amazon.AmazonItemLookupApi
 import at.shockbytes.dante.network.google.GoogleBooksApi
 import com.google.gson.Gson
@@ -20,7 +23,7 @@ import javax.inject.Singleton
  */
 
 @Module
-class NetworkModule {
+class NetworkModule(private val context: Context) {
 
     @Provides
     @Singleton
@@ -48,6 +51,18 @@ class NetworkModule {
                 .baseUrl(GoogleBooksApi.SERVICE_ENDPOINT)
                 .build()
                 .create(GoogleBooksApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideShockbytesHerokuApi(): ShockbytesHerokuApi {
+        return Retrofit.Builder()
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(SelfSigningClientBuilder.createClient(context))
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(ShockbytesHerokuApi.SERVICE_ENDPOINT)
+            .build()
+            .create(ShockbytesHerokuApi::class.java)
     }
 
     @Provides

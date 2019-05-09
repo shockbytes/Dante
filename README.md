@@ -14,17 +14,17 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Italian language support
 
 ### Version 3.9 - ALL IN THE CLOUD
-- [ ] Firebase as Online Backend
+- [ ] Online sync
 - [ ] Remove backup functionality / Replace it with online sync
 
 ### Version 3.8 - CLEAN THE CAMPFIRE BEFORE THE BBQ
 - [ ] Put overflow menu into ActionBar
 - [ ] Labels for books
 
-### Version 3.7 - START A CAMPFIRE
+### Version 3.6 - GET EXCITED
 - [ ] Move to Android App Bundles
-- [ ] Redesign login flow with Firebase login
 - [ ] Add onboarding
+- [ ] Introduce Shockbytes Backups
 
 ### Version 3.5
 * App shortcuts

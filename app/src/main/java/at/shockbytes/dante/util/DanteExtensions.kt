@@ -46,9 +46,14 @@ fun SpeedDialView.toggleVisibility(millis: Long = 300) {
 }
 
 fun GoogleSignInAccount.toDanteUser(): DanteUser {
-    return DanteUser(this.givenName, this.displayName,
-            this.email, this.photoUrl, "google",
-            this.idToken)
+    return DanteUser(
+        this.givenName,
+        this.displayName,
+        this.email,
+        this.photoUrl,
+        "google",
+        this.idToken
+    )
 }
 
 fun Activity.hideKeyboard() {

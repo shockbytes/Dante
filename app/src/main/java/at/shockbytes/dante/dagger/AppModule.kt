@@ -8,6 +8,7 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.DefaultBackupRepository
 import at.shockbytes.dante.backup.provider.BackupProvider
+import at.shockbytes.dante.backup.provider.google.GoogleDriveBackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.ShockbytesHerokuServerBackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
@@ -120,13 +121,13 @@ class AppModule(private val app: Application) {
         inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage
     ): Array<BackupProvider> {
         return arrayOf(
-            /*GoogleDriveBackupProvider(
+            GoogleDriveBackupProvider(
                 signInManager as GoogleSignInManager,
                 schedulerFacade,
                 Gson()
             ),
-            */
             ShockbytesHerokuServerBackupProvider(
+                signInManager,
                 shockbytesHerokuApi,
                 inactiveShockbytesBackupStorage
             )

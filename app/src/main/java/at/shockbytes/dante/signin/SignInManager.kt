@@ -6,11 +6,17 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
- * @author Martin Macheiner
- * Date: 08-Jun-18.
+ * Author:  Martin Macheiner
+ * Date:    08.06.2018
  */
-
 interface SignInManager {
+
+    companion object {
+
+        fun getAuthorizationHeader(authToken: String): String {
+            return "Bearer $authToken"
+        }
+    }
 
     var maybeLater: Boolean
 

@@ -3,6 +3,7 @@ package at.shockbytes.dante.signin
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import at.shockbytes.dante.R
 import at.shockbytes.dante.util.toDanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -20,7 +21,7 @@ import io.reactivex.subjects.BehaviorSubject
 
 /**
  * Author:  Martin Macheiner
- * Date:    30.12.2017.
+ * Date:    30.12.2017
  *
  * If migrating to firebase, use this docs
  * https://firebase.google.com/docs/auth/android/google-signin
@@ -54,6 +55,7 @@ class GoogleSignInManager(
         if (client == null) {
             val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
+                    .requestIdToken(context.getString(R.string.oauth_client_id))
                     .requestScopes(Scope(Scopes.DRIVE_APPFOLDER), Scope(Scopes.DRIVE_FILE))
                     .build()
             client = GoogleSignIn.getClient(context, signInOptions)
@@ -89,6 +91,10 @@ class GoogleSignInManager(
 
     fun getGoogleAccount(): GoogleSignInAccount? {
         return GoogleSignIn.getLastSignedInAccount(context)
+    }
+
+    fun getAuthorizationHeader(): String {
+        return SignInManager.getAuthorizationHeader(getGoogleAccount()?.idToken ?: "---")
     }
 
     companion object {

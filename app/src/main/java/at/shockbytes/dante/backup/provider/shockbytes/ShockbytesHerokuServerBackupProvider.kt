@@ -8,12 +8,14 @@ import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
 import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.signin.GoogleSignInManager
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
 class ShockbytesHerokuServerBackupProvider(
+    private val signInManager: GoogleSignInManager,
     private val shockbytesHerokuApi: ShockbytesHerokuApi,
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {
@@ -26,11 +28,17 @@ class ShockbytesHerokuServerBackupProvider(
     }
 
     override fun backup(books: List<BookEntity>): Completable {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return shockbytesHerokuApi
+            .makeBackup(signInManager.getAuthorizationHeader(), books)
+            .flatMapCompletable { entry ->
+
+                // TODO What to do with entry? Store in UI?
+                Completable.complete()
+            }
     }
 
     override fun getBackupEntries(): Single<List<BackupEntryState>> {
-        return shockbytesHerokuApi.listBackups("this is just a test token")
+        return shockbytesHerokuApi.listBackups(signInManager.getAuthorizationHeader())
             .map { entries ->
                 val entryStates: List<BackupEntryState> = entries.map { entry ->
                     BackupEntryState.Active(entry)
@@ -48,15 +56,17 @@ class ShockbytesHerokuServerBackupProvider(
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return shockbytesHerokuApi.removeBackupById(signInManager.getAuthorizationHeader(), entry.id)
     }
 
     override fun removeAllBackupEntries(): Completable {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return shockbytesHerokuApi.removeAllBackups(signInManager.getAuthorizationHeader())
     }
 
     override fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>> {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return shockbytesHerokuApi
+            .getBooksBackupById(signInManager.getAuthorizationHeader(), entry.id)
+            .subscribeOn(Schedulers.io())
     }
 
     override fun teardown(): Completable {

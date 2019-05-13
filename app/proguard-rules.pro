@@ -38,6 +38,16 @@
   *;
 }
 
+-keepclassmembers class at.shockbytes.dante.backup.model.** {
+  *;
+}
+
+-keepclassmembers class * extends java.lang.Enum {
+    <fields>;
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
 # Picasso
 -dontwarn com.squareup.okhttp.**
 

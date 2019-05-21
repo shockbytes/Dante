@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util.flagging
+package at.shockbytes.dante.flagging
 
 sealed class FeatureFlag(val key: String, val displayName: String, val defaultValue: Boolean) {
 

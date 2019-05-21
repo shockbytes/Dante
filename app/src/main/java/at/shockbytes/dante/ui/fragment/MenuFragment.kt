@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import android.view.View
@@ -17,7 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
-import at.shockbytes.dante.ui.activity.core.ActivityNavigation
+import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
@@ -76,9 +75,9 @@ class MenuFragment : BottomSheetDialogFragment() {
         }?.toBundle()
 
         view.findViewById<View>(R.id.btnMenuStatistics)?.setOnClickListener {
-            ActivityNavigation.navigateTo(
+            ActivityNavigator.navigateTo(
                     activity,
-                    ActivityNavigation.Destination.Statistics,
+                    ActivityNavigator.Destination.Statistics,
                     sceneTransition
             )
             dismiss()
@@ -93,9 +92,9 @@ class MenuFragment : BottomSheetDialogFragment() {
         }
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
-            ActivityNavigation.navigateTo(
+            ActivityNavigator.navigateTo(
                     activity,
-                    ActivityNavigation.Destination.Backup,
+                    ActivityNavigator.Destination.Backup,
                     sceneTransition
             )
             dismiss()
@@ -106,9 +105,9 @@ class MenuFragment : BottomSheetDialogFragment() {
         }
 
         view.findViewById<View>(R.id.btnMenuSettings)?.setOnClickListener {
-            ActivityNavigation.navigateTo(
+            ActivityNavigator.navigateTo(
                     activity,
-                    ActivityNavigation.Destination.Settings,
+                    ActivityNavigator.Destination.Settings,
                     sceneTransition
             )
             dismiss()

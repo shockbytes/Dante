@@ -10,8 +10,8 @@ import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import javax.inject.Inject
 
 /**

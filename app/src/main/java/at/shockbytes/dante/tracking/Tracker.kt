@@ -1,6 +1,6 @@
-package at.shockbytes.dante.util.tracking
+package at.shockbytes.dante.tracking
 
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 
 /**
  * Author:  Martin Macheiner

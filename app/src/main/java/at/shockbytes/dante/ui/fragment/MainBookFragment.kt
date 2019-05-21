@@ -16,12 +16,12 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.activity.core.ActivityNavigation
+import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import kotlinx.android.synthetic.main.fragment_book_main.*
@@ -127,10 +127,10 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     }
 
     override fun onItemClick(t: BookEntity, v: View) {
-        ActivityNavigation.navigateTo(
+        ActivityNavigator.navigateTo(
                 context,
-                ActivityNavigation.Destination.BookDetail(
-                    ActivityNavigation.Destination.BookDetail.BookDetailInfo(t.id, t.title)
+                ActivityNavigator.Destination.BookDetail(
+                    ActivityNavigator.Destination.BookDetail.BookDetailInfo(t.id, t.title)
                 ),
                 getTransitionBundle(v)
         )
@@ -151,7 +151,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     override fun onShare(b: BookEntity) {
         tracker.trackEvent(DanteTrackingEvent.BookSharedEvent())
-        ActivityNavigation.navigateTo(context, ActivityNavigation.Destination.Share(b))
+        ActivityNavigator.navigateTo(context, ActivityNavigator.Destination.Share(b))
     }
 
     override fun onMoveToUpcoming(b: BookEntity) {

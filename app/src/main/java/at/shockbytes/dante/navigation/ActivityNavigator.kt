@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.activity.core
+package at.shockbytes.dante.navigation
 
 import android.content.Context
 import android.content.Intent
@@ -17,33 +17,7 @@ import at.shockbytes.dante.ui.activity.StatisticsActivity
 import at.shockbytes.dante.util.createSharingIntent
 import kotlinx.android.parcel.Parcelize
 
-object ActivityNavigation {
-
-    sealed class Destination {
-        class BookDetail(val info: BookDetailInfo) : Destination() {
-
-            @Parcelize
-            data class BookDetailInfo(
-                val id: Long,
-                val title: String
-            ) : Parcelable
-        }
-        class Share(val bookEntity: BookEntity) : Destination()
-        class Retrieval(
-            val type: BookRetrievalActivity.RetrievalType,
-            val query: String?
-        ) : Destination()
-        class Main(
-            val bookDetailInfo: BookDetail.BookDetailInfo? = null,
-            val openCameraAfterLaunch: Boolean = false
-        ) : Destination()
-
-        object Search : Destination()
-        object ManualAdd : Destination()
-        object Statistics : Destination()
-        object Backup : Destination()
-        object Settings : Destination()
-    }
+object ActivityNavigator {
 
     fun navigateTo(
         context: Context?,
@@ -64,10 +38,10 @@ object ActivityNavigation {
                 is Destination.Search -> SearchActivity.newIntent(context)
                 is Destination.Retrieval -> BookRetrievalActivity.newIntent(context, destination.type, destination.query)
                 is Destination.Main -> MainActivity.newIntent(context, destination.bookDetailInfo, destination.openCameraAfterLaunch)
-                ActivityNavigation.Destination.ManualAdd -> ManualAddActivity.newIntent(context)
-                ActivityNavigation.Destination.Statistics -> StatisticsActivity.newIntent(context)
-                ActivityNavigation.Destination.Backup -> BackupActivity.newIntent(context)
-                ActivityNavigation.Destination.Settings -> SettingsActivity.newIntent(context)
+                is Destination.ManualAdd -> ManualAddActivity.newIntent(context)
+                is Destination.Statistics -> StatisticsActivity.newIntent(context)
+                is Destination.Backup -> BackupActivity.newIntent(context)
+                is Destination.Settings -> SettingsActivity.newIntent(context)
             }
 
             intentFlags?.let { flags ->

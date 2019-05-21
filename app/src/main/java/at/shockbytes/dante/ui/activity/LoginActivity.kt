@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.activity.core.ActivityNavigation
+import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.OnboardingFragment
@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity() {
                     showOnboardingFragment()
                 }
                 is LoginViewModel.LoginState.LoggedIn -> {
-                    ActivityNavigation.navigateTo(this, ActivityNavigation.Destination.Main())
+                    ActivityNavigator.navigateTo(this, ActivityNavigator.Destination.Main())
                 }
                 is LoginViewModel.LoginState.LoggedOut -> {
                     showLoginFragment()

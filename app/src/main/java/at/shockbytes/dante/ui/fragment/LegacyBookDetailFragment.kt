@@ -26,8 +26,8 @@ import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

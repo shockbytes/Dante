@@ -9,8 +9,8 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {

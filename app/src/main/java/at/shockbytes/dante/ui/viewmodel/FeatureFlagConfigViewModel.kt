@@ -2,9 +2,9 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import at.shockbytes.dante.util.flagging.FeatureFlag
-import at.shockbytes.dante.util.flagging.FeatureFlagItem
-import at.shockbytes.dante.util.flagging.FeatureFlagging
+import at.shockbytes.dante.flagging.FeatureFlag
+import at.shockbytes.dante.flagging.FeatureFlagItem
+import at.shockbytes.dante.flagging.FeatureFlagging
 import javax.inject.Inject
 
 class FeatureFlagConfigViewModel @Inject constructor(

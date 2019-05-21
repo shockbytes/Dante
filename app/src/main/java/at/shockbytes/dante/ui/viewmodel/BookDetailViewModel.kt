@@ -7,8 +7,8 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.settings.DanteSettings
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize

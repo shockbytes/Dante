@@ -8,6 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
@@ -16,6 +17,11 @@ import retrofit2.http.Path
  * Date:    09.05.2019
  */
 interface ShockbytesHerokuApi {
+
+    @POST("identify")
+    fun identify(
+        @Header("Authorization") bearerToken: String
+    ): Completable
 
     @GET("backups")
     fun listBackups(

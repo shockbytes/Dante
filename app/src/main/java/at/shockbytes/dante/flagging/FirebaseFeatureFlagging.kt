@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util.flagging
+package at.shockbytes.dante.flagging
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import timber.log.Timber

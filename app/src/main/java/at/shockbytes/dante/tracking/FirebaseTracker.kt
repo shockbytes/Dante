@@ -1,9 +1,9 @@
-package at.shockbytes.dante.util.tracking
+package at.shockbytes.dante.tracking
 
 import android.content.Context
 import android.os.Bundle
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
-import at.shockbytes.dante.util.tracking.event.TrackingProperty
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.event.TrackingProperty
 import com.google.firebase.analytics.FirebaseAnalytics
 
 /**

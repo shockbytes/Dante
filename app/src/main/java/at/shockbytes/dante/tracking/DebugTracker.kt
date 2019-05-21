@@ -1,7 +1,7 @@
-package at.shockbytes.dante.util.tracking
+package at.shockbytes.dante.tracking
 
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
-import at.shockbytes.dante.util.tracking.event.TrackingProperty
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.event.TrackingProperty
 import timber.log.Timber
 
 class DebugTracker : Tracker {

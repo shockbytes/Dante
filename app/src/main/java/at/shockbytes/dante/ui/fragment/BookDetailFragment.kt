@@ -368,7 +368,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
         // Hide complete card if no time information is available
         if (!book.isAnyTimeInformationAvailable) {
-            layoutDetailFragmentDates.visibility = View.GONE
+            layoutDetailFragmentDates?.visibility = View.GONE
         } else {
 
             val pattern = "dd. MMM yyyy"

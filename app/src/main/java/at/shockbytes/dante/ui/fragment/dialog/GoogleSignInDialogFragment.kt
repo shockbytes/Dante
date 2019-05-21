@@ -10,8 +10,8 @@ import android.widget.Button
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import com.google.android.gms.common.SignInButton
 import com.jakewharton.rxbinding2.view.RxView
 import kotterknife.bindView

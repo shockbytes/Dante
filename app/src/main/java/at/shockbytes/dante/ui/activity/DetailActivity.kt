@@ -9,8 +9,8 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.LegacyBookDetailFragment
-import at.shockbytes.dante.util.flagging.FeatureFlag
-import at.shockbytes.dante.util.flagging.FeatureFlagging
+import at.shockbytes.dante.flagging.FeatureFlag
+import at.shockbytes.dante.flagging.FeatureFlagging
 import javax.inject.Inject
 
 class DetailActivity : TintableBackNavigableActivity() {

@@ -55,7 +55,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
             fragment_backup_rv.addItemDecoration(EqualSpaceItemDecoration(8))
 
             fragment_backup_btn_backup.setOnClickListener {
-                viewModel.makeBackup(BackupStorageProvider.GOOGLE_DRIVE) // TODO Replace this with more storage provider
+                viewModel.makeBackup(BackupStorageProvider.SHOCKBYTES_SERVER) // TODO Replace this with more storage provider
             }
             fragment_backup_reload.setOnClickListener {
                 activity?.let { act ->

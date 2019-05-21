@@ -2,14 +2,13 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
-import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject

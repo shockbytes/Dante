@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util.tracking.event
+package at.shockbytes.dante.tracking.event
 
 import at.shockbytes.dante.book.BookEntity
 

@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util.flagging
+package at.shockbytes.dante.flagging
 
 /**
  * Author:  Martin Macheiner

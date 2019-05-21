@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.transition.Fade
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
@@ -16,8 +15,8 @@ import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.tracking.Tracker
-import at.shockbytes.dante.util.tracking.event.DanteTrackingEvent
+import at.shockbytes.dante.tracking.Tracker
+import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 

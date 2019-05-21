@@ -21,8 +21,6 @@ import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import kotlinx.android.synthetic.main.fragment_book_main.*
@@ -35,9 +33,6 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var tracker: Tracker
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -151,7 +146,6 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     }
 
     override fun onShare(b: BookEntity) {
-        tracker.trackEvent(DanteTrackingEvent.BookSharedEvent())
         ActivityNavigator.navigateTo(context, Destination.Share(b))
     }
 

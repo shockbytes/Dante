@@ -7,8 +7,6 @@ import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -19,8 +17,7 @@ import javax.inject.Inject
  */
 class ManualAddViewModel @Inject constructor(
     private val bookDao: BookEntityDao,
-    private val imagePicker: ImagePicker,
-    private val tracker: Tracker
+    private val imagePicker: ImagePicker
 ) : BaseViewModel() {
 
     val thumbnailUrl = MutableLiveData<Uri>()
@@ -59,7 +56,6 @@ class ManualAddViewModel @Inject constructor(
 
         if (entity != null) {
             bookDao.create(entity)
-            tracker.trackEvent(DanteTrackingEvent.BookAddedManuallyEvent(entity))
             addEvent.onNext(AddEvent.SuccessEvent)
         } else {
             addEvent.onNext(AddEvent.ErrorEvent)

@@ -15,8 +15,6 @@ import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -25,9 +23,6 @@ import javax.inject.Inject
  * Date:    03.02.2018
  */
 class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFragment.OnBookDownloadedListener {
-
-    @Inject
-    lateinit var tracker: Tracker
 
     @Inject
     lateinit var vmFactory: ViewModelFactory
@@ -57,17 +52,14 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
     }
 
     override fun onBookDownloaded(book: BookEntity) {
-        tracker.trackEvent(DanteTrackingEvent.BookAddedEvent(book, viaSearchInterface = true))
         finishBookDownload()
     }
 
     override fun onCancelDownload() {
-        tracker.trackEvent(DanteTrackingEvent.FoundBookCanceledEvent())
         finishBookDownload()
     }
 
     override fun onErrorDownload(reason: String, isAttached: Boolean) {
-        tracker.trackEvent(DanteTrackingEvent.BookDownloadErrorEvent(reason))
 
         if (!isAttached) {
             showToast(R.string.download_attachment_error)

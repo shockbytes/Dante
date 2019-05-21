@@ -7,8 +7,6 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.settings.DanteSettings
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
@@ -20,7 +18,6 @@ import javax.inject.Inject
  */
 class BookDetailViewModel @Inject constructor(
     private val bookDao: BookEntityDao,
-    private val tracker: Tracker,
     private val settings: DanteSettings
 ) : BaseViewModel() {
 
@@ -103,8 +100,6 @@ class BookDetailViewModel @Inject constructor(
     }
 
     fun updateRating(rating: Int) {
-        tracker.trackEvent(DanteTrackingEvent.RatingEvent(rating))
-
         val copy = getBookFromLiveData()?.copy(rating = rating) ?: return
         updateDaoAndObserver(copy)
     }

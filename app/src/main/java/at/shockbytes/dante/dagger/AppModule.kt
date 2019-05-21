@@ -29,9 +29,6 @@ import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import at.shockbytes.dante.tracking.FirebaseTracker
-import at.shockbytes.dante.tracking.DebugTracker
-import at.shockbytes.dante.tracking.Tracker
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -74,16 +71,6 @@ class AppModule(private val app: Application) {
         return GsonBuilder()
                 .registerTypeAdapter(BookSuggestion::class.java, GoogleBooksSuggestionResponseDeserializer())
                 .create()
-    }
-
-    @Provides
-    @Singleton
-    fun provideTracker(): Tracker {
-        return if (BuildConfig.DEBUG) {
-            DebugTracker()
-        } else {
-            FirebaseTracker(app.applicationContext)
-        }
     }
 
     @Provides

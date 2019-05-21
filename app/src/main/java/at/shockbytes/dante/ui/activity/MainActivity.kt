@@ -32,8 +32,6 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.util.toggleVisibility
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -50,9 +48,6 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
     @Inject
     lateinit var danteSettings: DanteSettings
-
-    @Inject
-    lateinit var tracker: Tracker
 
     private var tabId: Int = R.id.menu_navigation_current
 
@@ -211,7 +206,6 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
             when (item.id) {
 
                 R.id.menu_fab_add_camera -> {
-                    tracker.trackEvent(DanteTrackingEvent.OpenCameraEvent())
                     navigateToCamera()
                     false
                 }
@@ -220,7 +214,6 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
                     false
                 }
                 R.id.menu_fab_add_manually -> {
-                    tracker.trackEvent(DanteTrackingEvent.OpenManualAddViewEvent())
                     navigateToManualAdd()
                     false
                 }
@@ -328,7 +321,6 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     private fun showAddByTitleDialog() {
         QueryDialogFragment.newInstance()
             .setOnQueryEnteredListener { query ->
-                tracker.trackEvent(DanteTrackingEvent.OpenTitleSearchEvent())
 
                 ActivityNavigator.navigateTo(
                     this,

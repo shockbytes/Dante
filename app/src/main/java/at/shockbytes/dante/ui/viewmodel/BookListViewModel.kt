@@ -10,8 +10,6 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,7 +20,6 @@ import javax.inject.Inject
 class BookListViewModel @Inject constructor(
     private val bookDao: BookEntityDao,
     private val settings: DanteSettings,
-    private val tracker: Tracker,
     private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
@@ -114,7 +111,5 @@ class BookListViewModel @Inject constructor(
     fun moveBookToDoneList(book: BookEntity) {
         book.updateState(BookState.READ)
         bookDao.update(book)
-
-        tracker.trackEvent(DanteTrackingEvent.BookFinishedEvent(book))
     }
 }

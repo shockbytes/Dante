@@ -11,8 +11,6 @@ import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,8 +21,7 @@ import javax.inject.Inject
  */
 class BackupViewModel @Inject constructor(
     private val bookDao: BookEntityDao,
-    private val backupRepository: BackupRepository,
-    private val tracker: Tracker
+    private val backupRepository: BackupRepository
 ) : BaseViewModel() {
 
     private val loadBackupState = MutableLiveData<LoadBackupState>()
@@ -59,7 +56,6 @@ class BackupViewModel @Inject constructor(
             .subscribe({
                 val formattedTimestamp = DanteUtils.formatTimestamp(t.timestamp)
                 applyBackupEvent.onNext(ApplyBackupState.Success(formattedTimestamp))
-                tracker.trackEvent(DanteTrackingEvent.BackupRestoredEvent())
             }) { throwable ->
                 Timber.e(throwable)
                 applyBackupEvent.onNext(ApplyBackupState.Error(throwable))
@@ -73,7 +69,6 @@ class BackupViewModel @Inject constructor(
                 updateLastBackupTime()
                 loadBackupState()
                 makeBackupEvent.onNext(State.Success)
-                tracker.trackEvent(DanteTrackingEvent.BackupMadeEvent())
             }) { throwable ->
                 Timber.e(throwable)
                 makeBackupEvent.onNext(State.Error(throwable))

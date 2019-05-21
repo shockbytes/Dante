@@ -26,8 +26,6 @@ import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -52,9 +50,6 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var tracker: Tracker
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -202,7 +197,6 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
                         RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
                                 .setOnApplyListener { rating ->
                                     viewModel.updateRating(rating)
-                                    tracker.trackEvent(DanteTrackingEvent.RatingEvent(rating))
                                     btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                                 }.show(fragmentManager, "rating-dialogfragment")
                     }

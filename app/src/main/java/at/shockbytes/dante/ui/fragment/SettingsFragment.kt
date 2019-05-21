@@ -9,16 +9,10 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.tracking.Tracker
-import at.shockbytes.dante.tracking.event.DanteTrackingEvent
-import javax.inject.Inject
 import android.content.Intent
 import android.net.Uri
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
-
-    @Inject
-    lateinit var tracker: Tracker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +66,6 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onPreferenceChange(pref: Preference?, newValue: Any?): Boolean {
 
         if (pref?.key == getString(R.string.prefs_dark_mode_key) && (newValue is Boolean)) {
-            tracker.trackEvent(DanteTrackingEvent.DarkModeChangeEvent(!newValue, newValue))
             showDarkModeToast()
         }
         return true

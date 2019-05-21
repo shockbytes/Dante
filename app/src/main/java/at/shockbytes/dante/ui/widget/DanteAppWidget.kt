@@ -12,6 +12,7 @@ import timber.log.Timber
 import android.app.PendingIntent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
 
 class DanteAppWidget : AppWidgetProvider() {
 
@@ -43,7 +44,7 @@ class DanteAppWidget : AppWidgetProvider() {
         val bookTitle = intent.getStringExtra(EXTRA_BOOK_TITLE)
         ActivityNavigator.navigateTo(
             context,
-            ActivityNavigator.Destination.Main(ActivityNavigator.Destination.BookDetail.BookDetailInfo(bookId, bookTitle)),
+            Destination.Main(Destination.BookDetail.BookDetailInfo(bookId, bookTitle)),
             intentFlags = FLAG_ACTIVITY_NEW_TASK
         )
     }

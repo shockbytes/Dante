@@ -17,6 +17,7 @@ import android.widget.TextView
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
@@ -77,7 +78,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.btnMenuStatistics)?.setOnClickListener {
             ActivityNavigator.navigateTo(
                     activity,
-                    ActivityNavigator.Destination.Statistics,
+                    Destination.Statistics,
                     sceneTransition
             )
             dismiss()
@@ -94,7 +95,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
             ActivityNavigator.navigateTo(
                     activity,
-                    ActivityNavigator.Destination.Backup,
+                    Destination.Backup,
                     sceneTransition
             )
             dismiss()
@@ -107,7 +108,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.btnMenuSettings)?.setOnClickListener {
             ActivityNavigator.navigateTo(
                     activity,
-                    ActivityNavigator.Destination.Settings,
+                    Destination.Settings,
                     sceneTransition
             )
             dismiss()

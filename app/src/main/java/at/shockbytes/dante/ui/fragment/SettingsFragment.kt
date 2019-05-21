@@ -12,10 +12,10 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.tracking.Tracker
 import at.shockbytes.dante.tracking.event.DanteTrackingEvent
 import javax.inject.Inject
+import android.content.Intent
+import android.net.Uri
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
-
-    private lateinit var prefsDarkMode: SwitchPreferenceCompat
 
     @Inject
     lateinit var tracker: Tracker
@@ -28,10 +28,24 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
         addPreferencesFromResource(R.xml.settings)
 
-        prefsDarkMode = findPreference(getString(R.string.prefs_dark_mode_key)) as SwitchPreferenceCompat
-        prefsDarkMode.onPreferenceChangeListener = this
+        (findPreference(getString(R.string.prefs_dark_mode_key)) as SwitchPreferenceCompat).apply {
+            this.onPreferenceChangeListener = this@SettingsFragment
+        }
+
+        findPreference(getString(R.string.prefs_contribute_key)).apply {
+            this.setOnPreferenceClickListener {
+                openDanteGithubPage()
+                true
+            }
+        }
 
         showFeatureFlagsConfig(BuildConfig.DEBUG)
+    }
+
+    private fun openDanteGithubPage() {
+        val url = getString(at.shockbytes.dante.R.string.dante_github_link)
+        val githubIntent = Intent(Intent.ACTION_VIEW).setData(Uri.parse(url))
+        startActivity(githubIntent)
     }
 
     private fun showFeatureFlagsConfig(show: Boolean) {

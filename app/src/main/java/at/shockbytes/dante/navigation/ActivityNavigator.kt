@@ -3,9 +3,7 @@ package at.shockbytes.dante.navigation
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
@@ -15,7 +13,6 @@ import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
 import at.shockbytes.dante.util.createSharingIntent
-import kotlinx.android.parcel.Parcelize
 
 object ActivityNavigator {
 

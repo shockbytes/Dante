@@ -30,6 +30,7 @@ import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.flagging.FeatureFlag
+import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.dante.tracking.Tracker
 import at.shockbytes.dante.tracking.event.DanteTrackingEvent
@@ -164,7 +165,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
     private fun handleIntentExtras() {
 
-        val bookDetailInfo: ActivityNavigator.Destination.BookDetail.BookDetailInfo? = intent.getParcelableExtra(ARG_OPEN_BOOK_DETAIL_FOR_ID)
+        val bookDetailInfo: Destination.BookDetail.BookDetailInfo? = intent.getParcelableExtra(ARG_OPEN_BOOK_DETAIL_FOR_ID)
         val openCameraAfterLaunch = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
         val hasAppShortcutExtra = intent.hasExtra("app_shortcut")
 
@@ -175,17 +176,15 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
         }
     }
 
-    private fun navigateToBookDetailScreen(
-        bookDetailInfo: ActivityNavigator.Destination.BookDetail.BookDetailInfo
-    ) {
-        ActivityNavigator.navigateTo(this, ActivityNavigator.Destination.BookDetail(bookDetailInfo))
+    private fun navigateToBookDetailScreen(bookDetailInfo: Destination.BookDetail.BookDetailInfo) {
+        ActivityNavigator.navigateTo(this, Destination.BookDetail(bookDetailInfo))
     }
 
     private fun setupUI() {
         imgButtonMainToolbarSearch.setOnClickListener {
             ActivityNavigator.navigateTo(
                     this,
-                    ActivityNavigator.Destination.Search,
+                    Destination.Search,
                     ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
             )
         }
@@ -313,7 +312,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     private fun navigateToCamera() {
         ActivityNavigator.navigateTo(
             this,
-            ActivityNavigator.Destination.Retrieval(BookRetrievalActivity.RetrievalType.CAMERA, null),
+            Destination.Retrieval(BookRetrievalActivity.RetrievalType.CAMERA, null),
             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
         )
     }
@@ -321,7 +320,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     private fun navigateToManualAdd() {
         ActivityNavigator.navigateTo(
             this,
-            ActivityNavigator.Destination.ManualAdd,
+            Destination.ManualAdd,
             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
         )
     }
@@ -333,7 +332,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
                 ActivityNavigator.navigateTo(
                     this,
-                    ActivityNavigator.Destination.Retrieval(BookRetrievalActivity.RetrievalType.TITLE, query),
+                    Destination.Retrieval(BookRetrievalActivity.RetrievalType.TITLE, query),
                     ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
                 )
             }
@@ -378,7 +377,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
 
         fun newIntent(
             context: Context,
-            bookDetailInfo: ActivityNavigator.Destination.BookDetail.BookDetailInfo? = null,
+            bookDetailInfo: Destination.BookDetail.BookDetailInfo? = null,
             openCameraAfterLaunch: Boolean = false
         ): Intent {
             return Intent(context, MainActivity::class.java)

@@ -199,5 +199,7 @@
     <string name="menu_fab_manual_long">Gib die Buchinformationen manuell ein.</string>
     <string name="fab_hint_prompt">Scanne dein erstes Buch</string>
     <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
+    <string name="prefs_contribute_title">Mitwirken</string>
+    <string name="prefs_contribute_summary">Arbeite an Dante mit: https://github.com/shockbytes/Dante</string>
 
 </resources>

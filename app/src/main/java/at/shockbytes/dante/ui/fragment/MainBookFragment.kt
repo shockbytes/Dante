@@ -17,6 +17,7 @@ import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
@@ -129,8 +130,8 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
     override fun onItemClick(t: BookEntity, v: View) {
         ActivityNavigator.navigateTo(
                 context,
-                ActivityNavigator.Destination.BookDetail(
-                    ActivityNavigator.Destination.BookDetail.BookDetailInfo(t.id, t.title)
+                Destination.BookDetail(
+                    Destination.BookDetail.BookDetailInfo(t.id, t.title)
                 ),
                 getTransitionBundle(v)
         )
@@ -151,7 +152,7 @@ class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEnt
 
     override fun onShare(b: BookEntity) {
         tracker.trackEvent(DanteTrackingEvent.BookSharedEvent())
-        ActivityNavigator.navigateTo(context, ActivityNavigator.Destination.Share(b))
+        ActivityNavigator.navigateTo(context, Destination.Share(b))
     }
 
     override fun onMoveToUpcoming(b: BookEntity) {

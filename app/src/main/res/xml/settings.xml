@@ -21,10 +21,15 @@
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
         <androidx.preference.Preference
-            android:visible="false"
-            android:key="@string/prefs_feature_flag_key"
             android:icon="@drawable/ic_settings_feature_flag"
-            android:title="@string/prefs_feature_flag_title" />
+            android:key="@string/prefs_feature_flag_key"
+            android:title="@string/prefs_feature_flag_title"
+            android:visible="false" />
+
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_icons"
+            android:summary="@string/prefs_icons_summary"
+            android:title="@string/prefs_icons_title" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_developer"
@@ -32,9 +37,10 @@
             android:title="@string/prefs_developer_title" />
 
         <androidx.preference.Preference
-            android:icon="@drawable/ic_settings_icons"
-            android:summary="@string/prefs_icons_summary"
-            android:title="@string/prefs_icons_title" />
+            android:icon="@drawable/ic_settings_github"
+            android:key="@string/prefs_contribute_key"
+            android:summary="@string/prefs_contribute_summary"
+            android:title="@string/prefs_contribute_title" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_version"

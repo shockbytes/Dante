@@ -6,8 +6,26 @@ The app let's you arrange your books into 3 different categories, whether you
 have read the book, are currently reading the book or saved the book for later. So you 
 can simply keep track of your progress of all your books and their current states.
 
-## Versions
+## Setup
+TODO Describe setup
 
+### Sensitive developer data
+There are three files which must be explicitly added by each developer
+after they checkout the project.
+
+#### google-services.json
+Get the `google-services.json` from the Firebase console.
+
+#### /src/main/res/values/font_certs.xml
+Those certs are important in order to load the custom fonts (Montserrat)
+from the internet.
+
+#### /src/main/res/values/oauth_client_id.xml
+Download the client secret file from the Google Cloud Console. 
+This file is necessary in order to retrieve the JWT request token of 
+the user during the login process.
+
+## Versions
 
 ### Version 4.0 - SUGGESTIONS
 - [ ] Use Firebase Data for book suggestions
@@ -21,10 +39,13 @@ can simply keep track of your progress of all your books and their current state
 - [ ] Put overflow menu into ActionBar
 - [ ] Labels for books
 
+### Version 3.7 - ONBOARDING
+- [ ] Add onboarding
+
 ### Version 3.6 - GET EXCITED
 - [ ] Move to Android App Bundles
-- [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
+- [ ] Open source Dante
 
 ### Version 3.5
 * App shortcuts

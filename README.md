@@ -6,6 +6,8 @@ The app let's you arrange your books into 3 different categories, whether you
 have read the book, are currently reading the book or saved the book for later. So you 
 can simply keep track of your progress of all your books and their current states.
 
+<a href='https://play.google.com/store/apps/details?id=at.shockbytes.dante&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height=100 alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+
 ## Setup
 TODO Describe setup
 

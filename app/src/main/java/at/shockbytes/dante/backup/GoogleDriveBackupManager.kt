@@ -34,6 +34,7 @@ import java.io.OutputStreamWriter
  * Author:  Martin Macheiner
  * Date:    30.04.2017
  */
+@Deprecated("Use GoogleDriveBackupProvider instead")
 class GoogleDriveBackupManager(
     private val preferences: SharedPreferences,
     private val signInManager: GoogleSignInManager,

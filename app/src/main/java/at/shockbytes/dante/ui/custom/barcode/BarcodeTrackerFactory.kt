@@ -24,7 +24,9 @@ import com.google.android.gms.vision.barcode.Barcode
  * Factory for creating a tracker and associated graphic to be associated with a new barcode.  The
  * multi-processor uses this factory to create barcode trackers as needed -- one for each barcode.
  */
-class BarcodeTrackerFactory(private val mGraphicOverlay: GraphicOverlay<BarcodeGraphic>) : MultiProcessor.Factory<Barcode> {
+class BarcodeTrackerFactory(
+    private val mGraphicOverlay: GraphicOverlay<BarcodeGraphic>
+) : MultiProcessor.Factory<Barcode> {
 
     override fun create(barcode: Barcode): Tracker<Barcode> {
         val graphic = BarcodeGraphic(mGraphicOverlay)

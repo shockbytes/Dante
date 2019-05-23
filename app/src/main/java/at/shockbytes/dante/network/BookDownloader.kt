@@ -12,7 +12,6 @@ interface BookDownloader {
     fun downloadBook(isbn: String): Observable<BookSuggestion>
 
     companion object {
-
         const val MAX_FETCH_AMOUNT = 10
     }
 }

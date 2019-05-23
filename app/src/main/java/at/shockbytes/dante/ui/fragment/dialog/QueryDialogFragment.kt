@@ -12,8 +12,8 @@ import at.shockbytes.dante.R
 import kotterknife.bindView
 
 /**
- * @author Martin Macheiner
- * Date: 30.08.2016.
+ * Author:  Martin Macheiner
+ * Date:    30.08.2016
  */
 class QueryDialogFragment : androidx.fragment.app.DialogFragment() {
 

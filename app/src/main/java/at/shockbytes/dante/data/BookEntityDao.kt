@@ -6,8 +6,8 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 
 /**
- * @author Martin Macheiner
- * Date: 12-Jun-18.
+ * Author:  Martin Macheiner
+ * Date:    12.06.2018
  */
 interface BookEntityDao {
 

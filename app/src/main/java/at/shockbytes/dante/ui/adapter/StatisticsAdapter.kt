@@ -9,6 +9,7 @@ import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.statistics.StatisticsDisplayItem
 import at.shockbytes.util.adapter.BaseAdapter
+import kotlinx.android.extensions.LayoutContainer
 import kotterknife.bindView
 import java.lang.IllegalArgumentException
 
@@ -34,7 +35,9 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
         }
     }
 
-    inner class DataViewHolder(view: View) : BaseAdapter<StatisticsDisplayItem>.ViewHolder(view) {
+    inner class DataViewHolder(override val containerView: View) :
+        BaseAdapter<StatisticsDisplayItem>.ViewHolder(containerView),
+        LayoutContainer {
 
         private val imgViewIconStart by bindView<ImageView>(R.id.item_statistics_data_icon_start)
         private val imgViewIconEnd by bindView<ImageView>(R.id.item_statistics_data_icon_end)
@@ -60,7 +63,9 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
         }
     }
 
-    inner class HeaderViewHolder(view: View) : BaseAdapter<StatisticsDisplayItem>.ViewHolder(view) {
+    inner class HeaderViewHolder(override val containerView: View) :
+        BaseAdapter<StatisticsDisplayItem>.ViewHolder(containerView),
+        LayoutContainer {
 
         private val imgViewIcon by bindView<ImageView>(R.id.item_statistics_header_icon)
         private val txtTitle by bindView<TextView>(R.id.item_statistics_header_title)

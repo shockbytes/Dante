@@ -33,4 +33,6 @@ interface SignInManager {
     fun isSignedIn(): Observable<Boolean>
 
     fun getAccount(): DanteUser?
+
+    fun getAuthorizationHeader(): String
 }

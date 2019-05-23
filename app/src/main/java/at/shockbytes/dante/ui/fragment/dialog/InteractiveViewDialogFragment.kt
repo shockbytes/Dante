@@ -8,8 +8,8 @@ import android.view.View
 import at.shockbytes.dante.R
 
 /**
- * Author: Martin Macheiner
- * Date: 16.01.2018
+ * Author:  Martin Macheiner
+ * Date:    16.01.2018
  *
  * DialogFragment without usual frame and DialogFragment specific buttons
  *

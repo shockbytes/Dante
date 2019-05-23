@@ -23,6 +23,7 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import kotlinx.android.extensions.LayoutContainer
 import kotterknife.bindView
 import java.util.Collections
 
@@ -91,8 +92,10 @@ class BookAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class ViewHolder(itemView: View) : BaseAdapter<BookEntity>.ViewHolder(itemView),
-            PopupMenu.OnMenuItemClickListener {
+    inner class ViewHolder(override val containerView: View) :
+        BaseAdapter<BookEntity>.ViewHolder(containerView),
+        PopupMenu.OnMenuItemClickListener,
+        LayoutContainer {
 
         private val txtTitle by bindView<TextView>(R.id.item_book_txt_title)
         private val txtSubTitle by bindView<TextView>(R.id.item_book_txt_subtitle)

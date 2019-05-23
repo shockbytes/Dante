@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 
 /**
@@ -11,25 +12,27 @@ import com.google.gson.JsonObject
  * Date:    12.06.2018
  */
 fun BookEntity.toJson(): JsonObject {
-    val jsonObject = JsonObject()
-    jsonObject.addProperty("position", position)
-    jsonObject.addProperty("title", title)
-    jsonObject.addProperty("subTitle", subTitle)
-    jsonObject.addProperty("author", author)
-    jsonObject.addProperty("pageCount", pageCount)
-    jsonObject.addProperty("publishedDate", publishedDate)
-    jsonObject.addProperty("isbn", isbn)
-    jsonObject.addProperty("language", language)
-    jsonObject.addProperty("currentPage", currentPage)
-    jsonObject.addProperty("notes", notes)
-    jsonObject.addProperty("thumbnailAddress", thumbnailAddress)
-    jsonObject.addProperty("googleBooksLink", googleBooksLink)
-    jsonObject.addProperty("ordinalState", state.ordinal)
-    jsonObject.addProperty("rating", rating)
-    jsonObject.addProperty("startDate", startDate)
-    jsonObject.addProperty("endDate", endDate)
-    jsonObject.addProperty("wishlistDate", wishlistDate)
-    return jsonObject
+    return JsonObject().apply {
+        addProperty("position", position)
+        addProperty("title", title)
+        addProperty("subTitle", subTitle)
+        addProperty("author", author)
+        addProperty("pageCount", pageCount)
+        addProperty("publishedDate", publishedDate)
+        addProperty("isbn", isbn)
+        addProperty("language", language)
+        addProperty("currentPage", currentPage)
+        addProperty("notes", notes)
+        addProperty("thumbnailAddress", thumbnailAddress)
+        addProperty("googleBooksLink", googleBooksLink)
+        addProperty("ordinalState", state.ordinal)
+        addProperty("rating", rating)
+        addProperty("startDate", startDate)
+        addProperty("endDate", endDate)
+        addProperty("wishlistDate", wishlistDate)
+        addProperty("summary", summary)
+        add("labels", JsonArray().apply { labels.forEach { add(it) } })
+    }
 }
 
 fun BookEntity.createSharingIntent(c: Context): Intent {

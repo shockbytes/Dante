@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
+import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
 import at.shockbytes.dante.util.toDanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -25,7 +26,6 @@ import io.reactivex.subjects.BehaviorSubject
  *
  * If migrating to firebase, use this docs
  * https://firebase.google.com/docs/auth/android/google-signin
- *
  */
 class GoogleSignInManager(
     private val prefs: SharedPreferences,
@@ -36,17 +36,9 @@ class GoogleSignInManager(
 
     private val signInSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
-    override var maybeLater: Boolean
-        get() = prefs.getBoolean(prefsMaybeLater, false)
-        set(value) {
-            prefs.edit().putBoolean(prefsMaybeLater, value).apply()
-        }
+    override var maybeLater: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, "prefs_google_login_maybe_later", defaultValue = true)
 
-    override var showWelcomeScreen: Boolean
-        get() = prefs.getBoolean(prefsShowWelcomeScreen, true)
-        set(value) {
-            prefs.edit().putBoolean(prefsShowWelcomeScreen, value).apply()
-        }
+    override var showWelcomeScreen: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, "prefs_show_welcome_screen", defaultValue = true)
 
     override val signInIntent: Intent?
         get() = client?.signInIntent
@@ -89,17 +81,11 @@ class GoogleSignInManager(
         return GoogleSignIn.getLastSignedInAccount(context)?.toDanteUser()
     }
 
-    fun getGoogleAccount(): GoogleSignInAccount? {
-        return GoogleSignIn.getLastSignedInAccount(context)
-    }
-
-    fun getAuthorizationHeader(): String {
+    override fun getAuthorizationHeader(): String {
         return SignInManager.getAuthorizationHeader(getGoogleAccount()?.idToken ?: "---")
     }
 
-    companion object {
-
-        private const val prefsMaybeLater = "prefs_google_login_maybe_later"
-        private const val prefsShowWelcomeScreen = "prefs_google_show_welcome_screen"
+    fun getGoogleAccount(): GoogleSignInAccount? {
+        return GoogleSignIn.getLastSignedInAccount(context)
     }
 }

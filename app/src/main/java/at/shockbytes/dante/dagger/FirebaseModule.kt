@@ -9,10 +9,9 @@ import dagger.Provides
 import javax.inject.Singleton
 
 /**
- * @author Martin Macheiner
- * Date: 28-Aug-18.
+ * Author:  Martin Macheiner
+ * Date:    28.08.2018
  */
-
 @Module
 class FirebaseModule {
 

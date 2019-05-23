@@ -13,11 +13,10 @@ import at.shockbytes.dante.R
 import kotterknife.bindView
 
 /**
- * @author Martin Macheiner
- * Date: 15.01.2018.
+ * Author:  Martin Macheiner
+ * Date:    15.01.2018
  */
-
-class PageEditDialogFragment : androidx.fragment.app.DialogFragment() {
+class PageEditDialogFragment : DialogFragment() {
 
     private val editPages: EditText by bindView(R.id.dialogfragment_paging_edit_pages)
     private val editCurrentPages: EditText by bindView(R.id.dialogfragment_paging_edit_current_page)
@@ -89,12 +88,12 @@ class PageEditDialogFragment : androidx.fragment.app.DialogFragment() {
         private const val ARG_PAGES = "arg_pages"
 
         fun newInstance(current: Int, pages: Int): PageEditDialogFragment {
-            val fragment = PageEditDialogFragment()
-            val args = Bundle()
-            args.putInt(ARG_CURRENT_PAGE, current)
-            args.putInt(ARG_PAGES, pages)
-            fragment.arguments = args
-            return fragment
+            return PageEditDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_CURRENT_PAGE, current)
+                    putInt(ARG_PAGES, pages)
+                }
+            }
         }
     }
 }

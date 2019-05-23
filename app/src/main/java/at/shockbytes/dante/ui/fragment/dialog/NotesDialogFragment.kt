@@ -15,10 +15,9 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 16.01.2018.
+ * Author:  Martin Macheiner
+ * Date:    16.01.2018
  */
-
 class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
 
     private val txtHeader: TextView by bindView(R.id.dialogfragment_notes_txt_header)
@@ -77,13 +76,13 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
         private const val ARG_NOTES = "arg_prev_rating"
 
         fun newInstance(title: String, imageLink: String?, notes: String): NotesDialogFragment {
-            val fragment = NotesDialogFragment()
-            val args = Bundle()
-            args.putString(ARG_TITLE, title)
-            args.putString(ARG_IMAGE, imageLink)
-            args.putString(ARG_NOTES, notes)
-            fragment.arguments = args
-            return fragment
+            return NotesDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TITLE, title)
+                    putString(ARG_IMAGE, imageLink)
+                    putString(ARG_NOTES, notes)
+                }
+            }
         }
     }
 }

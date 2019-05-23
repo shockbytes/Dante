@@ -76,10 +76,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
     companion object {
 
         fun newInstance(): GoogleSignInDialogFragment {
-            val fragment = GoogleSignInDialogFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
+            return GoogleSignInDialogFragment()
         }
     }
 }

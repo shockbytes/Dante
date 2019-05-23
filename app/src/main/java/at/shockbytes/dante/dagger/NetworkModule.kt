@@ -53,9 +53,7 @@ class NetworkModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideShockbytesHerokuApi(
-        client: OkHttpClient
-    ): ShockbytesHerokuApi {
+    fun provideShockbytesHerokuApi(client: OkHttpClient): ShockbytesHerokuApi {
         return Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(client)

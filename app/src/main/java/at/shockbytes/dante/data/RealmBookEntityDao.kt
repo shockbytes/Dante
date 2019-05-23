@@ -14,9 +14,7 @@ import io.realm.Sort
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-class RealmBookEntityDao(
-    private val realm: RealmInstanceProvider
-) : BookEntityDao {
+class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityDao {
 
     private val bookClass = RealmBook::class.java
     private val configClass = RealmBookConfig::class.java

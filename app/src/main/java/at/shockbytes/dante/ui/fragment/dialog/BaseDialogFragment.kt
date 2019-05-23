@@ -7,8 +7,8 @@ import at.shockbytes.dante.dagger.AppComponent
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * Author: Martin Macheiner
- * Date: 30.12.2017.
+ * Author:  Martin Macheiner
+ * Date:    30.12.2017
  */
 abstract class BaseDialogFragment : androidx.fragment.app.DialogFragment() {
 

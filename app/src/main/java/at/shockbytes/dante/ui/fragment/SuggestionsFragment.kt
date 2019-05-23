@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 
@@ -30,10 +29,7 @@ class SuggestionsFragment : BaseFragment() {
     companion object {
 
         fun newInstance(): SuggestionsFragment {
-            val fragment = SuggestionsFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
+            return SuggestionsFragment()
         }
     }
 }

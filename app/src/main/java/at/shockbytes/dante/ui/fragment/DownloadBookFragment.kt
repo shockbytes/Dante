@@ -30,8 +30,11 @@ import kotlinx.android.synthetic.main.fragment_download_book.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
-        androidx.palette.graphics.Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
+class DownloadBookFragment :
+    BaseFragment(),
+    ImageLoadingCallback,
+    Palette.PaletteAsyncListener,
+    BaseAdapter.OnItemClickListener<BookEntity> {
 
     interface OnBookDownloadedListener {
 

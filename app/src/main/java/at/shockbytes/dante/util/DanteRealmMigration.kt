@@ -8,11 +8,15 @@ import io.realm.RealmSchema
  * Author:  Martin Macheiner
  * Date:    13.02.2017
  */
-
 class DanteRealmMigration : RealmMigration {
 
-    enum class Migrations {
-        BASE, DATES, RATING_LANG, PAGES_NOTES, NAME_REFACTORING, SUMMARY_AND_LABELS
+    private enum class Migrations {
+        BASE,
+        DATES,
+        RATING_LANG,
+        PAGES_NOTES,
+        NAME_REFACTORING,
+        SUMMARY_AND_LABELS
     }
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {

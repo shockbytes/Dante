@@ -22,10 +22,7 @@ class BackupEntryAdapter(ctx: Context) : BaseAdapter<BackupEntryState>(ctx), Ite
 
     var onItemDeleteClickListener: ((BackupEntry, Int) -> Unit)? = null
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return BackupViewHolder(inflater.inflate(R.layout.item_backup_entry, parent, false))
     }
 

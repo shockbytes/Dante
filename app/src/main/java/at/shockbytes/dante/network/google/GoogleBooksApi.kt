@@ -6,8 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
- * Author: Martin Macheiner
- * Date: 13.02.2017.
+ * Author:  Martin Macheiner
+ * Date:    13.02.2017
  */
 interface GoogleBooksApi {
 

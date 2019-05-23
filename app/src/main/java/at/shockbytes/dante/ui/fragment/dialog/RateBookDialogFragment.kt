@@ -93,13 +93,13 @@ class RateBookDialogFragment : InteractiveViewDialogFragment<Int>() {
             imageLink: String?,
             previousRating: Int
         ): RateBookDialogFragment {
-            val fragment = RateBookDialogFragment()
-            val args = Bundle()
-            args.putString(ARG_TITLE, title)
-            args.putString(ARG_IMAGE, imageLink)
-            args.putInt(ARG_PREV_RATING, previousRating)
-            fragment.arguments = args
-            return fragment
+            return RateBookDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_TITLE, title)
+                    putString(ARG_IMAGE, imageLink)
+                    putInt(ARG_PREV_RATING, previousRating)
+                }
+            }
         }
     }
 }

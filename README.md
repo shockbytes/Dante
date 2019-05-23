@@ -47,7 +47,7 @@ the user during the login process.
 ### Version 3.6 - GET EXCITED
 - [ ] Move to Android App Bundles
 - [ ] Introduce Shockbytes Backups
-- [ ] Open source Dante
+- [x] Open source Dante
 
 ### Version 3.5
 * App shortcuts

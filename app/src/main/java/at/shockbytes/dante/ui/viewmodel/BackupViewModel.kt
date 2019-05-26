@@ -26,6 +26,7 @@ class BackupViewModel @Inject constructor(
 
     private val loadBackupState = MutableLiveData<LoadBackupState>()
     fun getBackupState(): LiveData<LoadBackupState> = loadBackupState
+
     private val lastBackupTime = MutableLiveData<String>()
     fun getLastBackupTime(): LiveData<String> = lastBackupTime
 

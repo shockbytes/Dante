@@ -12,7 +12,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    26.05.2019
  */
-class BackupBackupFragment: BaseFragment() {
+class BackupBackupFragment : BaseFragment() {
 
     override val layoutId: Int = R.layout.fragment_backup_backup
 
@@ -41,7 +41,7 @@ class BackupBackupFragment: BaseFragment() {
 
     companion object {
 
-        fun newInstance() : BackupBackupFragment {
+        fun newInstance(): BackupBackupFragment {
             return BackupBackupFragment()
         }
     }

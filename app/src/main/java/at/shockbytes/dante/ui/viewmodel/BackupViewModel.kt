@@ -11,6 +11,7 @@ import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,7 +22,8 @@ import javax.inject.Inject
  */
 class BackupViewModel @Inject constructor(
     private val bookDao: BookEntityDao,
-    private val backupRepository: BackupRepository
+    private val backupRepository: BackupRepository,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     private val loadBackupState = MutableLiveData<LoadBackupState>()
@@ -52,8 +54,9 @@ class BackupViewModel @Inject constructor(
     }
 
     fun applyBackup(t: BackupMetadata, strategy: RestoreStrategy) {
-        backupRepository
-            .restoreBackup(t, bookDao, strategy)
+        backupRepository.restoreBackup(t, bookDao, strategy)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.ui)
             .subscribe({
                 val formattedTimestamp = DanteUtils.formatTimestamp(t.timestamp)
                 applyBackupEvent.onNext(ApplyBackupState.Success(formattedTimestamp))
@@ -66,6 +69,8 @@ class BackupViewModel @Inject constructor(
 
     fun makeBackup(backupStorageProvider: BackupStorageProvider) {
         backupRepository.backup(bookDao.bookObservable.blockingFirst(listOf()), backupStorageProvider)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.ui)
             .subscribe({
                 updateLastBackupTime()
                 loadBackupState()
@@ -79,6 +84,8 @@ class BackupViewModel @Inject constructor(
 
     fun deleteItem(t: BackupMetadata, position: Int, currentItems: Int) {
         backupRepository.removeBackupEntry(t)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.ui)
             .subscribe({
                 val wasLastEntry = (currentItems - 1) == 0
                 deleteBackupEvent.onNext(DeleteBackupState.Success(position, wasLastEntry))
@@ -97,14 +104,17 @@ class BackupViewModel @Inject constructor(
 
         // First show loading screen
         loadBackupState.postValue(LoadBackupState.Loading)
-        backupRepository.getBackups().subscribe({ backupEntries ->
+        backupRepository.getBackups()
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.ui)
+            .subscribe({ backupEntries ->
 
             // Check if backups are empty. One could argue that we can evaluate this in the fragment,
             // this solution seems cleaner, because it doesn't bother the view with even the simplest logic
             if (backupEntries.isNotEmpty()) {
-                loadBackupState.postValue(LoadBackupState.Success(backupEntries))
+                loadBackupState.value = LoadBackupState.Success(backupEntries)
             } else {
-                loadBackupState.postValue(LoadBackupState.Empty)
+                loadBackupState.value = LoadBackupState.Empty
             }
         }) { throwable ->
             Timber.e(throwable)

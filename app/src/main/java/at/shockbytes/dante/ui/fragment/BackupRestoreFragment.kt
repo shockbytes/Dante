@@ -19,7 +19,6 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_backup_legacy.*
 import kotlinx.android.synthetic.main.fragment_backup_restore.*
 import javax.inject.Inject
 
@@ -42,7 +41,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BackupViewModel::class.java]
+        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
     }
 
     override fun setupViews() {
@@ -53,7 +52,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
         rv_fragment_backup_restore.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = entryAdapter
-            addItemDecoration(EqualSpaceItemDecoration(8))
+            addItemDecoration(EqualSpaceItemDecoration(16))
         }
     }
 
@@ -121,7 +120,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
             .subscribe { state ->
                 when (state) {
                     is BackupViewModel.DeleteBackupState.Success -> {
-                        val adapter = fragment_backup_rv.adapter as BackupEntryAdapter
+                        val adapter = rv_fragment_backup_restore.adapter as BackupEntryAdapter
                         adapter.deleteEntity(state.deleteIndex)
                         showSnackbar(getString(R.string.backup_removed))
 

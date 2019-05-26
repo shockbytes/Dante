@@ -29,7 +29,7 @@ class BackupFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BackupViewModel::class.java]
+        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
     }
 
     override fun setupViews() {

@@ -19,7 +19,7 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_backup.*
+import kotlinx.android.synthetic.main.fragment_backup_legacy.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,9 +27,9 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    31.12.2017
  */
-class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupMetadataState> {
+class LegacyBackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupMetadataState> {
 
-    override val layoutId = R.layout.fragment_backup
+    override val layoutId = R.layout.fragment_backup_legacy
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -214,8 +214,8 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupMet
 
     companion object {
 
-        fun newInstance(): BackupFragment {
-            return BackupFragment().apply {
+        fun newInstance(): LegacyBackupFragment {
+            return LegacyBackupFragment().apply {
                 this.arguments = Bundle().apply {
                 }
             }

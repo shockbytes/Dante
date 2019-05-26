@@ -2,19 +2,32 @@ package at.shockbytes.dante.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.Fragment
+import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.flagging.FeatureFlag
+import at.shockbytes.dante.flagging.FeatureFlagging
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
+import at.shockbytes.dante.ui.fragment.LegacyBackupFragment
+import javax.inject.Inject
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import pub.devrel.easypermissions.EasyPermissions
-import javax.inject.Inject
 
 class BackupActivity : ContainerBackNavigableActivity(), EasyPermissions.PermissionCallbacks {
 
-    override val displayFragment = BackupFragment.newInstance()
+    @Inject
+    lateinit var featureFlagging: FeatureFlagging
+
+    override val displayFragment: Fragment by lazy {
+        if (featureFlagging[FeatureFlag.RefactoredBackups]) {
+            BackupFragment.newInstance()
+        } else {
+            LegacyBackupFragment.newInstance()
+        }
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory

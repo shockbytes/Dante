@@ -6,7 +6,7 @@ import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
-import at.shockbytes.dante.ui.fragment.BackupFragment
+import at.shockbytes.dante.ui.fragment.LegacyBackupFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.LegacyBookDetailFragment
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
@@ -63,7 +63,7 @@ interface AppComponent {
 
     fun inject(fragment: DownloadBookFragment)
 
-    fun inject(fragment: BackupFragment)
+    fun inject(fragment: LegacyBackupFragment)
 
     fun inject(fragment: QueryCaptureFragment)
 

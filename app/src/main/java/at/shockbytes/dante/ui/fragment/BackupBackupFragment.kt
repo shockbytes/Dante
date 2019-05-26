@@ -70,7 +70,9 @@ class BackupBackupFragment : BaseFragment() {
 
         providers.forEach { provider ->
             val view = BackupStorageProviderView(requireContext()).apply {
-                setStorageProvider(provider)
+                setStorageProvider(provider) { p ->
+                    viewModel.makeBackup(p)
+                }
             }
             grid_fragment_backup_providers.addView(view)
         }

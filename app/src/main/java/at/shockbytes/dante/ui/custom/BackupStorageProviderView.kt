@@ -18,13 +18,14 @@ class BackupStorageProviderView : FrameLayout {
         View.inflate(context, R.layout.backup_storage_provider_view, this)
     }
 
-    fun setStorageProvider(backupStorageProvider: BackupStorageProvider) {
+    fun setStorageProvider(backupStorageProvider: BackupStorageProvider, click: (BackupStorageProvider) -> Unit) {
         with(backupStorageProvider) {
             iv_backup_storage_provider_icon.setImageResource(icon)
             tv_backup_storage_provider_title.text = title
             tv_backup_storage_provider_rationale.setText(rationale)
+
+            root_backup_storage_provider.setOnClickListener { click(this) }
         }
     }
-
 
 }

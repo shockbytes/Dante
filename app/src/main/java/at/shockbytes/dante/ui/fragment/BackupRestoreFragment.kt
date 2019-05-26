@@ -41,8 +41,8 @@ class BackupRestoreFragment: BaseFragment() {
 
     companion object {
 
-        fun newInstance() : BackupBackupFragment {
-            return BackupBackupFragment()
+        fun newInstance() : BackupRestoreFragment {
+            return BackupRestoreFragment()
         }
     }
 }

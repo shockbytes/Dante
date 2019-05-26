@@ -55,6 +55,10 @@
     <string name="label_backup">Manage backups</string>
     <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
+
+    <string name="restore_title">Restore</string>
+    <string name="backup_title">Backup</string>
+
     <string name="last_backup">Last backup: %s</string>
     <string name="backup_books_amount">%d books</string>
     <string name="menu_main_backup">Backup</string>

@@ -25,8 +25,8 @@ class BackupPagerAdapter(
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
-            0 -> context.getString(R.string.backup)
-            1 -> context.getString(R.string.restore)
+            0 -> context.getString(R.string.backup_title)
+            1 -> context.getString(R.string.restore_title)
             else -> "" // Never the case
         }
     }

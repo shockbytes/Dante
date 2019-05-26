@@ -201,6 +201,8 @@
     <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
     <string name="prefs_contribute_title">Mitwirken</string>
     <string name="prefs_contribute_summary">Arbeite an Dante mit: https://github.com/shockbytes/Dante</string>
+    <string name="restore_title">Wiederherstellen</string>
+    <string name="backup_title">Backup</string>
     <string name="rationale_ask_cancel">Sicher nicht!</string>
     <string name="rationale_ask_ok">Alles klar</string>
     <string name="external_storage_rationale">Hey, wir möchten gerne Backups auf deine SD-Karte schreiben.</string>

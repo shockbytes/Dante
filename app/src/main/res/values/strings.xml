@@ -20,6 +20,7 @@
     <string name="action_move_to_reading">Move to reading</string>
     <string name="action_move_to_done">Move to done</string>
     <string name="action_delete">Delete</string>
+    <string name="na">Not available</string>
 
     <string name="permission_camera_rationale">The app needs access to your camera, in order to detect the barcodes of the books.</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission. The scan window will terminate.</string>
@@ -292,6 +293,9 @@
 
     <string name="fab_hint_prompt">Scan your first book</string>
     <string name="fab_hint_prompt_message">Tap on the + icon and start scanning your first book!</string>
+    <string name="backup_provider_rationale">TODO Write something here...</string>
+    <string name="backup_storage_provider_rationale_gdrive">Gdrive rationale</string>
+    <string name="backup_storage_provider_rationale_shockbytes">Shockbytes rationale</string>
     <string name="rationale_ask_ok">Sure</string>
     <string name="rationale_ask_cancel">No way</string>
     <string name="external_storage_rationale">Hey, we would like to write backups on your external storage.</string>

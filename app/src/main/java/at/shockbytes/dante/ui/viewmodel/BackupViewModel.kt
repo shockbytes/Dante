@@ -32,6 +32,9 @@ class BackupViewModel @Inject constructor(
     private val lastBackupTime = MutableLiveData<String>()
     fun getLastBackupTime(): LiveData<String> = lastBackupTime
 
+    private val backupStorageProviders = MutableLiveData<List<BackupStorageProvider>>()
+    fun getBackupProviders(): LiveData<List<BackupStorageProvider>> = backupStorageProviders
+
     val makeBackupEvent = PublishSubject.create<State>()
     val deleteBackupEvent = PublishSubject.create<DeleteBackupState>()
     val applyBackupEvent = PublishSubject.create<ApplyBackupState>()
@@ -47,6 +50,8 @@ class BackupViewModel @Inject constructor(
                 errorSubject.onNext(throwable)
             })
             .addTo(compositeDisposable)
+
+        postBackupProviders()
     }
 
     fun disconnect() {
@@ -134,6 +139,11 @@ class BackupViewModel @Inject constructor(
             DanteUtils.formatTimestamp(lastBackupMillis)
         else "---"
         lastBackupTime.postValue(lastBackup)
+    }
+
+    private fun postBackupProviders() {
+        val providers = backupRepository.backupProvider.map { it.backupStorageProvider }
+        backupStorageProviders.postValue(providers)
     }
 
     // -------------------------- State classes --------------------------

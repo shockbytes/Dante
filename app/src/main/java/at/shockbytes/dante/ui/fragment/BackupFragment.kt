@@ -7,7 +7,11 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupPagerAdapter
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
+import at.shockbytes.dante.util.addTo
+import com.google.android.gms.common.api.ApiException
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -39,6 +43,16 @@ class BackupFragment : BaseFragment() {
     }
 
     override fun bindViewModel() {
+
+        viewModel.errorSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ error ->
+                showToast(getString(R.string.backup_connection_error_google_drive, getErrorMessage(error)), showLong = true)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
+
         activity?.let { act ->
             viewModel.connect(act)
         }
@@ -54,6 +68,13 @@ class BackupFragment : BaseFragment() {
         vp_fragment_backup.apply {
             adapter = pagerAdapter
             offscreenPageLimit = 2
+        }
+    }
+
+    private fun getErrorMessage(throwable: Throwable): String {
+        return when (throwable) {
+            is ApiException -> getString(R.string.error_msg_execution_exception)
+            else -> getString(R.string.error_msg_unknown)
         }
     }
 

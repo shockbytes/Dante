@@ -25,7 +25,7 @@ interface BackupRepository {
     fun getBackups(): Single<List<BackupEntryState>>
 
     @Throws(BackupServiceConnectionException::class)
-    fun initialize(activity: FragmentActivity): Completable
+    fun initialize(activity: FragmentActivity, forceReload: Boolean): Completable
 
     fun close(): Completable
 

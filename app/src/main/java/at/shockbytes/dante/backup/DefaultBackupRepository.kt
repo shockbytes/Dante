@@ -19,11 +19,14 @@ class DefaultBackupRepository(
     preferences: SharedPreferences
 ) : BackupRepository {
 
+    private val activeBackupProvider: List<BackupProvider>
+        get() = backupProvider.filter { it.isEnabled }
+
     override var lastBackupTime: Long by SharedPreferencesLongPropertyDelegate(preferences, BackupRepository.KEY_LAST_BACKUP, 0)
 
     override fun getBackups(): Single<List<BackupEntryState>> {
 
-        return Single.merge(backupProvider.map { it.getBackupEntries() })
+        return Single.merge(activeBackupProvider.map { it.getBackupEntries() })
             .collect(
                 { mutableListOf() },
                 { container: MutableList<BackupEntryState>, value: List<BackupEntryState> ->
@@ -39,12 +42,17 @@ class DefaultBackupRepository(
             }
     }
 
-    override fun initialize(activity: FragmentActivity): Completable {
-        return Completable.concat(backupProvider.map { it.initialize(activity) })
+    override fun initialize(activity: FragmentActivity, forceReload: Boolean): Completable {
+
+        // If forceReload is set, then use the whole list of backup provider,
+        // otherwise just use the active ones
+        val provider = if (forceReload) backupProvider else activeBackupProvider
+
+        return Completable.concat(provider.map { it.initialize(activity) })
     }
 
     override fun close(): Completable {
-        return Completable.concat(backupProvider.map { it.teardown() })
+        return Completable.concat(activeBackupProvider.map { it.teardown() })
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {
@@ -53,7 +61,7 @@ class DefaultBackupRepository(
     }
 
     override fun removeAllBackupEntries(): Completable {
-        return Completable.concat(backupProvider.map { it.removeAllBackupEntries() })
+        return Completable.concat(activeBackupProvider.map { it.removeAllBackupEntries() })
     }
 
     override fun backup(books: List<BookEntity>, backupStorageProvider: BackupStorageProvider): Completable {
@@ -78,6 +86,6 @@ class DefaultBackupRepository(
     }
 
     private fun getBackupProvider(source: BackupStorageProvider): BackupProvider? {
-        return backupProvider.find { it.backupStorageProvider == source }
+        return activeBackupProvider.find { it.backupStorageProvider == source }
     }
 }

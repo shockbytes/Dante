@@ -27,6 +27,8 @@ class ExternalStorageBackupProvider(
 
     override val backupStorageProvider = BackupStorageProvider.EXTERNAL_STORAGE
 
+    override var isEnabled: Boolean = true
+
     override fun initialize(activity: FragmentActivity?): Completable {
         return Completable.fromAction {
 
@@ -41,8 +43,12 @@ class ExternalStorageBackupProvider(
     private fun checkPermissions(activity: FragmentActivity) {
 
         val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val hasPermissions = EasyPermissions.hasPermissions(activity, *permissions)
 
-        if (!EasyPermissions.hasPermissions(activity, *permissions)) {
+        // BackupProvider is enabled if it has permissions to read and write external storage
+        isEnabled = hasPermissions
+
+        if (!hasPermissions) {
             EasyPermissions.requestPermissions(
                 PermissionRequest.Builder(activity, RC_READ_WRITE_EXT_STORAGE, *permissions)
                     .setRationale(R.string.external_storage_rationale)

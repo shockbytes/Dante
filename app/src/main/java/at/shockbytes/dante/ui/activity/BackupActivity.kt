@@ -2,7 +2,9 @@ package at.shockbytes.dante.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
@@ -19,11 +21,16 @@ class BackupActivity : ContainerBackNavigableActivity(), EasyPermissions.Permiss
 
     private lateinit var viewModel: BackupViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, vmFactory)[BackupViewModel::class.java]
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         // Forward to EasyPermissions
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -34,7 +41,7 @@ class BackupActivity : ContainerBackNavigableActivity(), EasyPermissions.Permiss
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         // Reload data sources once external permission is granted
-        viewModel.connect(this)
+        viewModel.connect(this, forceReload = true)
     }
 
     companion object {

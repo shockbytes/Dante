@@ -20,6 +20,8 @@ class ShockbytesHerokuServerBackupProvider(
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {
 
+    override var isEnabled: Boolean = true
+
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 
     override fun initialize(activity: FragmentActivity?): Completable {

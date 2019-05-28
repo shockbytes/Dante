@@ -12,6 +12,8 @@ interface BackupProvider {
 
     val backupStorageProvider: BackupStorageProvider
 
+    var isEnabled: Boolean
+
     fun initialize(activity: FragmentActivity? = null): Completable
 
     fun backup(books: List<BookEntity>): Completable

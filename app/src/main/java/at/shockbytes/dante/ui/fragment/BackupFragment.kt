@@ -42,7 +42,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BackupViewModel::class.java]
+        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
     }
 
     override fun setupViews() {
@@ -58,9 +58,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 viewModel.makeBackup(BackupStorageProvider.GOOGLE_DRIVE) // TODO Replace this with more storage providers
             }
             fragment_backup_reload.setOnClickListener {
-                activity?.let { act ->
-                    viewModel.connect(act)
-                }
+                viewModel.connect(requireActivity())
             }
         }
     }
@@ -183,9 +181,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 })
                 .addTo(compositeDisposable)
 
-        activity?.let { act ->
-            viewModel.connect(act)
-        }
+        viewModel.connect(requireActivity())
     }
 
     override fun unbindViewModel() {

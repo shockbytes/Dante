@@ -1,8 +1,11 @@
 package at.shockbytes.dante.backup.provider.external
 
+import android.Manifest
 import androidx.fragment.app.FragmentActivity
+import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupEntry
 import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.book.BookEntity
@@ -10,6 +13,8 @@ import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Single
+import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.PermissionRequest
 
 /**
  * Author:  Martin Macheiner
@@ -23,8 +28,29 @@ class ExternalStorageBackupProvider(
     override val backupStorageProvider = BackupStorageProvider.EXTERNAL_STORAGE
 
     override fun initialize(activity: FragmentActivity?): Completable {
-        // TODO Implement this method...
-        return Completable.complete()
+        return Completable.fromAction {
+
+            if (activity == null) {
+                throw BackupServiceConnectionException("${this.javaClass.simpleName} requires an activity!")
+            }
+
+            checkPermissions(activity)
+        }
+    }
+
+    private fun checkPermissions(activity: FragmentActivity) {
+
+        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+
+        if (!EasyPermissions.hasPermissions(activity, *permissions)) {
+            EasyPermissions.requestPermissions(
+                PermissionRequest.Builder(activity, RC_READ_WRITE_EXT_STORAGE, *permissions)
+                    .setRationale(R.string.external_storage_rationale)
+                    .setPositiveButtonText(R.string.rationale_ask_ok)
+                    .setNegativeButtonText(R.string.rationale_ask_cancel)
+                    .build()
+            )
+        }
     }
 
     override fun backup(books: List<BookEntity>): Completable {
@@ -53,7 +79,7 @@ class ExternalStorageBackupProvider(
                         device = "Nexus 7",
                         storageProvider = backupStorageProvider,
                         books = 128,
-                        timestamp = System.currentTimeMillis() - 100000000L
+                        timestamp = System.currentTimeMillis() - 100000000000L
                     )
                 )
             )
@@ -77,5 +103,10 @@ class ExternalStorageBackupProvider(
 
     override fun teardown(): Completable {
         return Completable.complete()
+    }
+
+    companion object {
+
+        private const val RC_READ_WRITE_EXT_STORAGE = 0x5321
     }
 }

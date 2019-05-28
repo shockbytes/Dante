@@ -134,7 +134,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
-
+    implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'net.danlew:android.joda:2.9.9'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation "com.leinardi.android:speed-dial:2.0.1"

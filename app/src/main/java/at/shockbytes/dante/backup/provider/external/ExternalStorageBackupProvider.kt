@@ -1,9 +1,12 @@
 package at.shockbytes.dante.backup.provider.external
 
 import android.Manifest
+import android.os.Build
 import android.os.Environment
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
+import at.shockbytes.dante.backup.BackupRepository
+import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
@@ -16,6 +19,7 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import timber.log.Timber
 import java.io.File
 
 /**
@@ -74,43 +78,70 @@ class ExternalStorageBackupProvider(
     }
 
     override fun backup(books: List<BookEntity>): Completable {
-        return Completable.fromCallable {
+        return Completable
+            .fromCallable {
 
-            val fileName = createFileName()
-            val file = File(baseFile, fileName)
+                val timestamp = System.currentTimeMillis()
+                val fileName = createFileName(timestamp)
+                val metadata = getMetadata(books.size, fileName, timestamp)
 
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    throw IllegalStateException("Cannot create new file at location ${file.absolutePath}")
+                val file = File(baseFile, fileName)
+
+                if (!file.exists()) {
+                    if (!file.createNewFile()) {
+                        throw IllegalStateException("Cannot create new file at location ${file.absolutePath}")
+                    }
                 }
-            }
 
-            val content = "" // TODO what to write here
-            file.writeText(content)
-        }
+                val content = gson.toJson(BackupItem(metadata, books))
+                file.writeText(content)
+            }
+            .subscribeOn(schedulers.io)
     }
 
-    private fun createFileName(): String {
-        TODO("How should the filename look like")
+    private fun getMetadata(books: Int, fileName: String, timestamp: Long): BackupMetadata {
+        return BackupMetadata(
+            id = "",
+            fileName = fileName,
+            timestamp = timestamp,
+            books = books,
+            storageProvider = backupStorageProvider,
+            device = Build.MODEL
+
+        )
+    }
+
+    private fun createFileName(timestamp: Long): String {
+        return "$timestamp${BackupRepository.BACKUP_ITEM_SUFFIX}"
     }
 
     override fun getBackupEntries(): Single<List<BackupMetadataState>> {
         return Single.fromCallable {
 
             baseFile
-                ?.list({ _, name ->
-                    true // TODO
-                })
-                ?.map { backupFile ->
+                ?.list { _, name ->
+                    name.endsWith(BackupRepository.BACKUP_ITEM_SUFFIX)
+                }
+                ?.mapNotNull { backupFile ->
                     backupFileToBackupEntry(backupFile)
                 }
         }
     }
 
-    private fun backupFileToBackupEntry(backupFile: String): BackupMetadataState {
+    private fun backupFileToBackupEntry(backupFile: String): BackupMetadataState? {
 
-        TODO()
-        // return BackupEntryState.Active()
+        return try {
+
+            val file = File(baseFile, backupFile)
+            val content = file.readLines().joinToString(System.lineSeparator())
+            val metadata = gson.fromJson(content, BackupItem::class.java).backupMetadata
+
+            // Can only be active, there is no cached state
+            BackupMetadataState.Active(metadata)
+        } catch (e: Exception) {
+            Timber.e(e)
+            null
+        }
     }
 
     override fun removeBackupEntry(entry: BackupMetadata): Completable {
@@ -118,7 +149,7 @@ class ExternalStorageBackupProvider(
 
             val file = File(baseFile, entry.fileName)
             if (file.exists()) {
-                if (!file.delete()){
+                if (!file.delete()) {
                     throw IllegalStateException("File ${entry.fileName} cannot be deleted!")
                 }
             } else {
@@ -139,12 +170,9 @@ class ExternalStorageBackupProvider(
 
     override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
         return Single.fromCallable {
-
             val file = File(baseFile, entry.fileName)
-
-            // TODO This is important!
-
-            listOf<BookEntity>()
+            val content = file.readLines().joinToString(System.lineSeparator())
+            gson.fromJson(content, BackupItem::class.java).books
         }
     }
 

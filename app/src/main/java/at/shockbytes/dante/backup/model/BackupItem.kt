@@ -9,6 +9,6 @@ import at.shockbytes.dante.book.BookEntity
  * Date:    29.05.2019
  */
 data class BackupItem(
-    val backupEntry: BackupMetadata,
+    val backupMetadata: BackupMetadata,
     val books: List<BookEntity>
 )

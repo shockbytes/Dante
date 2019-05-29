@@ -1,8 +1,8 @@
 package at.shockbytes.dante.backup.provider.shockbytes
 
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
@@ -39,11 +39,11 @@ class ShockbytesHerokuServerBackupProvider(
             }
     }
 
-    override fun getBackupEntries(): Single<List<BackupEntryState>> {
+    override fun getBackupEntries(): Single<List<BackupMetadataState>> {
         return shockbytesHerokuApi.listBackups(signInManager.getAuthorizationHeader())
             .map { entries ->
-                val entryStates: List<BackupEntryState> = entries.map { entry ->
-                    BackupEntryState.Active(entry)
+                val entryStates: List<BackupMetadataState> = entries.map { entry ->
+                    BackupMetadataState.Active(entry)
                 }
                 entryStates
             }
@@ -57,7 +57,7 @@ class ShockbytesHerokuServerBackupProvider(
             }
     }
 
-    override fun removeBackupEntry(entry: BackupEntry): Completable {
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
         return shockbytesHerokuApi.removeBackupById(signInManager.getAuthorizationHeader(), entry.id)
     }
 
@@ -65,7 +65,7 @@ class ShockbytesHerokuServerBackupProvider(
         return shockbytesHerokuApi.removeAllBackups(signInManager.getAuthorizationHeader())
     }
 
-    override fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>> {
+    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
         return shockbytesHerokuApi
             .getBooksBackupById(signInManager.getAuthorizationHeader(), entry.id)
             .subscribeOn(Schedulers.io())

@@ -3,7 +3,7 @@ package at.shockbytes.dante.backup
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
+import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupException
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -48,7 +48,7 @@ class GoogleDriveBackupManager(
         get() = preferences.getLong(LAST_BACKUP, 0)
         set(value) = preferences.edit().putLong(LAST_BACKUP, value).apply()
 
-    override val backupList: Single<List<BackupEntry>>
+    override val backupList: Single<List<BackupMetadata>>
         get() =
             Single
                 .fromCallable {
@@ -71,7 +71,7 @@ class GoogleDriveBackupManager(
 
     override fun close(books: List<BookEntity>?) = Unit
 
-    override fun removeBackupEntry(entry: BackupEntry): Completable {
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
         return Completable
             .fromAction {
                 if (!deleteDriveFile(DriveId.decodeFromString(entry.id))) {
@@ -113,7 +113,7 @@ class GoogleDriveBackupManager(
     }
 
     override fun restoreBackup(
-        entry: BackupEntry,
+        entry: BackupMetadata,
         bookDao: BookEntityDao,
         strategy: RestoreStrategy
     ): Completable {
@@ -130,7 +130,7 @@ class GoogleDriveBackupManager(
         return client.delete(driveId.asDriveResource())?.isSuccessful ?: false
     }
 
-    private fun fromMetadataToBackupEntries(result: MetadataBuffer?): List<BackupEntry> {
+    private fun fromMetadataToBackupEntries(result: MetadataBuffer?): List<BackupMetadata> {
 
         val entries = result?.mapNotNullTo(mutableListOf()) { buffer ->
 
@@ -146,7 +146,7 @@ class GoogleDriveBackupManager(
                 val timestamp = java.lang.Long.parseLong(data[2])
                 val books = Integer.parseInt(data[3])
 
-                BackupEntry(
+                BackupMetadata(
                     id = fileId,
                     fileName = fileName,
                     device = device,
@@ -176,7 +176,7 @@ class GoogleDriveBackupManager(
             Build.MODEL + ".json"
     }
 
-    private fun booksFromEntry(entry: BackupEntry): Single<List<BookEntity>> {
+    private fun booksFromEntry(entry: BackupMetadata): Single<List<BookEntity>> {
         return Single
             .fromCallable {
 

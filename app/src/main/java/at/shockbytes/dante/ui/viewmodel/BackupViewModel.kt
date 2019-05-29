@@ -3,9 +3,9 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import at.shockbytes.dante.backup.model.BackupEntry
+import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.BackupRepository
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.data.BookEntityDao
@@ -50,7 +50,7 @@ class BackupViewModel @Inject constructor(
         backupRepository.close()
     }
 
-    fun applyBackup(t: BackupEntry, strategy: RestoreStrategy) {
+    fun applyBackup(t: BackupMetadata, strategy: RestoreStrategy) {
         backupRepository
             .restoreBackup(t, bookDao, strategy)
             .subscribe({
@@ -76,7 +76,7 @@ class BackupViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun deleteItem(t: BackupEntry, position: Int, currentItems: Int) {
+    fun deleteItem(t: BackupMetadata, position: Int, currentItems: Int) {
         backupRepository.removeBackupEntry(t)
             .subscribe({
                 val wasLastEntry = (currentItems - 1) == 0
@@ -128,7 +128,7 @@ class BackupViewModel @Inject constructor(
     // -------------------------- State classes --------------------------
 
     sealed class LoadBackupState {
-        data class Success(val backups: List<BackupEntryState>) : LoadBackupState()
+        data class Success(val backups: List<BackupMetadataState>) : LoadBackupState()
         object Empty : LoadBackupState()
         object Loading : LoadBackupState()
         data class Error(val throwable: Throwable) : LoadBackupState()

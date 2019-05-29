@@ -1,8 +1,8 @@
 package at.shockbytes.dante.backup
 
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
@@ -22,21 +22,21 @@ interface BackupRepository {
 
     var lastBackupTime: Long
 
-    fun getBackups(): Single<List<BackupEntryState>>
+    fun getBackups(): Single<List<BackupMetadataState>>
 
     @Throws(BackupServiceConnectionException::class)
     fun initialize(activity: FragmentActivity, forceReload: Boolean): Completable
 
     fun close(): Completable
 
-    fun removeBackupEntry(entry: BackupEntry): Completable
+    fun removeBackupEntry(entry: BackupMetadata): Completable
 
     fun removeAllBackupEntries(): Completable
 
     fun backup(books: List<BookEntity>, backupStorageProvider: BackupStorageProvider): Completable
 
     fun restoreBackup(
-        entry: BackupEntry,
+        entry: BackupMetadata,
         bookDao: BookEntityDao,
         strategy: RestoreStrategy
     ): Completable

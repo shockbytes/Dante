@@ -4,8 +4,8 @@ import android.Manifest
 import android.os.Environment
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
@@ -17,7 +17,6 @@ import io.reactivex.Single
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 import java.io.File
-import java.io.FilenameFilter
 
 /**
  * Author:  Martin Macheiner
@@ -95,7 +94,7 @@ class ExternalStorageBackupProvider(
         TODO("How should the filename look like")
     }
 
-    override fun getBackupEntries(): Single<List<BackupEntryState>> {
+    override fun getBackupEntries(): Single<List<BackupMetadataState>> {
         return Single.fromCallable {
 
             baseFile
@@ -108,13 +107,13 @@ class ExternalStorageBackupProvider(
         }
     }
 
-    private fun backupFileToBackupEntry(backupFile: String): BackupEntryState {
+    private fun backupFileToBackupEntry(backupFile: String): BackupMetadataState {
 
         TODO()
         // return BackupEntryState.Active()
     }
 
-    override fun removeBackupEntry(entry: BackupEntry): Completable {
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
         return Completable.fromAction {
 
             val file = File(baseFile, entry.fileName)
@@ -138,7 +137,7 @@ class ExternalStorageBackupProvider(
         }
     }
 
-    override fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>> {
+    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
         return Single.fromCallable {
 
             val file = File(baseFile, entry.fileName)

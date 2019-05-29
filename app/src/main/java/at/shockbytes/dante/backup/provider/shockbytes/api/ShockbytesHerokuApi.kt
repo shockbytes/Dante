@@ -1,6 +1,6 @@
 package at.shockbytes.dante.backup.provider.shockbytes.api
 
-import at.shockbytes.dante.backup.model.BackupEntry
+import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.book.BookEntity
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -26,7 +26,7 @@ interface ShockbytesHerokuApi {
     @GET("backups")
     fun listBackups(
         @Header("Authorization") bearerToken: String
-    ): Single<List<BackupEntry>>
+    ): Single<List<BackupMetadata>>
 
     @DELETE("backups")
     fun removeAllBackups(
@@ -49,7 +49,7 @@ interface ShockbytesHerokuApi {
     fun makeBackup(
         @Header("Authorization") bearerToken: String,
         @Body books: List<BookEntity>
-    ): Single<BackupEntry>
+    ): Single<BackupMetadata>
 
     companion object {
         const val SERVICE_ENDPOINT = "https://shockbytes-dante.herokuapp.com/"

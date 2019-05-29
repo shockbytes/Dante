@@ -2,8 +2,8 @@ package at.shockbytes.dante.backup
 
 import android.content.SharedPreferences
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
@@ -24,12 +24,12 @@ class DefaultBackupRepository(
 
     override var lastBackupTime: Long by SharedPreferencesLongPropertyDelegate(preferences, BackupRepository.KEY_LAST_BACKUP, 0)
 
-    override fun getBackups(): Single<List<BackupEntryState>> {
+    override fun getBackups(): Single<List<BackupMetadataState>> {
 
         return Single.merge(activeBackupProvider.map { it.getBackupEntries() })
             .collect(
                 { mutableListOf() },
-                { container: MutableList<BackupEntryState>, value: List<BackupEntryState> ->
+                { container: MutableList<BackupMetadataState>, value: List<BackupMetadataState> ->
                     container.addAll(value)
                 }
             )
@@ -55,7 +55,7 @@ class DefaultBackupRepository(
         return Completable.concat(activeBackupProvider.map { it.teardown() })
     }
 
-    override fun removeBackupEntry(entry: BackupEntry): Completable {
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
         return getBackupProvider(entry.storageProvider)?.removeBackupEntry(entry)
             ?: Completable.error(BackupStorageProviderNotAvailableException())
     }
@@ -74,7 +74,7 @@ class DefaultBackupRepository(
     }
 
     override fun restoreBackup(
-        entry: BackupEntry,
+        entry: BackupMetadata,
         bookDao: BookEntityDao,
         strategy: RestoreStrategy
     ): Completable {

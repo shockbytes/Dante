@@ -1,6 +1,7 @@
 package at.shockbytes.dante.backup.provider.external
 
 import android.Manifest
+import android.os.Environment
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupEntry
@@ -15,6 +16,8 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import java.io.File
+import java.io.FilenameFilter
 
 /**
  * Author:  Martin Macheiner
@@ -29,6 +32,8 @@ class ExternalStorageBackupProvider(
 
     override var isEnabled: Boolean = true
 
+    private var baseFile: File? = null
+
     override fun initialize(activity: FragmentActivity?): Completable {
         return Completable.fromAction {
 
@@ -37,6 +42,16 @@ class ExternalStorageBackupProvider(
             }
 
             checkPermissions(activity)
+
+            // If not enabled --> do nothing, we don't have the right permissions
+            if (isEnabled) {
+                baseFile = File(Environment.getExternalStorageDirectory(), "Dante")
+
+                if (baseFile?.mkdirs() == false) {
+                    isEnabled = false
+                    throw IllegalStateException("Cannot create baseFile in $baseFile")
+                }
+            }
         }
     }
 
@@ -60,51 +75,78 @@ class ExternalStorageBackupProvider(
     }
 
     override fun backup(books: List<BookEntity>): Completable {
-        // TODO Implement this method...
-        return Completable.complete()
+        return Completable.fromCallable {
+
+            val fileName = createFileName()
+            val file = File(baseFile, fileName)
+
+            if (!file.exists()) {
+                if (!file.createNewFile()) {
+                    throw IllegalStateException("Cannot create new file at location ${file.absolutePath}")
+                }
+            }
+
+            val content = "" // TODO what to write here
+            file.writeText(content)
+        }
+    }
+
+    private fun createFileName(): String {
+        TODO("How should the filename look like")
     }
 
     override fun getBackupEntries(): Single<List<BackupEntryState>> {
-        // TODO Implement this method...
-        return Single.just(
-            listOf(
-                BackupEntryState.Active(
-                    BackupEntry(
-                        id = "id1",
-                        fileName = "filename1",
-                        device = "Nexus 4",
-                        storageProvider = backupStorageProvider,
-                        books = 64,
-                        timestamp = System.currentTimeMillis()
-                    )
-                ),
-                BackupEntryState.Inactive(
-                    BackupEntry(
-                        id = "id2",
-                        fileName = "filename2",
-                        device = "Nexus 7",
-                        storageProvider = backupStorageProvider,
-                        books = 128,
-                        timestamp = System.currentTimeMillis() - 100000000000L
-                    )
-                )
-            )
-        )
+        return Single.fromCallable {
+
+            baseFile
+                ?.list({ _, name ->
+                    true // TODO
+                })
+                ?.map { backupFile ->
+                    backupFileToBackupEntry(backupFile)
+                }
+        }
+    }
+
+    private fun backupFileToBackupEntry(backupFile: String): BackupEntryState {
+
+        TODO()
+        // return BackupEntryState.Active()
     }
 
     override fun removeBackupEntry(entry: BackupEntry): Completable {
-        // TODO Implement this method...
-        return Completable.complete()
+        return Completable.fromAction {
+
+            val file = File(baseFile, entry.fileName)
+            if (file.exists()) {
+                if (!file.delete()){
+                    throw IllegalStateException("File ${entry.fileName} cannot be deleted!")
+                }
+            } else {
+                throw NullPointerException("File associated to ${entry.fileName} does not exist!")
+            }
+        }
     }
 
     override fun removeAllBackupEntries(): Completable {
-        // TODO Implement this method...
-        return Completable.complete()
+        return Completable.fromAction {
+            baseFile
+                ?.listFiles()
+                ?.forEach { f ->
+                    f.delete()
+                }
+        }
     }
 
     override fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>> {
-        // TODO Implement this method...
-        return Single.just(listOf())
+        return Single.fromCallable {
+
+            val file = File(baseFile, entry.fileName)
+
+            // TODO This is important!
+
+            listOf<BookEntity>()
+        }
     }
 
     override fun teardown(): Completable {

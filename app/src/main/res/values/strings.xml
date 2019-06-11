@@ -290,6 +290,6 @@
     <string name="fab_hint_prompt_message">Tap on the + icon and start scanning your first book!</string>
     <string name="rationale_ask_ok">Sure</string>
     <string name="rationale_ask_cancel">No way</string>
-    <string name="external_storage_rationale">Hey, would be cool if you would let me write on your external storage.</string>
+    <string name="external_storage_rationale">Hey, we would like to write backups on your external storage.</string>
 
 </resources>

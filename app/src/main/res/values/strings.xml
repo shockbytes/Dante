@@ -294,10 +294,10 @@
     <string name="fab_hint_prompt">Scan your first book</string>
     <string name="fab_hint_prompt_message">Tap on the + icon and start scanning your first book!</string>
 
-    <string name="backup_provider_rationale">TODO Write something here...</string>
-    <string name="backup_storage_provider_rationale_gdrive">Gdrive rationale</string>
-    <string name="backup_storage_provider_rationale_shockbytes">Shockbytes rationale</string>
-    <string name="backup_storage_provider_rationale_external_storage">External storage rationale</string>
+    <string name="backup_provider_rationale">Dante allows you to backup your data in several ways. It offers you a handy way to transfer data between devices. Backup your data on one device and restore it on your new device. Just click on your preferred way to backup.</string>
+    <string name="backup_storage_provider_rationale_gdrive">Backup your data on Google Drive. This requires you to be logged in with your same Google account if used on multiple devices.</string>
+    <string name="backup_storage_provider_rationale_shockbytes">Just upload your data to our servers. The data still belongs only to you. This is the preferred way of backing up your data.</string>
+    <string name="backup_storage_provider_rationale_external_storage">Save your data to your external storage. Note that this requires you to move it to another device manually.</string>
 
     <string name="rationale_ask_ok">Sure</string>
     <string name="rationale_ask_cancel">No way</string>

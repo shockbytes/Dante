@@ -6,7 +6,7 @@
     android:id="@+id/root_backup_storage_provider"
     android:background="@drawable/bg_round_border"
     android:layout_margin="4dp"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_backup_storage_provider_icon"

@@ -95,7 +95,7 @@ class BackupBackupFragment : BaseFragment() {
                     }
                 }
             }
-            addItemDecoration(EqualSpaceItemDecoration(8))
+            addItemDecoration(EqualSpaceItemDecoration(context.resources.getDimension(R.dimen.backup_provider_margin).toInt()))
         }
     }
 

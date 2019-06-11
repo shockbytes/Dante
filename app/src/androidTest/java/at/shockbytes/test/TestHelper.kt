@@ -2,7 +2,6 @@ package at.shockbytes.test
 
 import org.mockito.Mockito
 
-
 /**
  * Returns Mockito.any() as nullable type to avoid java.lang.IllegalStateException when
  * null is returned.

@@ -76,16 +76,18 @@ class ExternalStorageBackupProvider(
     }
 
     override fun getBackupEntries(): Single<List<BackupMetadataState>> {
-        return externalStorageInteractor.listFilesInDirectory(
+        return externalStorageInteractor
+            .listFilesInDirectory(
                 BASE_DIR_NAME,
                 filterPredicate = { fileName ->
                     fileName.endsWith(BackupRepository.BACKUP_ITEM_SUFFIX)
                 }
-        ).map { files ->
-            files.mapNotNull { backupFile ->
-                backupFileToBackupEntry(backupFile)
+            ).map { files ->
+                files.mapNotNull { backupFile ->
+                    backupFileToBackupEntry(backupFile)
+                }
             }
-        }
+            .subscribeOn(schedulers.io)
     }
 
     private fun backupFileToBackupEntry(backupFile: File): BackupMetadataState? {
@@ -109,19 +111,25 @@ class ExternalStorageBackupProvider(
     }
 
     override fun removeBackupEntry(entry: BackupMetadata): Completable {
-        return externalStorageInteractor.deleteFileInDirectory(BASE_DIR_NAME, entry.fileName)
+        return externalStorageInteractor
+            .deleteFileInDirectory(BASE_DIR_NAME, entry.fileName)
+            .subscribeOn(schedulers.io)
     }
 
     override fun removeAllBackupEntries(): Completable {
-        return externalStorageInteractor.deleteFilesInDirectory(BASE_DIR_NAME)
+        return externalStorageInteractor
+            .deleteFilesInDirectory(BASE_DIR_NAME)
+            .subscribeOn(schedulers.io)
     }
 
     override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
-        return Single.fromCallable {
-            externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName).let { content ->
-                gson.fromJson(content, BackupItem::class.java).books
+        return Single
+            .fromCallable {
+                externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName).let { content ->
+                    gson.fromJson(content, BackupItem::class.java).books
+                }
             }
-        }
+            .subscribeOn(schedulers.io)
     }
 
     override fun teardown(): Completable {

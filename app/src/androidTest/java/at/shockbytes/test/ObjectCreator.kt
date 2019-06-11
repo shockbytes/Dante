@@ -4,8 +4,6 @@ import at.shockbytes.dante.book.BookEntity
 
 object ObjectCreator {
 
-
-
     fun getPopulatedListOfBookEntities(): List<BookEntity> {
         return listOf(
             BookEntity(id = 0, title = "Their darkest hour"),

@@ -149,7 +149,7 @@
     <string name="prefs_dark_mode_title">Dark mode</string>
     <string name="prefs_dark_mode_summary">Verwende ein dunkles Thema für die App</string>
     <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
-    <string name="backup_connection_error_google_drive">Keine Verbindung zu Google Drive möglich. Grund: %s</string>
+    <string name="backup_connection_establish_error">Keine Verbindung zu deinen Backups möglich. Grund: %s</string>
     <string name="dark_mode_applied">Das Thema wird beim nächsten Start aktiviert.</string>
     <string name="error_google_login">Wir können dich leider nicht einloggen!</string>
     <string name="load_error">Bücher können nicht geladen werden</string>
@@ -206,5 +206,6 @@
     <string name="rationale_ask_cancel">Sicher nicht!</string>
     <string name="rationale_ask_ok">Alles klar</string>
     <string name="external_storage_rationale">Hey, wir möchten gerne Backups auf deine SD-Karte schreiben.</string>
+    <string name="na">Nicht verfügbar</string>
 
 </resources>

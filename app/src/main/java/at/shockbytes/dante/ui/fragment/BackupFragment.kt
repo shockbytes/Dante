@@ -47,7 +47,7 @@ class BackupFragment : BaseFragment() {
         viewModel.errorSubject
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ error ->
-                showToast(getString(R.string.backup_connection_error_google_drive, getErrorMessage(error)), showLong = true)
+                showToast(getString(R.string.backup_connection_establish_error, getErrorMessage(error)), showLong = true)
             }, { throwable ->
                 Timber.e(throwable)
             })
@@ -74,7 +74,7 @@ class BackupFragment : BaseFragment() {
     private fun getErrorMessage(throwable: Throwable): String {
         return when (throwable) {
             is ApiException -> getString(R.string.error_msg_execution_exception)
-            else -> getString(R.string.error_msg_unknown)
+            else -> throwable.localizedMessage
         }
     }
 

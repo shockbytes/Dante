@@ -175,7 +175,7 @@ class LegacyBackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Bac
         viewModel.errorSubject
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ error ->
-                    showToast(getString(R.string.backup_connection_error_google_drive, getErrorMessage(error)), showLong = true)
+                    showToast(getString(R.string.backup_connection_establish_error, getErrorMessage(error)), showLong = true)
                 }, { throwable ->
                     Timber.e(throwable)
                 })

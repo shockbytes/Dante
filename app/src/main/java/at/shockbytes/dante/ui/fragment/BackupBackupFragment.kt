@@ -1,15 +1,20 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.custom.BackupStorageProviderView
+import at.shockbytes.dante.ui.adapter.BackupStorageProviderAdapter
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
+import at.shockbytes.dante.util.Priority
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.util.adapter.BaseAdapter
+import at.shockbytes.util.view.EqualSpaceItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup_backup.*
 import javax.inject.Inject
@@ -66,15 +71,31 @@ class BackupBackupFragment : BaseFragment() {
     override fun unbindViewModel() = Unit
 
     private fun setupBackupProviderUI(providers: List<BackupStorageProvider>) {
-        grid_fragment_backup_providers.removeAllViews()
 
-        providers.forEach { provider ->
-            val view = BackupStorageProviderView(requireContext()).apply {
-                setStorageProvider(provider) { p ->
-                    viewModel.makeBackup(p)
+        rv_fragment_backup_providers.apply {
+            layoutManager = GridLayoutManager(requireContext(), 2).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return (rv_fragment_backup_providers.adapter as BackupStorageProviderAdapter)
+                            .data[position].priority.run {
+                            when (this) {
+                                Priority.LOW -> 1
+                                Priority.MEDIUM -> 1
+                                Priority.HIGH -> 2
+                            }
+                        }
+                    }
                 }
             }
-            grid_fragment_backup_providers.addView(view)
+            adapter = BackupStorageProviderAdapter(requireContext()).apply {
+                data = providers.sortedByDescending { it.priority }.toMutableList()
+                onItemClickListener = object : BaseAdapter.OnItemClickListener<BackupStorageProvider> {
+                    override fun onItemClick(t: BackupStorageProvider, v: View) {
+                        viewModel.makeBackup(t)
+                    }
+                }
+            }
+            addItemDecoration(EqualSpaceItemDecoration(8))
         }
     }
 

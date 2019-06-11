@@ -69,7 +69,7 @@ class GoogleDriveBackupProvider(
     override fun backup(books: List<BookEntity>): Completable {
 
         if (books.isEmpty()) {
-            throw BackupException("No books to backup")
+            return Completable.error(BackupException("No books to backup"))
         }
 
         val content = gson.toJson(books)

@@ -48,6 +48,7 @@ class BackupViewModel @Inject constructor(
             }, { throwable ->
                 Timber.e(throwable)
                 errorSubject.onNext(throwable)
+                loadBackupState.postValue(LoadBackupState.Error(throwable))
             })
             .addTo(compositeDisposable)
 

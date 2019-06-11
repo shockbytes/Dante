@@ -21,17 +21,15 @@ interface ExternalStorageInteractor {
 
     fun deleteFilesInDirectory(directoryName: String): Completable
 
-    fun <T> transformFilesInDirectory(
+    fun listFilesInDirectory(
         directoryName: String,
-        filterPredicate: (name: String) -> Boolean,
-        mapFunction: (file: File) -> T
-    ): Single<List<T>>
+        filterPredicate: (name: String) -> Boolean
+    ): Single<List<File>>
 
-    fun <T> transformFileContent(
+    fun readFileContent(
         directoryName: String,
-        fileName: String,
-        transformFun: (content: String) -> T
-    ): T
+        fileName: String
+    ): String
 
     fun deleteFileInDirectory(directoryName: String, fileName: String): Completable
 }

@@ -60,6 +60,74 @@ class ExternalStorageBackupProvider(
         }
     }
 
+    override fun backup(books: List<BookEntity>): Completable {
+        return Completable
+            .fromCallable {
+
+                val timestamp = System.currentTimeMillis()
+                val fileName = createFileName(timestamp)
+                val metadata = getMetadata(books.size, fileName, timestamp)
+
+                val content = gson.toJson(BackupItem(metadata, books))
+
+                externalStorageInteractor.writeToFileInDirectory(BASE_DIR_NAME, fileName, content)
+            }
+            .subscribeOn(schedulers.io)
+    }
+
+    override fun getBackupEntries(): Single<List<BackupMetadataState>> {
+        return externalStorageInteractor.listFilesInDirectory(
+                BASE_DIR_NAME,
+                filterPredicate = { fileName ->
+                    fileName.endsWith(BackupRepository.BACKUP_ITEM_SUFFIX)
+                }
+        ).map { files ->
+            files.mapNotNull { backupFile ->
+                backupFileToBackupEntry(backupFile)
+            }
+        }
+    }
+
+    private fun backupFileToBackupEntry(backupFile: File): BackupMetadataState? {
+
+        return try {
+
+            val metadata = externalStorageInteractor
+                .readFileContent(
+                    BASE_DIR_NAME,
+                    backupFile.name
+                ).let { content ->
+                    gson.fromJson(content, BackupItem::class.java).backupMetadata
+                }
+
+            // Can only be active, there is no cached state
+            BackupMetadataState.Active(metadata)
+        } catch (e: Exception) {
+            Timber.e(e)
+            null
+        }
+    }
+
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
+        return externalStorageInteractor.deleteFileInDirectory(BASE_DIR_NAME, entry.fileName)
+    }
+
+    override fun removeAllBackupEntries(): Completable {
+        return externalStorageInteractor.deleteFilesInDirectory(BASE_DIR_NAME)
+    }
+
+    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
+        return Single.fromCallable {
+            externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName).let { content ->
+                gson.fromJson(content, BackupItem::class.java).books
+            }
+        }
+    }
+
+    override fun teardown(): Completable {
+        return Completable.complete()
+    }
+
     private fun checkPermissions(activity: FragmentActivity) {
 
         permissionManager.verifyPermissions(activity, REQUIRED_PERMISSIONS).let { hasPermissions ->
@@ -81,21 +149,6 @@ class ExternalStorageBackupProvider(
         }
     }
 
-    override fun backup(books: List<BookEntity>): Completable {
-        return Completable
-            .fromCallable {
-
-                val timestamp = System.currentTimeMillis()
-                val fileName = createFileName(timestamp)
-                val metadata = getMetadata(books.size, fileName, timestamp)
-
-                val content = gson.toJson(BackupItem(metadata, books))
-
-                externalStorageInteractor.writeToFileInDirectory(BASE_DIR_NAME, fileName, content)
-            }
-            .subscribeOn(schedulers.io)
-    }
-
     private fun getMetadata(books: Int, fileName: String, timestamp: Long): BackupMetadata {
         return BackupMetadata(
             id = "",
@@ -104,64 +157,11 @@ class ExternalStorageBackupProvider(
             books = books,
             storageProvider = backupStorageProvider,
             device = Build.MODEL
-
         )
     }
 
     private fun createFileName(timestamp: Long): String {
         return "$timestamp${BackupRepository.BACKUP_ITEM_SUFFIX}"
-    }
-
-    override fun getBackupEntries(): Single<List<BackupMetadataState>> {
-        return externalStorageInteractor.transformFilesInDirectory(
-                BASE_DIR_NAME,
-                filterPredicate = { fileName ->
-                    fileName.endsWith(BackupRepository.BACKUP_ITEM_SUFFIX)
-                },
-                mapFunction = { backupFile ->
-                    backupFileToBackupEntry(backupFile)
-                }
-            )
-    }
-
-    private fun backupFileToBackupEntry(backupFile: File): BackupMetadataState {
-
-        return try {
-
-            val metadata = externalStorageInteractor
-                .transformFileContent(
-                    BASE_DIR_NAME,
-                    backupFile.name
-                ) { content ->
-                    gson.fromJson(content, BackupItem::class.java).backupMetadata
-                }
-
-            // Can only be active, there is no cached state
-            BackupMetadataState.Active(metadata)
-        } catch (e: Exception) {
-            Timber.e(e)
-            BackupMetadataState.Unreachable
-        }
-    }
-
-    override fun removeBackupEntry(entry: BackupMetadata): Completable {
-        return externalStorageInteractor.deleteFileInDirectory(BASE_DIR_NAME, entry.fileName)
-    }
-
-    override fun removeAllBackupEntries(): Completable {
-        return externalStorageInteractor.deleteFilesInDirectory(BASE_DIR_NAME)
-    }
-
-    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
-        return Single.fromCallable {
-            externalStorageInteractor.transformFileContent(BASE_DIR_NAME, entry.fileName) { content ->
-                gson.fromJson(content, BackupItem::class.java).books
-            }
-        }
-    }
-
-    override fun teardown(): Completable {
-        return Completable.complete()
     }
 
     companion object {

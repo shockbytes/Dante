@@ -59,32 +59,26 @@ class DefaultExternalStorageInteractor : ExternalStorageInteractor {
         }
     }
 
-    override fun <T> transformFilesInDirectory(
+    override fun listFilesInDirectory(
         directoryName: String,
-        filterPredicate: (name: String) -> Boolean,
-        mapFunction: (file: File) -> T
-    ): Single<List<T>> {
+        filterPredicate: (name: String) -> Boolean
+    ): Single<List<File>> {
         return Single.fromCallable {
 
             getBaseFile(directoryName)
                 .listFiles { _, name ->
                     filterPredicate(name)
                 }
-                .map { file: File ->
-                    mapFunction(file)
-                }
+                .toList()
         }
     }
 
-    override fun <T> transformFileContent(
+    override fun readFileContent(
         directoryName: String,
-        fileName: String,
-        transformFun: (content: String) -> T
-    ): T {
-
+        fileName: String
+    ): String {
         val file = File(getBaseFile(directoryName), fileName)
-        val content = file.readLines().joinToString(System.lineSeparator())
-        return transformFun(content)
+        return file.readLines().joinToString(System.lineSeparator())
     }
 
     private fun getBaseFile(directoryName: String): File {

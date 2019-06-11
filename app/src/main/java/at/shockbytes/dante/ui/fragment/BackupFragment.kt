@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
@@ -27,7 +27,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    31.12.2017
  */
-class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntryState> {
+class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupMetadataState> {
 
     override val layoutId = R.layout.fragment_backup
 
@@ -42,7 +42,7 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BackupViewModel::class.java]
+        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
     }
 
     override fun setupViews() {
@@ -58,27 +58,25 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 viewModel.makeBackup(BackupStorageProvider.GOOGLE_DRIVE) // TODO Replace this with more storage providers
             }
             fragment_backup_reload.setOnClickListener {
-                activity?.let { act ->
-                    viewModel.connect(act)
-                }
+                viewModel.connect(requireActivity(), forceReload = false)
             }
         }
     }
 
-    override fun onItemClick(t: BackupEntryState, v: View) {
+    override fun onItemClick(t: BackupMetadataState, v: View) {
 
         when (t) {
 
-            is BackupEntryState.Active -> showBackupRestoreStrategyModal(t)
+            is BackupMetadataState.Active -> showBackupRestoreStrategyModal(t)
 
-            is BackupEntryState.Inactive -> {
+            is BackupMetadataState.Inactive -> {
                 // TODO display something nicer here!
                 showToast("Inactive resource...")
             }
         }
     }
 
-    private fun showBackupRestoreStrategyModal(state: BackupEntryState.Active) {
+    private fun showBackupRestoreStrategyModal(state: BackupMetadataState.Active) {
         RestoreStrategyDialogFragment
             .newInstance()
             .setOnRestoreStrategySelectedListener { strategy ->
@@ -183,16 +181,14 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
                 })
                 .addTo(compositeDisposable)
 
-        activity?.let { act ->
-            viewModel.connect(act)
-        }
+        viewModel.connect(requireActivity(), forceReload = false)
     }
 
     override fun unbindViewModel() {
         viewModel.disconnect()
     }
 
-    private fun onItemDismissed(t: BackupEntry, position: Int) {
+    private fun onItemDismissed(t: BackupMetadata, position: Int) {
         val currentItems = fragment_backup_rv.adapter?.itemCount ?: -1
         viewModel.deleteItem(t, position, currentItems)
     }

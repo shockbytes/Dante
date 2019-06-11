@@ -11,7 +11,9 @@ enum class BackupStorageProvider(val acronym: String, @DrawableRes val icon: Int
     @SerializedName("gdrive")
     GOOGLE_DRIVE("gdrive", R.drawable.ic_google_drive),
     @SerializedName("shock_server")
-    SHOCKBYTES_SERVER("shock_server", R.drawable.ic_shockbytes);
+    SHOCKBYTES_SERVER("shock_server", R.drawable.ic_shockbytes),
+    @SerializedName("ext_storage")
+    EXTERNAL_STORAGE("ext_storage", R.drawable.ic_external_storage);
 
     companion object {
         fun byAcronym(acronym: String): BackupStorageProvider {

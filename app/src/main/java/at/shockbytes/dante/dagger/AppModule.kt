@@ -8,6 +8,9 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.DefaultBackupRepository
 import at.shockbytes.dante.backup.provider.BackupProvider
+import at.shockbytes.dante.storage.DefaultExternalStorageInteractor
+import at.shockbytes.dante.backup.provider.external.ExternalStorageBackupProvider
+import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.backup.provider.google.GoogleDriveBackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.ShockbytesHerokuServerBackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
@@ -27,6 +30,8 @@ import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
+import at.shockbytes.dante.util.permission.AndroidPermissionManager
+import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -99,11 +104,25 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Reusable
+    fun provideExternalStorageInteractor(): ExternalStorageInteractor {
+        return DefaultExternalStorageInteractor()
+    }
+
+    @Provides
+    @Reusable
+    fun providePermissionManager(): PermissionManager {
+        return AndroidPermissionManager()
+    }
+
+    @Provides
+    @Reusable
     fun provideBackupProvider(
         schedulerFacade: SchedulerFacade,
         signInManager: SignInManager,
         shockbytesHerokuApi: ShockbytesHerokuApi,
-        inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage
+        inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage,
+        externalStorageInteractor: ExternalStorageInteractor,
+        permissionManager: PermissionManager
     ): Array<BackupProvider> {
         return arrayOf(
             GoogleDriveBackupProvider(
@@ -115,6 +134,12 @@ class AppModule(private val app: Application) {
                 signInManager,
                 shockbytesHerokuApi,
                 inactiveShockbytesBackupStorage
+            ),
+            ExternalStorageBackupProvider(
+                schedulerFacade,
+                Gson(),
+                externalStorageInteractor,
+                permissionManager
             )
         )
     }

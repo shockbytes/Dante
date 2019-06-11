@@ -2,8 +2,8 @@ package at.shockbytes.dante.backup
 
 import android.content.SharedPreferences
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
@@ -19,41 +19,49 @@ class DefaultBackupRepository(
     preferences: SharedPreferences
 ) : BackupRepository {
 
+    private val activeBackupProvider: List<BackupProvider>
+        get() = backupProvider.filter { it.isEnabled }
+
     override var lastBackupTime: Long by SharedPreferencesLongPropertyDelegate(preferences, BackupRepository.KEY_LAST_BACKUP, 0)
 
-    override fun getBackups(): Single<List<BackupEntryState>> {
+    override fun getBackups(): Single<List<BackupMetadataState>> {
 
-        return Single.merge(backupProvider.map { it.getBackupEntries() })
+        return Single.merge(activeBackupProvider.map { it.getBackupEntries() })
             .collect(
                 { mutableListOf() },
-                { container: MutableList<BackupEntryState>, value: List<BackupEntryState> ->
+                { container: MutableList<BackupMetadataState>, value: List<BackupMetadataState> ->
                     container.addAll(value)
                 }
             )
             .map { entries ->
                 entries
                     .sortedByDescending {
-                        it.entry.timestamp
+                        it.timestamp
                     }
                     .toList()
             }
     }
 
-    override fun initialize(activity: FragmentActivity): Completable {
-        return Completable.concat(backupProvider.map { it.initialize(activity) })
+    override fun initialize(activity: FragmentActivity, forceReload: Boolean): Completable {
+
+        // If forceReload is set, then use the whole list of backup provider,
+        // otherwise just use the active ones
+        val provider = if (forceReload) backupProvider else activeBackupProvider
+
+        return Completable.concat(provider.map { it.initialize(activity) })
     }
 
     override fun close(): Completable {
-        return Completable.concat(backupProvider.map { it.teardown() })
+        return Completable.concat(activeBackupProvider.map { it.teardown() })
     }
 
-    override fun removeBackupEntry(entry: BackupEntry): Completable {
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
         return getBackupProvider(entry.storageProvider)?.removeBackupEntry(entry)
             ?: Completable.error(BackupStorageProviderNotAvailableException())
     }
 
     override fun removeAllBackupEntries(): Completable {
-        return Completable.concat(backupProvider.map { it.removeAllBackupEntries() })
+        return Completable.concat(activeBackupProvider.map { it.removeAllBackupEntries() })
     }
 
     override fun backup(books: List<BookEntity>, backupStorageProvider: BackupStorageProvider): Completable {
@@ -66,7 +74,7 @@ class DefaultBackupRepository(
     }
 
     override fun restoreBackup(
-        entry: BackupEntry,
+        entry: BackupMetadata,
         bookDao: BookEntityDao,
         strategy: RestoreStrategy
     ): Completable {
@@ -78,6 +86,6 @@ class DefaultBackupRepository(
     }
 
     private fun getBackupProvider(source: BackupStorageProvider): BackupProvider? {
-        return backupProvider.find { it.backupStorageProvider == source }
+        return activeBackupProvider.find { it.backupStorageProvider == source }
     }
 }

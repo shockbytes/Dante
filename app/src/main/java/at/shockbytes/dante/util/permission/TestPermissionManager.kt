@@ -14,6 +14,7 @@ class TestPermissionManager : PermissionManager {
 
     override fun requestPermissions(
         activity: FragmentActivity,
+        permissions: Array<String>,
         requestCode: Int,
         rationale: Int,
         positiveButtonText: Int,

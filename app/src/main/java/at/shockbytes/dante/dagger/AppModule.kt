@@ -30,6 +30,8 @@ import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
+import at.shockbytes.dante.util.permission.AndroidPermissionManager
+import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -108,12 +110,19 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Reusable
+    fun providePermissionManager(): PermissionManager {
+        return AndroidPermissionManager()
+    }
+
+    @Provides
+    @Reusable
     fun provideBackupProvider(
         schedulerFacade: SchedulerFacade,
         signInManager: SignInManager,
         shockbytesHerokuApi: ShockbytesHerokuApi,
         inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage,
-        externalStorageInteractor: ExternalStorageInteractor
+        externalStorageInteractor: ExternalStorageInteractor,
+        permissionManager: PermissionManager
     ): Array<BackupProvider> {
         return arrayOf(
             GoogleDriveBackupProvider(
@@ -129,7 +138,8 @@ class AppModule(private val app: Application) {
             ExternalStorageBackupProvider(
                 schedulerFacade,
                 Gson(),
-                externalStorageInteractor
+                externalStorageInteractor,
+                permissionManager
             )
         )
     }

@@ -15,10 +15,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import at.shockbytes.dante.ui.activity.MainActivity
 import androidx.test.rule.ActivityTestRule
+import at.shockbytes.dante.util.permission.TestPermissionManager
 import org.junit.Rule
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.`when`
-
 
 /**
  * Author:  Martin Macheiner
@@ -37,7 +36,12 @@ class ExternalStorageBackupProviderTest {
 
     @Before
     fun setup() {
-        backupProvider = ExternalStorageBackupProvider(schedulerFacade, gson, externalStorageInteractor)
+        backupProvider = ExternalStorageBackupProvider(
+            schedulerFacade,
+            gson,
+            externalStorageInteractor,
+            permissionManager
+        )
     }
 
     @Test
@@ -76,11 +80,10 @@ class ExternalStorageBackupProviderTest {
         assertThat(backupProvider.isEnabled).isTrue()
     }
 
-
     companion object {
 
         private val schedulerFacade = TestSchedulerFacade()
         private val gson = Gson()
+        private val permissionManager = TestPermissionManager()
     }
-
 }

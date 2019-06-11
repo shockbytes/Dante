@@ -30,5 +30,4 @@ class AndroidPermissionManager : PermissionManager {
                 .build()
         )
     }
-
 }

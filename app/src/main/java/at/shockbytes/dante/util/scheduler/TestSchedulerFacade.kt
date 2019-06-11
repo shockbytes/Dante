@@ -6,7 +6,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Tests should all run in sequence, therefore use trampoline scheduler
  */
-class TestSchedulerFacade: SchedulerFacade {
+class TestSchedulerFacade : SchedulerFacade {
 
     override val ui: Scheduler
         get() = Schedulers.trampoline()

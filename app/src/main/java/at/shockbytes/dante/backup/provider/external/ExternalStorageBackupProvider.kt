@@ -13,12 +13,11 @@ import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.storage.ExternalStorageInteractor
+import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Single
-import pub.devrel.easypermissions.EasyPermissions
-import pub.devrel.easypermissions.PermissionRequest
 import timber.log.Timber
 import java.io.File
 
@@ -29,7 +28,8 @@ import java.io.File
 class ExternalStorageBackupProvider(
     private val schedulers: SchedulerFacade,
     private val gson: Gson,
-    private val externalStorageInteractor: ExternalStorageInteractor
+    private val externalStorageInteractor: ExternalStorageInteractor,
+    private val permissionManager: PermissionManager
 ) : BackupProvider {
 
     override val backupStorageProvider = BackupStorageProvider.EXTERNAL_STORAGE
@@ -40,6 +40,7 @@ class ExternalStorageBackupProvider(
         return Completable.fromAction {
 
             if (activity == null) {
+                isEnabled = false
                 throw BackupServiceConnectionException("${this.javaClass.simpleName} requires an activity!")
             }
 
@@ -50,8 +51,10 @@ class ExternalStorageBackupProvider(
 
                 try {
                     externalStorageInteractor.createBaseDirectory(BASE_DIR_NAME)
+                    isEnabled = true
                 } catch (e: IllegalStateException) {
                     isEnabled = false
+                    throw e // Rethrow exception after disabling backup provider
                 }
             }
         }
@@ -59,20 +62,22 @@ class ExternalStorageBackupProvider(
 
     private fun checkPermissions(activity: FragmentActivity) {
 
-        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        val hasPermissions = EasyPermissions.hasPermissions(activity, *permissions)
+        permissionManager.verifyPermissions(activity, REQUIRED_PERMISSIONS).let { hasPermissions ->
 
-        // BackupProvider is enabled if it has permissions to read and write external storage
-        isEnabled = hasPermissions
+            // BackupProvider is enabled if it has permissions to read and write external storage
+            isEnabled = hasPermissions
 
-        if (!hasPermissions) {
-            EasyPermissions.requestPermissions(
-                PermissionRequest.Builder(activity, RC_READ_WRITE_EXT_STORAGE, *permissions)
-                    .setRationale(R.string.external_storage_rationale)
-                    .setPositiveButtonText(R.string.rationale_ask_ok)
-                    .setNegativeButtonText(R.string.rationale_ask_cancel)
-                    .build()
-            )
+            if (!hasPermissions) {
+
+                permissionManager.requestPermissions(
+                    activity,
+                    REQUIRED_PERMISSIONS,
+                    RC_READ_WRITE_EXT_STORAGE,
+                    R.string.external_storage_rationale,
+                    R.string.rationale_ask_ok,
+                    R.string.rationale_ask_cancel
+                )
+            }
         }
     }
 
@@ -163,5 +168,7 @@ class ExternalStorageBackupProvider(
 
         private const val BASE_DIR_NAME = "Dante"
         private const val RC_READ_WRITE_EXT_STORAGE = 0x5321
+
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     }
 }

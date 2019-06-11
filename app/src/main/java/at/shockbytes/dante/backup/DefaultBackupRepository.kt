@@ -35,8 +35,12 @@ class DefaultBackupRepository(
             )
             .map { entries ->
                 entries
+                    .filter { state ->
+                        // Do not process unreachable objects, just ACTIVE and INACTIVE
+                        state != BackupMetadataState.Unreachable
+                    }
                     .sortedByDescending {
-                        it.entry.timestamp
+                        it.timestamp
                     }
                     .toList()
             }

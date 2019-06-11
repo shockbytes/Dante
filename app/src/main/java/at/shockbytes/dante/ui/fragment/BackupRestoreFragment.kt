@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
@@ -26,7 +26,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    26.05.2019
  */
-class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntryState> {
+class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupMetadataState> {
 
     override val layoutId: Int = R.layout.fragment_backup_restore
 
@@ -56,13 +56,13 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
         }
     }
 
-    override fun onItemClick(t: BackupEntryState, v: View) {
+    override fun onItemClick(t: BackupMetadataState, v: View) {
 
         when (t) {
 
-            is BackupEntryState.Active -> showBackupRestoreStrategyModal(t)
+            is BackupMetadataState.Active -> showBackupRestoreStrategyModal(t)
 
-            is BackupEntryState.Inactive -> {
+            is BackupMetadataState.Inactive -> {
                 // TODO display something nicer here!
                 showToast("Inactive resource...")
             }
@@ -137,7 +137,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     override fun unbindViewModel() {
     }
 
-    private fun onItemDismissed(t: BackupEntry, position: Int) {
+    private fun onItemDismissed(t: BackupMetadata, position: Int) {
         val currentItems = rv_fragment_backup_restore.adapter?.itemCount ?: -1
         viewModel.deleteItem(t, position, currentItems)
     }
@@ -161,7 +161,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
         }
     }
 
-    private fun showBackupRestoreStrategyModal(state: BackupEntryState.Active) {
+    private fun showBackupRestoreStrategyModal(state: BackupMetadataState.Active) {
         RestoreStrategyDialogFragment
             .newInstance()
             .setOnRestoreStrategySelectedListener { strategy ->

@@ -40,7 +40,7 @@ class BackupViewModel @Inject constructor(
     val applyBackupEvent = PublishSubject.create<ApplyBackupState>()
     val errorSubject = PublishSubject.create<Throwable>()
 
-    fun connect(activity: FragmentActivity, forceReload: Boolean) {
+    fun connect(activity: FragmentActivity, forceReload: Boolean = false) {
         backupRepository.initialize(activity, forceReload)
             .subscribe({
                 loadBackupState()

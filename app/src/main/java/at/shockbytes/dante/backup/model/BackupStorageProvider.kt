@@ -19,7 +19,7 @@ enum class BackupStorageProvider(
     @SerializedName("shock_server")
     SHOCKBYTES_SERVER("shock_server", "Shockbytes Server", R.drawable.ic_shockbytes, R.string.backup_storage_provider_rationale_shockbytes),
     @SerializedName("ext_storage")
-    EXTERNAL_STORAGE("ext_storage", R.drawable.ic_external_storage);
+    EXTERNAL_STORAGE("ext_storage", "External Storage", R.drawable.ic_external_storage, R.string.backup_storage_provider_rationale_external_storage);
 
     companion object {
         fun byAcronym(acronym: String): BackupStorageProvider {

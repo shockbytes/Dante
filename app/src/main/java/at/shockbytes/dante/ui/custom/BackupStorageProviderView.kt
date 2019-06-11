@@ -27,5 +27,4 @@ class BackupStorageProviderView : FrameLayout {
             root_backup_storage_provider.setOnClickListener { click(this) }
         }
     }
-
 }

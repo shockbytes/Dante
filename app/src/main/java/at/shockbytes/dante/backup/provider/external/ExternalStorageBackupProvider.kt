@@ -100,7 +100,7 @@ class ExternalStorageBackupProvider(
                     gson.fromJson(content, BackupItem::class.java).backupMetadata
                 }
 
-            // Can only be active, there is no cached state
+            // Can only be active, ExternalStorageBackupProvider does not support cached states
             BackupMetadataState.Active(metadata)
         } catch (e: Exception) {
             Timber.e(e)

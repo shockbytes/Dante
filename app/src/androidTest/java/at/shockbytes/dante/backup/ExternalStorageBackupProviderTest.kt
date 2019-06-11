@@ -15,7 +15,10 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import at.shockbytes.dante.ui.activity.MainActivity
 import androidx.test.rule.ActivityTestRule
+import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.util.permission.TestPermissionManager
+import at.shockbytes.test.ObjectCreator
+import at.shockbytes.test.any
 import org.junit.Rule
 import org.mockito.Mockito.`when`
 
@@ -79,6 +82,42 @@ class ExternalStorageBackupProviderTest {
 
         assertThat(backupProvider.isEnabled).isTrue()
     }
+
+    @Test
+    fun test_backup_with_empty_list() {
+
+        val books = listOf<BookEntity>()
+
+        backupProvider.backup(books)
+            .test()
+            .assertComplete()
+    }
+
+    @Test
+    fun test_backup_with_populated_list() {
+
+        val books = ObjectCreator.getPopulatedListOfBookEntities()
+
+        backupProvider.backup(books)
+            .test()
+            .assertComplete()
+    }
+
+    @Test
+    fun test_backup_with_external_storage_error() {
+
+        `when`(externalStorageInteractor.writeToFileInDirectory(any(), any(), any()))
+            .thenThrow(IllegalStateException::class.java)
+
+
+        val books = ObjectCreator.getPopulatedListOfBookEntities()
+
+        backupProvider.backup(books)
+            .test()
+            .assertNotComplete()
+            .assertError(IllegalStateException::class.java)
+    }
+
 
     companion object {
 

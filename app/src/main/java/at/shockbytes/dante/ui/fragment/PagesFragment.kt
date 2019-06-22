@@ -35,13 +35,13 @@ class PagesFragment : BaseFragment() {
 
         btn_pages_save.setOnClickListener {
 
-            val current = et_pages_current_page.text?.toString()?.toIntOrNull()
-            val pages = et_pages_pages.text?.toString()?.toIntOrNull()
+            val current = getCurrentPage()
+            val pages = getPages()
 
             if (validateInput()) {
                 if (current != null && pages != null) {
                     onPageEditedListener?.invoke(current, pages)
-                    fragmentManager?.popBackStack()
+                    closeFragment()
                 }
             } else {
                 Toast.makeText(context, getString(R.string.dialogfragment_paging_error),
@@ -50,18 +50,22 @@ class PagesFragment : BaseFragment() {
         }
 
         layout_pages.setOnClickListener {
-            fragmentManager?.popBackStack()
+            closeFragment()
         }
 
         btn_pages_close.setOnClickListener {
-            fragmentManager?.popBackStack()
+            closeFragment()
         }
+    }
+
+    private fun closeFragment() {
+        fragmentManager?.popBackStack()
     }
 
     private fun increasePageNumber(v: View) {
 
-        val current = et_pages_current_page.text.toString().toIntOrNull() ?: 0
-        val pages = et_pages_pages.text.toString().toIntOrNull() ?: 0
+        val current = getCurrentPageOrElse(default = 0)
+        val pages = getPagesOrElse(default = 0)
 
         if (current < pages) {
             et_pages_current_page.setText(current.inc().toString())
@@ -88,14 +92,30 @@ class PagesFragment : BaseFragment() {
 
     private fun validateInput(): Boolean {
 
-        val current = et_pages_current_page.text.toString().toIntOrNull()
-        val pages = et_pages_pages.text.toString().toIntOrNull()
+        val current = getCurrentPage()
+        val pages = getPages()
 
         return if (current == null || pages == null) {
             false
         } else {
             pages >= current
         }
+    }
+
+    private fun getCurrentPage(): Int? {
+        return et_pages_current_page?.text.toString().toIntOrNull()
+    }
+
+    private fun getPages(): Int? {
+        return et_pages_pages?.text.toString().toIntOrNull()
+    }
+
+    private fun getCurrentPageOrElse(default: Int): Int {
+        return et_pages_current_page?.text.toString().toIntOrNull() ?: default
+    }
+
+    private fun getPagesOrElse(default: Int): Int {
+        return et_pages_pages?.text.toString().toIntOrNull() ?: default
     }
 
     companion object {

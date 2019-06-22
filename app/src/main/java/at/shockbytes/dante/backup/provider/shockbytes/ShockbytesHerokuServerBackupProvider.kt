@@ -15,6 +15,10 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
+/**
+ * Author:  Martin Macheiner
+ * Date:    09.05.2019
+ */
 class ShockbytesHerokuServerBackupProvider(
     private val signInManager: GoogleSignInManager,
     private val shockbytesHerokuApi: ShockbytesHerokuApi,

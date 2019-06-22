@@ -8,6 +8,10 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import kotlinx.android.synthetic.main.backup_storage_provider_view.view.*
 
+/**
+ * Author:  Martin Macheiner
+ * Date:    26.05.2019
+ */
 class BackupStorageProviderView : FrameLayout {
 
     constructor(context: Context) : super(context)

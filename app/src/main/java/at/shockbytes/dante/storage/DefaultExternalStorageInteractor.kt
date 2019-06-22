@@ -15,7 +15,7 @@ class DefaultExternalStorageInteractor : ExternalStorageInteractor {
 
         val baseFile = getBaseFile(directoryName)
 
-        if (!baseFile.mkdirs()) {
+        if (!baseFile.exists() && !baseFile.mkdirs()) {
             throw IllegalStateException("Cannot create baseFile in $baseFile")
         }
     }

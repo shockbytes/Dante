@@ -25,7 +25,7 @@ def playServicesVersionAuth = "16.0.1"
 
 def daggerVersion = "2.16"
 def retrofitVersion = "2.5.0"
-def shockUtilVersion = "4.0.2"
+def shockUtilVersion = "5.0"
 def crashlyticsVersion = "2.9.9"
 def glideVersion = "4.9.0"
 def lottieVersion = "3.0.1"
@@ -145,7 +145,7 @@ dependencies {
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
-    implementation 'net.danlew:android.joda:2.9.9'
+    implementation 'net.danlew:android.joda:2.10.1.2'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.mlsdev.rximagepicker:library:2.1.5'

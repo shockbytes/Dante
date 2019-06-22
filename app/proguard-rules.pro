@@ -110,3 +110,6 @@
 
 # Timber
 -dontwarn org.jetbrains.annotations.**
+
+# Activity Transition
+-keep public class android.app.ActivityTransitionCoordinator

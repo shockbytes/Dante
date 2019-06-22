@@ -1,6 +1,7 @@
 package at.shockbytes.dante.backup.provider.shockbytes
 
 import androidx.fragment.app.FragmentActivity
+import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -20,7 +21,8 @@ class ShockbytesHerokuServerBackupProvider(
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {
 
-    override var isEnabled: Boolean = false
+    // Enable it only in debug mode
+    override var isEnabled: Boolean = BuildConfig.DEBUG
 
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 

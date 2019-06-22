@@ -4,7 +4,7 @@ import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.isPortrait
 import kotlinx.android.synthetic.main.fragment_notes.*
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ class NotesFragment : BaseFragment() {
         val bookNotes = arguments?.getString(ARG_NOTES) ?: ""
         val bookImageLink = arguments?.getString(ARG_IMAGE)
 
-        val lines = if (DanteUtils.isPortrait(context)) 8 else 2
+        val lines = if (isPortrait()) 8 else 2
         et_notes.setLines(lines)
         et_notes.setText(bookNotes)
         txt_notes_header_description.text = getString(R.string.dialogfragment_notes_header, bookTitle)

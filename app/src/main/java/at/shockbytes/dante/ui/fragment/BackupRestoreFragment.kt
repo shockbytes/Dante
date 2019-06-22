@@ -13,6 +13,7 @@ import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
+import at.shockbytes.dante.ui.fragment.dialog.InactiveResourceDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
@@ -70,14 +71,15 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     override fun onItemClick(t: BackupMetadataState, v: View) {
 
         when (t) {
-
             is BackupMetadataState.Active -> showBackupRestoreStrategyModal(t)
-
-            is BackupMetadataState.Inactive -> {
-                // TODO display something nicer here!
-                showToast("Inactive resource...")
-            }
+            is BackupMetadataState.Inactive -> showInactiveResourceModal(t)
         }
+    }
+
+    private fun showInactiveResourceModal(t: BackupMetadataState.Inactive) {
+        InactiveResourceDialogFragment
+            .newInstance(t.entry.storageProvider)
+            .show(fragmentManager, "inactive-resource-dialog-fragment")
     }
 
     override fun bindViewModel() {

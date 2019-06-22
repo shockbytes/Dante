@@ -302,5 +302,7 @@
     <string name="rationale_ask_ok">Sure</string>
     <string name="rationale_ask_cancel">No way</string>
     <string name="external_storage_rationale">Hey, we would like to write backups on your external storage.</string>
+    <string name="inactive_resource_message">Inactive resource</string>
+    <string name="got_it">Got it</string>
 
 </resources>

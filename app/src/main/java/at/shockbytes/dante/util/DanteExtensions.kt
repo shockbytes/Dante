@@ -19,7 +19,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.Double.Companion.NaN
 
 /**
  * Author:  Martin Macheiner

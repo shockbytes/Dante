@@ -20,7 +20,7 @@ class ShockbytesHerokuServerBackupProvider(
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {
 
-    override var isEnabled: Boolean = true
+    override var isEnabled: Boolean = false
 
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 
@@ -33,7 +33,7 @@ class ShockbytesHerokuServerBackupProvider(
         return shockbytesHerokuApi
             .makeBackup(signInManager.getAuthorizationHeader(), books)
             .flatMapCompletable { entry ->
-
+                Timber.d(entry.toString())
                 // TODO What to do with entry? Store in UI?
                 Completable.complete()
             }

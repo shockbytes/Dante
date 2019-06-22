@@ -32,8 +32,8 @@ class BackupViewModel @Inject constructor(
     private val lastBackupTime = MutableLiveData<String>()
     fun getLastBackupTime(): LiveData<String> = lastBackupTime
 
-    private val backupStorageProviders = MutableLiveData<List<BackupStorageProvider>>()
-    fun getBackupProviders(): LiveData<List<BackupStorageProvider>> = backupStorageProviders
+    private val activeBackupStorageProviders = MutableLiveData<List<BackupStorageProvider>>()
+    fun getActiveBackupProviders(): LiveData<List<BackupStorageProvider>> = activeBackupStorageProviders
 
     val makeBackupEvent = PublishSubject.create<State>()
     val deleteBackupEvent = PublishSubject.create<DeleteBackupState>()
@@ -52,7 +52,7 @@ class BackupViewModel @Inject constructor(
             })
             .addTo(compositeDisposable)
 
-        postBackupProviders()
+        postActiveBackupProviders()
     }
 
     fun disconnect() {
@@ -142,9 +142,12 @@ class BackupViewModel @Inject constructor(
         lastBackupTime.postValue(lastBackup)
     }
 
-    private fun postBackupProviders() {
-        val providers = backupRepository.backupProvider.map { it.backupStorageProvider }
-        backupStorageProviders.postValue(providers)
+    private fun postActiveBackupProviders() {
+        val providers = backupRepository.backupProvider
+            .filter { it.isEnabled }
+            .map { it.backupStorageProvider }
+
+        activeBackupStorageProviders.postValue(providers)
     }
 
     // -------------------------- State classes --------------------------

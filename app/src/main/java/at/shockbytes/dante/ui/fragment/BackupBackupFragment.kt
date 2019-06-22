@@ -49,7 +49,7 @@ class BackupBackupFragment : BaseFragment() {
             tv_fragment_backup_last_backup.text = getString(R.string.last_backup, lastBackup)
         })
 
-        viewModel.getBackupProviders().observe(this, Observer { providers ->
+        viewModel.getActiveBackupProviders().observe(this, Observer { providers ->
             setupBackupProviderUI(providers)
         })
 
@@ -88,7 +88,11 @@ class BackupBackupFragment : BaseFragment() {
                 }
             }
             adapter = BackupStorageProviderAdapter(requireContext()).apply {
-                data = providers.sortedByDescending { it.priority }.toMutableList()
+
+                data = providers
+                    .sortedByDescending { it.priority }
+                    .toMutableList()
+
                 onItemClickListener = object : BaseAdapter.OnItemClickListener<BackupStorageProvider> {
                     override fun onItemClick(t: BackupStorageProvider, v: View) {
                         viewModel.makeBackup(t)

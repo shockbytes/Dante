@@ -61,18 +61,26 @@ class ExternalStorageBackupProvider(
     }
 
     override fun backup(books: List<BookEntity>): Completable {
-        return Completable
-            .fromCallable {
-
-                val timestamp = System.currentTimeMillis()
-                val fileName = createFileName(timestamp)
-                val metadata = getMetadata(books.size, fileName, timestamp)
-
-                val content = gson.toJson(BackupItem(metadata, books))
-
+        return getBackupContent(books)
+            .flatMapCompletable { (fileName, content) ->
                 externalStorageInteractor.writeToFileInDirectory(BASE_DIR_NAME, fileName, content)
             }
             .subscribeOn(schedulers.io)
+    }
+
+    /**
+     * Returns Pair<FileName, Content>
+     */
+    private fun getBackupContent(books: List<BookEntity>): Single<Pair<String, String>> {
+        return Single.fromCallable {
+            val timestamp = System.currentTimeMillis()
+            val fileName = createFileName(timestamp)
+            val metadata = getMetadata(books.size, fileName, timestamp)
+
+            val content = gson.toJson(BackupItem(metadata, books))
+
+            Pair(fileName, content)
+        }
     }
 
     override fun getBackupEntries(): Single<List<BackupMetadataState>> {

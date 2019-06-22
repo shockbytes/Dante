@@ -113,11 +113,12 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     private fun overwriteBackupRestore(backupBooks: List<BookEntity>) {
 
         val stored = realm.instance.where(bookClass).findAll()
-        realm.instance.executeTransaction { realm ->
+        realm.instance.executeTransaction {
             stored.deleteAllFromRealm()
-            realm.commitTransaction()
+        }
 
-            backupBooks.forEach { create(it) }
+        backupBooks.forEach { book ->
+            create(book)
         }
     }
 }

@@ -58,7 +58,11 @@ class BackupBackupFragment : BaseFragment() {
             .subscribe { state ->
                 when (state) {
                     is BackupViewModel.State.Success -> {
-                        showToast(getString(R.string.backup_created), showLong = false)
+                        showSnackbar(getString(R.string.backup_created), showLong = false)
+
+                        if (state.switchToBackupTab) {
+                            switchToBackupTab()
+                        }
                     }
                     is BackupViewModel.State.Error -> {
                         showSnackbar(getString(R.string.backup_not_created))
@@ -66,6 +70,10 @@ class BackupBackupFragment : BaseFragment() {
                 }
             }
             .addTo(compositeDisposable)
+    }
+
+    private fun switchToBackupTab() {
+        (parentFragment as? BackupFragment)?.switchToBackupTab()
     }
 
     override fun unbindViewModel() = Unit

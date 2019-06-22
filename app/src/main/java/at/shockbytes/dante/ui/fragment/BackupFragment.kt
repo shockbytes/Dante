@@ -78,6 +78,10 @@ class BackupFragment : BaseFragment() {
         }
     }
 
+    fun switchToBackupTab() {
+        vp_fragment_backup.setCurrentItem(1, true)
+    }
+
     companion object {
 
         fun newInstance(): BackupFragment {

@@ -80,7 +80,7 @@ class BackupViewModel @Inject constructor(
             .subscribe({
                 updateLastBackupTime()
                 loadBackupState()
-                makeBackupEvent.onNext(State.Success)
+                makeBackupEvent.onNext(State.Success(switchToBackupTab = true))
             }) { throwable ->
                 Timber.e(throwable)
                 makeBackupEvent.onNext(State.Error(throwable))
@@ -170,7 +170,7 @@ class BackupViewModel @Inject constructor(
     }
 
     sealed class State {
-        object Success : State()
+        data class Success(val switchToBackupTab: Boolean) : State()
         data class Error(val throwable: Throwable) : State()
     }
 }

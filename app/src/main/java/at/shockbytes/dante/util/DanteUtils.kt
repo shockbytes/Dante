@@ -1,6 +1,7 @@
 package at.shockbytes.dante.util
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -83,10 +84,6 @@ object DanteUtils {
         return if (total > 0) {
             ((x / total) * 100).roundToInt()
         } else 0
-    }
-
-    fun isPortrait(context: Context?): Boolean {
-        return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
     }
 
     fun checkUrlForHttps(url: String): String {

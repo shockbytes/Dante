@@ -5,7 +5,9 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
@@ -14,6 +16,7 @@ import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.isPortrait
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
@@ -50,9 +53,17 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
             onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }
         }
         rv_fragment_backup_restore.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = getLayoutManagerForAdapter()
             adapter = entryAdapter
             addItemDecoration(EqualSpaceItemDecoration(16))
+        }
+    }
+
+    private fun getLayoutManagerForAdapter(): RecyclerView.LayoutManager {
+        return if (isPortrait()) {
+            LinearLayoutManager(requireContext())
+        } else {
+            GridLayoutManager(requireContext(), 2)
         }
     }
 

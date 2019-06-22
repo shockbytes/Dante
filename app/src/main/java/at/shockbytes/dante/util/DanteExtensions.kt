@@ -2,6 +2,7 @@ package at.shockbytes.dante.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Handler
 import androidx.annotation.ColorInt
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -10,6 +11,7 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import at.shockbytes.dante.signin.DanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.leinardi.android.speeddial.SpeedDialView
@@ -71,7 +73,7 @@ fun View.setVisible(isVisible: Boolean) {
 
 fun Double.roundDouble(digits: Int): Double {
 
-    if (this == 0.0 || digits < 0 || this == Double.POSITIVE_INFINITY || this == NaN || this == Double.NaN || this == Double.NEGATIVE_INFINITY) {
+    if (this == 0.0 || digits < 0 || this == Double.POSITIVE_INFINITY || this.isNaN() || this == Double.NEGATIVE_INFINITY) {
         return 0.00
     }
 
@@ -80,4 +82,12 @@ fun Double.roundDouble(digits: Int): Double {
 
 fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
     compositeDisposable.add(this)
+}
+
+fun Fragment.isPortrait(): Boolean {
+    return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun Activity.isPortrait(): Boolean {
+    return resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
 }

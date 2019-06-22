@@ -90,7 +90,7 @@ class BackupBackupFragment : BaseFragment() {
             adapter = BackupStorageProviderAdapter(requireContext()).apply {
 
                 data = providers
-                    .sortedByDescending { it.priority }
+                    .sortedBy{ it.priority }
                     .toMutableList()
 
                 onItemClickListener = object : BaseAdapter.OnItemClickListener<BackupStorageProvider> {

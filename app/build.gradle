@@ -27,7 +27,7 @@ def daggerVersion = "2.16"
 def retrofitVersion = "2.5.0"
 def shockUtilVersion = "4.0.2"
 def crashlyticsVersion = "2.9.9"
-def glideVersion = "4.8.0"
+def glideVersion = "4.9.0"
 def lottieVersion = "3.0.1"
 def rxImagePickerVersion = "2.2.0"
 

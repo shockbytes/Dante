@@ -7,7 +7,6 @@ class SharedPrefsAnnouncementProvider(
     private val sharedPreferences: SharedPreferences
 ) : AnnouncementProvider {
 
-
     private val activeAnnouncement = Announcement(
         key = "open_source_announcement",
         titleRes = R.string.announcement_open_source_title,

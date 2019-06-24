@@ -10,7 +10,7 @@ import at.shockbytes.dante.dagger.AppComponent
  */
 abstract class ContainerBackNavigableActivity : BackNavigableActivity() {
 
-    abstract val displayFragment: androidx.fragment.app.Fragment
+    abstract val displayFragment: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

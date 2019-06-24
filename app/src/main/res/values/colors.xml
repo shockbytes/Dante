@@ -61,4 +61,6 @@
     <color name="iconColorSettings">@color/colorAccent</color>
     <color name="modal_background">#59000000</color>
 
+    <color name="border">#AAA</color>
+
 </resources>

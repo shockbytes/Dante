@@ -1,6 +1,7 @@
 package at.shockbytes.dante.backup.provider.shockbytes
 
 import androidx.fragment.app.FragmentActivity
+import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -14,13 +15,18 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
+/**
+ * Author:  Martin Macheiner
+ * Date:    09.05.2019
+ */
 class ShockbytesHerokuServerBackupProvider(
     private val signInManager: GoogleSignInManager,
     private val shockbytesHerokuApi: ShockbytesHerokuApi,
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {
 
-    override var isEnabled: Boolean = true
+    // Enable it only in debug mode
+    override var isEnabled: Boolean = BuildConfig.DEBUG
 
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 
@@ -33,7 +39,7 @@ class ShockbytesHerokuServerBackupProvider(
         return shockbytesHerokuApi
             .makeBackup(signInManager.getAuthorizationHeader(), books)
             .flatMapCompletable { entry ->
-
+                Timber.d(entry.toString())
                 // TODO What to do with entry? Store in UI?
                 Completable.complete()
             }

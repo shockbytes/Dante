@@ -10,7 +10,7 @@ import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.isPortrait
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -46,7 +46,7 @@ class NotesDialogFragment : InteractiveViewDialogFragment<String>() {
 
     override fun setupViews() {
 
-        val lines = if (DanteUtils.isPortrait(context)) 8 else 2
+        val lines = if (isPortrait()) 8 else 2
         editNotes.setLines(lines)
         editNotes.setText(bookNotes)
         txtHeader.text = getString(R.string.dialogfragment_notes_header, bookTitle)

@@ -34,8 +34,7 @@ the user during the login process.
 - [ ] Italian language support
 
 ### Version 3.9 - ALL IN THE CLOUD
-- [ ] Online sync
-- [ ] Remove backup functionality / Replace it with online sync
+- [ ] Add online sync capability
 
 ### Version 3.8 - CLEAN THE CAMPFIRE BEFORE THE BBQ
 - [ ] Put overflow menu into ActionBar
@@ -43,10 +42,11 @@ the user during the login process.
 
 ### Version 3.7 - ONBOARDING
 - [ ] Add onboarding
+- [ ] Introduce Shockbytes Backups
 
 ### Version 3.6 - GET EXCITED
 - [ ] Move to Android App Bundles
-- [ ] Introduce Shockbytes Backups
+- [ ] Improve Backups 
 - [x] Open source Dante
 
 ### Version 3.5

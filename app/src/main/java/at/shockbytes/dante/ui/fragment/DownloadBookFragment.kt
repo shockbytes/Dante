@@ -138,7 +138,7 @@ class DownloadBookFragment :
         // Not needed...
     }
 
-    override fun onGenerated(palette: androidx.palette.graphics.Palette?) {
+    override fun onGenerated(palette: Palette?) {
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
@@ -262,12 +262,15 @@ class DownloadBookFragment :
                     BookState.READ_LATER,
                     imageLoader
             ).apply {
-                //
                 this.data = books
-                        .map { it.state = BookState.READ_LATER; it }
+                        .map { book ->
+                            book.apply {
+                                state = BookState.READ_LATER
+                            }
+                        }
                         .toMutableList()
             }
-            recyclerViewDownloadFragmentOtherSuggestions.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
+            recyclerViewDownloadFragmentOtherSuggestions.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             bookAdapter?.onItemClickListener = this
             recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
         }

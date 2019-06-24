@@ -12,6 +12,7 @@ import at.shockbytes.dante.util.CrashlyticsReportingTree
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
 import io.fabric.sdk.android.Fabric
+import io.reactivex.plugins.RxJavaPlugins
 import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
@@ -40,12 +41,19 @@ class DanteApp : MultiDexApplication() {
 
         configureFabric()
         configureLogging()
+        configureRxJavaErrorHandling()
 
         appComponent = DaggerAppComponent.builder()
                 .networkModule(NetworkModule(this))
                 .bookModule(BookModule())
                 .appModule(AppModule(this))
                 .build()
+    }
+
+    private fun configureRxJavaErrorHandling() {
+        RxJavaPlugins.setErrorHandler { throwable ->
+            Timber.e(throwable)
+        }
     }
 
     private fun configureLogging() {

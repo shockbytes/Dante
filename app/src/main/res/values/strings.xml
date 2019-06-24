@@ -20,6 +20,8 @@
     <string name="action_move_to_reading">Move to reading</string>
     <string name="action_move_to_done">Move to done</string>
     <string name="action_delete">Delete</string>
+    <string name="na">Not available</string>
+    <string name="got_it">Got it</string>
 
     <string name="permission_camera_rationale">The app needs access to your camera, in order to detect the barcodes of the books.</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission. The scan window will terminate.</string>
@@ -55,6 +57,10 @@
     <string name="label_backup">Manage backups</string>
     <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
+
+    <string name="restore_title">Restore</string>
+    <string name="backup_title">Backup</string>
+
     <string name="last_backup">Last backup: %s</string>
     <string name="backup_books_amount">%d books</string>
     <string name="menu_main_backup">Backup</string>
@@ -198,7 +204,7 @@
     <string name="prefs_contribute_summary">Contribute to Dante on Github: https://github.com/shockbytes/Dante</string>
 
     <string name="backup_no_backups">You haven\'t made any backups.</string>
-    <string name="backup_connection_error_google_drive">Cannot connect to Google Drive. Reason: %s</string>
+    <string name="backup_connection_establish_error">Cannot connect to your backups. Reason: %s</string>
     <string name="dark_mode_applied">The theme will change next restart.</string>
     <string name="error_google_login">We cannot log you into your Google Account!</string>
     <string name="load_error">Cannot load books from storage</string>
@@ -288,8 +294,15 @@
 
     <string name="fab_hint_prompt">Scan your first book</string>
     <string name="fab_hint_prompt_message">Tap on the + icon and start scanning your first book!</string>
+
+    <string name="backup_provider_rationale">Dante allows you to backup your data in several ways. It offers you a handy way to transfer data between devices. Backup your data on one device and restore it on your new device. Just click on your preferred way to backup.</string>
+    <string name="backup_storage_provider_rationale_gdrive">Backup your data on Google Drive. This requires you to be logged in with your same Google account if used on multiple devices.</string>
+    <string name="backup_storage_provider_rationale_shockbytes">Just upload your data to our servers. The data still belongs only to you. This is the preferred way of backing up your data.</string>
+    <string name="backup_storage_provider_rationale_external_storage">Save your data to your external storage. Note that this requires you to move it to another device manually.</string>
+
     <string name="rationale_ask_ok">Sure</string>
     <string name="rationale_ask_cancel">No way</string>
     <string name="external_storage_rationale">Hey, we would like to write backups on your external storage.</string>
+    <string name="inactive_resource_message">It seems like this backup entry is unreachable. It could be that you are not connected to the internet.</string>
 
 </resources>

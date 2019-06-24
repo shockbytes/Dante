@@ -100,15 +100,17 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         txt_detail_description.setOnClickListener {
 
             val defaultLines = resources.getInteger(R.integer.detail_summary_default_lines)
-            var lines = txt_detail_description.maxLines
-            lines = if (lines == defaultLines) 100 else defaultLines
+            val currentLines = txt_detail_description.maxLines
+
+            val lines = if (currentLines == defaultLines) 100 else defaultLines
+            val animationDuration = if (currentLines == defaultLines) 500L else 100L
 
             ObjectAnimator.ofInt(
                 txt_detail_description,
                 "maxLines",
                 lines
             ).apply {
-                duration = 500
+                duration = animationDuration
                 start()
             }
         }
@@ -116,12 +118,6 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        // TODO Version 3.5
-        // inflater?.inflate(R.menu.popup_item, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun bindViewModel() {

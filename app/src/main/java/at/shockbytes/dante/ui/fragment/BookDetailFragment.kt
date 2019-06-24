@@ -257,9 +257,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         txt_detail_description.setVisible(book.summary != null && showSummary)
         txt_detail_description.text = book.summary
 
-        if (!book.thumbnailAddress.isNullOrEmpty()) {
-            loadImage(book.thumbnailAddress)
-        }
+        loadImage(book.thumbnailAddress)
 
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
@@ -433,20 +431,19 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     private fun loadImage(address: String?) {
-        if (address != null) {
-            activity?.let { ctx ->
+        if (!address.isNullOrEmpty()) {
 
-                // TODO Enable 2 times zoom
-                // val increasedZoomUrl = DownloadUtils.increaseGoogleThumbnailResolutionLink(url, 2)
+            // TODO Enable 2 times zoom
+            // val increasedZoomUrl = DownloadUtils.increaseGoogleThumbnailResolutionLink(url, 2)
 
-                imageLoader.loadImageWithCornerRadius(
-                        ctx,
-                        address,
-                        iv_detail_image,
-                        cornerDimension = ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
-                        callback = this,
-                        callbackHandleValues = Pair(first = false, second = true))
-            }
+            imageLoader.loadImageWithCornerRadius(
+                    requireContext(),
+                    address,
+                    iv_detail_image,
+                    cornerDimension = requireContext().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
+                    callback = this,
+                    callbackHandleValues = Pair(first = false, second = true))
+
         } else {
             iv_detail_image.setImageResource(R.drawable.ic_placeholder)
         }

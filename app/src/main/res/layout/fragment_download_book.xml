@@ -41,13 +41,27 @@
             android:maxLines="3"
             android:text="@string/fragment_download_text_placeholder"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:translationY="60dp" />
+            android:translationY="60dp"
+            tools:text="White nights" />
+
+        <TextView
+            android:id="@+id/txtDownloadFragmentAuthor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtDownloadFragmentTitle"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/fragment_download_text_placeholder"
+            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+            android:translationY="60dp"
+            tools:text="Fjodor Dostojewski" />
 
         <TextView
             android:id="@+id/txtDownloadFragmentOtherSuggestions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txtDownloadFragmentTitle"
+            android:layout_below="@+id/txtDownloadFragmentAuthor"
             android:layout_marginTop="32dp"
             android:alpha="0"
             android:gravity="center"
@@ -121,8 +135,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="16dp"
             android:alpha="0"
             android:paddingStart="32dp"
             android:paddingTop="8dp"

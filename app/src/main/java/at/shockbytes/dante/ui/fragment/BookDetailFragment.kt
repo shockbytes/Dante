@@ -10,8 +10,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
@@ -443,7 +441,6 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                     cornerDimension = requireContext().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
                     callback = this,
                     callbackHandleValues = Pair(first = false, second = true))
-
         } else {
             iv_detail_image.setImageResource(R.drawable.ic_placeholder)
         }

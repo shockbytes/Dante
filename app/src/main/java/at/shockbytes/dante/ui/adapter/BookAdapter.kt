@@ -113,7 +113,7 @@ class BookAdapter(
 
         override fun bindToView(t: BookEntity) {
             updateTexts(t)
-            updateImageThumbnail(t)
+            updateImageThumbnail(t.thumbnailAddress)
             updateProgress(t)
         }
 
@@ -156,11 +156,11 @@ class BookAdapter(
             groupProgress.setVisible(showProgress)
         }
 
-        private fun updateImageThumbnail(t: BookEntity) {
+        private fun updateImageThumbnail(address: String?) {
 
-            if (!t.thumbnailAddress.isNullOrEmpty()) {
+            if (!address.isNullOrEmpty()) {
                 val corners = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
-                imageLoader.loadImageWithCornerRadius(context, t.thumbnailAddress!!, imgViewThumb,
+                imageLoader.loadImageWithCornerRadius(context, address, imgViewThumb,
                         cornerDimension = corners)
             } else {
                 // Books with no image will recycle another cover if not cleared here

@@ -3,6 +3,10 @@ package at.shockbytes.dante.util
 import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Handler
 import androidx.annotation.ColorInt
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -89,4 +93,18 @@ fun Fragment.isPortrait(): Boolean {
 
 fun Activity.isPortrait(): Boolean {
     return resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun Drawable.toBitmap(): Bitmap {
+
+    if (this is BitmapDrawable) {
+        return this.bitmap
+    }
+
+    val bitmap = Bitmap.createBitmap(this.intrinsicWidth, this.intrinsicHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    this.setBounds(0, 0, canvas.width, canvas.height)
+    this.draw(canvas)
+
+    return bitmap
 }

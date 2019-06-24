@@ -304,5 +304,7 @@
     <string name="rationale_ask_cancel">No way</string>
     <string name="external_storage_rationale">Hey, we would like to write backups on your external storage.</string>
     <string name="inactive_resource_message">It seems like this backup entry is unreachable. It could be that you are not connected to the internet.</string>
+    <string name="announcement_open_source_title">Dante is now open source!</string>
+    <string name="announcement_open_source_description">Come up with nice description here</string>
 
 </resources>

@@ -305,6 +305,7 @@
     <string name="external_storage_rationale">Hey, we would like to write backups on your external storage.</string>
     <string name="inactive_resource_message">It seems like this backup entry is unreachable. It could be that you are not connected to the internet.</string>
     <string name="announcement_open_source_title">Dante is now open source!</string>
-    <string name="announcement_open_source_description">Come up with nice description here</string>
+    <string name="announcement_open_source_description">Dante got open-sourced on Github. If you have some Kotlin skills and know how to build an Android app, feel free to contribute to the app. Want to join? Visit \n\n https://github.com/shockbytes/Dante\n\n(You can find the link in the settings as well).</string>
+    <string name="announcement_header">&#127881; Announcement &#127881;</string>
 
 </resources>

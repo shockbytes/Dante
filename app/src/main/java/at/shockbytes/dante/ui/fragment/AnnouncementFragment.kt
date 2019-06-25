@@ -4,6 +4,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 
 class AnnouncementFragment : BaseFragment() {
+
     override val layoutId: Int = R.layout.fragment_announcement
 
     override fun setupViews() {

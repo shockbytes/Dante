@@ -58,7 +58,7 @@ class AnnouncementFragment : BaseFragment() {
                 is Announcement.Illustration.LottieIllustration -> {
                     lottie_announcement.apply {
                         setVisible(true)
-                        repeatCount =  LottieDrawable.INFINITE
+                        repeatCount = LottieDrawable.INFINITE
                         setAnimation(illustration.lottieRes)
                     }
                 }

@@ -20,6 +20,6 @@ data class Announcement(
 
     sealed class Action {
 
-        data class OpenUrl(val url: String): Action()
+        data class OpenUrl(val url: String) : Action()
     }
 }

@@ -1,8 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
-import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -10,6 +8,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.Announcement
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
+import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.setVisible
 import com.airbnb.lottie.LottieDrawable
 import kotlinx.android.synthetic.main.fragment_announcement.*
@@ -63,9 +62,10 @@ class AnnouncementFragment : BaseFragment() {
                         setAnimation(illustration.lottieRes)
                     }
                 }
-                else -> {
-                    TODO("DrawableIllustrations and null are not supported at the moment...")
-                }
+            }
+
+            card_announcement.setOnClickListener {
+                performAnnouncementAction(this.action)
             }
 
             layout_announcement.setOnClickListener {
@@ -73,6 +73,14 @@ class AnnouncementFragment : BaseFragment() {
             }
             btn_announcement_close.setOnClickListener {
                 closeModalAndDismissAnnouncement(this)
+            }
+        }
+    }
+
+    private fun performAnnouncementAction(action: Announcement.Action?) {
+        when (action) {
+            is Announcement.Action.OpenUrl -> {
+                UrlLauncher.launchUrl(requireContext(), action.url)
             }
         }
     }

@@ -178,7 +178,8 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     private fun showAnnouncementFragment() {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(0, R.anim.fade_out, 0, R.anim.fade_out)
-            .replace(android.R.id.content, AnnouncementFragment.newInstance())
+            .add(android.R.id.content, AnnouncementFragment.newInstance())
+            .addToBackStack(null)
             .commit()
     }
 

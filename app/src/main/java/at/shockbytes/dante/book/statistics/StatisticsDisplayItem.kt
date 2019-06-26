@@ -3,24 +3,27 @@ package at.shockbytes.dante.book.statistics
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
-sealed class StatisticsDisplayItem(
-    @StringRes val title: Int,
-    @DrawableRes val icon: Int
-) {
+sealed class StatisticsDisplayItem {
+
+    @get:StringRes
+    abstract val title: Int
+
+    @get:DrawableRes
+    abstract val icon: Int
+
+    data class StatisticsDataItem(
+        override val title: Int,
+        override val icon: Int,
+        val align: Align,
+        val messageArgs: List<String>
+    ) : StatisticsDisplayItem()
+
+    data class StatisticsHeaderItem(
+        override val title: Int,
+        override val icon: Int
+    ) : StatisticsDisplayItem()
 
     enum class Align {
         START, END
     }
-
-    class StatisticsDataItem(
-        @StringRes title: Int,
-        @DrawableRes icon: Int,
-        val align: Align,
-        vararg val messageArgs: String
-    ) : StatisticsDisplayItem(title, icon)
-
-    class StatisticsHeaderItem(
-        @StringRes title: Int,
-        @DrawableRes icon: Int
-    ) : StatisticsDisplayItem(title, icon)
 }

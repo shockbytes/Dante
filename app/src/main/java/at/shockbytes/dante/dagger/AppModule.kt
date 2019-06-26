@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import at.shockbytes.dante.BuildConfig
+import at.shockbytes.dante.announcement.AnnouncementProvider
+import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
 import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.DefaultBackupRepository
 import at.shockbytes.dante.backup.provider.BackupProvider
@@ -177,5 +179,12 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideImagePicker(): ImagePicker {
         return RxLegacyImagePicker()
+    }
+
+    @Provides
+    @Reusable
+    fun provideAnnouncementProvider(): AnnouncementProvider {
+        val prefs = app.getSharedPreferences("announcements", Context.MODE_PRIVATE)
+        return SharedPrefsAnnouncementProvider(prefs)
     }
 }

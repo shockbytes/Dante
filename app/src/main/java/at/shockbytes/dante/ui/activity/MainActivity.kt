@@ -31,10 +31,13 @@ import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import javax.inject.Inject
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
@@ -119,11 +122,25 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     // ---------------------------------------------------
 
     private fun bindViewModel() {
-        viewModel.userEvent.observe(this, Observer { event ->
+
+        viewModel.hasActiveAnnouncement()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ hasAnnouncement ->
+                if (hasAnnouncement) {
+                    showAnnouncementFragment()
+                }
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
+
+        viewModel.getUserEvent().observe(this, Observer { event ->
 
             when (event) {
 
                 is MainViewModel.UserEvent.SuccessEvent -> {
+                    // Only show announcements once the user is logged in
+                    viewModel.queryAnnouncements()
 
                     if (event.user != null) {
                         event.user.photoUrl?.let { photoUrl ->
@@ -156,6 +173,14 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
                 }
             }
         })
+    }
+
+    private fun showAnnouncementFragment() {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(0, R.anim.fade_out, 0, R.anim.fade_out)
+            .add(android.R.id.content, AnnouncementFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun handleIntentExtras() {

@@ -114,7 +114,7 @@ class MenuFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        viewModel.userEvent.observe(this, Observer { event ->
+        viewModel.getUserEvent().observe(this, Observer { event ->
 
             when (event) {
 

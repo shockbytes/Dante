@@ -2,10 +2,14 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.content.Intent
+import androidx.lifecycle.LiveData
 import at.shockbytes.dante.R
+import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.util.addTo
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -13,7 +17,10 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    10.06.2018
  */
-class MainViewModel @Inject constructor(private val signInManager: SignInManager) : BaseViewModel() {
+class MainViewModel @Inject constructor(
+    private val signInManager: SignInManager,
+    private val announcementProvider: AnnouncementProvider
+) : BaseViewModel() {
 
     sealed class UserEvent {
         data class SuccessEvent(val user: DanteUser?, val showWelcomeScreen: Boolean) : UserEvent()
@@ -21,7 +28,11 @@ class MainViewModel @Inject constructor(private val signInManager: SignInManager
         data class ErrorEvent(val errorMsg: Int) : UserEvent()
     }
 
-    val userEvent = MutableLiveData<UserEvent>()
+    private val userEvent = MutableLiveData<UserEvent>()
+    fun getUserEvent(): LiveData<UserEvent> = userEvent
+
+    private val activeAnnouncement = PublishSubject.create<Boolean>()
+    fun hasActiveAnnouncement(): Observable<Boolean> = activeAnnouncement
 
     init {
         initialize()
@@ -32,8 +43,12 @@ class MainViewModel @Inject constructor(private val signInManager: SignInManager
         signInManager.isSignedIn().subscribe { isSignedIn ->
 
             if (isSignedIn) { // <- User signed in, TOP!
-                userEvent.postValue(UserEvent.SuccessEvent(
-                        signInManager.getAccount(), signInManager.showWelcomeScreen))
+                userEvent.postValue(
+                    UserEvent.SuccessEvent(
+                        signInManager.getAccount(),
+                        signInManager.showWelcomeScreen
+                    )
+                )
             } else if (!isSignedIn) { // <- User not signed in, reset UI
                 userEvent.postValue(UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen))
             }
@@ -70,5 +85,10 @@ class MainViewModel @Inject constructor(private val signInManager: SignInManager
 
     fun showSignInWelcomeScreen(showWelcomeScreen: Boolean) {
         signInManager.showWelcomeScreen = showWelcomeScreen
+    }
+
+    fun queryAnnouncements() {
+        val hasActiveAnnouncement = announcementProvider.getActiveAnnouncement() != null
+        activeAnnouncement.onNext(hasActiveAnnouncement)
     }
 }

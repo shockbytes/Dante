@@ -1,6 +1,8 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.widget.TextView
+import androidx.annotation.StringRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -8,6 +10,9 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.Announcement
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
+import at.shockbytes.dante.util.setVisible
+import com.airbnb.lottie.LottieDrawable
+import kotlinx.android.synthetic.main.fragment_announcement.*
 import javax.inject.Inject
 
 class AnnouncementFragment : BaseFragment() {
@@ -24,9 +29,7 @@ class AnnouncementFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[AnnouncementViewModel::class.java]
     }
 
-    override fun setupViews() {
-        // TODO
-    }
+    override fun setupViews() = Unit
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -48,7 +51,35 @@ class AnnouncementFragment : BaseFragment() {
     }
 
     private fun populateAnnouncementViews(announcement: Announcement) {
-        // TODO
+        with(announcement) {
+            tv_announcement_title.setText(titleRes)
+            tv_announcement_description.setText(descriptionRes)
+
+            when (illustration) {
+                is Announcement.Illustration.LottieIllustration -> {
+                    lottie_announcement.apply {
+                        setVisible(true)
+                        repeatCount =  LottieDrawable.INFINITE
+                        setAnimation(illustration.lottieRes)
+                    }
+                }
+                else -> {
+                    TODO("DrawableIllustrations and null are not supported at the moment...")
+                }
+            }
+
+            layout_announcement.setOnClickListener {
+                closeModalAndDismissAnnouncement(this)
+            }
+            btn_announcement_close.setOnClickListener {
+                closeModalAndDismissAnnouncement(this)
+            }
+        }
+    }
+
+    private fun closeModalAndDismissAnnouncement(announcement: Announcement) {
+        viewModel.markAnnouncementAsSeen(announcement)
+        closeModal()
     }
 
     private fun closeModal() {

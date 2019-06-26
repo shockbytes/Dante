@@ -21,10 +21,14 @@ class AnnouncementViewModel @Inject constructor(
         announcementState.postValue(state)
     }
 
+    fun markAnnouncementAsSeen(announcement: Announcement) {
+        announcementProvider.markAnnouncementAsSeen(announcement)
+    }
+
     sealed class AnnouncementState {
 
-        data class Active(val announcement: Announcement): AnnouncementState()
+        data class Active(val announcement: Announcement) : AnnouncementState()
 
-        object Inactive: AnnouncementState()
+        object Inactive : AnnouncementState()
     }
 }

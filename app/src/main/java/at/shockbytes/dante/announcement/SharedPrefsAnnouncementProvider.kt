@@ -17,7 +17,7 @@ class SharedPrefsAnnouncementProvider(
     override fun getActiveAnnouncement(): Announcement? {
 
         val isSeen = isActiveAnnouncementSeen()
-        return if (isSeen) {
+        return if (!isSeen) {
             activeAnnouncement
         } else {
             null

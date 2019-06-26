@@ -213,5 +213,8 @@
     <string name="backup_storage_provider_rationale_shockbytes">Sichere deine Daten auf unsere Server. Deine Daten gehören immer noch dir. Wir empfehlen diese Art der Datensicherung.</string>
     <string name="backup_storage_provider_rationale_external_storage">Speichere deine Daten auf deinem externen Speicherplatz. Das Backup muss manuell auf andere Geräte übertragen werden.</string>
     <string name="backup_provider_rationale">Dante erlaubt es dir deine Daten auf verschiedenen Wegen zu sichern. Damit können deine Bücher zwischen verschiedenen Geräten synchronisiert werden. Sichere deine Bücher auf einen Gerät und stelle sie auf einem anderen Gerät wieder her. Klicke einfach auf deine bevorzugte Art.</string>
+    <string name="announcement_header">&#127881; Ankündigung &#127881;</string>
+    <string name="announcement_open_source_title">Dante ist jetzt Open Source!</string>
+    <string name="announcement_open_source_description">Dante wurde gerade auf Github veröffentlicht. Wenn du Kotlin Skills besitzt und weißt wie man eine Android App macht, dann mach einfach mit. Interessiert? Besuche \n\n<u>https://github.com/shockbytes/Dante</u></string>
 
 </resources>

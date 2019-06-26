@@ -10,7 +10,7 @@ can simply keep track of your progress of all your books and their current state
 
 | Home screen                             | Detail screen |  Book scanning screen                                             |
 |:----------------------------------------|:--------------|:----------------------------------------------|
-| ![Home screen][screenshots/en_main.png] | ![Details screen][screenshots/en_details.png]  | ![Book scanning screen][screenshots/en_scanning.png] |
+| ![Home screen](screenshots/en_main.png) | ![Details screen](screenshots/en_details.png)  | ![Book scanning screen](screenshots/en_scanning.png) |
 ## Setup
 Checkout/Fork the repository and get the missing files which are mentioned below.
 Make a pull request to the actual repository.

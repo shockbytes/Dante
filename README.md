@@ -8,8 +8,12 @@ can simply keep track of your progress of all your books and their current state
 
 <a href='https://play.google.com/store/apps/details?id=at.shockbytes.dante&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height=100 alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
+| Home screen                             | Detail screen |  Book scanning screen                                             |
+|:----------------------------------------|:--------------|:----------------------------------------------|
+| ![Home screen][screenshots/en_main.png] | ![Details screen][screenshots/en_details.png]  | ![Book scanning screen][screenshots/en_scanning.png] |
 ## Setup
-TODO Describe setup
+Checkout/Fork the repository and get the missing files which are mentioned below.
+Make a pull request to the actual repository.
 
 ### Sensitive developer data
 There are three files which must be explicitly added by each developer

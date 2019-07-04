@@ -45,13 +45,13 @@ the user during the login process.
 - [ ] Labels for books
 
 ### Version 3.7 - ONBOARDING
+- [ ] Move to Android App Bundles
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
 
 ### Version 3.6 - GET EXCITED
-- [ ] Move to Android App Bundles
-- [ ] Improve Backups 
-- [x] Open source Dante
+* Improve Backups 
+* Open source Dante
 
 ### Version 3.5
 * App shortcuts

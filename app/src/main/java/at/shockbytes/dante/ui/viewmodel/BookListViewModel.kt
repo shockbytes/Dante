@@ -69,8 +69,8 @@ class BookListViewModel @Inject constructor(
     private fun listenToSettings() {
         settings.observeSortStrategy()
                 .observeOn(schedulers.ui)
-                .subscribe {
-                    sortComparator = SortComparators.of(it)
+                .subscribe { strategy ->
+                    sortComparator = SortComparators.of(strategy)
                     updateIfBooksLoaded()
                 }.addTo(compositeDisposable)
     }

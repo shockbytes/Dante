@@ -15,11 +15,14 @@ import at.shockbytes.dante.util.DanteUtils
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.core.content.ContextCompat
+import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.toBitmap
 
 class DanteRemoteViewsFactory(
     private val context: Context,
-    private val bookEntityDao: BookEntityDao
+    private val bookEntityDao: BookEntityDao,
+    private val danteSettings: DanteSettings
 ) : RemoteViewsService.RemoteViewsFactory {
 
     private val compositeDisposable = CompositeDisposable()
@@ -38,7 +41,9 @@ class DanteRemoteViewsFactory(
     override fun getItemId(position: Int): Long = currentBooks[position].id
 
     override fun onDataSetChanged() {
-        currentBooks = ArrayList(bookEntityDao.booksCurrentlyReading)
+
+        val sorter = SortComparators.of(danteSettings.sortStrategy)
+        currentBooks = ArrayList(bookEntityDao.booksCurrentlyReading.sortedWith(sorter))
 
         Timber.d("appwidget - remoteviews factory - onDataSetChanged() - books: ${currentBooks.size}")
     }

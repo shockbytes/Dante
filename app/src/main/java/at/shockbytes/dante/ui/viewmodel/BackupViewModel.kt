@@ -112,15 +112,14 @@ class BackupViewModel @Inject constructor(
         loadBackupState.postValue(LoadBackupState.Loading)
         backupRepository.getBackups()
             .subscribeOn(schedulers.io)
-            .observeOn(schedulers.ui)
             .subscribe({ backupEntries ->
 
             // Check if backups are empty. One could argue that we can evaluate this in the fragment,
             // this solution seems cleaner, because it doesn't bother the view with even the simplest logic
             if (backupEntries.isNotEmpty()) {
-                loadBackupState.value = LoadBackupState.Success(backupEntries)
+                loadBackupState.postValue(LoadBackupState.Success(backupEntries))
             } else {
-                loadBackupState.value = LoadBackupState.Empty
+                loadBackupState.postValue(LoadBackupState.Empty)
             }
         }) { throwable ->
             Timber.e(throwable)

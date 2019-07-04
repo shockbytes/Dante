@@ -34,6 +34,11 @@ class BackupEntryAdapter(ctx: Context) : BaseAdapter<BackupMetadataState>(ctx), 
         onItemMoveListener?.onItemDismissed(data[position], position)
     }
 
+    fun updateData(backupStates: List<BackupMetadataState>) {
+        data.clear()
+        data.addAll(backupStates)
+    }
+
     inner class BackupViewHolder(
         override val containerView: View
     ) : BaseAdapter<BackupMetadataState>.ViewHolder(containerView), LayoutContainer {

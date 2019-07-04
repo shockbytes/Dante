@@ -19,6 +19,11 @@ class BackupStorageProviderAdapter(
         return ViewHolder(BackupStorageProviderView(context))
     }
 
+    fun updateData(providers: List<BackupStorageProvider>) {
+        data.clear()
+        data.addAll(providers)
+    }
+
     inner class ViewHolder(
         override val containerView: BackupStorageProviderView
     ) : BaseAdapter<BackupStorageProvider>.ViewHolder(containerView), LayoutContainer {

@@ -97,9 +97,9 @@ class BackupBackupFragment : BaseFragment() {
             }
             adapter = BackupStorageProviderAdapter(requireContext()).apply {
 
-                data = providers
+                updateData(providers
                     .sortedBy { it.priority }
-                    .toMutableList()
+                )
 
                 onItemClickListener = object : BaseAdapter.OnItemClickListener<BackupStorageProvider> {
                     override fun onItemClick(t: BackupStorageProvider, v: View) {
@@ -107,7 +107,10 @@ class BackupBackupFragment : BaseFragment() {
                     }
                 }
             }
-            addItemDecoration(EqualSpaceItemDecoration(context.resources.getDimension(R.dimen.backup_provider_margin).toInt()))
+
+            if (itemDecorationCount == 0) {
+                addItemDecoration(EqualSpaceItemDecoration(context.resources.getDimension(R.dimen.backup_provider_margin).toInt()))
+            }
         }
     }
 

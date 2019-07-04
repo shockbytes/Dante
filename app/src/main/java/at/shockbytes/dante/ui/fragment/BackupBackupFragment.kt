@@ -107,7 +107,10 @@ class BackupBackupFragment : BaseFragment() {
                     }
                 }
             }
-            addItemDecoration(EqualSpaceItemDecoration(context.resources.getDimension(R.dimen.backup_provider_margin).toInt()))
+
+            if (itemDecorationCount == 0) {
+                addItemDecoration(EqualSpaceItemDecoration(context.resources.getDimension(R.dimen.backup_provider_margin).toInt()))
+            }
         }
     }
 

@@ -95,7 +95,8 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         setupViewListener()
 
         // Collapse / unfold summary when clicking on it
-        txt_detail_description.setOnClickListener {
+        txt_detail_description.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
 
             val defaultLines = resources.getInteger(R.integer.detail_summary_default_lines)
             val currentLines = txt_detail_description.maxLines

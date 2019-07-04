@@ -7,6 +7,7 @@
     <color name="colorAccent">#2196F3</color>
     <color name="iconColor">#BBB</color>
     <color name="actionBarItemColor">#FFF</color>
+    <color name="danteAccent">#AAA</color>
 
     <color name="colorPrimaryText">#BBB</color>
     <color name="colorTertiaryText">#BBB</color>

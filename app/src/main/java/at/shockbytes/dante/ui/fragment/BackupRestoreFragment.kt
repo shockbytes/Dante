@@ -88,7 +88,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
             when (state) {
                 is BackupViewModel.LoadBackupState.Success -> {
-                    (rv_fragment_backup_restore.adapter as BackupEntryAdapter).data = state.backups.toMutableList()
+                    (rv_fragment_backup_restore.adapter as BackupEntryAdapter).updateData(state.backups)
                     rv_fragment_backup_restore.scrollToPosition(0)
 
                     showLoadingView(false)

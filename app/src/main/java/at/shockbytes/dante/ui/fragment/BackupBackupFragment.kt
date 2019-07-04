@@ -97,9 +97,9 @@ class BackupBackupFragment : BaseFragment() {
             }
             adapter = BackupStorageProviderAdapter(requireContext()).apply {
 
-                data = providers
+                updateData(providers
                     .sortedBy { it.priority }
-                    .toMutableList()
+                )
 
                 onItemClickListener = object : BaseAdapter.OnItemClickListener<BackupStorageProvider> {
                     override fun onItemClick(t: BackupStorageProvider, v: View) {

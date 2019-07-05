@@ -6,7 +6,8 @@ import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import kotlinx.android.parcel.Parcelize
 
 sealed class Destination {
-    class BookDetail(val info: BookDetailInfo) : Destination() {
+
+    data class BookDetail(val info: BookDetailInfo) : Destination() {
 
         @Parcelize
         data class BookDetailInfo(
@@ -15,13 +16,14 @@ sealed class Destination {
         ) : Parcelable
     }
 
-    class Share(val bookEntity: BookEntity) : Destination()
-    class Retrieval(
+    data class Share(val bookEntity: BookEntity) : Destination()
+
+    data class Retrieval(
         val type: BookRetrievalActivity.RetrievalType,
         val query: String?
     ) : Destination()
 
-    class Main(
+    data class Main(
         val bookDetailInfo: BookDetail.BookDetailInfo? = null,
         val openCameraAfterLaunch: Boolean = false
     ) : Destination()

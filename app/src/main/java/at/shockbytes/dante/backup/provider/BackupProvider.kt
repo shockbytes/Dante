@@ -1,8 +1,8 @@
 package at.shockbytes.dante.backup.provider
 
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.book.BookEntity
 import io.reactivex.Completable
@@ -12,17 +12,19 @@ interface BackupProvider {
 
     val backupStorageProvider: BackupStorageProvider
 
+    var isEnabled: Boolean
+
     fun initialize(activity: FragmentActivity? = null): Completable
 
     fun backup(books: List<BookEntity>): Completable
 
-    fun getBackupEntries(): Single<List<BackupEntryState>>
+    fun getBackupEntries(): Single<List<BackupMetadataState>>
 
-    fun removeBackupEntry(entry: BackupEntry): Completable
+    fun removeBackupEntry(entry: BackupMetadata): Completable
 
     fun removeAllBackupEntries(): Completable
 
-    fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>>
+    fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>>
 
     fun teardown(): Completable
 }

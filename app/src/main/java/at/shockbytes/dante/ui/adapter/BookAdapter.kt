@@ -23,6 +23,7 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import kotlinx.android.extensions.LayoutContainer
 import kotterknife.bindView
 import java.util.Collections
 
@@ -91,8 +92,10 @@ class BookAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class ViewHolder(itemView: View) : BaseAdapter<BookEntity>.ViewHolder(itemView),
-            PopupMenu.OnMenuItemClickListener {
+    inner class ViewHolder(override val containerView: View) :
+        BaseAdapter<BookEntity>.ViewHolder(containerView),
+        PopupMenu.OnMenuItemClickListener,
+        LayoutContainer {
 
         private val txtTitle by bindView<TextView>(R.id.item_book_txt_title)
         private val txtSubTitle by bindView<TextView>(R.id.item_book_txt_subtitle)
@@ -110,7 +113,7 @@ class BookAdapter(
 
         override fun bindToView(t: BookEntity) {
             updateTexts(t)
-            updateImageThumbnail(t)
+            updateImageThumbnail(t.thumbnailAddress)
             updateProgress(t)
         }
 
@@ -153,11 +156,11 @@ class BookAdapter(
             groupProgress.setVisible(showProgress)
         }
 
-        private fun updateImageThumbnail(t: BookEntity) {
+        private fun updateImageThumbnail(address: String?) {
 
-            if (!t.thumbnailAddress.isNullOrEmpty()) {
+            if (!address.isNullOrEmpty()) {
                 val corners = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
-                imageLoader.loadImageWithCornerRadius(context, t.thumbnailAddress!!, imgViewThumb,
+                imageLoader.loadImageWithCornerRadius(context, address, imgViewThumb,
                         cornerDimension = corners)
             } else {
                 // Books with no image will recycle another cover if not cleared here

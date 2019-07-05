@@ -30,8 +30,11 @@ import kotlinx.android.synthetic.main.fragment_download_book.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
-        androidx.palette.graphics.Palette.PaletteAsyncListener, BaseAdapter.OnItemClickListener<BookEntity> {
+class DownloadBookFragment :
+    BaseFragment(),
+    ImageLoadingCallback,
+    Palette.PaletteAsyncListener,
+    BaseAdapter.OnItemClickListener<BookEntity> {
 
     interface OnBookDownloadedListener {
 
@@ -123,7 +126,7 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
 
     override fun onImageResourceReady(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let {
-            androidx.palette.graphics.Palette.from(it).generate(this)
+            Palette.from(it).generate(this)
         }
     }
 
@@ -135,14 +138,18 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         // Not needed...
     }
 
-    override fun onGenerated(palette: androidx.palette.graphics.Palette?) {
+    override fun onGenerated(palette: Palette?) {
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-        listener?.colorSystemBars(actionBarColor, actionBarTextColor,
-                statusBarColor, selectedBook?.title)
+        listener?.colorSystemBars(
+            actionBarColor,
+            actionBarTextColor,
+            statusBarColor,
+            selectedBook?.title
+        )
     }
 
     override fun onItemClick(t: BookEntity, v: View) {
@@ -151,25 +158,47 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         bookAdapter?.addEntity(index, selectedBook!!)
 
         selectedBook = t
-        setTitleAndIcon(selectedBook)
+
+        setTitle(selectedBook?.title)
+        setIcon(selectedBook?.thumbnailAddress)
+        setAuthor(selectedBook?.author)
+
         recyclerViewDownloadFragmentOtherSuggestions.scrollToPosition(0)
     }
 
-    // --------------------------------------------------------------------
+    private fun setAuthor(author: String?) {
+        txtDownloadFragmentAuthor.text = author
+    }
 
     private fun showOtherSuggestions() {
 
         if (!isOtherSuggestionsShowing) {
 
-            txtDownloadFragmentTitle.animate().translationY(0f).setDuration(300)
-                    .setInterpolator(AnticipateInterpolator())
-                    .withEndAction {
-                        recyclerViewDownloadFragmentOtherSuggestions.animate().alpha(1f).start()
-                        txtDownloadFragmentOtherSuggestions.animate().alpha(1f).start()
-                    }.start()
-            imgViewDownloadFragmentCover.animate().translationY(0f).setDuration(300)
-                    .setInterpolator(AnticipateInterpolator())
-                    .start()
+            txtDownloadFragmentTitle.animate()
+                .translationY(0f)
+                .setDuration(300)
+                .setInterpolator(AnticipateInterpolator())
+                .withEndAction {
+                    recyclerViewDownloadFragmentOtherSuggestions.animate()
+                        .alpha(1f)
+                        .start()
+                    txtDownloadFragmentOtherSuggestions.animate()
+                        .alpha(1f)
+                        .start()
+                }
+                .start()
+
+            txtDownloadFragmentAuthor.animate()
+                .translationY(0f)
+                .setDuration(300)
+                .setInterpolator(AnticipateInterpolator())
+                .start()
+
+            imgViewDownloadFragmentCover.animate()
+                .translationY(0f)
+                .setDuration(300)
+                .setInterpolator(AnticipateInterpolator())
+                .start()
 
             btnDownloadFragmentNotMyBook.setText(R.string.download_suggestions_none)
 
@@ -194,9 +223,14 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
                 animateBookViews()
                 if (suggestion != null && suggestion.hasSuggestions) {
                     selectedBook = suggestion.mainSuggestion
-                    setTitleAndIcon(selectedBook)
+
+                    setIcon(selectedBook?.thumbnailAddress)
+                    setTitle(selectedBook?.title)
+                    setAuthor(selectedBook?.author)
+
                     setupOtherSuggestionsRecyclerView(suggestion.otherSuggestions)
-                    activity?.actionBar?.title = selectedBook?.title
+
+                    setActionBarTitle(selectedBook?.title)
                 } else {
                     listener?.onErrorDownload("no suggestions", isAdded)
                     showErrorLayout(getString(R.string.download_book_json_error))
@@ -208,6 +242,10 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
                         ?: "Error message not available", isAdded)
             }
         }
+    }
+
+    private fun setActionBarTitle(title: String?) {
+        activity?.actionBar?.title = title
     }
 
     private fun loadIcons() {
@@ -236,15 +274,20 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
         AnimationUtils.detailEnterAnimation(animViews, 250, interpolator = OvershootInterpolator(4f))
     }
 
-    private fun setTitleAndIcon(mainBook: BookEntity?) {
+    private fun setTitle(title: String?) {
+        txtDownloadFragmentTitle.text = title
+    }
 
-        txtDownloadFragmentTitle.text = mainBook?.title
-
-        val address = mainBook?.thumbnailAddress
+    private fun setIcon(address: String?) {
         if (!address.isNullOrEmpty()) {
             context?.let { ctx ->
-                imageLoader.loadImage(ctx, address, imgViewDownloadFragmentCover,
-                        callback = this, callbackHandleValues = Pair(first = false, second = true))
+                imageLoader.loadImage(
+                    ctx,
+                    address,
+                    imgViewDownloadFragmentCover,
+                    callback = this,
+                    callbackHandleValues = Pair(first = false, second = true)
+                )
             }
         } else {
             imgViewDownloadFragmentCover.setImageResource(R.drawable.ic_placeholder)
@@ -253,20 +296,24 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
 
     private fun setupOtherSuggestionsRecyclerView(books: List<BookEntity>) {
 
-        context?.let { ctx ->
-            bookAdapter = BookAdapter(
-                    ctx,
-                    BookState.READ_LATER,
-                    imageLoader
-            ).apply {
-                //
-                this.data = books
-                        .map { it.state = BookState.READ_LATER; it }
-                        .toMutableList()
-            }
-            recyclerViewDownloadFragmentOtherSuggestions.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
-            bookAdapter?.onItemClickListener = this
-            recyclerViewDownloadFragmentOtherSuggestions.adapter = bookAdapter
+        bookAdapter = BookAdapter(
+                requireContext(),
+                BookState.READ_LATER,
+                imageLoader
+        ).apply {
+            this.onItemClickListener = this@DownloadBookFragment
+
+            this.data = books
+                    .map { book ->
+                        book.apply {
+                            state = BookState.READ_LATER
+                        }
+                    }
+                    .toMutableList()
+        }
+        recyclerViewDownloadFragmentOtherSuggestions.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = bookAdapter
         }
     }
 
@@ -291,8 +338,6 @@ class DownloadBookFragment : BaseFragment(), ImageLoadingCallback,
             Timber.e(IllegalArgumentException("Cannot show error layout, because DownloadBookFragment is not attached to Activity"))
         }
     }
-
-    // --------------------------------------------------------------------
 
     companion object {
 

@@ -6,6 +6,7 @@ import at.shockbytes.dante.data.RealmBookEntityDao
 import at.shockbytes.dante.network.BookDownloader
 import at.shockbytes.dante.network.google.GoogleBooksApi
 import at.shockbytes.dante.network.google.GoogleBooksDownloader
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,15 +20,16 @@ class BookModule {
 
     @Provides
     @Singleton
-    fun provideBookDao(
-        realm: RealmInstanceProvider
-    ): BookEntityDao {
+    fun provideBookDao(realm: RealmInstanceProvider): BookEntityDao {
         return RealmBookEntityDao(realm)
     }
 
     @Provides
     @Singleton
-    fun provideBookDownloader(api: GoogleBooksApi): BookDownloader {
-        return GoogleBooksDownloader(api)
+    fun provideBookDownloader(
+        api: GoogleBooksApi,
+        schedulerFacade: SchedulerFacade
+    ): BookDownloader {
+        return GoogleBooksDownloader(api, schedulerFacade)
     }
 }

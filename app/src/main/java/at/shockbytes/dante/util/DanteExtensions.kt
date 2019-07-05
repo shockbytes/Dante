@@ -2,6 +2,11 @@ package at.shockbytes.dante.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Handler
 import androidx.annotation.ColorInt
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -10,6 +15,7 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import at.shockbytes.dante.signin.DanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.leinardi.android.speeddial.SpeedDialView
@@ -17,7 +23,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.Double.Companion.NaN
 
 /**
  * Author:  Martin Macheiner
@@ -71,7 +76,7 @@ fun View.setVisible(isVisible: Boolean) {
 
 fun Double.roundDouble(digits: Int): Double {
 
-    if (this == 0.0 || digits < 0 || this == Double.POSITIVE_INFINITY || this == NaN || this == Double.NaN || this == Double.NEGATIVE_INFINITY) {
+    if (this == 0.0 || digits < 0 || this == Double.POSITIVE_INFINITY || this.isNaN() || this == Double.NEGATIVE_INFINITY) {
         return 0.00
     }
 
@@ -80,4 +85,26 @@ fun Double.roundDouble(digits: Int): Double {
 
 fun Disposable.addTo(compositeDisposable: CompositeDisposable) {
     compositeDisposable.add(this)
+}
+
+fun Fragment.isPortrait(): Boolean {
+    return context?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun Activity.isPortrait(): Boolean {
+    return resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun Drawable.toBitmap(): Bitmap {
+
+    if (this is BitmapDrawable) {
+        return this.bitmap
+    }
+
+    val bitmap = Bitmap.createBitmap(this.intrinsicWidth, this.intrinsicHeight, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    this.setBounds(0, 0, canvas.width, canvas.height)
+    this.draw(canvas)
+
+    return bitmap
 }

@@ -10,8 +10,6 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
@@ -97,18 +95,21 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         setupViewListener()
 
         // Collapse / unfold summary when clicking on it
-        txt_detail_description.setOnClickListener {
+        txt_detail_description.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
 
             val defaultLines = resources.getInteger(R.integer.detail_summary_default_lines)
-            var lines = txt_detail_description.maxLines
-            lines = if (lines == defaultLines) 100 else defaultLines
+            val currentLines = txt_detail_description.maxLines
+
+            val lines = if (currentLines == defaultLines) 100 else defaultLines
+            val animationDuration = if (currentLines == defaultLines) 500L else 100L
 
             ObjectAnimator.ofInt(
                 txt_detail_description,
                 "maxLines",
                 lines
             ).apply {
-                duration = 500
+                duration = animationDuration
                 start()
             }
         }
@@ -116,12 +117,6 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        // TODO Version 3.5
-        // inflater?.inflate(R.menu.popup_item, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun bindViewModel() {
@@ -261,9 +256,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
         txt_detail_description.setVisible(book.summary != null && showSummary)
         txt_detail_description.text = book.summary
 
-        if (!book.thumbnailAddress.isNullOrEmpty()) {
-            loadImage(book.thumbnailAddress)
-        }
+        loadImage(book.thumbnailAddress)
 
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
@@ -437,20 +430,18 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
     }
 
     private fun loadImage(address: String?) {
-        if (address != null) {
-            activity?.let { ctx ->
+        if (!address.isNullOrEmpty()) {
 
-                // TODO Enable 2 times zoom
-                // val increasedZoomUrl = DownloadUtils.increaseGoogleThumbnailResolutionLink(url, 2)
+            // TODO Enable 2 times zoom
+            // val increasedZoomUrl = DownloadUtils.increaseGoogleThumbnailResolutionLink(url, 2)
 
-                imageLoader.loadImageWithCornerRadius(
-                        ctx,
-                        address,
-                        iv_detail_image,
-                        cornerDimension = ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
-                        callback = this,
-                        callbackHandleValues = Pair(first = false, second = true))
-            }
+            imageLoader.loadImageWithCornerRadius(
+                    requireContext(),
+                    address,
+                    iv_detail_image,
+                    cornerDimension = requireContext().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
+                    callback = this,
+                    callbackHandleValues = Pair(first = false, second = true))
         } else {
             iv_detail_image.setImageResource(R.drawable.ic_placeholder)
         }

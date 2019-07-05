@@ -1,8 +1,9 @@
 package at.shockbytes.dante.backup.provider.shockbytes
 
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.BuildConfig
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
@@ -14,11 +15,18 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
+/**
+ * Author:  Martin Macheiner
+ * Date:    09.05.2019
+ */
 class ShockbytesHerokuServerBackupProvider(
     private val signInManager: GoogleSignInManager,
     private val shockbytesHerokuApi: ShockbytesHerokuApi,
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {
+
+    // Enable it only in debug mode
+    override var isEnabled: Boolean = BuildConfig.DEBUG
 
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 
@@ -31,17 +39,17 @@ class ShockbytesHerokuServerBackupProvider(
         return shockbytesHerokuApi
             .makeBackup(signInManager.getAuthorizationHeader(), books)
             .flatMapCompletable { entry ->
-
+                Timber.d(entry.toString())
                 // TODO What to do with entry? Store in UI?
                 Completable.complete()
             }
     }
 
-    override fun getBackupEntries(): Single<List<BackupEntryState>> {
+    override fun getBackupEntries(): Single<List<BackupMetadataState>> {
         return shockbytesHerokuApi.listBackups(signInManager.getAuthorizationHeader())
             .map { entries ->
-                val entryStates: List<BackupEntryState> = entries.map { entry ->
-                    BackupEntryState.Active(entry)
+                val entryStates: List<BackupMetadataState> = entries.map { entry ->
+                    BackupMetadataState.Active(entry)
                 }
                 entryStates
             }
@@ -55,7 +63,7 @@ class ShockbytesHerokuServerBackupProvider(
             }
     }
 
-    override fun removeBackupEntry(entry: BackupEntry): Completable {
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
         return shockbytesHerokuApi.removeBackupById(signInManager.getAuthorizationHeader(), entry.id)
     }
 
@@ -63,7 +71,7 @@ class ShockbytesHerokuServerBackupProvider(
         return shockbytesHerokuApi.removeAllBackups(signInManager.getAuthorizationHeader())
     }
 
-    override fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>> {
+    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
         return shockbytesHerokuApi
             .getBooksBackupById(signInManager.getAuthorizationHeader(), entry.id)
             .subscribeOn(Schedulers.io())

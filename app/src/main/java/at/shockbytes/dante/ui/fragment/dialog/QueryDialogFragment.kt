@@ -12,10 +12,10 @@ import at.shockbytes.dante.R
 import kotterknife.bindView
 
 /**
- * @author Martin Macheiner
- * Date: 30.08.2016.
+ * Author:  Martin Macheiner
+ * Date:    30.08.2016
  */
-class QueryDialogFragment : androidx.fragment.app.DialogFragment() {
+class QueryDialogFragment : DialogFragment() {
 
     private val editQuery: EditText by bindView(R.id.dialogfragment_isbn_edit)
 
@@ -26,7 +26,7 @@ class QueryDialogFragment : androidx.fragment.app.DialogFragment() {
                 .inflate(R.layout.dialogfragment_enter_query, null, false)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context!!)
+        return AlertDialog.Builder(requireContext())
                 .setView(queryView)
                 .setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
                 .setPositiveButton(android.R.string.search_go) { _, _ ->

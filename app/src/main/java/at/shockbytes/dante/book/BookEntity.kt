@@ -4,7 +4,6 @@ package at.shockbytes.dante.book
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-
 data class BookEntity(
     var id: Long = -1,
     var title: String = "",

@@ -9,8 +9,7 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
-import android.content.Intent
-import android.net.Uri
+import at.shockbytes.dante.util.UrlLauncher
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
@@ -28,18 +27,12 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
         findPreference(getString(R.string.prefs_contribute_key)).apply {
             this.setOnPreferenceClickListener {
-                openDanteGithubPage()
+                UrlLauncher.openDanteGithubPage(context)
                 true
             }
         }
 
         showFeatureFlagsConfig(BuildConfig.DEBUG)
-    }
-
-    private fun openDanteGithubPage() {
-        val url = getString(at.shockbytes.dante.R.string.dante_github_link)
-        val githubIntent = Intent(Intent.ACTION_VIEW).setData(Uri.parse(url))
-        startActivity(githubIntent)
     }
 
     private fun showFeatureFlagsConfig(show: Boolean) {

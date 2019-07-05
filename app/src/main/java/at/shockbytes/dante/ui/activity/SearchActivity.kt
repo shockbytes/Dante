@@ -42,9 +42,12 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
             window.exitTransition = Fade()
             window.enterTransition = Fade()
         }
-        supportActionBar?.title = ""
-        supportActionBar?.setShowHideAnimationEnabled(true)
-        supportActionBar?.hide()
+
+        supportActionBar?.let { actionBar ->
+            actionBar.title = ""
+            actionBar.setShowHideAnimationEnabled(true)
+            actionBar.hide()
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

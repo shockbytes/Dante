@@ -26,8 +26,11 @@ import at.shockbytes.util.adapter.BaseItemTouchHelper
 import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
 
-class MainBookFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookEntity>,
-        BaseAdapter.OnItemMoveListener<BookEntity>, BookAdapter.OnBookPopupItemSelectedListener {
+class MainBookFragment :
+    BaseFragment(),
+    BaseAdapter.OnItemClickListener<BookEntity>,
+    BaseAdapter.OnItemMoveListener<BookEntity>,
+    BookAdapter.OnBookPopupItemSelectedListener {
 
     override val layoutId = R.layout.fragment_book_main
 

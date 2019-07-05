@@ -1,22 +1,13 @@
 package at.shockbytes.dante.ui.fragment
 
-import androidx.lifecycle.Observer
+import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
-import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
-import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
+import at.shockbytes.dante.ui.adapter.BackupPagerAdapter
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.setVisible
-import at.shockbytes.util.adapter.BaseAdapter
-import at.shockbytes.util.view.EqualSpaceItemDecoration
 import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup.*
@@ -25,11 +16,11 @@ import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
- * Date:    31.12.2017
+ * Date:    26.05.2019
  */
-class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEntryState> {
+class BackupFragment : BaseFragment() {
 
-    override val layoutId = R.layout.fragment_backup
+    override val layoutId: Int = R.layout.fragment_backup
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -42,146 +33,25 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BackupViewModel::class.java]
+        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
     }
 
     override fun setupViews() {
-        context?.let { ctx ->
-            val adapter = BackupEntryAdapter(ctx)
-            fragment_backup_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(ctx)
-            adapter.onItemClickListener = this
-            adapter.onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }
-            fragment_backup_rv.adapter = adapter
-            fragment_backup_rv.addItemDecoration(EqualSpaceItemDecoration(8))
+        setupViewPager()
 
-            fragment_backup_btn_backup.setOnClickListener {
-                viewModel.makeBackup(BackupStorageProvider.SHOCKBYTES_SERVER) // TODO Replace this with more storage provider
-            }
-            fragment_backup_reload.setOnClickListener {
-                activity?.let { act ->
-                    viewModel.connect(act)
-                }
-            }
-        }
-    }
-
-    override fun onItemClick(t: BackupEntryState, v: View) {
-
-        when (t) {
-
-            is BackupEntryState.Active -> showBackupRestoreStrategyModal(t)
-
-            is BackupEntryState.Inactive -> {
-                // TODO display something nicer here!
-                showToast("Inactive resource...")
-            }
-        }
-    }
-
-    private fun showBackupRestoreStrategyModal(state: BackupEntryState.Active) {
-        RestoreStrategyDialogFragment
-            .newInstance()
-            .setOnRestoreStrategySelectedListener { strategy ->
-                viewModel.applyBackup(state.entry, strategy)
-            }
-            .show(fragmentManager, "restore-strategy-dialog-fragment")
+        tabs_fragment_backup.setupWithViewPager(vp_fragment_backup)
     }
 
     override fun bindViewModel() {
 
-        viewModel.getBackupState().observe(this, Observer { state ->
-
-            when (state) {
-                is BackupViewModel.LoadBackupState.Success -> {
-                    val backupList = state.backups.toMutableList()
-                    (fragment_backup_rv.adapter as BackupEntryAdapter).data = backupList
-                    fragment_backup_rv.scrollToPosition(0)
-                    fragment_backup_txt_restore.text = getString(R.string.restore, backupList.size)
-
-                    showLoadingView(false)
-                    showEmptyStateView(false)
-                    showRecyclerView(true)
-                }
-                is BackupViewModel.LoadBackupState.Empty -> {
-                    showLoadingView(false)
-                    showEmptyStateView(true)
-                    showRecyclerView(false)
-
-                    fragment_backup_txt_restore.text = getString(R.string.restore, 0)
-                }
-                is BackupViewModel.LoadBackupState.Loading -> {
-                    showLoadingView(true)
-                    showEmptyStateView(false)
-                    showRecyclerView(false)
-                }
-                is BackupViewModel.LoadBackupState.Error -> {
-                    showSnackbar(state.throwable.localizedMessage, showLong = true)
-                    showLoadingView(false)
-                    showEmptyStateView(false)
-                    showRecyclerView(false)
-                }
-            }
-        })
-
-        viewModel.getLastBackupTime().observe(this, Observer { lastBackup ->
-            fragment_backup_txt_last_backup.text = getString(R.string.last_backup, lastBackup)
-        })
-
-        viewModel.makeBackupEvent
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { state ->
-                    when (state) {
-                        is BackupViewModel.State.Success -> {
-                            showToast(getString(R.string.backup_created), showLong = false)
-                        }
-                        is BackupViewModel.State.Error -> {
-                            showSnackbar(getString(R.string.backup_not_created))
-                        }
-                    }
-                }
-                .addTo(compositeDisposable)
-
-        viewModel.applyBackupEvent
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { state ->
-                    when (state) {
-                        is BackupViewModel.ApplyBackupState.Success -> {
-                            showSnackbar(getString(R.string.backup_restored, state.msg))
-                        }
-                        is BackupViewModel.ApplyBackupState.Error -> {
-                            showSnackbar(getString(R.string.backup_restore_error, state.throwable.localizedMessage), showLong = true)
-                        }
-                    }
-                }
-                .addTo(compositeDisposable)
-
-        viewModel.deleteBackupEvent
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { state ->
-                    when (state) {
-                        is BackupViewModel.DeleteBackupState.Success -> {
-                            val adapter = fragment_backup_rv.adapter as BackupEntryAdapter
-                            adapter.deleteEntity(state.deleteIndex)
-                            showSnackbar(getString(R.string.backup_removed))
-                            fragment_backup_txt_restore.text = getString(R.string.restore, adapter.itemCount)
-
-                            showEmptyStateView(state.isBackupListEmpty)
-                        }
-                        is BackupViewModel.DeleteBackupState.Error -> {
-                            showSnackbar(getErrorMessage(state.throwable))
-                        }
-                    }
-                }
-                .addTo(compositeDisposable)
-
         viewModel.errorSubject
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ error ->
-                    showToast(getString(R.string.backup_connection_error_google_drive, getErrorMessage(error)), showLong = true)
-                }, { throwable ->
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ error ->
+                showToast(getString(R.string.backup_connection_establish_error, getErrorMessage(error)), showLong = true)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
 
         activity?.let { act ->
             viewModel.connect(act)
@@ -192,28 +62,24 @@ class BackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BackupEnt
         viewModel.disconnect()
     }
 
-    private fun onItemDismissed(t: BackupEntry, position: Int) {
-        val currentItems = fragment_backup_rv.adapter?.itemCount ?: -1
-        viewModel.deleteItem(t, position, currentItems)
-    }
+    private fun setupViewPager() {
+        val pagerAdapter = BackupPagerAdapter(requireContext(), childFragmentManager)
 
-    private fun showLoadingView(show: Boolean) {
-        fragment_backup_pb.setVisible(show)
-    }
-
-    private fun showEmptyStateView(show: Boolean) {
-        fragment_backup_empty_view.setVisible(show)
-    }
-
-    private fun showRecyclerView(show: Boolean) {
-        fragment_backup_rv.setVisible(show)
+        vp_fragment_backup.apply {
+            adapter = pagerAdapter
+            offscreenPageLimit = 2
+        }
     }
 
     private fun getErrorMessage(throwable: Throwable): String {
         return when (throwable) {
             is ApiException -> getString(R.string.error_msg_execution_exception)
-            else -> getString(R.string.error_msg_unknown)
+            else -> throwable.localizedMessage
         }
+    }
+
+    fun switchToBackupTab() {
+        vp_fragment_backup.setCurrentItem(1, true)
     }
 
     companion object {

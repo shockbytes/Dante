@@ -1,10 +1,10 @@
 package at.shockbytes.dante.backup.model
 
 /**
- * Author: Martin Macheiner
- * Date: 30.04.2017.
+ * Author:  Martin Macheiner
+ * Date:    30.04.2017
  */
-data class BackupEntry(
+data class BackupMetadata(
     val id: String,
     val fileName: String,
     val device: String,

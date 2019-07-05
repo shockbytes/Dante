@@ -11,6 +11,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
+import androidx.palette.graphics.Palette
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.book.BookState
@@ -40,8 +41,12 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    08.06.2018
  */
-class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
-        androidx.palette.graphics.Palette.PaletteAsyncListener, CircleSeekBar.Callback {
+class LegacyBookDetailFragment :
+    BaseFragment(),
+    BackAnimatable,
+    ImageLoadingCallback,
+    Palette.PaletteAsyncListener,
+    CircleSeekBar.Callback {
 
     override val layoutId = R.layout.fragment_book_detail_legacy
 
@@ -55,20 +60,29 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
     lateinit var imageLoader: ImageLoader
 
     private val animationList: List<View> by lazy {
-        listOf(btnDetailFragmentPublished, btnDetailFragmentRating,
-                circleSeekbarDetailFragmentPages, btnDetailFragmentPages, btnDetailFragmentNotes,
-                viewDetailFragmentDivider, btnDetailFragmentWishlistDate, btnDetailFragmentStartDate,
-                btnDetailFragmentEndDate)
+        listOf(
+            btnDetailFragmentPublished,
+            btnDetailFragmentRating,
+            circleSeekbarDetailFragmentPages,
+            btnDetailFragmentPages,
+            btnDetailFragmentNotes,
+            viewDetailFragmentDivider,
+            btnDetailFragmentWishlistDate,
+            btnDetailFragmentStartDate,
+            btnDetailFragmentEndDate
+        )
     }
 
     private val drawableResList: List<Pair<Int, TextView>> by lazy {
-        listOf(Pair(R.drawable.ic_published_date, btnDetailFragmentPublished),
-                Pair(R.drawable.ic_rating, btnDetailFragmentRating),
-                Pair(R.drawable.ic_pages, btnDetailFragmentPages),
-                Pair(R.drawable.ic_notes, btnDetailFragmentNotes),
-                Pair(R.drawable.ic_popup_upcoming, btnDetailFragmentWishlistDate),
-                Pair(R.drawable.ic_popup_current, btnDetailFragmentStartDate),
-                Pair(R.drawable.ic_popup_done, btnDetailFragmentEndDate))
+        listOf(
+            R.drawable.ic_published_date to btnDetailFragmentPublished,
+            R.drawable.ic_rating to btnDetailFragmentRating,
+            R.drawable.ic_pages to btnDetailFragmentPages,
+            R.drawable.ic_notes to btnDetailFragmentNotes,
+            R.drawable.ic_popup_upcoming to btnDetailFragmentWishlistDate,
+            R.drawable.ic_popup_current to btnDetailFragmentStartDate,
+            R.drawable.ic_popup_done to btnDetailFragmentEndDate
+        )
     }
 
     private lateinit var viewModel: BookDetailViewModel
@@ -77,7 +91,9 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
 
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
+        arguments?.getLong(ARG_BOOK_ID)?.let { bookId ->
+            viewModel.initializeWithBookId(bookId)
+        }
     }
 
     override fun setupViews() {
@@ -115,7 +131,7 @@ class LegacyBookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCal
         }
     }
 
-    override fun onGenerated(palette: androidx.palette.graphics.Palette?) {
+    override fun onGenerated(palette: Palette?) {
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor

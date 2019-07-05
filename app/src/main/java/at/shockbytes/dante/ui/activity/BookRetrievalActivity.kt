@@ -16,7 +16,8 @@ import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
  * Date:    01.01.2018
  */
 class BookRetrievalActivity : TintableBackNavigableActivity(),
-        QueryCaptureFragment.QueryCaptureCallback, DownloadBookFragment.OnBookDownloadedListener {
+    QueryCaptureFragment.QueryCaptureCallback,
+    DownloadBookFragment.OnBookDownloadedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

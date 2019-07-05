@@ -6,25 +6,52 @@ The app let's you arrange your books into 3 different categories, whether you
 have read the book, are currently reading the book or saved the book for later. So you 
 can simply keep track of your progress of all your books and their current states.
 
-## Versions
+<a href='https://play.google.com/store/apps/details?id=at.shockbytes.dante&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height=100 alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
+| Home screen                             | Detail screen |  Book scanning screen                                             |
+|:----------------------------------------|:--------------|:----------------------------------------------|
+| ![Home screen](screenshots/en_main.png) | ![Details screen](screenshots/en_details.png)  | ![Book scanning screen](screenshots/en_scanning.png) |
+## Setup
+Checkout/Fork the repository and get the missing files which are mentioned below.
+Make a pull request to the actual repository.
+
+### Sensitive developer data
+There are three files which must be explicitly added by each developer
+after they checkout the project.
+
+#### google-services.json
+Get the `google-services.json` from the Firebase console.
+
+#### /src/main/res/values/font_certs.xml
+Those certs are important in order to load the custom fonts (Montserrat)
+from the internet.
+
+#### /src/main/res/values/oauth_client_id.xml
+Download the client secret file from the Google Cloud Console. 
+This file is necessary in order to retrieve the JWT request token of 
+the user during the login process.
+
+## Versions
 
 ### Version 4.0 - SUGGESTIONS
 - [ ] Use Firebase Data for book suggestions
 - [ ] Italian language support
 
 ### Version 3.9 - ALL IN THE CLOUD
-- [ ] Online sync
-- [ ] Remove backup functionality / Replace it with online sync
+- [ ] Add online sync capability
 
 ### Version 3.8 - CLEAN THE CAMPFIRE BEFORE THE BBQ
 - [ ] Put overflow menu into ActionBar
 - [ ] Labels for books
 
-### Version 3.6 - GET EXCITED
+### Version 3.7 - ONBOARDING
 - [ ] Move to Android App Bundles
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
+
+### Version 3.6 - GET EXCITED
+* Improve Backups 
+* Open source Dante
 
 ### Version 3.5
 * App shortcuts

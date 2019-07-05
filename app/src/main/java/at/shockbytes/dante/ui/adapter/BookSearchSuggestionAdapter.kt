@@ -10,6 +10,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookSearchItem
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.util.adapter.BaseAdapter
+import kotlinx.android.extensions.LayoutContainer
 import kotterknife.bindView
 
 /**
@@ -26,7 +27,9 @@ class BookSearchSuggestionAdapter(
         return ViewHolder(inflater.inflate(R.layout.item_book_search_suggestion, parent, false))
     }
 
-    inner class ViewHolder(itemView: View) : BaseAdapter<BookSearchItem>.ViewHolder(itemView) {
+    inner class ViewHolder(override val containerView: View) :
+        BaseAdapter<BookSearchItem>.ViewHolder(containerView),
+        LayoutContainer {
 
         private val txtTitle: TextView by bindView(R.id.item_book_search_suggestion_txt_title)
         private val txtAuthor: TextView by bindView(R.id.item_book_search_suggestion_txt_author)

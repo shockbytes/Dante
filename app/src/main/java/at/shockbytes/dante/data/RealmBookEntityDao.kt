@@ -14,9 +14,7 @@ import io.realm.Sort
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-class RealmBookEntityDao(
-    private val realm: RealmInstanceProvider
-) : BookEntityDao {
+class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityDao {
 
     private val bookClass = RealmBook::class.java
     private val configClass = RealmBookConfig::class.java
@@ -115,11 +113,12 @@ class RealmBookEntityDao(
     private fun overwriteBackupRestore(backupBooks: List<BookEntity>) {
 
         val stored = realm.instance.where(bookClass).findAll()
-        realm.instance.executeTransaction { realm ->
+        realm.instance.executeTransaction {
             stored.deleteAllFromRealm()
-            realm.commitTransaction()
+        }
 
-            backupBooks.forEach { create(it) }
+        backupBooks.forEach { book ->
+            create(book)
         }
     }
 }

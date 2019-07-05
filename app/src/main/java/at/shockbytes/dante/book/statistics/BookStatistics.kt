@@ -100,9 +100,15 @@ data class BookStatistics(
         private fun firstFiveStar(books: List<BookEntity>): StatsBookDisplayItem? {
             return books
                     .asSequence()
-                    .filter { it.rating == 5 }
-                    .minBy { it.endDate }
-                    ?.let { StatsBookDisplayItem(it.title, it.thumbnailAddress) }
+                    .filter { book ->
+                        book.rating == 5 && book.startDate > 0
+                    }
+                    .minBy { book ->
+                        book.startDate
+                    }
+                    ?.let { book ->
+                        StatsBookDisplayItem(book.title, book.thumbnailAddress)
+                    }
         }
 
         fun from(books: List<BookEntity>): Single<BookStatistics> {

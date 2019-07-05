@@ -16,10 +16,9 @@ import kotterknife.bindView
 import javax.inject.Inject
 
 /**
- * @author Martin Macheiner
- * Date: 01.01.2018.
+ * Author:  Martin Macheiner
+ * Date:    01.01.2018
  */
-
 class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
 
     private val txtName: TextView by bindView(R.id.dialogfragment_google_welcome_txt_headline)

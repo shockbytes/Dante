@@ -29,11 +29,11 @@ class StatisticsFragment : BaseFragment() {
     }
 
     override fun setupViews() {
-        context?.let { ctx ->
-            fragment_statistics_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(ctx)
-            val margin = ctx.resources.getDimension(R.dimen.dimen_statistics_margin).toInt()
-            fragment_statistics_rv.addItemDecoration(EqualSpaceItemDecoration(margin))
-            fragment_statistics_rv.adapter = StatisticsAdapter(ctx)
+        fragment_statistics_rv.apply {
+            val margin = requireContext().resources.getDimension(R.dimen.dimen_statistics_margin).toInt()
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(EqualSpaceItemDecoration(margin))
+            adapter = StatisticsAdapter(requireContext())
         }
     }
 
@@ -43,9 +43,7 @@ class StatisticsFragment : BaseFragment() {
 
     override fun bindViewModel() {
         viewModel.getStatistics().observe(this, Observer { items ->
-            items?.toMutableList()?.let {
-                (fragment_statistics_rv.adapter as StatisticsAdapter).data = it
-            }
+            (fragment_statistics_rv.adapter as StatisticsAdapter).updateData(items)
         })
         viewModel.requestStatistics()
     }

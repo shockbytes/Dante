@@ -2,6 +2,7 @@ package at.shockbytes.dante.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
@@ -26,8 +27,9 @@ import kotlin.reflect.KClass
  */
 @Suppress("UNCHECKED_CAST")
 @Singleton
-class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) : ViewModelProvider.Factory {
-
+class ViewModelFactory @Inject constructor(
+    private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = viewModels[modelClass]?.get() as T
 }
 
@@ -86,4 +88,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LoginViewModel::class)
     internal abstract fun loginViewModel(viewModel: LoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AnnouncementViewModel::class)
+    internal abstract fun announcementViewModel(viewModel: AnnouncementViewModel): ViewModel
 }

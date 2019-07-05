@@ -28,8 +28,9 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    01.01.2018
  */
-class QueryCaptureFragment : BaseFragment(),
-        GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic> {
+class QueryCaptureFragment :
+    BaseFragment(),
+    GraphicOverlay.OnGraphicAvailableListener<BarcodeGraphic> {
 
     interface QueryCaptureCallback {
 

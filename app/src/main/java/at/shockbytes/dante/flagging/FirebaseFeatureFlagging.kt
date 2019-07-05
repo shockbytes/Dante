@@ -10,7 +10,19 @@ import timber.log.Timber
 class FirebaseFeatureFlagging(private val remoteConfig: FirebaseRemoteConfig) : FeatureFlagging {
 
     init {
+        initializeRemoteConfig()
+    }
 
+    override fun get(flag: FeatureFlag): Boolean {
+        return remoteConfig.getBoolean(flag.key)
+    }
+
+    override fun updateFlag(key: String, value: Boolean) {
+        val msg = "Cannot update feature flags in FirebaseFeatureFlagging implementation!"
+        throw UnsupportedOperationException(msg)
+    }
+
+    private fun initializeRemoteConfig() {
         // Use a fetch interval of 3 days --> This will preserve performance of repetitive fetches
         remoteConfig.fetch(259200L).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -28,14 +40,5 @@ class FirebaseFeatureFlagging(private val remoteConfig: FirebaseRemoteConfig) : 
                 Timber.d("RemoteConfig fetch failed!")
             }
         }
-    }
-
-    override fun get(flag: FeatureFlag): Boolean {
-        return remoteConfig.getBoolean(flag.key)
-    }
-
-    override fun updateFlag(key: String, value: Boolean) {
-        val msg = "Cannot update feature flags in FirebaseFeatureFlagging implementation!"
-        throw UnsupportedOperationException(msg)
     }
 }

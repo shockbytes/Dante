@@ -34,9 +34,9 @@ abstract class BackNavigableActivity : BaseActivity() {
         }
     }
 
-    open fun backwardAnimation() { }
+    open fun backwardAnimation() = Unit
 
-    open fun onBackStackPopped() { }
+    open fun onBackStackPopped() = Unit
 
     fun setHomeAsUpIndicator(@DrawableRes indicator: Int) {
         supportActionBar?.setHomeAsUpIndicator(indicator)

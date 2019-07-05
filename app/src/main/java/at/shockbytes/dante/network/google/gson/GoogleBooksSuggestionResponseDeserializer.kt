@@ -23,7 +23,7 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
         context: JsonDeserializationContext
     ): BookSuggestion? {
 
-        if (json.asJsonObject.getAsJsonArray("items") != null) {
+        return json.asJsonObject.getAsJsonArray("items")?.let {
 
             var size = json.asJsonObject.getAsJsonArray("items").size()
             if (size > 0) {
@@ -42,10 +42,9 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
                             .get(idx).asJsonObject.get("volumeInfo").asJsonObject
                     grabBook(volumeInfo)
                 }
-                return BookSuggestion(mainSuggestion, otherSuggestions)
-            }
+                BookSuggestion(mainSuggestion, otherSuggestions)
+            } else null
         }
-        return null
     }
 
     private fun grabBook(volumeInfo: JsonObject): BookEntity {
@@ -61,39 +60,38 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
         val language = getLanguage(volumeInfo)
         val summary = getSummary(volumeInfo)
 
-        return BookEntity(title = title, subTitle = subtitle, author = author, pageCount = pageCount,
-                publishedDate = publishedDate, isbn = isbn, thumbnailAddress = thumbnailAddress,
-                googleBooksLink = googleBooksLink, language = language, summary = summary)
+        return BookEntity(
+            title = title,
+            subTitle = subtitle,
+            author = author,
+            pageCount = pageCount,
+            publishedDate = publishedDate,
+            isbn = isbn,
+            thumbnailAddress = thumbnailAddress,
+            googleBooksLink = googleBooksLink,
+            language = language,
+            summary = summary
+        )
     }
 
     private fun getPublishedDate(volumeInfo: JsonObject): String {
-        return if (volumeInfo.get("publishedDate") != null) {
-            volumeInfo.get("publishedDate").asString
-        } else ""
+        return volumeInfo.get("publishedDate")?.asString ?: ""
     }
 
     private fun getGoogleBooksLink(volumeInfo: JsonObject): String {
-        return if (volumeInfo.get("infoLink") != null) {
-            volumeInfo.get("infoLink").asString
-        } else ""
+        return volumeInfo.get("infoLink")?.asString ?: ""
     }
 
     private fun getLanguage(volumeInfo: JsonObject): String {
-        return if (volumeInfo.get("language") != null) {
-            volumeInfo.get("language").asString
-        } else ""
+        return volumeInfo.get("language")?.asString ?: ""
     }
 
     private fun getSubtitle(volumeInfo: JsonObject): String {
-        return if (volumeInfo.get("subtitle") != null) {
-            volumeInfo.get("subtitle").asString
-        } else ""
+        return volumeInfo.get("subtitle")?.asString ?: ""
     }
 
     private fun getPageCount(volumeInfo: JsonObject): Int {
-        return if (volumeInfo.get("pageCount") != null) {
-            volumeInfo.get("pageCount").asInt
-        } else 0
+        return volumeInfo.get("pageCount")?.asInt ?: 0
     }
 
     private fun getIsbn(volumeInfo: JsonObject): String {
@@ -108,24 +106,17 @@ class GoogleBooksSuggestionResponseDeserializer : JsonDeserializer<BookSuggestio
     }
 
     private fun getAuthors(volumeInfo: JsonObject): String {
-        return if (volumeInfo.get("authors") != null) {
-            val authors = volumeInfo.get("authors").asJsonArray
-            authors.joinToString(", ") { it.asString }
-        } else {
-            ""
-        }
+        return volumeInfo.get("authors")?.let { authors ->
+            authors.asJsonArray
+                .joinToString(", ") { it.asString }
+        } ?: ""
     }
 
     private fun getImageLink(volumeInfo: JsonObject): String? {
-        return if (volumeInfo.get("imageLinks") != null) {
-            volumeInfo.get("imageLinks").asJsonObject
-                    .get("thumbnail").asString
-        } else null
+        return volumeInfo.get("imageLinks")?.asJsonObject?.get("thumbnail")?.asString
     }
 
     private fun getSummary(volumeInfo: JsonObject): String? {
-        return if (volumeInfo.get("description") != null) {
-            volumeInfo.get("description").asString
-        } else null
+        return volumeInfo.get("description")?.asString
     }
 }

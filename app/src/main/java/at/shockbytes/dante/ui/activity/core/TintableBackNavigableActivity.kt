@@ -113,8 +113,9 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
             }
         }
 
-        val set = AnimatorSet()
-        set.playTogether(animatorToolbar, colorAnimation)
-        set.start()
+        AnimatorSet().apply {
+            playTogether(animatorToolbar, colorAnimation)
+            start()
+        }
     }
 }

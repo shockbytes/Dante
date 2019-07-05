@@ -16,8 +16,8 @@ import io.reactivex.disposables.CompositeDisposable
 import at.shockbytes.dante.util.colored
 
 /**
- * Author: Martin Macheiner
- * Date: 29.11.2017
+ * Author:  Martin Macheiner
+ * Date:    29.11.2017
  */
 abstract class BaseFragment : Fragment() {
 

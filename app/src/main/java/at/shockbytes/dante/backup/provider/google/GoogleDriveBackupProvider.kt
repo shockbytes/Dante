@@ -2,8 +2,8 @@ package at.shockbytes.dante.backup.provider.google
 
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.backup.model.BackupEntry
-import at.shockbytes.dante.backup.model.BackupEntryState
+import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupException
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -37,9 +37,11 @@ class GoogleDriveBackupProvider(
 
     private lateinit var client: DriveResourceClient
 
+    override var isEnabled: Boolean = true
+
     override val backupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
 
-    override fun mapEntryToBooks(entry: BackupEntry): Single<List<BookEntity>> {
+    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
         return Single
             .fromCallable {
 
@@ -67,7 +69,7 @@ class GoogleDriveBackupProvider(
     override fun backup(books: List<BookEntity>): Completable {
 
         if (books.isEmpty()) {
-            throw BackupException("No books to backup")
+            return Completable.error(BackupException("No books to backup"))
         }
 
         val content = gson.toJson(books)
@@ -97,7 +99,7 @@ class GoogleDriveBackupProvider(
         return Completable.complete()
     }
 
-    override fun getBackupEntries(): Single<List<BackupEntryState>> {
+    override fun getBackupEntries(): Single<List<BackupMetadataState>> {
         return Single
             .fromCallable {
                 client.appFolder?.let { folder ->
@@ -107,14 +109,14 @@ class GoogleDriveBackupProvider(
             }
             .map { entries ->
                 entries
-                    .mapTo(mutableListOf<BackupEntryState>()) { BackupEntryState.Active(it) }
+                    .mapTo(mutableListOf<BackupMetadataState>()) { BackupMetadataState.Active(it) }
                     .toList()
             }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
     }
 
-    override fun removeBackupEntry(entry: BackupEntry): Completable {
+    override fun removeBackupEntry(entry: BackupMetadata): Completable {
         return Completable
             .fromAction {
                 if (!deleteDriveFile(DriveId.decodeFromString(entry.id))) {
@@ -147,7 +149,7 @@ class GoogleDriveBackupProvider(
         return client.delete(driveId.asDriveResource())?.isSuccessful ?: false
     }
 
-    private fun fromMetadataToBackupEntries(result: MetadataBuffer?): List<BackupEntry> {
+    private fun fromMetadataToBackupEntries(result: MetadataBuffer?): List<BackupMetadata> {
 
         val entries = result?.mapNotNullTo(mutableListOf()) { buffer ->
 
@@ -163,7 +165,7 @@ class GoogleDriveBackupProvider(
                 val timestamp = java.lang.Long.parseLong(data[2])
                 val books = Integer.parseInt(data[3])
 
-                BackupEntry(
+                BackupMetadata(
                     id = fileId,
                     fileName = fileName,
                     device = device,

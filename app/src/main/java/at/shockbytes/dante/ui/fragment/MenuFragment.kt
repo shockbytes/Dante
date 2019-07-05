@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.navigation.ActivityNavigator
@@ -58,11 +59,11 @@ class MenuFragment : BottomSheetDialogFragment() {
         val contentView = View.inflate(context, R.layout.bottom_sheet_menu, null)
         dialog.setContentView(contentView)
         (contentView.parent as View)
-                .setBackgroundColor(ContextCompat.getColor(context!!, android.R.color.transparent))
+                .setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
 
-        val layoutParams = (contentView.parent as View).layoutParams as androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams
+        val layoutParams = (contentView.parent as View).layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
-        if (behavior != null && behavior is BottomSheetBehavior<*>) {
+        if (behavior is BottomSheetBehavior<*>) {
             behavior.setBottomSheetCallback(bottomSheetBehaviorCallback)
         }
 
@@ -114,7 +115,7 @@ class MenuFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        viewModel.userEvent.observe(this, Observer { event ->
+        viewModel.getUserEvent().observe(this, Observer { event ->
 
             when (event) {
 

@@ -15,9 +15,10 @@ def rxJavaVersion = "2.1.14"
 def rxAndroidVersion = "2.1.0"
 def rxBindingsVersion = "2.0.0"
 
-def firebaseVersionCore = "16.0.8"
-def firebaseVersionConfig = "16.5.0"
-def firebaseVersionAuth = "16.2.1"
+def firebaseVersionCore = "17.0.0"
+def firebaseVersionConfig = "18.0.0"
+def firebaseVersionAuth = "18.0.0"
+def firebaseMLVision = "21.0.0"
 
 def playServicesVersionVision = "17.0.2"
 def playServicesVersionDrive = "16.1.0"
@@ -130,6 +131,7 @@ dependencies {
     implementation "com.google.firebase:firebase-core:$firebaseVersionCore"
     implementation "com.google.firebase:firebase-config:$firebaseVersionConfig"
     implementation "com.google.firebase:firebase-auth:$firebaseVersionAuth"
+    implementation "com.google.firebase:firebase-ml-vision:$firebaseMLVision"
 
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"

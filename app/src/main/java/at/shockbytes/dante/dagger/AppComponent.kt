@@ -10,6 +10,7 @@ import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.fragment.BackupBackupFragment
 import at.shockbytes.dante.ui.fragment.BackupFragment
 import at.shockbytes.dante.ui.fragment.BackupRestoreFragment
+import at.shockbytes.dante.ui.fragment.BarcodeDetectorFragment
 import at.shockbytes.dante.ui.fragment.LegacyBackupFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.LegacyBookDetailFragment
@@ -104,6 +105,8 @@ interface AppComponent {
     fun inject(fragment: FeatureFlagConfigFragment)
 
     fun inject(fragment: AnnouncementFragment)
+
+    fun inject(fragment: BarcodeDetectorFragment)
 
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 

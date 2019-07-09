@@ -7,9 +7,13 @@ import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.book.BookEntity
 import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.flagging.FeatureFlag
+import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
+import at.shockbytes.dante.ui.fragment.BarcodeDetectorFragment
 import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
+import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
@@ -18,6 +22,9 @@ import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
 class BookRetrievalActivity : TintableBackNavigableActivity(),
     QueryCaptureFragment.QueryCaptureCallback,
     DownloadBookFragment.OnBookDownloadedListener {
+
+    @Inject
+    lateinit var featureFlagging: FeatureFlagging
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +35,27 @@ class BookRetrievalActivity : TintableBackNavigableActivity(),
         val typeOrdinal = intent.getIntExtra(ARG_EXTRA_RETRIEVAL_ORDINAL, RetrievalType.CAMERA.ordinal)
         when (RetrievalType.values()[typeOrdinal]) {
 
-            RetrievalType.CAMERA -> showQueryFragment()
+            RetrievalType.CAMERA -> {
+
+                if (featureFlagging[FeatureFlag.ScannerImprovements]) {
+                    showBarcodeDetectorFragment()
+                } else {
+                    showQueryFragment()
+                }
+
+            }
 
             RetrievalType.TITLE -> {
                 val query = intent.getStringExtra(ARG_EXTRA_RETRIEVAL_TITLE)
                 onQueryAvailable(query)
             }
         }
+    }
+
+    private fun showBarcodeDetectorFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(android.R.id.content, BarcodeDetectorFragment.newInstance())
+            .commit()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

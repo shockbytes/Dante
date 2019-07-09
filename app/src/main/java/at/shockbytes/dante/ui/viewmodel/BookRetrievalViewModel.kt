@@ -1,5 +1,3 @@
 package at.shockbytes.dante.ui.viewmodel
 
-class BookRetrievalViewModel: BaseViewModel() {
-
-}
+class BookRetrievalViewModel : BaseViewModel()

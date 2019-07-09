@@ -42,7 +42,6 @@ class BookRetrievalActivity : TintableBackNavigableActivity(),
                 } else {
                     showQueryFragment()
                 }
-
             }
 
             RetrievalType.TITLE -> {

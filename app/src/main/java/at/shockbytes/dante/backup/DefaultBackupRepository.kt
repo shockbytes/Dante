@@ -5,11 +5,11 @@ import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
-import at.shockbytes.dante.backup.model.RestoreStrategy
+import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesLongPropertyDelegate
 import io.reactivex.Completable
 import io.reactivex.Single

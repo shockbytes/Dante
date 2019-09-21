@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookSearchItem
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable

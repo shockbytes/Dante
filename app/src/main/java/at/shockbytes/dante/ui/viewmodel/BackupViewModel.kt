@@ -7,8 +7,8 @@ import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
-import at.shockbytes.dante.backup.model.RestoreStrategy
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.util.RestoreStrategy
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade

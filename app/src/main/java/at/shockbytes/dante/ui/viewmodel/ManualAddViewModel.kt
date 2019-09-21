@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import android.net.Uri
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.util.addTo
 import io.reactivex.subjects.PublishSubject

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.statistics.BookStatistics
 import at.shockbytes.dante.core.book.statistics.StatisticsDisplayItem
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.roundDouble
 import io.reactivex.rxkotlin.addTo
 import timber.log.Timber

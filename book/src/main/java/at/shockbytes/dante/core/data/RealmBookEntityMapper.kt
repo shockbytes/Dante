@@ -1,4 +1,4 @@
-package at.shockbytes.dante.data
+package at.shockbytes.dante.core.data
 
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState

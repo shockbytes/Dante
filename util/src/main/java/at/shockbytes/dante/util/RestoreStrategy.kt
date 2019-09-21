@@ -1,4 +1,4 @@
-package at.shockbytes.dante.backup.model
+package at.shockbytes.dante.util
 
 enum class RestoreStrategy {
     MERGE,

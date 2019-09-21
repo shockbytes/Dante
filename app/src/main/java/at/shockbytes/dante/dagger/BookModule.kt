@@ -1,8 +1,8 @@
 package at.shockbytes.dante.dagger
 
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
-import at.shockbytes.dante.data.BookEntityDao
-import at.shockbytes.dante.data.RealmBookEntityDao
+import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.RealmBookEntityDao
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.core.network.google.GoogleBooksDownloader

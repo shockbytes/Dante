@@ -1,4 +1,4 @@
-package at.shockbytes.dante.data
+package at.shockbytes.dante.core.data
 
 /**
  * Author:  Martin Macheiner

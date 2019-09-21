@@ -6,7 +6,7 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookEntityDao
 import io.reactivex.disposables.CompositeDisposable
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps

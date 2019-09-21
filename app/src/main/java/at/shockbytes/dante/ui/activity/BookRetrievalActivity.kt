@@ -116,7 +116,7 @@ class BookRetrievalActivity : TintableBackNavigableActivity(),
     private fun showDownloadFragment(query: String?) {
 
         if (featureFlagging[FeatureFlag.ScanFeedback]) {
-            TODO("Show bottomsheetdialogfragment")
+            // TODO("Show bottomsheetdialogfragment")
         } else {
             supportFragmentManager.beginTransaction()
                 .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)

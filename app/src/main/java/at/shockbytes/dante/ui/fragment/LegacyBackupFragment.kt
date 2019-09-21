@@ -82,7 +82,7 @@ class LegacyBackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Bac
             .setOnRestoreStrategySelectedListener { strategy ->
                 viewModel.applyBackup(state.entry, strategy)
             }
-            .show(fragmentManager, "restore-strategy-dialog-fragment")
+            .show(requireFragmentManager(), "restore-strategy-dialog-fragment")
     }
 
     override fun bindViewModel() {

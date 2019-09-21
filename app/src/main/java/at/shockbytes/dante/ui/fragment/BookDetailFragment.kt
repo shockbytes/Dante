@@ -136,7 +136,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                                 viewModel.moveBookToDone()
                                 activity?.supportFinishAfterTransition()
                             }
-                            .show(fragmentManager, "book-finished-dialogfragment")
+                            .show(requireFragmentManager(), "book-finished-dialogfragment")
                 }
                 .addTo(compositeDisposable)
 

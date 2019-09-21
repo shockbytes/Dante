@@ -65,7 +65,7 @@ class QueryCaptureFragment :
         appComponent.inject(this)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         callback = context as? QueryCaptureCallback
     }
@@ -180,7 +180,7 @@ class QueryCaptureFragment :
                     .setOnAcceptListener {
                         requestPermissions(permissions, rcHandleCameraPermission)
                     }
-                    .show(fragmentManager, "request-camera-permission-dialogfragment")
+                    .show(requireFragmentManager(), "request-camera-permission-dialogfragment")
         }
     }
 

@@ -4,7 +4,8 @@ sealed class FeatureFlag(val key: String, val displayName: String, val defaultVa
 
     object BookSuggestions : FeatureFlag("book_suggestions", "Book suggestions", false)
     object UpdatedDetailPage : FeatureFlag("detail_page_v2", "Updated detail page", true)
-    object ScannerImprovements : FeatureFlag("sanner_v2", "Book scanner v2", true)
+    object ScannerImprovements : FeatureFlag("scanner_v2", "Book scanner v2", false)
+    object ScanFeedback : FeatureFlag("scan_feedback", "Scanner feedback v2", true)
 
     companion object {
 

@@ -90,7 +90,7 @@ class MenuFragment : BottomSheetDialogFragment() {
                     .setOnApplyListener {
                         dismiss()
                     }
-                    .show(fragmentManager, "sort-dialog-fragment")
+                    .show(requireFragmentManager(), "sort-dialog-fragment")
         }
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
@@ -149,7 +149,7 @@ class MenuFragment : BottomSheetDialogFragment() {
                                 activity?.startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
                             }
                             .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
-                            .show(fragmentManager, "sign-in-fragment")
+                            .show(requireFragmentManager(), "sign-in-fragment")
                 }
             }
         })

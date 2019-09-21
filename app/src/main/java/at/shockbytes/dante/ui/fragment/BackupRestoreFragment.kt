@@ -79,7 +79,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     private fun showInactiveResourceModal(t: BackupMetadataState.Inactive) {
         InactiveResourceDialogFragment
             .newInstance(t.entry.storageProvider)
-            .show(fragmentManager, "inactive-resource-dialog-fragment")
+            .show(requireFragmentManager(), "inactive-resource-dialog-fragment")
     }
 
     override fun bindViewModel() {
@@ -180,7 +180,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
             .setOnRestoreStrategySelectedListener { strategy ->
                 viewModel.applyBackup(state.entry, strategy)
             }
-            .show(fragmentManager, "restore-strategy-dialog-fragment")
+            .show(requireFragmentManager(), "restore-strategy-dialog-fragment")
     }
 
     companion object {

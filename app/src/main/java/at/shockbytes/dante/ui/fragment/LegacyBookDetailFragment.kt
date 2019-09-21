@@ -176,7 +176,7 @@ class LegacyBookDetailFragment :
                                 viewModel.moveBookToDone()
                                 activity?.supportFinishAfterTransition()
                             }
-                            .show(fragmentManager, "book-finished-dialogfragment")
+                            .show(requireFragmentManager(), "book-finished-dialogfragment")
                 }
                 .addTo(compositeDisposable)
 
@@ -186,9 +186,10 @@ class LegacyBookDetailFragment :
                     data?.let { (currentPage, pageCount, _) ->
                         // Only show current page in dialog if tracking is enabled and book is in reading state
                         PageEditDialogFragment.newInstance(currentPage, pageCount)
-                                .setOnPageEditedListener { current, pages ->
-                                    viewModel.updateBookPages(current, pages)
-                                }.show(fragmentManager, "pages-dialogfragment")
+                            .setOnPageEditedListener { current, pages ->
+                                viewModel.updateBookPages(current, pages)
+                            }
+                            .show(requireFragmentManager(), "pages-dialogfragment")
                     }
                 }
                 .addTo(compositeDisposable)
@@ -198,10 +199,11 @@ class LegacyBookDetailFragment :
                 .subscribe { data ->
                     data?.let { (title, thumbnailAddress, notes) ->
                         NotesDialogFragment.newInstance(title, thumbnailAddress, notes)
-                                .setOnApplyListener { updatedNotes ->
-                                    viewModel.updateNotes(updatedNotes)
-                                    setupNotes(notes.isEmpty())
-                                }.show(fragmentManager, "notes-dialogfragment")
+                            .setOnApplyListener { updatedNotes ->
+                                viewModel.updateNotes(updatedNotes)
+                                setupNotes(notes.isEmpty())
+                            }
+                            .show(requireFragmentManager(), "notes-dialogfragment")
                     }
                 }
                 .addTo(compositeDisposable)
@@ -211,10 +213,11 @@ class LegacyBookDetailFragment :
                 .subscribe { data ->
                     data?.let { (title, thumbnailAddress, r) ->
                         RateBookDialogFragment.newInstance(title, thumbnailAddress, r)
-                                .setOnApplyListener { rating ->
-                                    viewModel.updateRating(rating)
-                                    btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
-                                }.show(fragmentManager, "rating-dialogfragment")
+                            .setOnApplyListener { rating ->
+                                viewModel.updateRating(rating)
+                                btnDetailFragmentRating.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
+                            }
+                            .show(requireFragmentManager(), "rating-dialogfragment")
                     }
                 }
                 .addTo(compositeDisposable)

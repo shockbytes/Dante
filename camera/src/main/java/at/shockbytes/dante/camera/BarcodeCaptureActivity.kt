@@ -1,6 +1,8 @@
 package at.shockbytes.dante.camera
 
 import android.Manifest
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Matrix
 import android.graphics.Rect
@@ -32,6 +34,8 @@ import androidx.camera.core.ImageAnalysisConfig
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
 import androidx.camera.core.UseCase
+import android.transition.Slide
+import android.view.Gravity
 import at.shockbytes.dante.camera.focus.FocusComputation
 import at.shockbytes.dante.camera.preview.AutoFitPreviewBuilder
 import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
@@ -58,6 +62,8 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window.exitTransition = Slide(Gravity.BOTTOM)
+        window.enterTransition = Slide(Gravity.BOTTOM)
         setContentView(R.layout.activity_camera)
         supportActionBar?.hide()
         window.setFlags(
@@ -252,5 +258,9 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
+
+        fun newIntent(context: Context): Intent {
+            return Intent(context, BarcodeCaptureActivity::class.java)
+        }
     }
 }

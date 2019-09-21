@@ -61,6 +61,8 @@
             android:name=".ui.activity.LoginActivity"
             android:exported="true" />
 
+        <activity android:name=".camera.BarcodeCaptureActivity" />
+
         <service
             android:name=".ui.widget.DanteRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />

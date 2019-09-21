@@ -33,4 +33,6 @@ sealed class Destination {
     object Statistics : Destination()
     object Backup : Destination()
     object Settings : Destination()
+
+    object BarcodeScanner : Destination()
 }

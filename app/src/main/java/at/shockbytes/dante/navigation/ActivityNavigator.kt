@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import at.shockbytes.dante.R
+import at.shockbytes.dante.camera.BarcodeCaptureActivity
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
@@ -39,6 +40,7 @@ object ActivityNavigator {
                 is Destination.Statistics -> StatisticsActivity.newIntent(context)
                 is Destination.Backup -> BackupActivity.newIntent(context)
                 is Destination.Settings -> SettingsActivity.newIntent(context)
+                Destination.BarcodeScanner -> BarcodeCaptureActivity.newIntent(context)
             }
 
             intentFlags?.let { flags ->

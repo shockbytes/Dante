@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import at.shockbytes.dante.camera.dependencies.CameraDependencyProvider.provideBooksDownloader
+import at.shockbytes.dante.camera.dependencies.CameraDependencyProvider.provideSchedulers
+import at.shockbytes.dante.camera.viewmodel.IsbnResolverViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.isbn_bottom_sheet.*
 
@@ -13,9 +16,13 @@ class IsbnBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var closeListener: (() -> Unit)? = null
 
+    private lateinit var viewModel: IsbnResolverViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isbn = arguments?.getString("isbn") ?: throw IllegalStateException("ISBN must be not null!")
+        viewModel = IsbnResolverViewModel(provideBooksDownloader(), provideSchedulers())
+        viewModel.loadBook(isbn)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

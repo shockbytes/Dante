@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
+import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.signin.DanteUser
@@ -41,7 +42,7 @@ import timber.log.Timber
 import javax.inject.Inject
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
-class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -330,8 +331,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     private fun navigateToCamera() {
         ActivityNavigator.navigateTo(
             this,
-            Destination.Retrieval(BookRetrievalActivity.RetrievalType.CAMERA, null),
-            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+            Destination.BarcodeScanner
         )
     }
 

@@ -1,5 +1,5 @@
 
-package at.shockbytes.camera.overlay
+package at.shockbytes.dante.camera.overlay
 
 import android.graphics.Canvas
 import android.graphics.Color

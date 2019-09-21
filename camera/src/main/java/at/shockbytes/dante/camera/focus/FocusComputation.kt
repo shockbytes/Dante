@@ -1,4 +1,4 @@
-package at.shockbytes.camera.focus
+package at.shockbytes.dante.camera.focus
 
 import android.graphics.Rect
 import android.view.MotionEvent

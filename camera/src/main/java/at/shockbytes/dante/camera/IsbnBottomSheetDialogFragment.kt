@@ -1,4 +1,4 @@
-package at.shockbytes.camera
+package at.shockbytes.dante.camera
 
 import android.os.Bundle
 import android.view.LayoutInflater

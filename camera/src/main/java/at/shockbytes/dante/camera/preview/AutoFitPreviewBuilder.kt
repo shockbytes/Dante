@@ -1,4 +1,4 @@
-package at.shockbytes.camera.preview
+package at.shockbytes.dante.camera.preview
 
 /*
  * Copyright 2019 Google LLC

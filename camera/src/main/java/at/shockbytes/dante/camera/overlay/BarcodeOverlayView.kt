@@ -1,4 +1,4 @@
-package at.shockbytes.camera.overlay
+package at.shockbytes.dante.camera.overlay
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet

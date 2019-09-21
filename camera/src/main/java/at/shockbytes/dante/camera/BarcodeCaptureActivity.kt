@@ -1,4 +1,4 @@
-package at.shockbytes.camera
+package at.shockbytes.dante.camera
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -20,9 +20,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.core.graphics.toRectF
-import at.shockbytes.camera.overlay.BarcodeObject
-import at.shockbytes.camera.overlay.BarcodeBoundsOverlay
-import at.shockbytes.camera.overlay.PositionTranslator
+import at.shockbytes.dante.camera.overlay.BarcodeObject
+import at.shockbytes.dante.camera.overlay.BarcodeBoundsOverlay
+import at.shockbytes.dante.camera.overlay.PositionTranslator
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import androidx.camera.core.CameraX.LensFacing
@@ -32,9 +32,9 @@ import androidx.camera.core.ImageAnalysisConfig
 import androidx.camera.core.Preview
 import androidx.camera.core.PreviewConfig
 import androidx.camera.core.UseCase
-import at.shockbytes.camera.focus.FocusComputation
-import at.shockbytes.camera.preview.AutoFitPreviewBuilder
-import at.shockbytes.camera.analyzer.BarcodeAnalyzer
+import at.shockbytes.dante.camera.focus.FocusComputation
+import at.shockbytes.dante.camera.preview.AutoFitPreviewBuilder
+import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber

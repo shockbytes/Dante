@@ -1,9 +1,9 @@
-package at.shockbytes.camera.analyzer
+package at.shockbytes.dante.camera.analyzer
 
 import android.util.Size
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
-import at.shockbytes.camera.IsbnVisionBarcode
+import at.shockbytes.dante.camera.IsbnVisionBarcode
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
 import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector

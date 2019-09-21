@@ -26,7 +26,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/view_finder"
             android:layout_marginBottom="64dp"/>
 
-    <at.shockbytes.camera.overlay.BarcodeOverlayView
+    <at.shockbytes.dante.camera.overlay.BarcodeOverlayView
             android:id="@+id/overlay_view"
             android:orientation="vertical"
             android:layout_width="0dp"
@@ -35,6 +35,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/view_finder">
-    </at.shockbytes.camera.overlay.BarcodeOverlayView>
+    </at.shockbytes.dante.camera.overlay.BarcodeOverlayView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

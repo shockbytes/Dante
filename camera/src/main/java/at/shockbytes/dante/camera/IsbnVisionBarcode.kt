@@ -1,4 +1,4 @@
-package at.shockbytes.camera
+package at.shockbytes.dante.camera
 
 import android.graphics.Point
 import android.graphics.Rect

@@ -1,4 +1,4 @@
-package at.shockbytes.camera.overlay
+package at.shockbytes.dante.camera.overlay
 
 import android.graphics.RectF
 import android.util.Size

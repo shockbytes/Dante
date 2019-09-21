@@ -14,8 +14,8 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment

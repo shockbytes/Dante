@@ -3,8 +3,8 @@ package at.shockbytes.dante.dagger
 import android.content.Context
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
-import at.shockbytes.dante.network.amazon.AmazonItemLookupApi
-import at.shockbytes.dante.network.google.GoogleBooksApi
+import at.shockbytes.dante.core.network.amazon.AmazonItemLookupApi
+import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides

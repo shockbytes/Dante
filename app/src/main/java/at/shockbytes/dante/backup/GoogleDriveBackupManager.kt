@@ -8,7 +8,7 @@ import at.shockbytes.dante.backup.model.BackupException
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade

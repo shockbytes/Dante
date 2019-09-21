@@ -24,7 +24,6 @@
     <string name="dialogfragment_query_message">Gib den Titel oder den ISBN deines Buches ein.</string>
     <string name="book_finished">%s fertig</string>
     <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.</string>
-    <string name="share_template">Hey, ich lese gerade %1$s und es ist fantastisch!\nSieh es dir selbst an: %2$s</string>
     <string name="send_to">Teile dein Buch</string>
     <string name="label_backup">Backups verwalten</string>
     <string name="last_backup">Letzte Sicherung: %s</string>

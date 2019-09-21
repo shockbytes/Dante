@@ -4,11 +4,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookSearchItem
+import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.dagger.ViewModelFactory
 import at.shockbytes.dante.ui.activity.DetailActivity

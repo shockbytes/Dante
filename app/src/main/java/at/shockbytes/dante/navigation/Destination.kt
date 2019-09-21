@@ -1,7 +1,7 @@
 package at.shockbytes.dante.navigation
 
 import android.os.Parcelable
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import kotlinx.android.parcel.Parcelize
 

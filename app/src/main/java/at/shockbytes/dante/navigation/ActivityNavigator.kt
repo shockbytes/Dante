@@ -12,7 +12,7 @@ import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
-import at.shockbytes.dante.util.createSharingIntent
+import at.shockbytes.dante.core.createSharingIntent
 
 object ActivityNavigator {
 

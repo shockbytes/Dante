@@ -1,7 +1,7 @@
 package at.shockbytes.dante.backup.provider.shockbytes.api
 
 import at.shockbytes.dante.backup.model.BackupMetadata
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Body

@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'realm-android'
 apply plugin: 'io.fabric'
 
 android {
@@ -31,17 +30,6 @@ android {
     }
     buildTypes {
         release {
-            useProguard true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        pre_release {
-            initWith(release)
-        }
-        // Use this build type in order to avoid, that release build type will be signed with the release key
-        proguard_debug {
-            initWith(debug)
-            useProguard true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -71,13 +59,13 @@ android {
 androidExtensions {
     experimental = true
 }
-kapt {
-    arguments {
-        arg("realm.ignoreKotlinNullability", true)
-    }
-}
 
 dependencies {
+
+    implementation project(':book')
+    implementation project(':util')
+    implementation project(':camera')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.google.android.material:material:${rootProject.androidXVersion}"
     implementation "androidx.legacy:legacy-support-v4:${rootProject.androidXVersion}"
@@ -110,7 +98,6 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "com.github.shockbytes:ShockUtil:$shockUtilVersion"
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
@@ -120,7 +107,6 @@ dependencies {
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
-    implementation 'net.danlew:android.joda:2.10.1.2'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation "com.leinardi.android:speed-dial:2.0.1"
     implementation 'com.mlsdev.rximagepicker:library:2.1.5'
@@ -133,10 +119,6 @@ dependencies {
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingsVersion"
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
 
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
 

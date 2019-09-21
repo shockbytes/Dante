@@ -7,7 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.transition.Fade
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.dagger.ViewModelFactory
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity

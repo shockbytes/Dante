@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.palette.graphics.Palette
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter

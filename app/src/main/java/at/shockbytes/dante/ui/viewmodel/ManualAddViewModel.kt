@@ -2,8 +2,8 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.util.addTo
@@ -81,16 +81,16 @@ class ManualAddViewModel @Inject constructor(
         } else {
 
             val entity = BookEntity(
-                    title = title,
-                    author = author,
-                    pageCount = pageCount,
-                    state = state,
-                    subTitle = subTitle ?: "",
-                    publishedDate = publishedDate ?: "",
-                    isbn = isbn ?: "",
-                    thumbnailAddress = thumbnailAddress,
-                    language = language,
-                    summary = summary
+                title = title,
+                author = author,
+                pageCount = pageCount,
+                state = state,
+                subTitle = subTitle ?: "",
+                publishedDate = publishedDate ?: "",
+                isbn = isbn ?: "",
+                thumbnailAddress = thumbnailAddress,
+                language = language,
+                summary = summary
             )
 
             when (state) {

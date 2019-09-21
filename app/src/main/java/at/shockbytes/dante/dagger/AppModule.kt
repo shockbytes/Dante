@@ -18,9 +18,9 @@ import at.shockbytes.dante.backup.provider.shockbytes.ShockbytesHerokuServerBack
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
 import at.shockbytes.dante.backup.provider.shockbytes.storage.SharedPreferencesInactiveShockbytesBackupStorage
-import at.shockbytes.dante.book.BookSuggestion
-import at.shockbytes.dante.book.realm.RealmInstanceProvider
-import at.shockbytes.dante.network.google.gson.GoogleBooksSuggestionResponseDeserializer
+import at.shockbytes.dante.core.book.BookSuggestion
+import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
+import at.shockbytes.dante.core.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.ui.image.GlideImageLoader
@@ -82,9 +82,9 @@ class AppModule(private val app: Application) {
     @Singleton
     fun provideRealmInstanceProvider(): RealmInstanceProvider {
         return RealmInstanceProvider(RealmConfiguration.Builder()
-                .schemaVersion(DanteRealmMigration.migrationVersion)
-                .migration(DanteRealmMigration())
-                .build())
+            .schemaVersion(DanteRealmMigration.migrationVersion)
+            .migration(DanteRealmMigration())
+            .build())
     }
 
     @Provides

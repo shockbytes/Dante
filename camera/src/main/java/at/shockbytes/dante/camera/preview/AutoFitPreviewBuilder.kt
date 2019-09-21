@@ -18,7 +18,6 @@ package at.shockbytes.dante.camera.preview
 import android.content.Context
 import android.graphics.Matrix
 import android.hardware.display.DisplayManager
-import android.util.Log
 import android.util.Size
 import android.view.Display
 import android.view.Surface
@@ -97,19 +96,16 @@ class AutoFitPreviewBuilder private constructor(
 
         // Every time the view finder is updated, recompute layout
         useCase.onPreviewOutputUpdateListener = Preview.OnPreviewOutputUpdateListener {
-            val viewFinder =
+            val vf =
                 viewFinderRef.get() ?: return@OnPreviewOutputUpdateListener
-            Log.d(
-                TAG, "Preview output changed. " +
-                "Size: ${it.textureSize}. Rotation: ${it.rotationDegrees}")
 
             // To update the SurfaceTexture, we have to remove it and re-add it
-            val parent = viewFinder.parent as ViewGroup
+            val parent = vf.parent as ViewGroup
             parent.removeView(viewFinder)
             parent.addView(viewFinder, 0)
 
             // Update internal texture
-            viewFinder.surfaceTexture = it.surfaceTexture
+            vf.surfaceTexture = it.surfaceTexture
 
             // Apply relevant transformations
             bufferRotation = it.rotationDegrees
@@ -120,12 +116,11 @@ class AutoFitPreviewBuilder private constructor(
 
         // Every time the provided texture view changes, recompute layout
         viewFinder.addOnLayoutChangeListener { view, left, top, right, bottom, _, _, _, _ ->
-            val viewFinder = view as TextureView
+            val vf = view as TextureView
             val newViewFinderDimens = Size(right - left, bottom - top)
-            Log.d(TAG, "View finder layout changed. Size: $newViewFinderDimens")
             val rotation =
                 getDisplaySurfaceRotation(viewFinder.display)
-            updateTransform(viewFinder, rotation, bufferDimens, newViewFinderDimens)
+            updateTransform(vf, rotation, bufferDimens, newViewFinderDimens)
         }
 
         // Every time the orientation of device changes, recompute layout
@@ -195,12 +190,6 @@ class AutoFitPreviewBuilder private constructor(
         }
 
         val matrix = Matrix()
-        Log.d(
-            TAG, "Applying output transformation.\n" +
-            "View finder size: $viewFinderDimens.\n" +
-            "Preview output size: $bufferDimens\n" +
-            "View finder rotation: $viewFinderRotation\n" +
-            "Preview output rotation: $bufferRotation")
 
         // Compute the center of the view finder
         val centerX = viewFinderDimens.width / 2f
@@ -235,7 +224,6 @@ class AutoFitPreviewBuilder private constructor(
     }
 
     companion object {
-        private val TAG = AutoFitPreviewBuilder::class.java.simpleName
 
         /** Helper function that gets the rotation of a [Display] in degrees */
         fun getDisplaySurfaceRotation(display: Display?) = when (display?.rotation) {

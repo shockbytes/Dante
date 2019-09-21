@@ -52,7 +52,6 @@
 
     <string name="contentdesc_listitem_img_thumb" translatable="false">Thumbnail for book cover</string>
     <string name="contentdesc_listitem_img_overflow" translatable="false">Overflow icon for list item</string>
-    <string name="share_template">Hey, I\'m currently reading %1$s and it\'s awesome!\nCheck it out: %2$s</string>
     <string name="send_to">Share your book</string>
     <string name="label_backup">Manage backups</string>
     <string name="restore">Restore (%d)</string>

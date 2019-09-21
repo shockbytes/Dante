@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 

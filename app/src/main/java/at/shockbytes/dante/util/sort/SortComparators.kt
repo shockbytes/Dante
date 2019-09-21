@@ -1,6 +1,6 @@
 package at.shockbytes.dante.util.sort
 
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.util.removeBrackets
 
 /**

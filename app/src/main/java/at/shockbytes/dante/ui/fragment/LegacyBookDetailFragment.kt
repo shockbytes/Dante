@@ -13,8 +13,8 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import androidx.palette.graphics.Palette
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment

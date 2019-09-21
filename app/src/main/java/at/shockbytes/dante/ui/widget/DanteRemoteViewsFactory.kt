@@ -5,7 +5,7 @@ import android.net.Uri
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import io.reactivex.disposables.CompositeDisposable
 import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap

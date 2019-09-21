@@ -8,7 +8,7 @@ import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.signin.GoogleSignInManager
 import io.reactivex.Completable
 import io.reactivex.Single

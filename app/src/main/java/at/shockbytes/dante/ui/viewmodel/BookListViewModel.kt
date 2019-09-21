@@ -2,8 +2,8 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo

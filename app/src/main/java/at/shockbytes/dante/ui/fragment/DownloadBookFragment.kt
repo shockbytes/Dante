@@ -11,11 +11,11 @@ import android.view.animation.AnticipateInterpolator
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.dagger.AppComponent
 import at.shockbytes.dante.data.BookEntityDao
-import at.shockbytes.dante.network.BookDownloader
+import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImageLoadingCallback

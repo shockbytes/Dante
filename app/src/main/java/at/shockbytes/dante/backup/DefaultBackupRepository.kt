@@ -8,7 +8,7 @@ import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.model.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.data.BookEntityDao
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesLongPropertyDelegate
 import io.reactivex.Completable

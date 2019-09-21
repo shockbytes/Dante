@@ -1,10 +1,10 @@
 package at.shockbytes.dante.data
 
 import at.shockbytes.dante.backup.model.RestoreStrategy
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.realm.RealmBook
-import at.shockbytes.dante.book.realm.RealmBookConfig
-import at.shockbytes.dante.book.realm.RealmInstanceProvider
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.realm.RealmBook
+import at.shockbytes.dante.core.book.realm.RealmBookConfig
+import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.realm.Case

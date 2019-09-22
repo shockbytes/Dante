@@ -61,8 +61,7 @@
             android:name=".ui.activity.LoginActivity"
             android:exported="true" />
 
-        <activity android:name=".camera.BarcodeCaptureActivity"
-            android:theme="@style/BarcodeCaptureTheme"/>
+        <activity android:name=".camera.BarcodeCaptureActivity"/>
 
         <service
             android:name=".ui.widget.DanteRemoteViewsService"

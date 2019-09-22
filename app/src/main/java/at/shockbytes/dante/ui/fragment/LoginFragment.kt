@@ -35,11 +35,9 @@ class LoginFragment : BaseFragment() {
         appComponent.inject(this)
     }
 
-    override fun bindViewModel() {
-    }
+    override fun bindViewModel() = Unit
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     companion object {
 

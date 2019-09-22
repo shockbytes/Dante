@@ -14,6 +14,7 @@ import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
+import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.navigation.ActivityNavigator
@@ -346,12 +347,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showAddByTitleDialog() {
         QueryDialogFragment.newInstance()
             .setOnQueryEnteredListener { query ->
-
-                ActivityNavigator.navigateTo(
-                    this,
-                    Destination.Retrieval(BookRetrievalActivity.RetrievalType.TITLE, query),
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
-                )
+                BarcodeScanResultBottomSheetDialogFragment.newInstance(query)
+                    .show(supportFragmentManager, "show-bottom-sheet-with-book")
             }
             .show(supportFragmentManager, "query-dialog-fragment")
     }

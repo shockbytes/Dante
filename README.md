@@ -41,12 +41,13 @@ the user during the login process.
 - [ ] Add online sync capability
 
 ### Version 3.8 - CLEAN THE CAMPFIRE BEFORE THE BBQ
-- [ ] Put overflow menu into ActionBar
 - [ ] Labels for books
-
-### Version 3.7 - ONBOARDING
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
+
+### Version 3.7 - ONBOARDING
+- [ ] Redesign overflow menu
+- [ ] Redesign scan screen
 
 ### Version 3.6 - GET EXCITED
 * Move to Android App Bundles

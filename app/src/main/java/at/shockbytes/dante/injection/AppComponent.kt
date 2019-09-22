@@ -4,7 +4,6 @@ import at.shockbytes.dante.core.injection.CoreComponent
 import at.shockbytes.dante.core.injection.ModuleScope
 import at.shockbytes.dante.core.injection.NetworkModule
 import at.shockbytes.dante.ui.activity.BackupActivity
-import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
@@ -17,7 +16,6 @@ import at.shockbytes.dante.ui.fragment.BarcodeDetectorFragment
 import at.shockbytes.dante.ui.fragment.LegacyBackupFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.LegacyBookDetailFragment
-import at.shockbytes.dante.ui.fragment.DownloadBookFragment
 import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
 import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
@@ -25,7 +23,6 @@ import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.fragment.NotesFragment
 import at.shockbytes.dante.ui.fragment.OnboardingFragment
-import at.shockbytes.dante.ui.fragment.QueryCaptureFragment
 import at.shockbytes.dante.ui.fragment.RateFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.fragment.SettingsFragment
@@ -61,8 +58,6 @@ interface AppComponent {
 
     fun inject(activity: DetailActivity)
 
-    fun inject(activity: BookRetrievalActivity)
-
     fun inject(activity: SearchActivity)
 
     fun inject(activity: BackupActivity)
@@ -71,8 +66,6 @@ interface AppComponent {
 
     fun inject(fragment: MainBookFragment)
 
-    fun inject(fragment: DownloadBookFragment)
-
     fun inject(fragment: LegacyBackupFragment)
 
     fun inject(fragment: BackupFragment)
@@ -80,8 +73,6 @@ interface AppComponent {
     fun inject(fragment: BackupBackupFragment)
 
     fun inject(fragment: BackupRestoreFragment)
-
-    fun inject(fragment: QueryCaptureFragment)
 
     fun inject(fragment: SearchFragment)
 

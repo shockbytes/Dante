@@ -81,11 +81,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        tools:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_barcode_result_error"
@@ -102,22 +102,22 @@
             android:layout_above="@+id/btn_barcode_result_error_close"
             android:layout_below="@+id/iv_barcode_result_error"
             android:gravity="center"
-            tools:text="@string/download_code_error"
             android:padding="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="@string/download_code_error" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_error_close"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_alignParentBottom="true"
             android:layout_marginBottom="48dp"
-            app:cornerRadius="22dp"
             android:text="@string/download_btn_error"
             android:textColor="@android:color/white"
-            app:backgroundTint="@color/color_error" />
+            app:backgroundTint="@color/color_error"
+            app:cornerRadius="22dp" />
 
     </RelativeLayout>
 
@@ -129,6 +129,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:maxLines="2"
         app:layout_constraintEnd_toStartOf="@+id/btn_barcode_result_close"
         app:layout_constraintStart_toEndOf="@+id/iv_barcode_scan_result_cover"
         app:layout_constraintTop_toTopOf="@+id/iv_barcode_scan_result_cover"
@@ -141,6 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
+        android:maxLines="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/tv_barcode_result_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_barcode_result_title"
@@ -150,7 +152,7 @@
         android:id="@+id/group_barcode_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="layout_barcode_result_buttons,btn_barcode_result_close,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover,btn_barcode_result_not_my_book" />
+        app:constraint_referenced_ids="layout_barcode_result_buttons,btn_barcode_result_close,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/pb_barcode_result"

@@ -35,8 +35,10 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var isbn: String
     private var askForAnotherScan: Boolean = false
+    private var showNotMyBookButton: Boolean = true
 
     private var closeListener: (() -> Unit)? = null
+    private var onBookAddedListener: ((CharSequence) -> Unit)? = null
 
     private lateinit var viewModel: BarcodeResultViewModel
 
@@ -59,6 +61,8 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         isbn = arguments?.getString(ARG_BARCODE_ISBN)
             ?: throw IllegalStateException("ISBN argument must be not null!")
         askForAnotherScan = arguments?.getBoolean(ARG_ASK_FOR_ANOTHER_SCAN, false) ?: false
+        showNotMyBookButton = arguments?.getBoolean(ARG_SHOW_NOT_MY_BOOK_BUTTON, true) ?: true
+
         viewModel = BarcodeResultViewModel(booksDownloader, schedulers, bookDao)
         viewModel.loadBook(isbn)
     }
@@ -137,6 +141,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         layout_barcode_result_error.setVisible(false)
         pb_barcode_result.setVisible(false)
         group_barcode_result.setVisible(true)
+        btn_barcode_result_not_my_book.setVisible(showNotMyBookButton)
 
         bookSuggestion.mainSuggestion?.run {
             tv_barcode_result_title.text = title
@@ -153,14 +158,17 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
             btn_barcode_result_for_later.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.READ_LATER)
+                onBookAddedListener?.invoke(title)
             }
 
             btn_barcode_result_reading.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.READING)
+                onBookAddedListener?.invoke(title)
             }
 
             btn_barcode_result_read.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.READ)
+                onBookAddedListener?.invoke(title)
             }
         }
 
@@ -196,6 +204,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         pb_barcode_result.setVisible(false)
         group_barcode_result.setVisible(false)
         layout_barcode_result_error.setVisible(true)
+        btn_barcode_result_not_my_book.setVisible(false)
 
         tv_barcode_result_error_cause.text = cause
         btn_barcode_result_error_close.setOnClickListener {
@@ -207,6 +216,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         pb_barcode_result.setVisible(true)
         group_barcode_result.setVisible(false)
         layout_barcode_result_error.setVisible(false)
+        btn_barcode_result_not_my_book.setVisible(false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -230,19 +240,28 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
+    fun setOnBookAddedListener(function: (CharSequence) -> Unit): BarcodeScanResultBottomSheetDialogFragment {
+        return this.apply {
+            onBookAddedListener = function
+        }
+    }
+
     companion object {
 
         private const val ARG_BARCODE_ISBN = "arg_barcode_isbn"
         private const val ARG_ASK_FOR_ANOTHER_SCAN = "arg_ask_for_another_scan"
+        private const val ARG_SHOW_NOT_MY_BOOK_BUTTON = "arg_show_not_my_book_button"
 
         fun newInstance(
             isbn: String,
-            askForAnotherScan: Boolean
+            askForAnotherScan: Boolean,
+            showNotMyBookButton: Boolean = true
         ): BarcodeScanResultBottomSheetDialogFragment {
             return BarcodeScanResultBottomSheetDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_BARCODE_ISBN, isbn)
                     putBoolean(ARG_ASK_FOR_ANOTHER_SCAN, askForAnotherScan)
+                    putBoolean(ARG_SHOW_NOT_MY_BOOK_BUTTON, showNotMyBookButton)
                 }
             }
         }

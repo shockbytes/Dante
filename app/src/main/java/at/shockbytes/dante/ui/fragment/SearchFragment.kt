@@ -123,9 +123,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
         })
     }
 
-    override fun unbindViewModel() {
-        // Not needed...
-    }
+    override fun unbindViewModel() = Unit
 
     override fun onItemClick(t: BookSearchItem, v: View) {
         activity?.hideKeyboard()

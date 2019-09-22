@@ -43,11 +43,8 @@
             android:name=".ui.activity.BackupActivity"
             android:label="@string/label_backup" />
         <activity
-            android:name=".ui.activity.BookRetrievalActivity"
-            android:label="@string/label_capture"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/search"
             android:screenOrientation="portrait" />
         <activity

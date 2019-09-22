@@ -3,6 +3,7 @@ package at.shockbytes.dante.camera.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import at.shockbytes.dante.camera.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLoadingState
 import at.shockbytes.dante.core.book.BookState
@@ -41,11 +42,18 @@ class BarcodeResultViewModel(
     fun loadBook(isbn: String) {
         bookDownloader.downloadBook(isbn)
             .subscribeOn(schedulerFacade.io)
-            .subscribe({ suggestion ->
-                bookLoadingState.postValue(BookLoadingState.Success(suggestion))
+            .map { suggestion ->
+                if (suggestion.hasSuggestions) {
+                    BookLoadingState.Success(suggestion)
+                } else {
+                    BookLoadingState.Error(R.string.download_book_json_error)
+                }
+            }
+            .subscribe({ state ->
+                bookLoadingState.postValue(state)
             }, { throwable ->
                 Timber.e(throwable)
-                bookLoadingState.postValue(BookLoadingState.Error)
+                bookLoadingState.postValue(BookLoadingState.Error(R.string.download_code_error))
             })
             .addTo(compositeDisposable)
     }

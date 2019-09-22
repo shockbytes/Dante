@@ -11,9 +11,7 @@
     <string name="prefs_app_version_title">App Version</string>
     <string name="prefs_category_about">Über</string>
     <string name="prefs_developer_title">Entwickler</string>
-    <string name="tab_upcoming">Für später</string>
-    <string name="tab_done">Gelesen</string>
-    <string name="tab_current">Lesen</string>
+
     <string name="permission_camera_rationale">Die App benötigt den Zugang zu deiner Kamera, um die Barcodes deiner Bücher zu scannen.</string>
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>
@@ -23,7 +21,6 @@
     <string name="dialogfragment_query_title">Titelsuche</string>
     <string name="dialogfragment_query_message">Gib den Titel oder den ISBN deines Buches ein.</string>
     <string name="book_finished">%s fertig</string>
-    <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.</string>
     <string name="send_to">Teile dein Buch</string>
     <string name="label_backup">Backups verwalten</string>
     <string name="last_backup">Letzte Sicherung: %s</string>
@@ -40,13 +37,8 @@
     <string name="backup_restore_strategy_title">Wiederherstellung</string>
     <string name="backup_restored">Backup vom %s hergestellt</string>
     <string name="backup_restore_error">Fehler beim Wiederherstellen. Grund: %s</string>
-    <string name="download_suggestion_header_other">Eines von denen?</string>
-    <string name="download_suggestion_other">Nicht mein Buch</string>
-    <string name="download_suggestions_none">Keines von denen</string>
     <string name="manual_query">Titel oder ISBN</string>
     <string name="book_finished_move_to_done_question">Soll das Buch auf die Liste der gelesenen Büchern?</string>
-    <string name="download_btn_error">Okay, verstanden</string>
-    <string name="download_code_error">Sorry! Ein unerwarteter Fehler ist aufgetreten.</string>
     <string name="login_title">Hallo!</string>
     <string name="login_later">Später</string>
     <string name="login_rationale">Danke, dass du Dante benützt. Um ein besseres Erlebnis zu bieten benötigen wir Zugang zu deinem Google Account. Damit kannst du unter anderem Google Drive Backups erstellen. Du kannst dich auch jederzeit später mit deinem Google Account verbinden.</string>
@@ -101,7 +93,6 @@
     <string name="search_invalid_query">Ungültige Sucheingabe</string>
     <string name="no_internet_connection">Zurzeit keine Internetverbindung möglich</string>
     <string name="download_attachment_error">Oh, da ist was mächtig schiefgelaufen!</string>
-    <string name="tab_suggestions">Vorschläge</string>
     <string name="menu_main_sort">Bücher sortieren</string>
     <string name="anonymous_user">Unbekannter Bücherwurm</string>
     <string name="sort_strategy_default">Standard</string>

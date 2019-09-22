@@ -194,7 +194,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
                 focusComputation.rotationDegrees = sourceRotationDegrees
 
                 addOverlayToViewFinder(isbn, bounds, sourceSize, sourceRotationDegrees)
-                BarcodeScanResultBottomSheetDialogFragment.newInstance(isbn)
+                BarcodeScanResultBottomSheetDialogFragment.newInstance(isbn, askForAnotherScan = true)
                     .setOnCloseListener {
                         overlay.showBarcodeObject(null)
                         startCamera()

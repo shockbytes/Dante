@@ -347,7 +347,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showAddByTitleDialog() {
         QueryDialogFragment.newInstance()
             .setOnQueryEnteredListener { query ->
-                BarcodeScanResultBottomSheetDialogFragment.newInstance(query)
+                BarcodeScanResultBottomSheetDialogFragment.newInstance(query, askForAnotherScan = false)
                     .show(supportFragmentManager, "show-bottom-sheet-with-book")
             }
             .show(supportFragmentManager, "query-dialog-fragment")

@@ -32,6 +32,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private val compositeDisposable = CompositeDisposable()
 
     private lateinit var isbn: String
+    private var askForAnotherScan: Boolean = false
 
     private var closeListener: (() -> Unit)? = null
 
@@ -54,6 +55,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         injectIntoCameraComponent()
 
         isbn = arguments?.getString(ARG_BARCODE_ISBN) ?: throw IllegalStateException("ISBN argument must be not null!")
+        askForAnotherScan = arguments?.getBoolean(ARG_ASK_FOR_ANOTHER_SCAN, false) ?: false
         viewModel = BarcodeResultViewModel(booksDownloader, schedulers, bookDao)
         viewModel.loadBook(isbn)
     }
@@ -86,7 +88,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         viewModel.getBookLoadingState().observe(this, Observer { state ->
             when (state) {
                 is BookLoadingState.Loading -> showLoadingLayout()
-                is BookLoadingState.Error -> showErrorLayout()
+                is BookLoadingState.Error -> showErrorLayout(getString(state.cause))
                 is BookLoadingState.Success -> showSuccessLayout(state.bookSuggestion)
             }
         })
@@ -94,7 +96,11 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         viewModel.onBookStoredEvent()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ storedBook ->
-                showBookStoredDialog(storedBook)
+                if (askForAnotherScan) {
+                    showBookStoredDialog(storedBook)
+                } else {
+                    dismiss()
+                }
             }, { throwable ->
                 Timber.e(throwable)
             })
@@ -109,13 +115,23 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 this@BarcodeScanResultBottomSheetDialogFragment.dismiss()
             }
             negativeButton(R.string.no) {
+                resetCloseListener()
                 activity?.supportFinishAfterTransition()
             }
             cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
         }
     }
 
+    /**
+     * Reset the close listener because the hosting activity is going to be destroyed anyway. This
+     * will prevent the app to reopen the camera and therefore to crash.
+     */
+    private fun resetCloseListener() {
+        closeListener = null
+    }
+
     private fun showSuccessLayout(bookSuggestion: BookSuggestion) {
+        layout_barcode_result_error.setVisible(false)
         pb_barcode_result.setVisible(false)
         group_barcode_result.setVisible(true)
 
@@ -151,13 +167,21 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun showErrorLayout() {
-        // TODO implement error state
+    private fun showErrorLayout(cause: String) {
+        pb_barcode_result.setVisible(false)
+        group_barcode_result.setVisible(false)
+        layout_barcode_result_error.setVisible(true)
+
+        tv_barcode_result_error_cause.text = cause
+        btn_barcode_result_error_close.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun showLoadingLayout() {
         pb_barcode_result.setVisible(true)
         group_barcode_result.setVisible(false)
+        layout_barcode_result_error.setVisible(false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -184,11 +208,16 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
     companion object {
 
         private const val ARG_BARCODE_ISBN = "arg_barcode_isbn"
+        private const val ARG_ASK_FOR_ANOTHER_SCAN = "arg_ask_for_another_scan"
 
-        fun newInstance(isbn: String): BarcodeScanResultBottomSheetDialogFragment {
+        fun newInstance(
+            isbn: String,
+            askForAnotherScan: Boolean
+        ): BarcodeScanResultBottomSheetDialogFragment {
             return BarcodeScanResultBottomSheetDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_BARCODE_ISBN, isbn)
+                    putBoolean(ARG_ASK_FOR_ANOTHER_SCAN, askForAnotherScan)
                 }
             }
         }

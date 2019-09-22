@@ -9,6 +9,11 @@
         <item name="android:fontFamily">@font/montserrat</item>
         <item name="android:windowSharedElementEnterTransition">@transition/hero_transition</item>
         <item name="android:windowSharedElementExitTransition">@transition/hero_transition</item>
+
+        <item name="md_font_title">@font/montserrat</item>
+        <item name="md_font_body">@font/montserrat</item>
+        <item name="md_font_button">@font/montserrat</item>
+        <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

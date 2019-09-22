@@ -1,5 +1,20 @@
 <resources>
     <string name="share_template">Hey, I\'m currently reading %1$s and it\'s awesome!\nCheck it out: %2$s</string>
+
     <string name="no">No</string>
     <string name="yes">Yes</string>
+
+    <string name="tab_upcoming">For later</string>
+    <string name="tab_current">Reading</string>
+    <string name="tab_done">Done</string>
+    <string name="tab_suggestions">Suggestions</string>
+
+    <string name="download_suggestions_none">None of them</string>
+    <string name="download_suggestion_header_other">Maybe one of them?</string>
+    <string name="download_suggestion_other">Not my book</string>
+    <string name="download_btn_error">Okay, got it</string>
+    <string name="download_code_error">Sorry! An unexpected error occurred.</string>
+    <string name="download_book_json_error">Cannot find any corresponding entry in Googles book database.</string>
+
+    <string name="fragment_download_text_placeholder" translatable="false">&#8230;</string>
 </resources>

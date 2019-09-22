@@ -41,10 +41,6 @@ class BarcodeAnalyzer : ImageAnalysis.Analyzer {
             .getVisionBarcodeDetector(options)
     }
 
-    fun triggerTest(isbn: String) {
-        publisher.onNext(IsbnVisionBarcode(isbn, null, null, Size(0, 0), 0))
-    }
-
     override fun analyze(imageProxy: ImageProxy, rotationDegrees: Int) {
 
         val currentTimestamp = System.currentTimeMillis()
@@ -66,14 +62,14 @@ class BarcodeAnalyzer : ImageAnalysis.Analyzer {
         val u = imageProxy.planes[1]
         val v = imageProxy.planes[2]
 
-        val Yb = y.buffer.remaining()
-        val Ub = u.buffer.remaining()
-        val Vb = v.buffer.remaining()
-        val data = ByteArray(Yb + Ub + Vb)
+        val yb = y.buffer.remaining()
+        val ub = u.buffer.remaining()
+        val vb = v.buffer.remaining()
+        val data = ByteArray(yb + ub + vb)
 
-        y.buffer.get(data, 0, Yb)
-        u.buffer.get(data, Yb, Ub)
-        v.buffer.get(data, Yb + Ub, Vb)
+        y.buffer.get(data, 0, yb)
+        u.buffer.get(data, yb, ub)
+        v.buffer.get(data, yb + ub, vb)
         val image = FirebaseVisionImage.fromByteArray(data, metadata)
 
         detector.detectInImage(image)

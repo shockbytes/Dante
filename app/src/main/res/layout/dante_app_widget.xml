@@ -5,7 +5,7 @@
     android:padding="@dimen/widget_margin">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/app_widget_iv_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
@@ -18,10 +18,10 @@
         android:id="@+id/app_widget_tv_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/iv_barcode_scan_result_cover"
-        android:layout_alignBottom="@+id/iv_barcode_scan_result_cover"
+        android:layout_alignTop="@+id/app_widget_iv_icon"
+        android:layout_alignBottom="@+id/app_widget_iv_icon"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@id/iv_barcode_scan_result_cover"
+        android:layout_toEndOf="@id/app_widget_iv_icon"
         android:gravity="center_vertical"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
@@ -33,7 +33,7 @@
         android:id="@+id/div"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/iv_barcode_scan_result_cover"
+        android:layout_below="@+id/app_widget_iv_icon"
         android:layout_marginStart="12dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="12dp"

@@ -14,7 +14,7 @@ import kotterknife.bindView
  * Author:  Martin Macheiner
  * Date:    02.01.2018
  */
-class SimpleRequestDialogFragment : androidx.fragment.app.DialogFragment() {
+class SimpleRequestDialogFragment : DialogFragment() {
 
     private val txtHeader: TextView by bindView(R.id.txtDialogFragmentSimpleRequestHeader)
     private val txtMessage: TextView by bindView(R.id.txtDialogFragmentSimpleRequestMessage)

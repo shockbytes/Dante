@@ -221,10 +221,6 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         }
 
         overlay_view.add(overlay)
-
-        Handler().postDelayed({
-            barcodeAnalyzer.triggerTest("Lord of the rings")
-        }, 1500)
     }
 
     /**

@@ -51,7 +51,10 @@ dependencies {
     api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
+    api "com.airbnb.android:lottie:$lottieVersion"
+
     api 'net.danlew:android.joda:2.10.1.2'
+    api 'com.afollestad.material-dialogs:core:3.1.1'
 
     api 'com.mlsdev.rximagepicker:library:2.1.5'
     api "com.github.qingmei2:rximagepicker:$rxImagePickerVersion"

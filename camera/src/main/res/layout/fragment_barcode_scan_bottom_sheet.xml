@@ -8,6 +8,23 @@
     android:minHeight="300dp"
     android:orientation="vertical">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lottie_loading"
+        android:id="@+id/pb_barcode_result"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="128dp"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_barcode_result_close"
@@ -22,16 +39,16 @@
     <ImageView
         android:id="@+id/iv_barcode_scan_result_cover"
         android:layout_width="wrap_content"
-        android:layout_height="72dp"
+        android:layout_height="84dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@color/color_error"
-        tools:layout_width="48dp" />
+        tools:layout_width="64dp" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/layout_barcode_result_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="12dp"
@@ -114,7 +131,13 @@
         android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/layout_barcode_result_buttons"
         app:rippleColor="@color/colorPrimaryText" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_barcode_result"
+        app:constraint_referenced_ids="layout_barcode_result_buttons,btn_barcode_result_close,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover,btn_barcode_result_not_my_book"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

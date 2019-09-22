@@ -97,8 +97,6 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    implementation "com.airbnb.android:lottie:$lottieVersion"
-
     implementation "com.jakewharton.timber:timber:$timberVersion"
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'

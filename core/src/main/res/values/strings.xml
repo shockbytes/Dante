@@ -1,3 +1,5 @@
 <resources>
     <string name="share_template">Hey, I\'m currently reading %1$s and it\'s awesome!\nCheck it out: %2$s</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

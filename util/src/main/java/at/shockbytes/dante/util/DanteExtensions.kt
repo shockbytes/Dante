@@ -7,18 +7,13 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Handler
 import androidx.annotation.ColorInt
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import at.shockbytes.dante.signin.DanteUser
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.leinardi.android.speeddial.SpeedDialView
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.math.BigDecimal
@@ -28,37 +23,16 @@ import java.math.RoundingMode
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
-fun String.colored(@ColorInt color: Int): SpannableString {
-    val spannable = SpannableString(this)
-    spannable.setSpan(ForegroundColorSpan(color),
-            0, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-    return spannable
+fun CharSequence.colored(@ColorInt color: Int): SpannableString {
+    return SpannableString(this).apply {
+        setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
 }
 
 fun String.removeBrackets(): String {
-    return this.replace("(", "")
-            .replace(")", "")
-}
-
-fun FloatingActionButton.toggle(millis: Long = 300) {
-    this.hide()
-    Handler().postDelayed({ this.show() }, millis)
-}
-
-fun SpeedDialView.toggleVisibility(millis: Long = 300) {
-    this.hide()
-    Handler().postDelayed({ this.show() }, millis)
-}
-
-fun GoogleSignInAccount.toDanteUser(): DanteUser {
-    return DanteUser(
-        this.givenName,
-        this.displayName,
-        this.email,
-        this.photoUrl,
-        "google",
-        this.idToken
-    )
+    return this
+        .replace("(", "")
+        .replace(")", "")
 }
 
 fun Activity.hideKeyboard() {

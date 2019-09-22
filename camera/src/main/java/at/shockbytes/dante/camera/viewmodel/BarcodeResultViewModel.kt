@@ -3,12 +3,16 @@ package at.shockbytes.dante.camera.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLoadingState
+import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.core.network.BookDownloader
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 
 class BarcodeResultViewModel(
@@ -21,6 +25,9 @@ class BarcodeResultViewModel(
 
     private val bookLoadingState = MutableLiveData<BookLoadingState>()
     fun getBookLoadingState(): LiveData<BookLoadingState> = bookLoadingState
+
+    private val bookStoredSubject = PublishSubject.create<String>()
+    fun onBookStoredEvent(): Observable<String> = bookStoredSubject
 
     init {
         bookLoadingState.value = BookLoadingState.Loading
@@ -43,7 +50,12 @@ class BarcodeResultViewModel(
             .addTo(compositeDisposable)
     }
 
-    fun storeBook() {
-        // TODO
+    fun storeBook(bookEntity: BookEntity, state: BookState) {
+        bookDao.create(
+            bookEntity.apply {
+                updateState(state)
+            }
+        )
+        bookStoredSubject.onNext(bookEntity.title)
     }
 }

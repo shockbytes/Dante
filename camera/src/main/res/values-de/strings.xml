@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nope">Nope</string>
+    <string name="book_added_to_library">%s wurde hinzugefügt</string>
+    <string name="scan_another_book">Willst du noch ein weiteres Buch scannen?</string>
+</resources>

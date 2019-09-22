@@ -7,6 +7,7 @@ import at.shockbytes.dante.camera.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLoadingState
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.BookSuggestion
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.core.network.BookDownloader
@@ -65,5 +66,18 @@ class BarcodeResultViewModel(
             }
         )
         bookStoredSubject.onNext(bookEntity.title)
+    }
+
+    fun setSelectedBook(bookSuggestion: BookSuggestion, selectedBook: BookEntity) {
+
+        val updatedSuggestions = ArrayList(bookSuggestion.otherSuggestions).apply {
+            remove(selectedBook)
+            bookSuggestion.mainSuggestion?.let { mainSuggestion ->
+                add(mainSuggestion)
+            }
+        }
+
+        val updated = BookSuggestion(mainSuggestion = selectedBook, otherSuggestions = updatedSuggestions)
+        bookLoadingState.postValue(BookLoadingState.Success(updated))
     }
 }

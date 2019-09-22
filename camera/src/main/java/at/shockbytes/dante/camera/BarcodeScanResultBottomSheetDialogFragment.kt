@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.camera.injection.DaggerCameraComponent
 import at.shockbytes.dante.camera.viewmodel.BarcodeResultViewModel
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLoadingState
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.BookSuggestion
@@ -19,7 +19,9 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.AppUtils
+import at.shockbytes.util.adapter.BaseAdapter
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.customListAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -54,7 +56,8 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         super.onCreate(savedInstanceState)
         injectIntoCameraComponent()
 
-        isbn = arguments?.getString(ARG_BARCODE_ISBN) ?: throw IllegalStateException("ISBN argument must be not null!")
+        isbn = arguments?.getString(ARG_BARCODE_ISBN)
+            ?: throw IllegalStateException("ISBN argument must be not null!")
         askForAnotherScan = arguments?.getBoolean(ARG_ASK_FOR_ANOTHER_SCAN, false) ?: false
         viewModel = BarcodeResultViewModel(booksDownloader, schedulers, bookDao)
         viewModel.loadBook(isbn)
@@ -162,8 +165,30 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
 
         btn_barcode_result_not_my_book.setOnClickListener {
-            // TODO implement choose other books
-            Toast.makeText(requireContext(), "Coming soon...", Toast.LENGTH_SHORT).show()
+            showOtherSuggestionsModal(bookSuggestion.otherSuggestions) { selectedBook ->
+                viewModel.setSelectedBook(bookSuggestion, selectedBook)
+            }
+        }
+    }
+
+    private fun showOtherSuggestionsModal(suggestions: List<BookEntity>, selectionListener: (BookEntity) -> Unit) {
+
+        MaterialDialog(requireContext()).show {
+            title(R.string.download_suggestion_header_other)
+            customListAdapter(
+                BookSuggestionPickerAdapter(requireContext(), suggestions, imageLoader).apply {
+                    onItemClickListener = object : BaseAdapter.OnItemClickListener<BookEntity> {
+                        override fun onItemClick(t: BookEntity, v: View) {
+                            selectionListener(t)
+                            dismiss()
+                        }
+                    }
+                }
+            )
+            positiveButton(R.string.nope) {
+                dismiss()
+            }
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
         }
     }
 

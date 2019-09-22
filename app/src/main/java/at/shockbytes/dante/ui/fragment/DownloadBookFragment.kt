@@ -200,7 +200,7 @@ class DownloadBookFragment :
                 .setInterpolator(AnticipateInterpolator())
                 .start()
 
-            btnDownloadFragmentNotMyBook.setText(R.string.download_suggestions_none)
+            btnDownloadFragmentNotMyBook.setText(R.string.download_suggestions_other)
 
             isOtherSuggestionsShowing = true
         } else {

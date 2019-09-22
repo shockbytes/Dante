@@ -6,7 +6,6 @@ import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeCaptureActivity
 import at.shockbytes.dante.ui.activity.BackupActivity
-import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity
@@ -34,7 +33,6 @@ object ActivityNavigator {
                     )
                 }
                 is Destination.Search -> SearchActivity.newIntent(context)
-                is Destination.Retrieval -> BookRetrievalActivity.newIntent(context, destination.type, destination.query)
                 is Destination.Main -> MainActivity.newIntent(context, destination.bookDetailInfo, destination.openCameraAfterLaunch)
                 is Destination.ManualAdd -> ManualAddActivity.newIntent(context)
                 is Destination.Statistics -> StatisticsActivity.newIntent(context)

@@ -1,4 +1,5 @@
 <resources>
     <string name="scan_another_book">Do you want to scan another book?</string>
     <string name="book_added_to_library">%s added to library</string>
+    <string name="nope">Nope</string>
 </resources>

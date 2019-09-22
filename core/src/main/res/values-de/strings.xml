@@ -3,7 +3,7 @@
 
     <string name="download_suggestion_header_other">Eines von denen?</string>
     <string name="download_suggestion_other">Nicht mein Buch</string>
-    <string name="download_suggestions_none">Keines von denen</string>
+    <string name="download_suggestions_other">Eines von denen?</string>
     <string name="download_btn_error">Okay, verstanden</string>
     <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.</string>
     <string name="download_code_error">Sorry! Ein unerwarteter Fehler ist aufgetreten.</string>

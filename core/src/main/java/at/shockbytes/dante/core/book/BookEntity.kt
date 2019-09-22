@@ -1,9 +1,13 @@
 package at.shockbytes.dante.core.book
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
+@Parcelize
 data class BookEntity(
     var id: Long = -1,
     var title: String = "",
@@ -25,7 +29,7 @@ data class BookEntity(
     var notes: String? = null,
     var summary: String? = null,
     var labels: List<String> = listOf()
-) {
+) : Parcelable {
 
     val reading: Boolean
         get() = state == BookState.READING

@@ -8,11 +8,11 @@ import io.reactivex.Observable
 
 class RxLegacyImagePicker : ImagePicker {
 
-    override fun openGallery(activity: androidx.fragment.app.FragmentActivity): Observable<Uri> {
+    override fun openGallery(activity: FragmentActivity): Observable<Uri> {
         return RxImagePicker.with(activity.fragmentManager).requestImage(Sources.GALLERY)
     }
 
-    override fun openCamera(activity: androidx.fragment.app.FragmentActivity): Observable<Uri> {
+    override fun openCamera(activity: FragmentActivity): Observable<Uri> {
         return RxImagePicker.with(activity.fragmentManager).requestImage(Sources.CAMERA)
     }
 }

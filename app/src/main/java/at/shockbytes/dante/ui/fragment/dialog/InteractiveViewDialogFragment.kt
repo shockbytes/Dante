@@ -22,7 +22,7 @@ abstract class InteractiveViewDialogFragment<T> : BaseDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(androidx.fragment.app.DialogFragment.STYLE_NO_FRAME, R.style.AppTheme)
+        setStyle(STYLE_NO_FRAME, R.style.AppTheme)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

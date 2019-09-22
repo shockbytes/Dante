@@ -554,20 +554,18 @@ class CameraSource(
         @SuppressLint("InlinedApi")
         val CAMERA_FACING_FRONT = Camera.CameraInfo.CAMERA_FACING_FRONT
 
-        private val TAG = "MIDemoApp:CameraSource"
-
         /**
          * The dummy surface texture must be assigned a chosen name. Since we never use an OpenGL context,
          * we can choose any ID we want here. The dummy surface texture is not a crazy hack - it is
          * actually how the camera team recommends using the camera without a preview.
          */
-        private val DUMMY_TEXTURE_NAME = 100
+        private const val DUMMY_TEXTURE_NAME = 100
 
         /**
          * If the absolute difference between a preview size aspect ratio and a picture size aspect ratio
          * is less than this tolerance, they are considered to be the same aspect ratio.
          */
-        private val ASPECT_RATIO_TOLERANCE = 0.01f
+        private const val ASPECT_RATIO_TOLERANCE = 0.01f
 
         /**
          * Gets the id for the camera specified by the direction it is facing. Returns -1 if no such

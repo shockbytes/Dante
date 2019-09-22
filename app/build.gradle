@@ -54,6 +54,9 @@ android {
             resources.srcDirs += ['src/androidTest/resources']
         }
     }
+    packagingOptions {
+        exclude 'META-INF/util_release.kotlin_module'
+    }
 }
 
 androidExtensions {

@@ -10,7 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.view.HapticFeedbackConstants
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.custom.barcode.BarcodeGraphic
 import at.shockbytes.dante.ui.custom.barcode.BarcodeTrackerFactory
 import at.shockbytes.dante.ui.custom.barcode.camera.CameraSourcePreview

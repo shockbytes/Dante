@@ -3,7 +3,7 @@ package at.shockbytes.dante.ui.fragment
 import at.shockbytes.dante.R
 import at.shockbytes.dante.barcode.BarcodeScanningProcessor
 import at.shockbytes.dante.barcode.util.CameraSource
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import com.google.firebase.ml.common.FirebaseMLException
 import kotlinx.android.synthetic.main.fragment_barcode_detector.*
 import timber.log.Timber

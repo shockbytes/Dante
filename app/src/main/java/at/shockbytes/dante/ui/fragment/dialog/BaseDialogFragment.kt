@@ -1,9 +1,8 @@
 package at.shockbytes.dante.ui.fragment.dialog
 
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import at.shockbytes.dante.DanteApp
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import io.reactivex.disposables.CompositeDisposable
 
 /**

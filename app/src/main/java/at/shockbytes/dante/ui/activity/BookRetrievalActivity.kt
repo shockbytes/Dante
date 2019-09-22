@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity

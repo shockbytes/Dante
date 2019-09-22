@@ -1,4 +1,4 @@
-package at.shockbytes.dante.dagger
+package at.shockbytes.dante.injection
 
 import android.app.Application
 import android.content.Context
@@ -18,33 +18,23 @@ import at.shockbytes.dante.backup.provider.shockbytes.ShockbytesHerokuServerBack
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
 import at.shockbytes.dante.backup.provider.shockbytes.storage.SharedPreferencesInactiveShockbytesBackupStorage
-import at.shockbytes.dante.core.book.BookSuggestion
-import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
-import at.shockbytes.dante.core.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.ui.image.GlideImageLoader
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.ui.image.ImagePicker
 import at.shockbytes.dante.ui.image.RxLegacyImagePicker
-import at.shockbytes.dante.util.DanteRealmMigration
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
-import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
-import io.realm.RealmConfiguration
-import javax.inject.Named
-import javax.inject.Singleton
 
 /**
  * Author:  Martin Macheiner
@@ -54,41 +44,16 @@ import javax.inject.Singleton
 class AppModule(private val app: Application) {
 
     @Provides
-    @Singleton
-    fun provideApplication(): Application = app
-
-    @Provides
-    @Singleton
     fun provideSharedPreferences(): SharedPreferences {
         return PreferenceManager.getDefaultSharedPreferences(app.applicationContext)
     }
 
     @Provides
-    @Singleton
     fun provideDanteSettings(sharedPreferences: SharedPreferences): DanteSettings {
         return DanteSettings(app.applicationContext, sharedPreferences)
     }
 
     @Provides
-    @Singleton
-    @Named("gsonDownload")
-    fun provideGson(): Gson {
-        return GsonBuilder()
-                .registerTypeAdapter(BookSuggestion::class.java, GoogleBooksSuggestionResponseDeserializer())
-                .create()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRealmInstanceProvider(): RealmInstanceProvider {
-        return RealmInstanceProvider(RealmConfiguration.Builder()
-            .schemaVersion(DanteRealmMigration.migrationVersion)
-            .migration(DanteRealmMigration())
-            .build())
-    }
-
-    @Provides
-    @Reusable
     fun provideInactiveShockbytesBackupStorage(
         preferences: SharedPreferences
     ): InactiveShockbytesBackupStorage {
@@ -96,7 +61,6 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @Reusable
     fun provideBackupRepository(
         backupProvider: Array<BackupProvider>,
         preferences: SharedPreferences
@@ -105,19 +69,16 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @Reusable
     fun provideExternalStorageInteractor(): ExternalStorageInteractor {
         return DefaultExternalStorageInteractor()
     }
 
     @Provides
-    @Reusable
     fun providePermissionManager(): PermissionManager {
         return AndroidPermissionManager()
     }
 
     @Provides
-    @Reusable
     fun provideBackupProvider(
         schedulerFacade: SchedulerFacade,
         signInManager: SignInManager,
@@ -147,13 +108,11 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @Singleton
     fun provideGoogleSignInManager(prefs: SharedPreferences): SignInManager {
         return GoogleSignInManager(prefs, app.applicationContext)
     }
 
     @Provides
-    @Singleton
     fun provideFeatureFlagging(remoteConfig: FirebaseRemoteConfig): FeatureFlagging {
         return if (BuildConfig.DEBUG) {
             val prefs = app.getSharedPreferences("feature_flagging", Context.MODE_PRIVATE)
@@ -164,25 +123,16 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    @Singleton
     fun provideImageLoader(): ImageLoader {
         return GlideImageLoader
     }
 
     @Provides
-    @Singleton
-    fun provideSchedulerFacade(): SchedulerFacade {
-        return AppSchedulerFacade()
-    }
-
-    @Provides
-    @Singleton
     fun provideImagePicker(): ImagePicker {
         return RxLegacyImagePicker()
     }
 
     @Provides
-    @Reusable
     fun provideAnnouncementProvider(): AnnouncementProvider {
         val prefs = app.getSharedPreferences("announcements", Context.MODE_PRIVATE)
         return SharedPrefsAnnouncementProvider(prefs)

@@ -5,7 +5,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.widget.Toast
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import kotlinx.android.synthetic.main.fragment_pages.*
 
 class PagesFragment : BaseFragment() {

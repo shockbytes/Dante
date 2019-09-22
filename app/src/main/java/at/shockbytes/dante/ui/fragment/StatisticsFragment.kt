@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.StatisticsAdapter
 
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel

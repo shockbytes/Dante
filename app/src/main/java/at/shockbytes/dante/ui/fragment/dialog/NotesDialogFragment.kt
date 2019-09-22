@@ -8,7 +8,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.util.isPortrait
 import kotterknife.bindView

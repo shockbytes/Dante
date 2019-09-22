@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.fragment
 
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 
 /**
  * Author:  Martin Macheiner

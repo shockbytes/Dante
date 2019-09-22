@@ -3,11 +3,15 @@ package at.shockbytes.dante
 import android.os.StrictMode
 import androidx.multidex.MultiDexApplication
 import androidx.appcompat.app.AppCompatDelegate
-import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.dagger.AppModule
-import at.shockbytes.dante.dagger.BookModule
-import at.shockbytes.dante.dagger.DaggerAppComponent
-import at.shockbytes.dante.dagger.NetworkModule
+import at.shockbytes.dante.core.injection.CoreComponent
+import at.shockbytes.dante.core.injection.CoreComponentProvider
+import at.shockbytes.dante.core.injection.CoreModule
+import at.shockbytes.dante.core.injection.DaggerCoreComponent
+import at.shockbytes.dante.core.injection.NetworkModule
+import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.injection.AppModule
+import at.shockbytes.dante.injection.AppNetworkModule
+import at.shockbytes.dante.injection.DaggerAppComponent
 import at.shockbytes.dante.util.CrashlyticsReportingTree
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
@@ -21,12 +25,19 @@ import timber.log.Timber
  * Author:  Martin Macheiner
  * Date:    13.02.2017
  */
-class DanteApp : MultiDexApplication() {
+class DanteApp : MultiDexApplication(), CoreComponentProvider {
 
     companion object {
         init {
             AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         }
+    }
+
+    private val coreComponent: CoreComponent by lazy {
+        DaggerCoreComponent.builder()
+            .coreModule(CoreModule())
+            .networkModule(NetworkModule(this))
+            .build()
     }
 
     lateinit var appComponent: AppComponent
@@ -44,10 +55,14 @@ class DanteApp : MultiDexApplication() {
         configureRxJavaErrorHandling()
 
         appComponent = DaggerAppComponent.builder()
-                .networkModule(NetworkModule(this))
-                .bookModule(BookModule())
+                .appNetworkModule(AppNetworkModule())
                 .appModule(AppModule(this))
+                .coreComponent(provideCoreComponent())
                 .build()
+    }
+
+    override fun provideCoreComponent(): CoreComponent {
+        return coreComponent
     }
 
     private fun configureRxJavaErrorHandling() {

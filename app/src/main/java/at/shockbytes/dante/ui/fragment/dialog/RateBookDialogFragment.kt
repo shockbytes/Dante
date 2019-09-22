@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.image.ImageLoader
 import at.shockbytes.dante.util.addTo
 import com.jakewharton.rxbinding2.view.RxView

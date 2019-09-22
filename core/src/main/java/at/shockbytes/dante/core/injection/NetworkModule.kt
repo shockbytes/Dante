@@ -1,11 +1,13 @@
-package at.shockbytes.dante.dagger
+package at.shockbytes.dante.core.injection
 
 import android.content.Context
-import at.shockbytes.dante.BuildConfig
-import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
+import at.shockbytes.dante.core.BuildConfig
+import at.shockbytes.dante.core.book.BookSuggestion
 import at.shockbytes.dante.core.network.amazon.AmazonItemLookupApi
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
+import at.shockbytes.dante.core.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -25,6 +27,7 @@ class NetworkModule(private val context: Context) {
 
     @Provides
     @Singleton
+    // @Named("test")
     fun provideOkHttpClient(): OkHttpClient {
 
         val clientBuilder = OkHttpClient.Builder()
@@ -34,6 +37,15 @@ class NetworkModule(private val context: Context) {
             clientBuilder.addInterceptor(loggingInterceptor)
         }
         return clientBuilder.build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("gsonDownload")
+    fun provideGson(): Gson {
+        return GsonBuilder()
+            .registerTypeAdapter(BookSuggestion::class.java, GoogleBooksSuggestionResponseDeserializer())
+            .create()
     }
 
     @Provides
@@ -49,18 +61,6 @@ class NetworkModule(private val context: Context) {
                 .baseUrl(GoogleBooksApi.SERVICE_ENDPOINT)
                 .build()
                 .create(GoogleBooksApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideShockbytesHerokuApi(client: OkHttpClient): ShockbytesHerokuApi {
-        return Retrofit.Builder()
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(ShockbytesHerokuApi.SERVICE_ENDPOINT)
-            .build()
-            .create(ShockbytesHerokuApi::class.java)
     }
 
     @Provides

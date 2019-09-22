@@ -50,4 +50,7 @@ dependencies {
 
     api 'net.danlew:android.joda:2.10.1.2'
     api "com.github.shockbytes:ShockUtil:$shockUtilVersion"
+
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 }

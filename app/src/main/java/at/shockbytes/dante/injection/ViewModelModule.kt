@@ -1,4 +1,4 @@
-package at.shockbytes.dante.dagger
+package at.shockbytes.dante.injection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +18,6 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import javax.inject.Inject
 import javax.inject.Provider
-import javax.inject.Singleton
 import kotlin.reflect.KClass
 
 /**
@@ -26,7 +25,6 @@ import kotlin.reflect.KClass
  * Date:    12.06.2018
  */
 @Suppress("UNCHECKED_CAST")
-@Singleton
 class ViewModelFactory @Inject constructor(
     private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
 ) : ViewModelProvider.Factory {

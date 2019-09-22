@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.InactiveResourceDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment

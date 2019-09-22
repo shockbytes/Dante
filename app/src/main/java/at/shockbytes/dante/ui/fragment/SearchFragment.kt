@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookSearchItem
-import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.dagger.ViewModelFactory
+import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.injection.ViewModelFactory
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter

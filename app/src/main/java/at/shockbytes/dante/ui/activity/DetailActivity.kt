@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
 import at.shockbytes.dante.ui.fragment.BookDetailFragment

@@ -41,6 +41,10 @@ class BarcodeAnalyzer : ImageAnalysis.Analyzer {
             .getVisionBarcodeDetector(options)
     }
 
+    fun triggerTest(isbn: String) {
+        publisher.onNext(IsbnVisionBarcode(isbn, null, null, Size(0, 0), 0))
+    }
+
     override fun analyze(imageProxy: ImageProxy, rotationDegrees: Int) {
 
         val currentTimestamp = System.currentTimeMillis()

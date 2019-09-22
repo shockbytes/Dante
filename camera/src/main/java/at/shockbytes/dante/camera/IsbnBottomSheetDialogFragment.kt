@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import at.shockbytes.dante.camera.dependencies.CameraDependencyProvider.provideBooksDownloader
-import at.shockbytes.dante.camera.dependencies.CameraDependencyProvider.provideSchedulers
+import at.shockbytes.dante.camera.injection.DaggerCameraComponent
 import at.shockbytes.dante.camera.viewmodel.IsbnResolverViewModel
+import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.injection.CoreInjectHelper
+import at.shockbytes.dante.core.network.BookDownloader
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.isbn_bottom_sheet.*
+import javax.inject.Inject
 
 class IsbnBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -18,11 +22,30 @@ class IsbnBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: IsbnResolverViewModel
 
+    @Inject
+    lateinit var booksDownloader: BookDownloader
+
+    @Inject
+    lateinit var schedulers: SchedulerFacade
+
+    @Inject
+    lateinit var bookDao: BookEntityDao
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        injectIntoCameraComponent()
+
         isbn = arguments?.getString("isbn") ?: throw IllegalStateException("ISBN must be not null!")
-        viewModel = IsbnResolverViewModel(provideBooksDownloader(), provideSchedulers())
+        viewModel = IsbnResolverViewModel(booksDownloader, schedulers, bookDao)
         viewModel.loadBook(isbn)
+    }
+
+    private fun injectIntoCameraComponent() {
+        DaggerCameraComponent
+            .builder()
+            .coreComponent(CoreInjectHelper.provideCoreComponent(requireActivity().applicationContext))
+            .build()
+            .inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,7 +59,7 @@ class IsbnBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (view!!.parent.parent.parent as View).fitsSystemWindows = false
+        (requireView().parent.parent.parent as View).fitsSystemWindows = false
     }
 
     override fun onDestroy() {

@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupStorageProvider
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 
 class InactiveResourceDialogFragment : BaseDialogFragment() {
 

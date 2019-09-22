@@ -2,7 +2,7 @@ package at.shockbytes.dante.ui.activity.core
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 
 /**
  * Author:  Martin Macheiner

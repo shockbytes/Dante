@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.adapter.OnboardingAdapter
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel

@@ -14,7 +14,7 @@ import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.activity.core.BaseActivity

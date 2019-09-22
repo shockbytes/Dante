@@ -1,5 +1,8 @@
-package at.shockbytes.dante.dagger
+package at.shockbytes.dante.injection
 
+import at.shockbytes.dante.core.injection.CoreComponent
+import at.shockbytes.dante.core.injection.ModuleScope
+import at.shockbytes.dante.core.injection.NetworkModule
 import at.shockbytes.dante.ui.activity.BackupActivity
 import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
@@ -36,20 +39,22 @@ import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.widget.DanteAppWidget
 import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
 import dagger.Component
-import javax.inject.Singleton
 
 /**
  * Author:  Martin Macheiner
  * Date:    19.01.2017
  */
-@Singleton
-@Component(modules = [
-    (NetworkModule::class),
-    (AppModule::class),
-    (BookModule::class),
-    (ViewModelModule::class),
-    (FirebaseModule::class)
-])
+@Component(
+    modules = [
+        (NetworkModule::class),
+        (AppModule::class),
+        (AppNetworkModule::class),
+        (ViewModelModule::class),
+        (FirebaseModule::class)
+    ],
+    dependencies = [CoreComponent::class]
+)
+@ModuleScope
 interface AppComponent {
 
     fun inject(activity: MainActivity)

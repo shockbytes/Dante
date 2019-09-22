@@ -9,7 +9,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
@@ -82,7 +82,7 @@ class LegacyBackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Bac
             .setOnRestoreStrategySelectedListener { strategy ->
                 viewModel.applyBackup(state.entry, strategy)
             }
-            .show(fragmentManager, "restore-strategy-dialog-fragment")
+            .show(requireFragmentManager(), "restore-strategy-dialog-fragment")
     }
 
     override fun bindViewModel() {

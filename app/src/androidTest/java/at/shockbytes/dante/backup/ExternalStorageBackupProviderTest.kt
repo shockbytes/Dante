@@ -19,7 +19,7 @@ import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.util.permission.TestPermissionManager
 import at.shockbytes.test.ObjectCreator
 import at.shockbytes.test.TestResourceManager

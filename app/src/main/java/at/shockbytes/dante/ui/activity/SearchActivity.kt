@@ -7,11 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.transition.Fade
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.dagger.ViewModelFactory
-import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
-import at.shockbytes.dante.ui.fragment.DownloadBookFragment
+import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
+import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.injection.ViewModelFactory
+import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.addTo
@@ -22,15 +21,12 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    03.02.2018
  */
-class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFragment.OnBookDownloadedListener {
+class SearchActivity : BaseActivity() {
 
     @Inject
     lateinit var vmFactory: ViewModelFactory
 
     private lateinit var viewModel: SearchViewModel
-
-    override val displayFragment: androidx.fragment.app.Fragment
-        get() = SearchFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,51 +39,14 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
             window.enterTransition = Fade()
         }
 
-        supportActionBar?.let { actionBar ->
-            actionBar.title = ""
-            actionBar.setShowHideAnimationEnabled(true)
-            actionBar.hide()
-        }
+        supportFragmentManager
+            .beginTransaction()
+            .replace(android.R.id.content, SearchFragment.newInstance())
+            .commit()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    override fun onBookDownloaded(book: BookEntity) {
-        finishBookDownload()
-    }
-
-    override fun onCancelDownload() {
-        finishBookDownload()
-    }
-
-    override fun onErrorDownload(reason: String, isAttached: Boolean) {
-
-        if (!isAttached) {
-            showToast(R.string.download_attachment_error)
-            supportFinishAfterTransition()
-        }
-    }
-
-    override fun onCloseOnError() {
-        finishBookDownload()
-    }
-
-    override fun colorSystemBars(
-        actionBarColor: Int?,
-        actionBarTextColor: Int?,
-        statusBarColor: Int?,
-        title: String?
-    ) {
-        tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor, title, true)
-    }
-
-    override fun onBackStackPopped() {
-        super.onBackStackPopped()
-        supportActionBar?.hide()
-        // Use default colors and default title
-        tintSystemBarsWithText(null, null, null, "", true)
     }
 
     private fun bindViewModel() {
@@ -101,17 +60,14 @@ class SearchActivity : ContainerTintableBackNavigableActivity(), DownloadBookFra
                 .addTo(compositeDisposable)
     }
 
-    private fun finishBookDownload() {
-        supportFinishAfterTransition()
-    }
-
-    private fun showDownloadFragment(query: String?) {
-        supportFragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
-                        android.R.anim.slide_in_left, android.R.anim.slide_out_right)
-                .add(android.R.id.content, DownloadBookFragment.newInstance(query))
-                .addToBackStack(null)
-                .commit()
+    private fun showDownloadFragment(query: String) {
+        BarcodeScanResultBottomSheetDialogFragment
+            .newInstance(query, askForAnotherScan = false, showNotMyBookButton = false)
+            .setOnBookAddedListener { bookTitle ->
+                showToast(getString(R.string.book_added_to_library, bookTitle))
+                supportFinishAfterTransition()
+            }
+            .show(supportFragmentManager, "bottom-sheet-add-search")
     }
 
     companion object {

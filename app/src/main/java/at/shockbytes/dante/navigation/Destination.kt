@@ -1,8 +1,7 @@
 package at.shockbytes.dante.navigation
 
 import android.os.Parcelable
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.ui.activity.BookRetrievalActivity
+import at.shockbytes.dante.core.book.BookEntity
 import kotlinx.android.parcel.Parcelize
 
 sealed class Destination {
@@ -18,11 +17,6 @@ sealed class Destination {
 
     data class Share(val bookEntity: BookEntity) : Destination()
 
-    data class Retrieval(
-        val type: BookRetrievalActivity.RetrievalType,
-        val query: String?
-    ) : Destination()
-
     data class Main(
         val bookDetailInfo: BookDetail.BookDetailInfo? = null,
         val openCameraAfterLaunch: Boolean = false
@@ -33,4 +27,6 @@ sealed class Destination {
     object Statistics : Destination()
     object Backup : Destination()
     object Settings : Destination()
+
+    object BarcodeScanner : Destination()
 }

@@ -108,7 +108,7 @@
 
                 <Button
                     android:id="@+id/btn_detail_pages"
-                    style="?android:attr/borderlessButtonStyle"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -142,7 +142,7 @@
 
                     <Button
                         android:id="@+id/btn_detail_rate"
-                        style="?android:attr/borderlessButtonStyle"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -156,7 +156,7 @@
 
                     <Button
                         android:id="@+id/btn_detail_notes"
-                        style="?android:attr/borderlessButtonStyle"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -170,7 +170,7 @@
 
                     <Button
                         android:id="@+id/btn_detail_published"
-                        style="?android:attr/borderlessButtonStyle"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -234,7 +234,7 @@
 
             <Button
                 android:id="@+id/btn_detail_wishhlist_date"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -248,7 +248,7 @@
 
             <Button
                 android:id="@+id/btn_detail_start_date"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -262,7 +262,7 @@
 
             <Button
                 android:id="@+id/btn_detail_end_date"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

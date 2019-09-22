@@ -1,6 +1,6 @@
 package at.shockbytes.test
 
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 
 object ObjectCreator {
 

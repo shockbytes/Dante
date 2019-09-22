@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.FeatureFlagConfigAdapter
 import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
 import kotlinx.android.synthetic.main.fragment_feature_flag_config.*

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.fragment.dialog.InactiveResourceDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
@@ -79,7 +79,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     private fun showInactiveResourceModal(t: BackupMetadataState.Inactive) {
         InactiveResourceDialogFragment
             .newInstance(t.entry.storageProvider)
-            .show(fragmentManager, "inactive-resource-dialog-fragment")
+            .show(requireFragmentManager(), "inactive-resource-dialog-fragment")
     }
 
     override fun bindViewModel() {
@@ -180,7 +180,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
             .setOnRestoreStrategySelectedListener { strategy ->
                 viewModel.applyBackup(state.entry, strategy)
             }
-            .show(fragmentManager, "restore-strategy-dialog-fragment")
+            .show(requireFragmentManager(), "restore-strategy-dialog-fragment")
     }
 
     companion object {

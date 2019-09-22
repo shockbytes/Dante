@@ -13,13 +13,13 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.adapter.BookAdapter
-import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper

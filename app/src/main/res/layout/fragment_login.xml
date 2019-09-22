@@ -38,9 +38,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_brand_app_logo" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/fragment_login_btn_login"
-        style="@style/AppTheme.RoundedButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -51,6 +50,9 @@
         android:paddingStart="48dp"
         android:paddingLeft="48dp"
         android:paddingTop="16dp"
+        app:cornerRadius="22dp"
+        android:textColor="@color/colorPrimaryTextLight"
+        android:backgroundTint="@color/colorAccent"
         android:paddingEnd="48dp"
         android:paddingRight="48dp"
         android:paddingBottom="16dp"

@@ -14,13 +14,13 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
-import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.ui.image.ImageLoadingCallback
+import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
@@ -136,7 +136,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
                                 viewModel.moveBookToDone()
                                 activity?.supportFinishAfterTransition()
                             }
-                            .show(fragmentManager, "book-finished-dialogfragment")
+                            .show(requireFragmentManager(), "book-finished-dialogfragment")
                 }
                 .addTo(compositeDisposable)
 

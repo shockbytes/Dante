@@ -1,10 +1,15 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.DayNight">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkPre23</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:fontFamily">@font/montserrat</item>
+
+        <item name="md_font_title">@font/montserrat</item>
+        <item name="md_font_body">@font/montserrat</item>
+        <item name="md_font_button">@font/montserrat</item>
+        <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -12,9 +17,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
 
     <style name="AppTheme.Launcher">
         <item name="colorPrimaryDark">@android:color/transparent</item>
@@ -26,30 +31,14 @@
         <item name="cardCornerRadius">12dp</item>
     </style>
 
-    <style name="AppTheme.RoundedButton.Outlined" parent="Base.Widget.AppCompat.Button">
+    <style name="AppTheme.RoundedButton.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:background">@drawable/rounded_button_outlined</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.RoundedButton" parent="Base.Widget.AppCompat.Button">
+    <style name="AppTheme.RoundedButton" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/rounded_button</item>
-    </style>
-
-    <style name="TextAuthor">
-        <item name="android:textColor">@color/colorSecondaryText</item>
-        <item name="android:textSize">15sp</item>
-    </style>
-
-    <style name="TextSubtitle">
-        <item name="android:textColor">@color/colorSecondaryText</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TextTitle">
-        <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="DanteAppWidget">

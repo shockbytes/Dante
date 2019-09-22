@@ -43,11 +43,8 @@
             android:name=".ui.activity.BackupActivity"
             android:label="@string/label_backup" />
         <activity
-            android:name=".ui.activity.BookRetrievalActivity"
-            android:label="@string/label_capture"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.activity.SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/search"
             android:screenOrientation="portrait" />
         <activity
@@ -60,6 +57,8 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="true" />
+
+        <activity android:name=".camera.BarcodeCaptureActivity"/>
 
         <service
             android:name=".ui.widget.DanteRemoteViewsService"
@@ -83,6 +82,10 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="barcode" />
 
     </application>
 

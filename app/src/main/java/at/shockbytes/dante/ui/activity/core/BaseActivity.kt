@@ -12,7 +12,7 @@ import android.view.Gravity
 import android.view.Window
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.injection.AppComponent
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseActivity : AppCompatActivity() {

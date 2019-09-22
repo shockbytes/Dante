@@ -3,7 +3,7 @@ package at.shockbytes.dante.ui.widget
 import android.content.Intent
 import android.widget.RemoteViewsService
 import at.shockbytes.dante.DanteApp
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.settings.DanteSettings
 import javax.inject.Inject
 

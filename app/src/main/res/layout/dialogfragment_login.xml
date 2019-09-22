@@ -14,7 +14,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/compat_ic_google"
         android:drawablePadding="16dp"
         android:drawableStart="@drawable/compat_ic_google"
         android:text="@string/dialog_login_title"
@@ -29,7 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="32dp"
         app:buttonSize="standard"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +37,6 @@
         android:id="@+id/dialogfragment_login_txt_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/login_title"
@@ -60,16 +57,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialogfragment_login_txt_headline" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/dialogfragment_login_btn_later"
-        style="?android:attr/borderlessButtonStyle"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/login_later"
         android:textColor="@android:color/tertiary_text_light"
         android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/dialogfragment_login_sign_in_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/dialogfragment_login_sign_in_button" />
 

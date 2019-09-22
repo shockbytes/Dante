@@ -12,8 +12,10 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
+import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
+import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.activity.core.BaseActivity
@@ -25,7 +27,7 @@ import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.flagging.FeatureFlagging
-import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
+import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
@@ -41,7 +43,7 @@ import timber.log.Timber
 import javax.inject.Inject
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
-class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageChangeListener {
+class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -92,9 +94,9 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putInt("tabId", tabId)
+        outState.putInt("tabId", tabId)
     }
 
     override fun onStart() {
@@ -330,8 +332,7 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     private fun navigateToCamera() {
         ActivityNavigator.navigateTo(
             this,
-            Destination.Retrieval(BookRetrievalActivity.RetrievalType.CAMERA, null),
-            ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+            Destination.BarcodeScanner
         )
     }
 
@@ -346,12 +347,8 @@ class MainActivity : BaseActivity(), androidx.viewpager.widget.ViewPager.OnPageC
     private fun showAddByTitleDialog() {
         QueryDialogFragment.newInstance()
             .setOnQueryEnteredListener { query ->
-
-                ActivityNavigator.navigateTo(
-                    this,
-                    Destination.Retrieval(BookRetrievalActivity.RetrievalType.TITLE, query),
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
-                )
+                BarcodeScanResultBottomSheetDialogFragment.newInstance(query, askForAnotherScan = false)
+                    .show(supportFragmentManager, "show-bottom-sheet-with-book")
             }
             .show(supportFragmentManager, "query-dialog-fragment")
     }

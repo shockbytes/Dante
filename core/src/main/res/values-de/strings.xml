@@ -1,0 +1,18 @@
+<resources>
+    <string name="share_template">Hey, ich lese gerade %1$s und es ist fantastisch!\nSieh es dir selbst an: %2$s</string>
+
+    <string name="download_suggestion_header_other">Eines von denen?</string>
+    <string name="download_suggestion_other">Nicht mein Buch</string>
+    <string name="download_suggestions_other">Eines von denen?</string>
+    <string name="download_btn_error">Okay, verstanden</string>
+    <string name="download_book_json_error">Es konnte kein Eintrag in Googles Bücherdatenbank gefunden werden.</string>
+    <string name="download_code_error">Sorry! Ein unerwarteter Fehler ist aufgetreten.</string>
+
+    <string name="tab_upcoming">Für später</string>
+    <string name="tab_done">Gelesen</string>
+    <string name="tab_current">Lesen</string>
+    <string name="tab_suggestions">Vorschläge</string>
+
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
+</resources>

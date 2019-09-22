@@ -1,6 +1,6 @@
 package at.shockbytes.dante.backup.model
 
-import at.shockbytes.dante.book.BookEntity
+import at.shockbytes.dante.core.book.BookEntity
 
 /**
  * BackupItem holds both the metadata and the actual list of books

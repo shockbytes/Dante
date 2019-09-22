@@ -4,15 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import at.shockbytes.dante.R
+import at.shockbytes.dante.camera.BarcodeCaptureActivity
 import at.shockbytes.dante.ui.activity.BackupActivity
-import at.shockbytes.dante.ui.activity.BookRetrievalActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
-import at.shockbytes.dante.util.createSharingIntent
+import at.shockbytes.dante.core.createSharingIntent
 
 object ActivityNavigator {
 
@@ -33,12 +33,12 @@ object ActivityNavigator {
                     )
                 }
                 is Destination.Search -> SearchActivity.newIntent(context)
-                is Destination.Retrieval -> BookRetrievalActivity.newIntent(context, destination.type, destination.query)
                 is Destination.Main -> MainActivity.newIntent(context, destination.bookDetailInfo, destination.openCameraAfterLaunch)
                 is Destination.ManualAdd -> ManualAddActivity.newIntent(context)
                 is Destination.Statistics -> StatisticsActivity.newIntent(context)
                 is Destination.Backup -> BackupActivity.newIntent(context)
                 is Destination.Settings -> SettingsActivity.newIntent(context)
+                Destination.BarcodeScanner -> BarcodeCaptureActivity.newIntent(context)
             }
 
             intentFlags?.let { flags ->

@@ -5,7 +5,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.statistics.StatisticsDisplayItem
+import at.shockbytes.dante.core.book.statistics.StatisticsDisplayItem
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_statistics_data.*

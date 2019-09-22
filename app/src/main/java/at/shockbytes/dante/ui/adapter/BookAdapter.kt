@@ -15,9 +15,9 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
-import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback

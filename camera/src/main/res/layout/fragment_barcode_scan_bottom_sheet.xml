@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/mainBackground"
+    android:minHeight="300dp"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/btn_barcode_result_close"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:tint="@color/colorTertiaryText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close" />
+
+    <ImageView
+        android:id="@+id/iv_barcode_scan_result_cover"
+        android:layout_width="wrap_content"
+        android:layout_height="84dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_placeholder"
+        tools:layout_width="64dp" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_barcode_result_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_barcode_scan_result_cover">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_barcode_result_for_later"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:text="@string/tab_upcoming"
+            android:textColor="@color/tabcolor_upcoming"
+            app:rippleColor="@color/tabcolor_upcoming" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_barcode_result_reading"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:text="@string/tab_current"
+            android:textColor="@color/tabcolor_current"
+            app:rippleColor="@color/tabcolor_current" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_barcode_result_read"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:text="@string/tab_done"
+            android:textColor="@color/tabcolor_done"
+            app:rippleColor="@color/tabcolor_done" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_barcode_result_error"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_barcode_result_error"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            app:srcCompat="@drawable/ic_download_error" />
+
+        <TextView
+            android:id="@+id/tv_barcode_result_error_cause"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_barcode_result_error_close"
+            android:layout_below="@+id/iv_barcode_result_error"
+            android:gravity="center"
+            android:padding="8dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:text="@string/download_code_error" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_barcode_result_error_close"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="48dp"
+            android:text="@string/download_btn_error"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/color_error"
+            app:cornerRadius="22dp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_barcode_result_title"
+        style="@style/TextTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:maxLines="2"
+        app:layout_constraintEnd_toStartOf="@+id/btn_barcode_result_close"
+        app:layout_constraintStart_toEndOf="@+id/iv_barcode_scan_result_cover"
+        app:layout_constraintTop_toTopOf="@+id/iv_barcode_scan_result_cover"
+        tools:text="Their darkest hour" />
+
+    <TextView
+        android:id="@+id/tv_barcode_result_author"
+        style="@style/TextAuthor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:maxLines="2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_barcode_result_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_barcode_result_title"
+        tools:text="Laurence Rees" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_barcode_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="layout_barcode_result_buttons,btn_barcode_result_close,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/pb_barcode_result"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="128dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lottie_loading"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_barcode_result_not_my_book"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/download_suggestion_other"
+        android:textColor="@color/colorPrimaryText"
+        app:cornerRadius="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_barcode_result_buttons"
+        app:rippleColor="@color/colorPrimaryText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,17 +4,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookSearchItem
-import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.dagger.ViewModelFactory
+import at.shockbytes.dante.core.book.BookSearchItem
+import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.injection.ViewModelFactory
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
-import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.util.adapter.BaseAdapter
@@ -125,9 +123,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
         })
     }
 
-    override fun unbindViewModel() {
-        // Not needed...
-    }
+    override fun unbindViewModel() = Unit
 
     override fun onItemClick(t: BookSearchItem, v: View) {
         activity?.hideKeyboard()

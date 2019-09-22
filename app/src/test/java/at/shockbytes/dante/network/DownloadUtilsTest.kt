@@ -1,5 +1,6 @@
 package at.shockbytes.dante.network
 
+import at.shockbytes.dante.core.network.DownloadUtils
 import org.junit.Assert
 import org.junit.Assert.fail
 import org.junit.Test

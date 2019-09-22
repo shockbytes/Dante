@@ -2,8 +2,8 @@ package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
 import at.shockbytes.dante.R
-import at.shockbytes.dante.dagger.AppComponent
-import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.isPortrait
 import kotlinx.android.synthetic.main.fragment_notes.*
 import javax.inject.Inject

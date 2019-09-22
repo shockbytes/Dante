@@ -3,9 +3,9 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import android.os.Parcelable
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.book.BookState
-import at.shockbytes.dante.data.BookEntityDao
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject

@@ -84,9 +84,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuStatistics"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -94,8 +94,9 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:drawablePadding="24dp"
-                android:drawableStart="@drawable/compat_ic_stats"
+                app:iconPadding="16dp"
+                app:iconTint="@color/danteAccent"
+                app:icon="@drawable/compat_ic_stats"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:textColor="@color/danteAccent"
@@ -105,18 +106,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/viewMenuSeparator" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuSortStrategy"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
-                android:drawablePadding="24dp"
+                app:iconPadding="16dp"
+                app:iconTint="@color/danteAccent"
                 android:textColor="@color/danteAccent"
-                android:drawableStart="@drawable/compat_ic_sort"
+                app:icon="@drawable/compat_ic_sort"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:text="@string/menu_main_sort"
@@ -125,17 +127,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuStatistics" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuBackup"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
-                android:drawablePadding="24dp"
-                android:drawableStart="@drawable/compat_ic_backup"
+                app:iconPadding="16dp"
+                app:iconTint="@color/danteAccent"
+                app:icon="@drawable/compat_ic_backup"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:textColor="@color/danteAccent"
@@ -147,17 +150,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuSortStrategy" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuSettings"
-                style="?android:attr/borderlessButtonStyle"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
-                android:drawablePadding="24dp"
-                android:drawableStart="@drawable/compat_ic_settings"
+                app:iconPadding="16dp"
+                app:iconTint="@color/danteAccent"
+                app:icon="@drawable/compat_ic_settings"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:textColor="@color/danteAccent"

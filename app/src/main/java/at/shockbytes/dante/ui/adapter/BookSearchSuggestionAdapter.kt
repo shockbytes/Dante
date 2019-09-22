@@ -7,8 +7,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.book.BookSearchItem
-import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.core.book.BookSearchItem
+import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotterknife.bindView

@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.model.RestoreStrategy
+import at.shockbytes.dante.util.RestoreStrategy
 
 /**
  * Author:  Martin Macheiner

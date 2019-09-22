@@ -1,8 +1,8 @@
 package at.shockbytes.dante.util.view
 
 import androidx.recyclerview.widget.DiffUtil
-import at.shockbytes.dante.book.BookEntity
-import at.shockbytes.dante.util.isContentSame
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.isContentSame
 
 /**
  * Author:  Martin Macheiner

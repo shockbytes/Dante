@@ -221,6 +221,16 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         }
 
         overlay_view.add(overlay)
+
+        // TODO Just testing
+        Handler().postDelayed({
+            IsbnBottomSheetDialogFragment.newInstance("Lord of the rings")
+                .setOnCloseListener {
+                    overlay.showBarcodeObject(null)
+                    startCamera()
+                }
+                .show(supportFragmentManager, "show-bottom-sheet-with-book")
+        }, 3000L)
     }
 
     /**

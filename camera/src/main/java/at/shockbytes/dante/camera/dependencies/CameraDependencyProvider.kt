@@ -17,7 +17,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * This class is quite a hack.
+ * This class is a mess!
  * TODO Use dagger for multiple modules instead
  */
 object CameraDependencyProvider {

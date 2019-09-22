@@ -62,7 +62,7 @@ androidExtensions {
 
 dependencies {
 
-    implementation project(':book')
+    implementation project(':core')
     implementation project(':util')
     implementation project(':camera')
 

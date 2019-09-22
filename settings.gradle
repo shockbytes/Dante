@@ -1,1 +1,1 @@
-include ':app', ':camera', ':book', ':util'
+include ':app', ':camera', ':core', ':util'

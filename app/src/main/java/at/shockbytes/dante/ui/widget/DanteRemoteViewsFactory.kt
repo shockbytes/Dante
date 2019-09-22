@@ -8,7 +8,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.data.BookEntityDao
 import io.reactivex.disposables.CompositeDisposable
-import at.shockbytes.dante.ui.image.GlideImageLoader.loadBitmap
+import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps
 import timber.log.Timber
 import at.shockbytes.dante.util.DanteUtils

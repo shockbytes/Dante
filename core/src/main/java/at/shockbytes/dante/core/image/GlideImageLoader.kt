@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.image
+package at.shockbytes.dante.core.image
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -39,7 +39,7 @@ object GlideImageLoader : ImageLoader {
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
         val request = Glide.with(context).load(checkUrlForHttps(url))
-                .apply(getRequestOptions(context, circular, placeholder))
+            .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
 
@@ -53,7 +53,7 @@ object GlideImageLoader : ImageLoader {
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
         val request = Glide.with(context).load(resource)
-                .apply(getRequestOptions(context, circular, placeholder))
+            .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
 
@@ -67,7 +67,7 @@ object GlideImageLoader : ImageLoader {
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
         val request = Glide.with(context).load(uri)
-                .apply(getRequestOptions(context, circular, placeholder))
+            .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
 
@@ -81,23 +81,29 @@ object GlideImageLoader : ImageLoader {
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
         val request = Glide.with(context).load(checkUrlForHttps(url))
-                .apply(RequestOptions()
-                        .placeholder(DanteUtils.vector2Drawable(context, placeholder))
-                        .transforms(CenterInside(), RoundedCorners(cornerDimension)))
+            .apply(RequestOptions()
+                .placeholder(DanteUtils.vector2Drawable(context, placeholder))
+                .transform(CenterInside(), RoundedCorners(cornerDimension)))
         executeRequest(request, target, callback, callbackHandleValues)
     }
 
     override fun Uri.loadBitmap(context: Context): Single<Bitmap> {
-        return Single.fromCallable {
-            (Glide.with(context).load(this).submit().get() as BitmapDrawable).bitmap
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+        return Single
+            .fromCallable {
+                (Glide.with(context).load(this).submit().get() as BitmapDrawable).bitmap
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
     }
 
     override fun Uri.loadRoundedBitmap(context: Context): Single<Bitmap> {
-        return Single.fromCallable {
-            (Glide.with(context).load(this)
+        return Single
+            .fromCallable {
+                (Glide.with(context).load(this)
                     .apply(RequestOptions.circleCropTransform()).submit().get() as BitmapDrawable).bitmap
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
     }
 
     // --------------------------------------------------------------------------------------------

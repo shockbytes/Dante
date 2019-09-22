@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.image
+package at.shockbytes.dante.core.image
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,7 +6,7 @@ import android.net.Uri
 import androidx.annotation.Dimension
 import androidx.annotation.DrawableRes
 import android.widget.ImageView
-import at.shockbytes.dante.R
+import at.shockbytes.dante.core.R
 import io.reactivex.Single
 
 interface ImageLoader {

@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.image
+package at.shockbytes.dante.core.image
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity

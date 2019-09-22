@@ -17,8 +17,8 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.ui.adapter.BookAdapter
-import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.ui.image.ImageLoadingCallback
+import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo

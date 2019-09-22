@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.ui.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoader
 
 class ManualAddLanguageSpinnerAdapter(
     context: Context,

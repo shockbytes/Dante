@@ -23,7 +23,7 @@ import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.ui.image.GlideImageLoader.loadRoundedBitmap
+import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
 import javax.inject.Inject
 
 /**

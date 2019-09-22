@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextAuthor">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TextSubtitle">
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextTitle">
+        <item name="android:textColor">@color/colorPrimaryText</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

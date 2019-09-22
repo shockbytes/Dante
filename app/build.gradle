@@ -96,10 +96,6 @@ dependencies {
 
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
-    implementation "com.github.bumptech.glide:glide:$glideVersion"
-    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
@@ -109,13 +105,10 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation "com.leinardi.android:speed-dial:2.0.1"
-    implementation 'com.mlsdev.rximagepicker:library:2.1.5'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
 
-    implementation "com.github.qingmei2:rximagepicker:$rxImagePickerVersion"
-    implementation "com.github.qingmei2:rximagepicker_support:$rxImagePickerVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingsVersion"
 

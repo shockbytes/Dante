@@ -23,7 +23,6 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.appcompat.widget.AppCompatDrawableManager
-import at.shockbytes.dante.R
 import at.shockbytes.util.AppUtils
 import java.text.SimpleDateFormat
 import java.util.Locale

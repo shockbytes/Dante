@@ -20,10 +20,6 @@ import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytes
 import at.shockbytes.dante.backup.provider.shockbytes.storage.SharedPreferencesInactiveShockbytesBackupStorage
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.signin.SignInManager
-import at.shockbytes.dante.ui.image.GlideImageLoader
-import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.ui.image.ImagePicker
-import at.shockbytes.dante.ui.image.RxLegacyImagePicker
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
@@ -120,16 +116,6 @@ class AppModule(private val app: Application) {
         } else {
             FirebaseFeatureFlagging(remoteConfig)
         }
-    }
-
-    @Provides
-    fun provideImageLoader(): ImageLoader {
-        return GlideImageLoader
-    }
-
-    @Provides
-    fun provideImagePicker(): ImagePicker {
-        return RxLegacyImagePicker()
     }
 
     @Provides

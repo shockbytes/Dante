@@ -4,6 +4,10 @@ import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.data.DanteRealmMigration
 import at.shockbytes.dante.core.data.RealmBookEntityDao
+import at.shockbytes.dante.core.image.GlideImageLoader
+import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.image.ImagePicker
+import at.shockbytes.dante.core.image.RxLegacyImagePicker
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.core.network.google.GoogleBooksDownloader
@@ -45,5 +49,17 @@ class CoreModule {
     @Singleton
     fun provideSchedulerFacade(): SchedulerFacade {
         return AppSchedulerFacade()
+    }
+
+    @Provides
+    @Singleton
+    fun provideImageLoader(): ImageLoader {
+        return GlideImageLoader
+    }
+
+    @Provides
+    @Singleton
+    fun provideImagePicker(): ImagePicker {
+        return RxLegacyImagePicker()
     }
 }

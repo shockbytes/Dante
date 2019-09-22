@@ -14,8 +14,8 @@ import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
-import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.ui.image.ImageLoadingCallback
+import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.util.addTo
 import kotlinx.android.synthetic.main.fragment_manual_add.*

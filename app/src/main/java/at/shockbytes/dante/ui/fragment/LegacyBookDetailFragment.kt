@@ -21,8 +21,8 @@ import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.PageEditDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
-import at.shockbytes.dante.ui.image.ImageLoader
-import at.shockbytes.dante.ui.image.ImageLoadingCallback
+import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.settings.DanteSettings

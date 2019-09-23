@@ -114,9 +114,12 @@ class BookAdapter(
             }
             item_book_actions_btn_delete.setOnClickListener { v ->
                 v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                onActionClickedListener.onDelete(item)
-                deleteEntity(item)
-                expandedPosition = -1
+                onActionClickedListener.onDelete(item) { onDeletionConfirmed ->
+                    if (onDeletionConfirmed) {
+                        deleteEntity(item)
+                        expandedPosition = -1
+                    }
+                }
             }
         }
 

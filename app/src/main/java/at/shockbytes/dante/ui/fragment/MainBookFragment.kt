@@ -22,8 +22,10 @@ import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
+import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
+import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
 
@@ -142,7 +144,23 @@ class MainBookFragment :
 
     override fun onItemMoveFinished() = viewModel.updateBookPositions(bookAdapter.data)
 
-    override fun onDelete(book: BookEntity) = viewModel.deleteBook(book)
+    override fun onDelete(book: BookEntity, onDeletionConfirmed: (Boolean) -> Unit) {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_delete)
+            title(text = getString(R.string.ask_for_book_deletion))
+            message(text = getString(R.string.ask_for_book_deletion_msg, book.title))
+            positiveButton(R.string.action_delete ) {
+                onDeletionConfirmed(true)
+                viewModel.deleteBook(book)
+            }
+            negativeButton(android.R.string.no) {
+                onDeletionConfirmed(false)
+                dismiss()
+            }
+            cancelOnTouchOutside(false)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
+    }
 
     override fun onShare(book: BookEntity) = ActivityNavigator.navigateTo(context, Destination.Share(book))
 

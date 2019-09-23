@@ -4,7 +4,7 @@ import at.shockbytes.dante.core.book.BookEntity
 
 interface OnBookActionClickedListener {
 
-    fun onDelete(book: BookEntity)
+    fun onDelete(book: BookEntity, onDeletionConfirmed: (Boolean) -> Unit)
 
     fun onShare(book: BookEntity)
 

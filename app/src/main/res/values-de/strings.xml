@@ -206,5 +206,7 @@
     <string name="announcement_header">&#127881; Ankündigung &#127881;</string>
     <string name="announcement_open_source_title">Dante ist jetzt Open Source!</string>
     <string name="announcement_open_source_description">Dante wurde gerade auf Github veröffentlicht. Wenn du Kotlin Skills besitzt und weißt wie man eine Android App macht, dann mach einfach mit. Interessiert? Besuche \n\n<u>https://github.com/shockbytes/Dante</u></string>
+    <string name="ask_for_book_deletion">Buch entfernen?</string>
+    <string name="ask_for_book_deletion_msg">Willst du wirklich das Buch %s von deiner Bibliothek entfernen?</string>
 
 </resources>

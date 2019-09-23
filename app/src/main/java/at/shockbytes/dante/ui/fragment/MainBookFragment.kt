@@ -20,6 +20,7 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
@@ -30,7 +31,7 @@ class MainBookFragment :
     BaseFragment(),
     BaseAdapter.OnItemClickListener<BookEntity>,
     BaseAdapter.OnItemMoveListener<BookEntity>,
-    BookAdapter.OnBookPopupItemSelectedListener {
+    OnBookActionClickedListener {
 
     override val layoutId = R.layout.fragment_book_main
 
@@ -104,24 +105,23 @@ class MainBookFragment :
 
     override fun setupViews() {
 
-        // Initialize text for empty indicator
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
-        // Initialize RecyclerView
-        context?.let { ctx ->
-            bookAdapter = BookAdapter(ctx, bookState, imageLoader, this, true).apply {
-                onItemClickListener = this@MainBookFragment
-                onItemMoveListener = this@MainBookFragment
-            }
-            fragment_book_main_rv.apply {
-                layoutManager = rvLayoutManager
-                adapter = bookAdapter
-            }
+        bookAdapter = BookAdapter(fragment_book_main_rv, imageLoader, this).apply {
+            onItemClickListener = this@MainBookFragment
+            onItemMoveListener = this@MainBookFragment
         }
 
-        // Setup RecyclerView's ItemTouchHelper
-        val itemTouchHelper = ItemTouchHelper(BaseItemTouchHelper(bookAdapter,
-                false, BaseItemTouchHelper.DragAccess.VERTICAL))
+        fragment_book_main_rv.apply {
+            layoutManager = rvLayoutManager
+            adapter = bookAdapter
+        }
+
+        val itemTouchHelper = ItemTouchHelper(
+            BaseItemTouchHelper(bookAdapter,
+                false,
+                BaseItemTouchHelper.DragAccess.VERTICAL)
+        )
         itemTouchHelper.attachToRecyclerView(fragment_book_main_rv)
     }
 
@@ -140,29 +140,17 @@ class MainBookFragment :
     // Do nothing, only react to move actions in the on item move finished method
     override fun onItemMove(t: BookEntity, from: Int, to: Int) = Unit
 
-    override fun onItemMoveFinished() {
-        viewModel.updateBookPositions(bookAdapter.data)
-    }
+    override fun onItemMoveFinished() = viewModel.updateBookPositions(bookAdapter.data)
 
-    override fun onDelete(b: BookEntity) {
-        viewModel.deleteBook(b)
-    }
+    override fun onDelete(book: BookEntity) = viewModel.deleteBook(book)
 
-    override fun onShare(b: BookEntity) {
-        ActivityNavigator.navigateTo(context, Destination.Share(b))
-    }
+    override fun onShare(book: BookEntity) = ActivityNavigator.navigateTo(context, Destination.Share(book))
 
-    override fun onMoveToUpcoming(b: BookEntity) {
-        viewModel.moveBookToUpcomingList(b)
-    }
+    override fun onMoveToUpcoming(book: BookEntity) = viewModel.moveBookToUpcomingList(book)
 
-    override fun onMoveToCurrent(b: BookEntity) {
-        viewModel.moveBookToCurrentList(b)
-    }
+    override fun onMoveToCurrent(book: BookEntity) = viewModel.moveBookToCurrentList(book)
 
-    override fun onMoveToDone(b: BookEntity) {
-        viewModel.moveBookToDoneList(b)
-    }
+    override fun onMoveToDone(book: BookEntity) = viewModel.moveBookToDoneList(book)
 
     // --------------------------------------------------------------
 

@@ -30,7 +30,6 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_book_detail.*
-import kotlinx.android.synthetic.main.fragment_book_detail_legacy.*
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
 import timber.log.Timber
@@ -41,8 +40,11 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    02.02.2019
  */
-class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
-        Palette.PaletteAsyncListener, CircleSeekBar.Callback {
+class BookDetailFragment : BaseFragment(),
+    BackAnimatable,
+    ImageLoadingCallback,
+    Palette.PaletteAsyncListener,
+    CircleSeekBar.Callback {
 
     override val layoutId = R.layout.fragment_book_detail
 
@@ -78,9 +80,9 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
             Pair(R.drawable.ic_rating, btn_detail_rate),
             Pair(R.drawable.ic_pages, btn_detail_pages),
             Pair(R.drawable.ic_notes, btn_detail_notes),
-            Pair(R.drawable.ic_popup_upcoming, btn_detail_wishhlist_date),
-            Pair(R.drawable.ic_popup_current, btn_detail_start_date),
-            Pair(R.drawable.ic_popup_done, btn_detail_end_date)
+            Pair(R.drawable.ic_tab_upcoming, btn_detail_wishhlist_date),
+            Pair(R.drawable.ic_tab_current, btn_detail_start_date),
+            Pair(R.drawable.ic_tab_done, btn_detail_end_date)
         )
     }
 
@@ -361,7 +363,7 @@ class BookDetailFragment : BaseFragment(), BackAnimatable, ImageLoadingCallback,
 
         // Hide complete card if no time information is available
         if (!book.isAnyTimeInformationAvailable) {
-            layoutDetailFragmentDates?.visibility = View.GONE
+            layout_detail_dates.visibility = View.GONE
         } else {
 
             val pattern = "dd. MMM yyyy"

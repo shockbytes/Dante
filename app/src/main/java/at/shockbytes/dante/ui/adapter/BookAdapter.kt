@@ -169,7 +169,7 @@ class BookAdapter(
                     context,
                     address,
                     item_book_img_thumb,
-                    cornerDimension =  context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                    cornerDimension = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                 )
             } else {
                 // Books with no image will recycle another cover if not cleared here

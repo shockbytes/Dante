@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.activity
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.transition.Fade
 import at.shockbytes.dante.R
@@ -36,7 +35,6 @@ class SearchActivity : BaseActivity() {
 
         window.exitTransition = Fade()
         window.enterTransition = Fade()
-
 
         supportFragmentManager
             .beginTransaction()

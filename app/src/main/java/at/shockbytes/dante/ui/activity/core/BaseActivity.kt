@@ -8,8 +8,6 @@ import android.transition.Explode
 import android.transition.Fade
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.transition.Slide
-import android.view.Gravity
 import android.view.Window
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp

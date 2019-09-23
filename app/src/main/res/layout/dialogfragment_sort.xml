@@ -97,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtDialogFragmentSortHint"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txtDialogFragmentSortHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -106,9 +106,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/compat_ic_sort"
         android:drawablePadding="16dp"
-        android:drawableStart="@drawable/compat_ic_sort"
+        android:drawableStart="@drawable/ic_sort"
         android:text="@string/dialogfragment_sort_by"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/menuItemColor"

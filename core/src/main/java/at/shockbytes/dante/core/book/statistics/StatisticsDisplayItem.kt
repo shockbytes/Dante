@@ -1,5 +1,6 @@
 package at.shockbytes.dante.core.book.statistics
 
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
@@ -14,6 +15,7 @@ sealed class StatisticsDisplayItem {
     data class StatisticsDataItem(
         override val title: Int,
         override val icon: Int,
+        @ColorRes val tintColorRes: Int,
         val align: Align,
         val messageArgs: List<String>
     ) : StatisticsDisplayItem()

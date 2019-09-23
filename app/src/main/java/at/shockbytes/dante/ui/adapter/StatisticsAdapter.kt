@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.statistics.StatisticsDisplayItem
 import at.shockbytes.util.adapter.BaseAdapter
@@ -49,10 +50,12 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
             with(t as StatisticsDisplayItem.StatisticsDataItem) {
                 if (align == StatisticsDisplayItem.Align.START) {
                     item_statistics_data_icon_start.setImageResource(icon)
+                    item_statistics_data_icon_start.setColorFilter(ContextCompat.getColor(context, tintColorRes))
                     item_statistics_data_icon_end.visibility = View.GONE
                     item_statistics_data_txt_title.gravity = Gravity.START or Gravity.CENTER_VERTICAL
                 } else {
                     item_statistics_data_icon_end.setImageResource(icon)
+                    item_statistics_data_icon_end.setColorFilter(ContextCompat.getColor(context, tintColorRes))
                     item_statistics_data_icon_start.visibility = View.GONE
                     item_statistics_data_txt_title.gravity = Gravity.END or Gravity.CENTER_VERTICAL
                 }

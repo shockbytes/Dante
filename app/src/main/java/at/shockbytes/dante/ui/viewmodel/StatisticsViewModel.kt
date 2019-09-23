@@ -46,7 +46,8 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_pages_waiting,
-                R.drawable.ic_pages_colored,
+                R.drawable.ic_pages,
+                R.color.tabcolor_upcoming_dark,
                 StatisticsDisplayItem.Align.START,
                 listOf(s.pagesWaiting.toString())
             )
@@ -54,7 +55,8 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_pages_read,
-                R.drawable.ic_pages,
+                R.drawable.ic_pages_read,
+                R.color.tabcolor_done_dark,
                 StatisticsDisplayItem.Align.START,
                 listOf(s.pagesRead.toString())
             )
@@ -62,7 +64,8 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_books_waiting,
-                R.drawable.ic_popup_upcoming,
+                R.drawable.ic_tab_upcoming,
+                R.color.tabcolor_upcoming,
                 StatisticsDisplayItem.Align.START,
                 listOf(s.booksWaiting.toString())
             )
@@ -70,7 +73,8 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_books_read,
-                R.drawable.ic_popup_done,
+                R.drawable.ic_tab_done,
+                R.color.tabcolor_done,
                 StatisticsDisplayItem.Align.START, listOf(s.booksRead.toString())
             )
         )
@@ -87,6 +91,7 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_duration_book,
                 R.drawable.ic_stats_fast,
+                R.color.colorAccent,
                 StatisticsDisplayItem.Align.START,
                 listOf(s.fastestBook?.days?.toString() ?: "---", s.fastestBook?.bookName ?: "---")
             )
@@ -95,6 +100,7 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_duration_book,
                 R.drawable.ic_stats_slow,
+                R.color.color_error,
                 StatisticsDisplayItem.Align.START,
                 listOf(
                     s.slowestBook?.days?.toString() ?: "---",
@@ -115,6 +121,7 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_favourite_author,
                 R.drawable.ic_fav_author,
+                R.color.support_badge_standard,
                 StatisticsDisplayItem.Align.START,
                 listOf(s.mostReadAuthor ?: "---")
             )
@@ -122,7 +129,8 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_first_five_star,
-                R.drawable.ic_five_star,
+                R.drawable.ic_rating,
+                R.color.nice_color,
                 StatisticsDisplayItem.Align.START,
                 listOf(s.firstFiveStarBook?.title ?: "---")
             )
@@ -132,7 +140,8 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_average_rating,
-                R.drawable.ic_rating_colored,
+                R.drawable.ic_rating_average,
+                R.color.support_badge_premium,
                 StatisticsDisplayItem.Align.START,
                 listOf(avgRating)
             )
@@ -148,7 +157,8 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
         items.add(
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_avg_books_per_month,
-                R.drawable.ic_popup_current,
+                R.drawable.ic_tab_current,
+                R.color.tabcolor_current,
                 StatisticsDisplayItem.Align.START,
                 listOf(s.avgBooksPerMonth.toString())
             )
@@ -157,6 +167,7 @@ class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao
             StatisticsDisplayItem.StatisticsDataItem(
                 R.string.statistics_most_reading_month,
                 R.drawable.ic_books,
+                R.color.brown,
                 StatisticsDisplayItem.Align.START,
                 listOf(
                     s.mostReadingMonth?.finishedBooks?.toString() ?: "0",

@@ -3,13 +3,10 @@ package at.shockbytes.dante.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
-import at.shockbytes.dante.ui.fragment.LegacyBookDetailFragment
-import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.flagging.FeatureFlagging
 import javax.inject.Inject
 
@@ -56,18 +53,14 @@ class DetailActivity : TintableBackNavigableActivity() {
 
     private fun pickDetailFragment(id: Long): BackAnimatable {
 
-        val fragment: Fragment = if (featureFlagging[FeatureFlag.UpdatedDetailPage]) {
-            BookDetailFragment.newInstance(id)
-        } else {
-            LegacyBookDetailFragment.newInstance(id)
-        }
+        val fragment = BookDetailFragment.newInstance(id)
 
         supportFragmentManager.beginTransaction()
                 .setReorderingAllowed(true)
                 .replace(android.R.id.content, fragment)
                 .commit()
 
-        return fragment as BackAnimatable // This cast is fine, both implement this interface
+        return fragment
     }
 
     companion object {

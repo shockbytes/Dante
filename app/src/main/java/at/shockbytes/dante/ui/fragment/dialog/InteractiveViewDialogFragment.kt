@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.fragment.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
 import android.view.View
 import at.shockbytes.dante.R

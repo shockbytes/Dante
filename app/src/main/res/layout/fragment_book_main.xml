@@ -19,7 +19,7 @@
         android:alpha="0"
         android:padding="8dp"
         android:drawablePadding="16dp"
-        android:drawableTop="@drawable/compat_ic_empty_indicator"
+        android:drawableTop="@drawable/ic_empty_indicator"
         android:gravity="center"
         android:textColor="@color/colorSecondaryText"
         android:textSize="25sp"

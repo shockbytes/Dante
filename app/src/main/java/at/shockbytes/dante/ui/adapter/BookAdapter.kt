@@ -32,6 +32,14 @@ class BookAdapter(
 
     private var expandedPosition = -1
 
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return data[position].id
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<BookEntity>.ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_book, parent, false))
     }
@@ -40,6 +48,7 @@ class BookAdapter(
         val removed = data.removeAt(position)
         onItemMoveListener?.onItemDismissed(removed, position)
     }
+
 
     override fun onItemMove(from: Int, to: Int): Boolean {
 

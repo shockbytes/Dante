@@ -10,7 +10,7 @@
         android:shortcutShortLabel="@string/menu_fab_scan">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="at.shockbytes.dante.ui.activity.BookRetrievalActivity"
+            android:targetClass="at.shockbytes.dante.camera.BarcodeCaptureActivity"
             android:targetPackage="at.shockbytes.dante">
 
             <extra

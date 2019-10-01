@@ -222,10 +222,13 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         val bgColors = listOf(R.color.tabcolor_upcoming, R.color.tabcolor_done, R.color.color_error)
         menu.visibleItems.forEachIndexed { idx, item ->
-            mainFabMenu.addActionItem(SpeedDialActionItem.Builder(item.itemId, item.icon)
+            mainFabMenu.addActionItem(
+                SpeedDialActionItem.Builder(item.itemId, item.icon)
                     .setLabel(item.title.toString())
+                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
                     .setFabBackgroundColor(ContextCompat.getColor(this, bgColors[idx]))
-                    .create())
+                    .create()
+            )
         }
 
         mainFabMenu.setOnActionSelectedListener { item ->

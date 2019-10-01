@@ -96,6 +96,8 @@
         app:sdExpansionMode="top"
         app:sdUseReverseAnimationOnClose="true"
         app:sdMainFabAnimationRotateAngle="90"
+        app:sdMainFabClosedIconColor="@color/white"
+        app:sdMainFabOpenedIconColor="@color/white"
         app:sdMainFabClosedSrc="@drawable/ic_add"
         app:sdMainFabOpenedSrc="@drawable/ic_close" />
     <!-- app:sdOverlayLayout="@id/mainFabMenuOverlay" -->

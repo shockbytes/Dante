@@ -32,7 +32,7 @@
     </style>
 
     <style name="AppTheme.RoundedButton.Outlined" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:background">@drawable/rounded_button_outlined</item>
+        <item name="rippleColor">@color/colorAccent</item>
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 

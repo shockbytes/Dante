@@ -9,6 +9,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.sort.SortStrategy
+import com.google.android.material.button.MaterialButton
 import kotterknife.bindView
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit>() {
             R.string.sort_strategy_pages_hint)
 
     private val radioGroupDialogFragmentSort: RadioGroup by bindView(R.id.radioGroupDialogFragmentSort)
-    private val btnDialogFragmentSortApply: Button by bindView(R.id.btnDialogFragmentSortApply)
+    private val btnDialogFragmentSortApply: MaterialButton by bindView(R.id.btnDialogFragmentSortApply)
     private val txtDialogFragmentSortHint: TextView by bindView(R.id.txtDialogFragmentSortHint)
 
     override fun setupViews() {

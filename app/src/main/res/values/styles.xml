@@ -57,4 +57,8 @@
         <item name="android:textStyle">italic</item>
     </style>
 
+    <style name="AppTheme.BorderlessButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="rippleColor">@color/colorBrand</item>
+    </style>
+
 </resources>

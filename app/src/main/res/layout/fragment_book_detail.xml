@@ -24,7 +24,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_detail_wishhlist_date"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -39,7 +39,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_detail_start_date"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -54,7 +54,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_detail_end_date"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -82,25 +82,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/btn_detail_pages"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:drawablePadding="8dp"
-                    android:gravity="center"
-                    android:textColor="@color/colorTertiaryText"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="@id/sb_detail_pages"
-                    app:layout_constraintEnd_toEndOf="@id/sb_detail_pages"
-                    app:layout_constraintStart_toStartOf="@id/sb_detail_pages"
-                    app:layout_constraintTop_toTopOf="@id/sb_detail_pages"
-                    tools:text="1000 / 1000" />
 
                 <ImageView
                     android:id="@+id/iv_detail_image"
@@ -133,7 +114,7 @@
 
                     <Button
                         android:id="@+id/btn_detail_rate"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/AppTheme.BorderlessButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -147,7 +128,7 @@
 
                     <Button
                         android:id="@+id/btn_detail_notes"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/AppTheme.BorderlessButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -161,7 +142,7 @@
 
                     <Button
                         android:id="@+id/btn_detail_published"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        style="@style/AppTheme.BorderlessButton"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -256,6 +237,26 @@
                     app:progressCircleLineColor="@color/colorAccent"
                     app:showCounter="false"
                     app:value="50" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_detail_pages"
+                    style="@style/AppTheme.BorderlessButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:textColor="@color/colorTertiaryText"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/sb_detail_pages"
+                    app:layout_constraintEnd_toEndOf="@id/sb_detail_pages"
+                    app:layout_constraintStart_toStartOf="@id/sb_detail_pages"
+                    app:layout_constraintTop_toTopOf="@id/sb_detail_pages"
+                    tools:text="1000 / 1000" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

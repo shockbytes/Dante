@@ -32,5 +32,6 @@
     <color name="iconColorSettings">@color/white</color>
 
     <color name="border">#EEE</color>
+    <color name="bottom_menu_background">#090909</color>
 
 </resources>

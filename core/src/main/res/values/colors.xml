@@ -66,4 +66,6 @@
 
     <color name="border">#AAA</color>
 
+    <color name="bottom_menu_background">@android:color/transparent</color>
+
 </resources>

@@ -15,10 +15,15 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabLayout
+            style="@style/Widget.MaterialComponents.TabLayout"
             android:id="@+id/tabs_fragment_backup"
+            app:tabSelectedTextColor="@color/danteAccent"
+            app:tabIndicatorColor="@color/danteAccent"
             android:layout_width="match_parent"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize" />
+            app:tabIndicatorFullWidth="false"/>
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -112,7 +112,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/sb_detail_pages"
                     app:layout_goneMarginTop="32dp">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_detail_rate"
                         style="@style/AppTheme.BorderlessButton"
                         android:layout_width="0dp"
@@ -126,7 +126,7 @@
                         android:textSize="15sp"
                         tools:text="Rate" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_detail_notes"
                         style="@style/AppTheme.BorderlessButton"
                         android:layout_width="0dp"
@@ -140,7 +140,7 @@
                         android:textSize="15sp"
                         tools:text="Notes" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_detail_published"
                         style="@style/AppTheme.BorderlessButton"
                         android:layout_width="0dp"

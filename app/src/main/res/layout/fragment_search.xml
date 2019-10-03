@@ -64,17 +64,16 @@
                     android:text="@string/search_online_hint"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                <androidx.appcompat.widget.AppCompatButton
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/fragment_search_btn_search_online"
                     style="@style/AppTheme.RoundedButton.Outlined"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:drawableStart="@drawable/ic_search"
                     android:padding="16dp"
-                    android:text="@string/search_online"
-                    android:textColor="@color/actionBarItemColor"
-                    app:backgroundTint="@color/colorPrimary" />
+                    app:icon="@drawable/ic_search"
+                    android:textColor="@color/colorPrimaryText"
+                    android:text="@string/search_online" />
             </LinearLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

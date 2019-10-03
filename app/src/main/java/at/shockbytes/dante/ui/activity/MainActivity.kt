@@ -380,7 +380,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         handleAppShortcut(intent.getStringExtra("app_shortcut"))
     }
 
-    private fun handleAppShortcut(stringExtra: String) {
+    private fun handleAppShortcut(stringExtra: String?) {
 
         when (stringExtra) {
             "extra_app_shortcut_title" -> showAddByTitleDialog()

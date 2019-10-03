@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import androidx.core.app.ActivityOptionsCompat
@@ -12,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
@@ -74,6 +76,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         bindViewModel()
         setupDarkMode()
         checkForOnboardingHints()
+    }
+
+    private fun animateTitle() {
+        txtMainToolbarTitle.animate()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .translationY(0f)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .start()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -145,16 +157,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     viewModel.queryAnnouncements()
 
                     if (event.user != null) {
-                        event.user.photoUrl?.let { photoUrl ->
-                            photoUrl.loadBitmap(this).subscribe({ bm ->
-                                imgButtonMainToolbarMore.setImageDrawable(AppUtils.createRoundedBitmap(this, bm))
-                            }, { throwable: Throwable ->
-                                throwable.printStackTrace()
-                            })
+                        val photoUrl = event.user.photoUrl
+                        if (photoUrl != null) {
+                            loadImageUrl(photoUrl)
+                        } else {
+                            animateTitle()
                         }
                         showGoogleWelcomeScreen(event.user, event.showWelcomeScreen)
                     } else {
                         imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
+                        animateTitle()
                     }
                 }
 
@@ -175,6 +187,21 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 }
             }
         })
+    }
+
+    private fun loadImageUrl(photoUrl: Uri) {
+
+        photoUrl
+            .loadBitmap(this)
+            .doFinally {
+                animateTitle()
+            }
+            .subscribe({ bm ->
+                imgButtonMainToolbarMore.setImageDrawable(AppUtils.createRoundedBitmap(this, bm))
+            }, { throwable: Throwable ->
+                throwable.printStackTrace()
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun showAnnouncementFragment() {

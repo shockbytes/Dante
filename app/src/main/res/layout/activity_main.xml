@@ -34,10 +34,18 @@
                     android:text="@string/app_name"
                     android:textColor="@color/actionBarItemColor"
                     android:textSize="22sp"
+                    android:alpha="0"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9"
+                    android:translationY="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarMore"
                     app:layout_constraintStart_toEndOf="@+id/imgButtonMainToolbarSearch"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:alpha="1"
+                    tools:translationY="0dp"
+                    tools:scaleX="1"
+                    tools:scaleY="1"/>
 
                 <ImageButton
                     android:id="@+id/imgButtonMainToolbarMore"

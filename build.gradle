@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath "io.fabric.tools:gradle:$crashlyticsPluginVersion"
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
         classpath 'com.google.gms:google-services:4.3.2'
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"

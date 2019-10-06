@@ -12,6 +12,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
@@ -33,7 +34,7 @@ class BookAdapter(
     private var expandedPosition = -1
 
     init {
-        setHasStableIds(true)
+        setHasStableIds(false)
     }
 
     override fun getItemId(position: Int): Long {
@@ -147,10 +148,16 @@ class BookAdapter(
 
             item_book_container_actions.setVisible(isExpanded)
             containerView.isActivated = isExpanded
-            item_book_img_overflow.setOnClickListener {
+
+            item_book_img_overflow.setOnClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+
                 expandedPosition = if (isExpanded) -1 else position
-                TransitionManager.beginDelayedTransition(recyclerView)
-                notifyDataSetChanged()
+
+                runDelayed(100) {
+                    TransitionManager.beginDelayedTransition(recyclerView)
+                    notifyDataSetChanged()
+                }
             }
         }
 

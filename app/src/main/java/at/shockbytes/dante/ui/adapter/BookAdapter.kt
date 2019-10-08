@@ -6,6 +6,9 @@ import android.view.HapticFeedbackConstants
 import androidx.recyclerview.widget.DiffUtil
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
@@ -28,6 +31,7 @@ import java.util.Collections
 class BookAdapter(
     private val recyclerView: RecyclerView,
     private val imageLoader: ImageLoader,
+    private val useNewOverflowReplacement: Boolean,
     private val onActionClickedListener: OnBookActionClickedListener
 ) : BaseAdapter<BookEntity>(recyclerView.context), ItemTouchHelperAdapter {
 
@@ -89,7 +93,12 @@ class BookAdapter(
             updateTexts(t)
             updateImageThumbnail(t.thumbnailAddress)
             updateProgress(t)
-            setActionButtons(t)
+
+            if (useNewOverflowReplacement) {
+                setActionButtons(t)
+            } else {
+                setupOverflowMenu(t)
+            }
         }
 
         private fun setActionButtons(item: BookEntity) {
@@ -166,8 +175,8 @@ class BookAdapter(
 
             if (showProgress) {
                 val progress = DanteUtils.computePercentage(
-                        t.currentPage.toDouble(),
-                        t.pageCount.toDouble()
+                    t.currentPage.toDouble(),
+                    t.pageCount.toDouble()
                 )
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     item_book_pb.setProgress(progress, true)
@@ -199,6 +208,59 @@ class BookAdapter(
             item_book_txt_title.text = t.title
             item_book_txt_author.text = t.author
             item_book_txt_subtitle.text = t.subTitle
+        }
+
+        private fun setupOverflowMenu(book: BookEntity) {
+
+            val popupMenu = PopupMenu(context, item_book_img_overflow)
+
+            popupMenu.menuInflater.inflate(R.menu.menu_book_item_overflow, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.popup_item_delete -> {
+                        onActionClickedListener.onDelete(book) { onDeletionConfirmed ->
+                            if (onDeletionConfirmed) {
+                                deleteEntity(book)
+                            }
+                        }
+                    }
+                    R.id.popup_item_share -> {
+                        onActionClickedListener.onShare(book)
+                    }
+                    R.id.popup_item_move_to_current -> {
+                        onActionClickedListener.onMoveToCurrent(book)
+                        deleteEntity(book)
+                    }
+
+                    R.id.popup_item_move_to_upcoming -> {
+                        onActionClickedListener.onMoveToUpcoming(book)
+                        deleteEntity(book)
+                    }
+                    R.id.popup_item_move_to_done -> {
+                        onActionClickedListener.onMoveToDone(book)
+                        deleteEntity(book)
+                    }
+                }
+                true
+            }
+
+            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_book_img_overflow)
+            menuHelper.setForceShowIcon(true)
+
+            popupMenu.hideSelectedPopupItem(book.state)
+
+            item_book_img_overflow.setOnClickListener { menuHelper.show() }
+        }
+
+        private fun PopupMenu.hideSelectedPopupItem(state: BookState) {
+
+            val item = when (state) {
+
+                BookState.READ_LATER -> this.menu.findItem(R.id.popup_item_move_to_upcoming)
+                BookState.READING -> this.menu.findItem(R.id.popup_item_move_to_current)
+                BookState.READ -> this.menu.findItem(R.id.popup_item_move_to_done)
+            }
+            item?.isVisible = false
         }
     }
 }

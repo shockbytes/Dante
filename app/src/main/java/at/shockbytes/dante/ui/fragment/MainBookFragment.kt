@@ -20,6 +20,8 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.flagging.FeatureFlag
+import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.util.AppUtils
@@ -42,6 +44,9 @@ class MainBookFragment :
 
     @Inject
     lateinit var imageLoader: ImageLoader
+
+    @Inject
+    lateinit var featureFlagging: FeatureFlagging
 
     private lateinit var bookState: BookState
     private lateinit var bookAdapter: BookAdapter
@@ -109,7 +114,12 @@ class MainBookFragment :
 
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
-        bookAdapter = BookAdapter(fragment_book_main_rv, imageLoader, this).apply {
+        bookAdapter = BookAdapter(
+            fragment_book_main_rv,
+            imageLoader,
+            featureFlagging[FeatureFlag.OverflowMenu],
+            this
+        ).apply {
             onItemClickListener = this@MainBookFragment
             onItemMoveListener = this@MainBookFragment
         }

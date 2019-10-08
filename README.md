@@ -44,10 +44,11 @@ the user during the login process.
 - [ ] Labels for books
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
-
-### Version 3.7 - ONBOARDING
 - [ ] Redesign overflow menu
-- [ ] Redesign scan screen
+
+### Version 3.7 - SCARY SCANNING
+- [x] Redesign scan screen
+- [x] Improved dark mode
 
 ### Version 3.6 - GET EXCITED
 * Move to Android App Bundles

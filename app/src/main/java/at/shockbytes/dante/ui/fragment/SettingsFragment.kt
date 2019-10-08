@@ -9,6 +9,7 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
@@ -25,9 +26,15 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             this.onPreferenceChangeListener = this@SettingsFragment
         }
 
-        findPreference(getString(R.string.prefs_contribute_key)).apply {
+        findPreference(getString(R.string.prefs_contribute_code_key)).apply {
             this.setOnPreferenceClickListener {
                 UrlLauncher.openDanteGithubPage(context)
+                true
+            }
+        }
+        findPreference(getString(R.string.prefs_translation_key)).apply {
+            this.setOnPreferenceClickListener {
+                MailLauncher.sendMail(context, getString(R.string.action_send_mail))
                 true
             }
         }
@@ -43,9 +50,9 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         if (show) {
             featureFlagPreference.isVisible = true
             featureFlagPreference.setOnPreferenceClickListener {
-                fragmentManager?.let { fm ->
+                fragmentManager?.run {
                     DanteUtils.addFragmentToActivity(
-                            fm,
+                            this,
                             FeatureFlagConfigFragment.newInstance(),
                             android.R.id.content,
                             addToBackStack = true

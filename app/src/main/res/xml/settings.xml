@@ -18,6 +18,22 @@
 
     </androidx.preference.PreferenceCategory>
 
+    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_contribute">
+
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_github"
+            android:key="@string/prefs_contribute_code_key"
+            android:summary="@string/prefs_contribute_code_summary"
+            android:title="@string/prefs_contribute_code_title" />
+
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_language"
+            android:key="@string/prefs_translation_key"
+            android:summary="@string/prefs_translation_summary"
+            android:title="@string/prefs_translation_title" />
+
+    </androidx.preference.PreferenceCategory>
+
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
         <androidx.preference.Preference
@@ -35,12 +51,6 @@
             android:icon="@drawable/ic_settings_developer"
             android:summary="@string/prefs_developer_summary"
             android:title="@string/prefs_developer_title" />
-
-        <androidx.preference.Preference
-            android:icon="@drawable/ic_settings_github"
-            android:key="@string/prefs_contribute_key"
-            android:summary="@string/prefs_contribute_summary"
-            android:title="@string/prefs_contribute_title" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_version"

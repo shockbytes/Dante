@@ -50,7 +50,6 @@ class BookAdapter(
         onItemMoveListener?.onItemDismissed(removed, position)
     }
 
-
     override fun onItemMove(from: Int, to: Int): Boolean {
 
         // Switch the item within the collection

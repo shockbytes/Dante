@@ -189,8 +189,8 @@
     <string name="menu_fab_manual_long">Gib die Buchinformationen manuell ein.</string>
     <string name="fab_hint_prompt">Scanne dein erstes Buch</string>
     <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
-    <string name="prefs_contribute_title">Mitwirken</string>
-    <string name="prefs_contribute_summary">Arbeite an Dante mit: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_title">Code</string>
+    <string name="prefs_contribute_code_summary">Arbeite an Dante mit: https://github.com/shockbytes/Dante</string>
     <string name="restore_title">Wiederherstellen</string>
     <string name="backup_title">Backup</string>
     <string name="rationale_ask_cancel">Sicher nicht!</string>
@@ -208,5 +208,12 @@
     <string name="announcement_open_source_description">Dante wurde gerade auf Github veröffentlicht. Wenn du Kotlin Skills besitzt und weißt wie man eine Android App macht, dann mach einfach mit. Interessiert? Besuche \n\n<u>https://github.com/shockbytes/Dante</u></string>
     <string name="ask_for_book_deletion">Buch entfernen?</string>
     <string name="ask_for_book_deletion_msg">Willst du wirklich das Buch %s von deiner Bibliothek entfernen?</string>
+    <string name="action_send_mail">Sende Mail</string>
+    <string name="announcement_translation_title">Hilf mit Dante zu übersetzen!</string>
+    <string name="mail_subject_translation">Ich will übersetzen helfen</string>
+    <string name="announcement_translation_description">Falls du Dante schon immer in deiner Sprache sehen wolltest, dann ist jetzt der Zeitpunkt gekommen. Hilf beim Übersetzen. Klicke <u>hier</u> um dich anzumelden.</string>
+    <string name="prefs_category_contribute">Mitwirken</string>
+    <string name="prefs_translation_title">Übersetzen</string>
+    <string name="prefs_translation_summary">Hilf Dante zu übersetzen</string>
 
 </resources>

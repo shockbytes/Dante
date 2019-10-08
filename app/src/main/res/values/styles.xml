@@ -67,6 +67,7 @@
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="hintTextColor">@color/colorAccent</item>
+        <item name="android:textCursorDrawable">@null</item>
     </style>
 
 </resources>

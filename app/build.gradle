@@ -75,7 +75,7 @@ dependencies {
     implementation "androidx.cardview:cardview:${rootProject.androidXVersion}"
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "androidx.core:core:$androidXCoreVersion"
-    implementation "androidx.preference:preference:$androidXVersion"
+    implementation "androidx.preference:preference:$androidXPreferenceVersion"
 
     implementation "com.google.android.material:material:${rootProject.materialVersion}"
 

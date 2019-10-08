@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_close_grayscale" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_rating_rate"
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"

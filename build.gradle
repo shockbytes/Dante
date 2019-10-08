@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath "io.fabric.tools:gradle:$crashlyticsPluginVersion"
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
         classpath 'com.google.gms:google-services:4.3.2'
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -29,7 +29,6 @@ allprojects {
         maven { url "https://clojars.org/repo/" }
         maven { url "https://maven.google.com" }
         maven { url 'https://jitpack.io' }
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 }
 
@@ -42,20 +41,22 @@ ext {
     archXVersion = '2.1.0'
     androidXVersion = '1.0.0'
     androidXCoreVersion = '1.0.2'
+    androidXPreferenceVersion = '1.1.0'
     androidXAppCompatVersion = '1.1.0'
+    materialVersion = '1.1.0-alpha10'
 
     rxJavaVersion = "2.1.14"
     rxAndroidVersion = "2.1.1"
     rxBindingsVersion = "2.0.0"
 
-    firebaseVersionCore = "17.0.0"
-    firebaseVersionConfig = "18.0.0"
-    firebaseVersionAuth = "18.0.0"
+    firebaseVersionCore = "17.2.0"
+    firebaseVersionConfig = "19.0.2"
+    firebaseVersionAuth = "19.1.0"
     firebaseMLVision = "21.0.0"
 
     playServicesVersionVision = "17.0.2"
-    playServicesVersionDrive = "16.1.0"
-    playServicesVersionAuth = "16.0.1"
+    playServicesVersionDrive = "17.0.0"
+    playServicesVersionAuth = "17.0.0"
 
     daggerVersion = "2.16"
     retrofitVersion = "2.5.0"

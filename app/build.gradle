@@ -5,13 +5,13 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "at.shockbytes.dante"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 26
         versionName "3.7"
 
@@ -70,13 +70,14 @@ dependencies {
     implementation project(':camera')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.google.android.material:material:${rootProject.androidXVersion}"
     implementation "androidx.legacy:legacy-support-v4:${rootProject.androidXVersion}"
     implementation "androidx.palette:palette:${rootProject.androidXVersion}"
     implementation "androidx.cardview:cardview:${rootProject.androidXVersion}"
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "androidx.core:core:$androidXCoreVersion"
-    implementation "androidx.preference:preference:$androidXVersion"
+    implementation "androidx.preference:preference:$androidXPreferenceVersion"
+
+    implementation "com.google.android.material:material:${rootProject.materialVersion}"
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -101,11 +102,10 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
     implementation "com.jakewharton.timber:timber:$timberVersion"
-    implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
-    implementation "com.leinardi.android:speed-dial:2.0.1"
+    implementation "com.leinardi.android:speed-dial:3.1.0"
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
@@ -132,6 +132,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.ext:truth:1.2.0'
     androidTestImplementation 'com.google.truth:truth:0.42'
+    implementation 'androidx.fragment:fragment-ktx:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

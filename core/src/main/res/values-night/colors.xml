@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="mainBackground">#323232</color>
-    <color name="colorPrimary">#212121</color>
-    <color name="colorPrimaryDarkPre23">#212121</color>
+    <color name="mainBackground">#1E1E1E</color>
+    <color name="colorPrimary">#DDD</color>
+    <color name="colorPrimaryDarkPre23">#121212</color>
     <color name="colorAccent">#2196F3</color>
     <color name="iconColor">#BBB</color>
     <color name="actionBarItemColor">#FFF</color>
@@ -24,12 +24,14 @@
     <color name="ratingBackground">#323232</color>
     <color name="notesBackground">#323232</color>
 
-    <color name="navigationBarColor">@color/colorPrimary</color>
+    <color name="navigationBarColor">#101010</color>
     <color name="navigationBarItemDisabled">@color/white</color>
     <color name="searchBarColor">#424242</color>
+    <color name="colorActionBar">@color/colorPrimaryDarkPre23</color>
 
     <color name="iconColorSettings">@color/white</color>
 
     <color name="border">#EEE</color>
+    <color name="bottom_menu_background">#090909</color>
 
 </resources>

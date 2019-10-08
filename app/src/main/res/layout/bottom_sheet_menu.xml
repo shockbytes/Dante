@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
+    android:background="@color/bottom_menu_background"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="-16dp"
+        app:cardBackgroundColor="@color/mainBackground"
         app:cardCornerRadius="16dp"
         app:cardElevation="24dp">
 
@@ -70,7 +71,7 @@
                 android:background="@color/danteAccent"
                 app:layout_constraintTop_toBottomOf="@+id/imageViewMenuUser" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuLogin"
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"
@@ -86,7 +87,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuStatistics"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -96,7 +97,7 @@
                 android:layout_marginTop="8dp"
                 app:iconPadding="16dp"
                 app:iconTint="@color/danteAccent"
-                app:icon="@drawable/compat_ic_stats"
+                app:icon="@drawable/ic_stats"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:textColor="@color/danteAccent"
@@ -108,7 +109,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuSortStrategy"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -118,7 +119,7 @@
                 app:iconPadding="16dp"
                 app:iconTint="@color/danteAccent"
                 android:textColor="@color/danteAccent"
-                app:icon="@drawable/compat_ic_sort"
+                app:icon="@drawable/ic_sort"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:text="@string/menu_main_sort"
@@ -129,7 +130,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuBackup"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -138,7 +139,7 @@
                 android:layout_marginStart="16dp"
                 app:iconPadding="16dp"
                 app:iconTint="@color/danteAccent"
-                app:icon="@drawable/compat_ic_backup"
+                app:icon="@drawable/ic_backup"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:textColor="@color/danteAccent"
@@ -152,7 +153,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuSettings"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -161,7 +162,7 @@
                 android:layout_marginStart="16dp"
                 app:iconPadding="16dp"
                 app:iconTint="@color/danteAccent"
-                app:icon="@drawable/compat_ic_settings"
+                app:icon="@drawable/ic_settings"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:textColor="@color/danteAccent"

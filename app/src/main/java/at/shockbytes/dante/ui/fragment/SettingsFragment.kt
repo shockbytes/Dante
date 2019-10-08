@@ -9,6 +9,7 @@ import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
@@ -21,13 +22,19 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
         addPreferencesFromResource(R.xml.settings)
 
-        (findPreference(getString(R.string.prefs_dark_mode_key)) as SwitchPreferenceCompat).apply {
+        findPreference<SwitchPreferenceCompat>(getString(R.string.prefs_dark_mode_key))?.apply {
             this.onPreferenceChangeListener = this@SettingsFragment
         }
 
-        findPreference(getString(R.string.prefs_contribute_key)).apply {
+        findPreference<Preference>(getString(R.string.prefs_contribute_code_key))?.apply {
             this.setOnPreferenceClickListener {
-                UrlLauncher.openDanteGithubPage(context)
+                UrlLauncher.openDanteGithubPage(requireContext())
+                true
+            }
+        }
+        findPreference<Preference>(getString(R.string.prefs_translation_key))?.apply {
+            this.setOnPreferenceClickListener {
+                MailLauncher.sendMail(context, getString(R.string.action_send_mail))
                 true
             }
         }
@@ -37,15 +44,15 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
     private fun showFeatureFlagsConfig(show: Boolean) {
 
-        val featureFlagPreference = findPreference(getString(R.string.prefs_feature_flag_key))
-        featureFlagPreference.isVisible = show
+        val featureFlagPreference = findPreference<Preference>(getString(R.string.prefs_feature_flag_key))
+        featureFlagPreference?.isVisible = show
 
         if (show) {
-            featureFlagPreference.isVisible = true
-            featureFlagPreference.setOnPreferenceClickListener {
-                fragmentManager?.let { fm ->
+            featureFlagPreference?.isVisible = true
+            featureFlagPreference?.setOnPreferenceClickListener {
+                fragmentManager?.run {
                     DanteUtils.addFragmentToActivity(
-                            fm,
+                            this,
                             FeatureFlagConfigFragment.newInstance(),
                             android.R.id.content,
                             addToBackStack = true

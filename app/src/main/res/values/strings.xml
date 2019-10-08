@@ -186,9 +186,9 @@
     <string name="prefs_show_summary_title">Show book summary</string>
     <string name="prefs_show_summary_summary">Show a summary of the books in the details screen</string>
 
-    <string name="prefs_contribute_key" translatable="false">prefs_contribute_key</string>
-    <string name="prefs_contribute_title">Contribute</string>
-    <string name="prefs_contribute_summary">Contribute to Dante on Github: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_key" translatable="false">prefs_contribute_key</string>
+    <string name="prefs_contribute_code_title">Code</string>
+    <string name="prefs_contribute_code_summary">Contribute to Dante on Github: https://github.com/shockbytes/Dante</string>
 
     <string name="backup_no_backups">You haven\'t made any backups.</string>
     <string name="backup_connection_establish_error">Cannot connect to your backups. Reason: %s</string>
@@ -294,5 +294,16 @@
     <string name="announcement_open_source_title">Dante is now open source!</string>
     <string name="announcement_open_source_description">Dante got open-sourced on Github. If you have some Kotlin skills and know how to build an Android app, feel free to contribute to the app. Want to join? Visit \n\n<u>https://github.com/shockbytes/Dante</u></string>
     <string name="announcement_header">&#127881; Announcement &#127881;</string>
+    <string name="ask_for_book_deletion">Delete book?</string>
+    <string name="ask_for_book_deletion_msg">Do you want to remove %s from your library?</string>
+
+    <string name="mail_subject_translation">I want to help you translate</string>
+    <string name="announcement_translation_title">Help translating Dante!</string>
+    <string name="action_send_mail">Send mail</string>
+    <string name="announcement_translation_description">If you want to see Dante in your native language then step up. Help translating Dante to another language. Just click <u>here</u> to get in touch.</string>
+    <string name="prefs_category_contribute">Contribute</string>
+    <string name="prefs_translation_key" translatable="false">prefs_translation_key</string>
+    <string name="prefs_translation_title">Translate</string>
+    <string name="prefs_translation_summary">Help translating Dante</string>
 
 </resources>

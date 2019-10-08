@@ -56,7 +56,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_pages_current_page"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/TextInputStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="88dp"
@@ -80,7 +80,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_pages_pages"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/TextInputStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="88dp"
@@ -102,7 +102,7 @@
                     tools:text="300" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_pages_save"
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"

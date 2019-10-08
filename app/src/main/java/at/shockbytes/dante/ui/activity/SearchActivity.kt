@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.activity
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.transition.Fade
 import at.shockbytes.dante.R
@@ -34,10 +33,8 @@ class SearchActivity : BaseActivity() {
         viewModel = ViewModelProviders.of(this, vmFactory)[SearchViewModel::class.java]
         bindViewModel()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.exitTransition = Fade()
-            window.enterTransition = Fade()
-        }
+        window.exitTransition = Fade()
+        window.enterTransition = Fade()
 
         supportFragmentManager
             .beginTransaction()

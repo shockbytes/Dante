@@ -11,6 +11,64 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/layout_detail_dates"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_detail_date_divider">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_detail_wishhlist_date"
+                style="@style/AppTheme.BorderlessButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/colorTertiaryText"
+                android:textSize="15sp"
+                app:drawableTint="@color/tabcolor_upcoming"
+                tools:text="27. March 2018" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_detail_start_date"
+                style="@style/AppTheme.BorderlessButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/colorTertiaryText"
+                android:textSize="15sp"
+                app:drawableTint="@color/tabcolor_current"
+                tools:text="06. May 2018" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_detail_end_date"
+                style="@style/AppTheme.BorderlessButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lines="2"
+                android:maxLines="2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:textColor="@color/colorTertiaryText"
+                android:textSize="15sp"
+                app:drawableTint="@color/tabcolor_done"
+                tools:text="04. June 2018" />
+
+        </LinearLayout>
+
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
@@ -23,6 +81,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
 
                 <ImageView
                     android:id="@+id/iv_detail_image"
@@ -38,6 +97,81 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@drawable/darkest_hour" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="100dp"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sb_detail_pages"
+                    app:layout_goneMarginTop="32dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_detail_rate"
+                        style="@style/AppTheme.BorderlessButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:maxLines="2"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textColor="@color/colorTertiaryText"
+                        android:textSize="15sp"
+                        tools:text="Rate" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_detail_notes"
+                        style="@style/AppTheme.BorderlessButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:maxLines="2"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textColor="@color/colorTertiaryText"
+                        android:textSize="15sp"
+                        tools:text="Notes" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_detail_published"
+                        style="@style/AppTheme.BorderlessButton"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:maxLines="2"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                        android:textColor="@color/colorTertiaryText"
+                        android:textSize="15sp"
+                        tools:text="Published" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txt_detail_description"
+                    style="@style/TextAuthor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="@integer/detail_summary_default_lines"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_detail_author"
+                    tools:text="Description Description Description Description DescriptionDescription Description Description Description" />
 
                 <TextView
                     android:id="@+id/txt_detail_title"
@@ -71,21 +205,19 @@
                     tools:text="No subtitle" />
 
                 <TextView
-                    android:id="@+id/txt_detail_description"
+                    android:id="@+id/txt_detail_author"
                     style="@style/TextAuthor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="16dp"
-                    android:ellipsize="end"
                     android:gravity="center"
-                    android:maxLines="@integer/detail_summary_default_lines"
-                    android:textSize="15sp"
+                    android:transitionName="@string/transition_name_author"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_detail_author"
-                    tools:text="Description Description Description Description DescriptionDescription Description Description Description" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_detail_subtitle"
+                    tools:text="Author" />
 
                 <ru.bullyboo.view.CircleSeekBar
                     android:id="@+id/sb_detail_pages"
@@ -106,9 +238,9 @@
                     app:showCounter="false"
                     app:value="50" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_detail_pages"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    style="@style/AppTheme.BorderlessButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -126,82 +258,25 @@
                     app:layout_constraintTop_toTopOf="@id/sb_detail_pages"
                     tools:text="1000 / 1000" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:minHeight="100dp"
-                    android:orientation="horizontal"
-                    android:weightSum="3"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sb_detail_pages"
-                    app:layout_goneMarginTop="32dp">
-
-                    <Button
-                        android:id="@+id/btn_detail_rate"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:lines="2"
-                        android:maxLines="2"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                        android:textColor="@color/colorTertiaryText"
-                        android:textSize="15sp"
-                        tools:text="Rate" />
-
-                    <Button
-                        android:id="@+id/btn_detail_notes"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:lines="2"
-                        android:maxLines="2"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                        android:textColor="@color/colorTertiaryText"
-                        android:textSize="15sp"
-                        tools:text="Notes" />
-
-                    <Button
-                        android:id="@+id/btn_detail_published"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:lines="2"
-                        android:maxLines="2"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                        android:textColor="@color/colorTertiaryText"
-                        android:textSize="15sp"
-                        tools:text="Published" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/txt_detail_author"
-                    style="@style/TextAuthor"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center"
-                    android:transitionName="@string/transition_name_author"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_detail_subtitle"
-                    tools:text="Author" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
+
+        <View
+            android:id="@+id/view_detail_date_divider"
+            android:layout_width="0dp"
+            android:layout_height="0.25dp"
+            android:background="@color/empty"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_h_dates" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_h_dates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_detail_chips"
@@ -213,77 +288,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_h_dates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.85" />
-
-        <LinearLayout
-            android:id="@+id/layout_detail_dates"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_detail_date_divider">
-
-            <Button
-                android:id="@+id/btn_detail_wishhlist_date"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:lines="2"
-                android:maxLines="2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/colorTertiaryText"
-                android:textSize="15sp"
-                tools:text="27. March 2018" />
-
-            <Button
-                android:id="@+id/btn_detail_start_date"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:lines="2"
-                android:maxLines="2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/colorTertiaryText"
-                android:textSize="15sp"
-                tools:text="06. May 2018" />
-
-            <Button
-                android:id="@+id/btn_detail_end_date"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:lines="2"
-                android:maxLines="2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:textColor="@color/colorTertiaryText"
-                android:textSize="15sp"
-                tools:text="04. June 2018" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view_detail_date_divider"
-            android:layout_width="0dp"
-            android:layout_height="0.25dp"
-            android:background="@color/empty"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_h_dates" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

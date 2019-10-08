@@ -8,6 +8,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.Announcement
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
+import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.setVisible
 import com.airbnb.lottie.LottieDrawable
@@ -81,6 +82,9 @@ class AnnouncementFragment : BaseFragment() {
         when (action) {
             is Announcement.Action.OpenUrl -> {
                 UrlLauncher.launchUrl(requireContext(), action.url)
+            }
+            is Announcement.Action.Mail -> {
+                MailLauncher.sendMail(requireContext(), getString(action.subject))
             }
         }
     }

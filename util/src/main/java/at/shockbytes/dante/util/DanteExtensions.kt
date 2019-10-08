@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Handler
 import androidx.annotation.ColorInt
 import android.text.SpannableString
 import android.text.Spanned
@@ -81,4 +82,10 @@ fun Drawable.toBitmap(): Bitmap {
     this.draw(canvas)
 
     return bitmap
+}
+
+fun runDelayed(delay: Long, action: () -> Unit) {
+    Handler().postDelayed({
+        action()
+    }, delay)
 }

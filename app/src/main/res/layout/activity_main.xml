@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorActionBar"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -34,18 +34,25 @@
                     android:text="@string/app_name"
                     android:textColor="@color/actionBarItemColor"
                     android:textSize="22sp"
+                    android:alpha="0"
+                    android:scaleX="0.9"
+                    android:scaleY="0.9"
+                    android:translationY="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarMore"
                     app:layout_constraintStart_toEndOf="@+id/imgButtonMainToolbarSearch"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:alpha="1"
+                    tools:translationY="0dp"
+                    tools:scaleX="1"
+                    tools:scaleY="1"/>
 
                 <ImageButton
                     android:id="@+id/imgButtonMainToolbarMore"
-                    style="@style/Widget.AppCompat.Button.Borderless"
+                    style="?android:borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -55,7 +62,7 @@
 
                 <ImageButton
                     android:id="@+id/imgButtonMainToolbarSearch"
-                    style="@style/Widget.AppCompat.Button.Borderless"
+                    style="?android:borderlessButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
@@ -96,6 +103,8 @@
         app:sdExpansionMode="top"
         app:sdUseReverseAnimationOnClose="true"
         app:sdMainFabAnimationRotateAngle="90"
+        app:sdMainFabClosedIconColor="@color/white"
+        app:sdMainFabOpenedIconColor="@color/white"
         app:sdMainFabClosedSrc="@drawable/ic_add"
         app:sdMainFabOpenedSrc="@drawable/ic_close" />
     <!-- app:sdOverlayLayout="@id/mainFabMenuOverlay" -->

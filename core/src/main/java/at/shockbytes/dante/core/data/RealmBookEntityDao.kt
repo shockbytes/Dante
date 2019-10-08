@@ -70,7 +70,9 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     override fun delete(id: Long) {
         realm.instance.executeTransaction { realm ->
             realm.where(bookClass)
-                    .equalTo("id", id).findFirst()?.deleteFromRealm()
+                .equalTo("id", id)
+                .findFirst()
+                ?.deleteFromRealm()
         }
     }
 

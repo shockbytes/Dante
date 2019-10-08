@@ -2,18 +2,17 @@ package at.shockbytes.dante.announcement
 
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.UrlLauncher
 
 class SharedPrefsAnnouncementProvider(
     private val sharedPreferences: SharedPreferences
 ) : AnnouncementProvider {
 
     private val activeAnnouncement = Announcement(
-        key = "open_source_announcement",
-        titleRes = R.string.announcement_open_source_title,
-        descriptionRes = R.string.announcement_open_source_description,
-        illustration = Announcement.Illustration.LottieIllustration(R.raw.lottie_github),
-        action = Announcement.Action.OpenUrl(UrlLauncher.DANTE_GITHUB_URL)
+        key = "translation_announcement",
+        titleRes = R.string.announcement_translation_title,
+        descriptionRes = R.string.announcement_translation_description,
+        illustration = Announcement.Illustration.LottieIllustration(R.raw.lottie_translation),
+        action = Announcement.Action.Mail(R.string.mail_subject_translation)
     )
 
     override fun getActiveAnnouncement(): Announcement? {

@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.transition.Explode
+import android.transition.Fade
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.transition.Fade
-import android.transition.Slide
-import android.view.Gravity
 import android.view.Window
 import android.widget.Toast
 import at.shockbytes.dante.DanteApp
@@ -25,8 +24,8 @@ abstract class BaseActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (enableActivityTransition) {
                 window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
-                window.exitTransition = Slide(Gravity.BOTTOM)
-                window.enterTransition = Fade()
+                window.exitTransition = Fade()
+                window.enterTransition = Explode()
             }
         }
         injectToGraph((application as DanteApp).appComponent)

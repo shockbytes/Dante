@@ -12,9 +12,11 @@
     android:layout_marginEnd="@dimen/item_book_horizontal_spacing"
     android:layout_marginRight="@dimen/item_book_horizontal_spacing"
     android:layout_marginBottom="6dp"
+    android:elevation="2dp"
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="80dp"
     android:padding="2dp"
+    android:stateListAnimator="@animator/item_book_actions"
     android:transitionName="@string/transition_name_card">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,23 +26,10 @@
         android:paddingEnd="2dp"
         android:paddingBottom="2dp">
 
-        <ImageView
-            android:id="@+id/item_book_img_thumb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minWidth="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/contentdesc_listitem_img_thumb"
-            android:transitionName="@string/transition_name_thumb"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_book_pb"
-            app:srcCompat="@drawable/ic_placeholder" />
-
         <ImageButton
             android:id="@+id/item_book_img_overflow"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="36dp"
+            android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -50,20 +39,28 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_overflow" />
 
-        <TextView
-            android:id="@+id/item_book_txt_title"
-            style="@style/TextTitle"
-            android:layout_width="0dp"
+        <ImageView
+            android:id="@+id/item_book_img_thumb"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:transitionName="@string/transition_name_title"
-            app:layout_constraintBottom_toTopOf="@+id/item_book_txt_subtitle"
-            app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
-            app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
+            android:contentDescription="@string/contentdesc_listitem_img_thumb"
+            android:minWidth="48dp"
+            android:transitionName="@string/transition_name_thumb"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_book_pb"
-            tools:text="Title" />
+            app:srcCompat="@drawable/ic_placeholder" />
+
+        <ProgressBar
+            android:id="@+id/item_book_pb"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:progress="50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/item_book_txt_subtitle"
@@ -90,35 +87,115 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:paddingBottom="8dp"
             android:transitionName="@string/transition_name_author"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
             app:layout_constraintTop_toBottomOf="@+id/item_book_txt_subtitle"
             tools:text="Author" />
 
-        <ProgressBar
-            android:id="@+id/item_book_pb"
-            style="?android:attr/progressBarStyleHorizontal"
+        <TextView
+            android:id="@+id/item_book_txt_title"
+            style="@style/TextTitle"
             android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:progress="50"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:transitionName="@string/transition_name_title"
+            app:layout_constraintBottom_toTopOf="@+id/item_book_txt_subtitle"
+            app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
+            app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
+            app:layout_constraintTop_toBottomOf="@id/item_book_pb"
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/item_book_tv_progress"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:gravity="center"
             android:textColor="@color/colorSecondaryText"
             android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_book_txt_author"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/item_book_txt_author"
+            tools:text="50%" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/item_book_container_actions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="50%" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_book_txt_author">
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/item_book_actions_btn_delete"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_delete" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/item_book_actions_btn_share"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/item_book_actions_btn_delete"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_share" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/item_book_actions_btn_move_to_upcoming"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:tint="@color/tabcolor_upcoming"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_tab_upcoming" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/item_book_actions_btn_move_to_reading"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:tint="@color/tabcolor_current"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_book_actions_btn_move_to_upcoming"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_tab_current" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/item_book_actions_btn_move_to_read"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:tint="@color/tabcolor_done"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/item_book_actions_btn_move_to_reading"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_tab_done" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/item_book_group_progress"

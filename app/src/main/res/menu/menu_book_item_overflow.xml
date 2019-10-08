@@ -5,27 +5,27 @@
 
     <item
         android:id="@+id/popup_item_move_to_upcoming"
-        android:icon="@drawable/ic_popup_upcoming"
+        android:icon="@drawable/ic_tab_upcoming_colored"
         android:title="@string/action_move_to_upcoming" />
 
     <item
         android:id="@+id/popup_item_move_to_current"
-        android:icon="@drawable/ic_popup_current"
+        android:icon="@drawable/ic_tab_current_colored"
         android:title="@string/action_move_to_reading" />
 
     <item
         android:id="@+id/popup_item_move_to_done"
-        android:icon="@drawable/ic_popup_done"
+        android:icon="@drawable/ic_tab_done_colored"
         android:title="@string/action_move_to_done" />
 
     <item
         android:id="@+id/popup_item_share"
-        android:icon="@drawable/ic_popup_share"
+        android:icon="@drawable/ic_share"
         android:title="@string/action_share" />
 
     <item
         android:id="@+id/popup_item_delete"
-        android:icon="@drawable/ic_popup_delete"
+        android:icon="@drawable/ic_delete"
         android:title="@string/action_delete" />
 
 </menu>

@@ -5,6 +5,7 @@
     <color name="colorPrimary">#FFF</color>
     <color name="colorPrimaryDark">#FFF</color>
     <color name="colorAccent">#2196F3</color>
+    <color name="colorActionBar">@color/colorPrimary</color>
 
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
@@ -64,5 +65,7 @@
     <color name="modal_background">#59000000</color>
 
     <color name="border">#AAA</color>
+
+    <color name="bottom_menu_background">@android:color/transparent</color>
 
 </resources>

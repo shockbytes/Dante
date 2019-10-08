@@ -15,7 +15,6 @@ import at.shockbytes.dante.ui.fragment.BackupRestoreFragment
 import at.shockbytes.dante.ui.fragment.BarcodeDetectorFragment
 import at.shockbytes.dante.ui.fragment.LegacyBackupFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
-import at.shockbytes.dante.ui.fragment.LegacyBookDetailFragment
 import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
 import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
@@ -77,8 +76,6 @@ interface AppComponent {
     fun inject(fragment: SearchFragment)
 
     fun inject(fragment: SuggestionsFragment)
-
-    fun inject(fragment: LegacyBookDetailFragment)
 
     fun inject(fragment: BookDetailFragment)
 

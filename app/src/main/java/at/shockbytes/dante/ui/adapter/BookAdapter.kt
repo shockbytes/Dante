@@ -1,30 +1,27 @@
 package at.shockbytes.dante.ui.adapter
 
-import android.content.Context
 import android.os.Build
-import androidx.constraintlayout.widget.Group
+import android.transition.TransitionManager
+import android.view.HapticFeedbackConstants
 import androidx.recyclerview.widget.DiffUtil
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotterknife.bindView
+import kotlinx.android.synthetic.main.item_book.*
 import java.util.Collections
 
 /**
@@ -32,24 +29,20 @@ import java.util.Collections
  * Date:    30.12.2017
  */
 class BookAdapter(
-    context: Context,
-    private val state: BookState,
+    private val recyclerView: RecyclerView,
     private val imageLoader: ImageLoader,
-    private val popupListener: OnBookPopupItemSelectedListener? = null,
-    private val showOverflow: Boolean = true
-) : BaseAdapter<BookEntity>(context), ItemTouchHelperAdapter {
+    private val useNewOverflowReplacement: Boolean,
+    private val onActionClickedListener: OnBookActionClickedListener
+) : BaseAdapter<BookEntity>(recyclerView.context), ItemTouchHelperAdapter {
 
-    interface OnBookPopupItemSelectedListener {
+    private var expandedPosition = -1
 
-        fun onDelete(b: BookEntity)
+    init {
+        setHasStableIds(false)
+    }
 
-        fun onShare(b: BookEntity)
-
-        fun onMoveToUpcoming(b: BookEntity)
-
-        fun onMoveToCurrent(b: BookEntity)
-
-        fun onMoveToDone(b: BookEntity)
+    override fun getItemId(position: Int): Long {
+        return data[position].id
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<BookEntity>.ViewHolder {
@@ -92,48 +85,88 @@ class BookAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 
-    inner class ViewHolder(override val containerView: View) :
-        BaseAdapter<BookEntity>.ViewHolder(containerView),
-        PopupMenu.OnMenuItemClickListener,
-        LayoutContainer {
-
-        private val txtTitle by bindView<TextView>(R.id.item_book_txt_title)
-        private val txtSubTitle by bindView<TextView>(R.id.item_book_txt_subtitle)
-        private val txtAuthor by bindView<TextView>(R.id.item_book_txt_author)
-        private val imgViewThumb by bindView<ImageView>(R.id.item_book_img_thumb)
-        private val imgBtnOverflow by bindView<ImageButton>(R.id.item_book_img_overflow)
-
-        private val groupProgress by bindView<Group>(R.id.item_book_group_progress)
-        private val pbProgress by bindView<ProgressBar>(R.id.item_book_pb)
-        private val txtProgress by bindView<TextView>(R.id.item_book_tv_progress)
-
-        init {
-            setupOverflowMenu()
-        }
+    inner class ViewHolder(
+        override val containerView: View
+    ) : BaseAdapter<BookEntity>.ViewHolder(containerView), LayoutContainer {
 
         override fun bindToView(t: BookEntity) {
             updateTexts(t)
             updateImageThumbnail(t.thumbnailAddress)
             updateProgress(t)
+
+            if (useNewOverflowReplacement) {
+                setActionButtons(t)
+            } else {
+                setupOverflowMenu(t)
+            }
         }
 
-        override fun onMenuItemClick(item: MenuItem): Boolean {
+        private fun setActionButtons(item: BookEntity) {
+            setActionButtonListener(item)
+            hideObsoleteActionButton(item.state)
+            setActionButtonAnimations(item)
+        }
 
-            // Do not delete book from adapter when user just wants to share it!
-            if (item.itemId != R.id.popup_item_share) {
-                deleteEntity(content)
+        private fun setActionButtonListener(item: BookEntity) {
+            item_book_actions_btn_move_to_upcoming.setOnClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                onActionClickedListener.onMoveToUpcoming(item)
+                deleteEntity(item)
+                expandedPosition = -1
             }
-
-            when (item.itemId) {
-                R.id.popup_item_move_to_upcoming -> popupListener?.onMoveToUpcoming(content)
-                R.id.popup_item_move_to_current -> popupListener?.onMoveToCurrent(content)
-                R.id.popup_item_move_to_done -> popupListener?.onMoveToDone(content)
-                R.id.popup_item_share -> popupListener?.onShare(content)
-                R.id.popup_item_delete -> popupListener?.onDelete(content)
-                else -> Unit
+            item_book_actions_btn_move_to_reading.setOnClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                onActionClickedListener.onMoveToCurrent(item)
+                deleteEntity(item)
+                expandedPosition = -1
             }
+            item_book_actions_btn_move_to_read.setOnClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                onActionClickedListener.onMoveToDone(item)
+                deleteEntity(item)
+                expandedPosition = -1
+            }
+            item_book_actions_btn_share.setOnClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                onActionClickedListener.onShare(item)
+            }
+            item_book_actions_btn_delete.setOnClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+                onActionClickedListener.onDelete(item) { onDeletionConfirmed ->
+                    if (onDeletionConfirmed) {
+                        deleteEntity(item)
+                        expandedPosition = -1
+                    }
+                }
+            }
+        }
 
-            return true
+        private fun hideObsoleteActionButton(state: BookState) {
+            val actionButton = when (state) {
+                BookState.READ_LATER -> item_book_actions_btn_move_to_upcoming
+                BookState.READING -> item_book_actions_btn_move_to_reading
+                BookState.READ -> item_book_actions_btn_move_to_read
+            }
+            actionButton.setVisible(false)
+        }
+
+        private fun setActionButtonAnimations(item: BookEntity) {
+            val position = getLocation(item)
+            val isExpanded = position == expandedPosition
+
+            item_book_container_actions.setVisible(isExpanded)
+            containerView.isActivated = isExpanded
+
+            item_book_img_overflow.setOnClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+
+                expandedPosition = if (isExpanded) -1 else position
+
+                runDelayed(100) {
+                    TransitionManager.beginDelayedTransition(recyclerView)
+                    notifyDataSetChanged()
+                }
+            }
         }
 
         private fun updateProgress(t: BookEntity) {
@@ -142,57 +175,84 @@ class BookAdapter(
 
             if (showProgress) {
                 val progress = DanteUtils.computePercentage(
-                        t.currentPage.toDouble(),
-                        t.pageCount.toDouble()
+                    t.currentPage.toDouble(),
+                    t.pageCount.toDouble()
                 )
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    pbProgress.setProgress(progress, true)
+                    item_book_pb.setProgress(progress, true)
                 } else {
-                    pbProgress.progress = progress
+                    item_book_pb.progress = progress
                 }
-                txtProgress.text = context.getString(R.string.percentage_formatter, progress)
+                item_book_tv_progress.text = context.getString(R.string.percentage_formatter, progress)
             }
 
-            groupProgress.setVisible(showProgress)
+            item_book_group_progress.setVisible(showProgress)
         }
 
         private fun updateImageThumbnail(address: String?) {
 
             if (!address.isNullOrEmpty()) {
-                val corners = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
-                imageLoader.loadImageWithCornerRadius(context, address, imgViewThumb,
-                        cornerDimension = corners)
+                imageLoader.loadImageWithCornerRadius(
+                    context,
+                    address,
+                    item_book_img_thumb,
+                    cornerDimension = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                )
             } else {
                 // Books with no image will recycle another cover if not cleared here
-                imgViewThumb.setImageResource(R.drawable.ic_placeholder)
+                item_book_img_thumb.setImageResource(R.drawable.ic_placeholder)
             }
         }
 
         private fun updateTexts(t: BookEntity) {
-            txtTitle.text = t.title
-            txtAuthor.text = t.author
-            txtSubTitle.text = t.subTitle
+            item_book_txt_title.text = t.title
+            item_book_txt_author.text = t.author
+            item_book_txt_subtitle.text = t.subTitle
         }
 
-        private fun setupOverflowMenu() {
+        private fun setupOverflowMenu(book: BookEntity) {
 
-            val popupMenu = PopupMenu(context, imgBtnOverflow)
+            val popupMenu = PopupMenu(context, item_book_img_overflow)
 
-            val visibilityOverflow = if (showOverflow) View.VISIBLE else View.GONE
-            imgBtnOverflow.visibility = visibilityOverflow
+            popupMenu.menuInflater.inflate(R.menu.menu_book_item_overflow, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.popup_item_delete -> {
+                        onActionClickedListener.onDelete(book) { onDeletionConfirmed ->
+                            if (onDeletionConfirmed) {
+                                deleteEntity(book)
+                            }
+                        }
+                    }
+                    R.id.popup_item_share -> {
+                        onActionClickedListener.onShare(book)
+                    }
+                    R.id.popup_item_move_to_current -> {
+                        onActionClickedListener.onMoveToCurrent(book)
+                        deleteEntity(book)
+                    }
 
-            popupMenu.menuInflater.inflate(R.menu.popup_item, popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener(this)
+                    R.id.popup_item_move_to_upcoming -> {
+                        onActionClickedListener.onMoveToUpcoming(book)
+                        deleteEntity(book)
+                    }
+                    R.id.popup_item_move_to_done -> {
+                        onActionClickedListener.onMoveToDone(book)
+                        deleteEntity(book)
+                    }
+                }
+                true
+            }
 
-            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, imgBtnOverflow)
+            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_book_img_overflow)
             menuHelper.setForceShowIcon(true)
 
-            popupMenu.hideSelectedPopupItem()
+            popupMenu.hideSelectedPopupItem(book.state)
 
-            imgBtnOverflow.setOnClickListener { menuHelper.show() }
+            item_book_img_overflow.setOnClickListener { menuHelper.show() }
         }
 
-        private fun PopupMenu.hideSelectedPopupItem() {
+        private fun PopupMenu.hideSelectedPopupItem(state: BookState) {
 
             val item = when (state) {
 

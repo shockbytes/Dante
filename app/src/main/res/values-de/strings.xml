@@ -215,5 +215,6 @@
     <string name="prefs_category_contribute">Mitwirken</string>
     <string name="prefs_translation_title">Übersetzen</string>
     <string name="prefs_translation_summary">Hilf Dante zu übersetzen</string>
+    <string name="mail_body_translation">Hey, ich will helfen Dante zu verbessern!\n\n</string>
 
 </resources>

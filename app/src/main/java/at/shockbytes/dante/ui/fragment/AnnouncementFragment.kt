@@ -84,7 +84,7 @@ class AnnouncementFragment : BaseFragment() {
                 UrlLauncher.launchUrl(requireContext(), action.url)
             }
             is Announcement.Action.Mail -> {
-                MailLauncher.sendMail(requireContext(), getString(action.subject))
+                MailLauncher.sendMail(requireActivity(), getString(action.subject), getString(R.string.mail_body_translation))
             }
         }
     }

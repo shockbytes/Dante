@@ -62,7 +62,7 @@ ext {
     retrofitVersion = "2.5.0"
     shockUtilVersion = "5.0.1.3"
     crashlyticsVersion = "2.9.9"
-    glideVersion = "4.9.0"
+    glideVersion = "4.10.0"
     lottieVersion = "3.0.1"
     rxImagePickerVersion = "2.2.0"
     rxKotlinVersion = "2.3.0"

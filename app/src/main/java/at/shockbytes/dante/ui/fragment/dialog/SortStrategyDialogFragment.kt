@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.fragment.dialog
 
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.RadioGroup
 import android.widget.TextView
 import at.shockbytes.dante.R

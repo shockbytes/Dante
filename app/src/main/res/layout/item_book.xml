@@ -16,8 +16,11 @@
     android:foreground="?android:attr/selectableItemBackground"
     android:minHeight="80dp"
     android:padding="2dp"
-    android:stateListAnimator="@animator/item_book_actions"
     android:transitionName="@string/transition_name_card">
+
+    <!-- Use this only for the new overflow menu
+    android:stateListAnimator="@animator/item_book_actions"
+    -->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

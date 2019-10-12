@@ -34,7 +34,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         }
         findPreference<Preference>(getString(R.string.prefs_translation_key))?.apply {
             this.setOnPreferenceClickListener {
-                MailLauncher.sendMail(context, getString(R.string.action_send_mail))
+                MailLauncher.sendMail(requireActivity(), getString(R.string.mail_subject_translation), getString(R.string.mail_body_translation))
                 true
             }
         }

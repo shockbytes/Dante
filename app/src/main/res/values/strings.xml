@@ -305,5 +305,6 @@
     <string name="prefs_translation_key" translatable="false">prefs_translation_key</string>
     <string name="prefs_translation_title">Translate</string>
     <string name="prefs_translation_summary">Help translating Dante</string>
+    <string name="mail_body_translation">Hey, I want to improve Dante!\n\n</string>
 
 </resources>

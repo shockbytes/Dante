@@ -159,7 +159,7 @@ class MainBookFragment :
             icon(R.drawable.ic_delete)
             title(text = getString(R.string.ask_for_book_deletion))
             message(text = getString(R.string.ask_for_book_deletion_msg, book.title))
-            positiveButton(R.string.action_delete ) {
+            positiveButton(R.string.action_delete) {
                 onDeletionConfirmed(true)
                 viewModel.deleteBook(book)
             }

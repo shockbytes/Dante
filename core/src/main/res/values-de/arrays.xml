@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="language_names">
+        <item>Andere</item>
+        <item>Englisch</item>
+        <item>Deutsch</item>
+        <item>Italienisch</item>
+        <item>Französisch</item>
+        <item>Spanisch</item>
+        <item>Portugiesisch</item>
+        <item>Holländisch</item>
+        <item>Chinesisch</item>
+        <item>Russisch</item>
+        <item>Swedisch</item>
+        <item>Norwegisch</item>
+        <item>Polisch</item>
+        <item>Romänisch</item>
+        <item>Kroatisch</item>
+        <item>Ungarisch</item>
+        <item>Indonesisch</item>
+        <item>Thai</item>
+    </string-array>
+
+    <string-array name="empty_indicators">
+        <item>Scanne Bücher um sie später zu lesen</item>
+        <item>Warum liest du kein Buch?</item>
+        <item>Du hast noch kein Buch gelesen</item>
+    </string-array>
+
+    <string-array name="ratings">
+        <item>Zeitverwschwendung!</item>
+        <item>Hab schon bessere gelesen!</item>
+        <item>Es ist okay!</item>
+        <item>Wirklich, wirklich gut!</item>
+        <item>Exzellent!</item>
+    </string-array>
+
+</resources>

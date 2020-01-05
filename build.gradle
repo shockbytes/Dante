@@ -68,6 +68,7 @@ ext {
     rxKotlinVersion = "2.3.0"
     cameraXVersion = "1.0.0-alpha05"
 
+    jodaTimeVersion = "2.10.3"
     timberVersion = "4.7.1"
 }
 

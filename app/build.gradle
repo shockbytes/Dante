@@ -120,6 +120,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'androidx.test:core:1.2.0'
     testImplementation 'org.mockito:mockito-core:2.28.2'
+    testImplementation "com.google.truth:truth:1.0"
+    testImplementation 'joda-time:joda-time:2.10.3'
     androidTestImplementation 'androidx.test:core:1.2.0'
     // androidTestImplementation 'org.mockito:mockito-core:2.19.0'
     androidTestImplementation 'org.mockito:mockito-android:2.28.2'
@@ -131,7 +133,7 @@ dependencies {
     // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.ext:truth:1.2.0'
-    androidTestImplementation 'com.google.truth:truth:0.42'
+    androidTestImplementation 'com.google.truth:truth:1.0'
     implementation 'androidx.fragment:fragment-ktx:1.1.0'
 }
 

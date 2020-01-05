@@ -53,7 +53,7 @@ dependencies {
 
     api "com.airbnb.android:lottie:$lottieVersion"
 
-    api 'net.danlew:android.joda:2.10.1.2'
+    api "net.danlew:android.joda:$jodaTimeVersion"
     api 'com.afollestad.material-dialogs:core:3.1.1'
 
     api 'com.mlsdev.rximagepicker:library:2.1.5'

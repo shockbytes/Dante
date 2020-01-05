@@ -25,6 +25,7 @@ sealed class Destination {
     object Search : Destination()
     object ManualAdd : Destination()
     object Statistics : Destination()
+    object Timeline : Destination()
     object Backup : Destination()
     object Settings : Destination()
 

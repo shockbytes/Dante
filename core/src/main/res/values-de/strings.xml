@@ -8,6 +8,7 @@
     <string name="menu_main_stats">Statistiken</string>
     <string name="label_settings">Einstellungen</string>
     <string name="label_stats">Deine Statistiken</string>
+    <string name="label_timeline">Deine Timeline</string>
     <string name="prefs_app_version_title">App Version</string>
     <string name="prefs_category_about">Über</string>
     <string name="prefs_developer_title">Entwickler</string>

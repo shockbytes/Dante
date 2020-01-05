@@ -64,7 +64,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         val layoutParams = (contentView.parent as View).layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
         if (behavior is BottomSheetBehavior<*>) {
-            behavior.setBottomSheetCallback(bottomSheetBehaviorCallback)
+            behavior.bottomSheetCallback = bottomSheetBehaviorCallback
         }
 
         setupViews(contentView)
@@ -81,6 +81,15 @@ class MenuFragment : BottomSheetDialogFragment() {
                     activity,
                     Destination.Statistics,
                     sceneTransition
+            )
+            dismiss()
+        }
+
+        view.findViewById<View>(R.id.btnMenuTimeline)?.setOnClickListener {
+            ActivityNavigator.navigateTo(
+                activity,
+                Destination.Timeline,
+                sceneTransition
             )
             dismiss()
         }

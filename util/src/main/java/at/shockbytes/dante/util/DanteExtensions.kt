@@ -15,6 +15,10 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import java.math.BigDecimal
@@ -88,4 +92,12 @@ fun runDelayed(delay: Long, action: () -> Unit) {
     Handler().postDelayed({
         action()
     }, delay)
+}
+
+inline fun <reified T : ViewModel> Fragment.viewModelOf(factory: ViewModelProvider.Factory): T {
+    return ViewModelProviders.of(this, factory)[T::class.java]
+}
+
+inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewModelProvider.Factory): T {
+    return ViewModelProviders.of(this, factory)[T::class.java]
 }

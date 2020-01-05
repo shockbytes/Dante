@@ -1,26 +1,31 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 
-class TimeLineFragment: BaseFragment() {
+class TimeLineFragment : BaseFragment() {
 
     override val layoutId: Int = R.layout.fragment_timeline
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun setupViews() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        appComponent.inject(this)
     }
 
     override fun bindViewModel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO
     }
 
     override fun unbindViewModel() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO
     }
 
     companion object {

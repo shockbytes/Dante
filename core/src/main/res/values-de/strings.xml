@@ -30,6 +30,7 @@
     <string name="backup_books_amount">%d Bücher</string>
     <string name="backup">Backup</string>
     <string name="menu_main_backup">Backup</string>
+    <string name="menu_main_timeline">Timeline</string>
     <string name="backup_strategy_merge">Zusammenfügen</string>
     <string name="backup_strategy_overwrite">Überschreiben</string>
     <string name="backup_created">Backup erstellt</string>

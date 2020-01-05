@@ -10,10 +10,7 @@ import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
-class TimelineViewModel @Inject constructor(
-    private val bookDao: BookEntityDao,
-    private val schedulers: SchedulerFacade
-) : BaseViewModel() {
+class TimelineViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
 
     sealed class TimeLineState {
 
@@ -28,7 +25,6 @@ class TimelineViewModel @Inject constructor(
 
     fun requestTimeline() {
         bookDao.bookObservable
-            .subscribeOn(schedulers.io)
             .doOnSubscribe { postState(TimeLineState.Loading) }
             .doOnError { postState(TimeLineState.Error) }
             .map(TimeLineBuilder::buildTimeLineItems)

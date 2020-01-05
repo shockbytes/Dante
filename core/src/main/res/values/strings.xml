@@ -271,4 +271,6 @@
     <string name="book_added_to_library">%s added to library</string>
     <string name="nope">Nope</string>
 
+    <string name="date_month_and_year" translatable="false">%s %s</string>
+
 </resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="300dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/colorAccent"
+        app:cardCornerRadius="28dp">
+
+        <TextView
+            android:id="@+id/tv_time_line_header"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            tools:text="February 2020"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</FrameLayout>

@@ -84,7 +84,11 @@ class TimeLineFragment : BaseFragment() {
 
         rv_timeline.setVisible(true)
 
-        timeLineAdapter.data = content.toMutableList()
+        timeLineAdapter.data.apply {
+            clear()
+            addAll(content)
+        }
+        timeLineAdapter.notifyDataSetChanged()
     }
 
     override fun unbindViewModel() {

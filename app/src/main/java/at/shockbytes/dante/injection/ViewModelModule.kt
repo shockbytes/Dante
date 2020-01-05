@@ -12,6 +12,7 @@ import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
+import at.shockbytes.dante.ui.viewmodel.TimelineViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -91,4 +92,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AnnouncementViewModel::class)
     internal abstract fun announcementViewModel(viewModel: AnnouncementViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TimelineViewModel::class)
+    internal abstract fun timelineViewModel(viewModel: TimelineViewModel): ViewModel
+
 }

@@ -18,11 +18,14 @@ import kotlinx.android.synthetic.main.item_backup_entry.*
  * Author:  Martin Macheiner
  * Date:    22.04.2017
  */
-class BackupEntryAdapter(ctx: Context) : BaseAdapter<BackupMetadataState>(ctx), ItemTouchHelperAdapter {
+class BackupEntryAdapter(
+    ctx: Context,
+    onItemClickListener: OnItemClickListener<BackupMetadataState>
+) : BaseAdapter<BackupMetadataState>(ctx, onItemClickListener), ItemTouchHelperAdapter {
 
     var onItemDeleteClickListener: ((BackupMetadata, Int) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BackupMetadataState> {
         return BackupViewHolder(inflater.inflate(R.layout.item_backup_entry, parent, false))
     }
 
@@ -41,23 +44,23 @@ class BackupEntryAdapter(ctx: Context) : BaseAdapter<BackupMetadataState>(ctx), 
 
     inner class BackupViewHolder(
         override val containerView: View
-    ) : BaseAdapter<BackupMetadataState>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<BackupMetadataState>(containerView), LayoutContainer {
 
-        override fun bindToView(t: BackupMetadataState) {
+        override fun bindToView(content: BackupMetadataState, position: Int) {
 
-            with(t.entry) {
+            with(content.entry) {
                 item_backup_entry_imgview_provider.setImageResource(storageProvider.icon)
 
                 item_backup_entry_txt_time.text = DanteUtils.formatTimestamp(timestamp)
                 item_backup_entry_txt_books.text = context.getString(R.string.backup_books_amount, books)
                 item_backup_entry_txt_device.text = device
 
-                if (t is BackupMetadataState.Active) {
+                if (content is BackupMetadataState.Active) {
 
                     item_backup_entry_card.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
                     item_backup_entry_btn_delete.setVisible(true)
                     item_backup_entry_btn_delete.setOnClickListener {
-                        onItemDeleteClickListener?.invoke(this, getLocation(t))
+                        onItemDeleteClickListener?.invoke(this, getLocation(content))
                     }
                 } else {
                     item_backup_entry_card.setBackgroundColor(ContextCompat.getColor(context, R.color.disabled_view))

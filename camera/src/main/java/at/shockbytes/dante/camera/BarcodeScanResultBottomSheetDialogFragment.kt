@@ -184,14 +184,17 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         MaterialDialog(requireContext()).show {
             title(R.string.download_suggestion_header_other)
             customListAdapter(
-                BookSuggestionPickerAdapter(requireContext(), suggestions, imageLoader).apply {
+                BookSuggestionPickerAdapter(
+                    requireContext(),
+                    suggestions,
+                    imageLoader,
                     onItemClickListener = object : BaseAdapter.OnItemClickListener<BookEntity> {
-                        override fun onItemClick(t: BookEntity, v: View) {
-                            selectionListener(t)
+                        override fun onItemClick(content: BookEntity, position: Int, v: View) {
+                            selectionListener(content)
                             dismiss()
                         }
                     }
-                }
+                )
             )
             positiveButton(R.string.nope) {
                 dismiss()

@@ -47,9 +47,8 @@ class LegacyBackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Bac
 
     override fun setupViews() {
         context?.let { ctx ->
-            val adapter = BackupEntryAdapter(ctx)
+            val adapter = BackupEntryAdapter(ctx, onItemClickListener = this)
             fragment_backup_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(ctx)
-            adapter.onItemClickListener = this
             adapter.onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }
             fragment_backup_rv.adapter = adapter
             fragment_backup_rv.addItemDecoration(EqualSpaceItemDecoration(8))
@@ -63,11 +62,11 @@ class LegacyBackupFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Bac
         }
     }
 
-    override fun onItemClick(t: BackupMetadataState, v: View) {
+    override fun onItemClick(content: BackupMetadataState, position: Int, v: View) {
 
-        when (t) {
+        when (content) {
 
-            is BackupMetadataState.Active -> showBackupRestoreStrategyModal(t)
+            is BackupMetadataState.Active -> showBackupRestoreStrategyModal(content)
 
             is BackupMetadataState.Inactive -> {
                 // TODO display something nicer here!

@@ -118,11 +118,10 @@ class MainBookFragment :
             fragment_book_main_rv,
             imageLoader,
             featureFlagging[FeatureFlag.OverflowMenu],
-            this
-        ).apply {
-            onItemClickListener = this@MainBookFragment
-            onItemMoveListener = this@MainBookFragment
-        }
+            onActionClickedListener = this,
+            onItemClickListener = this,
+            onItemMoveListener = this
+        )
 
         fragment_book_main_rv.apply {
             layoutManager = rvLayoutManager
@@ -137,11 +136,11 @@ class MainBookFragment :
         itemTouchHelper.attachToRecyclerView(fragment_book_main_rv)
     }
 
-    override fun onItemClick(t: BookEntity, v: View) {
+    override fun onItemClick(content: BookEntity, position: Int, v: View) {
         ActivityNavigator.navigateTo(
                 context,
                 Destination.BookDetail(
-                    Destination.BookDetail.BookDetailInfo(t.id, t.title)
+                    Destination.BookDetail.BookDetailInfo(content.id, content.title)
                 ),
                 getTransitionBundle(v)
         )

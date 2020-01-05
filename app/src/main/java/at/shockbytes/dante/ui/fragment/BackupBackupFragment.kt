@@ -95,17 +95,15 @@ class BackupBackupFragment : BaseFragment() {
                     }
                 }
             }
-            adapter = BackupStorageProviderAdapter(requireContext()).apply {
-
-                updateData(providers
-                    .sortedBy { it.priority }
-                )
-
+            adapter = BackupStorageProviderAdapter(
+                requireContext(),
                 onItemClickListener = object : BaseAdapter.OnItemClickListener<BackupStorageProvider> {
-                    override fun onItemClick(t: BackupStorageProvider, v: View) {
-                        viewModel.makeBackup(t)
+                    override fun onItemClick(content: BackupStorageProvider, position: Int, v: View) {
+                        viewModel.makeBackup(content)
                     }
                 }
+            ).apply {
+                updateData(providers.sortedBy { it.priority })
             }
 
             if (itemDecorationCount == 0) {

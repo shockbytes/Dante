@@ -49,8 +49,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     }
 
     override fun setupViews() {
-        val entryAdapter = BackupEntryAdapter(requireContext()).apply {
-            onItemClickListener = this@BackupRestoreFragment
+        val entryAdapter = BackupEntryAdapter(requireContext(), onItemClickListener = this).apply {
             onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }
         }
         rv_fragment_backup_restore.apply {
@@ -68,11 +67,11 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
         }
     }
 
-    override fun onItemClick(t: BackupMetadataState, v: View) {
+    override fun onItemClick(content: BackupMetadataState, position: Int, v: View) {
 
-        when (t) {
-            is BackupMetadataState.Active -> showBackupRestoreStrategyModal(t)
-            is BackupMetadataState.Inactive -> showInactiveResourceModal(t)
+        when (content) {
+            is BackupMetadataState.Active -> showBackupRestoreStrategyModal(content)
+            is BackupMetadataState.Inactive -> showInactiveResourceModal(content)
         }
     }
 

@@ -20,32 +20,33 @@ import kotterknife.bindView
 class BookSearchSuggestionAdapter(
     context: Context,
     private val imageLoader: ImageLoader,
-    private val addClickedListener: (BookSearchItem) -> Unit
-) : BaseAdapter<BookSearchItem>(context) {
+    private val addClickedListener: (BookSearchItem) -> Unit,
+    onItemClickListener: OnItemClickListener<BookSearchItem>
+) : BaseAdapter<BookSearchItem>(context, onItemClickListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(inflater.inflate(R.layout.item_book_search_suggestion, parent, false))
     }
 
-    inner class ViewHolder(override val containerView: View) :
-        BaseAdapter<BookSearchItem>.ViewHolder(containerView),
-        LayoutContainer {
+    inner class ViewHolder(
+        override val containerView: View
+    ) : BaseAdapter.ViewHolder<BookSearchItem>(containerView), LayoutContainer {
 
         private val txtTitle: TextView by bindView(R.id.item_book_search_suggestion_txt_title)
         private val txtAuthor: TextView by bindView(R.id.item_book_search_suggestion_txt_author)
         private val btnAdd: Button by bindView(R.id.item_book_search_suggestion_btn_add)
         private val imgViewCover: ImageView by bindView(R.id.item_book_search_suggestion_imgview_cover)
 
-        override fun bindToView(t: BookSearchItem) {
-            txtTitle.text = t.title
-            txtAuthor.text = t.author
+        override fun bindToView(content: BookSearchItem, position: Int) {
+            txtTitle.text = content.title
+            txtAuthor.text = content.author
 
-            btnAdd.visibility = if (t.bookId < 0) View.VISIBLE else View.GONE
+            btnAdd.visibility = if (content.bookId < 0) View.VISIBLE else View.GONE
             btnAdd.setOnClickListener {
-                addClickedListener.invoke(t)
+                addClickedListener.invoke(content)
             }
 
-            t.thumbnailAddress?.let { address ->
+            content.thumbnailAddress?.let { address ->
                 if (address.isNotEmpty()) {
                     imageLoader.loadImage(context, address, imgViewCover, R.drawable.ic_placeholder)
                 }

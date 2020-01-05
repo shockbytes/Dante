@@ -6,7 +6,6 @@ import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.timeline.TimeLineBuilder
 import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.util.ExceptionHandlers
-import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 

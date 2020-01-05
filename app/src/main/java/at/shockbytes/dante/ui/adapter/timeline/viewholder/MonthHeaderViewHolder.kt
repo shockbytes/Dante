@@ -12,7 +12,7 @@ class MonthHeaderViewHolder(
 ) : BaseAdapter.ViewHolder<TimeLineItem>(containerView), LayoutContainer {
 
     override fun bindToView(content: TimeLineItem, position: Int) {
-        with (content as TimeLineItem.MonthHeader) {
+        with(content as TimeLineItem.MonthHeader) {
             val monthStr = containerView.context.resources.getStringArray(R.array.months)[month - 1]
             tv_time_line_header.text = containerView.context.getString(R.string.date_month_and_year, monthStr, year)
         }

@@ -97,5 +97,4 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TimelineViewModel::class)
     internal abstract fun timelineViewModel(viewModel: TimelineViewModel): ViewModel
-
 }

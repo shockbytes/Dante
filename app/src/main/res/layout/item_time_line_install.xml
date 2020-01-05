@@ -4,23 +4,31 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="300dp"
-        android:layout_height="56dp"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
-        app:cardBackgroundColor="@color/colorAccent"
-        app:cardCornerRadius="28dp">
+        android:minWidth="480dp"
+        app:cardCornerRadius="24dp"
+        app:strokeColor="@color/colorAccent"
+        app:strokeWidth="1dp">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_whats_hot"
+            android:drawableEnd="@drawable/ic_whats_hot"
+            android:drawablePadding="12dp"
+            app:drawableTint="@color/colorAccent"
             android:gravity="center"
             android:text="You installed Dante"
-            android:textColor="@color/white"
+            android:textColor="@color/colorAccent"
             android:textSize="18sp" />
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </FrameLayout>

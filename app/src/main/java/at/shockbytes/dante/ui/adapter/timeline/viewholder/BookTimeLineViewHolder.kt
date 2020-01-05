@@ -40,13 +40,16 @@ class BookTimeLineViewHolder(
     }
 
     private fun loadThumbnail(imageView: ImageView, thumbnailAddress: String?) {
-        thumbnailAddress?.let {
+
+        if (thumbnailAddress != null) {
             imageLoader.loadImageWithCornerRadius(
                 containerView.context,
                 thumbnailAddress,
                 imageView,
                 cornerDimension = containerView.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
             )
+        } else {
+            imageView.setImageResource(R.drawable.ic_placeholder)
         }
     }
 }

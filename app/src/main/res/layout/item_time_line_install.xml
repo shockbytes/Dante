@@ -20,12 +20,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_whats_hot"
-            android:drawableEnd="@drawable/ic_whats_hot"
+            android:drawableStart="@drawable/ic_rating"
+            android:drawableEnd="@drawable/ic_rating"
             android:drawablePadding="12dp"
             app:drawableTint="@color/colorAccent"
             android:gravity="center"
-            android:text="You installed Dante"
+            android:text="@string/dante_install"
             android:textColor="@color/colorAccent"
             android:textSize="18sp" />
 

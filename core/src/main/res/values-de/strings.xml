@@ -5,6 +5,7 @@
     <string name="action_move_to_reading">Verschieben zu Lesen</string>
     <string name="action_move_to_upcoming">Verschieben zu Später Lesen</string>
     <string name="settings">Einstellungen</string>
+    <string name="help">Hilfe</string>
     <string name="menu_main_stats">Statistiken</string>
     <string name="label_settings">Einstellungen</string>
     <string name="label_stats">Deine Statistiken</string>
@@ -200,4 +201,6 @@
     <string name="nope">Nope</string>
     <string name="book_added_to_library">%s wurde hinzugefügt</string>
     <string name="scan_another_book">Willst du noch ein weiteres Buch scannen?</string>
+    <string name="dante_install">Installation von Dante</string>
+
 </resources>

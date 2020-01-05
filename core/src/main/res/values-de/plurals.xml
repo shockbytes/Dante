@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="book_rating">
+        <item quantity="one">%d Stern</item>
+        <item quantity="other">%d Sterne</item>
+    </plurals>
+
+</resources>

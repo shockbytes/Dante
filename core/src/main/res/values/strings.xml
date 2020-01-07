@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.7</string>
+    <string name="app_version" translatable="false">3.8</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -31,7 +31,7 @@
     <string name="prefs_category_about">About</string>
     <string name="prefs_app_version_title">App version</string>
     <string name="prefs_developer_title">Developer</string>
-    <string name="prefs_developer_summary" translatable="false">Shockbytes Studio &#169; 2016-2019</string>
+    <string name="prefs_developer_summary" translatable="false">Shockbytes Studio &#169; 2016-2020</string>
     <string name="prefs_icons_title" translatable="false">Icons</string>
     <string name="prefs_icons_summary" translatable="false">www.icons8.com\nwww.flaticon.com</string>
 

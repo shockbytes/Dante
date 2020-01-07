@@ -64,7 +64,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         val layoutParams = (contentView.parent as View).layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
         if (behavior is BottomSheetBehavior<*>) {
-            behavior.bottomSheetCallback = bottomSheetBehaviorCallback
+            behavior.addBottomSheetCallback(bottomSheetBehaviorCallback)
         }
 
         setupViews(contentView)

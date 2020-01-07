@@ -63,8 +63,7 @@ class TimeLineBuilderTest {
             TimeLineItem.MonthHeader(1, 2020),
             TimeLineItem.BookTimeLineItem("Daily Stoic", "ds.png"),
             TimeLineItem.BookTimeLineItem("Test", null),
-            TimeLineItem.BookTimeLineItem("Moby Dick", "moby-dick.png"),
-            TimeLineItem.DanteInstall
+            TimeLineItem.BookTimeLineItem("Moby Dick", "moby-dick.png")
         )
 
         assertThat(actual).isEqualTo(expected)
@@ -94,8 +93,7 @@ class TimeLineBuilderTest {
             TimeLineItem.MonthHeader(1, 2020),
             TimeLineItem.BookTimeLineItem("Daily Stoic", "ds.png"),
             TimeLineItem.BookTimeLineItem("Test", null),
-            TimeLineItem.BookTimeLineItem("Moby Dick", "moby-dick.png"),
-            TimeLineItem.DanteInstall
+            TimeLineItem.BookTimeLineItem("Moby Dick", "moby-dick.png")
         )
 
         assertThat(actual).isEqualTo(expected)

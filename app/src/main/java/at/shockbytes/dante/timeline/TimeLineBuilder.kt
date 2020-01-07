@@ -33,11 +33,6 @@ object TimeLineBuilder {
                 }
         }
 
-        // Only add the install time if a book is already added
-        if (content.isNotEmpty()) {
-            content.add(TimeLineItem.DanteInstall)
-        }
-
         return content
     }
 }

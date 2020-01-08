@@ -9,6 +9,8 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 
 class TimeLineActivity : ContainerBackNavigableActivity() {
 
@@ -25,7 +27,16 @@ class TimeLineActivity : ContainerBackNavigableActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == R.id.menu_timeline_help) {
-            showToast("TODO Show help")
+            MaterialDialog(this)
+                .title(R.string.label_timeline)
+                .message(R.string.timeline_explanation)
+                .icon(R.drawable.ic_menu_timeline)
+                .cornerRadius(AppUtils.convertDpInPixel(6, this).toFloat())
+                .cancelOnTouchOutside(true)
+                .positiveButton(R.string.got_it) {
+                    it.dismiss()
+                }
+                .show()
         }
 
         return super.onOptionsItemSelected(item)

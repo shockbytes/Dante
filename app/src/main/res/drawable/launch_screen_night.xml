@@ -6,7 +6,7 @@
     <item
         android:bottom="@dimen/product_logo_bottom"
         android:gravity="center"
-        android:drawable="@drawable/ic_brand_app_logo_dark" />
+        android:drawable="@drawable/ic_brand_app_logo_night" />
 
     <item
         android:bottom="@dimen/product_brand_bottom"

@@ -52,8 +52,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun setupViews() {
 
-        rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, imageLoader, addClickedListener)
-        rvAdapter.onItemClickListener = this
+        rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, imageLoader, addClickedListener, onItemClickListener = this)
         fragment_search_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         fragment_search_rv.adapter = rvAdapter
         val dividerItemDecoration = androidx.recyclerview.widget.DividerItemDecoration(fragment_search_rv.context,
@@ -125,11 +124,11 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun unbindViewModel() = Unit
 
-    override fun onItemClick(t: BookSearchItem, v: View) {
+    override fun onItemClick(content: BookSearchItem, position: Int, v: View) {
         activity?.hideKeyboard()
-        if (t.bookId > -1) {
+        if (content.bookId > -1) {
             context?.let { ctx ->
-                startActivity(DetailActivity.newIntent(ctx, t.bookId, t.title))
+                startActivity(DetailActivity.newIntent(ctx, content.bookId, content.title))
             }
         }
     }

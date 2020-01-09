@@ -27,6 +27,7 @@ import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.fragment.SettingsFragment
 import at.shockbytes.dante.ui.fragment.StatisticsFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
+import at.shockbytes.dante.ui.fragment.TimeLineFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
@@ -100,6 +101,8 @@ interface AppComponent {
     fun inject(fragment: AnnouncementFragment)
 
     fun inject(fragment: BarcodeDetectorFragment)
+
+    fun inject(fragment: TimeLineFragment)
 
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 

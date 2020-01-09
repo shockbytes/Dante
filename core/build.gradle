@@ -5,12 +5,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 28
-
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -43,7 +42,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
 
-    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    api "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
@@ -53,7 +52,7 @@ dependencies {
 
     api "com.airbnb.android:lottie:$lottieVersion"
 
-    api 'net.danlew:android.joda:2.10.1.2'
+    api "net.danlew:android.joda:$jodaTimeVersion"
     api 'com.afollestad.material-dialogs:core:3.1.1'
 
     api 'com.mlsdev.rximagepicker:library:2.1.5'

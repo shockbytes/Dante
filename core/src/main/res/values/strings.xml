@@ -5,12 +5,15 @@
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
+    <string name="help">Help</string>
     <string name="label_settings">Settings</string>
     <string name="label_stats">Your statistics</string>
+    <string name="label_timeline">Your timeline</string>
 
     <string name="currently_reading">Currently reading</string>
 
     <string name="menu_main_stats">Statistics</string>
+    <string name="menu_main_timeline">Timeline</string>
     <string name="settings">Settings</string>
     <string name="action_move_to_upcoming">Move to read later</string>
     <string name="action_move_to_reading">Move to reading</string>
@@ -268,5 +271,9 @@
     <string name="scan_another_book">Do you want to scan another book?</string>
     <string name="book_added_to_library">%s added to library</string>
     <string name="nope">Nope</string>
+
+    <string name="date_month_and_year" translatable="false">%s %s</string>
+    <string name="dante_install">You installed Dante</string>
+    <string name="timeline_explanation">The timeline shows you exactly when you read each and every book in your library. Each book is associated to the month when you started reading it.</string>
 
 </resources>

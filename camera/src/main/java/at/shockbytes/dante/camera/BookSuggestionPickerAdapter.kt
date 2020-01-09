@@ -13,23 +13,24 @@ import kotlinx.android.synthetic.main.suggestion_picker_item.*
 class BookSuggestionPickerAdapter(
     context: Context,
     suggestions: List<BookEntity>,
-    private val imageLoader: ImageLoader
-) : BaseAdapter<BookEntity>(context) {
+    private val imageLoader: ImageLoader,
+    onItemClickListener: OnItemClickListener<BookEntity>
+) : BaseAdapter<BookEntity>(context, onItemClickListener) {
 
     init {
         data = suggestions.toMutableList()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BookEntity> {
         return SuggestionViewHolder(inflater.inflate(R.layout.suggestion_picker_item, parent, false))
     }
 
     inner class SuggestionViewHolder(
         override val containerView: View
-    ) : BaseAdapter<BookEntity>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<BookEntity>(containerView), LayoutContainer {
 
-        override fun bindToView(t: BookEntity) {
-            with(t) {
+        override fun bindToView(content: BookEntity, position: Int) {
+            with(content) {
                 tv_suggestion_picker_item_title.text = title
                 tv_suggestion_picker_item_author.text = author
 

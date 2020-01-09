@@ -32,8 +32,14 @@ class BookAdapter(
     private val recyclerView: RecyclerView,
     private val imageLoader: ImageLoader,
     private val useNewOverflowReplacement: Boolean,
-    private val onActionClickedListener: OnBookActionClickedListener
-) : BaseAdapter<BookEntity>(recyclerView.context), ItemTouchHelperAdapter {
+    private val onActionClickedListener: OnBookActionClickedListener,
+    onItemClickListener: OnItemClickListener<BookEntity>,
+    onItemMoveListener: OnItemMoveListener<BookEntity>
+) : BaseAdapter<BookEntity>(
+    recyclerView.context,
+    onItemClickListener = onItemClickListener,
+    onItemMoveListener = onItemMoveListener
+), ItemTouchHelperAdapter {
 
     private var expandedPosition = -1
 
@@ -45,7 +51,7 @@ class BookAdapter(
         return data[position].id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter<BookEntity>.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<BookEntity> {
         return ViewHolder(inflater.inflate(R.layout.item_book, parent, false))
     }
 
@@ -87,17 +93,17 @@ class BookAdapter(
 
     inner class ViewHolder(
         override val containerView: View
-    ) : BaseAdapter<BookEntity>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<BookEntity>(containerView), LayoutContainer {
 
-        override fun bindToView(t: BookEntity) {
-            updateTexts(t)
-            updateImageThumbnail(t.thumbnailAddress)
-            updateProgress(t)
+        override fun bindToView(content: BookEntity, position: Int) {
+            updateTexts(content)
+            updateImageThumbnail(content.thumbnailAddress)
+            updateProgress(content)
 
             if (useNewOverflowReplacement) {
-                setActionButtons(t)
+                setActionButtons(content)
             } else {
-                setupOverflowMenu(t)
+                setupOverflowMenu(content)
             }
         }
 

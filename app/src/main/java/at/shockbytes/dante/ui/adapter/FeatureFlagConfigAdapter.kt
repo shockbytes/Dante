@@ -20,10 +20,10 @@ class FeatureFlagConfigAdapter(
 
     inner class ViewHolder(
         override val containerView: View
-    ) : BaseAdapter<FeatureFlagItem>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<FeatureFlagItem>(containerView), LayoutContainer {
 
-        override fun bindToView(t: FeatureFlagItem) {
-            with(t) {
+        override fun bindToView(content: FeatureFlagItem, position: Int) {
+            with(content) {
 
                 item_feature_flag_txt_title.text = displayName
                 item_feature_flag_switch.isChecked = value
@@ -31,11 +31,11 @@ class FeatureFlagConfigAdapter(
 
             item_feature_flag_root.setOnClickListener {
                 item_feature_flag_switch.toggle()
-                updateItemState(t)
+                updateItemState(content)
             }
 
             item_feature_flag_switch.setOnClickListener {
-                updateItemState(t)
+                updateItemState(content)
             }
         }
 

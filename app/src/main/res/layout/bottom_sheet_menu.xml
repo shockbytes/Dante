@@ -108,6 +108,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewMenuSeparator" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMenuTimeline"
+                style="@style/AppTheme.BorderlessButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                app:iconPadding="16dp"
+                app:iconTint="@color/danteAccent"
+                app:icon="@drawable/ic_menu_timeline"
+                android:gravity="start|center_vertical"
+                android:padding="8dp"
+                android:textColor="@color/danteAccent"
+                android:text="@string/menu_main_timeline"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnMenuStatistics" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuSortStrategy"
                 style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
@@ -126,7 +147,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnMenuStatistics" />
+                app:layout_constraintTop_toBottomOf="@+id/btnMenuTimeline" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnMenuBackup"

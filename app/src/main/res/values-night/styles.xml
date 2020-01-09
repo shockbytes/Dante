@@ -8,6 +8,11 @@
         <item name="android:fontFamily">@font/montserrat</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="colorPrimaryDark">@android:color/transparent</item>
+        <item name="android:windowBackground">@drawable/launch_screen_night</item>
+    </style>
+
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -5,9 +5,11 @@
     <string name="action_move_to_reading">Verschieben zu Lesen</string>
     <string name="action_move_to_upcoming">Verschieben zu Später Lesen</string>
     <string name="settings">Einstellungen</string>
+    <string name="help">Hilfe</string>
     <string name="menu_main_stats">Statistiken</string>
     <string name="label_settings">Einstellungen</string>
     <string name="label_stats">Deine Statistiken</string>
+    <string name="label_timeline">Deine Timeline</string>
     <string name="prefs_app_version_title">App Version</string>
     <string name="prefs_category_about">Über</string>
     <string name="prefs_developer_title">Entwickler</string>
@@ -29,6 +31,7 @@
     <string name="backup_books_amount">%d Bücher</string>
     <string name="backup">Backup</string>
     <string name="menu_main_backup">Backup</string>
+    <string name="menu_main_timeline">Timeline</string>
     <string name="backup_strategy_merge">Zusammenfügen</string>
     <string name="backup_strategy_overwrite">Überschreiben</string>
     <string name="backup_created">Backup erstellt</string>
@@ -198,4 +201,7 @@
     <string name="nope">Nope</string>
     <string name="book_added_to_library">%s wurde hinzugefügt</string>
     <string name="scan_another_book">Willst du noch ein weiteres Buch scannen?</string>
+    <string name="dante_install">Installation von Dante</string>
+    <string name="timeline_explanation">Die Timeline ordnet deine gelesenen Bücher chronologisch an. Jedes Buch wird dem Monat zugeordnet, in welchem du es begonnen hast.</string>
+
 </resources>

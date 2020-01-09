@@ -13,6 +13,7 @@ import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
 import at.shockbytes.dante.core.createSharingIntent
+import at.shockbytes.dante.ui.activity.TimeLineActivity
 
 object ActivityNavigator {
 
@@ -36,6 +37,7 @@ object ActivityNavigator {
                 is Destination.Main -> MainActivity.newIntent(context, destination.bookDetailInfo, destination.openCameraAfterLaunch)
                 is Destination.ManualAdd -> ManualAddActivity.newIntent(context)
                 is Destination.Statistics -> StatisticsActivity.newIntent(context)
+                is Destination.Timeline -> TimeLineActivity.newIntent(context)
                 is Destination.Backup -> BackupActivity.newIntent(context)
                 is Destination.Settings -> SettingsActivity.newIntent(context)
                 Destination.BarcodeScanner -> BarcodeCaptureActivity.newIntent(context)

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+    <item android:drawable="@color/darkLaunchScreen" />
+
+    <item
+        android:bottom="@dimen/product_logo_bottom"
+        android:gravity="center"
+        android:drawable="@drawable/ic_brand_app_logo_night" />
+
+    <item
+        android:bottom="@dimen/product_brand_bottom"
+        android:drawable="@drawable/ic_brand_name"
+        android:gravity="center_horizontal|bottom" />
+
+</layer-list>

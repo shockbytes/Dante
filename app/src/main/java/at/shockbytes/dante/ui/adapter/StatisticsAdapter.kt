@@ -30,7 +30,7 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<StatisticsDisplayItem> {
         return when (viewType) {
             VIEW_TYPE_DATA -> {
                 DataViewHolder(inflater.inflate(R.layout.item_statistics_data, parent, false))
@@ -44,10 +44,10 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
 
     inner class DataViewHolder(
         override val containerView: View
-    ) : BaseAdapter<StatisticsDisplayItem>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<StatisticsDisplayItem>(containerView), LayoutContainer {
 
-        override fun bindToView(t: StatisticsDisplayItem) {
-            with(t as StatisticsDisplayItem.StatisticsDataItem) {
+        override fun bindToView(content: StatisticsDisplayItem, position: Int) {
+            with(content as StatisticsDisplayItem.StatisticsDataItem) {
                 if (align == StatisticsDisplayItem.Align.START) {
                     item_statistics_data_icon_start.setImageResource(icon)
                     item_statistics_data_icon_start.setColorFilter(ContextCompat.getColor(context, tintColorRes))
@@ -70,10 +70,10 @@ class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(c
 
     inner class HeaderViewHolder(
         override val containerView: View
-    ) : BaseAdapter<StatisticsDisplayItem>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<StatisticsDisplayItem>(containerView), LayoutContainer {
 
-        override fun bindToView(t: StatisticsDisplayItem) {
-            with(t as StatisticsDisplayItem.StatisticsHeaderItem) {
+        override fun bindToView(content: StatisticsDisplayItem, position: Int) {
+            with(content as StatisticsDisplayItem.StatisticsHeaderItem) {
                 item_statistics_header_icon.setImageResource(icon)
                 item_statistics_header_title.text = context.getString(title)
             }

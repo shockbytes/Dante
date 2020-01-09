@@ -12,8 +12,9 @@ import kotlinx.android.extensions.LayoutContainer
  * Date:    11.06.2019
  */
 class BackupStorageProviderAdapter(
-    context: Context
-) : BaseAdapter<BackupStorageProvider>(context) {
+    context: Context,
+    onItemClickListener: OnItemClickListener<BackupStorageProvider>
+) : BaseAdapter<BackupStorageProvider>(context, onItemClickListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(BackupStorageProviderView(context))
@@ -26,11 +27,11 @@ class BackupStorageProviderAdapter(
 
     inner class ViewHolder(
         override val containerView: BackupStorageProviderView
-    ) : BaseAdapter<BackupStorageProvider>.ViewHolder(containerView), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<BackupStorageProvider>(containerView), LayoutContainer {
 
-        override fun bindToView(t: BackupStorageProvider) {
-            containerView.setStorageProvider(t) {
-                onItemClickListener?.onItemClick(t, containerView)
+        override fun bindToView(content: BackupStorageProvider, position: Int) {
+            containerView.setStorageProvider(content) {
+                onItemClickListener?.onItemClick(content, adapterPosition, containerView)
             }
         }
     }

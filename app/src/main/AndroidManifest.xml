@@ -59,6 +59,8 @@
             android:exported="true" />
 
         <activity android:name=".camera.BarcodeCaptureActivity"/>
+        <activity android:name=".ui.activity.TimeLineActivity"
+            android:label="@string/label_timeline"/>
 
         <service
             android:name=".ui.widget.DanteRemoteViewsService"

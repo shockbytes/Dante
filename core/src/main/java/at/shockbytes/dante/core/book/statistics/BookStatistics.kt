@@ -38,10 +38,9 @@ data class BookStatistics(
 
             val now = System.currentTimeMillis()
             val start = booksDone
-                    .filter { it.startDate > 0 }
-                    .map { it.startDate }
-                    .sorted()
-                    .firstOrNull() ?: now
+                .filter { it.startDate > 0 }
+                .map { it.startDate }
+                .min() ?: now
             val monthsReading = Months.monthsBetween(DateTime(start), DateTime(now)).months
 
             return if (monthsReading == 0) {

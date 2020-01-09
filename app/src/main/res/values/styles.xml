@@ -64,9 +64,12 @@
         <item name="rippleColor">@color/colorBrand</item>
     </style>
 
-    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="TextInputLayoutStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/colorAccent</item>
         <item name="hintTextColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextInputStyle" >
         <item name="android:textCursorDrawable">@null</item>
     </style>
 

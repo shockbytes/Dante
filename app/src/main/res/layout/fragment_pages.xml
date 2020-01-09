@@ -56,7 +56,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_pages_current_page"
-                style="@style/TextInputStyle"
+                style="@style/TextInputLayoutStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="88dp"
@@ -70,6 +70,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/btn_pages_close">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    style="@style/TextInputStyle"
                     android:id="@+id/et_pages_current_page"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +81,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_pages_pages"
-                style="@style/TextInputStyle"
+                style="@style/TextInputLayoutStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="88dp"
@@ -94,6 +95,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_pages_slash">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    style="@style/TextInputStyle"
                     android:id="@+id/et_pages_pages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

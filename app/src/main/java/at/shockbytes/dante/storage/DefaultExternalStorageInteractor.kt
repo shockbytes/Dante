@@ -1,5 +1,6 @@
 package at.shockbytes.dante.storage
 
+import android.content.Context
 import android.os.Environment
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -9,7 +10,7 @@ import java.io.File
  * Author:  Martin Macheiner
  * Date:    11.06.2019
  */
-class DefaultExternalStorageInteractor : ExternalStorageInteractor {
+class DefaultExternalStorageInteractor(private val context: Context) : ExternalStorageInteractor {
 
     override fun createBaseDirectory(directoryName: String) {
 
@@ -39,7 +40,7 @@ class DefaultExternalStorageInteractor : ExternalStorageInteractor {
         return Completable.fromAction {
             getBaseFile(directoryName)
                 .listFiles()
-                .forEach { f ->
+                ?.forEach{ f ->
                     f.delete()
                 }
         }
@@ -69,7 +70,8 @@ class DefaultExternalStorageInteractor : ExternalStorageInteractor {
                 .listFiles { _, name ->
                     filterPredicate(name)
                 }
-                .toList()
+                ?.toList()
+                ?: listOf()
         }
     }
 
@@ -82,6 +84,6 @@ class DefaultExternalStorageInteractor : ExternalStorageInteractor {
     }
 
     private fun getBaseFile(directoryName: String): File {
-        return File(Environment.getExternalStorageDirectory(), directoryName)
+        return File(context.getExternalFilesDirs(Environment.DIRECTORY_DOCUMENTS)[0], directoryName)
     }
 }

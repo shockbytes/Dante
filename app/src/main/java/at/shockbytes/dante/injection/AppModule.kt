@@ -66,7 +66,7 @@ class AppModule(private val app: Application) {
 
     @Provides
     fun provideExternalStorageInteractor(): ExternalStorageInteractor {
-        return DefaultExternalStorageInteractor()
+        return DefaultExternalStorageInteractor(app.applicationContext)
     }
 
     @Provides

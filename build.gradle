@@ -63,7 +63,7 @@ ext {
     okHttpVersion = "3.14.1"
     shockUtilVersion = "6.1.2"
     crashlyticsVersion = "2.9.9"
-    glideVersion = "4.10.0"
+    glideVersion = "4.11.0"
     lottieVersion = "3.0.1"
     rxImagePickerVersion = "2.2.0"
     rxKotlinVersion = "2.3.0"

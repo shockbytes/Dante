@@ -40,7 +40,7 @@ class DefaultExternalStorageInteractor(private val context: Context) : ExternalS
         return Completable.fromAction {
             getBaseFile(directoryName)
                 .listFiles()
-                ?.forEach{ f ->
+                ?.forEach { f ->
                     f.delete()
                 }
         }

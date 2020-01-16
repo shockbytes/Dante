@@ -77,8 +77,14 @@ class DanteRemoteViewsFactory(
     }
 
     private fun getThumbnailBitmap(thumbnailAddress: String?): Bitmap? {
+        Timber.d("Thumbnail: $thumbnailAddress")
         return if (!thumbnailAddress.isNullOrEmpty()) {
-            Uri.parse(checkUrlForHttps(thumbnailAddress)).loadBitmap(context).blockingGet()
+            try {
+                Uri.parse(checkUrlForHttps(thumbnailAddress)).loadBitmap(context).blockingGet()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                ContextCompat.getDrawable(context, R.drawable.ic_placeholder)?.toBitmap()
+            }
         } else {
             ContextCompat.getDrawable(context, R.drawable.ic_placeholder)?.toBitmap()
         }

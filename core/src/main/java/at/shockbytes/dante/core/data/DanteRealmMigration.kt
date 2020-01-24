@@ -16,7 +16,8 @@ class DanteRealmMigration : RealmMigration {
         RATING_LANG,
         PAGES_NOTES,
         NAME_REFACTORING,
-        SUMMARY_AND_LABELS
+        SUMMARY_AND_LABELS,
+        LABEL_OBJECT
     }
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
@@ -41,6 +42,9 @@ class DanteRealmMigration : RealmMigration {
         }
         if (versionCounter == Migrations.NAME_REFACTORING.v()) {
             migrateSummaryAndLabels(schema)
+        }
+        if (versionCounter == Migrations.SUMMARY_AND_LABELS.v()) {
+            migrateToLabelObjects(schema)
         }
     }
 
@@ -74,10 +78,21 @@ class DanteRealmMigration : RealmMigration {
                 ?.addRealmListField("labels", String::class.java)
     }
 
-    companion object {
+    private fun migrateToLabelObjects(schema: RealmSchema) {
+
+        val labelSchema = schema.create("RealmBookLabel")
+                .addField("title", String::class.java)
+                .addField("hexColor", String::class.java)
+
+        schema.get("RealmBook")
+                ?.removeField("labels")
+                ?.addRealmListField("labels", labelSchema)
+    }
+
+        companion object {
 
         private fun Migrations.v(): Long = this.ordinal.toLong()
 
-        val migrationVersion = Migrations.SUMMARY_AND_LABELS.v()
+        val migrationVersion = Migrations.LABEL_OBJECT.v()
     }
 }

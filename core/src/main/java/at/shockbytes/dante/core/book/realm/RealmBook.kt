@@ -29,8 +29,8 @@ open class RealmBook @JvmOverloads constructor(
     var rating: Int = 0, // 1 - 5
     var currentPage: Int = 0, // Version 3
     var notes: String? = null,
-    var summary: String? = null, // Version 4
-    var labels: RealmList<String> = RealmList()
+    var summary: String? = null, // Version 4-5
+    var labels: RealmList<RealmBookLabel> = RealmList()
 ) : RealmObject(), Gsonify {
 
     enum class State {
@@ -72,7 +72,6 @@ open class RealmBook @JvmOverloads constructor(
             addProperty("endDate", endDate)
             addProperty("wishlistDate", wishlistDate)
             addProperty("summary", summary)
-            add("labels", JsonArray().apply { labels.forEach { add(it) } })
         }
     }
 

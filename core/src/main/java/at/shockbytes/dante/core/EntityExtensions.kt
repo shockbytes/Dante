@@ -31,6 +31,18 @@ fun BookEntity.toJson(): JsonObject {
         addProperty("endDate", endDate)
         addProperty("wishlistDate", wishlistDate)
         addProperty("summary", summary)
+
+        val labels = JsonArray().apply {
+            labels.forEach {  label ->
+                val labelObject = JsonObject().apply {
+                    addProperty("title", label.title)
+                    addProperty("hexColor", label.hexColor)
+                }
+                add(labelObject)
+            }
+        }
+
+        add("labels", JsonArray().apply { labels.forEach { add(it) } })
         add("labels", JsonArray().apply { labels.forEach { add(it) } })
     }
 }

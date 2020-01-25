@@ -478,7 +478,7 @@ class BookDetailFragment : BaseFragment(),
 
     private fun showLabelPicker() {
         LabelPickerBottomSheetFragment.newInstance()
-            .show(childFragmentManager, "pick-label-bottom-sheet")
+            .show(fragmentManager!!, "pick-label-bottom-sheet")
     }
 
     private fun initializeTimeInformation(book: BookEntity) {

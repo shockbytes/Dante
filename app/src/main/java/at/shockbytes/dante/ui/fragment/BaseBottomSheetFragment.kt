@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -31,6 +32,10 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
 
     protected abstract fun unbindViewModel()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        injectToGraph((activity?.application as DanteApp).appComponent)
+    }
 
     override fun onPause() {
         unbindViewModel()

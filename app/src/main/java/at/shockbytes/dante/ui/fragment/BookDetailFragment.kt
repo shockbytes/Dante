@@ -565,22 +565,10 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun setupLabels(labels: List<BookLabel>) {
-        // TODO
-
-        val l = listOf(
-            BookLabel("Must Read", "#DDEEAA"),
-            BookLabel("Fiction", "#AADDEE"),
-            BookLabel("Must Read", "#DDEEAA"),
-            BookLabel("Fiction", "#AADDEE"),
-            BookLabel("Must Read", "#DDEEAA"),
-            BookLabel("Fiction", "#AADDEE"),
-            BookLabel("Must Read", "#DDEEAA"),
-            BookLabel("Fiction", "#AADDEE")
-        )
 
         chips_detail_label.removeAllViews()
 
-        l
+        labels
             .map (::buildChipViewFromLabel)
             .forEach(chips_detail_label::addView)
     }

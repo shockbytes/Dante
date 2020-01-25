@@ -45,7 +45,7 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
 
     override fun bindViewModel() {
 
-        viewModel.requestAvailableLabels()
+        viewModel.requestAvailableLabels(attachedLabels.labels)
         viewModel.getBookLabels().observe(this, Observer { labels ->
             labelAdapter.data = labels.toMutableList()
         })
@@ -55,6 +55,10 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
 
     override fun setupViews() {
         rv_pick_labels.adapter = labelAdapter
+
+        btn_create_new_label.setOnClickListener {
+            // TODO
+        }
     }
 
     fun setOnLabelSelectedListener(listener: ((BookLabel) -> Unit)): LabelPickerBottomSheetFragment {

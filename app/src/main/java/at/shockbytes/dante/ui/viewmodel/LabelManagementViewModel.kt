@@ -10,7 +10,7 @@ class LabelManagementViewModel @Inject constructor() : BaseViewModel() {
     private val bookLabels = MutableLiveData<List<BookLabel>>()
     fun getBookLabels(): LiveData<List<BookLabel>> = bookLabels
 
-    fun requestAvailableLabels() {
+    fun requestAvailableLabels(alreadyAttachedLabels: List<BookLabel>) {
 
         bookLabels.postValue(
             listOf(
@@ -21,4 +21,7 @@ class LabelManagementViewModel @Inject constructor() : BaseViewModel() {
         )
     }
 
+    fun createNewBookLabel(title: String, hexColor: String) {
+        // TODO
+    }
 }

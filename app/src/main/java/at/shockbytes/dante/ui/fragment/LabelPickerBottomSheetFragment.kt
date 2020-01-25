@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -8,8 +9,10 @@ import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.LabelManagementAdapter
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
+import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_label_picker_bottom_sheet.*
 import javax.inject.Inject
 
@@ -21,6 +24,8 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
     lateinit var vmFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: LabelManagementViewModel
+
+    private var attachedLabels: AttachedLabels by argument()
 
     private var onLabelSelectedListener: ((BookLabel) -> Unit)? = null
 
@@ -60,8 +65,13 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
 
     companion object {
 
-        fun newInstance(attachedLabels: List<BookLabel>): LabelPickerBottomSheetFragment {
-            return LabelPickerBottomSheetFragment()
+        fun newInstance(alreadyAttachedLabels: List<BookLabel>): LabelPickerBottomSheetFragment {
+            return LabelPickerBottomSheetFragment().apply {
+                attachedLabels = AttachedLabels(alreadyAttachedLabels)
+            }
         }
+
+        @Parcelize
+        private data class AttachedLabels(val labels: List<BookLabel>): Parcelable
     }
 }

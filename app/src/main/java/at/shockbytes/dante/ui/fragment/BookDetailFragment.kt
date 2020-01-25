@@ -478,7 +478,7 @@ class BookDetailFragment : BaseFragment(),
 
     private fun showLabelPicker() {
         LabelPickerBottomSheetFragment
-            .newInstance(attachedLabels = listOf())
+            .newInstance(alreadyAttachedLabels = listOf())
             .setOnLabelSelectedListener { label ->
                 showToast(label.title)
             }

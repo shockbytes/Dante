@@ -1,8 +1,10 @@
 package at.shockbytes.dante.core.data
 
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.realm.RealmBook
 import at.shockbytes.dante.core.book.realm.RealmBookConfig
+import at.shockbytes.dante.core.book.realm.RealmBookLabel
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
@@ -18,8 +20,10 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     private val bookClass = RealmBook::class.java
     private val configClass = RealmBookConfig::class.java
+    private val labelClass = RealmBookLabel::class.java
 
-    private val mapper: RealmBookEntityMapper = RealmBookEntityMapper()
+    private val labelMapper = RealmBookLabelMapper()
+    private val mapper: RealmBookEntityMapper = RealmBookEntityMapper(labelMapper)
 
     /**
      * This must always be called inside a transaction
@@ -38,6 +42,14 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
                 .asFlowable()
                 .map { mapper.mapTo(it) }
                 .toObservable()
+
+    override val bookLabelObservable: Observable<List<BookLabel>>
+        get() = realm.instance.where(labelClass)
+            .sort("title", Sort.DESCENDING)
+            .findAllAsync()
+            .asFlowable()
+            .map { labelMapper.mapTo(it) }
+            .toObservable()
 
     override val booksCurrentlyReading: List<BookEntity>
         get() = realm.instance.where(bookClass)
@@ -94,6 +106,21 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
                 RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
                 RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
             }
+        }
+    }
+
+    override fun createBookLabel(bookLabel: BookLabel) {
+        realm.instance.executeTransaction { realm ->
+            realm.copyToRealm(labelMapper.mapFrom(bookLabel))
+        }
+    }
+
+    override fun deleteBookLabel(bookLabel: BookLabel) {
+        realm.instance.executeTransaction { realm ->
+            realm.where(labelClass)
+                .equalTo("title", bookLabel.title)
+                .findFirst()
+                ?.deleteFromRealm()
         }
     }
 

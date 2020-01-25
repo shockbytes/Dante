@@ -406,6 +406,11 @@ class BookDetailFragment : BaseFragment(),
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             showDatePicker(DATE_TARGET_END_DATE)
         }
+
+        btn_add_label.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            showLabelPicker()
+        }
     }
 
     private fun loadIcons() {
@@ -469,6 +474,11 @@ class BookDetailFragment : BaseFragment(),
                 cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
                 .show()
         }
+    }
+
+    private fun showLabelPicker() {
+        LabelPickerBottomSheetFragment.newInstance()
+            .show(childFragmentManager, "pick-label-bottom-sheet")
     }
 
     private fun initializeTimeInformation(book: BookEntity) {

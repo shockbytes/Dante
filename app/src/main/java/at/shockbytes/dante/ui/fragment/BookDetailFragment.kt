@@ -477,7 +477,11 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun showLabelPicker() {
-        LabelPickerBottomSheetFragment.newInstance()
+        LabelPickerBottomSheetFragment
+            .newInstance(attachedLabels = listOf())
+            .setOnLabelSelectedListener { label ->
+                showToast(label.title)
+            }
             .show(fragmentManager!!, "pick-label-bottom-sheet")
     }
 

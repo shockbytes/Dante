@@ -21,6 +21,8 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
+import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
@@ -161,19 +163,11 @@ class BookDetailFragment : BaseFragment(),
         viewModel.showNotesDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
-                    data?.let { (title, thumbnailAddress, notes) ->
 
-                        fragmentManager?.let { fm ->
-                            val fragment = NotesFragment.newInstance(title, thumbnailAddress, notes)
-                                    .apply {
-                                        onSavedClickListener = { updatedNotes ->
-                                            viewModel.updateNotes(updatedNotes)
-                                            setupNotes(notes.isEmpty())
-                                        }
-                                    }
-                            DanteUtils.addFragmentToActivity(fm, fragment, android.R.id.content, true)
-                        }
-                    }
+                    ActivityNavigator.navigateTo(context, Destination.Notes(data))
+                    // TODO Bring this back
+                    // viewModel.updateNotes(updatedNotes)
+                    // setupNotes(notes.isEmpty())
                 }
                 .addTo(compositeDisposable)
 

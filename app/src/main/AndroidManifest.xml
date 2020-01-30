@@ -31,7 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data android:name="android.app.shortcuts"
+            <meta-data
+                android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
 
         </activity>
@@ -44,9 +45,9 @@
             android:label="@string/label_backup" />
         <activity
             android:name=".ui.activity.SearchActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/search"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.activity.ManualAddActivity"
             android:label=""
@@ -58,15 +59,20 @@
             android:name=".ui.activity.LoginActivity"
             android:exported="true" />
 
-        <activity android:name=".camera.BarcodeCaptureActivity"/>
-        <activity android:name=".ui.activity.TimeLineActivity"
-            android:label="@string/label_timeline"/>
+        <activity android:name=".camera.BarcodeCaptureActivity" />
+        <activity
+            android:name=".ui.activity.TimeLineActivity"
+            android:label="@string/label_timeline" />
+        <activity
+            android:name=".ui.activity.NotesActivity"
+            android:label="@string/label_my_notes" />
 
         <service
             android:name=".ui.widget.DanteRemoteViewsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <receiver android:name=".ui.widget.DanteAppWidget"
+        <receiver
+            android:name=".ui.widget.DanteAppWidget"
             android:label="@string/currently_reading">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

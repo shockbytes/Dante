@@ -13,6 +13,7 @@ import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
 import at.shockbytes.dante.core.createSharingIntent
+import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.activity.TimeLineActivity
 
 object ActivityNavigator {
@@ -41,6 +42,7 @@ object ActivityNavigator {
                 is Destination.Backup -> BackupActivity.newIntent(context)
                 is Destination.Settings -> SettingsActivity.newIntent(context)
                 Destination.BarcodeScanner -> BarcodeCaptureActivity.newIntent(context)
+                is Destination.Notes -> NotesActivity.newIntent(context, destination.notesBundle)
             }
 
             intentFlags?.let { flags ->

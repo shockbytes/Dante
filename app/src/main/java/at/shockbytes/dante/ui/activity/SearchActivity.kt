@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.activity
 
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +12,7 @@ import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.viewModelOf
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, vmFactory)[SearchViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
         bindViewModel()
 
         window.exitTransition = Fade()

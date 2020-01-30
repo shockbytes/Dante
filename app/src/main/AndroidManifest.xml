@@ -65,7 +65,8 @@
             android:label="@string/label_timeline" />
         <activity
             android:name=".ui.activity.NotesActivity"
-            android:label="@string/label_my_notes" />
+            android:label="@string/label_my_notes"
+            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name=".ui.widget.DanteRemoteViewsService"

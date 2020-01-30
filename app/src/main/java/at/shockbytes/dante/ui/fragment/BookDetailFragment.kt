@@ -2,9 +2,12 @@ package at.shockbytes.dante.ui.fragment
 
 import android.animation.ObjectAnimator
 import android.app.DatePickerDialog
+import android.content.BroadcastReceiver
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -13,6 +16,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
@@ -88,11 +92,24 @@ class BookDetailFragment : BaseFragment(),
         )
     }
 
+    private val notesReceiver = object: BroadcastReceiver() {
+
+        override fun onReceive(p0: Context?, data: Intent?) {
+
+            val updatedNotes = data?.extras?.getString("notes") ?: return
+
+            viewModel.updateNotes(updatedNotes)
+            setupNotes(updatedNotes.isEmpty())
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
         arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
+
+        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(notesReceiver, IntentFilter("NOTES"))
     }
 
     override fun setupViews() {
@@ -166,8 +183,7 @@ class BookDetailFragment : BaseFragment(),
 
                     ActivityNavigator.navigateTo(context, Destination.Notes(data))
                     // TODO Bring this back
-                    // viewModel.updateNotes(updatedNotes)
-                    // setupNotes(notes.isEmpty())
+
                 }
                 .addTo(compositeDisposable)
 
@@ -190,6 +206,12 @@ class BookDetailFragment : BaseFragment(),
 
     override fun unbindViewModel() {
         viewModel.getViewState().removeObservers(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(notesReceiver)
+
     }
 
     override fun onBackwardAnimation() {

@@ -7,15 +7,17 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout2"
+        android:id="@+id/appBarNotes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:background="@color/colorActionBar"
             android:layout_height="wrap_content">
 
             <ImageView
@@ -67,7 +69,7 @@
         app:layout_constraintBottom_toTopOf="@+id/card_notes_action"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/appBarNotes">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_notes"

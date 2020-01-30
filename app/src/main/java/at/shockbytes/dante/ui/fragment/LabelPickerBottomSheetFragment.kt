@@ -8,6 +8,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.LabelManagementAdapter
+import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.viewModelOf
@@ -57,7 +58,12 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
         rv_pick_labels.adapter = labelAdapter
 
         btn_create_new_label.setOnClickListener {
-            // TODO
+
+            CreateLabelDialogFragment.newInstance()
+                .setOnApplyListener { label ->
+                    viewModel.createNewBookLabel(label)
+                }
+                .show(requireFragmentManager(), "create-label-dialog-fragment")
         }
     }
 
@@ -76,6 +82,6 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
         }
 
         @Parcelize
-        private data class AttachedLabels(val labels: List<BookLabel>): Parcelable
+        private data class AttachedLabels(val labels: List<BookLabel>) : Parcelable
     }
 }

@@ -28,9 +28,7 @@ class LabelManagementViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun createNewBookLabel(title: String, hexColor: String) {
-
-        val newLabel = BookLabel(title = title, hexColor = hexColor)
+    fun createNewBookLabel(newLabel: BookLabel) {
         bookEntityDao.createBookLabel(newLabel)
     }
 }

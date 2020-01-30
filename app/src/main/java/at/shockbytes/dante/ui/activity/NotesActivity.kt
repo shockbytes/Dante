@@ -12,7 +12,7 @@ import at.shockbytes.dante.ui.activity.core.BackNavigableActivity
 import kotlinx.android.synthetic.main.activity_notes.*
 import javax.inject.Inject
 
-class NotesActivity: BackNavigableActivity() {
+class NotesActivity : BackNavigableActivity() {
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -28,7 +28,6 @@ class NotesActivity: BackNavigableActivity() {
 
     private fun setupViews(notesBundle: NotesBundle) {
         supportActionBar?.elevation = 0f
-
 
         et_notes.setText(notesBundle.notes)
         txt_notes_header_description.text = getString(R.string.dialogfragment_notes_header, notesBundle.title)
@@ -53,16 +52,18 @@ class NotesActivity: BackNavigableActivity() {
     }
 
     private fun buildNotesIntent(): Intent {
-        return Intent("NOTES")
-            .putExtra("notes", et_notes.text.toString())
+        return Intent(ACTION_NOTES)
+            .putExtra(NOTES_EXTRA, et_notes.text.toString())
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
-
     companion object {
+
+        const val ACTION_NOTES = "write_notes"
+        const val NOTES_EXTRA = "notes"
 
         private const val ARG_NOTES_BUNDLE = "arg_notes_bundle"
 

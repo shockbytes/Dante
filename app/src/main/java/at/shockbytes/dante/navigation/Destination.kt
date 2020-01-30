@@ -31,6 +31,5 @@ sealed class Destination {
 
     object BarcodeScanner : Destination()
 
-
     data class Notes(val notesBundle: NotesBundle) : Destination()
 }

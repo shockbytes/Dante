@@ -27,6 +27,7 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
@@ -92,12 +93,11 @@ class BookDetailFragment : BaseFragment(),
         )
     }
 
-    private val notesReceiver = object: BroadcastReceiver() {
+    private val notesReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(p0: Context?, data: Intent?) {
 
-            val updatedNotes = data?.extras?.getString("notes") ?: return
-
+            val updatedNotes = data?.extras?.getString(NotesActivity.NOTES_EXTRA) ?: return
             viewModel.updateNotes(updatedNotes)
             setupNotes(updatedNotes.isEmpty())
         }
@@ -109,7 +109,8 @@ class BookDetailFragment : BaseFragment(),
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
         arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
 
-        LocalBroadcastManager.getInstance(requireContext()).registerReceiver(notesReceiver, IntentFilter("NOTES"))
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
     }
 
     override fun setupViews() {
@@ -180,10 +181,7 @@ class BookDetailFragment : BaseFragment(),
         viewModel.showNotesDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
-
                     ActivityNavigator.navigateTo(context, Destination.Notes(data))
-                    // TODO Bring this back
-
                 }
                 .addTo(compositeDisposable)
 
@@ -211,7 +209,6 @@ class BookDetailFragment : BaseFragment(),
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(notesReceiver)
-
     }
 
     override fun onBackwardAnimation() {

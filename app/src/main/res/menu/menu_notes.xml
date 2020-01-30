@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_notes_delete"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/action_delete"
+        app:iconTint="@color/danteAccent"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_notes_save"
+        android:icon="@drawable/ic_check_white_18dp"
+        android:title="@string/save"
+        app:iconTint="@color/danteAccent"
+        app:showAsAction="always" />
+
+</menu>

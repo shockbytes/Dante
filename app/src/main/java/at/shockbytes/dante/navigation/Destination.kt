@@ -30,4 +30,6 @@ sealed class Destination {
     object Settings : Destination()
 
     object BarcodeScanner : Destination()
+
+    data class Notes(val notesBundle: NotesBundle) : Destination()
 }

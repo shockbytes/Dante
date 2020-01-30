@@ -6,6 +6,7 @@ import android.os.Parcelable
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -35,8 +36,8 @@ class BookDetailViewModel @Inject constructor(
     private val showPagesDialogSubject = PublishSubject.create<PageInfo>()
     val showPagesDialogEvent: Observable<PageInfo> = showPagesDialogSubject
 
-    private val showNotesDialogSubject = PublishSubject.create<NotesInfo>()
-    val showNotesDialogEvent: Observable<NotesInfo> = showNotesDialogSubject
+    private val showNotesDialogSubject = PublishSubject.create<NotesBundle>()
+    val showNotesDialogEvent: Observable<NotesBundle> = showNotesDialogSubject
 
     private val showRatingDialogSubject = PublishSubject.create<RatingInfo>()
     val showRatingDialogEvent: Observable<RatingInfo> = showRatingDialogSubject
@@ -53,8 +54,8 @@ class BookDetailViewModel @Inject constructor(
 
     fun requestNotesDialog() {
         val instance = getBookFromLiveData() ?: return
-        showNotesDialogSubject.onNext(NotesInfo(instance.title, instance.thumbnailAddress, instance.notes
-                ?: ""))
+        showNotesDialogSubject.onNext(NotesBundle(instance.title, instance.thumbnailAddress, instance.notes
+            ?: ""))
     }
 
     fun requestRatingDialog() {
@@ -180,12 +181,6 @@ class BookDetailViewModel @Inject constructor(
         val currentPage: Int,
         val pageCount: Int,
         val isReading: Boolean
-    )
-
-    data class NotesInfo(
-        val title: String,
-        val thumbnailUrl: String?,
-        val notes: String
     )
 
     @Parcelize

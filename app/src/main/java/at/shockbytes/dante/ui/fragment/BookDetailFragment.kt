@@ -2,9 +2,12 @@ package at.shockbytes.dante.ui.fragment
 
 import android.animation.ObjectAnimator
 import android.app.DatePickerDialog
+import android.content.BroadcastReceiver
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -13,6 +16,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
@@ -21,6 +25,9 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
+import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
@@ -86,11 +93,24 @@ class BookDetailFragment : BaseFragment(),
         )
     }
 
+    private val notesReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(p0: Context?, data: Intent?) {
+
+            val updatedNotes = data?.extras?.getString(NotesActivity.NOTES_EXTRA) ?: return
+            viewModel.updateNotes(updatedNotes)
+            setupNotes(updatedNotes.isEmpty())
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
         arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
+
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
     }
 
     override fun setupViews() {
@@ -161,19 +181,7 @@ class BookDetailFragment : BaseFragment(),
         viewModel.showNotesDialogEvent
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { data ->
-                    data?.let { (title, thumbnailAddress, notes) ->
-
-                        fragmentManager?.let { fm ->
-                            val fragment = NotesFragment.newInstance(title, thumbnailAddress, notes)
-                                    .apply {
-                                        onSavedClickListener = { updatedNotes ->
-                                            viewModel.updateNotes(updatedNotes)
-                                            setupNotes(notes.isEmpty())
-                                        }
-                                    }
-                            DanteUtils.addFragmentToActivity(fm, fragment, android.R.id.content, true)
-                        }
-                    }
+                    ActivityNavigator.navigateTo(context, Destination.Notes(data))
                 }
                 .addTo(compositeDisposable)
 
@@ -196,6 +204,11 @@ class BookDetailFragment : BaseFragment(),
 
     override fun unbindViewModel() {
         viewModel.getViewState().removeObservers(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(notesReceiver)
     }
 
     override fun onBackwardAnimation() {

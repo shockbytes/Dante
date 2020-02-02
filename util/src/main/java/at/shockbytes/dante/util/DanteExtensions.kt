@@ -95,9 +95,9 @@ fun runDelayed(delay: Long, action: () -> Unit) {
 }
 
 inline fun <reified T : ViewModel> Fragment.viewModelOf(factory: ViewModelProvider.Factory): T {
-    return ViewModelProviders.of(this, factory)[T::class.java]
+    return ViewModelProvider(this.viewModelStore, factory)[T::class.java]
 }
 
 inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewModelProvider.Factory): T {
-    return ViewModelProviders.of(this, factory)[T::class.java]
+    return ViewModelProvider(this.viewModelStore, factory)[T::class.java]
 }

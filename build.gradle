@@ -38,19 +38,19 @@ task clean(type: Delete) {
 
 ext {
 
-    archXVersion = '2.1.0'
+    archXVersion = '2.2.0'
     androidXVersion = '1.0.0'
     androidXCoreVersion = '1.0.2'
     androidXPreferenceVersion = '1.1.0'
     androidXAppCompatVersion = '1.1.0'
-    materialVersion = '1.2.0-alpha03'
+    materialVersion = '1.2.0-alpha04'
 
     rxJavaVersion = "2.1.14"
     rxAndroidVersion = "2.1.1"
     rxBindingsVersion = "2.0.0"
 
-    firebaseVersionCore = "17.2.1"
-    firebaseVersionConfig = "19.1.0"
+    firebaseVersionCore = "17.2.2"
+    firebaseVersionConfig = "19.1.1"
     firebaseVersionAuth = "19.2.0"
     firebaseMLVision = "24.0.1"
 

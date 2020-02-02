@@ -1,7 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import androidx.lifecycle.ViewModelProvider
@@ -14,10 +13,10 @@ import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.core.app.SharedElementCallback
+import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
@@ -155,7 +154,7 @@ class BookDetailFragment : BaseFragment(),
             val currentLines = txt_detail_description.maxLines
 
             val lines = if (currentLines == defaultLines) 100 else defaultLines
-            val animationDuration = if (currentLines == defaultLines) 500L else 100L
+            val animationDuration = if (currentLines == defaultLines) 250L else 100L
 
             ObjectAnimator.ofInt(
                 txt_detail_description,
@@ -173,7 +172,7 @@ class BookDetailFragment : BaseFragment(),
     }
 
     override fun bindViewModel() {
-        viewModel.getViewState().observe(this, androidx.lifecycle.Observer { viewState ->
+        viewModel.getViewState().observe(this, Observer { viewState ->
             viewState?.let {
                 initializeBookInformation(viewState.book, viewState.showSummary)
                 initializeTimeInformation(viewState.book)
@@ -456,7 +455,7 @@ class BookDetailFragment : BaseFragment(),
 
             btn_detail_pages.text = if (state == BookState.READING)
                 // Initially set currentPage to 0 for progress animation
-                getString(R.string.detail_pages, 0, pageCount)
+                getString(R.string.detail_pages, currentPage, pageCount)
             else
                 pageCount.toString()
         } else {
@@ -471,22 +470,11 @@ class BookDetailFragment : BaseFragment(),
     private fun setupPageProgress(currentPage: Int, pageCount: Int) {
 
         sb_detail_pages.apply {
-
-            value = 0 // Initially set to 0 for animation
+            value = currentPage
             maxValue = pageCount
             setCallback(this@BookDetailFragment)
             setOnValueChangedListener { page ->
                 btn_detail_pages.text = getString(R.string.detail_pages, page, pageCount)
-            }
-
-            ValueAnimator.ofInt(0, currentPage).apply {
-                startDelay = 750L
-                addUpdateListener { animator ->
-                    value = animator.animatedValue as Int
-                }
-                duration = 500
-                interpolator = AccelerateDecelerateInterpolator()
-                start()
             }
         }
     }

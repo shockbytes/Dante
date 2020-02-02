@@ -232,7 +232,7 @@
                     app:layout_goneMarginStart="8dp"
                     app:progressCircleLineColor="@color/colorAccent"
                     app:showCounter="false"
-                    app:value="50" />
+                    tools:value="50" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_detail_pages"

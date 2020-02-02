@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.activity
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -37,6 +36,7 @@ import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.toggleVisibility
+import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -67,7 +67,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
         tabId = savedInstanceState?.getInt("tabId") ?: R.id.menu_navigation_current
 
         handleIntentExtras()
@@ -116,8 +116,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setupFabMenu()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onStop() {
+        super.onStop()
         DanteAppWidgetManager.refresh(this)
     }
 
@@ -388,10 +388,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         danteSettings
             .observeDarkModeEnabled()
-                .subscribe { isDarkModeEnabled ->
-                    enableDarkMode(isDarkModeEnabled)
-                }
-                .addTo(compositeDisposable)
+            .subscribe(::enableDarkMode)
+            .addTo(compositeDisposable)
     }
 
     private fun enableDarkMode(isEnabled: Boolean) {

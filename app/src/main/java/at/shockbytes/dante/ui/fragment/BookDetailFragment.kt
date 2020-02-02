@@ -1,10 +1,10 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -14,8 +14,10 @@ import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.core.app.SharedElementCallback
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
@@ -33,6 +35,7 @@ import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
+import at.shockbytes.dante.util.viewModelOf
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -106,11 +109,39 @@ class BookDetailFragment : BaseFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
 
+        viewModel = viewModelOf(vmFactory)
+        arguments?.getLong(ARG_BOOK_ID)?.let { bookId ->
+            viewModel.initializeWithBookId(bookId)
+        }
+
+        registerLocalBroadcastReceiver()
+        fixSharedElementTransitionBug()
+    }
+
+    private fun registerLocalBroadcastReceiver() {
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
+    }
+
+    /**
+     * Fix the shared element transition bug by requesting the ImageView
+     * layout after the transition ends.
+     */
+    private fun fixSharedElementTransitionBug() {
+        activity?.setEnterSharedElementCallback(object : SharedElementCallback() {
+
+            override fun onSharedElementEnd(
+                sharedElementNames: MutableList<String>?,
+                sharedElements: MutableList<View>?,
+                sharedElementSnapshots: MutableList<View>?
+            ) {
+                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots)
+                iv_detail_image?.post {
+                    iv_detail_image.requestLayout()
+                }
+            }
+        })
     }
 
     override fun setupViews() {
@@ -150,56 +181,63 @@ class BookDetailFragment : BaseFragment(),
         })
 
         viewModel.showBookFinishedDialogEvent
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { title ->
-                    SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
-                            getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
-                            .setOnAcceptListener {
-                                viewModel.moveBookToDone()
-                                activity?.supportFinishAfterTransition()
-                            }
-                            .show(requireFragmentManager(), "book-finished-dialogfragment")
-                }
-                .addTo(compositeDisposable)
+            .observeOn(AndroidSchedulers.mainThread())
+            .map(::createBookFinishedFragment)
+            .subscribe { fragment ->
+                fragment.show(parentFragmentManager, "book-finished-dialogfragment")
+            }
+            .addTo(compositeDisposable)
 
         viewModel.showPagesDialogEvent
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { data ->
-                    data?.let { (currentPage, pageCount, _) ->
-                        fragmentManager?.let { fm ->
-                            val fragment = PagesFragment.newInstance(currentPage, pageCount).apply {
-                                onPageEditedListener = { current, pages ->
-                                    viewModel.updateBookPages(current, pages)
-                                }
-                            }
-                            DanteUtils.addFragmentToActivity(fm, fragment, android.R.id.content, true)
-                        }
-                    }
-                }
-                .addTo(compositeDisposable)
+            .observeOn(AndroidSchedulers.mainThread())
+            .map(::createPagesFragment)
+            .subscribe { fragment ->
+                DanteUtils.addFragmentToActivity(parentFragmentManager, fragment, android.R.id.content, true)
+            }
+            .addTo(compositeDisposable)
 
         viewModel.showNotesDialogEvent
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { data ->
-                    ActivityNavigator.navigateTo(context, Destination.Notes(data))
-                }
-                .addTo(compositeDisposable)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { data ->
+                ActivityNavigator.navigateTo(context, Destination.Notes(data))
+            }
+            .addTo(compositeDisposable)
 
         viewModel.showRatingDialogEvent
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { data ->
-                    fragmentManager?.let { fm ->
-                        val fragment = RateFragment.newInstance(data)
-                                .apply {
-                                    onRateClickListener = { rating ->
-                                        viewModel.updateRating(rating)
-                                        btn_detail_rate?.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
-                                    }
-                                }
-                        DanteUtils.addFragmentToActivity(fm, fragment, android.R.id.content, true)
-                    }
+            .observeOn(AndroidSchedulers.mainThread())
+            .map(::createRateFragment)
+            .subscribe { fragment ->
+                DanteUtils.addFragmentToActivity(parentFragmentManager, fragment, android.R.id.content, true)
+            }
+            .addTo(compositeDisposable)
+    }
+
+    private fun createBookFinishedFragment(title: String): SimpleRequestDialogFragment {
+        return SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
+            getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
+            .setOnAcceptListener {
+                viewModel.moveBookToDone()
+                activity?.supportFinishAfterTransition()
+            }
+    }
+
+    private fun createPagesFragment(pageInfo: BookDetailViewModel.PageInfo): PagesFragment {
+        val (currentPage, pageCount) = pageInfo
+        return PagesFragment.newInstance(currentPage, pageCount).apply {
+            onPageEditedListener = { current, pages ->
+                viewModel.updateBookPages(current, pages)
+            }
+        }
+    }
+
+    private fun createRateFragment(data: BookDetailViewModel.RatingInfo): RateFragment {
+        return RateFragment.newInstance(data)
+            .apply {
+                onRateClickListener = { rating ->
+                    viewModel.updateRating(rating)
+                    btn_detail_rate?.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                 }
-                .addTo(compositeDisposable)
+            }
     }
 
     override fun unbindViewModel() {
@@ -224,12 +262,9 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        context?.let { ctx ->
-            loadIcons(ctx)
-        }
+    override fun onStart() {
+        super.onStart()
+        loadIcons()
     }
 
     override fun onImageLoadingFailed(e: Exception?) {
@@ -242,8 +277,8 @@ class BookDetailFragment : BaseFragment(),
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-        (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
-                actionBarTextColor, statusBarColor)
+        (activity as? TintableBackNavigableActivity)
+            ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
     }
 
     override fun onStartScrolling(startValue: Int) = Unit
@@ -259,7 +294,7 @@ class BookDetailFragment : BaseFragment(),
         txt_detail_title.text = book.title
         txt_detail_author.text = book.author
 
-        btn_detail_published.text = if (!book.publishedDate.isEmpty()) book.publishedDate else "---"
+        btn_detail_published.text = if (book.publishedDate.isNotEmpty()) book.publishedDate else "---"
         btn_detail_rate.text = if (book.rating in 1..5) {
             resources.getQuantityString(R.plurals.book_rating, book.rating, book.rating)
         } else getString(R.string.rate_book)
@@ -309,23 +344,23 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun loadIcons(ctx: Context) {
+    private fun loadIcons() {
         Observable
-                .fromIterable(iconLoadingMap)
-                .map { (drawableRes, v) ->
-                    Pair(DanteUtils.vector2Drawable(ctx, drawableRes), v)
-                }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ (drawable, v) ->
-                    v.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
-                }, { throwable ->
-                    throwable.printStackTrace()
-                }, {
-                    // In the end start the component animations in onComplete()
-                    startComponentAnimations()
-                })
-                .addTo(compositeDisposable)
+            .fromIterable(iconLoadingMap)
+            .map { (drawableRes, v) ->
+                Pair(DanteUtils.vector2Drawable(requireContext(), drawableRes), v)
+            }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ (drawable, v) ->
+                v.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
+            }, { throwable ->
+                throwable.printStackTrace()
+            }, {
+                // In the end start the component animations in onComplete()
+                startComponentAnimations()
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun startComponentAnimations() {
@@ -341,34 +376,34 @@ class BookDetailFragment : BaseFragment(),
         context?.let { ctx ->
             val cal = Calendar.getInstance()
             DatePickerDialog(ctx,
-                    { _, y, m, d ->
+                { _, y, m, d ->
 
-                        when (target) {
-                            DATE_TARGET_PUBLISHED_DATE -> {
-                                onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) // +1 because month starts with 0
-                            }
-                            DATE_TARGET_WISHLIST_DATE -> {
-                                val wishListDate = DanteUtils.buildTimestampFromDate(y, m, d)
-                                if (!viewModel.updateWishlistDate(wishListDate)) {
-                                    showToast(R.string.invalid_time_range_wishlist, true)
-                                }
-                            }
-                            DATE_TARGET_START_DATE -> {
-                                val startDate = DanteUtils.buildTimestampFromDate(y, m, d)
-                                if (!viewModel.updateStartDate(startDate)) {
-                                    showToast(R.string.invalid_time_range_start, true)
-                                }
-                            }
-                            DATE_TARGET_END_DATE -> {
-                                val endDate = DanteUtils.buildTimestampFromDate(y, m, d)
-                                if (!viewModel.updateEndDate(endDate)) {
-                                    showToast(R.string.invalid_time_range_end, true)
-                                }
+                    when (target) {
+                        DATE_TARGET_PUBLISHED_DATE -> {
+                            onUpdatePublishedDate(y.toString(), m.plus(1).toString(), d.toString()) // +1 because month starts with 0
+                        }
+                        DATE_TARGET_WISHLIST_DATE -> {
+                            val wishListDate = DanteUtils.buildTimestampFromDate(y, m, d)
+                            if (!viewModel.updateWishlistDate(wishListDate)) {
+                                showToast(R.string.invalid_time_range_wishlist, true)
                             }
                         }
-                    },
-                    cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
-                    .show()
+                        DATE_TARGET_START_DATE -> {
+                            val startDate = DanteUtils.buildTimestampFromDate(y, m, d)
+                            if (!viewModel.updateStartDate(startDate)) {
+                                showToast(R.string.invalid_time_range_start, true)
+                            }
+                        }
+                        DATE_TARGET_END_DATE -> {
+                            val endDate = DanteUtils.buildTimestampFromDate(y, m, d)
+                            if (!viewModel.updateEndDate(endDate)) {
+                                showToast(R.string.invalid_time_range_end, true)
+                            }
+                        }
+                    }
+                },
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+                .show()
         }
     }
 
@@ -417,25 +452,42 @@ class BookDetailFragment : BaseFragment(),
         // must be enabled in the settings
         if (isReading && hasPages) {
 
-            sb_detail_pages.maxValue = pageCount
-            sb_detail_pages.value = currentPage
-            sb_detail_pages.setCallback(this)
-            sb_detail_pages.setOnValueChangedListener { page ->
-                btn_detail_pages.text = getString(R.string.detail_pages, page, pageCount)
-            }
+            setupPageProgress(currentPage, pageCount)
 
-            // Show pages as button text
-            val pages = if (state == BookState.READING)
-                getString(R.string.detail_pages, currentPage, pageCount)
+            btn_detail_pages.text = if (state == BookState.READING)
+                // Initially set currentPage to 0 for progress animation
+                getString(R.string.detail_pages, 0, pageCount)
             else
                 pageCount.toString()
-            btn_detail_pages.text = pages
         } else {
             sb_detail_pages.apply {
                 visibility = View.INVISIBLE
                 isEnabled = false
             }
             btn_detail_pages.text = pageCount.toString()
+        }
+    }
+
+    private fun setupPageProgress(currentPage: Int, pageCount: Int) {
+
+        sb_detail_pages.apply {
+
+            value = 0 // Initially set to 0 for animation
+            maxValue = pageCount
+            setCallback(this@BookDetailFragment)
+            setOnValueChangedListener { page ->
+                btn_detail_pages.text = getString(R.string.detail_pages, page, pageCount)
+            }
+
+            ValueAnimator.ofInt(0, currentPage).apply {
+                startDelay = 750L
+                addUpdateListener { animator ->
+                    value = animator.animatedValue as Int
+                }
+                duration = 500
+                interpolator = AccelerateDecelerateInterpolator()
+                start()
+            }
         }
     }
 
@@ -446,17 +498,13 @@ class BookDetailFragment : BaseFragment(),
 
     private fun loadImage(address: String?) {
         if (!address.isNullOrEmpty()) {
-
-            // TODO Enable 2 times zoom
-            // val increasedZoomUrl = DownloadUtils.increaseGoogleThumbnailResolutionLink(url, 2)
-
             imageLoader.loadImageWithCornerRadius(
-                    requireContext(),
-                    address,
-                    iv_detail_image,
-                    cornerDimension = requireContext().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
-                    callback = this,
-                    callbackHandleValues = Pair(first = false, second = true))
+                requireContext(),
+                address,
+                iv_detail_image,
+                cornerDimension = requireContext().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
+                callback = this,
+                callbackHandleValues = Pair(first = false, second = true))
         } else {
             iv_detail_image.setImageResource(R.drawable.ic_placeholder)
         }

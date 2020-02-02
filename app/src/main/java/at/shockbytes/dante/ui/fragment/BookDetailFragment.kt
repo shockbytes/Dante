@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -16,6 +15,7 @@ import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.core.app.SharedElementCallback
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
@@ -33,6 +33,7 @@ import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
+import at.shockbytes.dante.util.viewModelOf
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -106,11 +107,40 @@ class BookDetailFragment : BaseFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BookDetailViewModel::class.java]
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId -> viewModel.initializeWithBookId(bookId) }
 
+        viewModel = viewModelOf(vmFactory)
+        arguments?.getLong(ARG_BOOK_ID)?.let { bookId ->
+            viewModel.initializeWithBookId(bookId)
+        }
+
+        registerLocalBroadcastReceiver()
+        fixSharedElementTransitionBug()
+    }
+
+    private fun registerLocalBroadcastReceiver() {
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
+
+    }
+
+    /**
+     * Fix the shared element transition bug by requesting the ImageView
+     * layout after the transition ends.
+     */
+    private fun fixSharedElementTransitionBug() {
+        activity?.setEnterSharedElementCallback(object: SharedElementCallback() {
+
+            override fun onSharedElementEnd(
+                sharedElementNames: MutableList<String>?,
+                sharedElements: MutableList<View>?,
+                sharedElementSnapshots: MutableList<View>?
+            ) {
+                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots)
+                iv_detail_image?.post {
+                    iv_detail_image.requestLayout()
+                }
+            }
+        })
     }
 
     override fun setupViews() {
@@ -227,9 +257,7 @@ class BookDetailFragment : BaseFragment(),
     override fun onResume() {
         super.onResume()
 
-        context?.let { ctx ->
-            loadIcons(ctx)
-        }
+        loadIcons(requireContext())
     }
 
     override fun onImageLoadingFailed(e: Exception?) {
@@ -242,8 +270,8 @@ class BookDetailFragment : BaseFragment(),
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-        (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
-                actionBarTextColor, statusBarColor)
+        (activity as? TintableBackNavigableActivity)
+            ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
     }
 
     override fun onStartScrolling(startValue: Int) = Unit
@@ -259,7 +287,7 @@ class BookDetailFragment : BaseFragment(),
         txt_detail_title.text = book.title
         txt_detail_author.text = book.author
 
-        btn_detail_published.text = if (!book.publishedDate.isEmpty()) book.publishedDate else "---"
+        btn_detail_published.text = if (book.publishedDate.isNotEmpty()) book.publishedDate else "---"
         btn_detail_rate.text = if (book.rating in 1..5) {
             resources.getQuantityString(R.plurals.book_rating, book.rating, book.rating)
         } else getString(R.string.rate_book)

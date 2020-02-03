@@ -42,6 +42,9 @@ class BookDetailViewModel @Inject constructor(
     private val showRatingDialogSubject = PublishSubject.create<RatingInfo>()
     val showRatingDialogEvent: Observable<RatingInfo> = showRatingDialogSubject
 
+    private val requestBookEditSubject = PublishSubject.create<BookEntity>()
+    val onBookEditRequest: Observable<BookEntity> = requestBookEditSubject
+
     fun initializeWithBookId(id: Long) {
         fetchBook(id)
     }
@@ -175,6 +178,11 @@ class BookDetailViewModel @Inject constructor(
     private fun updateDaoAndObserver(b: BookEntity) {
         bookDao.update(b)
         viewState.postValue(craftViewSate(b))
+    }
+
+    fun requestEditBook() {
+        val bookEntity = viewState.value?.book ?: return
+        requestBookEditSubject.onNext(bookEntity)
     }
 
     data class PageInfo(

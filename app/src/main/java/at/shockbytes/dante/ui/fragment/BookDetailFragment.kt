@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.ColorStateList
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -127,7 +126,7 @@ class BookDetailFragment : BaseFragment(),
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         return inflater.inflate(R.menu.menu_book_detail, menu).also {
-            menuItemEdit = menu.getItem(0)
+            menuItemEdit = menu.findItem(R.id.menu_book_detail_edit)
         }
     }
 
@@ -222,6 +221,16 @@ class BookDetailFragment : BaseFragment(),
                 DanteUtils.addFragmentToActivity(parentFragmentManager, fragment, android.R.id.content, true)
             }
             .addTo(compositeDisposable)
+
+        viewModel.onBookEditRequest
+            .observeOn(AndroidSchedulers.mainThread())
+            .map(Destination::ManualAdd)
+            .subscribe({ destination ->
+                ActivityNavigator.navigateTo(context, destination)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun createBookFinishedFragment(title: String): SimpleRequestDialogFragment {
@@ -310,9 +319,8 @@ class BookDetailFragment : BaseFragment(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         if (item.itemId == R.id.menu_book_detail_edit) {
-
+            viewModel.requestEditBook()
         }
-
         return super.onOptionsItemSelected(item)
     }
 

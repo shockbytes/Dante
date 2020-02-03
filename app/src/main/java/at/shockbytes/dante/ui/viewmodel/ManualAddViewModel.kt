@@ -7,6 +7,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.image.ImagePicker
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -22,26 +23,48 @@ class ManualAddViewModel @Inject constructor(
     private val imagePicker: ImagePicker
 ) : BaseViewModel() {
 
+    sealed class AddEvent {
+        object Success : AddEvent()
+        object Error : AddEvent()
+    }
+
+    sealed class ViewState {
+        object ManualAdd : ViewState()
+        data class UpdateBook(val bookEntity: BookEntity): ViewState()
+    }
+
     private val thumbnailUrl = MutableLiveData<Uri>()
     fun getThumbnailUrl(): LiveData<Uri> = thumbnailUrl
 
     private val addEvent = PublishSubject.create<AddEvent>()
     val onAddEvent: Observable<AddEvent> = addEvent
 
+    private val viewState = MutableLiveData<ViewState>()
+    fun getViewState(): LiveData<ViewState> = viewState
+
     /**
      * Call reset at #onCreate() in order to avoid a already set thumbnailAddress from the previous
      * ViewModel usage
      */
-    fun reset() {
+    private fun reset() {
         thumbnailUrl.value = null
     }
 
+    fun initialize(bookEntity: BookEntity?) {
+        if (bookEntity != null) {
+            viewState.postValue(ViewState.UpdateBook(bookEntity))
+            thumbnailUrl.postValue(Uri.parse(bookEntity.normalizedThumbnailUrl))
+        } else {
+            viewState.postValue(ViewState.ManualAdd)
+            reset()
+        }
+    }
+
     fun pickImage(activity: androidx.fragment.app.FragmentActivity) {
-        imagePicker.openGallery(activity).subscribe({ uri ->
-            thumbnailUrl.postValue(uri)
-        }, { throwable ->
-            Timber.e(throwable)
-        }).addTo(compositeDisposable)
+        imagePicker
+            .openGallery(activity)
+            .subscribe(thumbnailUrl::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     fun storeBook(
@@ -60,10 +83,24 @@ class ManualAddViewModel @Inject constructor(
 
         if (entity != null) {
             bookDao.create(entity)
-            addEvent.onNext(AddEvent.SuccessEvent)
+            addEvent.onNext(AddEvent.Success)
         } else {
-            addEvent.onNext(AddEvent.ErrorEvent)
+            addEvent.onNext(AddEvent.Error)
         }
+    }
+
+    fun updateBook(
+        title: String?,
+        author: String?,
+        pageCount: Int?,
+        state: BookState,
+        subTitle: String?,
+        publishedDate: String?,
+        isbn: String?,
+        language: String?,
+        summary: String?
+    ) {
+        TODO()
     }
 
     private fun createEntity(
@@ -104,16 +141,5 @@ class ManualAddViewModel @Inject constructor(
             }
             entity
         }
-    }
-
-    fun withBook(bookEntity: BookEntity) {
-        // TODO
-        Timber.d("With book entity $bookEntity")
-    }
-
-    sealed class AddEvent {
-
-        object SuccessEvent : AddEvent()
-        object ErrorEvent : AddEvent()
     }
 }

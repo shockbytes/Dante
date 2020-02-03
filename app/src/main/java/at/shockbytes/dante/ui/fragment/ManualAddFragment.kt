@@ -18,6 +18,7 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_manual_add.*
@@ -44,11 +45,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         super.onCreate(savedInstanceState)
         viewModel = viewModelOf(vmFactory)
 
-        val bookEntity = arguments?.getParcelable<BookEntity>(ARG_BOOK_ENTITY_UPDATE)
-        if (bookEntity != null) {
-            viewModel.withBook(bookEntity)
-        } else {
-            viewModel.reset()
+        arguments?.getParcelable<BookEntity>(ARG_BOOK_ENTITY_UPDATE).let { bookEntity ->
+            viewModel.initialize(bookEntity)
         }
     }
 
@@ -124,15 +122,30 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     private fun setupObserver() {
 
         viewModel.getThumbnailUrl().observe(this, Observer { thumbnailUrl ->
-            imageLoader.loadImageUri(
-                requireContext(),
-                thumbnailUrl,
-                imgViewManualAdd,
-                R.drawable.ic_placeholder,
-                circular = false,
-                callback = this,
-                callbackHandleValues = Pair(first = false, second = true)
-            )
+            thumbnailUrl?.let {
+                imageLoader.loadImageUri(
+                    requireContext(),
+                    thumbnailUrl,
+                    imgViewManualAdd,
+                    R.drawable.ic_placeholder,
+                    circular = false,
+                    callback = this,
+                    callbackHandleValues = Pair(first = false, second = true)
+                )
+            }
+        })
+
+        viewModel.getViewState().observe(this, Observer { viewState ->
+
+            when (viewState) {
+                ManualAddViewModel.ViewState.ManualAdd -> {
+                    container_manual_add_buttons.setVisible(true)
+                }
+                is ManualAddViewModel.ViewState.UpdateBook -> {
+                    container_manual_add_buttons.setVisible(false)
+                    // TODO Populate Views
+                }
+            }
         })
 
         viewModel.onAddEvent
@@ -140,12 +153,12 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             .subscribe { event ->
 
                 when (event) {
-                    is ManualAddViewModel.AddEvent.SuccessEvent -> {
+                    is ManualAddViewModel.AddEvent.Success -> {
                         activity?.onBackPressed()
                     }
-                    is ManualAddViewModel.AddEvent.ErrorEvent -> {
+                    is ManualAddViewModel.AddEvent.Error -> {
                         showSnackbar(getString(R.string.manual_add_error),
-                                getString(android.R.string.ok), true) { this.dismiss() }
+                            getString(android.R.string.ok), true) { this.dismiss() }
                     }
                 }
             }

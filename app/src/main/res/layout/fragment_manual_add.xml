@@ -307,6 +307,7 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/container_manual_add_buttons"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="4dp"

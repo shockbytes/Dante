@@ -18,6 +18,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
@@ -226,7 +227,11 @@ class BookDetailFragment : BaseFragment(),
             .observeOn(AndroidSchedulers.mainThread())
             .map(Destination::ManualAdd)
             .subscribe({ destination ->
-                ActivityNavigator.navigateTo(context, destination)
+
+                val sceneTransition = activity?.let {
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(it)
+                }?.toBundle()
+                ActivityNavigator.navigateTo(context, destination, sceneTransition)
             }, { throwable ->
                 Timber.e(throwable)
             })
@@ -492,7 +497,7 @@ class BookDetailFragment : BaseFragment(),
             setupPageProgress(currentPage, pageCount)
 
             btn_detail_pages.text = if (state == BookState.READING)
-                // Initially set currentPage to 0 for progress animation
+            // Initially set currentPage to 0 for progress animation
                 getString(R.string.detail_pages, currentPage, pageCount)
             else
                 pageCount.toString()

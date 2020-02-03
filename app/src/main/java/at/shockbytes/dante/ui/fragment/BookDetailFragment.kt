@@ -7,15 +7,20 @@ import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.ColorStateList
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.core.app.SharedElementCallback
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
@@ -64,6 +69,8 @@ class BookDetailFragment : BaseFragment(),
     lateinit var imageLoader: ImageLoader
 
     private lateinit var viewModel: BookDetailViewModel
+
+    private var menuItemEdit: MenuItem? = null
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
@@ -116,6 +123,12 @@ class BookDetailFragment : BaseFragment(),
 
         registerLocalBroadcastReceiver()
         fixSharedElementTransitionBug()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        return inflater.inflate(R.menu.menu_book_detail, menu).also {
+            menuItemEdit = menu.getItem(0)
+        }
     }
 
     private fun registerLocalBroadcastReceiver() {
@@ -272,6 +285,14 @@ class BookDetailFragment : BaseFragment(),
 
     override fun onGenerated(palette: Palette?) {
 
+        palette?.lightMutedSwatch?.titleTextColor?.let { textColor ->
+            menuItemEdit?.icon?.let { icon ->
+                val drawable = DrawableCompat.wrap(icon)
+                DrawableCompat.setTint(drawable, textColor)
+                menuItemEdit?.setIcon(drawable)
+            }
+        }
+
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette?.darkMutedSwatch?.rgb
@@ -284,6 +305,15 @@ class BookDetailFragment : BaseFragment(),
 
     override fun onEndScrolling(endValue: Int) {
         viewModel.updateCurrentPage(endValue)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == R.id.menu_book_detail_edit) {
+
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     // --------------------------------------------------------------------

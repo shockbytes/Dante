@@ -204,5 +204,6 @@
     <string name="dante_install">Installation von Dante</string>
     <string name="timeline_explanation">Die Timeline ordnet deine gelesenen Bücher chronologisch an. Jedes Buch wird dem Monat zugeordnet, in welchem du es begonnen hast.</string>
     <string name="label_my_notes">Meine Notizen</string>
+    <string name="edit">Editieren</string>
 
 </resources>

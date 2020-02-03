@@ -36,7 +36,7 @@ object ActivityNavigator {
                 }
                 is Destination.Search -> SearchActivity.newIntent(context)
                 is Destination.Main -> MainActivity.newIntent(context, destination.bookDetailInfo, destination.openCameraAfterLaunch)
-                is Destination.ManualAdd -> ManualAddActivity.newIntent(context)
+                is Destination.ManualAdd -> ManualAddActivity.newIntent(context, destination.updatedBookEntity)
                 is Destination.Statistics -> StatisticsActivity.newIntent(context)
                 is Destination.Timeline -> TimeLineActivity.newIntent(context)
                 is Destination.Backup -> BackupActivity.newIntent(context)

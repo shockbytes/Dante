@@ -2,11 +2,13 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.image.ImagePicker
 import at.shockbytes.dante.util.addTo
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,9 +22,11 @@ class ManualAddViewModel @Inject constructor(
     private val imagePicker: ImagePicker
 ) : BaseViewModel() {
 
-    val thumbnailUrl = MutableLiveData<Uri>()
+    private val thumbnailUrl = MutableLiveData<Uri>()
+    fun getThumbnailUrl(): LiveData<Uri> = thumbnailUrl
 
-    val addEvent = PublishSubject.create<AddEvent>()
+    private val addEvent = PublishSubject.create<AddEvent>()
+    val onAddEvent: Observable<AddEvent> = addEvent
 
     /**
      * Call reset at #onCreate() in order to avoid a already set thumbnailAddress from the previous
@@ -100,6 +104,11 @@ class ManualAddViewModel @Inject constructor(
             }
             entity
         }
+    }
+
+    fun withBook(bookEntity: BookEntity) {
+        // TODO
+        Timber.d("With book entity $bookEntity")
     }
 
     sealed class AddEvent {

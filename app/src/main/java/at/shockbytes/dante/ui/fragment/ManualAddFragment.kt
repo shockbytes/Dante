@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.fragment
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
@@ -18,6 +18,8 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.viewModelOf
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_manual_add.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -40,8 +42,14 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[ManualAddViewModel::class.java]
-        viewModel.reset()
+        viewModel = viewModelOf(vmFactory)
+
+        val bookEntity = arguments?.getParcelable<BookEntity>(ARG_BOOK_ENTITY_UPDATE)
+        if (bookEntity != null) {
+            viewModel.withBook(bookEntity)
+        } else {
+            viewModel.reset()
+        }
     }
 
     override fun setupViews() {
@@ -115,34 +123,33 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     private fun setupObserver() {
 
-        viewModel.thumbnailUrl.observe(this, Observer {
-            context?.let { ctx ->
-                it?.let { uri ->
-                    imageLoader.loadImageUri(
-                        ctx,
-                        uri,
-                        imgViewManualAdd,
-                        R.drawable.ic_placeholder,
-                        false,
-                        this,
-                        Pair(first = false, second = true)
-                    )
-                }
-            }
+        viewModel.getThumbnailUrl().observe(this, Observer { thumbnailUrl ->
+            imageLoader.loadImageUri(
+                requireContext(),
+                thumbnailUrl,
+                imgViewManualAdd,
+                R.drawable.ic_placeholder,
+                circular = false,
+                callback = this,
+                callbackHandleValues = Pair(first = false, second = true)
+            )
         })
 
-        viewModel.addEvent.subscribe { event ->
+        viewModel.onAddEvent
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { event ->
 
-            when (event) {
-                is ManualAddViewModel.AddEvent.SuccessEvent -> {
-                    activity?.onBackPressed()
-                }
-                is ManualAddViewModel.AddEvent.ErrorEvent -> {
-                    showSnackbar(getString(R.string.manual_add_error),
-                            getString(android.R.string.ok), true) { this.dismiss() }
+                when (event) {
+                    is ManualAddViewModel.AddEvent.SuccessEvent -> {
+                        activity?.onBackPressed()
+                    }
+                    is ManualAddViewModel.AddEvent.ErrorEvent -> {
+                        showSnackbar(getString(R.string.manual_add_error),
+                                getString(android.R.string.ok), true) { this.dismiss() }
+                    }
                 }
             }
-        }.addTo(compositeDisposable)
+            .addTo(compositeDisposable)
     }
 
     private fun setupLanguageSpinner() {
@@ -209,8 +216,14 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     companion object {
 
-        fun newInstance(): ManualAddFragment {
-            return ManualAddFragment()
+        private const val ARG_BOOK_ENTITY_UPDATE = "arg_book_entity_update"
+
+        fun newInstance(updatedBookEntity: BookEntity?): ManualAddFragment {
+            return ManualAddFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_BOOK_ENTITY_UPDATE, updatedBookEntity)
+                }
+            }
         }
     }
 }

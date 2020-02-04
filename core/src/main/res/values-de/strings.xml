@@ -205,5 +205,8 @@
     <string name="timeline_explanation">Die Timeline ordnet deine gelesenen Bücher chronologisch an. Jedes Buch wird dem Monat zugeordnet, in welchem du es begonnen hast.</string>
     <string name="label_my_notes">Meine Notizen</string>
     <string name="edit">Editieren</string>
+    <string name="discard">Verwerfen</string>
+    <string name="update_book_discard_title">Änderungen verwerfen?</string>
+    <string name="update_book_discard_message">Willst du die Änderungen verwerfen und zur Bücherübersicht zurückkehren?</string>
 
 </resources>

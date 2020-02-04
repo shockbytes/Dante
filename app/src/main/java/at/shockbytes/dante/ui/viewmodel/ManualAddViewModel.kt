@@ -11,7 +11,6 @@ import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -30,7 +29,7 @@ class ManualAddViewModel @Inject constructor(
 
     sealed class ViewState {
         object ManualAdd : ViewState()
-        data class UpdateBook(val bookEntity: BookEntity): ViewState()
+        data class UpdateBook(val bookEntity: BookEntity) : ViewState()
     }
 
     private val thumbnailUrl = MutableLiveData<Uri>()

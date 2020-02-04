@@ -79,14 +79,14 @@ class SimpleRequestDialogFragment : DialogFragment() {
             icon: Int,
             positiveText: Int = android.R.string.yes
         ): SimpleRequestDialogFragment {
-            val fragment = SimpleRequestDialogFragment()
-            val args = Bundle(4)
-            args.putString(argTitle, title)
-            args.putString(argMessage, message)
-            args.putInt(argIcon, icon)
-            args.putInt(argPositiveText, positiveText)
-            fragment.arguments = args
-            return fragment
+            return SimpleRequestDialogFragment().apply {
+                arguments = Bundle(4).apply {
+                    putString(argTitle, title)
+                    putString(argMessage, message)
+                    putInt(argIcon, icon)
+                    putInt(argPositiveText, positiveText)
+                }
+            }
         }
     }
 }

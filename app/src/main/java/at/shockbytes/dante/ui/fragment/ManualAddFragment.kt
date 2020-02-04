@@ -88,8 +88,17 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
         btn_update_book_discard.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            // TODO Ask confirmation dialog
-            activity?.onBackPressed()
+            SimpleRequestDialogFragment
+                .newInstance(
+                    title = getString(R.string.update_book_discard_title),
+                    message = getString(R.string.update_book_discard_message),
+                    icon = R.drawable.ic_delete,
+                    positiveText = R.string.discard
+                )
+                .setOnAcceptListener {
+                    activity?.onBackPressed()
+                }
+                .show(childFragmentManager, "tag-discard-book-update-confirmation")
         }
 
         btn_update_book_save.setOnClickListener { v ->

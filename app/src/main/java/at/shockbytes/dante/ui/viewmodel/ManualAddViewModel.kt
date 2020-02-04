@@ -31,7 +31,10 @@ class ManualAddViewModel @Inject constructor(
         val isbn: String?,
         val language: String?,
         val summary: String?
-    )
+    ) {
+        val isValid: Boolean
+            get() = title != null && author != null && pageCount != null
+    }
 
     sealed class AddEvent {
         object Success : AddEvent()
@@ -104,8 +107,33 @@ class ManualAddViewModel @Inject constructor(
 
     fun updateBook(bookUpdateData: BookUpdateData) {
 
-        // TODO Update book entity
-        addEvent.onNext(AddEvent.Success)
+        if (bookUpdateData.isValid) {
+
+            viewState.value?.let { v ->
+                if (v is ViewState.UpdateBook) {
+                    val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
+                    bookDao.update(updatedEntity)
+                    addEvent.onNext(AddEvent.Success)
+                } else {
+                    addEvent.onNext(AddEvent.Error)
+                }
+            } ?: addEvent.onNext(AddEvent.Error)
+        } else {
+            addEvent.onNext(AddEvent.Error)
+        }
+    }
+
+    private fun BookEntity.updateFromBookUpdateData(bookUpdateData: BookUpdateData): BookEntity {
+        return this.copy(
+            title = bookUpdateData.title ?: title,
+            author = bookUpdateData.author ?: author,
+            pageCount = bookUpdateData.pageCount ?: pageCount,
+            subTitle = bookUpdateData.subTitle ?: subTitle,
+            publishedDate = bookUpdateData.publishedDate ?: publishedDate,
+            isbn = bookUpdateData.isbn ?: isbn,
+            language = bookUpdateData.language ?: language,
+            summary = bookUpdateData.summary ?: summary
+        )
     }
 
     private fun createEntity(

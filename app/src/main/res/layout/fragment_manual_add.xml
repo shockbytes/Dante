@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/mainBackground"
     android:focusable="true"
     android:focusableInTouchMode="true">
@@ -307,13 +308,12 @@
     </ScrollView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/container_manual_add_buttons"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="4dp"
-        app:cardCornerRadius="12dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        app:cardCornerRadius="6dp"
         app:cardElevation="12dp"
         app:cardBackgroundColor="@color/mainBackground"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -322,45 +322,92 @@
         app:layout_constraintTop_toBottomOf="@+id/scrollViewManualAdd"
         app:layout_constraintWidth_max="@dimen/max_width">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:layout_height="match_parent">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnManualAddUpcoming"
-                style="?android:attr/borderlessButtonStyle"
+            <LinearLayout
+                android:id="@+id/container_update_book_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_update_book_discard"
+                    style="@style/AppTheme.BorderlessButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:textSize="18sp"
+                    android:text="@string/discard"
+                    app:icon="@drawable/ic_close"
+                    app:iconTint="@color/color_error"
+                    app:iconGravity="textStart"
+                    android:textColor="@color/color_error" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_update_book_save"
+                style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawablePadding="8dp"
                 android:maxLines="1"
-                android:text="@string/tab_upcoming"
-                android:textColor="@color/tabcolor_upcoming" />
+                android:textSize="18sp"
+                app:icon="@drawable/ic_tab_done"
+                app:iconTint="@color/danteAccent"
+                app:iconGravity="textStart"
+                android:text="@string/save"
+                android:textColor="@color/danteAccent" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnManualAddCurrent"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawablePadding="8dp"
-                android:maxLines="1"
-                android:text="@string/tab_current"
-                android:textColor="@color/tabcolor_current" />
+            </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnManualAddDone"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/container_manual_add_buttons"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawablePadding="8dp"
-                android:maxLines="1"
-                android:text="@string/tab_done"
-                android:textColor="@color/tabcolor_done" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                tools:visibility="gone"
+                android:weightSum="3">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnManualAddUpcoming"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:maxLines="1"
+                    android:text="@string/tab_upcoming"
+                    android:textColor="@color/tabcolor_upcoming" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnManualAddCurrent"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:maxLines="1"
+                    android:text="@string/tab_current"
+                    android:textColor="@color/tabcolor_current" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnManualAddDone"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:maxLines="1"
+                    android:text="@string/tab_done"
+                    android:textColor="@color/tabcolor_done" />
+            </LinearLayout>
+
+
+        </FrameLayout>
+
 
     </androidx.cardview.widget.CardView>
 

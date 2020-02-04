@@ -100,6 +100,7 @@
     <string name="dialogfragment_paging_error">Invalid input!Pages cannot be less than current page, or invalid numbers!</string>
     <string name="dialogfragment_notes_header">Write down your thoughts, feelings or some general remarks about %s.</string>
     <string name="save">Save</string>
+    <string name="discard">Discard</string>
     <string name="dialogfragment_notes_hint">Your thoughts belong in here&#8230;</string>
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>

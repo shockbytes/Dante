@@ -78,8 +78,18 @@ class ManualAddViewModel @Inject constructor(
         language: String?,
         summary: String?
     ) {
-        val entity = createEntity(title, author, pageCount, state, subTitle,
-                publishedDate, isbn, thumbnailUrl.value?.toString(), language, summary)
+        val entity = createEntity(
+            title,
+            author,
+            pageCount,
+            state,
+            subTitle,
+            publishedDate,
+            isbn,
+            thumbnailUrl.value?.toString(),
+            language,
+            summary
+        )
 
         if (entity != null) {
             bookDao.create(entity)

@@ -16,6 +16,7 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
+import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
@@ -52,8 +53,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     override fun setupViews() {
 
-        imgViewManualAdd.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        imgViewManualAdd.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             activity?.let { a ->
                 viewModel.pickImage(a)
             }
@@ -70,19 +71,30 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             }
         })
 
-        btnManualAddUpcoming.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        btnManualAddUpcoming.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ_LATER)
         }
 
-        btnManualAddCurrent.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        btnManualAddCurrent.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READING)
         }
 
-        btnManualAddDone.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        btnManualAddDone.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ)
+        }
+
+        btn_update_book_discard.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            // TODO Ask confirmation dialog
+            activity?.onBackPressed()
+        }
+
+        btn_update_book_save.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            updateBook()
         }
 
         setupLanguageSpinner()
@@ -140,10 +152,12 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             when (viewState) {
                 ManualAddViewModel.ViewState.ManualAdd -> {
                     container_manual_add_buttons.setVisible(true)
+                    container_update_book_buttons.setVisible(false)
                 }
                 is ManualAddViewModel.ViewState.UpdateBook -> {
                     container_manual_add_buttons.setVisible(false)
-                    // TODO Populate Views
+                    container_update_book_buttons.setVisible(true)
+                    populateBookDataViews(viewState.bookEntity)
                 }
             }
         })
@@ -165,11 +179,29 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             .addTo(compositeDisposable)
     }
 
-    private fun setupLanguageSpinner() {
-        context?.let { ctx ->
-            val data = buildLanguageData()
-            spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(ctx, data, imageLoader)
+    private fun populateBookDataViews(bookEntity: BookEntity) {
+        with(bookEntity) {
+
+            editTextManualAddTitle.setText(title)
+            editTextManualAddSubtitle.setText(subTitle)
+            editTextManualAddAuthors.setText(author)
+            editTextManualAddPages.setText(pageCount.toString())
+            editTextManualAddPublishedDate.setText(publishedDate)
+            editTextManualAddIsbn.setText(isbn)
+            editTextManualAddSummary.setText(summary)
+
+            val languages = resources.getStringArray(R.array.language_codes)
+            val languageIdx = languages.indexOfFirst { it == language }
+
+            if (languageIdx > -1) {
+                spinnerManualAddLanguage.setSelection(languageIdx, true)
+            }
         }
+    }
+
+    private fun setupLanguageSpinner() {
+        val data = buildLanguageData()
+        spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(requireContext(), data, imageLoader)
     }
 
     private fun buildLanguageData(): Array<ManualAddLanguageSpinnerAdapter.LanguageItem> {
@@ -198,6 +230,11 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     private fun buildFlagIconUrl(id: String, size: Int = 64): String {
         return "https://www.countryflags.io/$id/flat/$size.png"
+    }
+
+    private fun updateBook() {
+        // TODO
+        // viewModel.updateBook()
     }
 
     private fun storeBook(state: BookState) {

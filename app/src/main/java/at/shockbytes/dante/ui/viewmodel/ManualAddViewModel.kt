@@ -22,6 +22,17 @@ class ManualAddViewModel @Inject constructor(
     private val imagePicker: ImagePicker
 ) : BaseViewModel() {
 
+    data class BookUpdateData(
+        val title: String?,
+        val author: String?,
+        val pageCount: Int?,
+        val subTitle: String?,
+        val publishedDate: String?,
+        val isbn: String?,
+        val language: String?,
+        val summary: String?
+    )
+
     sealed class AddEvent {
         object Success : AddEvent()
         object Error : AddEvent()
@@ -67,27 +78,20 @@ class ManualAddViewModel @Inject constructor(
     }
 
     fun storeBook(
-        title: String?,
-        author: String?,
-        pageCount: Int?,
-        state: BookState,
-        subTitle: String?,
-        publishedDate: String?,
-        isbn: String?,
-        language: String?,
-        summary: String?
+        bookUpdateData: BookUpdateData,
+        state: BookState
     ) {
         val entity = createEntity(
-            title,
-            author,
-            pageCount,
+            bookUpdateData.title,
+            bookUpdateData.author,
+            bookUpdateData.pageCount,
             state,
-            subTitle,
-            publishedDate,
-            isbn,
+            bookUpdateData.subTitle,
+            bookUpdateData.publishedDate,
+            bookUpdateData.isbn,
             thumbnailUrl.value?.toString(),
-            language,
-            summary
+            bookUpdateData.language,
+            bookUpdateData.summary
         )
 
         if (entity != null) {
@@ -98,18 +102,10 @@ class ManualAddViewModel @Inject constructor(
         }
     }
 
-    fun updateBook(
-        title: String?,
-        author: String?,
-        pageCount: Int?,
-        state: BookState,
-        subTitle: String?,
-        publishedDate: String?,
-        isbn: String?,
-        language: String?,
-        summary: String?
-    ) {
-        TODO()
+    fun updateBook(bookUpdateData: BookUpdateData) {
+
+        // TODO Update book entity
+        addEvent.onNext(AddEvent.Success)
     }
 
     private fun createEntity(

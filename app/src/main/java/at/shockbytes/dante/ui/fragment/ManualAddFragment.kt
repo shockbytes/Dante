@@ -135,7 +135,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                 val statusBarColor = palette?.darkMutedSwatch?.rgb
 
                 (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
-                        actionBarTextColor, statusBarColor)
+                    actionBarTextColor, statusBarColor)
             }
         }
     }
@@ -220,21 +220,21 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val langEnglish = resources.getString(R.string.language_english)
 
         return resources.getStringArray(R.array.language_names)
-                .mapIndexedNotNull { index, s ->
-                    s?.let { language ->
-                        val shortName = languageIds[index]
+            .mapIndexedNotNull { index, s ->
+                s?.let { language ->
+                    val shortName = languageIds[index]
 
-                        val url = if (shortName == langEnglish) {
-                            buildFlagIconUrl("gb")
-                        } else {
-                            buildFlagIconUrl(shortName)
-                        }
-                        val showFlag = shortName != langNotAvailable
-
-                        ManualAddLanguageSpinnerAdapter.LanguageItem(language, shortName, url, showFlag)
+                    val url = if (shortName == langEnglish) {
+                        buildFlagIconUrl("gb")
+                    } else {
+                        buildFlagIconUrl(shortName)
                     }
+                    val showFlag = shortName != langNotAvailable
+
+                    ManualAddLanguageSpinnerAdapter.LanguageItem(language, shortName, url, showFlag)
                 }
-                .toTypedArray()
+            }
+            .toTypedArray()
     }
 
     private fun buildFlagIconUrl(id: String, size: Int = 64): String {
@@ -242,12 +242,17 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     }
 
     private fun updateBook() {
-        // TODO
-        // viewModel.updateBook()
+        viewModel.updateBook(gatherBookUpdateData())
     }
 
     private fun storeBook(state: BookState) {
+        viewModel.storeBook(
+            gatherBookUpdateData(),
+            state
+        )
+    }
 
+    private fun gatherBookUpdateData(): ManualAddViewModel.BookUpdateData {
         val title = editTextManualAddTitle.text?.toString()
         val subTitle: String? = editTextManualAddSubtitle.text?.toString()
         val authors = editTextManualAddAuthors.text?.toString()
@@ -260,16 +265,15 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val lIdx = spinnerManualAddLanguage.selectedItemPosition.coerceIn(0..languages.size)
         val language = languages[lIdx]
 
-        viewModel.storeBook(
-                title,
-                authors,
-                pageCount,
-                state,
-                subTitle,
-                publishedDate,
-                isbn,
-                language,
-                summary
+        return ManualAddViewModel.BookUpdateData(
+            title = title,
+            author = authors,
+            pageCount = pageCount,
+            subTitle = subTitle,
+            publishedDate = publishedDate,
+            isbn = isbn,
+            language = language,
+            summary = summary
         )
     }
 

@@ -8,6 +8,8 @@ interface OnBookActionClickedListener {
 
     fun onShare(book: BookEntity)
 
+    fun onEdit(book: BookEntity)
+
     fun onMoveToUpcoming(book: BookEntity)
 
     fun onMoveToCurrent(book: BookEntity)

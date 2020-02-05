@@ -199,7 +199,17 @@ class MainBookFragment :
         }
     }
 
-    override fun onShare(book: BookEntity) = ActivityNavigator.navigateTo(context, Destination.Share(book))
+    override fun onShare(book: BookEntity) {
+        ActivityNavigator.navigateTo(context, Destination.Share(book))
+    }
+
+    override fun onEdit(book: BookEntity) {
+        ActivityNavigator.navigateTo(
+            context,
+            Destination.ManualAdd(book),
+            ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle()
+        )
+    }
 
     override fun onMoveToUpcoming(book: BookEntity) = viewModel.moveBookToUpcomingList(book)
 

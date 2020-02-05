@@ -247,7 +247,9 @@ class BookAdapter(
                         onActionClickedListener.onMoveToCurrent(book)
                         deleteEntity(book)
                     }
-
+                    R.id.popup_item_edit -> {
+                        onActionClickedListener.onEdit(book)
+                    }
                     R.id.popup_item_move_to_upcoming -> {
                         onActionClickedListener.onMoveToUpcoming(book)
                         deleteEntity(book)

@@ -39,6 +39,7 @@ class BookListViewModel @Inject constructor(
     }
 
     private val books = MutableLiveData<BookLoadingState>()
+    fun getBooks(): LiveData<BookLoadingState> = books
 
     private var sortComparator: Comparator<BookEntity> = SortComparators.of(settings.sortStrategy)
 
@@ -48,31 +49,37 @@ class BookListViewModel @Inject constructor(
 
     private fun loadBooks() {
         bookDao.bookObservable
-                .map { fetchedBooks ->
-                    fetchedBooks
-                            .filter { it.state == state }
-                            .sortedWith(sortComparator)
-                }
-                .subscribe({ displayBooks ->
-                    if (displayBooks.isNotEmpty()) {
-                        books.postValue(BookLoadingState.Success(displayBooks))
-                    } else {
-                        books.postValue(BookLoadingState.Empty)
-                    }
-                }, { throwable ->
-                    Timber.e(throwable, "Cannot fecth books from storage!")
-                    books.postValue(BookLoadingState.Error(throwable))
-                })
-                .addTo(compositeDisposable)
+            .map { fetchedBooks ->
+                fetchedBooks
+                    .filter { it.state == state }
+                    .sortedWith(sortComparator)
+            }
+            .map(::mapBooksToBookLoadingState)
+            .subscribe({ state ->
+                books.postValue(state)
+            }, { throwable ->
+                Timber.e(throwable, "Cannot fetch books from storage!")
+                books.postValue(BookLoadingState.Error(throwable))
+            })
+            .addTo(compositeDisposable)
+    }
+
+    private fun mapBooksToBookLoadingState(books: List<BookEntity>): BookLoadingState {
+        return if (books.isNotEmpty()) {
+            BookLoadingState.Success(books)
+        } else {
+            BookLoadingState.Empty
+        }
     }
 
     private fun listenToSettings() {
         settings.observeSortStrategy()
-                .observeOn(schedulers.ui)
-                .subscribe { strategy ->
-                    sortComparator = SortComparators.of(strategy)
-                    updateIfBooksLoaded()
-                }.addTo(compositeDisposable)
+            .observeOn(schedulers.ui)
+            .subscribe { strategy ->
+                sortComparator = SortComparators.of(strategy)
+                updateIfBooksLoaded()
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun updateIfBooksLoaded() {
@@ -81,8 +88,6 @@ class BookListViewModel @Inject constructor(
             books.postValue(state.copy(books = state.books.sortedWith(sortComparator)))
         }
     }
-
-    fun getBooks(): LiveData<BookLoadingState> = books
 
     fun deleteBook(book: BookEntity) {
         bookDao.delete(book.id)
@@ -111,5 +116,11 @@ class BookListViewModel @Inject constructor(
     fun moveBookToDoneList(book: BookEntity) {
         book.updateState(BookState.READ)
         bookDao.update(book)
+    }
+
+    fun onBookUpdatedEvent(updatedBookState: BookState) {
+        if (updatedBookState == state) {
+            loadBooks()
+        }
     }
 }

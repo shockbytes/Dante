@@ -187,7 +187,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                             getString(android.R.string.ok), true) { this.dismiss() }
                     }
                     is ManualAddViewModel.AddEvent.Updated -> {
-                        sendBookUpdatedBroadcast()
+                        sendBookUpdatedBroadcast(event.updateBookState)
                         activity?.onBackPressed()
                     }
                 }
@@ -195,9 +195,12 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             .addTo(compositeDisposable)
     }
 
-    private fun sendBookUpdatedBroadcast() {
+    private fun sendBookUpdatedBroadcast(bookState: BookState) {
         LocalBroadcastManager.getInstance(requireContext())
-            .sendBroadcast(Intent(ManualAddActivity.ACTION_BOOK_UPDATED))
+            .sendBroadcast(
+                Intent(ManualAddActivity.ACTION_BOOK_UPDATED)
+                    .putExtra(ManualAddActivity.EXTRA_UPDATED_BOOK_STATE, bookState)
+            )
     }
 
     private fun populateBookDataViews(bookEntity: BookEntity) {

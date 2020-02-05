@@ -1,8 +1,11 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
@@ -12,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
@@ -22,8 +26,11 @@ import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.flagging.FeatureFlagging
+import at.shockbytes.dante.ui.activity.ManualAddActivity
+import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
+import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
@@ -52,6 +59,15 @@ class MainBookFragment :
     private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
 
+    private val bookUpdatedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, data: Intent?) {
+
+            (data?.getSerializableExtra(EXTRA_UPDATED_BOOK_STATE) as? BookState)?.let { updatedBookState ->
+                viewModel.onBookUpdatedEvent(updatedBookState)
+            }
+        }
+    }
+
     private val rvLayoutManager: RecyclerView.LayoutManager
         get() = if (resources.getBoolean(R.bool.isTablet)) {
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
@@ -67,10 +83,17 @@ class MainBookFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BookListViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
 
         bookState = arguments?.getSerializable(ARG_STATE) as BookState
         viewModel.state = bookState
+
+        registerBookUpdatedBroadcastReceiver()
+    }
+
+    private fun registerBookUpdatedBroadcastReceiver() {
+        LocalBroadcastManager.getInstance(requireContext()).
+            registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -79,12 +102,17 @@ class MainBookFragment :
 
     override fun onResume() {
         super.onResume()
-        fragment_book_main_rv.isLayoutFrozen = false
+        fragment_book_main_rv.suppressLayout(false)
     }
 
     override fun onPause() {
         super.onPause()
-        fragment_book_main_rv.isLayoutFrozen = true
+        fragment_book_main_rv.suppressLayout(true)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(bookUpdatedReceiver)
     }
 
     override fun bindViewModel() {

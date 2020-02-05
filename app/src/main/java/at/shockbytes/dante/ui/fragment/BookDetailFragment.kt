@@ -112,8 +112,8 @@ class BookDetailFragment : BaseFragment(),
             setupNotes(updatedNotes.isEmpty())
         }
     }
-    private val bookUpdatedReceiver = object : BroadcastReceiver() {
 
+    private val bookUpdatedReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, data: Intent?) {
             viewModel.reload()
         }

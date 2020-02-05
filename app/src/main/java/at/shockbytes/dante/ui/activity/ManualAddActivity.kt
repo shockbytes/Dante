@@ -32,6 +32,7 @@ class ManualAddActivity : ContainerTintableBackNavigableActivity() {
     companion object {
 
         const val ACTION_BOOK_UPDATED = "action_book_updated"
+        const val EXTRA_UPDATED_BOOK_STATE = "extra_updated_book_state"
 
         private const val ARG_BOOK_ENTITY_UPDATE = "arg_book_entity_update"
 

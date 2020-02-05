@@ -362,7 +362,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun navigateToCamera() {
         ActivityNavigator.navigateTo(
             this,
-            Destination.BarcodeScanner
+            Destination.BarcodeScanner,
+            ActivityOptionsCompat
+                .makeClipRevealAnimation(
+                    mainFabMenu,
+                    mainFabMenu.x.toInt(),
+                    mainFabMenu.y.toInt(),
+                    mainFabMenu.width,
+                    mainFabMenu.height
+                )
+                .toBundle()
         )
     }
 

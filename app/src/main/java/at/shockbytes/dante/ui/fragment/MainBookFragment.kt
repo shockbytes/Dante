@@ -220,20 +220,18 @@ class MainBookFragment :
     // --------------------------------------------------------------
 
     private fun getTransitionBundle(v: View): Bundle? {
-        return activity?.let { act ->
-            ActivityOptionsCompat
-                .makeSceneTransitionAnimation(act,
-                    Pair(
-                        v.findViewById(R.id.item_book_card),
-                        getString(R.string.transition_name_card)
-                    ),
-                    Pair(v.findViewById(
-                        R.id.item_book_img_thumb),
-                        getString(R.string.transition_name_thumb)
-                    )
+        return ActivityOptionsCompat
+            .makeSceneTransitionAnimation(requireActivity(),
+                Pair(
+                    v.findViewById(R.id.item_book_card),
+                    getString(R.string.transition_name_card)
+                ),
+                Pair(
+                    v.findViewById(R.id.item_book_img_thumb),
+                    getString(R.string.transition_name_thumb)
                 )
-                .toBundle()
-        }
+            )
+            .toBundle()
     }
 
     private fun updateEmptyView(hide: Boolean, animate: Boolean) {

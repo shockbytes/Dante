@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.graphics.drawable.BitmapDrawable
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
@@ -16,6 +18,7 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
+import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.util.addTo
@@ -183,9 +186,18 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                         showSnackbar(getString(R.string.manual_add_error),
                             getString(android.R.string.ok), true) { this.dismiss() }
                     }
+                    is ManualAddViewModel.AddEvent.Updated -> {
+                        sendBookUpdatedBroadcast()
+                        activity?.onBackPressed()
+                    }
                 }
             }
             .addTo(compositeDisposable)
+    }
+
+    private fun sendBookUpdatedBroadcast() {
+        LocalBroadcastManager.getInstance(requireContext())
+            .sendBroadcast(Intent(ManualAddActivity.ACTION_BOOK_UPDATED))
     }
 
     private fun populateBookDataViews(bookEntity: BookEntity) {

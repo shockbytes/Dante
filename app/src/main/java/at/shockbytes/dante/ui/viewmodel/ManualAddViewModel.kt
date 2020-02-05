@@ -38,6 +38,7 @@ class ManualAddViewModel @Inject constructor(
 
     sealed class AddEvent {
         object Success : AddEvent()
+        object Updated : AddEvent()
         object Error : AddEvent()
     }
 
@@ -113,7 +114,7 @@ class ManualAddViewModel @Inject constructor(
                 if (v is ViewState.UpdateBook) {
                     val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
                     bookDao.update(updatedEntity)
-                    addEvent.onNext(AddEvent.Success)
+                    addEvent.onNext(AddEvent.Updated)
                 } else {
                     addEvent.onNext(AddEvent.Error)
                 }

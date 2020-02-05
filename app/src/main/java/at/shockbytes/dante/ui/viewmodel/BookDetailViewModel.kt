@@ -45,8 +45,11 @@ class BookDetailViewModel @Inject constructor(
     private val requestBookEditSubject = PublishSubject.create<BookEntity>()
     val onBookEditRequest: Observable<BookEntity> = requestBookEditSubject
 
+    private var bookId: Long = -1L
+
     fun initializeWithBookId(id: Long) {
-        fetchBook(id)
+        this.bookId = id
+        fetchBook(bookId)
     }
 
     private fun fetchBook(bookId: Long) {
@@ -57,8 +60,14 @@ class BookDetailViewModel @Inject constructor(
 
     fun requestNotesDialog() {
         val instance = getBookFromLiveData() ?: return
-        showNotesDialogSubject.onNext(NotesBundle(instance.title, instance.thumbnailAddress, instance.notes
-            ?: ""))
+
+        val notesBundle = NotesBundle(
+            instance.title,
+            instance.thumbnailAddress,
+            instance.notes ?: ""
+        )
+
+        showNotesDialogSubject.onNext(notesBundle)
     }
 
     fun requestRatingDialog() {
@@ -149,7 +158,7 @@ class BookDetailViewModel @Inject constructor(
 
     private fun checkDateBoundaries(wishlist: Long, start: Long, end: Long): Boolean {
 
-        // Wishlist specific cases
+        // Wish list specific cases
         if ((wishlist <= start || start == 0L) && (wishlist <= end || end == 0L)) {
             return true
         }
@@ -183,6 +192,10 @@ class BookDetailViewModel @Inject constructor(
     fun requestEditBook() {
         val bookEntity = viewState.value?.book ?: return
         requestBookEditSubject.onNext(bookEntity)
+    }
+
+    fun reload() {
+        fetchBook(bookId)
     }
 
     data class PageInfo(

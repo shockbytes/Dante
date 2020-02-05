@@ -31,6 +31,8 @@ class ManualAddActivity : ContainerTintableBackNavigableActivity() {
 
     companion object {
 
+        const val ACTION_BOOK_UPDATED = "action_book_updated"
+
         private const val ARG_BOOK_ENTITY_UPDATE = "arg_book_entity_update"
 
         fun newIntent(context: Context, bookEntity: BookEntity? = null): Intent {

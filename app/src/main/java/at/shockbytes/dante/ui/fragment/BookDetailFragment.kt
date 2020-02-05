@@ -33,6 +33,7 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
@@ -111,6 +112,12 @@ class BookDetailFragment : BaseFragment(),
             setupNotes(updatedNotes.isEmpty())
         }
     }
+    private val bookUpdatedReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(p0: Context?, data: Intent?) {
+            viewModel.reload()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -132,8 +139,10 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun registerLocalBroadcastReceiver() {
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
+        LocalBroadcastManager.getInstance(requireContext()).apply {
+            registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
+            registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
+        }
     }
 
     /**
@@ -272,7 +281,10 @@ class BookDetailFragment : BaseFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(notesReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).apply {
+            unregisterReceiver(notesReceiver)
+            unregisterReceiver(bookUpdatedReceiver)
+        }
     }
 
     override fun onBackwardAnimation() {

@@ -92,8 +92,8 @@ class MainBookFragment :
     }
 
     private fun registerBookUpdatedBroadcastReceiver() {
-        LocalBroadcastManager.getInstance(requireContext()).
-            registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -166,11 +166,11 @@ class MainBookFragment :
 
     override fun onItemClick(content: BookEntity, position: Int, v: View) {
         ActivityNavigator.navigateTo(
-                context,
-                Destination.BookDetail(
-                    Destination.BookDetail.BookDetailInfo(content.id, content.title)
-                ),
-                getTransitionBundle(v)
+            context,
+            Destination.BookDetail(
+                Destination.BookDetail.BookDetailInfo(content.id, content.title)
+            ),
+            getTransitionBundle(v)
         )
     }
 
@@ -213,14 +213,14 @@ class MainBookFragment :
         return activity?.let { act ->
             ActivityOptionsCompat
                 .makeSceneTransitionAnimation(act,
-                        Pair(
-                            v.findViewById(R.id.item_book_card),
-                            getString(R.string.transition_name_card)
-                        ),
-                        Pair(v.findViewById(
-                            R.id.item_book_img_thumb),
-                            getString(R.string.transition_name_thumb)
-                        )
+                    Pair(
+                        v.findViewById(R.id.item_book_card),
+                        getString(R.string.transition_name_card)
+                    ),
+                    Pair(v.findViewById(
+                        R.id.item_book_img_thumb),
+                        getString(R.string.transition_name_thumb)
+                    )
                 )
                 .toBundle()
         }
@@ -231,9 +231,9 @@ class MainBookFragment :
         val alpha = if (hide) 0f else 1f
         if (animate) {
             fragment_book_main_empty_view.animate()
-                    .alpha(alpha)
-                    .setDuration(450)
-                    .start()
+                .alpha(alpha)
+                .setDuration(450)
+                .start()
         } else {
             fragment_book_main_empty_view.alpha = (alpha)
         }

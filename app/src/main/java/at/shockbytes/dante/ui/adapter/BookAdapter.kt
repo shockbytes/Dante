@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.adapter
 
-import android.os.Build
 import android.transition.TransitionManager
 import android.view.HapticFeedbackConstants
 import androidx.recyclerview.widget.DiffUtil
@@ -184,15 +183,26 @@ class BookAdapter(
                     t.currentPage.toDouble(),
                     t.pageCount.toDouble()
                 )
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    item_book_pb.setProgress(progress, true)
-                } else {
-                    item_book_pb.progress = progress
-                }
+                animateBookProgress(progress)
                 item_book_tv_progress.text = context.getString(R.string.percentage_formatter, progress)
             }
 
             item_book_group_progress.setVisible(showProgress)
+        }
+
+        private fun animateBookProgress(progress: Int) {
+            item_book_pb.progress = progress
+
+            /* TODO This does not work when the ViewHolder is recycled
+            val previousProgress = item_book_pb.progress
+            ValueAnimator.ofInt(previousProgress, progress).apply {
+                interpolator = AccelerateDecelerateInterpolator()
+                addUpdateListener { animator ->
+                    val current = animator.animatedValue as Int
+                    item_book_pb.progress = current
+                }
+                start()
+            } */
         }
 
         private fun updateImageThumbnail(address: String?) {

@@ -7,6 +7,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.image.ImagePicker
+import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailUri
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
@@ -47,8 +48,14 @@ class ManualAddViewModel @Inject constructor(
         data class UpdateBook(val bookEntity: BookEntity) : ViewState()
     }
 
-    private val thumbnailUrl = MutableLiveData<Uri>()
-    fun getThumbnailUrl(): LiveData<Uri> = thumbnailUrl
+    sealed class ImageState {
+
+        data class ThumbnailUri(val uri: Uri) : ImageState()
+        object NoImage : ImageState()
+    }
+
+    private val imageState = MutableLiveData<ImageState>()
+    fun getImageState(): LiveData<ImageState> = imageState
 
     private val addEvent = PublishSubject.create<AddEvent>()
     val onAddEvent: Observable<AddEvent> = addEvent
@@ -56,28 +63,25 @@ class ManualAddViewModel @Inject constructor(
     private val viewState = MutableLiveData<ViewState>()
     fun getViewState(): LiveData<ViewState> = viewState
 
-    /**
-     * Call reset at #onCreate() in order to avoid a already set thumbnailAddress from the previous
-     * ViewModel usage
-     */
-    private fun reset() {
-        thumbnailUrl.value = null
-    }
-
     fun initialize(bookEntity: BookEntity?) {
         if (bookEntity != null) {
             viewState.postValue(ViewState.UpdateBook(bookEntity))
-            thumbnailUrl.postValue(Uri.parse(bookEntity.normalizedThumbnailUrl))
+
+            val image = bookEntity.normalizedThumbnailUrl
+                ?.let { ThumbnailUri(Uri.parse(it)) }
+                ?: ImageState.NoImage
+            imageState.postValue(image)
         } else {
             viewState.postValue(ViewState.ManualAdd)
-            reset()
+            imageState.postValue(ImageState.NoImage)
         }
     }
 
     fun pickImage(activity: androidx.fragment.app.FragmentActivity) {
         imagePicker
             .openGallery(activity)
-            .subscribe(thumbnailUrl::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .map(::ThumbnailUri)
+            .subscribe(imageState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
@@ -93,7 +97,7 @@ class ManualAddViewModel @Inject constructor(
             bookUpdateData.subTitle,
             bookUpdateData.publishedDate,
             bookUpdateData.isbn,
-            thumbnailUrl.value?.toString(),
+            imageState.value?.toString(),
             bookUpdateData.language,
             bookUpdateData.summary
         )

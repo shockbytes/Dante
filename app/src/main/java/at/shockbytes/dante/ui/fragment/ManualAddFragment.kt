@@ -145,17 +145,28 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     private fun setupObserver() {
 
-        viewModel.getThumbnailUrl().observe(this, Observer { thumbnailUrl ->
-            thumbnailUrl?.let {
-                imageLoader.loadImageUri(
-                    requireContext(),
-                    thumbnailUrl,
-                    imgViewManualAdd,
-                    R.drawable.ic_placeholder,
-                    circular = false,
-                    callback = this,
-                    callbackHandleValues = Pair(first = false, second = true)
-                )
+        viewModel.getImageState().observe(this, Observer { imageState ->
+
+
+            when (imageState) {
+                is ManualAddViewModel.ImageState.ThumbnailUri -> {
+                    imageLoader.loadImageUri(
+                        requireContext(),
+                        imageState.uri,
+                        imgViewManualAdd,
+                        R.drawable.ic_placeholder,
+                        circular = false,
+                        callback = this,
+                        callbackHandleValues = Pair(first = false, second = true)
+                    )
+                }
+                ManualAddViewModel.ImageState.NoImage -> {
+                    imageLoader.loadImageResource(
+                        requireContext(),
+                        R.drawable.ic_placeholder,
+                        imgViewManualAdd
+                    )
+                }
             }
         })
 

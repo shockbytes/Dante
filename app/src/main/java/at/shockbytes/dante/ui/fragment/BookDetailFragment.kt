@@ -18,8 +18,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -312,11 +314,7 @@ class BookDetailFragment : BaseFragment(),
     override fun onGenerated(palette: Palette?) {
 
         palette?.lightMutedSwatch?.titleTextColor?.let { textColor ->
-            menuItemEdit?.icon?.let { icon ->
-                val drawable = DrawableCompat.wrap(icon)
-                DrawableCompat.setTint(drawable, textColor)
-                menuItemEdit?.setIcon(drawable)
-            }
+            tintEditMenuItem(textColor)
         }
 
         val actionBarColor = palette?.lightMutedSwatch?.rgb
@@ -325,6 +323,14 @@ class BookDetailFragment : BaseFragment(),
 
         (activity as? TintableBackNavigableActivity)
             ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
+    }
+
+    private fun tintEditMenuItem(@ColorInt tintColor: Int) {
+        menuItemEdit?.icon?.let { icon ->
+            val drawable = DrawableCompat.wrap(icon)
+            DrawableCompat.setTint(drawable, tintColor)
+            menuItemEdit?.setIcon(drawable)
+        }
     }
 
     override fun onStartScrolling(startValue: Int) = Unit
@@ -549,6 +555,7 @@ class BookDetailFragment : BaseFragment(),
                 callback = this,
                 callbackHandleValues = Pair(first = false, second = true))
         } else {
+            tintEditMenuItem(ContextCompat.getColor(requireContext(), R.color.danteAccent))
             iv_detail_image.setImageResource(R.drawable.ic_placeholder)
         }
     }

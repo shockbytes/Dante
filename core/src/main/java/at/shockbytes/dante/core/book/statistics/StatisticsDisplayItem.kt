@@ -4,6 +4,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
+@Deprecated("Use BookStatsItem instead")
 sealed class StatisticsDisplayItem {
 
     @get:StringRes

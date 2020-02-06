@@ -10,13 +10,11 @@ import at.shockbytes.dante.stats.BookStatsItem
 import at.shockbytes.dante.stats.BookStatsBuilder
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.roundDouble
-import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(
-    private val bookDao: BookEntityDao,
-    private val schedulerFacade: SchedulerFacade
+    private val bookDao: BookEntityDao
 ) : BaseViewModel() {
 
     private val statisticsItems = MutableLiveData<List<BookStatsItem>>()

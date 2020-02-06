@@ -12,6 +12,7 @@ import org.joda.time.Months
  * Author:  Martin Macheiner
  * Date:    03.02.2018
  */
+@Deprecated("Use BookStatsItem instead")
 data class BookStatistics(
     val pagesRead: Int, // Pages & books
     val pagesWaiting: Int, // Pages & books

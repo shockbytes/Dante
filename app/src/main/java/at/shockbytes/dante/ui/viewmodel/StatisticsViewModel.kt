@@ -6,30 +6,25 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.statistics.BookStatistics
 import at.shockbytes.dante.core.book.statistics.StatisticsDisplayItem
 import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.stats.BookStatsBuilder
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.roundDouble
 import io.reactivex.rxkotlin.addTo
-import timber.log.Timber
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
 
-    private val statisticsItems = MutableLiveData<List<StatisticsDisplayItem>>()
+    private val statisticsItems = MutableLiveData<List<BookStatsItem>>()
 
     fun requestStatistics() {
         bookDao.bookObservable
-                .flatMapSingle { books ->
-                    BookStatistics.from(books)
-                            .map { statsToItems(it) }
-                }
-                .subscribe({ items ->
-                    statisticsItems.postValue(items)
-                }, { throwable ->
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
+            .map(BookStatsBuilder::createFrom)
+            .subscribe(statisticsItems::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
-    fun getStatistics(): LiveData<List<StatisticsDisplayItem>> = statisticsItems
+    fun getStatistics(): LiveData<List<BookStatsItem>> = statisticsItems
 
     private fun statsToItems(s: BookStatistics): List<StatisticsDisplayItem> {
 

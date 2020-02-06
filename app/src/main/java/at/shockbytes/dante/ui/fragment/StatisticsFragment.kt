@@ -2,15 +2,14 @@ package at.shockbytes.dante.ui.fragment
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.injection.AppComponent
-import at.shockbytes.dante.ui.adapter.StatisticsAdapter
-
+import at.shockbytes.dante.ui.adapter.stats.StatsAdapter
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
-import at.shockbytes.util.view.EqualSpaceItemDecoration
+import at.shockbytes.dante.util.viewModelOf
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import javax.inject.Inject
 
@@ -21,19 +20,24 @@ class StatisticsFragment : BaseFragment() {
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
     private lateinit var viewModel: StatisticsViewModel
+
+    private val statsAdapter: StatsAdapter by lazy {
+        StatsAdapter(requireContext(), imageLoader)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[StatisticsViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
     }
 
     override fun setupViews() {
         fragment_statistics_rv.apply {
-            val margin = requireContext().resources.getDimension(R.dimen.dimen_statistics_margin).toInt()
             layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(EqualSpaceItemDecoration(margin))
-            adapter = StatisticsAdapter(requireContext())
+            adapter = statsAdapter
         }
     }
 
@@ -42,13 +46,12 @@ class StatisticsFragment : BaseFragment() {
     }
 
     override fun bindViewModel() {
-        viewModel.getStatistics().observe(this, Observer { items ->
-            (fragment_statistics_rv.adapter as StatisticsAdapter).updateData(items)
-        })
         viewModel.requestStatistics()
+        viewModel.getStatistics().observe(this, Observer(statsAdapter::updateData))
     }
 
     override fun unbindViewModel() {
+        viewModel.getStatistics().removeObservers(this)
     }
 
     companion object {

@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.item_statistics_data.*
 import kotlinx.android.synthetic.main.item_statistics_header.*
 import java.lang.IllegalArgumentException
 
+@Deprecated("Use StatsAdapter instead")
 class StatisticsAdapter(context: Context) : BaseAdapter<StatisticsDisplayItem>(context) {
 
     fun updateData(items: List<StatisticsDisplayItem>) {

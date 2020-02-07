@@ -28,10 +28,14 @@ sealed class BookStatsItem {
      */
     data class Languages(val languages: Map<String, Int>) : BookStatsItem()
 
-    /**
-     * Average rating
-     * Average books per month
-     * Most read month
-     */
-    object Others : BookStatsItem()
+    sealed class Others : BookStatsItem() {
+
+        object Empty : Others()
+
+        data class Present(
+            val averageRating: Int,
+            val averageBooksPerMonth: Int,
+            val mostActiveMonth: MostActiveMonth
+        ): Others()
+    }
 }

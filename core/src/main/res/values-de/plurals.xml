@@ -6,4 +6,9 @@
         <item quantity="other">%d Sterne</item>
     </plurals>
 
+    <plurals name="days">
+        <item quantity="one">%d Tag</item>
+        <item quantity="other">%d Tage</item>
+    </plurals>
+
 </resources>

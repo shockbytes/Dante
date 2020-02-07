@@ -1,10 +1,12 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.stats.BookStatsItem
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_stats_reading_duration.*
 
 class BookStatsReadingDurationViewHolder(
     override val containerView: View,
@@ -13,6 +15,49 @@ class BookStatsReadingDurationViewHolder(
 
     override fun bindToView(content: BookStatsItem, position: Int) {
         with(content as BookStatsItem.ReadingDuration) {
+
+            when (this) {
+                BookStatsItem.ReadingDuration.Empty -> {
+                    showEmptyState()
+                }
+                is BookStatsItem.ReadingDuration.Present -> {
+                    showReadingDuration(this)
+                }
+            }
+        }
+    }
+
+    private fun showEmptyState() {
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun showReadingDuration(content: BookStatsItem.ReadingDuration.Present) {
+        with(content) {
+            bare_bone_book_view_slowest_book.apply {
+                setTitle(slowest.book.title)
+
+                val slowestUrl = slowest.book.thumbnailAddress
+                if (slowestUrl != null) {
+                    imageLoader.loadImage(containerView.context, slowestUrl, imageView)
+                } else {
+                    imageView.setImageResource(R.drawable.ic_placeholder)
+                }
+            }
+            val slowestDays = containerView.context.resources.getQuantityString(R.plurals.days, slowest.days, slowest.days)
+            tv_item_stats_reading_duration_slowest_duration.text = slowestDays
+
+            bare_bone_book_view_fastest_book.apply {
+                setTitle(fastest.book.title)
+
+                val fastestUrl = fastest.book.thumbnailAddress
+                if (fastestUrl != null) {
+                    imageLoader.loadImage(containerView.context, fastestUrl, imageView)
+                } else {
+                    imageView.setImageResource(R.drawable.ic_placeholder)
+                }
+            }
+            val fastestDays = containerView.context.resources.getQuantityString(R.plurals.days, fastest.days, fastest.days)
+            tv_item_stats_reading_duration_fastest_duration.text = fastestDays
         }
     }
 }

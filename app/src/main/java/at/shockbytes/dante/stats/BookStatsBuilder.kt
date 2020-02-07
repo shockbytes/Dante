@@ -4,7 +4,10 @@ import at.shockbytes.dante.core.bareBone
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.util.AppUtils
+import org.joda.time.DateTime
 import org.joda.time.Duration
+import org.joda.time.Months
 
 object BookStatsBuilder {
 
@@ -19,8 +22,35 @@ object BookStatsBuilder {
     }
 
     private fun createBooksAndPagesItem(books: List<BookEntity>): BookStatsItem {
-        // TODO
-        return BookStatsItem.BooksAndPages
+
+        if (books.isEmpty()) {
+            return BookStatsItem.BooksAndPages.Empty
+        }
+
+        val states = books.groupBy { it.state }
+
+        val waiting = states[BookState.READ_LATER] ?: listOf()
+        val read = states[BookState.READ] ?: listOf()
+        val reading = states[BookState.READING] ?: listOf()
+
+        // Add pages in the currently read book to read pages
+        val pagesRead = read.sumBy { it.pageCount } + reading.sumBy { it.currentPage }
+        // Add pages waiting in the current book to waiting pages
+        val pagesWaiting = waiting.sumBy { it.pageCount } + reading.sumBy { it.pageCount - it.currentPage }
+
+        return BookStatsItem.BooksAndPages.Present(
+            BooksPagesInfo(
+                books = BooksPagesInfo.Books(
+                    waiting = waiting.size,
+                    reading = reading.size,
+                    read = read.size
+                ),
+                pages = BooksPagesInfo.Pages(
+                    waiting = pagesWaiting,
+                    read = pagesRead
+                )
+            )
+        )
     }
 
     private fun createReadingDurationItem(books: List<BookEntity>): BookStatsItem {
@@ -87,7 +117,6 @@ object BookStatsBuilder {
             ?.bareBone()
     }
 
-
     private fun createLanguageItem(books: List<BookEntity>): BookStatsItem {
 
         val languages = books.asSequence()
@@ -99,7 +128,59 @@ object BookStatsBuilder {
     }
 
     private fun createOthersItem(books: List<BookEntity>): BookStatsItem {
-        // TODO
-        return BookStatsItem.Others
+
+        if (books.isEmpty()) {
+            BookStatsItem.ReadingDuration.Empty
+        }
+
+        return BookStatsItem.Others.Present(
+            averageRating = averageBookRating(books),
+            averageBooksPerMonth = averageBooksPerMonth(books),
+            mostActiveMonth = mostActiveMonth(books)
+        )
+    }
+
+    private fun mostActiveMonth(books: List<BookEntity>): MostActiveMonth? {
+        return books
+            .asSequence()
+            .filter { it.state == BookState.READ }
+            .map { Pair(it.bareBone(), DateTime(it.endDate)) }
+            .groupBy { it.second.monthOfYear * it.second.year }
+            .maxBy { it.value.size }
+            ?.let { max ->
+
+                val activeBooks = max.value.map { it.first }
+                val monthAsString = max.value.first().second.toString("MMM yyyy")
+
+                MostActiveMonth(
+                    monthAsString = monthAsString,
+                    books = activeBooks
+                )
+            }
+    }
+
+    private fun averageBookRating(books: List<BookEntity>): Double {
+        val booksWithRating = books.filter { it.rating > 0 }
+        return if (booksWithRating.isNotEmpty()) {
+            booksWithRating
+                .map { it.rating.toDouble() }
+                .average()
+        } else 0.0
+    }
+
+    private fun averageBooksPerMonth(booksDone: List<BookEntity>): Double {
+
+        val now = System.currentTimeMillis()
+        val start = booksDone
+            .filter { it.startDate > 0 && it.state == BookState.READ }
+            .map { it.startDate }
+            .min() ?: now
+        val monthsReading = Months.monthsBetween(DateTime(start), DateTime(now)).months
+
+        return if (monthsReading == 0) {
+            booksDone.size.toDouble()
+        } else {
+            AppUtils.roundDouble(booksDone.size / monthsReading.toDouble(), 2)
+        }
     }
 }

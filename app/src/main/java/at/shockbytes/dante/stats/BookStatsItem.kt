@@ -4,7 +4,14 @@ import at.shockbytes.dante.core.book.BareBoneBook
 
 sealed class BookStatsItem {
 
-    object BooksAndPages : BookStatsItem()
+    sealed class BooksAndPages : BookStatsItem() {
+
+        object Empty : BooksAndPages()
+
+        data class Present(
+            val booksAndPages: BooksPagesInfo
+        ) : BooksAndPages()
+    }
 
     sealed class ReadingDuration : BookStatsItem() {
 
@@ -20,7 +27,7 @@ sealed class BookStatsItem {
         data class Present(
             val favoriteAuthor: FavoriteAuthor,
             val firstFiveStarBook: BareBoneBook
-        ): Favorites()
+        ) : Favorites()
     }
 
     /**
@@ -33,9 +40,9 @@ sealed class BookStatsItem {
         object Empty : Others()
 
         data class Present(
-            val averageRating: Int,
-            val averageBooksPerMonth: Int,
-            val mostActiveMonth: MostActiveMonth
-        ): Others()
+            val averageRating: Double,
+            val averageBooksPerMonth: Double,
+            val mostActiveMonth: MostActiveMonth?
+        ) : Others()
     }
 }

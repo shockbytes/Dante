@@ -10,7 +10,6 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_favorites.*
-import kotlinx.android.synthetic.main.item_time_line_book.*
 
 class BookStatsFavoritesViewHolder(
     override val containerView: View,
@@ -42,7 +41,10 @@ class BookStatsFavoritesViewHolder(
     }
 
     private fun setFavoriteAuthor(favoriteAuthor: FavoriteAuthor) {
-        // TODO
+        multi_bare_bone_book_favorite_author.apply {
+            setTitle(favoriteAuthor.author)
+            setMultipleBookImages(favoriteAuthor.bookUrls, imageLoader)
+        }
     }
 
     private fun setFirstFiveStarBook(firstFiveStarBook: BareBoneBook?) {

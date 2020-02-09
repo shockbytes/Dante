@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="92dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/darkest_hour" />
+        tools:srcCompat="@drawable/darkest_hour" />
 
     <TextView
         android:id="@+id/tv_bare_bone_book_view"
@@ -19,6 +19,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         tools:text="Their darkest hour" />
 </LinearLayout>

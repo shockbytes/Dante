@@ -57,7 +57,7 @@ object BookStatsBuilder {
 
             val booksWithDuration = books
                 .asSequence()
-                .filter { it.startDate > 0 } // Only take books where the start date is set
+                .filter { it.startDate > 0 && it.state == BookState.READ } // Only take books where the start date is set
                 .map { book ->
                     val days = Duration(book.endDate - book.startDate)
                         .standardDays
@@ -83,7 +83,7 @@ object BookStatsBuilder {
         val firstFiveStar = firstFiveStarBook(books)
         val favoriteAuthor = favoriteAuthor(books)
 
-        return if (firstFiveStar != null && favoriteAuthor != null) {
+        return if (favoriteAuthor != null) {
             BookStatsItem.Favorites.Present(favoriteAuthor, firstFiveStar)
         } else {
             BookStatsItem.Favorites.Empty

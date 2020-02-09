@@ -164,7 +164,7 @@
     <!-- Statistics -->
     <string name="statistics_header_pages"><![CDATA[Pages & Books]]></string>
     <string name="statistics_header_time">Reading time</string>
-    <string name="statistics_header_favs">Favourites</string>
+    <string name="statistics_header_favs">Favorites</string>
     <string name="statistics_header_other">Others</string>
 
     <string name="statistics_pages_read">%s pages already read</string>
@@ -172,13 +172,15 @@
     <string name="statistics_books_read">%s books already read</string>
     <string name="statistics_books_waiting">%s books are waiting</string>
 
-    <string name="statistics_favourite_author">Favourite author: %s</string>
-    <string name="statistics_first_five_star">First 5 star book: %s</string>
+    <string name="statistics_favourite_author">Favorite author</string>
 
     <string name="statistics_avg_books_per_month">%s books per month</string>
     <string name="statistics_duration_book">%s days for %s</string>
+    <string name="statistics_duration_slowest_book">Slowest book</string>
+    <string name="statistics_duration_fastest_book">Fastest book</string>
     <string name="statistics_most_reading_month">%s books read in %s</string>
     <string name="statistics_average_rating">Average rating: %s</string>
+    <string name="statistics_first_five_star_book">First 5 star book</string>
 
     <string name="prefs_category_books_general">General</string>
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>
@@ -281,5 +283,6 @@
     <string name="date_month_and_year" translatable="false">%s %s</string>
     <string name="dante_install">You installed Dante</string>
     <string name="timeline_explanation">The timeline shows you exactly when you read each and every book in your library. Each book is associated to the month when you started reading it.</string>
+    <string name="statistics_first_five_star">First 5 star book</string>
 
 </resources>

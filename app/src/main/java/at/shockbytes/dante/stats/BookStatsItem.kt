@@ -26,7 +26,7 @@ sealed class BookStatsItem {
 
         data class Present(
             val favoriteAuthor: FavoriteAuthor,
-            val firstFiveStarBook: BareBoneBook
+            val firstFiveStarBook: BareBoneBook?
         ) : Favorites()
     }
 

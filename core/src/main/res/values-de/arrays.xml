@@ -16,27 +16,6 @@
         <item>Dezember</item>
     </string-array>
 
-    <string-array name="language_names">
-        <item>Andere</item>
-        <item>Englisch</item>
-        <item>Deutsch</item>
-        <item>Italienisch</item>
-        <item>Französisch</item>
-        <item>Spanisch</item>
-        <item>Portugiesisch</item>
-        <item>Holländisch</item>
-        <item>Chinesisch</item>
-        <item>Russisch</item>
-        <item>Swedisch</item>
-        <item>Norwegisch</item>
-        <item>Polisch</item>
-        <item>Rumänisch</item>
-        <item>Kroatisch</item>
-        <item>Ungarisch</item>
-        <item>Indonesisch</item>
-        <item>Thai</item>
-    </string-array>
-
     <string-array name="empty_indicators">
         <item>Scanne Bücher um sie später zu lesen</item>
         <item>Warum liest du kein Buch?</item>

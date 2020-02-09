@@ -1,23 +1,30 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
+import at.shockbytes.dante.ui.activity.ManualAddActivity
+import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.setVisible
+import at.shockbytes.dante.util.viewModelOf
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_manual_add.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -40,14 +47,17 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[ManualAddViewModel::class.java]
-        viewModel.reset()
+        viewModel = viewModelOf(vmFactory)
+
+        arguments?.getParcelable<BookEntity>(ARG_BOOK_ENTITY_UPDATE).let { bookEntity ->
+            viewModel.initialize(bookEntity)
+        }
     }
 
     override fun setupViews() {
 
-        imgViewManualAdd.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        imgViewManualAdd.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             activity?.let { a ->
                 viewModel.pickImage(a)
             }
@@ -64,19 +74,39 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             }
         })
 
-        btnManualAddUpcoming.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        btnManualAddUpcoming.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ_LATER)
         }
 
-        btnManualAddCurrent.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        btnManualAddCurrent.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READING)
         }
 
-        btnManualAddDone.setOnClickListener {
-            it.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+        btnManualAddDone.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ)
+        }
+
+        btn_update_book_discard.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            SimpleRequestDialogFragment
+                .newInstance(
+                    title = getString(R.string.update_book_discard_title),
+                    message = getString(R.string.update_book_discard_message),
+                    icon = R.drawable.ic_delete,
+                    positiveText = R.string.discard
+                )
+                .setOnAcceptListener {
+                    activity?.onBackPressed()
+                }
+                .show(childFragmentManager, "tag-discard-book-update-confirmation")
+        }
+
+        btn_update_book_save.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            updateBook()
         }
 
         setupLanguageSpinner()
@@ -108,48 +138,105 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                 val statusBarColor = palette?.darkMutedSwatch?.rgb
 
                 (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
-                        actionBarTextColor, statusBarColor)
+                    actionBarTextColor, statusBarColor)
             }
         }
     }
 
     private fun setupObserver() {
 
-        viewModel.thumbnailUrl.observe(this, Observer {
-            context?.let { ctx ->
-                it?.let { uri ->
+        viewModel.getImageState().observe(this, Observer { imageState ->
+
+
+            when (imageState) {
+                is ManualAddViewModel.ImageState.ThumbnailUri -> {
                     imageLoader.loadImageUri(
-                        ctx,
-                        uri,
+                        requireContext(),
+                        imageState.uri,
                         imgViewManualAdd,
                         R.drawable.ic_placeholder,
-                        false,
-                        this,
-                        Pair(first = false, second = true)
+                        circular = false,
+                        callback = this,
+                        callbackHandleValues = Pair(first = false, second = true)
+                    )
+                }
+                ManualAddViewModel.ImageState.NoImage -> {
+                    imageLoader.loadImageResource(
+                        requireContext(),
+                        R.drawable.ic_placeholder,
+                        imgViewManualAdd
                     )
                 }
             }
         })
 
-        viewModel.addEvent.subscribe { event ->
+        viewModel.getViewState().observe(this, Observer { viewState ->
 
-            when (event) {
-                is ManualAddViewModel.AddEvent.SuccessEvent -> {
-                    activity?.onBackPressed()
+            when (viewState) {
+                ManualAddViewModel.ViewState.ManualAdd -> {
+                    container_manual_add_buttons.setVisible(true)
+                    container_update_book_buttons.setVisible(false)
                 }
-                is ManualAddViewModel.AddEvent.ErrorEvent -> {
-                    showSnackbar(getString(R.string.manual_add_error),
-                            getString(android.R.string.ok), true) { this.dismiss() }
+                is ManualAddViewModel.ViewState.UpdateBook -> {
+                    container_manual_add_buttons.setVisible(false)
+                    container_update_book_buttons.setVisible(true)
+                    populateBookDataViews(viewState.bookEntity)
                 }
             }
-        }.addTo(compositeDisposable)
+        })
+
+        viewModel.onAddEvent
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { event ->
+
+                when (event) {
+                    is ManualAddViewModel.AddEvent.Success -> {
+                        activity?.onBackPressed()
+                    }
+                    is ManualAddViewModel.AddEvent.Error -> {
+                        showSnackbar(getString(R.string.manual_add_error),
+                            getString(android.R.string.ok), true) { this.dismiss() }
+                    }
+                    is ManualAddViewModel.AddEvent.Updated -> {
+                        sendBookUpdatedBroadcast(event.updateBookState)
+                        activity?.onBackPressed()
+                    }
+                }
+            }
+            .addTo(compositeDisposable)
+    }
+
+    private fun sendBookUpdatedBroadcast(bookState: BookState) {
+        LocalBroadcastManager.getInstance(requireContext())
+            .sendBroadcast(
+                Intent(ManualAddActivity.ACTION_BOOK_UPDATED)
+                    .putExtra(ManualAddActivity.EXTRA_UPDATED_BOOK_STATE, bookState)
+            )
+    }
+
+    private fun populateBookDataViews(bookEntity: BookEntity) {
+        with(bookEntity) {
+
+            editTextManualAddTitle.setText(title)
+            editTextManualAddSubtitle.setText(subTitle)
+            editTextManualAddAuthors.setText(author)
+            editTextManualAddPages.setText(pageCount.toString())
+            editTextManualAddPublishedDate.setText(publishedDate)
+            editTextManualAddIsbn.setText(isbn)
+            editTextManualAddSummary.setText(summary)
+
+            val languages = resources.getStringArray(R.array.language_codes)
+            val languageIdx = languages.indexOfFirst { it == language }
+
+            if (languageIdx > -1) {
+                spinnerManualAddLanguage.setSelection(languageIdx, true)
+            }
+        }
     }
 
     private fun setupLanguageSpinner() {
-        context?.let { ctx ->
-            val data = buildLanguageData()
-            spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(ctx, data, imageLoader)
-        }
+        val data = buildLanguageData()
+        spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(requireContext(), data, imageLoader)
     }
 
     private fun buildLanguageData(): Array<ManualAddLanguageSpinnerAdapter.LanguageItem> {
@@ -159,29 +246,39 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val langEnglish = resources.getString(R.string.language_english)
 
         return resources.getStringArray(R.array.language_names)
-                .mapIndexedNotNull { index, s ->
-                    s?.let { language ->
-                        val shortName = languageIds[index]
+            .mapIndexedNotNull { index, s ->
+                s?.let { language ->
+                    val shortName = languageIds[index]
 
-                        val url = if (shortName == langEnglish) {
-                            buildFlagIconUrl("gb")
-                        } else {
-                            buildFlagIconUrl(shortName)
-                        }
-                        val showFlag = shortName != langNotAvailable
-
-                        ManualAddLanguageSpinnerAdapter.LanguageItem(language, shortName, url, showFlag)
+                    val url = if (shortName == langEnglish) {
+                        buildFlagIconUrl("gb")
+                    } else {
+                        buildFlagIconUrl(shortName)
                     }
+                    val showFlag = shortName != langNotAvailable
+
+                    ManualAddLanguageSpinnerAdapter.LanguageItem(language, shortName, url, showFlag)
                 }
-                .toTypedArray()
+            }
+            .toTypedArray()
     }
 
     private fun buildFlagIconUrl(id: String, size: Int = 64): String {
         return "https://www.countryflags.io/$id/flat/$size.png"
     }
 
-    private fun storeBook(state: BookState) {
+    private fun updateBook() {
+        viewModel.updateBook(gatherBookUpdateData())
+    }
 
+    private fun storeBook(state: BookState) {
+        viewModel.storeBook(
+            gatherBookUpdateData(),
+            state
+        )
+    }
+
+    private fun gatherBookUpdateData(): ManualAddViewModel.BookUpdateData {
         val title = editTextManualAddTitle.text?.toString()
         val subTitle: String? = editTextManualAddSubtitle.text?.toString()
         val authors = editTextManualAddAuthors.text?.toString()
@@ -194,23 +291,28 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val lIdx = spinnerManualAddLanguage.selectedItemPosition.coerceIn(0..languages.size)
         val language = languages[lIdx]
 
-        viewModel.storeBook(
-                title,
-                authors,
-                pageCount,
-                state,
-                subTitle,
-                publishedDate,
-                isbn,
-                language,
-                summary
+        return ManualAddViewModel.BookUpdateData(
+            title = title,
+            author = authors,
+            pageCount = pageCount,
+            subTitle = subTitle,
+            publishedDate = publishedDate,
+            isbn = isbn,
+            language = language,
+            summary = summary
         )
     }
 
     companion object {
 
-        fun newInstance(): ManualAddFragment {
-            return ManualAddFragment()
+        private const val ARG_BOOK_ENTITY_UPDATE = "arg_book_entity_update"
+
+        fun newInstance(updatedBookEntity: BookEntity?): ManualAddFragment {
+            return ManualAddFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_BOOK_ENTITY_UPDATE, updatedBookEntity)
+                }
+            }
         }
     }
 }

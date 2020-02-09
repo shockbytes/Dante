@@ -37,9 +37,9 @@ fun BookEntity.toJson(): JsonObject {
 fun BookEntity.createSharingIntent(c: Context): Intent {
     val msg = c.getString(R.string.share_template, this.title, this.googleBooksLink)
     return Intent()
-            .setAction(Intent.ACTION_SEND)
-            .putExtra(Intent.EXTRA_TEXT, msg)
-            .setType("text/plain")
+        .setAction(Intent.ACTION_SEND)
+        .putExtra(Intent.EXTRA_TEXT, msg)
+        .setType("text/plain")
 }
 
 /**
@@ -49,11 +49,10 @@ fun BookEntity.createSharingIntent(c: Context): Intent {
  */
 fun BookEntity.isContentSame(other: BookEntity): Boolean {
     return (this.id == other.id) &&
-            (this.currentPage == other.currentPage) &&
-            (this.pageCount == other.pageCount) &&
-            (this.wishlistDate == other.wishlistDate) &&
-            (this.startDate == other.startDate) &&
-            (this.endDate == other.endDate) &&
-            (this.rating == other.rating) &&
-            (this.notes == other.notes)
+        (this.currentPage == other.currentPage) &&
+        (this.pageCount == other.pageCount) &&
+        (this.subTitle == other.subTitle) &&
+        (this.author == other.author) &&
+        (this.thumbnailAddress == other.thumbnailAddress) &&
+        (this.title == other.title)
 }

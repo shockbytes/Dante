@@ -12,10 +12,17 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
@@ -28,6 +35,7 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
@@ -64,6 +72,8 @@ class BookDetailFragment : BaseFragment(),
     lateinit var imageLoader: ImageLoader
 
     private lateinit var viewModel: BookDetailViewModel
+
+    private var menuItemEdit: MenuItem? = null
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
@@ -105,6 +115,12 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
+    private val bookUpdatedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(p0: Context?, data: Intent?) {
+            viewModel.reload()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -118,9 +134,17 @@ class BookDetailFragment : BaseFragment(),
         fixSharedElementTransitionBug()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        return inflater.inflate(R.menu.menu_book_detail, menu).also {
+            menuItemEdit = menu.findItem(R.id.menu_book_detail_edit)
+        }
+    }
+
     private fun registerLocalBroadcastReceiver() {
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
+        LocalBroadcastManager.getInstance(requireContext()).apply {
+            registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
+            registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
+        }
     }
 
     /**
@@ -209,6 +233,20 @@ class BookDetailFragment : BaseFragment(),
                 DanteUtils.addFragmentToActivity(parentFragmentManager, fragment, android.R.id.content, true)
             }
             .addTo(compositeDisposable)
+
+        viewModel.onBookEditRequest
+            .observeOn(AndroidSchedulers.mainThread())
+            .map(Destination::ManualAdd)
+            .subscribe({ destination ->
+
+                val sceneTransition = activity?.let {
+                    ActivityOptionsCompat.makeSceneTransitionAnimation(it)
+                }?.toBundle()
+                ActivityNavigator.navigateTo(context, destination, sceneTransition)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun createBookFinishedFragment(title: String): SimpleRequestDialogFragment {
@@ -245,7 +283,10 @@ class BookDetailFragment : BaseFragment(),
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(notesReceiver)
+        LocalBroadcastManager.getInstance(requireContext()).apply {
+            unregisterReceiver(notesReceiver)
+            unregisterReceiver(bookUpdatedReceiver)
+        }
     }
 
     override fun onBackwardAnimation() {
@@ -272,6 +313,10 @@ class BookDetailFragment : BaseFragment(),
 
     override fun onGenerated(palette: Palette?) {
 
+        palette?.lightMutedSwatch?.titleTextColor?.let { textColor ->
+            tintEditMenuItem(textColor)
+        }
+
         val actionBarColor = palette?.lightMutedSwatch?.rgb
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette?.darkMutedSwatch?.rgb
@@ -280,10 +325,26 @@ class BookDetailFragment : BaseFragment(),
             ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
     }
 
+    private fun tintEditMenuItem(@ColorInt tintColor: Int) {
+        menuItemEdit?.icon?.let { icon ->
+            val drawable = DrawableCompat.wrap(icon)
+            DrawableCompat.setTint(drawable, tintColor)
+            menuItemEdit?.setIcon(drawable)
+        }
+    }
+
     override fun onStartScrolling(startValue: Int) = Unit
 
     override fun onEndScrolling(endValue: Int) {
         viewModel.updateCurrentPage(endValue)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == R.id.menu_book_detail_edit) {
+            viewModel.requestEditBook()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     // --------------------------------------------------------------------
@@ -454,7 +515,7 @@ class BookDetailFragment : BaseFragment(),
             setupPageProgress(currentPage, pageCount)
 
             btn_detail_pages.text = if (state == BookState.READING)
-                // Initially set currentPage to 0 for progress animation
+            // Initially set currentPage to 0 for progress animation
                 getString(R.string.detail_pages, currentPage, pageCount)
             else
                 pageCount.toString()
@@ -494,6 +555,7 @@ class BookDetailFragment : BaseFragment(),
                 callback = this,
                 callbackHandleValues = Pair(first = false, second = true))
         } else {
+            tintEditMenuItem(ContextCompat.getColor(requireContext(), R.color.danteAccent))
             iv_detail_image.setImageResource(R.drawable.ic_placeholder)
         }
     }

@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.8.2</string>
+    <string name="app_version" translatable="false">3.8.3</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -13,6 +13,7 @@
 
     <string name="currently_reading">Currently reading</string>
 
+    <string name="edit">Edit</string>
     <string name="menu_main_stats">Statistics</string>
     <string name="menu_main_timeline">Timeline</string>
     <string name="settings">Settings</string>
@@ -99,6 +100,7 @@
     <string name="dialogfragment_paging_error">Invalid input!Pages cannot be less than current page, or invalid numbers!</string>
     <string name="dialogfragment_notes_header">Write down your thoughts, feelings or some general remarks about %s.</string>
     <string name="save">Save</string>
+    <string name="discard">Discard</string>
     <string name="dialogfragment_notes_hint">Your thoughts belong in here&#8230;</string>
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>
@@ -251,6 +253,9 @@
     <string name="mail_body_translation">Hey, I want to improve Dante!\n\n</string>
 
     <string name="share_template">Hey, I\'m currently reading %1$s and it\'s awesome!\nCheck it out: %2$s</string>
+
+    <string name="update_book_discard_title">Discard changes?</string>
+    <string name="update_book_discard_message">Discard changes and go back to book details?</string>
 
     <string name="no">No</string>
     <string name="yes">Yes</string>

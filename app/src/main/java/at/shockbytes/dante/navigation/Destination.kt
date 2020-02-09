@@ -23,7 +23,7 @@ sealed class Destination {
     ) : Destination()
 
     object Search : Destination()
-    object ManualAdd : Destination()
+    data class ManualAdd(val updatedBookEntity: BookEntity? = null) : Destination()
     object Statistics : Destination()
     object Timeline : Destination()
     object Backup : Destination()

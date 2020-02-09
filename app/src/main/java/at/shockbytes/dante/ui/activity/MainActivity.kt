@@ -362,14 +362,23 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun navigateToCamera() {
         ActivityNavigator.navigateTo(
             this,
-            Destination.BarcodeScanner
+            Destination.BarcodeScanner,
+            ActivityOptionsCompat
+                .makeClipRevealAnimation(
+                    mainFabMenu,
+                    mainFabMenu.x.toInt(),
+                    mainFabMenu.y.toInt(),
+                    mainFabMenu.width,
+                    mainFabMenu.height
+                )
+                .toBundle()
         )
     }
 
     private fun navigateToManualAdd() {
         ActivityNavigator.navigateTo(
             this,
-            Destination.ManualAdd,
+            Destination.ManualAdd(),
             ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
         )
     }
@@ -377,7 +386,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showAddByTitleDialog() {
         QueryDialogFragment.newInstance()
             .setOnQueryEnteredListener { query ->
-                BarcodeScanResultBottomSheetDialogFragment.newInstance(query, askForAnotherScan = false)
+                BarcodeScanResultBottomSheetDialogFragment
+                    .newInstance(query, askForAnotherScan = false)
                     .show(supportFragmentManager, "show-bottom-sheet-with-book")
             }
             .show(supportFragmentManager, "query-dialog-fragment")

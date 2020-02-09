@@ -2,13 +2,16 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
+import androidx.lifecycle.LiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.image.ImagePicker
+import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailUri
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -20,46 +23,122 @@ class ManualAddViewModel @Inject constructor(
     private val imagePicker: ImagePicker
 ) : BaseViewModel() {
 
-    val thumbnailUrl = MutableLiveData<Uri>()
+    data class BookUpdateData(
+        val title: String?,
+        val author: String?,
+        val pageCount: Int?,
+        val subTitle: String?,
+        val publishedDate: String?,
+        val isbn: String?,
+        val language: String?,
+        val summary: String?
+    ) {
+        val isValid: Boolean
+            get() = title != null && author != null && pageCount != null
+    }
 
-    val addEvent = PublishSubject.create<AddEvent>()
+    sealed class AddEvent {
+        object Success : AddEvent()
+        data class Updated(val updateBookState: BookState) : AddEvent()
+        object Error : AddEvent()
+    }
 
-    /**
-     * Call reset at #onCreate() in order to avoid a already set thumbnailAddress from the previous
-     * ViewModel usage
-     */
-    fun reset() {
-        thumbnailUrl.value = null
+    sealed class ViewState {
+        object ManualAdd : ViewState()
+        data class UpdateBook(val bookEntity: BookEntity) : ViewState()
+    }
+
+    sealed class ImageState {
+
+        data class ThumbnailUri(val uri: Uri) : ImageState()
+        object NoImage : ImageState()
+    }
+
+    private val imageState = MutableLiveData<ImageState>()
+    fun getImageState(): LiveData<ImageState> = imageState
+
+    private val addEvent = PublishSubject.create<AddEvent>()
+    val onAddEvent: Observable<AddEvent> = addEvent
+
+    private val viewState = MutableLiveData<ViewState>()
+    fun getViewState(): LiveData<ViewState> = viewState
+
+    fun initialize(bookEntity: BookEntity?) {
+        if (bookEntity != null) {
+            viewState.postValue(ViewState.UpdateBook(bookEntity))
+
+            val image = bookEntity.normalizedThumbnailUrl
+                ?.let { ThumbnailUri(Uri.parse(it)) }
+                ?: ImageState.NoImage
+            imageState.postValue(image)
+        } else {
+            viewState.postValue(ViewState.ManualAdd)
+            imageState.postValue(ImageState.NoImage)
+        }
     }
 
     fun pickImage(activity: androidx.fragment.app.FragmentActivity) {
-        imagePicker.openGallery(activity).subscribe({ uri ->
-            thumbnailUrl.postValue(uri)
-        }, { throwable ->
-            Timber.e(throwable)
-        }).addTo(compositeDisposable)
+        imagePicker
+            .openGallery(activity)
+            .map(::ThumbnailUri)
+            .subscribe(imageState::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     fun storeBook(
-        title: String?,
-        author: String?,
-        pageCount: Int?,
-        state: BookState,
-        subTitle: String?,
-        publishedDate: String?,
-        isbn: String?,
-        language: String?,
-        summary: String?
+        bookUpdateData: BookUpdateData,
+        state: BookState
     ) {
-        val entity = createEntity(title, author, pageCount, state, subTitle,
-                publishedDate, isbn, thumbnailUrl.value?.toString(), language, summary)
+        val entity = createEntity(
+            bookUpdateData.title,
+            bookUpdateData.author,
+            bookUpdateData.pageCount,
+            state,
+            bookUpdateData.subTitle,
+            bookUpdateData.publishedDate,
+            bookUpdateData.isbn,
+            imageState.value?.toString(),
+            bookUpdateData.language,
+            bookUpdateData.summary
+        )
 
         if (entity != null) {
             bookDao.create(entity)
-            addEvent.onNext(AddEvent.SuccessEvent)
+            addEvent.onNext(AddEvent.Success)
         } else {
-            addEvent.onNext(AddEvent.ErrorEvent)
+            addEvent.onNext(AddEvent.Error)
         }
+    }
+
+    fun updateBook(bookUpdateData: BookUpdateData) {
+
+        if (bookUpdateData.isValid) {
+
+            viewState.value?.let { v ->
+                if (v is ViewState.UpdateBook) {
+                    val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
+                    bookDao.update(updatedEntity)
+                    addEvent.onNext(AddEvent.Updated(updatedEntity.state))
+                } else {
+                    addEvent.onNext(AddEvent.Error)
+                }
+            } ?: addEvent.onNext(AddEvent.Error)
+        } else {
+            addEvent.onNext(AddEvent.Error)
+        }
+    }
+
+    private fun BookEntity.updateFromBookUpdateData(bookUpdateData: BookUpdateData): BookEntity {
+        return this.copy(
+            title = bookUpdateData.title ?: title,
+            author = bookUpdateData.author ?: author,
+            pageCount = bookUpdateData.pageCount ?: pageCount,
+            subTitle = bookUpdateData.subTitle ?: subTitle,
+            publishedDate = bookUpdateData.publishedDate ?: publishedDate,
+            isbn = bookUpdateData.isbn ?: isbn,
+            language = bookUpdateData.language ?: language,
+            summary = bookUpdateData.summary ?: summary
+        )
     }
 
     private fun createEntity(
@@ -100,11 +179,5 @@ class ManualAddViewModel @Inject constructor(
             }
             entity
         }
-    }
-
-    sealed class AddEvent {
-
-        object SuccessEvent : AddEvent()
-        object ErrorEvent : AddEvent()
     }
 }

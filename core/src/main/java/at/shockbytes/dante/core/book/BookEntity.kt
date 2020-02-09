@@ -1,6 +1,7 @@
 package at.shockbytes.dante.core.book
 
 import android.os.Parcelable
+import at.shockbytes.dante.util.DanteUtils
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -58,4 +59,9 @@ data class BookEntity(
             }
         }
     }
+
+    val normalizedThumbnailUrl: String?
+        get() = thumbnailAddress?.let { url ->
+            DanteUtils.checkUrlForHttps(url)
+        }
 }

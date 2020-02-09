@@ -2,7 +2,8 @@
 <resources>
 
     <declare-styleable name="StatsHeaderView">
-        <attr name="title" format="reference" />
+        <attr name="header_title" format="reference" />
+        <attr name="show_divider" format="boolean" />
     </declare-styleable>
 
 </resources>

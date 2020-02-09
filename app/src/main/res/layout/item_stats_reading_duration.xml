@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="200dp">
+    android:layout_marginTop="@dimen/stats_section_margin_top">
 
-    <TextView
+    <at.shockbytes.dante.ui.custom.StatsHeaderView
         android:id="@+id/tv_item_stats_reading_duration_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/statistics_header_time"
+        app:header_title="@string/statistics_header_time"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -18,6 +18,7 @@
         tools:text="@string/statistics_header_time" />
 
     <View
+        android:id="@+id/view_stats_header_view_1"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="12dp"
@@ -29,6 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/tv_stats_header_view" />
 
     <View
+        android:id="@+id/view_stats_header_view_2"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="12dp"

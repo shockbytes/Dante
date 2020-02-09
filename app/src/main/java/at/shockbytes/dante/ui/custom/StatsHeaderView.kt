@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import at.shockbytes.dante.R
+import at.shockbytes.dante.util.setVisible
 import kotlinx.android.synthetic.main.stats_header_view.view.*
 
 class StatsHeaderView @JvmOverloads constructor(
@@ -24,14 +25,22 @@ class StatsHeaderView @JvmOverloads constructor(
 
     private fun initializeWithAttributes(attributes: TypedArray) {
 
-        val titleResId = attributes.getResourceId(R.styleable.StatsHeaderView_title, 0)
+        val titleResId = attributes.getResourceId(R.styleable.StatsHeaderView_header_title, 0)
 
         if (titleResId != 0) {
             setHeaderTitle(context.getString(titleResId))
         }
+
+        val showDivider = attributes.getBoolean(R.styleable.StatsHeaderView_show_divider, true)
+        showDivider(showDivider)
     }
 
     fun setHeaderTitle(title: CharSequence) {
         tv_stats_header_view.text = title
+    }
+
+    fun showDivider(showDivider: Boolean) {
+        view_stats_header_view_1.setVisible(showDivider)
+        view_stats_header_view_2.setVisible(showDivider)
     }
 }

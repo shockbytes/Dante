@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/container_multi_bare_bone_book_view"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:gravity="center"
+        android:orientation="horizontal" />
+
+    <TextView
+        android:id="@+id/tv_multi_bare_bone_book_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        tools:text="Their darkest hour" />
+
+</LinearLayout>

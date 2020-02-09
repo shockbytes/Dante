@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/stats_section_margin_top"
+    android:orientation="vertical">
+
+    <at.shockbytes.dante.ui.custom.StatsHeaderView
+        android:id="@+id/tv_item_stats_favorites_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:header_title="@string/statistics_header_favs" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/item_stats_favorites_empty"
+            layout="@layout/item_stats_empty_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/item_stats_favorites_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_item_stats_favorites_favorite_author_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:text="@string/statistics_favourite_author"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <at.shockbytes.dante.ui.custom.MultiBareBoneBookView
+                android:id="@+id/multi_bare_bone_book_favorite_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/tv_item_stats_favorites_first_five_star_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="32dp"
+                android:text="@string/statistics_first_five_star_book"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <at.shockbytes.dante.ui.custom.BareBoneBookView
+                android:id="@+id/bare_bone_book_view_first_five_star"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

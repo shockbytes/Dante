@@ -13,6 +13,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
@@ -147,7 +148,6 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
         viewModel.getImageState().observe(this, Observer { imageState ->
 
-
             when (imageState) {
                 is ManualAddViewModel.ImageState.ThumbnailUri -> {
                     imageLoader.loadImageUri(
@@ -225,8 +225,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             editTextManualAddIsbn.setText(isbn)
             editTextManualAddSummary.setText(summary)
 
-            val languages = resources.getStringArray(R.array.language_codes)
-            val languageIdx = languages.indexOfFirst { it == language }
+            val languages = Languages.values()
+            val languageIdx = languages.indexOfFirst { it.code == language }
 
             if (languageIdx > -1) {
                 spinnerManualAddLanguage.setSelection(languageIdx, true)
@@ -235,36 +235,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     }
 
     private fun setupLanguageSpinner() {
-        val data = buildLanguageData()
-        spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(requireContext(), data, imageLoader)
-    }
-
-    private fun buildLanguageData(): Array<ManualAddLanguageSpinnerAdapter.LanguageItem> {
-
-        val languageIds = resources.getStringArray(R.array.language_codes)
-        val langNotAvailable = resources.getString(R.string.language_not_available)
-        val langEnglish = resources.getString(R.string.language_english)
-
-        return resources.getStringArray(R.array.language_names)
-            .mapIndexedNotNull { index, s ->
-                s?.let { language ->
-                    val shortName = languageIds[index]
-
-                    val url = if (shortName == langEnglish) {
-                        buildFlagIconUrl("gb")
-                    } else {
-                        buildFlagIconUrl(shortName)
-                    }
-                    val showFlag = shortName != langNotAvailable
-
-                    ManualAddLanguageSpinnerAdapter.LanguageItem(language, shortName, url, showFlag)
-                }
-            }
-            .toTypedArray()
-    }
-
-    private fun buildFlagIconUrl(id: String, size: Int = 64): String {
-        return "https://www.countryflags.io/$id/flat/$size.png"
+        spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(requireContext(), Languages.values())
     }
 
     private fun updateBook() {
@@ -287,9 +258,9 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         val isbn = editTextManualAddIsbn.text?.toString()
         val summary = editTextManualAddSummary.text?.toString()
 
-        val languages = resources.getStringArray(R.array.language_codes)
+        val languages = Languages.values()
         val lIdx = spinnerManualAddLanguage.selectedItemPosition.coerceIn(0..languages.size)
-        val language = languages[lIdx]
+        val language = languages[lIdx].code
 
         return ManualAddViewModel.BookUpdateData(
             title = title,

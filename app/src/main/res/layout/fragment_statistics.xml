@@ -5,28 +5,16 @@
     android:layout_height="match_parent"
     android:background="@color/mainBackground">
 
-    <androidx.cardview.widget.CardView
-        style="@style/AppTheme.CardLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_statistics_rv"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_max="@dimen/max_width">
+        android:layoutAnimation="@anim/stats_section_anim"
+        app:layout_constraintWidth_max="@dimen/max_width" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:overScrollMode="never"
-            android:id="@+id/fragment_statistics_rv"
-            android:layout_width="match_parent"
-            android:scrollbars="vertical"
-            android:layout_height="match_parent" />
-
-    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

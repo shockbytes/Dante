@@ -2,6 +2,7 @@ package at.shockbytes.dante.core
 
 import android.content.Context
 import android.content.Intent
+import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.BookEntity
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -40,6 +41,14 @@ fun BookEntity.createSharingIntent(c: Context): Intent {
         .setAction(Intent.ACTION_SEND)
         .putExtra(Intent.EXTRA_TEXT, msg)
         .setType("text/plain")
+}
+
+fun BookEntity.bareBone(): BareBoneBook {
+    return BareBoneBook(
+        title = title,
+        author = author,
+        thumbnailAddress = thumbnailAddress
+    )
 }
 
 /**

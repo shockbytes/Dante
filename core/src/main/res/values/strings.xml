@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.8.3</string>
+    <string name="app_version" translatable="false">3.9 Beta</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -162,9 +162,10 @@
     <string name="manual_add_error">Please specify at least title, authors and amount of pages.</string>
 
     <!-- Statistics -->
-    <string name="statistics_header_pages"><![CDATA[Pages & Books]]></string>
+    <string name="statistics_header_pages">Pages &amp; Books</string>
     <string name="statistics_header_time">Reading time</string>
-    <string name="statistics_header_favs">Favourites</string>
+    <string name="statistics_header_languages">Languages</string>
+    <string name="statistics_header_favs">Favorites</string>
     <string name="statistics_header_other">Others</string>
 
     <string name="statistics_pages_read">%s pages already read</string>
@@ -172,13 +173,25 @@
     <string name="statistics_books_read">%s books already read</string>
     <string name="statistics_books_waiting">%s books are waiting</string>
 
-    <string name="statistics_favourite_author">Favourite author: %s</string>
-    <string name="statistics_first_five_star">First 5 star book: %s</string>
+    <string name="statistics_favourite_author">Favorite author</string>
 
     <string name="statistics_avg_books_per_month">%s books per month</string>
     <string name="statistics_duration_book">%s days for %s</string>
+    <string name="statistics_duration_slowest_book">Slowest book</string>
+    <string name="statistics_duration_fastest_book">Fastest book</string>
     <string name="statistics_most_reading_month">%s books read in %s</string>
-    <string name="statistics_average_rating">Average rating: %s</string>
+    <string name="statistics_average_rating">Average rating</string>
+    <string name="statistics_first_five_star_book">First 5 star book</string>
+    <string name="statistics_no_data">No data available</string>
+    <string name="stars_with_placeholder">%s stars</string>
+    <string name="books_per_month">books per month</string>
+    <string name="most_active_month">books in %s</string>
+
+    <string name="books_reading">%d books reading</string>
+    <string name="books_read">%d books read</string>
+    <string name="books_waiting">%d books waiting</string>
+    <string name="pages_read">%d pages read</string>
+    <string name="pages_waiting">%d pages waiting</string>
 
     <string name="prefs_category_books_general">General</string>
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>
@@ -281,5 +294,24 @@
     <string name="date_month_and_year" translatable="false">%s %s</string>
     <string name="dante_install">You installed Dante</string>
     <string name="timeline_explanation">The timeline shows you exactly when you read each and every book in your library. Each book is associated to the month when you started reading it.</string>
+    <string name="statistics_first_five_star">First 5 star book</string>
+    <string name="language_other">Other</string>
+    <string name="language_english_full">English</string>
+    <string name="language_german_full">German</string>
+    <string name="language_italian_full">Italian</string>
+    <string name="language_french_full">French</string>
+    <string name="language_spanish_full">Spanish</string>
+    <string name="language_portuguese_full">Portuguese</string>
+    <string name="language_dutch_full">Dutch</string>
+    <string name="language_chinese_full">Chinese</string>
+    <string name="language_russian_full">Russian</string>
+    <string name="language_swedish_full">Swedish</string>
+    <string name="language_norwegian_full">Norwegian</string>
+    <string name="language_polish_full">Polish</string>
+    <string name="language_romanian_full">Romanian</string>
+    <string name="language_croatian_full">Croatian</string>
+    <string name="language_hungary_full">Hungary</string>
+    <string name="language_indonesian_full">Indonesian</string>
+    <string name="language_thai_full">Thai</string>
 
 </resources>

@@ -91,7 +91,7 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
         val defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()
         Thread.setDefaultUncaughtExceptionHandler { t, e ->
             Timber.e(e, "uncaught exception")
-            defaultExceptionHandler.uncaughtException(t, e)
+            defaultExceptionHandler?.uncaughtException(t, e)
         }
     }
 

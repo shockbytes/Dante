@@ -30,47 +30,4 @@
         <item>December</item>
     </string-array>
 
-    <string-array name="language_codes">
-        <item>na</item>
-        <item>en</item>
-        <item>de</item>
-        <item>it</item>
-        <item>fr</item>
-        <item>es</item>
-        <item>pt</item>
-        <item>nl</item>
-        <item>cn</item>
-        <item>ru</item>
-        <item>se</item>
-        <item>no</item>
-        <item>pl</item>
-        <item>ro</item>
-        <item>hr</item>
-        <item>hu</item>
-        <item>id</item>
-        <item>th</item>
-    </string-array>
-
-    <string-array name="language_names">
-        <item>Other</item>
-        <item>English</item>
-        <item>German</item>
-        <item>Italian</item>
-        <item>French</item>
-        <item>Spanish</item>
-        <item>Portuguese</item>
-        <item>Dutch</item>
-        <item>Chinese</item>
-        <item>Russian</item>
-        <item>Swedish</item>
-        <item>Norwegian</item>
-        <item>Polish</item>
-        <item>Romanian</item>
-        <item>Croatian</item>
-        <item>Hungarian</item>
-        <item>Indonesian</item>
-        <item>Thai</item>
-    </string-array>
-
-
 </resources>

@@ -8,13 +8,12 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
-import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.book.Languages
 
 class ManualAddLanguageSpinnerAdapter(
     context: Context,
-    private val languages: Array<LanguageItem>,
-    private val imageLoader: ImageLoader
-) : ArrayAdapter<ManualAddLanguageSpinnerAdapter.LanguageItem>(context, 0, languages) {
+    private val languages: Array<Languages>
+) : ArrayAdapter<Languages>(context, 0, languages) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
@@ -26,13 +25,7 @@ class ManualAddLanguageSpinnerAdapter(
         v!!.findViewById<TextView>(R.id.item_language_text)?.text = item.name
 
         val imageView = v.findViewById<ImageView>(R.id.item_language_image)
-
-        if (item.showFlag) {
-            imageLoader.loadImage(context, item.iconUrl, imageView)
-            imageView.visibility = View.VISIBLE
-        } else {
-            imageView.visibility = View.INVISIBLE
-        }
+        imageView.setImageResource(item.image)
 
         return v
     }
@@ -40,11 +33,4 @@ class ManualAddLanguageSpinnerAdapter(
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         return getView(position, convertView, parent)
     }
-
-    data class LanguageItem(
-        val name: String,
-        val shortName: String,
-        val iconUrl: String,
-        val showFlag: Boolean = true
-    )
 }

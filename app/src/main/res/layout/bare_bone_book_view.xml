@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/iv_bare_bone_book_view"
         android:layout_width="match_parent"
-        android:layout_height="104dp"
+        android:layout_height="92dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/darkest_hour" />
 

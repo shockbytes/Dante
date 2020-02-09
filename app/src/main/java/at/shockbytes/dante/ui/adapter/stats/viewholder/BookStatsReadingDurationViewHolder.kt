@@ -38,7 +38,12 @@ class BookStatsReadingDurationViewHolder(
 
                 val slowestUrl = slowest.book.thumbnailAddress
                 if (slowestUrl != null) {
-                    imageLoader.loadImage(containerView.context, slowestUrl, imageView)
+                    imageLoader.loadImageWithCornerRadius(
+                        containerView.context,
+                        slowestUrl,
+                        imageView,
+                        cornerDimension = containerView.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                    )
                 } else {
                     imageView.setImageResource(R.drawable.ic_placeholder)
                 }
@@ -51,7 +56,12 @@ class BookStatsReadingDurationViewHolder(
 
                 val fastestUrl = fastest.book.thumbnailAddress
                 if (fastestUrl != null) {
-                    imageLoader.loadImage(containerView.context, fastestUrl, imageView)
+                    imageLoader.loadImageWithCornerRadius(
+                        containerView.context,
+                        fastestUrl,
+                        imageView,
+                        cornerDimension = containerView.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                    )
                 } else {
                     imageView.setImageResource(R.drawable.ic_placeholder)
                 }

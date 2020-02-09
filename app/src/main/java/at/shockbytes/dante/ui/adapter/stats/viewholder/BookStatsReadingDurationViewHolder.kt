@@ -4,6 +4,7 @@ import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_reading_duration.*
@@ -28,10 +29,14 @@ class BookStatsReadingDurationViewHolder(
     }
 
     private fun showEmptyState() {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        item_stats_reading_duration_empty.setVisible(true)
+        item_stats_reading_duration_content.setVisible(false)
     }
 
     private fun showReadingDuration(content: BookStatsItem.ReadingDuration.Present) {
+        item_stats_reading_duration_empty.setVisible(false)
+        item_stats_reading_duration_content.setVisible(true)
+
         with(content) {
             bare_bone_book_view_slowest_book.apply {
                 setTitle(slowest.book.title)

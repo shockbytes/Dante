@@ -182,6 +182,7 @@
     <string name="statistics_most_reading_month">%s books read in %s</string>
     <string name="statistics_average_rating">Average rating</string>
     <string name="statistics_first_five_star_book">First 5 star book</string>
+    <string name="statistics_no_data">No data available</string>
     <string name="stars_with_placeholder">%s stars</string>
     <string name="books_per_month">books per month</string>
     <string name="most_active_month">books in %s</string>

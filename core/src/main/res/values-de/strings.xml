@@ -238,5 +238,6 @@
     <string name="most_active_month">Bücher in %s</string>
     <string name="pages_read">%d Seiten gelesen</string>
     <string name="pages_waiting">%d Seiten warten</string>
+    <string name="statistics_no_data">Keine Daten verfügbar</string>
 
 </resources>

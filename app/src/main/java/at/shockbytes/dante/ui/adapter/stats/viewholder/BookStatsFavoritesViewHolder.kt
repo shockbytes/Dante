@@ -30,10 +30,14 @@ class BookStatsFavoritesViewHolder(
     }
 
     private fun showEmptyState() {
-        TODO("Not implemented yet")
+        item_stats_favorites_empty.setVisible(true)
+        item_stats_favorites_content.setVisible(false)
     }
 
     private fun showReadingDuration(content: BookStatsItem.Favorites.Present) {
+        item_stats_favorites_empty.setVisible(false)
+        item_stats_favorites_content.setVisible(true)
+
         with(content) {
             setFavoriteAuthor(favoriteAuthor)
             setFirstFiveStarBook(firstFiveStarBook)

@@ -6,6 +6,7 @@ import at.shockbytes.dante.stats.BookStatsItem
 import at.shockbytes.dante.stats.BooksPagesInfo
 import at.shockbytes.dante.ui.custom.rbc.RelativeBarChartData
 import at.shockbytes.dante.ui.custom.rbc.RelativeBarChartEntry
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_books_and_pages.*
@@ -28,10 +29,14 @@ class BookStatsBookAndPagesViewHolder(
     }
 
     private fun showEmptyState() {
-        TODO("TODO")
+        item_stats_books_and_pages_empty.setVisible(true)
+        item_stats_books_and_pages_content.setVisible(false)
     }
 
     private fun showBooksAndPages(content: BookStatsItem.BooksAndPages.Present) {
+        item_stats_books_and_pages_empty.setVisible(false)
+        item_stats_books_and_pages_content.setVisible(true)
+
         with(content) {
             setBooks(booksAndPages.books)
             setPages(booksAndPages.pages)

@@ -30,16 +30,17 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/item_stats_reading_duration_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/stats_section_margin_top">
 
             <at.shockbytes.dante.ui.custom.BareBoneBookView
                 android:id="@+id/bare_bone_book_view_slowest_book"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_item_stats_reading_duration_slowest_header" />
 
@@ -54,12 +55,11 @@
                 android:id="@+id/tv_item_stats_reading_duration_slowest_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:text="@string/statistics_duration_slowest_book"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_item_stats_reading_duration_slowest_duration"
@@ -75,18 +75,19 @@
                 android:id="@+id/tv_item_stats_reading_duration_fastest_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:text="@string/statistics_duration_fastest_book"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline" />
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <at.shockbytes.dante.ui.custom.BareBoneBookView
                 android:id="@+id/bare_bone_book_view_fastest_book"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/bare_bone_book_view_slowest_book"
                 app:layout_constraintTop_toBottomOf="@+id/tv_item_stats_reading_duration_fastest_header" />

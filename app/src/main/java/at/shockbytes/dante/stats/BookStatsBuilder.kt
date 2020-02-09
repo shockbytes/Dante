@@ -167,11 +167,12 @@ object BookStatsBuilder {
         } else 0.0
     }
 
-    private fun averageBooksPerMonth(booksDone: List<BookEntity>): Double {
+    private fun averageBooksPerMonth(books: List<BookEntity>): Double {
+
+        val booksDone = books.filter { it.startDate > 0 && it.state == BookState.READ }
 
         val now = System.currentTimeMillis()
         val start = booksDone
-            .filter { it.startDate > 0 && it.state == BookState.READ }
             .map { it.startDate }
             .min() ?: now
         val monthsReading = Months.monthsBetween(DateTime(start), DateTime(now)).months

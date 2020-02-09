@@ -118,7 +118,7 @@
     <string name="statistics_books_read">%s Bücher schon gelesen</string>
     <string name="statistics_pages_waiting">%s Seiten warten auf dich</string>
     <string name="statistics_pages_read">%s Seiten schon gelesen</string>
-    <string name="statistics_average_rating">Durchschnittliche Bewertung: %s</string>
+    <string name="statistics_average_rating">Durchschnittliche Bewertung</string>
 
     <string name="prefs_category_books_general">Allgemein</string>
     <string name="prefs_dark_mode_title">Dark mode</string>
@@ -230,5 +230,6 @@
     <string name="language_spanish_full">Spanisch</string>
     <string name="language_swedish_full">Schwedisch</string>
     <string name="language_thai_full">Thai</string>
+    <string name="stars_with_placeholder">%s Sterne</string>
 
 </resources>

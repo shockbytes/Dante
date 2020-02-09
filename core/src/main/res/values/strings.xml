@@ -180,8 +180,11 @@
     <string name="statistics_duration_slowest_book">Slowest book</string>
     <string name="statistics_duration_fastest_book">Fastest book</string>
     <string name="statistics_most_reading_month">%s books read in %s</string>
-    <string name="statistics_average_rating">Average rating: %s</string>
+    <string name="statistics_average_rating">Average rating</string>
     <string name="statistics_first_five_star_book">First 5 star book</string>
+    <string name="stars_with_placeholder">%s stars</string>
+    <string name="books_per_month">books per month</string>
+    <string name="most_active_month">books in %s</string>
 
     <string name="prefs_category_books_general">General</string>
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>

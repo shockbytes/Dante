@@ -61,5 +61,4 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     abstract fun setupViews()
-
 }

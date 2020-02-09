@@ -45,7 +45,8 @@ class FragmentArgumentDelegate<T : Any> : ReadWriteProperty<Fragment, T> {
 
     override fun setValue(
         thisRef: Fragment,
-        property: KProperty<*>, value: T
+        property: KProperty<*>,
+        value: T
     ) {
         val args = thisRef.arguments
             ?: Bundle().also(thisRef::setArguments)
@@ -67,7 +68,8 @@ class FragmentNullableArgumentDelegate<T : Any?> : ReadWriteProperty<Fragment, T
 
     override fun setValue(
         thisRef: Fragment,
-        property: KProperty<*>, value: T?
+        property: KProperty<*>,
+        value: T?
     ) {
         val args = thisRef.arguments
             ?: Bundle().also(thisRef::setArguments)

@@ -128,12 +128,15 @@
     <string name="sort_strategy_title">Title</string>
     <string name="sort_strategy_progress">Progress</string>
     <string name="sort_strategy_pages">Pages</string>
+    <string name="sort_strategy_labels">Labels</string>
 
     <string name="sort_strategy_default_hint">Books are automatically inserted after scanning. You can rearrange your books by drag and drop.</string>
     <string name="sort_strategy_author_hint">Books are sorted by the name of the author. Manually rearranging your books will fall back to default sort.</string>
     <string name="sort_strategy_title_hint">Books are sorted by the book title. Manually rearranging your books will fall back to default sort.</string>
     <string name="sort_strategy_progress_hint">Books are sorted by your reading progress. Manually rearranging your books will fall back to default strategy.</string>
     <string name="sort_strategy_pages_hint">Sort your books by the ascending number of pages.</string>
+    <string name="sort_strategy_labels_hint">Sort your books by the attached labels.</string>
+
 
     <string name="dialogfragment_sort_by">Sort by</string>
     <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others…</string>

@@ -33,7 +33,7 @@ fun BookEntity.toJson(): JsonObject {
         addProperty("summary", summary)
 
         val labels = JsonArray().apply {
-            labels.forEach {  label ->
+            labels.forEach { label ->
                 val labelObject = JsonObject().apply {
                     addProperty("title", label.title)
                     addProperty("hexColor", label.hexColor)

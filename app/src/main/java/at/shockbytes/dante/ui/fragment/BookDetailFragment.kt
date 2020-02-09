@@ -584,7 +584,7 @@ class BookDetailFragment : BaseFragment(),
         chips_detail_label.removeAllViews()
 
         labels
-            .map (::buildChipViewFromLabel)
+            .map(::buildChipViewFromLabel)
             .forEach(chips_detail_label::addView)
     }
 

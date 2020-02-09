@@ -7,4 +7,4 @@ import kotlinx.android.parcel.Parcelize
 data class BookLabel(
     val title: String,
     val hexColor: String
-): Parcelable
+) : Parcelable

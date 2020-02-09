@@ -1,7 +1,6 @@
 package at.shockbytes.dante.core.book.realm
 
 import at.shockbytes.dante.util.Gsonify
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import io.realm.RealmList
 import io.realm.RealmObject

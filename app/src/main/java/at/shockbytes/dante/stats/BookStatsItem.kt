@@ -31,10 +31,17 @@ sealed class BookStatsItem {
         ) : Favorites()
     }
 
-    /**
-     * @param languages Occurrences of books in a certain language mapped to the language code
-     */
-    data class LanguageDistribution(val languages: Map<Languages, Int>) : BookStatsItem()
+    sealed class LanguageDistribution : BookStatsItem() {
+
+        object  Empty : LanguageDistribution()
+
+        /**
+         * @param languages Occurrences of books in a certain language mapped to the language code
+         */
+        data class Present(
+            val languages: Map<Languages, Int>
+        ): LanguageDistribution()
+    }
 
     sealed class Others : BookStatsItem() {
 

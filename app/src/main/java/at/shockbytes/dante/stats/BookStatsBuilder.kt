@@ -123,7 +123,11 @@ object BookStatsBuilder {
             .mapKeys { Languages.fromLanguageCode(it.key) }
             .mapValues { it.value.size }
 
-        return BookStatsItem.LanguageDistribution(languages)
+        return if (languages.isEmpty()) {
+            BookStatsItem.LanguageDistribution.Empty
+        } else {
+            BookStatsItem.LanguageDistribution.Present(languages)
+        }
     }
 
     private fun createOthersItem(books: List<BookEntity>): BookStatsItem {

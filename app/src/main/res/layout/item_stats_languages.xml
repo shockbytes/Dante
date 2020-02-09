@@ -15,10 +15,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart_item_stats_language"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_height="wrap_content" >
+
+        <include
+            android:id="@+id/item_stats_languages_empty"
+            layout="@layout/item_stats_empty_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart_item_stats_language"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp"/>
+
+    </FrameLayout>
 
 </LinearLayout>

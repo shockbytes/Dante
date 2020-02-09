@@ -18,7 +18,7 @@
             android:orientation="horizontal"
             android:weightSum="3"
             android:elevation="36dp"
-            android:background="@color/white"
+            android:background="@color/mainBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -277,6 +277,7 @@
                             android:text="@string/add_label"
                             android:backgroundTint="@color/colorAccent"
                             android:textColor="@color/white"
+                            app:iconTint="@color/white"
                             app:icon="@drawable/ic_add"
                             app:cornerRadius="20dp"
                             android:layout_height="match_parent"

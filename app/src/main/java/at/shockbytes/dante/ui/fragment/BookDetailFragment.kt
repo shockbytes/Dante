@@ -90,6 +90,7 @@ class BookDetailFragment : BaseFragment(),
             btn_detail_rate,
             btn_detail_notes,
             btn_detail_published,
+            layout_detail_dates,
             btn_detail_wishhlist_date,
             btn_detail_start_date,
             btn_detail_end_date

@@ -33,7 +33,7 @@ class StatsViewHolderFactory(
             R.layout.item_stats_books_and_pages -> BookStatsBookAndPagesViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_reading_duration -> BookStatsReadingDurationViewHolder(inflater.inflate(viewType, parent, false), imageLoader)
             R.layout.item_stats_favorites -> BookStatsFavoritesViewHolder(inflater.inflate(viewType, parent, false), imageLoader)
-            R.layout.item_stats_languages -> BookStatsLanguageViewHolder(inflater.inflate(viewType, parent, false), imageLoader)
+            R.layout.item_stats_languages -> BookStatsLanguageViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_others -> BookStatsOthersViewHolder(inflater.inflate(viewType, parent, false))
             else -> throw IllegalStateException("Unknown view type $viewType")
         }

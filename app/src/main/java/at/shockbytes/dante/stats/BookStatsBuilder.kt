@@ -13,9 +13,9 @@ object BookStatsBuilder {
 
     fun createFrom(books: List<BookEntity>): List<BookStatsItem> {
         return listOf(
-            createBooksAndPagesItem(books),
-            createReadingDurationItem(books),
-            createFavoriteItem(books),
+            // createBooksAndPagesItem(books),
+            // createReadingDurationItem(books),
+            // createFavoriteItem(books),
             createLanguageItem(books),
             createOthersItem(books)
         )

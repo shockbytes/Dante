@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#f00"
-    android:minHeight="200dp">
+    android:layout_marginTop="@dimen/stats_section_margin_top">
 
-    <TextView
+    <at.shockbytes.dante.ui.custom.StatsHeaderView
+        android:id="@+id/tv_item_stats_books_and_pages_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Books and Pages"
+        app:header_title="@string/statistics_header_pages"
+        app:show_divider="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

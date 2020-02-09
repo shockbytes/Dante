@@ -162,8 +162,9 @@
     <string name="manual_add_error">Please specify at least title, authors and amount of pages.</string>
 
     <!-- Statistics -->
-    <string name="statistics_header_pages"><![CDATA[Pages & Books]]></string>
+    <string name="statistics_header_pages">Pages &amp; Books</string>
     <string name="statistics_header_time">Reading time</string>
+    <string name="statistics_header_languages">Languages</string>
     <string name="statistics_header_favs">Favorites</string>
     <string name="statistics_header_other">Others</string>
 

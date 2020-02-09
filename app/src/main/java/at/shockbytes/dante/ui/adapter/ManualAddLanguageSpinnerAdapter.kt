@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
-import at.shockbytes.dante.core.image.ImageLoader
 
 class ManualAddLanguageSpinnerAdapter(
     context: Context,

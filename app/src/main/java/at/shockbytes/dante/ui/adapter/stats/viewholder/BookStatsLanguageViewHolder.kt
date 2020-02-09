@@ -1,10 +1,9 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
-import android.graphics.Typeface
 import android.view.View
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
-import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.stats.BookStatsItem
 import at.shockbytes.util.adapter.BaseAdapter
 import com.github.mikephil.charting.components.Legend
@@ -16,28 +15,28 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_languages.*
 
-
 class BookStatsLanguageViewHolder(
     override val containerView: View
 ) : BaseAdapter.ViewHolder<BookStatsItem>(containerView), LayoutContainer {
 
     override fun bindToView(content: BookStatsItem, position: Int) {
-        with(content as BookStatsItem.Languages) {
+        with(content as BookStatsItem.LanguageDistribution) {
             showLanguageChart(languages)
         }
     }
 
-    private fun showLanguageChart(languages: Map<String, Int>) {
+    private fun showLanguageChart(languages: Map<Languages, Int>) {
 
-        // TODO Add language icons
         val entries = languages.map { (language, books) ->
-            PieEntry(books.toFloat(), language)
+            val title = containerView.context.getString(language.title)
+            val iconDrawable = containerView.context.getDrawable(language.image)
+            PieEntry(books.toFloat(), title, iconDrawable)
         }
 
         val pieDataSet = PieDataSet(entries, "").apply {
             setColors(*ColorTemplate.VORDIPLOM_COLORS)
             setDrawValues(true)
-            valueFormatter = object: ValueFormatter() {
+            valueFormatter = object : ValueFormatter() {
                 override fun getFormattedValue(value: Float): String = ""
             }
             setDrawIcons(true)
@@ -69,5 +68,4 @@ class BookStatsLanguageViewHolder(
             invalidate()
         }
     }
-
 }

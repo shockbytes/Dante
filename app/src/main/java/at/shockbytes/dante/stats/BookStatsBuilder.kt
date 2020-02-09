@@ -4,6 +4,7 @@ import at.shockbytes.dante.core.bareBone
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.util.AppUtils
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -13,9 +14,9 @@ object BookStatsBuilder {
 
     fun createFrom(books: List<BookEntity>): List<BookStatsItem> {
         return listOf(
-            // createBooksAndPagesItem(books),
-            // createReadingDurationItem(books),
-            // createFavoriteItem(books),
+            createBooksAndPagesItem(books),
+            createReadingDurationItem(books),
+            createFavoriteItem(books),
             createLanguageItem(books),
             createOthersItem(books)
         )
@@ -119,9 +120,10 @@ object BookStatsBuilder {
         val languages = books.asSequence()
             .filter { it.language != null }
             .groupBy { it.language!! }
+            .mapKeys { Languages.fromLanguageCode(it.key) }
             .mapValues { it.value.size }
 
-        return BookStatsItem.Languages(languages)
+        return BookStatsItem.LanguageDistribution(languages)
     }
 
     private fun createOthersItem(books: List<BookEntity>): BookStatsItem {

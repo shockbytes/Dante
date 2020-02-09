@@ -1,6 +1,7 @@
 package at.shockbytes.dante.stats
 
 import at.shockbytes.dante.core.book.BareBoneBook
+import at.shockbytes.dante.core.book.Languages
 
 sealed class BookStatsItem {
 
@@ -33,7 +34,7 @@ sealed class BookStatsItem {
     /**
      * @param languages Occurrences of books in a certain language mapped to the language code
      */
-    data class Languages(val languages: Map<String, Int>) : BookStatsItem()
+    data class LanguageDistribution(val languages: Map<Languages, Int>) : BookStatsItem()
 
     sealed class Others : BookStatsItem() {
 

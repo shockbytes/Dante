@@ -148,7 +148,6 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
         viewModel.getImageState().observe(this, Observer { imageState ->
 
-
             when (imageState) {
                 is ManualAddViewModel.ImageState.ThumbnailUri -> {
                     imageLoader.loadImageUri(

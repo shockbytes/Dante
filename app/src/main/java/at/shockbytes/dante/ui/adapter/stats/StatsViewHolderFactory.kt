@@ -23,7 +23,7 @@ class StatsViewHolderFactory(
             is BookStatsItem.BooksAndPages -> R.layout.item_stats_books_and_pages
             is BookStatsItem.ReadingDuration -> R.layout.item_stats_reading_duration
             is BookStatsItem.Favorites -> R.layout.item_stats_favorites
-            is BookStatsItem.Languages -> R.layout.item_stats_languages
+            is BookStatsItem.LanguageDistribution -> R.layout.item_stats_languages
             is BookStatsItem.Others -> R.layout.item_stats_others
         }
     }

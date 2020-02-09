@@ -18,6 +18,7 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart_item_stats_language"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:layout_marginTop="16dp"/>
 
 </LinearLayout>

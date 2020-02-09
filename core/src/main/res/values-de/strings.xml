@@ -211,5 +211,24 @@
     <string name="discard">Verwerfen</string>
     <string name="update_book_discard_title">Änderungen verwerfen?</string>
     <string name="update_book_discard_message">Willst du die Änderungen verwerfen und zur Bücherübersicht zurückkehren?</string>
+    <string name="statistics_header_languages">Sprachen</string>
+    <string name="language_chinese_full">Chinesisch</string>
+    <string name="language_croatian_full">Kroatisch</string>
+    <string name="language_dutch_full">Holländisch</string>
+    <string name="language_english_full">Englisch</string>
+    <string name="language_french_full">Französisch</string>
+    <string name="language_german_full">Deutsch</string>
+    <string name="language_other">Andere</string>
+    <string name="language_polish_full">Polisch</string>
+    <string name="language_italian_full">Italienisch</string>
+    <string name="language_hungary_full">Ungarisch</string>
+    <string name="language_indonesian_full">Indonesisch</string>
+    <string name="language_norwegian_full">Norwegisch</string>
+    <string name="language_portuguese_full">Portugiesisch</string>
+    <string name="language_romanian_full">Rumänisch</string>
+    <string name="language_russian_full">Russisch</string>
+    <string name="language_spanish_full">Spanisch</string>
+    <string name="language_swedish_full">Schwedisch</string>
+    <string name="language_thai_full">Thai</string>
 
 </resources>

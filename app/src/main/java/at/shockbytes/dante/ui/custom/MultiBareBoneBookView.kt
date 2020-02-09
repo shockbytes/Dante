@@ -20,6 +20,7 @@ class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayou
     }
 
     fun setMultipleBookImages(urls: List<String?>, imageLoader: ImageLoader) {
+        container_multi_bare_bone_book_view.removeAllViews()
 
         urls
             .mapNotNull { url ->

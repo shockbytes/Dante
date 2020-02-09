@@ -231,5 +231,12 @@
     <string name="language_swedish_full">Schwedisch</string>
     <string name="language_thai_full">Thai</string>
     <string name="stars_with_placeholder">%s Sterne</string>
+    <string name="books_per_month">Bücher pro Monat</string>
+    <string name="books_read">%d Bücher gelesen</string>
+    <string name="books_reading">%d Bücher werden gelesen</string>
+    <string name="books_waiting">%d Bücher warten</string>
+    <string name="most_active_month">Bücher in %s</string>
+    <string name="pages_read">%d Seiten gelesen</string>
+    <string name="pages_waiting">%d Seiten warten</string>
 
 </resources>

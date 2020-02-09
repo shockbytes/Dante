@@ -1,19 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/stats_section_margin_top">
+    android:layout_marginTop="@dimen/stats_section_margin_top"
+    android:orientation="vertical">
 
     <at.shockbytes.dante.ui.custom.StatsHeaderView
         android:id="@+id/tv_item_stats_books_and_pages_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:header_title="@string/statistics_header_pages"
-        app:show_divider="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:show_divider="false" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <at.shockbytes.dante.ui.custom.rbc.RelativeBarChart
+        android:id="@+id/rbc_item_stats_books"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/tv_item_stats_books_waiting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="20 books waiting" />
+
+        <TextView
+            android:id="@+id/tv_item_stats_books_reading"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="3 books reading" />
+
+        <TextView
+            android:id="@+id/tv_item_stats_books_read"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="60 books read" />
+
+    </LinearLayout>
+
+    <at.shockbytes.dante.ui.custom.rbc.RelativeBarChart
+        android:id="@+id/rbc_item_stats_pages"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/tv_item_stats_pages_waiting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="20000 pages waiting" />
+
+        <TextView
+            android:id="@+id/tv_item_stats_pages_read"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            tools:text="60000 pages read" />
+
+    </LinearLayout>
+
+</LinearLayout>

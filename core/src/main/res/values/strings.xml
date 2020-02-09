@@ -186,6 +186,12 @@
     <string name="books_per_month">books per month</string>
     <string name="most_active_month">books in %s</string>
 
+    <string name="books_reading">%d books reading</string>
+    <string name="books_read">%d books read</string>
+    <string name="books_waiting">%d books waiting</string>
+    <string name="pages_read">%d pages read</string>
+    <string name="pages_waiting">%d pages waiting</string>
+
     <string name="prefs_category_books_general">General</string>
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>
     <string name="prefs_dark_mode_title">Dark mode</string>

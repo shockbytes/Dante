@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 
-
 class RelativeBarChart @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
@@ -29,15 +28,11 @@ class RelativeBarChart @JvmOverloads constructor(
 
     private fun buildDrawItems(data: RelativeBarChartData, parentWidth: Float): List<DrawItem> {
 
-        val filtered = data.entries.filter { it.value > 0 }
-
-        if (filtered.size == 1) {
-            return listOf(DrawItem.SingleItem(0f, parentWidth, Paint().apply {
-                color = ContextCompat.getColor(context, filtered[0].color)
-            }))
+        if (data.size == 1) {
+            return listOf(DrawItem.SingleItem(0f, parentWidth, createPaint(data.filteredEntries[0].color)))
         }
 
-        return filtered.mapIndexed { index, e ->
+        return data.filteredEntries.mapIndexed { index, e ->
 
             when (index) {
                 0 -> {
@@ -45,7 +40,7 @@ class RelativeBarChart @JvmOverloads constructor(
                     val itemWidth = (e.value / data.absoluteValue) * parentWidth
                     DrawItem.FirstItem(0f, itemWidth, createPaint(e.color))
                 }
-                (data.entries.size - 1) -> {
+                (data.size - 1) -> {
                     // Handle last item
                     val startX = (data.startValueOf(index) / data.absoluteValue) * parentWidth
                     val itemWidth = (e.value / data.absoluteValue) * parentWidth
@@ -119,7 +114,6 @@ class RelativeBarChart @JvmOverloads constructor(
                     RectF(endX - parentHeight.div(2), 0f, endX, parentHeight),
                     paint
                 )
-
             }
         }
 

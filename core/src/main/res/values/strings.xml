@@ -285,5 +285,23 @@
     <string name="dante_install">You installed Dante</string>
     <string name="timeline_explanation">The timeline shows you exactly when you read each and every book in your library. Each book is associated to the month when you started reading it.</string>
     <string name="statistics_first_five_star">First 5 star book</string>
+    <string name="language_other">Other</string>
+    <string name="language_english_full">English</string>
+    <string name="language_german_full">German</string>
+    <string name="language_italian_full">Italian</string>
+    <string name="language_french_full">French</string>
+    <string name="language_spanish_full">Spanish</string>
+    <string name="language_portuguese_full">Portuguese</string>
+    <string name="language_dutch_full">Dutch</string>
+    <string name="language_chinese_full">Chinese</string>
+    <string name="language_russian_full">Russian</string>
+    <string name="language_swedish_full">Swedish</string>
+    <string name="language_norwegian_full">Norwegian</string>
+    <string name="language_polish_full">Polish</string>
+    <string name="language_romanian_full">Romanian</string>
+    <string name="language_croatian_full">Croatian</string>
+    <string name="language_hungary_full">Hungary</string>
+    <string name="language_indonesian_full">Indonesian</string>
+    <string name="language_thai_full">Thai</string>
 
 </resources>

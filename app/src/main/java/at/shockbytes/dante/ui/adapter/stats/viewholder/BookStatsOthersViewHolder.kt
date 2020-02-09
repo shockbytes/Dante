@@ -5,6 +5,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsItem
 import at.shockbytes.dante.stats.MostActiveMonth
 import at.shockbytes.dante.util.roundDouble
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_others.*
@@ -27,10 +28,14 @@ class BookStatsOthersViewHolder(
     }
 
     private fun showEmptyState() {
-        TODO("implement this")
+        item_stats_others_empty.setVisible(true)
+        item_stats_others_content.setVisible(false)
     }
 
     private fun showInformation(content: BookStatsItem.Others.Present) {
+        item_stats_others_empty.setVisible(false)
+        item_stats_others_content.setVisible(true)
+
         with(content) {
             setAverageBooksPerMonth(averageBooksPerMonth)
             setMostActiveMonth(mostActiveMonth)
@@ -48,7 +53,8 @@ class BookStatsOthersViewHolder(
             tv_item_stats_others_most_active_month_content.text = mostActiveMonth.finishedBooks.toString()
             tv_item_stats_others_most_active_month_description.text = containerView.context.getString(R.string.most_active_month, mostActiveMonth.monthAsString)
         } else {
-            // TODO What to do here???
+            tv_item_stats_others_most_active_month_content.text = "-"
+            tv_item_stats_others_most_active_month_description.text = "---"
         }
     }
 

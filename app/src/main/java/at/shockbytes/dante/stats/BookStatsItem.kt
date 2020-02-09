@@ -33,14 +33,14 @@ sealed class BookStatsItem {
 
     sealed class LanguageDistribution : BookStatsItem() {
 
-        object  Empty : LanguageDistribution()
+        object Empty : LanguageDistribution()
 
         /**
          * @param languages Occurrences of books in a certain language mapped to the language code
          */
         data class Present(
             val languages: Map<Languages, Int>
-        ): LanguageDistribution()
+        ) : LanguageDistribution()
     }
 
     sealed class Others : BookStatsItem() {

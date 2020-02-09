@@ -56,18 +56,18 @@ object BookStatsBuilder {
 
     private fun createReadingDurationItem(books: List<BookEntity>): BookStatsItem {
 
-            val booksWithDuration = books
-                .asSequence()
-                .filter { it.startDate > 0 && it.state == BookState.READ } // Only take books where the start date is set
-                .map { book ->
-                    val days = Duration(book.endDate - book.startDate)
-                        .standardDays
-                        .coerceAtLeast(1)
-                        .toInt()
-                    BookWithDuration(book.bareBone(), days)
-                }
-                .sortedBy { it.days }
-                .toList()
+        val booksWithDuration = books
+            .asSequence()
+            .filter { it.startDate > 0 && it.state == BookState.READ } // Only take books where the start date is set
+            .map { book ->
+                val days = Duration(book.endDate - book.startDate)
+                    .standardDays
+                    .coerceAtLeast(1)
+                    .toInt()
+                BookWithDuration(book.bareBone(), days)
+            }
+            .sortedBy { it.days }
+            .toList()
 
         return if (booksWithDuration.isNotEmpty()) {
             BookStatsItem.ReadingDuration.Present(
@@ -132,15 +132,15 @@ object BookStatsBuilder {
 
     private fun createOthersItem(books: List<BookEntity>): BookStatsItem {
 
-        if (books.isEmpty()) {
-            BookStatsItem.ReadingDuration.Empty
+        return if (books.isEmpty()) {
+            BookStatsItem.Others.Empty
+        } else {
+            BookStatsItem.Others.Present(
+                averageRating = averageBookRating(books),
+                averageBooksPerMonth = averageBooksPerMonth(books),
+                mostActiveMonth = mostActiveMonth(books)
+            )
         }
-
-        return BookStatsItem.Others.Present(
-            averageRating = averageBookRating(books),
-            averageBooksPerMonth = averageBooksPerMonth(books),
-            mostActiveMonth = mostActiveMonth(books)
-        )
     }
 
     private fun mostActiveMonth(books: List<BookEntity>): MostActiveMonth? {

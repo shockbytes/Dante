@@ -33,6 +33,7 @@
         android:id="@+id/rv_timeline"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layoutAnimation="@anim/rv_fall_down_animation"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </FrameLayout>

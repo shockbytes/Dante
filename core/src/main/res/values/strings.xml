@@ -109,9 +109,11 @@
     <string name="search_hint">Search…</string>
     <string name="preview_failed">Cannot open the camera. Restarting your phone may help!</string>
     <string name="add">Add</string>
-    <string name="add_label">Add Label</string>
+    <string name="add_label">Label</string>
     <string name="create_new_label">Create new Label</string>
     <string name="pick_a_label">Pick a label</string>
+    <string name="new_label_name">Name</string>
+    <string name="choose_color">Choose a color</string>
     <string name="search_online">Search online</string>
     <string name="search_online_hint">No books found in your library. Do you want to search online?</string>
     <string name="search_invalid_query">Invalid search query</string>

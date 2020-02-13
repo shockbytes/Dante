@@ -239,10 +239,12 @@
     <string name="pages_read">%d Seiten gelesen</string>
     <string name="pages_waiting">%d Seiten warten</string>
     <string name="statistics_no_data">Keine Daten verfügbar</string>
-    <string name="add_label">Label hinzufügen</string>
+    <string name="add_label">Label</string>
     <string name="create_new_label">Neues Label</string>
     <string name="pick_a_label">Label wählen</string>
     <string name="sort_strategy_labels">Labels</string>
     <string name="sort_strategy_labels_hint">Sortiere deine Bücher aufgrund der beigefügten Label</string>
+    <string name="choose_color">Farbe wählen</string>
+    <string name="new_label_name">Name</string>
 
 </resources>

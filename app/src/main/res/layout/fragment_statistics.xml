@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layoutAnimation="@anim/stats_section_anim"
+        android:layoutAnimation="@anim/rv_fall_down_animation"
         app:layout_constraintWidth_max="@dimen/max_width" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -112,6 +112,7 @@
     <string name="add_label">Label</string>
     <string name="create_new_label">Create new Label</string>
     <string name="pick_a_label">Pick a label</string>
+    <string name="new_label_error">Please specify the name and pick a color</string>
     <string name="new_label_name">Name</string>
     <string name="choose_color">Choose a color</string>
     <string name="search_online">Search online</string>

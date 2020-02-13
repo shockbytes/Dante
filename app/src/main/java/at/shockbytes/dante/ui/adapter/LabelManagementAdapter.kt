@@ -14,8 +14,16 @@ import kotlinx.android.synthetic.main.item_book_label_management.*
 
 class LabelManagementAdapter(
     context: Context,
-    onItemClickListener: OnItemClickListener<BookLabel>
+    onItemClickListener: OnItemClickListener<BookLabel>,
+    private val onLabelDeleteClickListener: ((BookLabel) -> Unit)
 ) : BaseAdapter<BookLabel>(context, onItemClickListener) {
+
+    fun updateData(labels: List<BookLabel>) {
+        data.clear()
+        data.addAll(labels)
+
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BookLabel> {
         val view = inflater.inflate(R.layout.item_book_label_management, parent, false)
@@ -36,6 +44,10 @@ class LabelManagementAdapter(
                     Color.parseColor(hexColor)
                 ).let { rbd ->
                     iv_item_label_management.setImageDrawable(rbd)
+                }
+
+                btn_item_label_management_delete.setOnClickListener {
+                    onLabelDeleteClickListener(this)
                 }
             }
         }

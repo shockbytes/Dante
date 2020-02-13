@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.dante.R
-import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.isContentSame
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer

@@ -1,12 +1,10 @@
 package at.shockbytes.dante.ui.custom.colorpicker
 
-import android.R.animator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.SimpleItemAnimator
 import at.shockbytes.dante.R
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.synthetic.main.color_picker_view.view.*
@@ -46,8 +44,6 @@ class ColorPickerView @JvmOverloads constructor(
 
     val selectedItem: ColorPickerItem?
         get() = colors.find { it.isSelected }
-
-    var onItemSelectedListener: ((ColorPickerItem) -> Unit)? = null
 
     init {
         View.inflate(context, R.layout.color_picker_view, this)

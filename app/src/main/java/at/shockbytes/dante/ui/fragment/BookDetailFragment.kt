@@ -43,6 +43,7 @@ import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
@@ -252,6 +253,11 @@ class BookDetailFragment : BaseFragment(),
                 Timber.e(throwable)
             })
             .addTo(compositeDisposable)
+
+        viewModel.onAddLabelsRequest
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::showLabelPicker, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     private fun createBookFinishedFragment(title: String): SimpleRequestDialogFragment {
@@ -411,7 +417,7 @@ class BookDetailFragment : BaseFragment(),
 
         btn_add_label.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showLabelPicker()
+            viewModel.requestAddLabels()
         }
     }
 
@@ -478,9 +484,10 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun showLabelPicker() {
+    private fun showLabelPicker(alreadyAttachedLabels: List<BookLabel>) {
+
         LabelPickerBottomSheetFragment
-            .newInstance(alreadyAttachedLabels = listOf())
+            .newInstance(alreadyAttachedLabels)
             .setOnLabelSelectedListener(viewModel::attachLabel)
             .show(childFragmentManager, "pick-label-bottom-sheet")
     }

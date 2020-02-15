@@ -20,9 +20,10 @@ class LabelManagementViewModel @Inject constructor(
     fun requestAvailableLabels(alreadyAttachedLabels: List<BookLabel>) {
         bookEntityDao.bookLabelObservable
             .map { labels ->
-                labels.filter { label ->
+                val a = labels.filter { label ->
                     !alreadyAttachedLabels.contains(label)
                 }
+                a
             }
             .subscribe(bookLabels::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)

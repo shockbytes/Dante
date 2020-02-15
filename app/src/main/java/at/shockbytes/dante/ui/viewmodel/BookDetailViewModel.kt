@@ -46,6 +46,9 @@ class BookDetailViewModel @Inject constructor(
     private val requestBookEditSubject = PublishSubject.create<BookEntity>()
     val onBookEditRequest: Observable<BookEntity> = requestBookEditSubject
 
+    private val addLabelsSubject = PublishSubject.create<List<BookLabel>>()
+    val onAddLabelsRequest: Observable<List<BookLabel>> = addLabelsSubject
+
     private var bookId: Long = -1L
 
     fun initializeWithBookId(id: Long) {
@@ -211,6 +214,10 @@ class BookDetailViewModel @Inject constructor(
             updateDaoAndObserver(copy)
         }
 
+    }
+
+    fun requestAddLabels() {
+        getBookFromLiveData()?.labels?.let(addLabelsSubject::onNext)
     }
 
     data class PageInfo(

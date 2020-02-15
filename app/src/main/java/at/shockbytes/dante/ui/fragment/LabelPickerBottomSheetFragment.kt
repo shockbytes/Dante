@@ -9,6 +9,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.LabelManagementAdapter
+import at.shockbytes.dante.ui.adapter.OnLabelActionClickedListener
 import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
 import at.shockbytes.dante.util.addTo
@@ -43,7 +44,11 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
                     dismiss()
                 }
             },
-            onLabelDeleteClickListener = viewModel::deleteBookLabel
+            object: OnLabelActionClickedListener {
+                override fun onLabelDeleted(label: BookLabel) {
+                    viewModel.deleteBookLabel(label)
+                }
+            }
         )
     }
 

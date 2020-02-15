@@ -15,7 +15,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textColor="@color/colorSecondaryText"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_item_label_management_delete"
+        app:layout_constraintEnd_toStartOf="@+id/btn_item_label_management_overflow"
         app:layout_constraintStart_toEndOf="@+id/iv_item_label_management"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Must read" />
@@ -33,7 +33,7 @@
         tools:srcCompat="@color/color_error" />
 
     <ImageButton
-        android:id="@+id/btn_item_label_management_delete"
+        android:id="@+id/btn_item_label_management_overflow"
         style="?attr/borderlessButtonStyle"
         android:layout_width="48dp"
         android:layout_height="0dp"
@@ -43,5 +43,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete" />
+        app:srcCompat="@drawable/ic_overflow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

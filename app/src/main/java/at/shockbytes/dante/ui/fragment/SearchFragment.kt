@@ -1,10 +1,10 @@
 package at.shockbytes.dante.ui.fragment
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.injection.AppComponent
@@ -15,6 +15,7 @@ import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.hideKeyboard
+import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.synthetic.main.fragment_search.*
 import java.net.UnknownHostException
@@ -46,8 +47,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = ViewModelProviders.of(activity as SearchActivity, vmFactory)[SearchViewModel::class.java]
+        viewModel = viewModelOfActivity(activity as SearchActivity, vmFactory)
     }
 
     override fun setupViews() {
@@ -55,8 +55,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
         rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, imageLoader, addClickedListener, onItemClickListener = this)
         fragment_search_rv.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         fragment_search_rv.adapter = rvAdapter
-        val dividerItemDecoration = androidx.recyclerview.widget.DividerItemDecoration(fragment_search_rv.context,
-            androidx.recyclerview.widget.DividerItemDecoration.VERTICAL)
+        val dividerItemDecoration = DividerItemDecoration(fragment_search_rv.context, DividerItemDecoration.VERTICAL)
         dividerItemDecoration.setDrawable(ContextCompat.getDrawable(fragment_search_rv.context, R.drawable.recycler_divider)!!)
         fragment_search_rv.addItemDecoration(dividerItemDecoration)
 

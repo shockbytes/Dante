@@ -61,7 +61,8 @@ class MainBookFragment :
     private lateinit var viewModel: BookListViewModel
 
     private val onLabelClickedListener: ((BookLabel) -> Unit) = { label ->
-        showToast(label.title)
+        LabelCategoryBottomSheetFragment.newInstance(label)
+            .show(childFragmentManager, "show-label-bottom-sheet")
     }
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {

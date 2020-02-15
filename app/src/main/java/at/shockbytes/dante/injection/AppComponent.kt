@@ -17,6 +17,7 @@ import at.shockbytes.dante.ui.fragment.BarcodeDetectorFragment
 import at.shockbytes.dante.ui.fragment.LegacyBackupFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
+import at.shockbytes.dante.ui.fragment.LabelCategoryBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LabelPickerBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
@@ -123,4 +124,6 @@ interface AppComponent {
     fun inject(remoteViewsService: DanteRemoteViewsService)
 
     fun inject(fragment: LabelPickerBottomSheetFragment)
+
+    fun inject(labelCategoryBottomSheetFragment: LabelCategoryBottomSheetFragment)
 }

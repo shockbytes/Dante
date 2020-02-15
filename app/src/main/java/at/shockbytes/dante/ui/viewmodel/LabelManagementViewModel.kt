@@ -6,10 +6,8 @@ import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 class LabelManagementViewModel @Inject constructor(

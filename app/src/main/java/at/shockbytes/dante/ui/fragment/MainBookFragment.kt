@@ -18,6 +18,7 @@ import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
@@ -58,6 +59,10 @@ class MainBookFragment :
     private lateinit var bookState: BookState
     private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
+
+    private val onLabelClickedListener: ((BookLabel) -> Unit) = { label ->
+        showToast(label.title)
+    }
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, data: Intent?) {
@@ -148,7 +153,8 @@ class MainBookFragment :
             featureFlagging[FeatureFlag.OverflowMenu],
             onActionClickedListener = this,
             onItemClickListener = this,
-            onItemMoveListener = this
+            onItemMoveListener = this,
+            onLabelClickedListener = onLabelClickedListener
         )
 
         fragment_book_main_rv.apply {

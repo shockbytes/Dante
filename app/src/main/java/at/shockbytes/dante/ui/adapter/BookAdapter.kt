@@ -37,6 +37,7 @@ class BookAdapter(
     private val imageLoader: ImageLoader,
     private val useNewOverflowReplacement: Boolean,
     private val onActionClickedListener: OnBookActionClickedListener,
+    private val onLabelClickedListener: ((BookLabel) -> Unit),
     onItemClickListener: OnItemClickListener<BookEntity>,
     onItemMoveListener: OnItemMoveListener<BookEntity>
 ) : BaseAdapter<BookEntity>(
@@ -125,6 +126,9 @@ class BookAdapter(
                 chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(label.hexColor))
                 text = label.title
                 setTextColor(Color.WHITE)
+                setOnClickListener {
+                    onLabelClickedListener(label)
+                }
             }
         }
 

@@ -46,7 +46,7 @@ class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel>() {
             }
 
             if (title.isNotEmpty() && !labelColor.isNullOrEmpty()) {
-                val label = BookLabel(title, labelColor)
+                val label = BookLabel.unassignedLabel(title, labelColor)
                 applyListener?.invoke(label)
                 activity?.hideKeyboard()
                 dismiss()

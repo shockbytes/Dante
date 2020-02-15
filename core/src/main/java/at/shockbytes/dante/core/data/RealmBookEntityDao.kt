@@ -46,6 +46,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.instance.where(labelClass)
             .sort("title", Sort.DESCENDING)
+            .distinct("title")
             .findAllAsync()
             .asFlowable()
             .map { labelMapper.mapTo(it) }
@@ -119,6 +120,8 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         realm.instance.executeTransaction { realm ->
             realm.where(labelClass)
                 .equalTo("title", bookLabel.title)
+                .and()
+                .equalTo("id", bookLabel.bookId)
                 .findFirst()
                 ?.deleteFromRealm()
         }

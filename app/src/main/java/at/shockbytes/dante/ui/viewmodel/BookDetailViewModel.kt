@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import android.os.Parcelable
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.navigation.NotesBundle
@@ -196,6 +197,20 @@ class BookDetailViewModel @Inject constructor(
 
     fun reload() {
         fetchBook(bookId)
+    }
+
+    fun attachLabel(bookLabel: BookLabel) {
+
+        getBookFromLiveData()?.let { book ->
+
+            val updatedLabels = book.labels.toMutableList()
+                .apply {
+                    add(bookLabel)
+                }
+            val copy = book.copy(labels = updatedLabels)
+            updateDaoAndObserver(copy)
+        }
+
     }
 
     data class PageInfo(

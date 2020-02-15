@@ -481,9 +481,7 @@ class BookDetailFragment : BaseFragment(),
     private fun showLabelPicker() {
         LabelPickerBottomSheetFragment
             .newInstance(alreadyAttachedLabels = listOf())
-            .setOnLabelSelectedListener { label ->
-                showToast(label.title)
-            }
+            .setOnLabelSelectedListener(viewModel::attachLabel)
             .show(childFragmentManager, "pick-label-bottom-sheet")
     }
 

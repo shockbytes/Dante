@@ -45,6 +45,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.instance.where(labelClass)
+            .equalTo("bookId", BookLabel.UNASSIGNED_LABEL_ID)
             .sort("title", Sort.DESCENDING)
             .distinct("title")
             .findAllAsync()

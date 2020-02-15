@@ -16,7 +16,7 @@ data class BookLabel(
 
     companion object {
 
-        private const val UNASSIGNED_LABEL_ID = -1L
+        const val UNASSIGNED_LABEL_ID = -1L
 
         fun unassignedLabel(title: String, hexColor: String): BookLabel {
             return BookLabel(UNASSIGNED_LABEL_ID, title, hexColor)

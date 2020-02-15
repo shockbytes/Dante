@@ -16,8 +16,15 @@ class LabelManagementViewModel @Inject constructor(
     private val bookEntityDao: BookEntityDao
 ) : BaseViewModel() {
 
-    private val bookLabels = MutableLiveData<List<BookLabel>>()
-    fun getBookLabels(): LiveData<List<BookLabel>> = bookLabels
+    sealed class LabelState {
+
+        object Empty : LabelState()
+
+        data class Present(val labels: List<BookLabel>) : LabelState()
+    }
+
+    private val bookLabelState = MutableLiveData<LabelState>()
+    fun getBookLabelState(): LiveData<LabelState> = bookLabelState
 
     private val newLabelRequestSubject = PublishSubject.create<List<BookLabel>>()
     val onCreateNewLabelRequest: Observable<List<BookLabel>> = newLabelRequestSubject
@@ -25,11 +32,17 @@ class LabelManagementViewModel @Inject constructor(
     fun requestAvailableLabels(alreadyAttachedLabels: List<BookLabel>) {
         bookEntityDao.bookLabelObservable
             .map { labels ->
-                labels.filter { label ->
+                val filtered = labels.filter { label ->
                     alreadyAttachedLabels.none { it.hexColor == label.hexColor && it.title == label.title }
                 }
+
+                if (filtered.isNotEmpty()) {
+                    LabelState.Present(filtered)
+                } else {
+                    LabelState.Empty
+                }
             }
-            .subscribe(bookLabels::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .subscribe(bookLabelState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
@@ -42,6 +55,13 @@ class LabelManagementViewModel @Inject constructor(
     }
 
     fun requestCreateNewLabel() {
-        bookLabels.value?.let(newLabelRequestSubject::onNext)
+        bookLabelState.value?.let { state ->
+
+            val labels = when (state) {
+                LabelState.Empty -> listOf()
+                is LabelState.Present -> state.labels
+            }
+            newLabelRequestSubject.onNext(labels)
+        }
     }
 }

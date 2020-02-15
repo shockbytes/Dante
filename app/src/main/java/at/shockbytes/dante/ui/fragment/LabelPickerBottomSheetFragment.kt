@@ -5,7 +5,6 @@ import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.injection.AppComponent
@@ -59,7 +58,7 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
 
     override fun bindViewModel() {
         viewModel.requestAvailableLabels(attachedLabels.labels)
-        viewModel.getBookLabels().observe(this, Observer(labelAdapter::updateData))
+        viewModel.getBookLabelState().observe(this, Observer(::handleLabelState))
 
         viewModel.onCreateNewLabelRequest
             .observeOn(AndroidSchedulers.mainThread())
@@ -71,6 +70,18 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
                 Timber.e(throwable)
             })
             .addTo(compositeDisposable)
+    }
+
+    private fun handleLabelState(state: LabelManagementViewModel.LabelState) {
+        when (state) {
+            LabelManagementViewModel.LabelState.Empty -> {
+                tv_pick_labels_empty.visibility = View.VISIBLE
+            }
+            is LabelManagementViewModel.LabelState.Present -> {
+                tv_pick_labels_empty.visibility = View.INVISIBLE
+                labelAdapter.updateData(state.labels)
+            }
+        }
     }
 
     override fun unbindViewModel() = Unit

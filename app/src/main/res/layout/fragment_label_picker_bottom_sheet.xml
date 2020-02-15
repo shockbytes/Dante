@@ -37,6 +37,19 @@
             tools:itemCount="8"
             tools:listitem="@layout/item_book_label_management" />
 
+        <TextView
+            android:id="@+id/tv_pick_labels_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorSecondaryText"
+            android:text="@string/empty_label_picker"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_pick_labels"
+            app:layout_constraintEnd_toEndOf="@+id/rv_pick_labels"
+            app:layout_constraintStart_toStartOf="@+id/rv_pick_labels"
+            app:layout_constraintTop_toTopOf="@+id/rv_pick_labels" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_create_new_label"
             style="@style/AppTheme.RoundedButton.Outlined"

@@ -246,5 +246,8 @@
     <string name="sort_strategy_labels_hint">Sortiere deine Bücher aufgrund der beigefügten Label</string>
     <string name="choose_color">Farbe wählen</string>
     <string name="new_label_name">Name</string>
+    <string name="new_label_error">Bitte bennene das Label und wähle eine Farbe</string>
+    <string name="new_label_title_exists">Dieser Titel existiert bereits</string>
+    <string name="empty_label_picker">Keine Labels verfügbar.\\n Erstelle ein neues zuerst.#</string>
 
 </resources>

@@ -44,7 +44,7 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
                     dismiss()
                 }
             },
-            object: OnLabelActionClickedListener {
+            object : OnLabelActionClickedListener {
                 override fun onLabelDeleted(label: BookLabel) {
                     viewModel.deleteBookLabel(label)
                 }

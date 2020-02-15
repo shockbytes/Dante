@@ -121,7 +121,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             realm.where(labelClass)
                 .equalTo("title", bookLabel.title)
                 .and()
-                .equalTo("id", bookLabel.bookId)
+                .equalTo("bookId", bookLabel.bookId)
                 .findFirst()
                 ?.deleteFromRealm()
         }

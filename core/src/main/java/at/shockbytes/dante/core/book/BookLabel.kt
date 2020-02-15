@@ -10,14 +10,16 @@ data class BookLabel(
     val hexColor: String
 ) : Parcelable {
 
+    fun withBookId(bookId: Long): BookLabel {
+        return copy(bookId = bookId)
+    }
 
     companion object {
 
-        const val UNASSIGNED_LABEL_ID = -1L
+        private const val UNASSIGNED_LABEL_ID = -1L
 
         fun unassignedLabel(title: String, hexColor: String): BookLabel {
             return BookLabel(UNASSIGNED_LABEL_ID, title, hexColor)
         }
-
     }
 }

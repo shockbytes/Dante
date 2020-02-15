@@ -204,20 +204,25 @@ class BookDetailViewModel @Inject constructor(
 
     fun attachLabel(bookLabel: BookLabel) {
 
+        val attachableLabel = bookLabel.withBookId(bookId)
+
         getBookFromLiveData()?.let { book ->
 
-            val updatedLabels = book.labels.toMutableList()
-                .apply {
-                    add(bookLabel)
-                }
+            val updatedLabels = book.labels + attachableLabel
             val copy = book.copy(labels = updatedLabels)
             updateDaoAndObserver(copy)
         }
-
     }
 
     fun requestAddLabels() {
         getBookFromLiveData()?.labels?.let(addLabelsSubject::onNext)
+    }
+
+    fun removeLabel(label: BookLabel) {
+        bookDao.deleteBookLabel(label)
+
+        // Reload the book once a label got deleted
+        fetchBook(bookId)
     }
 
     data class PageInfo(

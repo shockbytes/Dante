@@ -12,11 +12,14 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.LabelManagementAdapter
 import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_label_picker_bottom_sheet.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
@@ -57,6 +60,17 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
     override fun bindViewModel() {
         viewModel.requestAvailableLabels(attachedLabels.labels)
         viewModel.getBookLabels().observe(this, Observer(labelAdapter::updateData))
+
+        viewModel.onCreateNewLabelRequest
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ labels ->
+                CreateLabelDialogFragment.newInstance(labels)
+                    .setOnApplyListener(viewModel::createNewBookLabel)
+                    .show(childFragmentManager, "create-label-dialog-fragment")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     override fun unbindViewModel() = Unit
@@ -67,9 +81,7 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
         }
 
         btn_create_new_label.setOnClickListener {
-            CreateLabelDialogFragment.newInstance()
-                .setOnApplyListener(viewModel::createNewBookLabel)
-                .show(childFragmentManager, "create-label-dialog-fragment")
+            viewModel.requestCreateNewLabel()
         }
     }
 

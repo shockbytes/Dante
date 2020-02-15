@@ -598,9 +598,12 @@ class BookDetailFragment : BaseFragment(),
         return Chip(requireContext()).apply {
             chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(label.hexColor))
             text = label.title
+            setTextColor(Color.WHITE)
+            closeIconTint = ColorStateList.valueOf(Color.WHITE)
             isCloseIconVisible = true
-            setOnCloseIconClickListener {
-                showToast("Remove ${label.title}")
+            setOnCloseIconClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                viewModel.removeLabel(label)
             }
         }
     }

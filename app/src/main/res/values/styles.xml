@@ -73,6 +73,11 @@
         <item name="android:textCursorDrawable">@null</item>
     </style>
 
+    <style name="TextInputCounterAppearance">
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:textColor">@color/colorTertiaryText</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 
     <style name="BottomSheetTheme" parent="@style/Theme.MaterialComponents.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>

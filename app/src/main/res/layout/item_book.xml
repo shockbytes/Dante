@@ -135,7 +135,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_book_txt_author">
+            app:layout_constraintTop_toBottomOf="@+id/hsv_item_books_labels">
 
             <androidx.appcompat.widget.AppCompatImageButton
                 android:id="@+id/item_book_actions_btn_delete"
@@ -200,6 +200,30 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_tab_done" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/hsv_item_books_labels"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/item_book_container_actions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_book_txt_author"
+            tools:layout_height="40dp"
+            android:scrollbars="none"
+            tools:background="#aed" >
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chips_item_book_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"/>
+
+        </HorizontalScrollView>
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/item_book_group_progress"

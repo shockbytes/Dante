@@ -1,5 +1,7 @@
 package at.shockbytes.dante.ui.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.transition.TransitionManager
 import android.view.HapticFeedbackConstants
 import androidx.recyclerview.widget.DiffUtil
@@ -11,6 +13,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.DanteUtils
@@ -19,7 +22,9 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import com.google.android.material.chip.Chip
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.fragment_book_detail.*
 import kotlinx.android.synthetic.main.item_book.*
 import java.util.Collections
 
@@ -98,11 +103,28 @@ class BookAdapter(
             updateTexts(content)
             updateImageThumbnail(content.thumbnailAddress)
             updateProgress(content)
+            updateLabels(content.labels)
 
             if (useNewOverflowReplacement) {
                 setActionButtons(content)
             } else {
                 setupOverflowMenu(content)
+            }
+        }
+
+        private fun updateLabels(labels: List<BookLabel>) {
+            chips_item_book_label.removeAllViews()
+
+            labels
+                .map(::buildChipViewFromLabel)
+                .forEach(chips_item_book_label::addView)
+        }
+
+        private fun buildChipViewFromLabel(label: BookLabel): Chip {
+            return Chip(containerView.context).apply {
+                chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(label.hexColor))
+                text = label.title
+                setTextColor(Color.WHITE)
             }
         }
 

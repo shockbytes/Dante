@@ -75,5 +75,6 @@ fun BookEntity.isContentSame(other: BookEntity): Boolean {
         (this.subTitle == other.subTitle) &&
         (this.author == other.author) &&
         (this.thumbnailAddress == other.thumbnailAddress) &&
-        (this.title == other.title)
+        (this.title == other.title) &&
+        (this.labels == other.labels)
 }

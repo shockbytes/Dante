@@ -64,7 +64,12 @@ class LabelCategoryBottomSheetFragment : BaseBottomSheetFragment() {
 
     override fun bindViewModel() {
         viewModel.requestBooksWithLabel(label)
-        viewModel.getBooks().observe(this, Observer(simpleBookAdapter::updateData))
+        viewModel.getBooks().observe(this, Observer(::showBooks))
+    }
+
+    private fun showBooks(books: List<BookEntity>) {
+        simpleBookAdapter.updateData(books)
+        tv_label_category_description.text = resources.getQuantityString(R.plurals.books, books.size, books.size)
     }
 
     override fun unbindViewModel() = Unit

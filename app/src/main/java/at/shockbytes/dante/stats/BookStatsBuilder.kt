@@ -1,10 +1,12 @@
 package at.shockbytes.dante.stats
 
+import android.graphics.Color
 import at.shockbytes.dante.core.bareBone
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.util.AppUtils
 import org.joda.time.DateTime
 import org.joda.time.Duration
@@ -18,6 +20,7 @@ object BookStatsBuilder {
             createReadingDurationItem(books),
             createFavoriteItem(books),
             createLanguageItem(books),
+            createLabelItem(books),
             createOthersItem(books)
         )
     }
@@ -127,6 +130,21 @@ object BookStatsBuilder {
             BookStatsItem.LanguageDistribution.Empty
         } else {
             BookStatsItem.LanguageDistribution.Present(languages)
+        }
+    }
+
+    private fun createLabelItem(books: List<BookEntity>): BookStatsItem {
+
+        val labels = books.asSequence()
+            .map { it.labels }
+            .flatten()
+            .groupBy { LabelStatsItem(it.title, Color.parseColor(it.hexColor)) }
+            .mapValues { it.value.size }
+
+        return if (labels.isEmpty()) {
+            BookStatsItem.LabelStats.Empty
+        } else {
+            BookStatsItem.LabelStats.Present(labels)
         }
     }
 

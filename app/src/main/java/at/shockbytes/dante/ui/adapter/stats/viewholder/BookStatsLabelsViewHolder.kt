@@ -1,6 +1,8 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
+import androidx.core.content.ContextCompat
+import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsItem
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.dante.util.setVisible
@@ -63,11 +65,12 @@ class BookStatsLabelsViewHolder(
 
                 isEnabled = true
                 position = XAxis.XAxisPosition.BOTTOM
-                granularity = 1f
+                labelCount = entries.size
                 setDrawAxisLine(false)
                 setDrawGridLines(false)
                 setDrawAxisLine(false)
                 setDrawGridBackground(false)
+                textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
                 valueFormatter = IndexAxisValueFormatter(labels.map { it.key.title })
             }
 
@@ -81,6 +84,7 @@ class BookStatsLabelsViewHolder(
             getAxis(YAxis.AxisDependency.RIGHT).apply {
                 isEnabled = true
                 setDrawAxisLine(false)
+                textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
             }
 
             setFitBars(true)

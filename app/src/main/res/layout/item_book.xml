@@ -212,6 +212,7 @@
             app:layout_constraintTop_toBottomOf="@+id/item_book_txt_author"
             tools:layout_height="40dp"
             android:scrollbars="none"
+            android:overScrollMode="never"
             tools:background="#aed" >
 
                 <com.google.android.material.chip.ChipGroup

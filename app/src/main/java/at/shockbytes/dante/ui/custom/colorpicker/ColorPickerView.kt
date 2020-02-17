@@ -21,7 +21,7 @@ class ColorPickerView @JvmOverloads constructor(
             updateRecyclerViewAdapter(value)
         }
 
-    var columns: Int = 4
+    var columns: Int = 5
         set(value) {
             field = value
             initializeRecyclerView()

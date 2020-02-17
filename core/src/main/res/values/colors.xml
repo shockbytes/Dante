@@ -46,6 +46,9 @@
     <color name="indigo">#3F51B5</color>
     <color name="brown">#9F6459</color>
     <color name="yellow">#ffeb3b</color>
+    <color name="blue_gray_900">#263238</color>
+    <color name="teal_500">#009688</color>
+    <color name="pink_500">#E91E63</color>
 
     <color name="colorBrand">#A8A8A8</color>
     <color name="tabcolor_suggestions">#9C27B0</color>
@@ -68,5 +71,6 @@
     <color name="border">#AAA</color>
 
     <color name="bottom_menu_background">@android:color/transparent</color>
+    <color name="transparent_black">#00000000</color>
 
 </resources>

@@ -61,6 +61,16 @@ class SortComparators {
         }
     }
 
+    private class LabelsComparator : Comparator<BookEntity> {
+        override fun compare(o1: BookEntity?, o2: BookEntity?): Int {
+
+            val firstLabel = o1?.labels?.firstOrNull()?.title ?: ""
+            val secondLabel = o2?.labels?.firstOrNull()?.title ?: ""
+
+            return firstLabel.compareTo(secondLabel)
+        }
+    }
+
     companion object {
 
         fun of(strategy: SortStrategy): Comparator<BookEntity> {
@@ -70,6 +80,7 @@ class SortComparators {
                 SortStrategy.TITLE -> TitleComparator()
                 SortStrategy.PROGRESS -> ProgressComparator()
                 SortStrategy.PAGES -> PagesComparator()
+                SortStrategy.LABELS -> LabelsComparator()
             }
         }
     }

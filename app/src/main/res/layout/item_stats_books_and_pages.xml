@@ -14,7 +14,6 @@
         app:header_title="@string/statistics_header_pages"
         app:show_divider="false" />
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

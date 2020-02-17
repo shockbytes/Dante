@@ -33,22 +33,25 @@ the user during the login process.
 
 ## Versions
 
-### Version 4.0 - SUGGESTIONS
+### Backlog
 - [ ] Use Firebase Data for book suggestions
-- [ ] Italian language support
-
-### Version 3.9 - ALL IN THE CLOUD
 - [ ] Add online sync capability
-
-### Version 3.8 - CLEAN THE CAMPFIRE BEFORE THE BBQ
-- [ ] Labels for books
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
 - [ ] Redesign overflow menu
 
+### Version 3.9 - LABELS
+- [ ] Labels for books
+- [ ] Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT
+- [ ] Scanning crashes
+
+### Version 3.8 - TIMELINE
+* Timeline feature
+* Various bugfixes
+
 ### Version 3.7 - SCARY SCANNING
-- [x] Redesign scan screen
-- [x] Improved dark mode
+* Redesign scan screen
+* Improved dark mode
 
 ### Version 3.6 - GET EXCITED
 * Move to Android App Bundles

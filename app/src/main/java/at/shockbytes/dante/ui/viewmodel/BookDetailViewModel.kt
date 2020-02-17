@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import android.os.Parcelable
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.navigation.NotesBundle
@@ -44,6 +45,9 @@ class BookDetailViewModel @Inject constructor(
 
     private val requestBookEditSubject = PublishSubject.create<BookEntity>()
     val onBookEditRequest: Observable<BookEntity> = requestBookEditSubject
+
+    private val addLabelsSubject = PublishSubject.create<List<BookLabel>>()
+    val onAddLabelsRequest: Observable<List<BookLabel>> = addLabelsSubject
 
     private var bookId: Long = -1L
 
@@ -195,6 +199,29 @@ class BookDetailViewModel @Inject constructor(
     }
 
     fun reload() {
+        fetchBook(bookId)
+    }
+
+    fun attachLabel(bookLabel: BookLabel) {
+
+        val attachableLabel = bookLabel.withBookId(bookId)
+
+        getBookFromLiveData()?.let { book ->
+
+            val updatedLabels = book.labels + attachableLabel
+            val copy = book.copy(labels = updatedLabels)
+            updateDaoAndObserver(copy)
+        }
+    }
+
+    fun requestAddLabels() {
+        getBookFromLiveData()?.labels?.let(addLabelsSubject::onNext)
+    }
+
+    fun removeLabel(label: BookLabel) {
+        bookDao.deleteBookLabel(label)
+
+        // Reload the book once a label got deleted
         fetchBook(bookId)
     }
 

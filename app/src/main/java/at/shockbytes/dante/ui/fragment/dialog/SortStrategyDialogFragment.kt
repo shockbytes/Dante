@@ -24,18 +24,23 @@ class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit>() {
     @Inject
     lateinit var settings: DanteSettings
 
-    private val posIdMap = mapOf(Pair(0, R.id.radioBtnDialogFragmentSortDefault),
-            Pair(1, R.id.radioBtnDialogFragmentSortAuthor),
-            Pair(2, R.id.radioBtnDialogFragmentSortTitle),
-            Pair(3, R.id.radioBtnDialogFragmentSortProgress),
-            Pair(4, R.id.radioBtnDialogFragmentSortPages))
+    private val posIdMap = mapOf(
+        Pair(0, R.id.radioBtnDialogFragmentSortDefault),
+        Pair(1, R.id.radioBtnDialogFragmentSortAuthor),
+        Pair(2, R.id.radioBtnDialogFragmentSortTitle),
+        Pair(3, R.id.radioBtnDialogFragmentSortProgress),
+        Pair(4, R.id.radioBtnDialogFragmentSortPages),
+        Pair(5, R.id.radioBtnDialogFragmentSortLabels)
+    )
 
     private val strategyHint = listOf(
-            R.string.sort_strategy_default_hint,
-            R.string.sort_strategy_author_hint,
-            R.string.sort_strategy_title_hint,
-            R.string.sort_strategy_progress_hint,
-            R.string.sort_strategy_pages_hint)
+        R.string.sort_strategy_default_hint,
+        R.string.sort_strategy_author_hint,
+        R.string.sort_strategy_title_hint,
+        R.string.sort_strategy_progress_hint,
+        R.string.sort_strategy_pages_hint,
+        R.string.sort_strategy_labels_hint
+    )
 
     private val radioGroupDialogFragmentSort: RadioGroup by bindView(R.id.radioGroupDialogFragmentSort)
     private val btnDialogFragmentSortApply: MaterialButton by bindView(R.id.btnDialogFragmentSortApply)

@@ -29,7 +29,7 @@ data class BookEntity(
     var currentPage: Int = 0,
     var notes: String? = null,
     var summary: String? = null,
-    var labels: List<String> = listOf()
+    var labels: List<BookLabel> = listOf()
 ) : Parcelable {
 
     val reading: Boolean

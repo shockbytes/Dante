@@ -7,5 +7,5 @@ package at.shockbytes.dante.util.sort
  * POSITION is default behavior and is always applied if the user drags items per hand.
  */
 enum class SortStrategy {
-    POSITION, AUTHOR, TITLE, PROGRESS, PAGES
+    POSITION, AUTHOR, TITLE, PROGRESS, PAGES, LABELS
 }

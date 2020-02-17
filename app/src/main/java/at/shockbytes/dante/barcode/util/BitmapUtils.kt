@@ -1,5 +1,6 @@
 package at.shockbytes.dante.barcode.util
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
@@ -7,6 +8,9 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.YuvImage
 import android.hardware.Camera
+import androidx.annotation.ColorInt
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
@@ -58,5 +62,22 @@ object BitmapUtils {
             matrix.postScale(-1.0f, 1.0f)
             Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
         }
+    }
+
+    fun createRoundedBitmapFromColor(
+        context: Context,
+        size: Int,
+        @ColorInt color: Int
+    ): RoundedBitmapDrawable {
+
+        val image = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        image.eraseColor(color)
+
+        // val c = Canvas(image)
+        // c.drawBitmap(image, 0f, 0f, null)
+
+        val rdb = RoundedBitmapDrawableFactory.create(context.resources, image)
+        rdb.isCircular = true
+        return rdb
     }
 }

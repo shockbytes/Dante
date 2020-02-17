@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:cardCornerRadius="12dp"
     android:transitionName="@string/transition_name_card"
     app:cardElevation="0dp">
 
@@ -14,13 +15,14 @@
         <LinearLayout
             android:id="@+id/layout_detail_dates"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="80dp"
             android:orientation="horizontal"
             android:weightSum="3"
+            android:elevation="36dp"
+            android:background="@color/mainBackground"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_detail_date_divider">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_detail_wishhlist_date"
@@ -73,7 +75,7 @@
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/view_detail_date_divider"
+            app:layout_constraintBottom_toTopOf="@+id/layout_detail_dates"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -95,14 +97,13 @@
                     tools:srcCompat="@drawable/darkest_hour" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayout"
+                    android:id="@+id/linearLayout_additional_book_info"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:minHeight="100dp"
                     android:orientation="horizontal"
                     android:weightSum="3"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/sb_detail_pages"
@@ -254,36 +255,49 @@
                     app:layout_constraintTop_toTopOf="@id/sb_detail_pages"
                     tools:text="1000 / 1000" />
 
+                <HorizontalScrollView
+                    android:id="@+id/hsv_labels"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout_additional_book_info"
+                    android:layout_height="48dp"
+                    android:scrollbars="none"
+                    tools:background="#eda" >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_add_label"
+                            android:layout_width="wrap_content"
+                            android:text="@string/add_label"
+                            android:backgroundTint="@color/colorAccent"
+                            android:textColor="@color/white"
+                            app:iconTint="@color/white"
+                            app:icon="@drawable/ic_add"
+                            app:cornerRadius="20dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginEnd="8dp"/>
+
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chips_detail_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"/>
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>
-
-        <View
-            android:id="@+id/view_detail_date_divider"
-            android:layout_width="0dp"
-            android:layout_height="0.25dp"
-            android:background="@color/empty"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline_h_dates" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline_h_dates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.85" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_detail_chips"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:background="#dea"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/guideline_h_dates"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="visible" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

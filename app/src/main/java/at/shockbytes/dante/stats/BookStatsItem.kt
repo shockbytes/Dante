@@ -2,6 +2,7 @@ package at.shockbytes.dante.stats
 
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 
 sealed class BookStatsItem {
 
@@ -41,6 +42,15 @@ sealed class BookStatsItem {
         data class Present(
             val languages: Map<Languages, Int>
         ) : LanguageDistribution()
+    }
+
+    sealed class LabelStats : BookStatsItem() {
+
+        object Empty : LabelStats()
+
+        data class Present(
+            val labels: Map<LabelStatsItem, Int>
+        ) : LabelStats()
     }
 
     sealed class Others : BookStatsItem() {

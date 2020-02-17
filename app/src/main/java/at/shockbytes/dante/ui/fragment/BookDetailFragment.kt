@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import androidx.lifecycle.ViewModelProvider
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
@@ -27,6 +29,7 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
@@ -40,9 +43,11 @@ import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -86,7 +91,8 @@ class BookDetailFragment : BaseFragment(),
             btn_detail_rate,
             btn_detail_notes,
             btn_detail_published,
-            view_detail_date_divider,
+            hsv_labels,
+            layout_detail_dates,
             btn_detail_wishhlist_date,
             btn_detail_start_date,
             btn_detail_end_date
@@ -247,6 +253,11 @@ class BookDetailFragment : BaseFragment(),
                 Timber.e(throwable)
             })
             .addTo(compositeDisposable)
+
+        viewModel.onAddLabelsRequest
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::showLabelPicker, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     private fun createBookFinishedFragment(title: String): SimpleRequestDialogFragment {
@@ -370,6 +381,7 @@ class BookDetailFragment : BaseFragment(),
 
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
+        setupLabels(book.labels)
     }
 
     private fun setupViewListener() {
@@ -401,6 +413,11 @@ class BookDetailFragment : BaseFragment(),
         btn_detail_end_date.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             showDatePicker(DATE_TARGET_END_DATE)
+        }
+
+        btn_add_label.setOnClickListener { v ->
+            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
+            viewModel.requestAddLabels()
         }
     }
 
@@ -465,6 +482,14 @@ class BookDetailFragment : BaseFragment(),
                 cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
                 .show()
         }
+    }
+
+    private fun showLabelPicker(alreadyAttachedLabels: List<BookLabel>) {
+
+        LabelPickerBottomSheetFragment
+            .newInstance(alreadyAttachedLabels)
+            .setOnLabelSelectedListener(viewModel::attachLabel)
+            .show(childFragmentManager, "pick-label-bottom-sheet")
     }
 
     private fun initializeTimeInformation(book: BookEntity) {
@@ -557,6 +582,29 @@ class BookDetailFragment : BaseFragment(),
         } else {
             tintEditMenuItem(ContextCompat.getColor(requireContext(), R.color.danteAccent))
             iv_detail_image.setImageResource(R.drawable.ic_placeholder)
+        }
+    }
+
+    private fun setupLabels(labels: List<BookLabel>) {
+
+        chips_detail_label.removeAllViews()
+
+        labels
+            .map(::buildChipViewFromLabel)
+            .forEach(chips_detail_label::addView)
+    }
+
+    private fun buildChipViewFromLabel(label: BookLabel): Chip {
+        return Chip(requireContext()).apply {
+            chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(label.hexColor))
+            text = label.title
+            setTextColor(Color.WHITE)
+            closeIconTint = ColorStateList.valueOf(Color.WHITE)
+            isCloseIconVisible = true
+            setOnCloseIconClickListener { v ->
+                v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                viewModel.removeLabel(label)
+            }
         }
     }
 

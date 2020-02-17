@@ -62,6 +62,8 @@ class BookStatsLanguageViewHolder(
             description.isEnabled = false
             setUsePercentValues(true)
             setDrawEntryLabels(false)
+            setTouchEnabled(false)
+            isRotationEnabled = false
 
             legend.apply {
                 isWordWrapEnabled = true

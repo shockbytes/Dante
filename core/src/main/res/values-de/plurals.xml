@@ -6,6 +6,11 @@
         <item quantity="other">%d Sterne</item>
     </plurals>
 
+    <plurals name="books">
+        <item quantity="one">%d Buch</item>
+        <item quantity="other">%d Bücher</item>
+    </plurals>
+
     <plurals name="days">
         <item quantity="one">%d Tag</item>
         <item quantity="other">%d Tage</item>

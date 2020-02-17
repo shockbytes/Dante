@@ -9,7 +9,9 @@ import io.realm.RealmList
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-class RealmBookEntityMapper : Mapper<RealmBook, BookEntity>() {
+class RealmBookEntityMapper(
+    private val labelMapper: RealmBookLabelMapper
+) : Mapper<RealmBook, BookEntity>() {
 
     override fun mapFrom(data: BookEntity): RealmBook {
         return RealmBook(
@@ -31,7 +33,7 @@ class RealmBookEntityMapper : Mapper<RealmBook, BookEntity>() {
             data.currentPage,
             data.notes,
             data.summary,
-            RealmList(*data.labels.toTypedArray())
+            RealmList(*data.labels.map { bookLabel -> labelMapper.mapFrom(bookLabel) }.toTypedArray())
         ).apply {
             state = RealmBook.State.values()[data.state.ordinal]
         }
@@ -58,7 +60,7 @@ class RealmBookEntityMapper : Mapper<RealmBook, BookEntity>() {
             data.currentPage,
             data.notes,
             data.summary,
-            data.labels.toList()
+            data.labels.map { realmBookLabel -> labelMapper.mapTo(realmBookLabel) }
         )
     }
 }

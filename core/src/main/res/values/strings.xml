@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.9 Beta</string>
+    <string name="app_version" translatable="false">3.9</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -109,6 +109,14 @@
     <string name="search_hint">Search…</string>
     <string name="preview_failed">Cannot open the camera. Restarting your phone may help!</string>
     <string name="add">Add</string>
+    <string name="add_label">Label</string>
+    <string name="create_new_label">Create new Label</string>
+    <string name="pick_a_label">Pick a label</string>
+    <string name="new_label_error">Please specify the name and pick a color</string>
+    <string name="new_label_title_exists">This title already exists</string>
+    <string name="empty_label_picker">No labels available.\nCreate a new label first.</string>
+    <string name="new_label_name">Name</string>
+    <string name="choose_color">Choose a color</string>
     <string name="search_online">Search online</string>
     <string name="search_online_hint">No books found in your library. Do you want to search online?</string>
     <string name="search_invalid_query">Invalid search query</string>
@@ -125,12 +133,15 @@
     <string name="sort_strategy_title">Title</string>
     <string name="sort_strategy_progress">Progress</string>
     <string name="sort_strategy_pages">Pages</string>
+    <string name="sort_strategy_labels">Labels</string>
 
     <string name="sort_strategy_default_hint">Books are automatically inserted after scanning. You can rearrange your books by drag and drop.</string>
     <string name="sort_strategy_author_hint">Books are sorted by the name of the author. Manually rearranging your books will fall back to default sort.</string>
     <string name="sort_strategy_title_hint">Books are sorted by the book title. Manually rearranging your books will fall back to default sort.</string>
     <string name="sort_strategy_progress_hint">Books are sorted by your reading progress. Manually rearranging your books will fall back to default strategy.</string>
     <string name="sort_strategy_pages_hint">Sort your books by the ascending number of pages.</string>
+    <string name="sort_strategy_labels_hint">Sort your books by the attached labels.</string>
+
 
     <string name="dialogfragment_sort_by">Sort by</string>
     <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others…</string>
@@ -165,6 +176,7 @@
     <string name="statistics_header_pages">Pages &amp; Books</string>
     <string name="statistics_header_time">Reading time</string>
     <string name="statistics_header_languages">Languages</string>
+    <string name="statistics_header_labels">Labels</string>
     <string name="statistics_header_favs">Favorites</string>
     <string name="statistics_header_other">Others</string>
 

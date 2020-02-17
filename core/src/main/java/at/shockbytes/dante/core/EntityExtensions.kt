@@ -31,6 +31,18 @@ fun BookEntity.toJson(): JsonObject {
         addProperty("endDate", endDate)
         addProperty("wishlistDate", wishlistDate)
         addProperty("summary", summary)
+
+        val labels = JsonArray().apply {
+            labels.forEach { label ->
+                val labelObject = JsonObject().apply {
+                    addProperty("title", label.title)
+                    addProperty("hexColor", label.hexColor)
+                }
+                add(labelObject)
+            }
+        }
+
+        add("labels", JsonArray().apply { labels.forEach { add(it) } })
         add("labels", JsonArray().apply { labels.forEach { add(it) } })
     }
 }
@@ -63,5 +75,6 @@ fun BookEntity.isContentSame(other: BookEntity): Boolean {
         (this.subTitle == other.subTitle) &&
         (this.author == other.author) &&
         (this.thumbnailAddress == other.thumbnailAddress) &&
-        (this.title == other.title)
+        (this.title == other.title) &&
+        (this.labels == other.labels)
 }

@@ -2,7 +2,7 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.stats.MostActiveMonth
 import at.shockbytes.dante.util.roundDouble
 import at.shockbytes.dante.util.setVisible
@@ -12,15 +12,15 @@ import kotlinx.android.synthetic.main.item_stats_others.*
 
 class BookStatsOthersViewHolder(
     override val containerView: View
-) : BaseAdapter.ViewHolder<BookStatsItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookStatsItem, position: Int) {
-        with(content as BookStatsItem.Others) {
+    override fun bindToView(content: BookStatsViewItem, position: Int) {
+        with(content as BookStatsViewItem.Others) {
             when (this) {
-                BookStatsItem.Others.Empty -> {
+                BookStatsViewItem.Others.Empty -> {
                     showEmptyState()
                 }
-                is BookStatsItem.Others.Present -> {
+                is BookStatsViewItem.Others.Present -> {
                     showInformation(this)
                 }
             }
@@ -32,7 +32,7 @@ class BookStatsOthersViewHolder(
         item_stats_others_content.setVisible(false)
     }
 
-    private fun showInformation(content: BookStatsItem.Others.Present) {
+    private fun showInformation(content: BookStatsViewItem.Others.Present) {
         item_stats_others_empty.setVisible(false)
         item_stats_others_content.setVisible(true)
 

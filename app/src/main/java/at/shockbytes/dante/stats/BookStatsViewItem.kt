@@ -1,12 +1,19 @@
 package at.shockbytes.dante.stats
 
+import androidx.annotation.LayoutRes
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 
-sealed class BookStatsItem {
+sealed class BookStatsViewItem {
 
-    sealed class BooksAndPages : BookStatsItem() {
+    @get:LayoutRes
+    abstract val layoutId: Int
+
+    sealed class BooksAndPages : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_books_and_pages
 
         object Empty : BooksAndPages()
 
@@ -15,14 +22,18 @@ sealed class BookStatsItem {
         ) : BooksAndPages()
     }
 
-    sealed class ReadingDuration : BookStatsItem() {
+    sealed class ReadingDuration : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_reading_duration
 
         object Empty : ReadingDuration()
 
         data class Present(val slowest: BookWithDuration, val fastest: BookWithDuration) : ReadingDuration()
     }
 
-    sealed class Favorites : BookStatsItem() {
+    sealed class Favorites : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_favorites
 
         object Empty : Favorites()
 
@@ -32,7 +43,9 @@ sealed class BookStatsItem {
         ) : Favorites()
     }
 
-    sealed class LanguageDistribution : BookStatsItem() {
+    sealed class LanguageDistribution : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_languages
 
         object Empty : LanguageDistribution()
 
@@ -44,7 +57,9 @@ sealed class BookStatsItem {
         ) : LanguageDistribution()
     }
 
-    sealed class LabelStats : BookStatsItem() {
+    sealed class LabelStats : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_labels
 
         object Empty : LabelStats()
 
@@ -53,7 +68,9 @@ sealed class BookStatsItem {
         ) : LabelStats()
     }
 
-    sealed class Others : BookStatsItem() {
+    sealed class Others : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_others
 
         object Empty : Others()
 

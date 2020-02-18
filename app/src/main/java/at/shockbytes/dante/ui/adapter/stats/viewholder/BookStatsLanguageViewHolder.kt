@@ -4,7 +4,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
-import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import com.github.mikephil.charting.components.Legend
@@ -18,15 +18,15 @@ import kotlinx.android.synthetic.main.item_stats_languages.*
 
 class BookStatsLanguageViewHolder(
     override val containerView: View
-) : BaseAdapter.ViewHolder<BookStatsItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookStatsItem, position: Int) {
-        with(content as BookStatsItem.LanguageDistribution) {
+    override fun bindToView(content: BookStatsViewItem, position: Int) {
+        with(content as BookStatsViewItem.LanguageDistribution) {
             when (this) {
-                BookStatsItem.LanguageDistribution.Empty -> {
+                BookStatsViewItem.LanguageDistribution.Empty -> {
                     showEmptyState()
                 }
-                is BookStatsItem.LanguageDistribution.Present -> {
+                is BookStatsViewItem.LanguageDistribution.Present -> {
                     showLanguageChart(languages)
                 }
             }

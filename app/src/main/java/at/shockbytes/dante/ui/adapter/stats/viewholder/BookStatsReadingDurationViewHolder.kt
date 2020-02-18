@@ -3,7 +3,7 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -12,16 +12,16 @@ import kotlinx.android.synthetic.main.item_stats_reading_duration.*
 class BookStatsReadingDurationViewHolder(
     override val containerView: View,
     private val imageLoader: ImageLoader
-) : BaseAdapter.ViewHolder<BookStatsItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookStatsItem, position: Int) {
-        with(content as BookStatsItem.ReadingDuration) {
+    override fun bindToView(content: BookStatsViewItem, position: Int) {
+        with(content as BookStatsViewItem.ReadingDuration) {
 
             when (this) {
-                BookStatsItem.ReadingDuration.Empty -> {
+                BookStatsViewItem.ReadingDuration.Empty -> {
                     showEmptyState()
                 }
-                is BookStatsItem.ReadingDuration.Present -> {
+                is BookStatsViewItem.ReadingDuration.Present -> {
                     showReadingDuration(this)
                 }
             }
@@ -33,7 +33,7 @@ class BookStatsReadingDurationViewHolder(
         item_stats_reading_duration_content.setVisible(false)
     }
 
-    private fun showReadingDuration(content: BookStatsItem.ReadingDuration.Present) {
+    private fun showReadingDuration(content: BookStatsViewItem.ReadingDuration.Present) {
         item_stats_reading_duration_empty.setVisible(false)
         item_stats_reading_duration_content.setVisible(true)
 

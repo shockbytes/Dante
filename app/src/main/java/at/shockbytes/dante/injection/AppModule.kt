@@ -27,9 +27,6 @@ import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import at.shockbytes.tracking.DebugTracker
-import at.shockbytes.tracking.FirebaseTracker
-import at.shockbytes.tracking.Tracker
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module

@@ -47,11 +47,12 @@
                     tools:scaleX="1"
                     tools:scaleY="1"/>
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/imgButtonMainToolbarMore"
-                    style="?android:borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rounded_ripple"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="8dp"
                     android:layout_marginEnd="16dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
@@ -60,11 +61,12 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_overflow" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/imgButtonMainToolbarSearch"
-                    style="?android:borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rounded_ripple"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:padding="8dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"

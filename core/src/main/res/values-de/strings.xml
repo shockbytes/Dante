@@ -253,5 +253,6 @@
     <string name="prefs_category_books_privacy">Datenschutz</string>
     <string name="prefs_tracking_title">Tracking</string>
     <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
+    <string name="not_available">N/A</string>
 
 </resources>

@@ -10,6 +10,7 @@
     <string name="label_stats">Your statistics</string>
     <string name="label_timeline">Your timeline</string>
     <string name="label_my_notes">My notes</string>
+    <string name="not_available">N/A</string>
 
     <string name="currently_reading">Currently reading</string>
 

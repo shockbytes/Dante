@@ -500,28 +500,24 @@ class BookDetailFragment : BaseFragment(),
         } else {
 
             val pattern = "dd. MMM yyyy"
-            // Check if wishlist date is available
-            if (book.wishlistDate > 0) {
-                val wishlistDate = DateTime(book.wishlistDate).toString(pattern)
-                btn_detail_wishhlist_date.text = wishlistDate
-            } else {
-                btn_detail_wishhlist_date.visibility = View.INVISIBLE
+            // Wishlist Date
+            when {
+                book.wishlistDate > 0 -> btn_detail_wishhlist_date.text = DateTime(book.wishlistDate).toString(pattern)
+                book.state != BookState.READ_LATER -> btn_detail_wishhlist_date.setText(R.string.not_available)
+                else -> btn_detail_wishhlist_date.visibility = View.INVISIBLE
             }
 
-            // Check if start date is available
-            if (book.startDate > 0) {
-                val startDate = DateTime(book.startDate).toString(pattern)
-                btn_detail_start_date.text = startDate
-            } else {
-                btn_detail_start_date.visibility = View.INVISIBLE
+            // Start Date
+            when {
+                book.startDate > 0 -> btn_detail_start_date.text = DateTime(book.startDate).toString(pattern)
+                book.state != BookState.READ_LATER -> btn_detail_start_date.setText(R.string.not_available)
+                else -> btn_detail_start_date.visibility = View.INVISIBLE
             }
 
-            // Check if end date is available
-            if (book.endDate > 0) {
-                val endDate = DateTime(book.endDate).toString(pattern)
-                btn_detail_end_date.text = endDate
-            } else {
-                btn_detail_end_date.visibility = View.INVISIBLE
+            // End Date
+            when {
+                book.endDate > 0 -> btn_detail_end_date.text = DateTime(book.endDate).toString(pattern)
+                else -> btn_detail_end_date.visibility = View.INVISIBLE
             }
         }
     }

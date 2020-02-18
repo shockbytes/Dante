@@ -10,7 +10,10 @@ import com.google.firebase.analytics.FirebaseAnalytics
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
-class FirebaseTracker(context: Context) : Tracker {
+class FirebaseTracker(
+    context: Context,
+    initialTrackingPermission: Boolean
+) : Tracker(initialTrackingPermission) {
 
     private val fbAnalytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(context)
 

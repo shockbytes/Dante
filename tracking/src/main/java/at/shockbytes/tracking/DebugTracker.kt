@@ -4,7 +4,9 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import at.shockbytes.tracking.event.TrackingProperty
 import timber.log.Timber
 
-class DebugTracker : Tracker {
+class DebugTracker(
+    initialTrackingPermission: Boolean
+) : Tracker(initialTrackingPermission) {
 
     override fun trackEvent(event: DanteTrackingEvent) {
         Timber.d("Event: ${event.name} - ${createTrackEventData(event.props)}")

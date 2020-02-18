@@ -12,6 +12,7 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.injection.AppModule
 import at.shockbytes.dante.injection.AppNetworkModule
 import at.shockbytes.dante.injection.DaggerAppComponent
+import at.shockbytes.dante.injection.FirebaseModule
 import at.shockbytes.dante.util.CrashlyticsReportingTree
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
@@ -55,10 +56,11 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
         configureRxJavaErrorHandling()
 
         appComponent = DaggerAppComponent.builder()
-                .appNetworkModule(AppNetworkModule())
-                .appModule(AppModule(this))
-                .coreComponent(provideCoreComponent())
-                .build()
+            .appNetworkModule(AppNetworkModule())
+            .appModule(AppModule(this))
+            .firebaseModule(FirebaseModule(this))
+            .coreComponent(provideCoreComponent())
+            .build()
     }
 
     override fun provideCoreComponent(): CoreComponent {

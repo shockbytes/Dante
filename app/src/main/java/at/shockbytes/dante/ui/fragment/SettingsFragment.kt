@@ -5,6 +5,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import android.widget.Toast
 import androidx.preference.ListPreference
+import androidx.preference.SwitchPreferenceCompat
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
@@ -12,12 +13,16 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.tracking.Tracker
 import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
 
     @Inject
     lateinit var danteSettings: DanteSettings
+
+    @Inject
+    lateinit var tracker: Tracker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,15 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         findPreference<ListPreference>(getString(R.string.prefs_dark_mode_key))?.apply {
             this.onPreferenceChangeListener = this@SettingsFragment
             summary = this.entry
+        }
+
+        findPreference<SwitchPreferenceCompat>(getString(R.string.prefs_tracking_key))?.apply {
+            onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                if (newValue is Boolean) {
+                    tracker.isTrackingAllowed = newValue
+                }
+                true
+            }
         }
 
         findPreference<Preference>(getString(R.string.prefs_change_icon_key))?.apply {

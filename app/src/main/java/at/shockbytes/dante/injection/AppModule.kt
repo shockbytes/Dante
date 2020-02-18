@@ -126,13 +126,4 @@ class AppModule(private val app: Application) {
         val prefs = app.getSharedPreferences("announcements", Context.MODE_PRIVATE)
         return SharedPrefsAnnouncementProvider(prefs)
     }
-
-    @Provides
-    fun provideTracker(): Tracker {
-        return if (BuildConfig.DEBUG) {
-            DebugTracker()
-        } else {
-            FirebaseTracker(app.applicationContext)
-        }
-    }
 }

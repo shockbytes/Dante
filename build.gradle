@@ -61,6 +61,7 @@ ext {
     daggerVersion = "2.16"
     retrofitVersion = "2.7.0"
     okHttpVersion = "3.14.1"
+    leakCanaryVersion = "2.2"
     shockUtilVersion = "6.1.2"
     crashlyticsVersion = "2.9.9"
     glideVersion = "4.11.0"

@@ -11,8 +11,9 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_launcher_icon_item.*
 
 class LauncherIconPickerAdapter(
-    context: Context
-) : BaseAdapter<LauncherIconPickerViewModel.LauncherIconItem>(context) {
+    context: Context,
+    onItemClickListener: OnItemClickListener<LauncherIconPickerViewModel.LauncherIconItem>
+) : BaseAdapter<LauncherIconPickerViewModel.LauncherIconItem>(context, onItemClickListener) {
 
     fun updateData(newContent: List<LauncherIconPickerViewModel.LauncherIconItem>) {
 

@@ -310,6 +310,9 @@
     <string name="book_added_to_library">%s added to library</string>
     <string name="nope">Nope</string>
 
+    <string name="restarting_app">The app may restart shortly&#8230;</string>
+    <string name="launcher_icon_change_description">Changing the icon may \n automatically restart the app</string>
+
     <string name="date_month_and_year" translatable="false">%s %s</string>
     <string name="dante_install">You installed Dante</string>
     <string name="timeline_explanation">The timeline shows you exactly when you read each and every book in your library. Each book is associated to the month when you started reading it.</string>

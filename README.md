@@ -40,10 +40,16 @@ the user during the login process.
 - [ ] Introduce Shockbytes Backups
 - [ ] Redesign overflow menu
 
-### Version 3.9 - LABELS
-- [ ] Labels for books
-- [ ] Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT
+### Version 3.10 - SETTINGS AND TRACKING
+* Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT
+* Change launcher icon
+* Bring back tracking capabilities
+* Smaller UI fixes
+- [ ] Manual Add book cover bug
 - [ ] Scanning crashes
+
+### Version 3.9 - LABELS
+* Labels for books
 
 ### Version 3.8 - TIMELINE
 * Timeline feature

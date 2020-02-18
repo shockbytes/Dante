@@ -205,10 +205,10 @@
     <string name="pages_read">%d pages read</string>
     <string name="pages_waiting">%d pages waiting</string>
 
-    <string name="prefs_category_books_general">General</string>
-    <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>
-    <string name="prefs_dark_mode_title">Dark mode</string>
-    <string name="prefs_dark_mode_summary">Enable a dark theme for the app</string>
+    <string name="prefs_category_books_appearance">Appearance</string>
+    <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_string_key</string>
+    <string name="prefs_dark_mode_default_value" translatable="false">system</string>
+    <string name="prefs_dark_mode_title">Theme</string>
 
     <string name="prefs_feature_flag_key" translatable="false">prefs_feature_flag_key</string>
     <string name="prefs_feature_flag_title" translatable="false">Feature Flags</string>

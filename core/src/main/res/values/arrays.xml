@@ -30,4 +30,16 @@
         <item>December</item>
     </string-array>
 
+    <string-array name="prefs_dark_mode_entries">
+        <item>Light theme</item>
+        <item>Dark theme</item>
+        <item>System default</item>
+    </string-array>
+
+    <string-array name="prefs_dark_mode_entry_values">
+        <item>light</item>
+        <item>dark</item>
+        <item>system</item>
+    </string-array>
+
 </resources>

@@ -3,8 +3,8 @@ package at.shockbytes.dante.ui.fragment
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
 import android.widget.Toast
+import androidx.preference.ListPreference
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
@@ -22,8 +22,10 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
         addPreferencesFromResource(R.xml.settings)
 
-        findPreference<SwitchPreferenceCompat>(getString(R.string.prefs_dark_mode_key))?.apply {
+        findPreference<ListPreference>(getString(R.string.prefs_dark_mode_key))?.apply {
             this.onPreferenceChangeListener = this@SettingsFragment
+
+            summary = this.entry
         }
 
         findPreference<Preference>(getString(R.string.prefs_contribute_code_key))?.apply {
@@ -50,14 +52,12 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         if (show) {
             featureFlagPreference?.isVisible = true
             featureFlagPreference?.setOnPreferenceClickListener {
-                fragmentManager?.run {
-                    DanteUtils.addFragmentToActivity(
-                            this,
-                            FeatureFlagConfigFragment.newInstance(),
-                            android.R.id.content,
-                            addToBackStack = true
-                    )
-                }
+                DanteUtils.addFragmentToActivity(
+                        childFragmentManager,
+                        FeatureFlagConfigFragment.newInstance(),
+                        android.R.id.content,
+                        addToBackStack = true
+                )
                 true
             }
         }
@@ -65,7 +65,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
     override fun onPreferenceChange(pref: Preference?, newValue: Any?): Boolean {
 
-        if (pref?.key == getString(R.string.prefs_dark_mode_key) && (newValue is Boolean)) {
+        if (pref?.key == getString(R.string.prefs_dark_mode_key)) {
             showDarkModeToast()
         }
         return true

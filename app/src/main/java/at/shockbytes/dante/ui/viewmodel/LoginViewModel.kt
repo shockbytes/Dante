@@ -58,7 +58,9 @@ class LoginViewModel @Inject constructor(
             }
             is OnboardingStepAction.NightMode -> {
                 nextOnboardingStep.postValue(OnboardingStepAction.Tracking())
-                danteSettings.darkModeEnabled = currentStep.enableNightMode
+
+                // TODO Change to ThemeState later
+                // danteSettings.darkModeEnabled = currentStep.enableNightMode
             }
             is OnboardingStepAction.Tracking -> {
                 nextOnboardingStep.postValue(OnboardingStepAction.Login(LoginMethod.GOOGLE))

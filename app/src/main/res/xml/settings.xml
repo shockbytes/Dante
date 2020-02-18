@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_books_general">
-        <androidx.preference.SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:icon="@drawable/ic_settings_dark_mode"
+    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_books_appearance">
+
+        <androidx.preference.ListPreference
             android:key="@string/prefs_dark_mode_key"
-            android:summary="@string/prefs_dark_mode_summary"
-            android:title="@string/prefs_dark_mode_title" />
+            android:title="@string/prefs_dark_mode_title"
+            android:defaultValue="@string/prefs_dark_mode_default_value"
+            android:icon="@drawable/ic_settings_dark_mode"
+            android:entries="@array/prefs_dark_mode_entries"
+            android:entryValues="@array/prefs_dark_mode_entry_values" />
 
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="true"

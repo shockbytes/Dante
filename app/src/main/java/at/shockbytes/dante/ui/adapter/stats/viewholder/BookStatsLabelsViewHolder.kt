@@ -16,7 +16,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_labels.*
 
-
 class BookStatsLabelsViewHolder(
     override val containerView: View
 ) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {

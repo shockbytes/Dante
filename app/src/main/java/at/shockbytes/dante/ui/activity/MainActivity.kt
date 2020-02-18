@@ -35,6 +35,7 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
+import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggleVisibility
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
@@ -394,21 +395,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun setupDarkMode() {
-        enableDarkMode(danteSettings.darkModeEnabled)
+        setupTheme(danteSettings.themeState)
 
         danteSettings
-            .observeDarkModeEnabled()
-            .subscribe(::enableDarkMode)
+            .observeThemeChanged()
+            .subscribe(::setupTheme)
             .addTo(compositeDisposable)
     }
 
-    private fun enableDarkMode(isEnabled: Boolean) {
-        val mode = if (isEnabled) {
-            AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            AppCompatDelegate.MODE_NIGHT_NO
-        }
-        AppCompatDelegate.setDefaultNightMode(mode)
+    private fun setupTheme(theme: ThemeState) {
+        AppCompatDelegate.setDefaultNightMode(theme.themeMode)
     }
 
     private fun checkForAppShortcut() {

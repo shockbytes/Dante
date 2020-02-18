@@ -1,32 +1,29 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
-import at.shockbytes.dante.ui.adapter.FeatureFlagConfigAdapter
-import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
+import at.shockbytes.dante.ui.adapter.LauncherIconPickerAdapter
+import at.shockbytes.dante.ui.viewmodel.LauncherIconPickerViewModel
 import at.shockbytes.dante.util.viewModelOf
-import kotlinx.android.synthetic.main.fragment_feature_flag_config.*
+import kotlinx.android.synthetic.main.fragment_launcher_icon_picker.*
 import javax.inject.Inject
 
-class FeatureFlagConfigFragment : BaseFragment() {
+class LauncherIconPickerFragment: BaseFragment() {
 
-    override val layoutId = R.layout.fragment_feature_flag_config
+    override val layoutId: Int = R.layout.fragment_launcher_icon_picker
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: FeatureFlagConfigViewModel
+    private lateinit var viewModel: LauncherIconPickerViewModel
 
-    private val flagAdapter: FeatureFlagConfigAdapter by lazy {
-        FeatureFlagConfigAdapter(requireContext()) { item ->
-            viewModel.updateFeatureFlag(item.key, item.value)
-        }
+    private val launcherItemAdapter: LauncherIconPickerAdapter by lazy {
+        LauncherIconPickerAdapter(requireContext())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +33,7 @@ class FeatureFlagConfigFragment : BaseFragment() {
     }
 
     override fun setupViews() {
-        layout_feature_flag_config.setOnClickListener {
+        layout_launcher_icon_items.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
         setupRecyclerView()
@@ -47,18 +44,16 @@ class FeatureFlagConfigFragment : BaseFragment() {
     }
 
     override fun bindViewModel() {
-        viewModel.getFeatureFlagItems().observe(this, Observer { listItems ->
-            flagAdapter.data = listItems.toMutableList()
-        })
+        viewModel.getLauncherItems().observe(this, Observer(launcherItemAdapter::updateData))
     }
 
     override fun unbindViewModel() {
-        viewModel.getFeatureFlagItems().removeObservers(this)
+        viewModel.getLauncherItems().removeObservers(this)
     }
 
     private fun setupRecyclerView() {
-        rv_feature_flags.apply {
-            adapter = flagAdapter
+        rv_launcher_icon_items.apply {
+            adapter = launcherItemAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
@@ -66,8 +61,8 @@ class FeatureFlagConfigFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): FeatureFlagConfigFragment {
-            return FeatureFlagConfigFragment()
+        fun newInstance(): LauncherIconPickerFragment {
+            return LauncherIconPickerFragment()
         }
     }
 }

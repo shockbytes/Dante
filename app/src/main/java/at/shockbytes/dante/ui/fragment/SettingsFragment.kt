@@ -30,7 +30,12 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         findPreference<Preference>(getString(R.string.prefs_change_icon_key))?.apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
-                showToast("Open picker overview")
+                DanteUtils.addFragmentToActivity(
+                    parentFragmentManager,
+                    LauncherIconPickerFragment.newInstance(),
+                    android.R.id.content,
+                    addToBackStack = true
+                )
                 true
             }
         }

@@ -5,8 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.viewmodel.LauncherIconPickerViewModel
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_launcher_icon_item.*
 
 class LauncherIconPickerAdapter(
     context: Context
@@ -30,6 +32,10 @@ class LauncherIconPickerAdapter(
         override fun bindToView(content: LauncherIconPickerViewModel.LauncherIconItem, position: Int) {
             with(content) {
 
+                iv_item_launcher_icon_item.setImageResource(iconLauncherIconState.icon)
+                tv_item_launcher_icon_item.text = iconLauncherIconState.title
+
+                iv_item_launcher_icon_item_checked.setVisible(isSelected)
             }
         }
     }

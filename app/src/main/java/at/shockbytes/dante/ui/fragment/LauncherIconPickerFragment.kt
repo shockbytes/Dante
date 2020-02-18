@@ -44,6 +44,7 @@ class LauncherIconPickerFragment: BaseFragment() {
     }
 
     override fun bindViewModel() {
+        viewModel.requestLauncherItems()
         viewModel.getLauncherItems().observe(this, Observer(launcherItemAdapter::updateData))
     }
 

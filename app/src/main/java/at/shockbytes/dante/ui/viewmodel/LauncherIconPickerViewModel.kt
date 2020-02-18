@@ -3,8 +3,9 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.util.settings.LauncherIconState
+import javax.inject.Inject
 
-class LauncherIconPickerViewModel : BaseViewModel() {
+class LauncherIconPickerViewModel @Inject constructor() : BaseViewModel() {
 
     data class LauncherIconItem(
         val iconLauncherIconState: LauncherIconState,

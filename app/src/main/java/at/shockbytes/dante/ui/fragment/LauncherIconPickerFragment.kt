@@ -1,7 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
 import `in`.myinnos.library.AppIconNameChanger
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -14,7 +13,6 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.LauncherIconPickerAdapter
 import at.shockbytes.dante.ui.viewmodel.LauncherIconPickerViewModel
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.retrieveActiveActivityAlias
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -22,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_launcher_icon_picker.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class LauncherIconPickerFragment: BaseFragment() {
+class LauncherIconPickerFragment : BaseFragment() {
 
     override val layoutId: Int = R.layout.fragment_launcher_icon_picker
 
@@ -31,6 +29,8 @@ class LauncherIconPickerFragment: BaseFragment() {
 
     private lateinit var viewModel: LauncherIconPickerViewModel
 
+    private var onDismissListener: (() -> Unit)? = null
+
     private val launcherItemAdapter: LauncherIconPickerAdapter by lazy {
         LauncherIconPickerAdapter(
             requireContext(),
@@ -38,7 +38,6 @@ class LauncherIconPickerFragment: BaseFragment() {
                 override fun onItemClick(content: LauncherIconPickerViewModel.LauncherIconItem, position: Int, v: View) {
                     viewModel.applyLauncher(content.iconLauncherIconState)
                 }
-
             }
         )
     }
@@ -51,7 +50,7 @@ class LauncherIconPickerFragment: BaseFragment() {
 
     override fun setupViews() {
         layout_launcher_icon_items.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            dismiss()
         }
         setupRecyclerView()
     }
@@ -62,9 +61,6 @@ class LauncherIconPickerFragment: BaseFragment() {
 
     override fun bindViewModel() {
 
-        val selectedManifestAlias = requireActivity().retrieveActiveActivityAlias()
-        Timber.e("Selected: $selectedManifestAlias")
-
         viewModel.requestLauncherItems()
         viewModel.getLauncherItems().observe(this, Observer(launcherItemAdapter::updateData))
 
@@ -72,7 +68,7 @@ class LauncherIconPickerFragment: BaseFragment() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 showToast(R.string.restarting_app)
-                parentFragmentManager.popBackStack()
+                dismiss()
             }
             .subscribe({ (activeName, disableNames) ->
                 applyLauncherChange(activeName, disableNames)
@@ -100,6 +96,17 @@ class LauncherIconPickerFragment: BaseFragment() {
             adapter = launcherItemAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+        }
+    }
+
+    private fun dismiss() {
+        parentFragmentManager.popBackStack()
+        onDismissListener?.invoke()
+    }
+
+    fun setOnDismissListener(listener: (() -> Unit)): LauncherIconPickerFragment {
+        return apply {
+            this.onDismissListener = listener
         }
     }
 

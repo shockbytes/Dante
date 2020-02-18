@@ -11,8 +11,13 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
+import at.shockbytes.dante.util.settings.DanteSettings
+import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
+
+    @Inject
+    lateinit var danteSettings: DanteSettings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +35,13 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         findPreference<Preference>(getString(R.string.prefs_change_icon_key))?.apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
 
+                val fragment = LauncherIconPickerFragment
+                    .newInstance()
+                    .setOnDismissListener(::updateLauncherIconSummary)
+
                 DanteUtils.addFragmentToActivity(
                     parentFragmentManager,
-                    LauncherIconPickerFragment.newInstance(),
+                    fragment,
                     android.R.id.content,
                     addToBackStack = true
                 )
@@ -85,6 +94,17 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
     private fun showToast(content: String) {
         Toast.makeText(activity, content, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateLauncherIconSummary()
+    }
+
+    private fun updateLauncherIconSummary() {
+        findPreference<Preference>(getString(R.string.prefs_change_icon_key))?.apply {
+            summary = danteSettings.selectedLauncherIconState.title
+        }
     }
 
     companion object {

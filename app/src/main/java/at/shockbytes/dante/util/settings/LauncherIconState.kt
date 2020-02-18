@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import at.shockbytes.dante.R
 
 enum class LauncherIconState(
-    private val id: String,
+    val id: String,
     val manifestAliasId: String,
     val title: String,
     @DrawableRes val icon: Int
@@ -30,8 +30,8 @@ enum class LauncherIconState(
 
     companion object {
 
-        fun ofStringOrDefault(idString: String): LauncherIconState {
-            return values().find { it.id == idString } ?: STANDARD
+        fun ofStringOrDefault(manifestAliasId: String?): LauncherIconState {
+            return values().find { it.manifestAliasId == manifestAliasId } ?: STANDARD
         }
     }
 }

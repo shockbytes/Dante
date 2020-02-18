@@ -207,6 +207,7 @@
 
     <string name="prefs_category_books_appearance">Appearance</string>
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_string_key</string>
+    <string name="prefs_launcher_icon_state_key" translatable="false">prefs_launcher_icon_state_key</string>
     <string name="prefs_dark_mode_default_value" translatable="false">system</string>
     <string name="prefs_dark_mode_title">Theme</string>
 

@@ -26,6 +26,17 @@ class DanteSettings(
 
     private val darkModeString: String by SharedPreferencesStringPropertyDelegate(prefs, context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
 
+    var selectedLauncherIconState: LauncherIconState
+        get() {
+            val idString = prefs.getString(context.getString(R.string.prefs_launcher_icon_state_key), "standard") ?: "standard"
+            return LauncherIconState.ofStringOrDefault(idString)
+        }
+        set(value) {
+            prefs.edit()
+                .putString(context.getString(R.string.prefs_launcher_icon_state_key), value.manifestAliasId)
+                .apply()
+        }
+
     val themeState: ThemeState
         get() = ThemeState.ofString(darkModeString) ?: ThemeState.SYSTEM
 
@@ -65,6 +76,8 @@ class DanteSettings(
     fun observeThemeChanged(): Observable<ThemeState> {
         return rxPrefs.getString(context.getString(R.string.prefs_dark_mode_key))
             .asObservable()
+            .filter { it.isNotEmpty() }
+            .distinctUntilChanged()
             .map(ThemeState.Companion::ofStringWithDefault)
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())

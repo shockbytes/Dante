@@ -24,8 +24,15 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
         findPreference<ListPreference>(getString(R.string.prefs_dark_mode_key))?.apply {
             this.onPreferenceChangeListener = this@SettingsFragment
-
             summary = this.entry
+        }
+
+        findPreference<Preference>(getString(R.string.prefs_change_icon_key))?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+                showToast("Open picker overview")
+                true
+            }
         }
 
         findPreference<Preference>(getString(R.string.prefs_contribute_code_key))?.apply {
@@ -66,13 +73,13 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onPreferenceChange(pref: Preference?, newValue: Any?): Boolean {
 
         if (pref?.key == getString(R.string.prefs_dark_mode_key)) {
-            showDarkModeToast()
+            showToast(getString(R.string.dark_mode_applied))
         }
         return true
     }
 
-    private fun showDarkModeToast() {
-        Toast.makeText(activity, R.string.dark_mode_applied, Toast.LENGTH_LONG).show()
+    private fun showToast(content: String) {
+        Toast.makeText(activity, content, Toast.LENGTH_LONG).show()
     }
 
     companion object {

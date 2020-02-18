@@ -249,5 +249,6 @@
     <string name="new_label_title_exists">Dieser Titel existiert bereits</string>
     <string name="empty_label_picker">Keine Labels verfügbar.\\n Erstelle ein neues zuerst.#</string>
     <string name="statistics_header_labels">Labels</string>
+    <string name="prefs_change_icon_title">Icon ändern</string>
 
 </resources>

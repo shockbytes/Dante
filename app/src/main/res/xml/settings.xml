@@ -12,6 +12,12 @@
             android:entries="@array/prefs_dark_mode_entries"
             android:entryValues="@array/prefs_dark_mode_entry_values" />
 
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_change_icon"
+            android:key="@string/prefs_change_icon_key"
+            android:summary="Standard"
+            android:title="@string/prefs_change_icon_title" />
+
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:icon="@drawable/ic_settings_book_summary"

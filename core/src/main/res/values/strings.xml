@@ -210,6 +210,9 @@
     <string name="prefs_dark_mode_default_value" translatable="false">system</string>
     <string name="prefs_dark_mode_title">Theme</string>
 
+    <string name="prefs_change_icon_key" translatable="false">prefs_change_icon_key</string>
+    <string name="prefs_change_icon_title">Change launcher icon</string>
+
     <string name="prefs_feature_flag_key" translatable="false">prefs_feature_flag_key</string>
     <string name="prefs_feature_flag_title" translatable="false">Feature Flags</string>
 

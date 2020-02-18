@@ -210,6 +210,11 @@
     <string name="prefs_dark_mode_default_value" translatable="false">system</string>
     <string name="prefs_dark_mode_title">Theme</string>
 
+    <string name="prefs_category_books_privacy">Privacy</string>
+    <string name="prefs_tracking_key" translatable="false">prefs_tracking_key</string>
+    <string name="prefs_tracking_summary">Improve the app by sending anonymous data to our servers</string>
+    <string name="prefs_tracking_title">Tracking</string>
+
     <string name="prefs_change_icon_key" translatable="false">prefs_change_icon_key</string>
     <string name="prefs_change_icon_title">Change launcher icon</string>
 
@@ -246,7 +251,6 @@
     <string name="ic_onboarding_suggestions">TODO</string>
     <string name="ic_onboarding_cta">TODO</string>
 
-    <string name="prefs_tracking_key" translatable="false">prefs_tracking_key</string>
     <string name="prefs_last_login" translatable="false">prefs_last_login</string>
     <string name="prefs_first_app_open_key" translatable="false">prefs_first_app_open_key</string>
 

@@ -250,5 +250,8 @@
     <string name="empty_label_picker">Keine Labels verfügbar.\\n Erstelle ein neues zuerst.#</string>
     <string name="statistics_header_labels">Labels</string>
     <string name="prefs_change_icon_title">Icon ändern</string>
+    <string name="prefs_category_books_privacy">Datenschutz</string>
+    <string name="prefs_tracking_title">Tracking</string>
+    <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
 
 </resources>

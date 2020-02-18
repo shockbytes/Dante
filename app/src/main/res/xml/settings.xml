@@ -5,12 +5,12 @@
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_books_appearance">
 
         <androidx.preference.ListPreference
-            android:key="@string/prefs_dark_mode_key"
-            android:title="@string/prefs_dark_mode_title"
             android:defaultValue="@string/prefs_dark_mode_default_value"
-            android:icon="@drawable/ic_settings_dark_mode"
             android:entries="@array/prefs_dark_mode_entries"
-            android:entryValues="@array/prefs_dark_mode_entry_values" />
+            android:entryValues="@array/prefs_dark_mode_entry_values"
+            android:icon="@drawable/ic_settings_dark_mode"
+            android:key="@string/prefs_dark_mode_key"
+            android:title="@string/prefs_dark_mode_title" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_change_icon"
@@ -24,6 +24,19 @@
             android:key="@string/prefs_show_summary_key"
             android:summary="@string/prefs_show_summary_summary"
             android:title="@string/prefs_show_summary_title" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/prefs_category_books_privacy"
+        android:visible="false">
+
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:icon="@drawable/ic_settings_tracking"
+            android:key="@string/prefs_tracking_key"
+            android:summary="@string/prefs_tracking_summary"
+            android:title="@string/prefs_tracking_title" />
 
     </androidx.preference.PreferenceCategory>
 

@@ -2,6 +2,7 @@ package at.shockbytes.dante.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -71,6 +72,12 @@ fun Fragment.isPortrait(): Boolean {
 
 fun Activity.isPortrait(): Boolean {
     return resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun Activity.retrieveActiveActivityAlias(): String? {
+    return this.intent.component?.let { component ->
+        packageManager.getActivityInfo(component, PackageManager.GET_META_DATA).name
+    }
 }
 
 fun Drawable.toBitmap(): Bitmap {

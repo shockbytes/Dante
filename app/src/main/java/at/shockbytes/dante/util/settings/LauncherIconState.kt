@@ -1,16 +1,17 @@
 package at.shockbytes.dante.util.settings
 
 enum class LauncherIconState(
-    private val stringRepresentation: String
+    private val id: String,
+    val manifestAliasId: String
 ) {
-    STANDARD("standard"),
-    DARK("dark"),
-    CLASSIC("classic");
+    STANDARD("standard", "at.shockbytes.dante.entry.standard"),
+    DARK("dark", "at.shockbytes.dante.entry.dark"),
+    CLASSIC("classic", "at.shockbytes.dante.entry.classic");
 
     companion object {
 
-        fun ofStringOrDefault(str: String): LauncherIconState {
-            return values().find { it.stringRepresentation == str } ?: STANDARD
+        fun ofStringOrDefault(idString: String): LauncherIconState {
+            return values().find { it.id == idString } ?: STANDARD
         }
     }
 }

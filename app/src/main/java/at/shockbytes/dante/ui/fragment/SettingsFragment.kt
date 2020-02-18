@@ -60,10 +60,10 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             featureFlagPreference?.isVisible = true
             featureFlagPreference?.setOnPreferenceClickListener {
                 DanteUtils.addFragmentToActivity(
-                        childFragmentManager,
-                        FeatureFlagConfigFragment.newInstance(),
-                        android.R.id.content,
-                        addToBackStack = true
+                    parentFragmentManager,
+                    FeatureFlagConfigFragment.newInstance(),
+                    android.R.id.content,
+                    addToBackStack = true
                 )
                 true
             }

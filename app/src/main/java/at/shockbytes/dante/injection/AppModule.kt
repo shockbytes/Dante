@@ -3,7 +3,7 @@ package at.shockbytes.dante.injection
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
@@ -27,6 +27,9 @@ import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.tracking.DebugTracker
+import at.shockbytes.tracking.FirebaseTracker
+import at.shockbytes.tracking.Tracker
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
@@ -122,5 +125,14 @@ class AppModule(private val app: Application) {
     fun provideAnnouncementProvider(): AnnouncementProvider {
         val prefs = app.getSharedPreferences("announcements", Context.MODE_PRIVATE)
         return SharedPrefsAnnouncementProvider(prefs)
+    }
+
+    @Provides
+    fun provideTracker(): Tracker {
+        return if (BuildConfig.DEBUG) {
+            DebugTracker()
+        } else {
+            FirebaseTracker(app.applicationContext)
+        }
     }
 }

@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.activity
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
@@ -12,6 +11,7 @@ import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.OnboardingFragment
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.util.viewModelOf
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity() {
@@ -24,7 +24,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[LoginViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
 
         bindViewModel()
     }

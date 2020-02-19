@@ -13,8 +13,6 @@ import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.fragment.BackupBackupFragment
 import at.shockbytes.dante.ui.fragment.BackupFragment
 import at.shockbytes.dante.ui.fragment.BackupRestoreFragment
-import at.shockbytes.dante.ui.fragment.BarcodeDetectorFragment
-import at.shockbytes.dante.ui.fragment.LegacyBackupFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
 import at.shockbytes.dante.ui.fragment.LabelCategoryBottomSheetFragment
@@ -24,7 +22,6 @@ import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
-import at.shockbytes.dante.ui.fragment.NotesFragment
 import at.shockbytes.dante.ui.fragment.OnboardingFragment
 import at.shockbytes.dante.ui.fragment.RateFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
@@ -34,8 +31,6 @@ import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.NotesDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.RateBookDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.widget.DanteAppWidget
 import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
@@ -72,8 +67,6 @@ interface AppComponent {
 
     fun inject(fragment: MainBookFragment)
 
-    fun inject(fragment: LegacyBackupFragment)
-
     fun inject(fragment: BackupFragment)
 
     fun inject(fragment: BackupBackupFragment)
@@ -94,8 +87,6 @@ interface AppComponent {
 
     fun inject(fragment: SettingsFragment)
 
-    fun inject(fragment: NotesFragment)
-
     fun inject(fragment: RateFragment)
 
     fun inject(fragment: LoginFragment)
@@ -106,17 +97,11 @@ interface AppComponent {
 
     fun inject(fragment: AnnouncementFragment)
 
-    fun inject(fragment: BarcodeDetectorFragment)
-
     fun inject(fragment: TimeLineFragment)
 
     fun inject(dialogFragment: GoogleSignInDialogFragment)
 
     fun inject(dialogFragment: SortStrategyDialogFragment)
-
-    fun inject(dialogFragment: NotesDialogFragment)
-
-    fun inject(dialogFragment: RateBookDialogFragment)
 
     fun inject(dialogFragment: GoogleWelcomeScreenDialogFragment)
 

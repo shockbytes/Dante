@@ -24,7 +24,6 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import com.google.android.material.chip.Chip
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.fragment_book_detail.*
 import kotlinx.android.synthetic.main.item_book.*
 import java.util.Collections
 

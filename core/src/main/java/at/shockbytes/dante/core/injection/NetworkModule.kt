@@ -1,6 +1,5 @@
 package at.shockbytes.dante.core.injection
 
-import android.content.Context
 import at.shockbytes.dante.core.BuildConfig
 import at.shockbytes.dante.core.book.BookSuggestion
 import at.shockbytes.dante.core.network.amazon.AmazonItemLookupApi
@@ -23,11 +22,10 @@ import javax.inject.Singleton
  * Date:    19.01.2017
  */
 @Module
-class NetworkModule(private val context: Context) {
+class NetworkModule {
 
     @Provides
     @Singleton
-    // @Named("test")
     fun provideOkHttpClient(): OkHttpClient {
 
         val clientBuilder = OkHttpClient.Builder()

@@ -2,12 +2,12 @@ package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupPagerAdapter
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.viewModelOfActivity
 import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup.*
@@ -33,7 +33,7 @@ class BackupFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
+        viewModel = viewModelOfActivity(requireActivity(), vmFactory)
     }
 
     override fun setupViews() {
@@ -74,7 +74,7 @@ class BackupFragment : BaseFragment() {
     private fun getErrorMessage(throwable: Throwable): String {
         return when (throwable) {
             is ApiException -> getString(R.string.error_msg_execution_exception)
-            else -> throwable.localizedMessage
+            else -> throwable.localizedMessage ?: ""
         }
     }
 

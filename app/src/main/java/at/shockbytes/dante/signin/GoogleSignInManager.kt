@@ -28,7 +28,7 @@ import io.reactivex.subjects.BehaviorSubject
  * https://firebase.google.com/docs/auth/android/google-signin
  */
 class GoogleSignInManager(
-    private val prefs: SharedPreferences,
+    prefs: SharedPreferences,
     private val context: Context
 ) : SignInManager {
 

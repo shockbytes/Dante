@@ -6,11 +6,11 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import at.shockbytes.dante.injection.AppComponent
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
 import javax.inject.Inject
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
+import at.shockbytes.dante.util.viewModelOf
 import pub.devrel.easypermissions.EasyPermissions
 
 class BackupActivity : ContainerBackNavigableActivity(), EasyPermissions.PermissionCallbacks {
@@ -26,7 +26,7 @@ class BackupActivity : ContainerBackNavigableActivity(), EasyPermissions.Permiss
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, vmFactory)[BackupViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
 
         supportActionBar?.elevation = 0f
     }

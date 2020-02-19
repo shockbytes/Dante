@@ -43,7 +43,7 @@ private fun <T, V : View> required(id: Int, finder: Finder<T>) = Lazy { t: T, de
 }
 
 @Suppress("UNCHECKED_CAST")
-private fun <T, V : View> optional(id: Int, finder: Finder<T>) = Lazy { t: T, desc -> t.finder(id) as V? }
+private fun <T, V : View> optional(id: Int, finder: Finder<T>) = Lazy { t: T, _ -> t.finder(id) as V? }
 
 @Suppress("UNCHECKED_CAST")
 private fun <T, V : View> required(ids: IntArray, finder: Finder<T>) = Lazy { t: T, desc ->

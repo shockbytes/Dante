@@ -24,11 +24,11 @@ class RateFragment : BaseFragment() {
     override fun setupViews() {
 
         layout_rating.setOnClickListener {
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStack()
         }
 
         btn_rating_close.setOnClickListener {
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStack()
         }
 
         RxRatingBar.ratingChanges(rb_rating)
@@ -47,7 +47,7 @@ class RateFragment : BaseFragment() {
                 .distinctUntilChanged()
                 .subscribe({
                     onRateClickListener?.invoke(rb_rating.rating.toInt())
-                    fragmentManager?.popBackStack()
+                    parentFragmentManager.popBackStack()
                 }, { throwable ->
                     Timber.e(throwable)
                 })

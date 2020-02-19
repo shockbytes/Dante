@@ -39,7 +39,7 @@ class SearchViewModel @Inject constructor(
 
     fun showBooks(query: CharSequence, keepLocal: Boolean) {
 
-        if (!query.isEmpty()) {
+        if (query.isNotEmpty()) {
 
             searchState.postValue(SearchState.LoadingState)
 

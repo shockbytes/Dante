@@ -9,7 +9,7 @@ import com.google.gson.reflect.TypeToken
  * Date: 14.01.2018.
  */
 
-inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object : TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: String): T = this.fromJson<T>(json, object : TypeToken<T>() {}.type)
 
 interface Gsonify {
 

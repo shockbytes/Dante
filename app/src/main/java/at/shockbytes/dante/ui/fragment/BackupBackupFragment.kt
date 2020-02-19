@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -13,6 +12,7 @@ import at.shockbytes.dante.ui.adapter.BackupStorageProviderAdapter
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.Priority
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -38,7 +38,7 @@ class BackupBackupFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
+        viewModel = viewModelOfActivity(requireActivity(), vmFactory)
     }
 
     override fun setupViews() = Unit

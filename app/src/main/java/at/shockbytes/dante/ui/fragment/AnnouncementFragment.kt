@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.fragment
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.Announcement
 import at.shockbytes.dante.injection.AppComponent
@@ -11,6 +10,7 @@ import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
 import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.setVisible
+import at.shockbytes.dante.util.viewModelOfActivity
 import com.airbnb.lottie.LottieDrawable
 import kotlinx.android.synthetic.main.fragment_announcement.*
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class AnnouncementFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[AnnouncementViewModel::class.java]
+        viewModel = viewModelOfActivity(requireActivity(), vmFactory)
     }
 
     override fun setupViews() = Unit
@@ -95,7 +95,7 @@ class AnnouncementFragment : BaseFragment() {
     }
 
     private fun closeModal() {
-        fragmentManager?.popBackStack()
+        parentFragmentManager.popBackStack()
     }
 
     override fun unbindViewModel() = Unit

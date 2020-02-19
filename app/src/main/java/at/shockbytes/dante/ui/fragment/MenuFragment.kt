@@ -3,8 +3,6 @@ package at.shockbytes.dante.ui.fragment
 import android.app.Dialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-
 import android.os.Bundle
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -24,6 +22,7 @@ import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
+import at.shockbytes.dante.util.viewModelOf
 import javax.inject.Inject
 
 /**
@@ -51,7 +50,7 @@ class MenuFragment : BottomSheetDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as DanteApp).appComponent.inject(this)
-        viewModel = ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {
@@ -72,9 +71,7 @@ class MenuFragment : BottomSheetDialogFragment() {
 
     private fun setupViews(view: View) {
 
-        val sceneTransition = activity?.let {
-            ActivityOptionsCompat.makeSceneTransitionAnimation(it)
-        }?.toBundle()
+        val sceneTransition = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle()
 
         view.findViewById<View>(R.id.btnMenuStatistics)?.setOnClickListener {
             ActivityNavigator.navigateTo(
@@ -99,7 +96,7 @@ class MenuFragment : BottomSheetDialogFragment() {
                     .setOnApplyListener {
                         dismiss()
                     }
-                    .show(requireFragmentManager(), "sort-dialog-fragment")
+                    .show(childFragmentManager, "sort-dialog-fragment")
         }
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
@@ -155,10 +152,10 @@ class MenuFragment : BottomSheetDialogFragment() {
                 is MainViewModel.UserEvent.LoginEvent -> {
                     GoogleSignInDialogFragment.newInstance()
                             .setSignInListener {
-                                activity?.startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                                requireActivity().startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
                             }
                             .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
-                            .show(requireFragmentManager(), "sign-in-fragment")
+                            .show(childFragmentManager, "sign-in-fragment")
                 }
             }
         })

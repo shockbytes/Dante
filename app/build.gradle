@@ -77,14 +77,14 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "androidx.core:core:$androidXCoreVersion"
     implementation "androidx.preference:preference:$androidXPreferenceVersion"
-    implementation 'androidx.fragment:fragment-ktx:1.2.0'
+    implementation 'androidx.fragment:fragment-ktx:1.2.1'
 
     implementation "com.google.android.material:material:${rootProject.materialVersion}"
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.core:core-ktx:1.1.0'
+    implementation 'androidx.core:core-ktx:1.2.0'
 
     implementation "androidx.lifecycle:lifecycle-extensions:$archXVersion"
     implementation "androidx.lifecycle:lifecycle-reactivestreams:$archXVersion"
@@ -127,7 +127,6 @@ dependencies {
     testImplementation "com.google.truth:truth:1.0"
     testImplementation 'joda-time:joda-time:2.10.3'
     androidTestImplementation 'androidx.test:core:1.2.0'
-    // androidTestImplementation 'org.mockito:mockito-core:2.19.0'
     androidTestImplementation 'org.mockito:mockito-android:2.28.2'
 
     // AndroidJUnitRunner and JUnit Rules

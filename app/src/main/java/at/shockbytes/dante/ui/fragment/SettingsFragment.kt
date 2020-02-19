@@ -70,10 +70,14 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             }
         }
         findPreference<Preference>(getString(R.string.prefs_translation_key))?.apply {
+            isVisible = false
+
+            /* Discontinued until a feasible solution is found
             this.setOnPreferenceClickListener {
                 MailLauncher.sendMail(requireActivity(), getString(R.string.mail_subject_translation), getString(R.string.mail_body_translation))
                 true
             }
+             */
         }
 
         showFeatureFlagsConfig(BuildConfig.DEBUG)

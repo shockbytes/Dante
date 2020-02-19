@@ -7,6 +7,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.util.viewModelOfActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class LoginFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity as LoginActivity, vmFactory)[LoginViewModel::class.java]
+        viewModel = viewModelOfActivity(activity as LoginActivity, vmFactory)
     }
 
     override fun setupViews() {

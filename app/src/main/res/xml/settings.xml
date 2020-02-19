@@ -28,8 +28,7 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
-        android:title="@string/prefs_category_books_privacy"
-        android:visible="false">
+        android:title="@string/prefs_category_books_privacy">
 
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="true"

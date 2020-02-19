@@ -45,9 +45,9 @@ ext {
     androidXAppCompatVersion = '1.1.0'
     materialVersion = '1.2.0-alpha04'
 
-    rxJavaVersion = "2.1.14"
+    rxJavaVersion = "2.2.17"
     rxAndroidVersion = "2.1.1"
-    rxBindingsVersion = "2.0.0"
+    rxBindingsVersion = "2.2.0"
 
     firebaseVersionCore = "17.2.2"
     firebaseVersionConfig = "19.1.1"
@@ -59,7 +59,7 @@ ext {
     playServicesVersionDrive = "17.0.0"
     playServicesVersionAuth = "17.0.0"
 
-    daggerVersion = "2.16"
+    daggerVersion = "2.26"
     retrofitVersion = "2.7.0"
     okHttpVersion = "3.14.1"
     leakCanaryVersion = "2.2"

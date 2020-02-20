@@ -254,5 +254,7 @@
     <string name="prefs_tracking_title">Tracking</string>
     <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
     <string name="not_available">N/A</string>
+    <string name="launcher_icon_change_description">Eine Änderung des Icons \\n führt voraussichtlich zu einem Neustart</string>
+    <string name="restarting_app">Die App startet sich voraussichtlich neu...</string>
 
 </resources>

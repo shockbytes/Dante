@@ -8,6 +8,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_book_main_rv"
         android:layout_width="match_parent"
+        android:scrollbars="vertical"
         android:padding="@dimen/main_padding"
         android:layout_height="match_parent" />
 

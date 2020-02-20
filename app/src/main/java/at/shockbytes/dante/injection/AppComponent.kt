@@ -1,5 +1,6 @@
 package at.shockbytes.dante.injection
 
+import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.core.injection.CoreComponent
 import at.shockbytes.dante.core.injection.ModuleScope
 import at.shockbytes.dante.core.injection.NetworkModule
@@ -52,6 +53,8 @@ import dagger.Component
 )
 @ModuleScope
 interface AppComponent {
+
+    fun inject(app: DanteApp)
 
     fun inject(activity: MainActivity)
 

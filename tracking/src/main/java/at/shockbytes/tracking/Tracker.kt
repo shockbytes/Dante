@@ -1,19 +1,14 @@
 package at.shockbytes.tracking
 
 import at.shockbytes.tracking.event.DanteTrackingEvent
-import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
  * Date:    30.08.2018
  */
-abstract class Tracker(initialTrackingPermission: Boolean) {
+abstract class Tracker {
 
-    var isTrackingAllowed: Boolean = initialTrackingPermission
-        set(value) {
-            field = value
-            Timber.d("Changed tracker to $field")
-        }
+    var isTrackingAllowed: Boolean = true
 
     fun track(event: DanteTrackingEvent) {
         if (isTrackingAllowed) {

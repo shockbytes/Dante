@@ -14,6 +14,8 @@ import at.shockbytes.dante.injection.AppNetworkModule
 import at.shockbytes.dante.injection.DaggerAppComponent
 import at.shockbytes.dante.injection.FirebaseModule
 import at.shockbytes.dante.util.CrashlyticsReportingTree
+import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.tracking.Tracker
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
 import io.fabric.sdk.android.Fabric
@@ -21,6 +23,7 @@ import io.reactivex.plugins.RxJavaPlugins
 import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
@@ -44,16 +47,15 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
     lateinit var appComponent: AppComponent
         private set
 
+    @Inject
+    lateinit var danteSettings: DanteSettings
+
+    @Inject
+    lateinit var tracker: Tracker
+
     override fun onCreate() {
         super.onCreate()
         setStrictMode()
-
-        Realm.init(this)
-        JodaTimeAndroid.init(this)
-
-        configureFabric()
-        configureLogging()
-        configureRxJavaErrorHandling()
 
         appComponent = DaggerAppComponent.builder()
             .appNetworkModule(AppNetworkModule())
@@ -61,6 +63,17 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
             .firebaseModule(FirebaseModule(this))
             .coreComponent(provideCoreComponent())
             .build()
+            .also { component ->
+                component.inject(this)
+            }
+
+        Realm.init(this)
+        JodaTimeAndroid.init(this)
+
+        configureFabric()
+        configureLogging()
+        configureRxJavaErrorHandling()
+        configureTracker()
     }
 
     override fun provideCoreComponent(): CoreComponent {
@@ -71,6 +84,10 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
         RxJavaPlugins.setErrorHandler { throwable ->
             Timber.e(throwable)
         }
+    }
+
+    private fun configureTracker() {
+        tracker.isTrackingAllowed = danteSettings.trackingEnabled
     }
 
     private fun configureLogging() {

@@ -3,7 +3,6 @@ package at.shockbytes.dante.injection
 import android.content.Context
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.tracking.DebugTracker
 import at.shockbytes.tracking.FirebaseTracker
 import at.shockbytes.tracking.Tracker
@@ -36,11 +35,11 @@ class FirebaseModule(private val context: Context) {
     }
 
     @Provides
-    fun provideTracker(danteSettings: DanteSettings): Tracker {
+    fun provideTracker(): Tracker {
         return if (BuildConfig.DEBUG) {
-            DebugTracker(danteSettings.trackingEnabled)
+            DebugTracker()
         } else {
-            FirebaseTracker(context, danteSettings.trackingEnabled)
+            FirebaseTracker(context)
         }
     }
 }

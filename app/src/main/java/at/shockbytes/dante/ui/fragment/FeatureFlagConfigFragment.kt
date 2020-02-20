@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.fragment
 
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +9,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.FeatureFlagConfigAdapter
 import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
+import at.shockbytes.dante.util.viewModelOf
 import kotlinx.android.synthetic.main.fragment_feature_flag_config.*
 import javax.inject.Inject
 
@@ -23,22 +23,20 @@ class FeatureFlagConfigFragment : BaseFragment() {
     private lateinit var viewModel: FeatureFlagConfigViewModel
 
     private val flagAdapter: FeatureFlagConfigAdapter by lazy {
-        context?.let { ctx ->
-            FeatureFlagConfigAdapter(ctx) { item ->
-                viewModel.updateFeatureFlag(item.key, item.value)
-            }
-        } ?: throw IllegalStateException("Context must not be null when lazy loading FlagAdapter!")
+        FeatureFlagConfigAdapter(requireContext()) { item ->
+            viewModel.updateFeatureFlag(item.key, item.value)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProviders.of(this, vmFactory)[FeatureFlagConfigViewModel::class.java]
+        viewModel = viewModelOf(vmFactory)
     }
 
     override fun setupViews() {
         layout_feature_flag_config.setOnClickListener {
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStack()
         }
         setupRecyclerView()
     }
@@ -49,9 +47,7 @@ class FeatureFlagConfigFragment : BaseFragment() {
 
     override fun bindViewModel() {
         viewModel.getFeatureFlagItems().observe(this, Observer { listItems ->
-            listItems?.let { items ->
-                flagAdapter.data = items.toMutableList()
-            }
+            flagAdapter.data = listItems.toMutableList()
         })
     }
 
@@ -60,12 +56,10 @@ class FeatureFlagConfigFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        context?.let { ctx ->
-            rv_feature_flags.apply {
-                adapter = flagAdapter
-                layoutManager = LinearLayoutManager(ctx)
-                addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
-            }
+        rv_feature_flags.apply {
+            adapter = flagAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
     }
 

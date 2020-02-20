@@ -1,13 +1,13 @@
 package at.shockbytes.dante.ui.fragment
 
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.adapter.OnboardingAdapter
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.util.viewModelOfActivity
 import kotlinx.android.synthetic.main.fragment_onboarding.*
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ class OnboardingFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(activity as LoginActivity, vmFactory)[LoginViewModel::class.java]
+        viewModel = viewModelOfActivity(activity as LoginActivity, vmFactory)
     }
 
     override fun setupViews() {

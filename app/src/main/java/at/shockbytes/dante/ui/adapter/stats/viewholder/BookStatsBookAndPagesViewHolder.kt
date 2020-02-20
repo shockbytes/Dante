@@ -2,7 +2,7 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.stats.BooksPagesInfo
 import at.shockbytes.dante.ui.custom.rbc.RelativeBarChartData
 import at.shockbytes.dante.ui.custom.rbc.RelativeBarChartEntry
@@ -13,15 +13,15 @@ import kotlinx.android.synthetic.main.item_stats_books_and_pages.*
 
 class BookStatsBookAndPagesViewHolder(
     override val containerView: View
-) : BaseAdapter.ViewHolder<BookStatsItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookStatsItem, position: Int) {
-        with(content as BookStatsItem.BooksAndPages) {
+    override fun bindToView(content: BookStatsViewItem, position: Int) {
+        with(content as BookStatsViewItem.BooksAndPages) {
             when (this) {
-                BookStatsItem.BooksAndPages.Empty -> {
+                BookStatsViewItem.BooksAndPages.Empty -> {
                     showEmptyState()
                 }
-                is BookStatsItem.BooksAndPages.Present -> {
+                is BookStatsViewItem.BooksAndPages.Present -> {
                     showBooksAndPages(this)
                 }
             }
@@ -33,7 +33,7 @@ class BookStatsBookAndPagesViewHolder(
         item_stats_books_and_pages_content.setVisible(false)
     }
 
-    private fun showBooksAndPages(content: BookStatsItem.BooksAndPages.Present) {
+    private fun showBooksAndPages(content: BookStatsViewItem.BooksAndPages.Present) {
         item_stats_books_and_pages_empty.setVisible(false)
         item_stats_books_and_pages_content.setVisible(true)
 

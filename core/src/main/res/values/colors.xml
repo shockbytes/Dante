@@ -65,6 +65,8 @@
     <color name="navigationBarColor">@color/white</color>
     <color name="searchBarColor">@color/white</color>
 
+    <color name="fab_overlay">#aaffffff</color>
+
     <color name="iconColorSettings">@color/colorAccent</color>
     <color name="modal_background">#59000000</color>
 

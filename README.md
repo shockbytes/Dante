@@ -39,11 +39,17 @@ the user during the login process.
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
 - [ ] Redesign overflow menu
+- [ ] Update to a stable CameraX version as soon as it's ready
+
+### Version 3.10 - SETTINGS AND TRACKING
+* Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT
+* Change launcher icon
+* Bring back tracking capabilities
+* Smaller UI fixes
+* Manual Add book cover bug
 
 ### Version 3.9 - LABELS
-- [ ] Labels for books
-- [ ] Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT
-- [ ] Scanning crashes
+* Labels for books
 
 ### Version 3.8 - TIMELINE
 * Timeline feature

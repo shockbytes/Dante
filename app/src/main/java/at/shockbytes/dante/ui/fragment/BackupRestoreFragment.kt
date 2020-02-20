@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +18,7 @@ import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isPortrait
 import at.shockbytes.dante.util.setVisible
+import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import com.google.android.gms.common.api.ApiException
@@ -45,7 +45,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity(), vmFactory)[BackupViewModel::class.java]
+        viewModel = viewModelOfActivity(requireActivity(), vmFactory)
     }
 
     override fun setupViews() {
@@ -78,7 +78,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     private fun showInactiveResourceModal(t: BackupMetadataState.Inactive) {
         InactiveResourceDialogFragment
             .newInstance(t.entry.storageProvider)
-            .show(requireFragmentManager(), "inactive-resource-dialog-fragment")
+            .show(childFragmentManager, "inactive-resource-dialog-fragment")
     }
 
     override fun bindViewModel() {
@@ -105,7 +105,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
                     showRecyclerView(false)
                 }
                 is BackupViewModel.LoadBackupState.Error -> {
-                    showSnackbar(state.throwable.localizedMessage, showLong = true)
+                    showSnackbar(state.throwable.localizedMessage ?: "", showLong = true)
                     showLoadingView(false)
                     showEmptyStateView(false)
                     showRecyclerView(false)
@@ -179,7 +179,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
             .setOnRestoreStrategySelectedListener { strategy ->
                 viewModel.applyBackup(state.entry, strategy)
             }
-            .show(requireFragmentManager(), "restore-strategy-dialog-fragment")
+            .show(childFragmentManager, "restore-strategy-dialog-fragment")
     }
 
     companion object {

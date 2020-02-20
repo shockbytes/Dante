@@ -59,7 +59,7 @@ class PagesFragment : BaseFragment() {
     }
 
     private fun closeFragment() {
-        fragmentManager?.popBackStack()
+        parentFragmentManager.popBackStack()
     }
 
     private fun increasePageNumber(v: View) {

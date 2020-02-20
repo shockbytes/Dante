@@ -38,7 +38,7 @@ object GlideImageLoader : ImageLoader {
         callback: ImageLoadingCallback?,
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
-        val request = Glide.with(context).load(checkUrlForHttps(url))
+        val request = Glide.with(context).load(url.checkUrlForHttps())
             .apply(getRequestOptions(context, circular, placeholder))
         executeRequest(request, target, callback, callbackHandleValues)
     }
@@ -80,10 +80,15 @@ object GlideImageLoader : ImageLoader {
         callback: ImageLoadingCallback?,
         callbackHandleValues: Pair<Boolean, Boolean>?
     ) {
-        val request = Glide.with(context).load(checkUrlForHttps(url))
-            .apply(RequestOptions()
-                .placeholder(DanteUtils.vector2Drawable(context, placeholder))
-                .transform(CenterInside(), RoundedCorners(cornerDimension)))
+        val request = Glide
+            .with(context)
+            .load(url.checkUrlForHttps())
+            .apply(
+                RequestOptions()
+                    .placeholder(DanteUtils.vector2Drawable(context, placeholder))
+                    .transform(CenterInside(), RoundedCorners(cornerDimension))
+            )
+
         executeRequest(request, target, callback, callbackHandleValues)
     }
 

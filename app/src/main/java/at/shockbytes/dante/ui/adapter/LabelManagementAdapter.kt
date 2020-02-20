@@ -8,12 +8,11 @@ import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import at.shockbytes.dante.R
-import at.shockbytes.dante.barcode.util.BitmapUtils
 import at.shockbytes.dante.core.book.BookLabel
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_book.*
 import kotlinx.android.synthetic.main.item_book_label_management.*
 
 class LabelManagementAdapter(
@@ -42,7 +41,7 @@ class LabelManagementAdapter(
             with(content) {
                 tv_item_label_management.text = title
 
-                BitmapUtils.createRoundedBitmapFromColor(
+                DanteUtils.createRoundedBitmapFromColor(
                     context,
                     AppUtils.convertDpInPixel(32, context),
                     Color.parseColor(hexColor)

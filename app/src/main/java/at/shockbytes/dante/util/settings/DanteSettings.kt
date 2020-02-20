@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
+import at.shockbytes.dante.util.settings.delegate.SharedPreferencesStringPropertyDelegate
 import at.shockbytes.dante.util.sort.SortStrategy
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
@@ -23,7 +24,21 @@ class DanteSettings(
 
     var isFirstAppOpen: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_first_app_open_key), defaultValue = true)
 
-    var darkModeEnabled: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_dark_mode_key), defaultValue = false)
+    private val darkModeString: String by SharedPreferencesStringPropertyDelegate(prefs, context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
+
+    var selectedLauncherIconState: LauncherIconState
+        get() {
+            val idString = prefs.getString(context.getString(R.string.prefs_launcher_icon_state_key), "standard") ?: "standard"
+            return LauncherIconState.ofStringOrDefault(idString)
+        }
+        set(value) {
+            prefs.edit()
+                .putString(context.getString(R.string.prefs_launcher_icon_state_key), value.manifestAliasId)
+                .apply()
+        }
+
+    val themeState: ThemeState
+        get() = ThemeState.ofString(darkModeString) ?: ThemeState.SYSTEM
 
     var showSummary: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_show_summary_key), defaultValue = true)
 
@@ -58,10 +73,13 @@ class DanteSettings(
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun observeDarkModeEnabled(): Observable<Boolean> {
-        return rxPrefs.getBoolean(context.getString(R.string.prefs_dark_mode_key))
-                .asObservable()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+    fun observeThemeChanged(): Observable<ThemeState> {
+        return rxPrefs.getString(context.getString(R.string.prefs_dark_mode_key))
+            .asObservable()
+            .filter { it.isNotEmpty() }
+            .distinctUntilChanged()
+            .map(ThemeState.Companion::ofStringWithDefault)
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

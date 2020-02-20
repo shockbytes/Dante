@@ -2,6 +2,8 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
+import androidx.core.net.toUri
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
@@ -12,6 +14,7 @@ import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -31,7 +34,8 @@ class ManualAddViewModel @Inject constructor(
         val publishedDate: String?,
         val isbn: String?,
         val language: String?,
-        val summary: String?
+        val summary: String?,
+        val thumbnailAddress: String?
     ) {
         val isValid: Boolean
             get() = title != null && author != null && pageCount != null
@@ -68,7 +72,7 @@ class ManualAddViewModel @Inject constructor(
             viewState.postValue(ViewState.UpdateBook(bookEntity))
 
             val image = bookEntity.normalizedThumbnailUrl
-                ?.let { ThumbnailUri(Uri.parse(it)) }
+                ?.let { ThumbnailUri(it.toUri()) }
                 ?: ImageState.NoImage
             imageState.postValue(image)
         } else {
@@ -77,10 +81,13 @@ class ManualAddViewModel @Inject constructor(
         }
     }
 
-    fun pickImage(activity: androidx.fragment.app.FragmentActivity) {
+    fun pickImage(activity: FragmentActivity) {
         imagePicker
             .openGallery(activity)
             .map(::ThumbnailUri)
+            .doOnNext { thumbnailUri ->
+                Timber.d("Image thumbnail picked: ${thumbnailUri.uri}")
+            }
             .subscribe(imageState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
@@ -97,7 +104,7 @@ class ManualAddViewModel @Inject constructor(
             bookUpdateData.subTitle,
             bookUpdateData.publishedDate,
             bookUpdateData.isbn,
-            imageState.value?.toString(),
+            getImageUri(),
             bookUpdateData.language,
             bookUpdateData.summary
         )
@@ -107,6 +114,15 @@ class ManualAddViewModel @Inject constructor(
             addEvent.onNext(AddEvent.Success)
         } else {
             addEvent.onNext(AddEvent.Error)
+        }
+    }
+
+    fun getImageUri(): String? {
+        return imageState.value?.let { state ->
+            when (state) {
+                is ThumbnailUri -> state.uri.toString()
+                ImageState.NoImage -> null
+            }
         }
     }
 
@@ -137,7 +153,8 @@ class ManualAddViewModel @Inject constructor(
             publishedDate = bookUpdateData.publishedDate ?: publishedDate,
             isbn = bookUpdateData.isbn ?: isbn,
             language = bookUpdateData.language ?: language,
-            summary = bookUpdateData.summary ?: summary
+            summary = bookUpdateData.summary ?: summary,
+            thumbnailAddress = bookUpdateData.thumbnailAddress
         )
     }
 

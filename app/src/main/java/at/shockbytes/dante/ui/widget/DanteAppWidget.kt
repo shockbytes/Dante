@@ -41,7 +41,7 @@ class DanteAppWidget : AppWidgetProvider() {
     private fun handleOnBookClickedEvent(context: Context?, intent: Intent) {
 
         val bookId = intent.getLongExtra(EXTRA_BOOK_ID, -1L)
-        val bookTitle = intent.getStringExtra(EXTRA_BOOK_TITLE)
+        val bookTitle = intent.getStringExtra(EXTRA_BOOK_TITLE) ?: ""
         ActivityNavigator.navigateTo(
             context,
             Destination.Main(Destination.BookDetail.BookDetailInfo(bookId, bookTitle)),

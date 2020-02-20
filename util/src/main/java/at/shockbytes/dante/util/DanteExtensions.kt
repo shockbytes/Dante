@@ -2,6 +2,7 @@ package at.shockbytes.dante.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -47,6 +48,16 @@ fun Activity.hideKeyboard() {
     }
 }
 
+fun Fragment.showKeyboard(focusView: View) {
+    showKeyboard(requireContext(), focusView)
+}
+
+fun showKeyboard(context: Context, view: View) {
+    view.requestFocus()
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+}
+
 fun View.setVisible(isVisible: Boolean) {
     val visibility = if (isVisible) View.VISIBLE else View.GONE
     this.visibility = visibility
@@ -71,6 +82,12 @@ fun Fragment.isPortrait(): Boolean {
 
 fun Activity.isPortrait(): Boolean {
     return resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun Activity.retrieveActiveActivityAlias(): String? {
+    return this.intent.component?.let { component ->
+        packageManager.getActivityInfo(component, PackageManager.GET_META_DATA).name
+    }
 }
 
 fun Drawable.toBitmap(): Bitmap {

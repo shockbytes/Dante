@@ -14,7 +14,7 @@ import org.joda.time.Months
 
 object BookStatsBuilder {
 
-    fun createFrom(books: List<BookEntity>): List<BookStatsItem> {
+    fun createFrom(books: List<BookEntity>): List<BookStatsViewItem> {
         return listOf(
             createBooksAndPagesItem(books),
             createReadingDurationItem(books),
@@ -25,10 +25,10 @@ object BookStatsBuilder {
         )
     }
 
-    private fun createBooksAndPagesItem(books: List<BookEntity>): BookStatsItem {
+    private fun createBooksAndPagesItem(books: List<BookEntity>): BookStatsViewItem {
 
         if (books.isEmpty()) {
-            return BookStatsItem.BooksAndPages.Empty
+            return BookStatsViewItem.BooksAndPages.Empty
         }
 
         val states = books.groupBy { it.state }
@@ -42,7 +42,7 @@ object BookStatsBuilder {
         // Add pages waiting in the current book to waiting pages
         val pagesWaiting = waiting.sumBy { it.pageCount } + reading.sumBy { it.pageCount - it.currentPage }
 
-        return BookStatsItem.BooksAndPages.Present(
+        return BookStatsViewItem.BooksAndPages.Present(
             BooksPagesInfo(
                 books = BooksPagesInfo.Books(
                     waiting = waiting.size,
@@ -57,7 +57,7 @@ object BookStatsBuilder {
         )
     }
 
-    private fun createReadingDurationItem(books: List<BookEntity>): BookStatsItem {
+    private fun createReadingDurationItem(books: List<BookEntity>): BookStatsViewItem {
 
         val booksWithDuration = books
             .asSequence()
@@ -73,24 +73,24 @@ object BookStatsBuilder {
             .toList()
 
         return if (booksWithDuration.isNotEmpty()) {
-            BookStatsItem.ReadingDuration.Present(
+            BookStatsViewItem.ReadingDuration.Present(
                 slowest = booksWithDuration.last(),
                 fastest = booksWithDuration.first()
             )
         } else {
-            BookStatsItem.ReadingDuration.Empty
+            BookStatsViewItem.ReadingDuration.Empty
         }
     }
 
-    private fun createFavoriteItem(books: List<BookEntity>): BookStatsItem {
+    private fun createFavoriteItem(books: List<BookEntity>): BookStatsViewItem {
 
         val firstFiveStar = firstFiveStarBook(books)
         val favoriteAuthor = favoriteAuthor(books)
 
         return if (favoriteAuthor != null) {
-            BookStatsItem.Favorites.Present(favoriteAuthor, firstFiveStar)
+            BookStatsViewItem.Favorites.Present(favoriteAuthor, firstFiveStar)
         } else {
-            BookStatsItem.Favorites.Empty
+            BookStatsViewItem.Favorites.Empty
         }
     }
 
@@ -118,7 +118,7 @@ object BookStatsBuilder {
             ?.bareBone()
     }
 
-    private fun createLanguageItem(books: List<BookEntity>): BookStatsItem {
+    private fun createLanguageItem(books: List<BookEntity>): BookStatsViewItem {
 
         val languages = books.asSequence()
             .filter { it.language != null }
@@ -127,13 +127,13 @@ object BookStatsBuilder {
             .mapValues { it.value.size }
 
         return if (languages.isEmpty()) {
-            BookStatsItem.LanguageDistribution.Empty
+            BookStatsViewItem.LanguageDistribution.Empty
         } else {
-            BookStatsItem.LanguageDistribution.Present(languages)
+            BookStatsViewItem.LanguageDistribution.Present(languages)
         }
     }
 
-    private fun createLabelItem(books: List<BookEntity>): BookStatsItem {
+    private fun createLabelItem(books: List<BookEntity>): BookStatsViewItem {
 
         val labels = books.asSequence()
             .map { it.labels }
@@ -142,18 +142,18 @@ object BookStatsBuilder {
             .mapValues { it.value.size }
 
         return if (labels.isEmpty()) {
-            BookStatsItem.LabelStats.Empty
+            BookStatsViewItem.LabelStats.Empty
         } else {
-            BookStatsItem.LabelStats.Present(labels)
+            BookStatsViewItem.LabelStats.Present(labels)
         }
     }
 
-    private fun createOthersItem(books: List<BookEntity>): BookStatsItem {
+    private fun createOthersItem(books: List<BookEntity>): BookStatsViewItem {
 
         return if (books.isEmpty()) {
-            BookStatsItem.Others.Empty
+            BookStatsViewItem.Others.Empty
         } else {
-            BookStatsItem.Others.Present(
+            BookStatsViewItem.Others.Present(
                 averageRating = averageBookRating(books),
                 averageBooksPerMonth = averageBooksPerMonth(books),
                 mostActiveMonth = mostActiveMonth(books)

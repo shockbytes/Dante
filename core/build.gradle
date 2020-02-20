@@ -55,6 +55,8 @@ dependencies {
     api "net.danlew:android.joda:$jodaTimeVersion"
     api "com.afollestad.material-dialogs:core:${rootProject.materialDialogsVersion}"
 
+    api "com.jakewharton.timber:timber:$timberVersion"
+
     api 'com.mlsdev.rximagepicker:library:2.1.5'
     api "com.github.qingmei2:rximagepicker:$rxImagePickerVersion"
     api "com.github.qingmei2:rximagepicker_support:$rxImagePickerVersion"

@@ -4,7 +4,7 @@ import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.stats.FavoriteAuthor
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
@@ -14,15 +14,15 @@ import kotlinx.android.synthetic.main.item_stats_favorites.*
 class BookStatsFavoritesViewHolder(
     override val containerView: View,
     private val imageLoader: ImageLoader
-) : BaseAdapter.ViewHolder<BookStatsItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookStatsItem, position: Int) {
-        with(content as BookStatsItem.Favorites) {
+    override fun bindToView(content: BookStatsViewItem, position: Int) {
+        with(content as BookStatsViewItem.Favorites) {
             when (this) {
-                BookStatsItem.Favorites.Empty -> {
+                BookStatsViewItem.Favorites.Empty -> {
                     showEmptyState()
                 }
-                is BookStatsItem.Favorites.Present -> {
+                is BookStatsViewItem.Favorites.Present -> {
                     showReadingDuration(this)
                 }
             }
@@ -34,7 +34,7 @@ class BookStatsFavoritesViewHolder(
         item_stats_favorites_content.setVisible(false)
     }
 
-    private fun showReadingDuration(content: BookStatsItem.Favorites.Present) {
+    private fun showReadingDuration(content: BookStatsViewItem.Favorites.Present) {
         item_stats_favorites_empty.setVisible(false)
         item_stats_favorites_content.setVisible(true)
 

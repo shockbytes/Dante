@@ -23,6 +23,8 @@ import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.appcompat.widget.AppCompatDrawableManager
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import at.shockbytes.util.AppUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -83,10 +85,10 @@ object DanteUtils {
         } else 0
     }
 
-    fun checkUrlForHttps(url: String): String {
-        return if (url.startsWith("http://")) {
-            url.replace("http://", "https://")
-        } else url
+    fun String.checkUrlForHttps(): String {
+        return if (startsWith("http://")) {
+            replace("http://", "https://")
+        } else this
     }
 
     fun vector2Drawable(c: Context, res: Int): Drawable = AppCompatDrawableManager.get().getDrawable(c, res)
@@ -145,5 +147,22 @@ object DanteUtils {
         vectorDrawable.setBounds(padding, padding, canvas.width - padding, canvas.height - padding)
         vectorDrawable.draw(canvas)
         return bitmap
+    }
+
+    fun createRoundedBitmapFromColor(
+        context: Context,
+        size: Int,
+        @ColorInt color: Int
+    ): RoundedBitmapDrawable {
+
+        val image = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        image.eraseColor(color)
+
+        // val c = Canvas(image)
+        // c.drawBitmap(image, 0f, 0f, null)
+
+        val rdb = RoundedBitmapDrawableFactory.create(context.resources, image)
+        rdb.isCircular = true
+        return rdb
     }
 }

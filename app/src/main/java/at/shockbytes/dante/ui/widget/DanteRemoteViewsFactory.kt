@@ -1,7 +1,6 @@
 package at.shockbytes.dante.ui.widget
 
 import android.content.Context
-import android.net.Uri
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import at.shockbytes.dante.R
@@ -15,6 +14,7 @@ import at.shockbytes.dante.util.DanteUtils
 import android.content.Intent
 import android.graphics.Bitmap
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.toBitmap
@@ -80,7 +80,7 @@ class DanteRemoteViewsFactory(
         Timber.d("Thumbnail: $thumbnailAddress")
         return if (!thumbnailAddress.isNullOrEmpty()) {
             try {
-                Uri.parse(checkUrlForHttps(thumbnailAddress)).loadBitmap(context).blockingGet()
+                thumbnailAddress.checkUrlForHttps().toUri().loadBitmap(context).blockingGet()
             } catch (e: Exception) {
                 e.printStackTrace()
                 ContextCompat.getDrawable(context, R.drawable.ic_placeholder)?.toBitmap()

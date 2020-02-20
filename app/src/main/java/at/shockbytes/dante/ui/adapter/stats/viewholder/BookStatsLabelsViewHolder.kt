@@ -3,7 +3,7 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 import android.view.View
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
-import at.shockbytes.dante.stats.BookStatsItem
+import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
@@ -16,18 +16,17 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_labels.*
 
-
 class BookStatsLabelsViewHolder(
     override val containerView: View
-) : BaseAdapter.ViewHolder<BookStatsItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookStatsItem, position: Int) {
-        with(content as BookStatsItem.LabelStats) {
+    override fun bindToView(content: BookStatsViewItem, position: Int) {
+        with(content as BookStatsViewItem.LabelStats) {
             when (this) {
-                BookStatsItem.LabelStats.Empty -> {
+                BookStatsViewItem.LabelStats.Empty -> {
                     showEmptyState()
                 }
-                is BookStatsItem.LabelStats.Present -> {
+                is BookStatsViewItem.LabelStats.Present -> {
                     showLabelsCharts(labels)
                 }
             }

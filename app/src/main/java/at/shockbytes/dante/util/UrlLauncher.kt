@@ -6,7 +6,7 @@ import android.net.Uri
 
 object UrlLauncher {
 
-    const val DANTE_GITHUB_URL = "https://github.com/shockbytes/Dante"
+    private const val DANTE_GITHUB_URL = "https://github.com/shockbytes/Dante"
 
     fun openDanteGithubPage(context: Context) {
         launchUrl(context, DANTE_GITHUB_URL)

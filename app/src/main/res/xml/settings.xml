@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_books_general">
-        <androidx.preference.SwitchPreferenceCompat
-            android:defaultValue="false"
+    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_books_appearance">
+
+        <androidx.preference.ListPreference
+            android:defaultValue="@string/prefs_dark_mode_default_value"
+            android:entries="@array/prefs_dark_mode_entries"
+            android:entryValues="@array/prefs_dark_mode_entry_values"
             android:icon="@drawable/ic_settings_dark_mode"
             android:key="@string/prefs_dark_mode_key"
-            android:summary="@string/prefs_dark_mode_summary"
             android:title="@string/prefs_dark_mode_title" />
+
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_change_icon"
+            android:key="@string/prefs_change_icon_key"
+            android:summary="Standard"
+            android:title="@string/prefs_change_icon_title" />
 
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="true"
@@ -15,6 +24,18 @@
             android:key="@string/prefs_show_summary_key"
             android:summary="@string/prefs_show_summary_summary"
             android:title="@string/prefs_show_summary_title" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/prefs_category_books_privacy">
+
+        <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:icon="@drawable/ic_settings_tracking"
+            android:key="@string/prefs_tracking_key"
+            android:summary="@string/prefs_tracking_summary"
+            android:title="@string/prefs_tracking_title" />
 
     </androidx.preference.PreferenceCategory>
 

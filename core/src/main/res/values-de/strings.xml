@@ -120,9 +120,8 @@
     <string name="statistics_pages_read">%s Seiten schon gelesen</string>
     <string name="statistics_average_rating">Durchschnittliche Bewertung</string>
 
-    <string name="prefs_category_books_general">Allgemein</string>
-    <string name="prefs_dark_mode_title">Dark mode</string>
-    <string name="prefs_dark_mode_summary">Verwende ein dunkles Thema für die App</string>
+    <string name="prefs_category_books_appearance">Aussehen</string>
+    <string name="prefs_dark_mode_title">Theme</string>
     <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
     <string name="backup_connection_establish_error">Keine Verbindung zu deinen Backups möglich. Grund: %s</string>
     <string name="dark_mode_applied">Das Thema wird beim nächsten Start aktiviert.</string>
@@ -250,5 +249,12 @@
     <string name="new_label_title_exists">Dieser Titel existiert bereits</string>
     <string name="empty_label_picker">Keine Labels verfügbar.\\n Erstelle ein neues zuerst.#</string>
     <string name="statistics_header_labels">Labels</string>
+    <string name="prefs_change_icon_title">Icon ändern</string>
+    <string name="prefs_category_books_privacy">Datenschutz</string>
+    <string name="prefs_tracking_title">Tracking</string>
+    <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
+    <string name="not_available">N/A</string>
+    <string name="launcher_icon_change_description">Eine Änderung des Icons \\n führt voraussichtlich zu einem Neustart</string>
+    <string name="restarting_app">Die App startet sich voraussichtlich neu...</string>
 
 </resources>

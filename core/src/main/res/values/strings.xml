@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.9</string>
+    <string name="app_version" translatable="false">3.10</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -10,6 +10,7 @@
     <string name="label_stats">Your statistics</string>
     <string name="label_timeline">Your timeline</string>
     <string name="label_my_notes">My notes</string>
+    <string name="not_available">N/A</string>
 
     <string name="currently_reading">Currently reading</string>
 
@@ -205,10 +206,19 @@
     <string name="pages_read">%d pages read</string>
     <string name="pages_waiting">%d pages waiting</string>
 
-    <string name="prefs_category_books_general">General</string>
-    <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_key</string>
-    <string name="prefs_dark_mode_title">Dark mode</string>
-    <string name="prefs_dark_mode_summary">Enable a dark theme for the app</string>
+    <string name="prefs_category_books_appearance">Appearance</string>
+    <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_string_key</string>
+    <string name="prefs_launcher_icon_state_key" translatable="false">prefs_launcher_icon_state_key</string>
+    <string name="prefs_dark_mode_default_value" translatable="false">system</string>
+    <string name="prefs_dark_mode_title">Theme</string>
+
+    <string name="prefs_category_books_privacy">Privacy</string>
+    <string name="prefs_tracking_key" translatable="false">prefs_tracking_key</string>
+    <string name="prefs_tracking_summary">Improve the app by sending anonymous data to our servers</string>
+    <string name="prefs_tracking_title">Tracking</string>
+
+    <string name="prefs_change_icon_key" translatable="false">prefs_change_icon_key</string>
+    <string name="prefs_change_icon_title">Change launcher icon</string>
 
     <string name="prefs_feature_flag_key" translatable="false">prefs_feature_flag_key</string>
     <string name="prefs_feature_flag_title" translatable="false">Feature Flags</string>
@@ -243,7 +253,6 @@
     <string name="ic_onboarding_suggestions">TODO</string>
     <string name="ic_onboarding_cta">TODO</string>
 
-    <string name="prefs_tracking_key" translatable="false">prefs_tracking_key</string>
     <string name="prefs_last_login" translatable="false">prefs_last_login</string>
     <string name="prefs_first_app_open_key" translatable="false">prefs_first_app_open_key</string>
 
@@ -302,6 +311,9 @@
     <string name="scan_another_book">Do you want to scan another book?</string>
     <string name="book_added_to_library">%s added to library</string>
     <string name="nope">Nope</string>
+
+    <string name="restarting_app">The app may restart shortly&#8230;</string>
+    <string name="launcher_icon_change_description">Changing the icon may \n automatically restart the app</string>
 
     <string name="date_month_and_year" translatable="false">%s %s</string>
     <string name="dante_install">You installed Dante</string>

@@ -46,8 +46,7 @@ the user during the login process.
 * Change launcher icon
 * Bring back tracking capabilities
 * Smaller UI fixes
-- [ ] Manual Add book cover bug
-- [ ] Scanning crashes
+* Manual Add book cover bug
 
 ### Version 3.9 - LABELS
 * Labels for books

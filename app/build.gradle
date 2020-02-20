@@ -57,6 +57,9 @@ android {
     packagingOptions {
         exclude 'META-INF/util_release.kotlin_module'
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 androidExtensions {

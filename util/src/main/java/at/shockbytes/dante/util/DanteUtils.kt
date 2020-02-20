@@ -85,10 +85,10 @@ object DanteUtils {
         } else 0
     }
 
-    fun checkUrlForHttps(url: String): String {
-        return if (url.startsWith("http://")) {
-            url.replace("http://", "https://")
-        } else url
+    fun String.checkUrlForHttps(): String {
+        return if (startsWith("http://")) {
+            replace("http://", "https://")
+        } else this
     }
 
     fun vector2Drawable(c: Context, res: Int): Drawable = AppCompatDrawableManager.get().getDrawable(c, res)

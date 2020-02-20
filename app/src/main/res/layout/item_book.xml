@@ -50,6 +50,7 @@
             android:layout_marginTop="8dp"
             android:contentDescription="@string/contentdesc_listitem_img_thumb"
             android:minWidth="48dp"
+            app:layout_constraintHeight_max="64dp"
             android:transitionName="@string/transition_name_thumb"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_book_pb"

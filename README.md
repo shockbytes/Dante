@@ -39,6 +39,7 @@ the user during the login process.
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
 - [ ] Redesign overflow menu
+- [ ] Update to a stable CameraX version as soon as it's ready
 
 ### Version 3.10 - SETTINGS AND TRACKING
 * Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT

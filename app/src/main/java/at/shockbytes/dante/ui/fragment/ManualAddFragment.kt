@@ -270,7 +270,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             publishedDate = publishedDate,
             isbn = isbn,
             language = language,
-            summary = summary
+            summary = summary,
+            thumbnailAddress = viewModel.getImageUri()
         )
     }
 

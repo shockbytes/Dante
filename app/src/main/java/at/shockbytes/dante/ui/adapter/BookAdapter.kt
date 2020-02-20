@@ -2,30 +2,41 @@ package at.shockbytes.dante.ui.adapter
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.transition.TransitionManager
 import android.view.HapticFeedbackConstants
-import androidx.recyclerview.widget.DiffUtil
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Nullable
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.net.toUri
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ItemTouchHelperAdapter
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.google.android.material.chip.Chip
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_book.*
+import timber.log.Timber
 import java.util.Collections
+
 
 /**
  * Author:  Martin Macheiner
@@ -231,6 +242,8 @@ class BookAdapter(
         }
 
         private fun updateImageThumbnail(address: String?) {
+
+            Timber.d("Set image thumbnail in adapter: <$address>")
 
             if (!address.isNullOrEmpty()) {
                 imageLoader.loadImageWithCornerRadius(

@@ -86,14 +86,13 @@
         android:layout_below="@+id/appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <!--
     <com.leinardi.android.speeddial.SpeedDialOverlayLayout
         android:id="@+id/mainFabMenuOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:clickable_overlay="true"
+        android:background="@color/fab_overlay"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
--->
 
     <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/mainFabMenu"
@@ -108,8 +107,8 @@
         app:sdMainFabClosedIconColor="@color/white"
         app:sdMainFabOpenedIconColor="@color/white"
         app:sdMainFabClosedSrc="@drawable/ic_add"
-        app:sdMainFabOpenedSrc="@drawable/ic_close" />
-    <!-- app:sdOverlayLayout="@id/mainFabMenuOverlay" -->
+        app:sdMainFabOpenedSrc="@drawable/ic_close"
+        app:sdOverlayLayout="@id/mainFabMenuOverlay" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mainBottomNavigation"

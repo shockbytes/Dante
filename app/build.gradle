@@ -108,7 +108,7 @@ dependencies {
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
-    implementation "com.leinardi.android:speed-dial:3.1.0"
+    implementation "com.leinardi.android:speed-dial:3.1.1"
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'

@@ -263,6 +263,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
 
         mainFabMenu.setOnActionSelectedListener { item ->
+            mainFabMenuOverlay.hide(false)
 
             when (item.id) {
 

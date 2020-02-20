@@ -107,7 +107,7 @@ sealed class Destination {
     data class Notes(private val notesBundle: NotesBundle) : Destination() {
 
         override fun provideIntent(context: Context): Intent {
-            return  NotesActivity.newIntent(context, notesBundle)
+            return NotesActivity.newIntent(context, notesBundle)
         }
     }
 }

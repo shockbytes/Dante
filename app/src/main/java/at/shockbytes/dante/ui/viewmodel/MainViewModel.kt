@@ -61,17 +61,19 @@ class MainViewModel @Inject constructor(
         .addTo(compositeDisposable)
     }
 
-    fun signIn(data: Intent, signInToBackend: Boolean) {
-        signInManager.signIn(data, signInToBackend).subscribe({ account ->
-            userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
-        }, { throwable: Throwable ->
-            Timber.e(throwable)
-            userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
-        }).addTo(compositeDisposable)
+    fun signIn(data: Intent) {
+        signInManager.signIn(data)
+            .subscribe({ account ->
+                userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
+            }, { throwable: Throwable ->
+                Timber.e(throwable)
+                userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
+            })
+            .addTo(compositeDisposable)
     }
 
     fun loginLogout() {
-
+x
         if (signInManager.getAccount() != null) {
             signInManager.signOut().subscribe { }.addTo(compositeDisposable)
         } else {

@@ -26,7 +26,7 @@ interface SignInManager {
 
     fun setup()
 
-    fun signIn(data: Intent, signInToOnlineBackend: Boolean): Single<DanteUser?>
+    fun signIn(data: Intent): Single<DanteUser>
 
     fun signOut(): Completable
 

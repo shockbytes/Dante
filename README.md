@@ -42,6 +42,9 @@ the user during the login process.
 
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add online sync capability
+  - [ ] Login with Firebase
+  - [ ] Migrate from local to remote storage
+  - [ ] Rework Backup screen into Book management screen (Local and online tab)
 
 ### Version 3.10 - SETTINGS AND TRACKING
 * Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT

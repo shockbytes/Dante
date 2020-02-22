@@ -78,7 +78,7 @@ class MainViewModel @Inject constructor(
     fun loginLogout() {
         signInManager.getAccount()
             .subscribeOn(schedulers.io)
-            .doOnError{
+            .doOnError {
                 userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
             }
             .flatMapCompletable { signInManager.signOut() }

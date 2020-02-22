@@ -8,16 +8,13 @@ import at.shockbytes.dante.injection.AppComponent
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.activity.core.BackNavigableActivity
-import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
 import at.shockbytes.dante.ui.fragment.OnlineStorageFragment
 import javax.inject.Inject
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import kotlinx.android.synthetic.main.activity_book_storage.*
-import kotlinx.android.synthetic.main.activity_main.*
 import pub.devrel.easypermissions.EasyPermissions
 
 class BookStorageActivity : BackNavigableActivity(), EasyPermissions.PermissionCallbacks {
@@ -31,7 +28,6 @@ class BookStorageActivity : BackNavigableActivity(), EasyPermissions.PermissionC
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_storage)
         viewModel = viewModelOf(vmFactory)
-
 
         initializeNavigation()
     }
@@ -69,11 +65,8 @@ class BookStorageActivity : BackNavigableActivity(), EasyPermissions.PermissionC
             .commit()
     }
 
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        // Forward to EasyPermissions
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 

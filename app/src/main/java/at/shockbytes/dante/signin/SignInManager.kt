@@ -32,7 +32,9 @@ interface SignInManager {
 
     fun observeSignInState(): Observable<Boolean>
 
-    fun getAccount(): DanteUser?
+    fun getAccount(): Single<DanteUser>
 
-    fun getAuthorizationHeader(): String
+    fun getAuthorizationHeader(): Single<String>
+
+    fun close()
 }

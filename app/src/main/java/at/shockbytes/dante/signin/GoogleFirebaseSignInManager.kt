@@ -19,7 +19,10 @@ import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
+import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -33,6 +36,8 @@ class GoogleFirebaseSignInManager(
     private val context: Context,
     private val schedulers: SchedulerFacade
 ) : SignInManager {
+
+    private val compositeDisposable = CompositeDisposable()
 
     private var client: GoogleSignInClient? = null
 
@@ -56,7 +61,15 @@ class GoogleFirebaseSignInManager(
                 .build()
             client = GoogleSignIn.getClient(context, signInOptions)
 
-            signInSubject.onNext(getAccount() != null)
+            getAccount()
+                .subscribeOn(schedulers.io)
+                .subscribe({
+                    signInSubject.onNext(true)
+                }, { throwable ->
+                    Timber.e(throwable)
+                    signInSubject.onNext(false)
+                })
+                .addTo(compositeDisposable)
         }
     }
 
@@ -101,12 +114,22 @@ class GoogleFirebaseSignInManager(
             .subscribeOn(schedulers.io)
     }
 
-    override fun getAccount(): DanteUser? {
-        return fbAuth.currentUser?.toDanteUser()
+    override fun getAccount(): Single<DanteUser> {
+        return Single
+            .fromCallable {
+                fbAuth.currentUser?.toDanteUser() ?: throw IllegalStateException("No account signed in")
+            }
+            .subscribeOn(schedulers.io)
     }
 
-    override fun getAuthorizationHeader(): String {
-        return SignInManager.getAuthorizationHeader(getAccount()?.authToken ?: "")
+    override fun getAuthorizationHeader(): Single<String> {
+        return getAccount().map { account ->
+            SignInManager.getAuthorizationHeader(account.authToken ?: "")
+        }
+    }
+
+    override fun close() {
+        compositeDisposable.clear()
     }
 
     fun getGoogleAccount(): GoogleSignInAccount? {

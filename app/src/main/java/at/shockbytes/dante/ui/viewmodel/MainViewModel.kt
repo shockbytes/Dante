@@ -8,6 +8,7 @@ import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -19,7 +20,8 @@ import javax.inject.Inject
  */
 class MainViewModel @Inject constructor(
     private val signInManager: SignInManager,
-    private val announcementProvider: AnnouncementProvider
+    private val announcementProvider: AnnouncementProvider,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     sealed class UserEvent {
@@ -46,7 +48,7 @@ class MainViewModel @Inject constructor(
                 if (isSignedIn) { // <- User signed in, TOP!
                     userEvent.postValue(
                         UserEvent.SuccessEvent(
-                            signInManager.getAccount(),
+                            signInManager.getAccount().blockingGet(), // TODO rework this
                             signInManager.showWelcomeScreen
                         )
                     )
@@ -74,18 +76,18 @@ class MainViewModel @Inject constructor(
     }
 
     fun loginLogout() {
-
-        if (signInManager.getAccount() != null) {
-            signInManager.signOut()
-                .subscribe({
-                    Timber.d("Successfully logged out!")
-                }, { throwable ->
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
-        } else {
-            userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
-        }
+        signInManager.getAccount()
+            .subscribeOn(schedulers.io)
+            .doOnError {
+                userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+            }
+            .flatMapCompletable { signInManager.signOut() }
+            .subscribe({
+                Timber.d("Successfully logged out!")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun signInMaybeLater(maybeLater: Boolean) {

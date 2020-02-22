@@ -69,4 +69,7 @@ class DefaultBookRepository(
         selectedBookDao.deleteBookLabel(bookLabel)
     }
 
+    override fun migrateToRemoteStorage(): Completable {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }

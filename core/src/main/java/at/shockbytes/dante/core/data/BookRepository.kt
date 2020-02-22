@@ -36,4 +36,5 @@ interface BookRepository {
 
     fun deleteBookLabel(bookLabel: BookLabel)
 
+    fun migrateToRemoteStorage(): Completable
 }

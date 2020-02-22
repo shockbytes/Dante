@@ -36,45 +36,57 @@ class ShockbytesHerokuServerBackupProvider(
     }
 
     override fun backup(books: List<BookEntity>): Completable {
-        return shockbytesHerokuApi
-            .makeBackup(signInManager.getAuthorizationHeader(), books)
-            .flatMapCompletable { entry ->
-                Timber.d(entry.toString())
-                // TODO What to do with entry? Store in UI?
-                Completable.complete()
-            }
+        return signInManager.getAuthorizationHeader()
+            .flatMapCompletable { token ->
+            shockbytesHerokuApi.makeBackup(token, books)
+                .flatMapCompletable { entry ->
+                    Timber.d(entry.toString())
+                    // TODO What to do with entry? Store in UI?
+                    Completable.complete()
+                }
+        }
     }
 
     override fun getBackupEntries(): Single<List<BackupMetadataState>> {
-        return shockbytesHerokuApi.listBackups(signInManager.getAuthorizationHeader())
-            .map { entries ->
-                val entryStates: List<BackupMetadataState> = entries.map { entry ->
-                    BackupMetadataState.Active(entry)
-                }
-                entryStates
-            }
-            .subscribeOn(Schedulers.io())
-            .doOnSuccess { activeItems ->
-                inactiveBackupStorage.storeInactiveItems(activeItems)
-            }
-            .onErrorReturn { throwable ->
-                Timber.e(throwable)
-                inactiveBackupStorage.getInactiveItems()
+        return signInManager.getAuthorizationHeader()
+            .flatMap { token ->
+                shockbytesHerokuApi.listBackups(token)
+                    .map { entries ->
+                        val entryStates: List<BackupMetadataState> = entries.map { entry ->
+                            BackupMetadataState.Active(entry)
+                        }
+                        entryStates
+                    }
+                    .subscribeOn(Schedulers.io())
+                    .doOnSuccess { activeItems ->
+                        inactiveBackupStorage.storeInactiveItems(activeItems)
+                    }
+                    .onErrorReturn { throwable ->
+                        Timber.e(throwable)
+                        inactiveBackupStorage.getInactiveItems()
+                    }
             }
     }
 
     override fun removeBackupEntry(entry: BackupMetadata): Completable {
-        return shockbytesHerokuApi.removeBackupById(signInManager.getAuthorizationHeader(), entry.id)
+        return signInManager.getAuthorizationHeader()
+            .flatMapCompletable { token ->
+                shockbytesHerokuApi.removeBackupById(token, entry.id)
+            }
     }
 
     override fun removeAllBackupEntries(): Completable {
-        return shockbytesHerokuApi.removeAllBackups(signInManager.getAuthorizationHeader())
+        return signInManager.getAuthorizationHeader()
+            .flatMapCompletable(shockbytesHerokuApi::removeAllBackups)
     }
 
     override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
-        return shockbytesHerokuApi
-            .getBooksBackupById(signInManager.getAuthorizationHeader(), entry.id)
-            .subscribeOn(Schedulers.io())
+        return signInManager.getAuthorizationHeader()
+            .flatMap { token ->
+                shockbytesHerokuApi
+                    .getBooksBackupById(token, entry.id)
+                    .subscribeOn(Schedulers.io())
+            }
     }
 
     override fun teardown(): Completable {

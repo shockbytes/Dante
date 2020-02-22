@@ -86,8 +86,8 @@
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/label_settings" />
         <activity
-            android:name=".ui.activity.BackupActivity"
-            android:label="@string/label_backup" />
+            android:name=".ui.activity.BookStorageActivity"
+            android:label="@string/label_book_storage" />
         <activity
             android:name=".ui.activity.SearchActivity"
             android:label="@string/search"

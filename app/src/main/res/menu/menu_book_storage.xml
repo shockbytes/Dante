@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_book_storage_online"
+        android:icon="@drawable/ic_remote_storage"
+        android:title="@string/storage_remote" />
+    <item
+        android:id="@+id/menu_book_storage_local"
+        android:icon="@drawable/ic_local_storage"
+        android:title="@string/storage_local" />
+</menu>

@@ -4,7 +4,7 @@ import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.core.injection.CoreComponent
 import at.shockbytes.dante.core.injection.ModuleScope
 import at.shockbytes.dante.core.injection.NetworkModule
-import at.shockbytes.dante.ui.activity.BackupActivity
+import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
@@ -24,6 +24,7 @@ import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.fragment.OnboardingFragment
+import at.shockbytes.dante.ui.fragment.OnlineStorageFragment
 import at.shockbytes.dante.ui.fragment.RateFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.fragment.SettingsFragment
@@ -62,7 +63,7 @@ interface AppComponent {
 
     fun inject(activity: SearchActivity)
 
-    fun inject(activity: BackupActivity)
+    fun inject(activity: BookStorageActivity)
 
     fun inject(activity: LoginActivity)
 
@@ -117,4 +118,6 @@ interface AppComponent {
     fun inject(labelCategoryBottomSheetFragment: LabelCategoryBottomSheetFragment)
 
     fun inject(fragment: LauncherIconPickerFragment)
+
+    fun inject(fragment: OnlineStorageFragment)
 }

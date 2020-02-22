@@ -45,12 +45,11 @@ class MenuFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy { viewModelOf<MainViewModel>(vmFactory) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as DanteApp).appComponent.inject(this)
-        viewModel = viewModelOf(vmFactory)
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {
@@ -102,7 +101,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
             ActivityNavigator.navigateTo(
                 activity,
-                Destination.Backup,
+                Destination.BookStorage,
                 sceneTransition
             )
             dismiss()

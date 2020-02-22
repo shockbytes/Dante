@@ -35,11 +35,13 @@ the user during the login process.
 
 ### Backlog
 - [ ] Use Firebase Data for book suggestions
-- [ ] Add online sync capability
 - [ ] Add onboarding
 - [ ] Introduce Shockbytes Backups
 - [ ] Redesign overflow menu
 - [ ] Update to a stable CameraX version as soon as it's ready
+
+### Version 4.0 - CAMPING WITH FIREBASE
+- [ ] Add online sync capability
 
 ### Version 3.10 - SETTINGS AND TRACKING
 * Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT

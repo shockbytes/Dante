@@ -30,7 +30,7 @@ interface SignInManager {
 
     fun signOut(): Completable
 
-    fun isSignedIn(): Observable<Boolean>
+    fun observeSignInState(): Observable<Boolean>
 
     fun getAccount(): DanteUser?
 

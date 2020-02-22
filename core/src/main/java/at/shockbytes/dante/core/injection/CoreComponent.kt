@@ -5,7 +5,6 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImagePicker
 import at.shockbytes.dante.core.network.BookDownloader
-import at.shockbytes.dante.core.network.amazon.AmazonItemLookupApi
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import dagger.Component
@@ -31,5 +30,4 @@ interface CoreComponent {
 
     fun getOkHttpClient(): OkHttpClient
     fun provideGoogleBooksApi(): GoogleBooksApi
-    fun provideAmazonItemLookupApi(): AmazonItemLookupApi
 }

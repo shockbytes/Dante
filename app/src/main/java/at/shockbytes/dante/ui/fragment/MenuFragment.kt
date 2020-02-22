@@ -58,7 +58,7 @@ class MenuFragment : BottomSheetDialogFragment() {
         val contentView = View.inflate(context, R.layout.bottom_sheet_menu, null)
         dialog.setContentView(contentView)
         (contentView.parent as View)
-                .setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
+            .setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
 
         val layoutParams = (contentView.parent as View).layoutParams as CoordinatorLayout.LayoutParams
         val behavior = layoutParams.behavior
@@ -75,9 +75,9 @@ class MenuFragment : BottomSheetDialogFragment() {
 
         view.findViewById<View>(R.id.btnMenuStatistics)?.setOnClickListener {
             ActivityNavigator.navigateTo(
-                    activity,
-                    Destination.Statistics,
-                    sceneTransition
+                activity,
+                Destination.Statistics,
+                sceneTransition
             )
             dismiss()
         }
@@ -93,17 +93,17 @@ class MenuFragment : BottomSheetDialogFragment() {
 
         view.findViewById<View>(R.id.btnMenuSortStrategy)?.setOnClickListener {
             SortStrategyDialogFragment.newInstance()
-                    .setOnApplyListener {
-                        dismiss()
-                    }
-                    .show(childFragmentManager, "sort-dialog-fragment")
+                .setOnApplyListener {
+                    dismiss()
+                }
+                .show(childFragmentManager, "sort-dialog-fragment")
         }
 
         view.findViewById<View>(R.id.btnMenuBackup)?.setOnClickListener {
             ActivityNavigator.navigateTo(
-                    activity,
-                    Destination.Backup,
-                    sceneTransition
+                activity,
+                Destination.Backup,
+                sceneTransition
             )
             dismiss()
         }
@@ -114,9 +114,9 @@ class MenuFragment : BottomSheetDialogFragment() {
 
         view.findViewById<View>(R.id.btnMenuSettings)?.setOnClickListener {
             ActivityNavigator.navigateTo(
-                    activity,
-                    Destination.Settings,
-                    sceneTransition
+                activity,
+                Destination.Settings,
+                sceneTransition
             )
             dismiss()
         }
@@ -151,11 +151,11 @@ class MenuFragment : BottomSheetDialogFragment() {
 
                 is MainViewModel.UserEvent.LoginEvent -> {
                     GoogleSignInDialogFragment.newInstance()
-                            .setSignInListener {
-                                requireActivity().startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
-                            }
-                            .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
-                            .show(childFragmentManager, "sign-in-fragment")
+                        .setSignInListener {
+                            requireActivity().startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                        }
+                        .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
+                        .show(childFragmentManager, "sign-in-fragment")
                 }
             }
         })

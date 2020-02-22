@@ -10,7 +10,7 @@ import io.reactivex.Single
 class DefaultBookRepository(
     private val localBookDao: BookEntityDao,
     private val remoteBookDao: BookEntityDao
-): BookRepository {
+) : BookRepository {
 
     private var selectedBookDao: BookEntityDao
 
@@ -70,6 +70,6 @@ class DefaultBookRepository(
     }
 
     override fun migrateToRemoteStorage(): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

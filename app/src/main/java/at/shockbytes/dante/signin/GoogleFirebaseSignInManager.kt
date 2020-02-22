@@ -20,7 +20,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
-import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -29,7 +28,7 @@ import timber.log.Timber
  * If migrating to firebase, use this docs
  * https://firebase.google.com/docs/auth/android/google-signin
  */
-class GoogleSignInManager(
+class GoogleFirebaseSignInManager(
     prefs: SharedPreferences,
     private val context: Context,
     private val schedulers: SchedulerFacade
@@ -66,57 +65,48 @@ class GoogleSignInManager(
             .fromCallable {
                 Tasks
                     .await(GoogleSignIn.getSignedInAccountFromIntent(data))
-                    .also(::firebaseAuthWithGoogle)
-                    ?.toDanteUser()
+                    .authenticateToFirebase()
                     ?: throw SignInException("Cannot sign into Google Account! DanteUser = null")
-
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
-            .doOnSubscribe { signInSubject.onNext(true) }
+            .doOnSuccess {
+                signInSubject.onNext(true)
+            }
     }
 
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        Timber.d("firebaseAuthWithGoogle:" + account.id)
+    private fun GoogleSignInAccount.authenticateToFirebase(): DanteUser? {
 
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        fbAuth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Timber.d("signInWithCredential:success")
-                    val user = fbAuth.currentUser
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Timber.e(task.exception,"signInWithCredential:failure")
-                }
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        return Tasks.await(fbAuth.signInWithCredential(credential))?.let { authResult ->
 
-                // ...
-            }
+            val givenName = authResult.additionalUserInfo?.profile?.get("given_name") as? String
+            authResult.user?.toDanteUser(givenName)
+        }
     }
 
     override fun signOut(): Completable {
         return Completable
-            .fromAction {
-                client?.let { Tasks.await(it.signOut()) }
+            .fromAction(fbAuth::signOut)
+            .doOnComplete {
                 signInSubject.onNext(false)
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
     }
 
-    override fun isSignedIn(): Observable<Boolean> {
+    override fun observeSignInState(): Observable<Boolean> {
         return signInSubject
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
     }
 
     override fun getAccount(): DanteUser? {
-        return GoogleSignIn.getLastSignedInAccount(context)?.toDanteUser()
+        return fbAuth.currentUser?.toDanteUser()
     }
 
     override fun getAuthorizationHeader(): String {
-        return SignInManager.getAuthorizationHeader(getGoogleAccount()?.idToken ?: "---")
+        return SignInManager.getAuthorizationHeader(getAccount()?.authToken ?: "")
     }
 
     fun getGoogleAccount(): GoogleSignInAccount? {

@@ -2,7 +2,6 @@ package at.shockbytes.dante.core.injection
 
 import at.shockbytes.dante.core.BuildConfig
 import at.shockbytes.dante.core.book.BookSuggestion
-import at.shockbytes.dante.core.network.amazon.AmazonItemLookupApi
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.core.network.google.gson.GoogleBooksSuggestionResponseDeserializer
 import com.google.gson.Gson
@@ -59,17 +58,5 @@ class NetworkModule {
                 .baseUrl(GoogleBooksApi.SERVICE_ENDPOINT)
                 .build()
                 .create(GoogleBooksApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAmazonItemLookupApi(client: OkHttpClient): AmazonItemLookupApi {
-        return Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(AmazonItemLookupApi.SERVICE_ENDPOINT)
-                .build()
-                .create(AmazonItemLookupApi::class.java)
     }
 }

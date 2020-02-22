@@ -1,11 +1,10 @@
 package at.shockbytes.dante.core.injection
 
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImagePicker
 import at.shockbytes.dante.core.network.BookDownloader
-import at.shockbytes.dante.core.network.amazon.AmazonItemLookupApi
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import dagger.Component
@@ -21,7 +20,7 @@ import javax.inject.Singleton
 @Singleton
 interface CoreComponent {
 
-    fun getBookDao(): BookEntityDao
+    fun getBookRepository(): BookRepository
     fun getBookDownloader(): BookDownloader
     fun getRealmInstanceProvider(): RealmInstanceProvider
 
@@ -31,5 +30,4 @@ interface CoreComponent {
 
     fun getOkHttpClient(): OkHttpClient
     fun provideGoogleBooksApi(): GoogleBooksApi
-    fun provideAmazonItemLookupApi(): AmazonItemLookupApi
 }

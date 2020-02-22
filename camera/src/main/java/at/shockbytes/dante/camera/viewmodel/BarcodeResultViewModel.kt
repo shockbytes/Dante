@@ -8,7 +8,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLoadingState
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.BookSuggestion
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.core.network.BookDownloader
 import io.reactivex.Observable
@@ -20,7 +20,7 @@ import timber.log.Timber
 class BarcodeResultViewModel(
     private val bookDownloader: BookDownloader,
     private val schedulerFacade: SchedulerFacade,
-    private val bookDao: BookEntityDao
+    private val bookRepository: BookRepository
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -60,7 +60,7 @@ class BarcodeResultViewModel(
     }
 
     fun storeBook(bookEntity: BookEntity, state: BookState) {
-        bookDao.create(
+        bookRepository.create(
             bookEntity.apply {
                 updateState(state)
             }

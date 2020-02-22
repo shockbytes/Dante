@@ -9,7 +9,7 @@ import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesLongPropertyDelegate
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -75,13 +75,13 @@ class DefaultBackupRepository(
 
     override fun restoreBackup(
         entry: BackupMetadata,
-        bookDao: BookEntityDao,
+        bookRepository: BookRepository,
         strategy: RestoreStrategy
     ): Completable {
 
         return getBackupProvider(entry.storageProvider)?.mapEntryToBooks(entry)
             ?.flatMapCompletable { books ->
-                bookDao.restoreBackup(books, strategy)
+                bookRepository.restoreBackup(books, strategy)
             } ?: Completable.error(BackupStorageProviderNotAvailableException())
     }
 

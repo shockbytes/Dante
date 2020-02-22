@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
 import at.shockbytes.dante.util.toDanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -13,11 +14,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 
 /**
@@ -27,12 +28,15 @@ import io.reactivex.subjects.BehaviorSubject
  * If migrating to firebase, use this docs
  * https://firebase.google.com/docs/auth/android/google-signin
  */
-class GoogleSignInManager(
+class GoogleFirebaseSignInManager(
     prefs: SharedPreferences,
-    private val context: Context
+    private val context: Context,
+    private val schedulers: SchedulerFacade
 ) : SignInManager {
 
     private var client: GoogleSignInClient? = null
+
+    private val fbAuth = FirebaseAuth.getInstance()
 
     private val signInSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
@@ -46,43 +50,63 @@ class GoogleSignInManager(
     override fun setup() {
         if (client == null) {
             val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestEmail()
-                    .requestIdToken(context.getString(R.string.oauth_client_id))
-                    .requestScopes(Scope(Scopes.DRIVE_APPFOLDER), Scope(Scopes.DRIVE_FILE))
-                    .build()
+                .requestEmail()
+                .requestIdToken(context.getString(R.string.oauth_client_id))
+                .requestScopes(Scope(Scopes.DRIVE_APPFOLDER), Scope(Scopes.DRIVE_FILE))
+                .build()
             client = GoogleSignIn.getClient(context, signInOptions)
 
             signInSubject.onNext(getAccount() != null)
         }
     }
 
-    override fun signIn(data: Intent, signInToOnlineBackend: Boolean): Single<DanteUser?> {
-        return Single.fromCallable {
-            Tasks.await(GoogleSignIn.getSignedInAccountFromIntent(data))?.toDanteUser()
-        }.observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .doOnSubscribe { signInSubject.onNext(true) }
+    override fun signIn(data: Intent): Single<DanteUser> {
+        return Single
+            .fromCallable {
+                Tasks
+                    .await(GoogleSignIn.getSignedInAccountFromIntent(data))
+                    .authenticateToFirebase()
+                    ?: throw SignInException("Cannot sign into Google Account! DanteUser = null")
+            }
+            .observeOn(schedulers.ui)
+            .subscribeOn(schedulers.io)
+            .doOnSuccess {
+                signInSubject.onNext(true)
+            }
+    }
+
+    private fun GoogleSignInAccount.authenticateToFirebase(): DanteUser? {
+
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        return Tasks.await(fbAuth.signInWithCredential(credential))?.let { authResult ->
+
+            val givenName = authResult.additionalUserInfo?.profile?.get("given_name") as? String
+            authResult.user?.toDanteUser(givenName)
+        }
     }
 
     override fun signOut(): Completable {
-        return Completable.fromAction {
-            client?.let { Tasks.await(it.signOut()) }
-            signInSubject.onNext(false)
-        }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+        return Completable
+            .fromAction(fbAuth::signOut)
+            .doOnComplete {
+                signInSubject.onNext(false)
+            }
+            .observeOn(schedulers.ui)
+            .subscribeOn(schedulers.io)
     }
 
-    override fun isSignedIn(): Observable<Boolean> {
+    override fun observeSignInState(): Observable<Boolean> {
         return signInSubject
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+            .observeOn(schedulers.ui)
+            .subscribeOn(schedulers.io)
     }
 
     override fun getAccount(): DanteUser? {
-        return GoogleSignIn.getLastSignedInAccount(context)?.toDanteUser()
+        return fbAuth.currentUser?.toDanteUser()
     }
 
     override fun getAuthorizationHeader(): String {
-        return SignInManager.getAuthorizationHeader(getGoogleAccount()?.idToken ?: "---")
+        return SignInManager.getAuthorizationHeader(getAccount()?.authToken ?: "")
     }
 
     fun getGoogleAccount(): GoogleSignInAccount? {

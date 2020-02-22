@@ -18,7 +18,7 @@ import at.shockbytes.dante.backup.provider.shockbytes.ShockbytesHerokuServerBack
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
 import at.shockbytes.dante.backup.provider.shockbytes.storage.SharedPreferencesInactiveShockbytesBackupStorage
-import at.shockbytes.dante.signin.GoogleSignInManager
+import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
 import at.shockbytes.dante.signin.SignInManager
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
@@ -85,7 +85,7 @@ class AppModule(private val app: Application) {
     ): Array<BackupProvider> {
         return arrayOf(
             GoogleDriveBackupProvider(
-                signInManager as GoogleSignInManager,
+                signInManager as GoogleFirebaseSignInManager,
                 schedulerFacade,
                 Gson()
             ),
@@ -104,8 +104,11 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideGoogleSignInManager(prefs: SharedPreferences): SignInManager {
-        return GoogleSignInManager(prefs, app.applicationContext)
+    fun provideGoogleSignInManager(
+        prefs: SharedPreferences,
+        schedulers: SchedulerFacade
+    ): SignInManager {
+        return GoogleFirebaseSignInManager(prefs, app.applicationContext, schedulers)
     }
 
     @Provides

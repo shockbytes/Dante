@@ -4,6 +4,7 @@ import android.os.Handler
 import at.shockbytes.dante.signin.DanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseUser
 import com.leinardi.android.speeddial.SpeedDialView
 
 fun FloatingActionButton.toggle(millis: Long = 300) {
@@ -23,6 +24,19 @@ fun GoogleSignInAccount.toDanteUser(): DanteUser {
         this.email,
         this.photoUrl,
         "google",
-        this.idToken
+        this.idToken,
+        userId = ""
+    )
+}
+
+fun FirebaseUser.toDanteUser(givenName: String? = this.displayName): DanteUser {
+    return DanteUser(
+        givenName,
+        this.displayName,
+        this.email,
+        this.photoUrl,
+        this.providerId,
+        this.getIdToken(false).result?.token,
+        this.uid
     )
 }

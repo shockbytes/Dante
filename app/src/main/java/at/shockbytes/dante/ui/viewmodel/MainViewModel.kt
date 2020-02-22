@@ -40,40 +40,49 @@ class MainViewModel @Inject constructor(
 
     private fun initialize() {
         signInManager.setup()
-        signInManager.isSignedIn().subscribe { isSignedIn ->
+        signInManager.observeSignInState()
+            .subscribe { isSignedIn ->
 
-            if (isSignedIn) { // <- User signed in, TOP!
-                userEvent.postValue(
-                    UserEvent.SuccessEvent(
-                        signInManager.getAccount(),
-                        signInManager.showWelcomeScreen
+                if (isSignedIn) { // <- User signed in, TOP!
+                    userEvent.postValue(
+                        UserEvent.SuccessEvent(
+                            signInManager.getAccount(),
+                            signInManager.showWelcomeScreen
+                        )
                     )
-                )
-            } else if (!isSignedIn) { // <- User not signed in, reset UI
-                userEvent.postValue(UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen))
-            }
+                } else { // <- User not signed in, reset UI
+                    userEvent.postValue(UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen))
+                }
 
-            // User not signed in and did not opt-out for login screen
-            if (!isSignedIn && !signInManager.maybeLater) {
-                userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+                // User not signed in and did not opt-out for login screen
+                if (!isSignedIn && !signInManager.maybeLater) {
+                    userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+                }
             }
-        }
-        .addTo(compositeDisposable)
+            .addTo(compositeDisposable)
     }
 
-    fun signIn(data: Intent, signInToBackend: Boolean) {
-        signInManager.signIn(data, signInToBackend).subscribe({ account ->
-            userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
-        }, { throwable: Throwable ->
-            Timber.e(throwable)
-            userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
-        }).addTo(compositeDisposable)
+    fun signIn(data: Intent) {
+        signInManager.signIn(data)
+            .subscribe({ account ->
+                userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
+            }, { throwable: Throwable ->
+                Timber.e(throwable)
+                userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
+            })
+            .addTo(compositeDisposable)
     }
 
     fun loginLogout() {
 
         if (signInManager.getAccount() != null) {
-            signInManager.signOut().subscribe { }.addTo(compositeDisposable)
+            signInManager.signOut()
+                .subscribe({
+                    Timber.d("Successfully logged out!")
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
+                .addTo(compositeDisposable)
         } else {
             userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
         }

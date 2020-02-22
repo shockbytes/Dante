@@ -1,8 +1,9 @@
-package at.shockbytes.dante.core.data
+package at.shockbytes.dante.core.data.local
 
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.realm.RealmBook
+import at.shockbytes.dante.core.data.Mapper
 import io.realm.RealmList
 
 /**

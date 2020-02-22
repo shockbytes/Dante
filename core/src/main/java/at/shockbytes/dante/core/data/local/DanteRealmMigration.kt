@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core.data
+package at.shockbytes.dante.core.data.local
 
 import io.realm.DynamicRealm
 import io.realm.RealmMigration

@@ -54,7 +54,7 @@
     <string name="contentdesc_listitem_img_thumb" translatable="false">Thumbnail for book cover</string>
     <string name="contentdesc_listitem_img_overflow" translatable="false">Overflow icon for list item</string>
     <string name="send_to">Share your book</string>
-    <string name="label_backup">Manage backups</string>
+    <string name="label_book_storage">Manage book storage</string>
     <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
 
@@ -63,7 +63,7 @@
 
     <string name="last_backup">Last backup: %s</string>
     <string name="backup_books_amount">%d books</string>
-    <string name="menu_main_backup">Backup</string>
+    <string name="menu_main_book_storage">Book storage</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>
     <string name="backup_strategy_overwrite">Overwrite</string>
@@ -338,4 +338,6 @@
     <string name="language_indonesian_full">Indonesian</string>
     <string name="language_thai_full">Thai</string>
 
+    <string name="storage_remote">Online</string>
+    <string name="storage_local">Local</string>
 </resources>

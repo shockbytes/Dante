@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -18,7 +18,7 @@ import javax.inject.Inject
  * Date:    12.06.2018
  */
 class BookListViewModel @Inject constructor(
-    private val bookDao: BookEntityDao,
+    private val bookRepository: BookRepository,
     private val settings: DanteSettings,
     private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
@@ -48,7 +48,7 @@ class BookListViewModel @Inject constructor(
     }
 
     private fun loadBooks() {
-        bookDao.bookObservable
+        bookRepository.bookObservable
             .map { fetchedBooks ->
                 fetchedBooks
                     .filter { it.state == state }
@@ -90,13 +90,13 @@ class BookListViewModel @Inject constructor(
     }
 
     fun deleteBook(book: BookEntity) {
-        bookDao.delete(book.id)
+        bookRepository.delete(book.id)
     }
 
     fun updateBookPositions(data: MutableList<BookEntity>) {
         data.forEachIndexed { index, book ->
             book.position = index
-            bookDao.update(book)
+            bookRepository.update(book)
         }
 
         // Update book strategy, because this means user falls back to default strategy
@@ -105,17 +105,17 @@ class BookListViewModel @Inject constructor(
 
     fun moveBookToUpcomingList(book: BookEntity) {
         book.updateState(BookState.READ_LATER)
-        bookDao.update(book)
+        bookRepository.update(book)
     }
 
     fun moveBookToCurrentList(book: BookEntity) {
         book.updateState(BookState.READING)
-        bookDao.update(book)
+        bookRepository.update(book)
     }
 
     fun moveBookToDoneList(book: BookEntity) {
         book.updateState(BookState.READ)
-        bookDao.update(book)
+        bookRepository.update(book)
     }
 
     fun onBookUpdatedEvent(updatedBookState: BookState) {

@@ -100,13 +100,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-
-            DanteUtils.rcSignIn -> {
-                data?.let { d ->
-                    val onlineBackend = d.getBooleanExtra("onlineBackend", false)
-                    viewModel.signIn(d, signInToBackend = onlineBackend)
-                }
-            }
+            DanteUtils.rcSignIn -> data?.let(viewModel::signIn)
         }
     }
 

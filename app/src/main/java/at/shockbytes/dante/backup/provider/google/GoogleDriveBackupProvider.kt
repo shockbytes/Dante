@@ -9,7 +9,7 @@ import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.signin.GoogleSignInManager
+import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.android.gms.drive.Drive
 import com.google.android.gms.drive.DriveFile
@@ -30,7 +30,7 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
 class GoogleDriveBackupProvider(
-    private val signInManager: GoogleSignInManager,
+    private val signInManager: GoogleFirebaseSignInManager,
     private val schedulers: SchedulerFacade,
     private val gson: Gson
 ) : BackupProvider {

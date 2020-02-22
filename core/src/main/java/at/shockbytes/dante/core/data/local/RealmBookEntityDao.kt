@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core.data
+package at.shockbytes.dante.core.data.local
 
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
@@ -6,6 +6,7 @@ import at.shockbytes.dante.core.book.realm.RealmBook
 import at.shockbytes.dante.core.book.realm.RealmBookConfig
 import at.shockbytes.dante.core.book.realm.RealmBookLabel
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
 import io.reactivex.Observable

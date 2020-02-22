@@ -2,14 +2,16 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.timeline.TimeLineBuilder
 import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.util.ExceptionHandlers
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
-class TimelineViewModel @Inject constructor(private val bookDao: BookEntityDao) : BaseViewModel() {
+class TimelineViewModel @Inject constructor(
+    private val bookRepository: BookRepository
+) : BaseViewModel() {
 
     sealed class TimeLineState {
 
@@ -23,7 +25,7 @@ class TimelineViewModel @Inject constructor(private val bookDao: BookEntityDao) 
     fun getTimeLineState(): LiveData<TimeLineState> = timeLineState
 
     fun requestTimeline() {
-        bookDao.bookObservable
+        bookRepository.bookObservable
             .doOnSubscribe { postState(TimeLineState.Loading) }
             .doOnError { postState(TimeLineState.Error) }
             .map(TimeLineBuilder::buildTimeLineItems)

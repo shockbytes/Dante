@@ -10,6 +10,7 @@ import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.signin.GoogleSignInManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.android.gms.drive.Drive
@@ -114,12 +115,12 @@ class GoogleDriveBackupManager(
 
     override fun restoreBackup(
         entry: BackupMetadata,
-        bookDao: BookEntityDao,
+        bookRepository: BookRepository,
         strategy: RestoreStrategy
     ): Completable {
         return booksFromEntry(entry)
             .flatMapCompletable { books ->
-                bookDao.restoreBackup(books, strategy)
+                bookRepository.restoreBackup(books, strategy)
             }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)

@@ -3,15 +3,15 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookLabel
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.ExceptionHandlers
-import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class LabelManagementViewModel @Inject constructor(
-    private val bookEntityDao: BookEntityDao
+    private val bookRepository: BookRepository
 ) : BaseViewModel() {
 
     sealed class LabelState {
@@ -28,7 +28,7 @@ class LabelManagementViewModel @Inject constructor(
     val onCreateNewLabelRequest: Observable<List<BookLabel>> = newLabelRequestSubject
 
     fun requestAvailableLabels(alreadyAttachedLabels: List<BookLabel>) {
-        bookEntityDao.bookLabelObservable
+        bookRepository.bookLabelObservable
             .map { labels ->
                 val filtered = labels.filter { label ->
                     alreadyAttachedLabels.none { it.hexColor == label.hexColor && it.title == label.title }
@@ -45,11 +45,11 @@ class LabelManagementViewModel @Inject constructor(
     }
 
     fun createNewBookLabel(newLabel: BookLabel) {
-        bookEntityDao.createBookLabel(newLabel)
+        bookRepository.createBookLabel(newLabel)
     }
 
     fun deleteBookLabel(bookLabel: BookLabel) {
-        bookEntityDao.deleteBookLabel(bookLabel)
+        bookRepository.deleteBookLabel(bookLabel)
     }
 
     fun requestCreateNewLabel() {

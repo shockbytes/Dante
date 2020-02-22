@@ -6,7 +6,7 @@ import android.os.Parcelable
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
@@ -19,7 +19,7 @@ import javax.inject.Inject
  * Date:    13.06.2018
  */
 class BookDetailViewModel @Inject constructor(
-    private val bookDao: BookEntityDao,
+    private val bookRepository: BookRepository,
     private val settings: DanteSettings
 ) : BaseViewModel() {
 
@@ -57,7 +57,7 @@ class BookDetailViewModel @Inject constructor(
     }
 
     private fun fetchBook(bookId: Long) {
-        bookDao.get(bookId)?.let { entity ->
+        bookRepository.get(bookId)?.let { entity ->
             viewState.postValue(craftViewSate(entity))
         }
     }
@@ -189,7 +189,7 @@ class BookDetailViewModel @Inject constructor(
     }
 
     private fun updateDaoAndObserver(b: BookEntity) {
-        bookDao.update(b)
+        bookRepository.update(b)
         viewState.postValue(craftViewSate(b))
     }
 
@@ -219,7 +219,7 @@ class BookDetailViewModel @Inject constructor(
     }
 
     fun removeLabel(label: BookLabel) {
-        bookDao.deleteBookLabel(label)
+        bookRepository.deleteBookLabel(label)
 
         // Reload the book once a label got deleted
         fetchBook(bookId)

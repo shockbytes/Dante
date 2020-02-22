@@ -5,7 +5,7 @@ import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -33,7 +33,7 @@ interface BackupManager {
 
     fun restoreBackup(
         entry: BackupMetadata,
-        bookDao: BookEntityDao,
+        bookRepository: BookRepository,
         strategy: RestoreStrategy
     ): Completable
 }

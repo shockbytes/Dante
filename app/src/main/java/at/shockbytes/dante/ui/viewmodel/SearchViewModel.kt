@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookSearchItem
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
     private val bookDownloader: BookDownloader,
-    private val bookDao: BookEntityDao
+    private val bookRepository: BookRepository
 ) : BaseViewModel() {
 
     private val bookTransform: ((BookEntity) -> BookSearchItem) = { b ->
@@ -63,7 +63,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun localSearch(query: String): Observable<List<BookSearchItem>> {
-        return bookDao.search(query)
+        return bookRepository.search(query)
                 .map { it.map { b -> bookTransform(b) } }
     }
 

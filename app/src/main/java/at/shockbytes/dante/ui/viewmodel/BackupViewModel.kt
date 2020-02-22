@@ -8,7 +8,7 @@ import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -21,7 +21,7 @@ import javax.inject.Inject
  * Date:    10.11.2018
  */
 class BackupViewModel @Inject constructor(
-    private val bookDao: BookEntityDao,
+    private val bookRepository: BookRepository,
     private val backupRepository: BackupRepository,
     private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
@@ -60,7 +60,7 @@ class BackupViewModel @Inject constructor(
     }
 
     fun applyBackup(t: BackupMetadata, strategy: RestoreStrategy) {
-        backupRepository.restoreBackup(t, bookDao, strategy)
+        backupRepository.restoreBackup(t, bookRepository, strategy)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({
@@ -74,7 +74,7 @@ class BackupViewModel @Inject constructor(
     }
 
     fun makeBackup(backupStorageProvider: BackupStorageProvider) {
-        backupRepository.backup(bookDao.bookObservable.blockingFirst(listOf()), backupStorageProvider)
+        backupRepository.backup(bookRepository.bookObservable.blockingFirst(listOf()), backupStorageProvider)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({

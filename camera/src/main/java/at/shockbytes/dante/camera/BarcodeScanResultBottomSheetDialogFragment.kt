@@ -11,7 +11,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLoadingState
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.BookSuggestion
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.injection.CoreInjectHelper
 import at.shockbytes.dante.core.network.BookDownloader
@@ -49,7 +49,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
     lateinit var schedulers: SchedulerFacade
 
     @Inject
-    lateinit var bookDao: BookEntityDao
+    lateinit var bookRepository: BookRepository
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -63,7 +63,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         askForAnotherScan = arguments?.getBoolean(ARG_ASK_FOR_ANOTHER_SCAN, false) ?: false
         showNotMyBookButton = arguments?.getBoolean(ARG_SHOW_NOT_MY_BOOK_BUTTON, true) ?: true
 
-        viewModel = BarcodeResultViewModel(booksDownloader, schedulers, bookDao)
+        viewModel = BarcodeResultViewModel(booksDownloader, schedulers, bookRepository)
         viewModel.loadBook(isbn)
     }
 

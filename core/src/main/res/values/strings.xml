@@ -340,6 +340,11 @@
     <string name="language_thai_full">Thai</string>
 
     <string name="storage_remote">Online</string>
+    <string name="online_storage_interested">I am interested</string>
+    <string name="online_storage_already_interested">We\'ll keep you updated</string>
+    <string name="online_storage_active_development">Currently in active development!</string>
+    <string name="online_storage_development_explanation">The next big thing will be online synchronization functionality. With this feature you don\'t really need to take care of backups on your own (which, of course, you can still do). All your data will be uploaded to the cloud and will be available on multiple devices (and maybe from the web app at some point &#128586;).</string>
+
     <string name="storage_local">Local</string>
     <string name="storage_import">Import</string>
 </resources>

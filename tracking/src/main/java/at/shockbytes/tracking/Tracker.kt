@@ -16,5 +16,5 @@ abstract class Tracker {
         }
     }
 
-    abstract fun trackEvent(event: DanteTrackingEvent)
+    internal abstract fun trackEvent(event: DanteTrackingEvent)
 }

@@ -91,4 +91,9 @@ sealed class DanteTrackingEvent(
         "change_dark_mode",
         listOf(TrackingProperty("from", from), TrackingProperty("to", to))
     )
+
+    class InterestedInOnlineStorageEvent : DanteTrackingEvent(
+        "interested_in_online_storage",
+        listOf()
+    )
 }

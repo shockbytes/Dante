@@ -253,12 +253,16 @@
     <string name="prefs_tracking_title">Tracking</string>
     <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
     <string name="not_available">N/A</string>
-    <string name="launcher_icon_change_description">Eine Änderung des Icons \\n führt voraussichtlich zu einem Neustart</string>
-    <string name="restarting_app">Die App startet sich voraussichtlich neu...</string>
+    <string name="launcher_icon_change_description">Eine Änderung des Icons \n führt voraussichtlich zu einem Neustart</string>
+    <string name="restarting_app">Die App startet sich voraussichtlich neu&#8230;</string>
     <string name="menu_main_book_storage">Buchspeicherung</string>
     <string name="storage_local">Am Gerät</string>
     <string name="storage_remote">Online</string>
     <string name="storage_import">Importieren</string>
     <string name="backup_storage_provider_rationale_csv">TODO!</string>
+    <string name="online_storage_interested">Ich bin interessiert</string>
+    <string name="online_storage_already_interested">Wir informieren dich</string>
+    <string name="online_storage_active_development">Gerade in Entwicklung!</string>
+    <string name="online_storage_development_explanation">Das nächste große Ding wird die Online-Synchronisation werden. Dieses Feature macht manuelle Backups bei einem Gerätewechsel unnötig (obwohl manuelle Backups auch weiterhin zur Verfügung stehen). Deine Daten werden in die Cloud hochgeladen und können von anderen Geräten geöffnet werden (eventuell auch einmal von einer Web App &#128586;).</string>
 
 </resources>

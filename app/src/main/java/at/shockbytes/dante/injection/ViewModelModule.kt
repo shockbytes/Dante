@@ -14,6 +14,7 @@ import at.shockbytes.dante.ui.viewmodel.LauncherIconPickerViewModel
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
+import at.shockbytes.dante.ui.viewmodel.OnlineStorageViewModel
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
 import at.shockbytes.dante.ui.viewmodel.TimelineViewModel
@@ -116,6 +117,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ImportBooksStorageViewModel::class)
     internal abstract fun importBooksStorageViewModel(viewModel: ImportBooksStorageViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OnlineStorageViewModel::class)
+    internal abstract fun onlineStorageViewModel(viewModel: OnlineStorageViewModel): ViewModel
 
     @Binds
     @IntoMap

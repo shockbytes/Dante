@@ -14,7 +14,7 @@ buildscript {
     }
     dependencies {
         classpath "io.fabric.tools:gradle:$crashlyticsPluginVersion"
-        classpath 'com.android.tools.build:gradle:3.5.3'
+        classpath 'com.android.tools.build:gradle:3.6.1'
         classpath 'com.google.gms:google-services:4.3.3'
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -49,8 +49,8 @@ ext {
     rxAndroidVersion = "2.1.1"
     rxBindingsVersion = "2.2.0"
 
-    firebaseVersionCore = "17.2.2"
-    firebaseVersionConfig = "19.1.1"
+    firebaseVersionCore = "17.2.3"
+    firebaseVersionConfig = "19.1.2"
     firebaseVersionAuth = "19.2.0"
     firebaseMLVision = "24.0.1"
     firebaseAnalyticsVersion = "17.2.2"
@@ -64,7 +64,7 @@ ext {
     okHttpVersion = "3.14.1"
     leakCanaryVersion = "2.2"
     shockUtilVersion = "6.1.2"
-    crashlyticsVersion = "2.9.9"
+    crashlyticsVersion = "2.10.1"
     glideVersion = "4.11.0"
     lottieVersion = "3.0.1"
     rxImagePickerVersion = "2.2.0"

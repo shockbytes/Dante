@@ -132,13 +132,11 @@ class MenuFragment : BottomSheetDialogFragment() {
                         view.findViewById<View>(R.id.btnMenuBackup)?.visibility = View.VISIBLE
                         view.findViewById<Button>(R.id.btnMenuLogin)?.text = getString(R.string.logout)
 
-                        context?.let { ctx ->
-                            event.user.photoUrl?.loadRoundedBitmap(ctx)?.subscribe({ image ->
-                                view.findViewById<ImageView>(R.id.imageViewMenuUser)?.setImageBitmap(image)
-                            }, {
-                                it.printStackTrace()
-                            })
-                        }
+                        event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
+                            view.findViewById<ImageView>(R.id.imageViewMenuUser)?.setImageBitmap(image)
+                        }, { throwable ->
+                            throwable.printStackTrace()
+                        })
                     } else {
                         view.findViewById<TextView>(R.id.txtMenuUserName)?.text = getString(R.string.anonymous_user)
                         view.findViewById<TextView>(R.id.txtMenuUserMail)?.text = ""

@@ -172,9 +172,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
 
                     GoogleSignInDialogFragment.newInstance()
-                            .setSignInListener { withOnlineBackend ->
-                                startActivityForResult(event.signInIntent
-                                        ?.putExtra("onlineBackend", withOnlineBackend), DanteUtils.rcSignIn)
+                            .setSignInListener {
+                                startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
                             }
                             .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
                             .show(supportFragmentManager, "sign-in-fragment")

@@ -258,5 +258,6 @@
     <string name="menu_main_book_storage">Buchspeicherung</string>
     <string name="storage_local">Am Gerät</string>
     <string name="storage_remote">Online</string>
+    <string name="storage_import">Importieren</string>
 
 </resources>

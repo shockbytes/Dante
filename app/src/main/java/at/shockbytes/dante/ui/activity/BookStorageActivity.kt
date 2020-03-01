@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.activity.core.BackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
+import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
 import at.shockbytes.dante.ui.fragment.OnlineStorageFragment
 import javax.inject.Inject
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
@@ -46,12 +47,16 @@ class BookStorageActivity : BackNavigableActivity(), EasyPermissions.PermissionC
                     setActionBarElevation(0f)
                     showFragment(BackupFragment.newInstance())
                 }
+                R.id.menu_book_storage_import -> {
+                    setActionBarElevation(AppUtils.convertDpInPixel(4, this).toFloat())
+                    showFragment(ImportBooksStorageFragment.newInstance())
+                }
             }
 
             true
         }
 
-        bottom_navigation_book_storage.selectedItemId = R.id.menu_book_storage_online
+        bottom_navigation_book_storage.selectedItemId = R.id.menu_book_storage_local
     }
 
     private fun setActionBarElevation(elevation: Float) {

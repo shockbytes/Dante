@@ -160,7 +160,7 @@
                 android:layout_marginStart="16dp"
                 app:iconPadding="16dp"
                 app:iconTint="@color/danteAccent"
-                app:icon="@drawable/ic_book_storage"
+                app:icon="@drawable/ic_book_count"
                 android:gravity="start|center_vertical"
                 android:padding="8dp"
                 android:textColor="@color/danteAccent"

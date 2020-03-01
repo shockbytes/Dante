@@ -7,6 +7,7 @@ import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
+import at.shockbytes.dante.ui.viewmodel.ImportBooksStorageViewModel
 import at.shockbytes.dante.ui.viewmodel.LabelCategoryViewModel
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
 import at.shockbytes.dante.ui.viewmodel.LauncherIconPickerViewModel
@@ -110,6 +111,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LabelCategoryViewModel::class)
     internal abstract fun labelCategoryViewModel(viewModel: LabelCategoryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ImportBooksStorageViewModel::class)
+    internal abstract fun importBooksStorageViewModel(viewModel: ImportBooksStorageViewModel): ViewModel
 
     @Binds
     @IntoMap

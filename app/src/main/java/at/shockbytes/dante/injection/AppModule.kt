@@ -10,6 +10,7 @@ import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
 import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.DefaultBackupRepository
 import at.shockbytes.dante.backup.provider.BackupProvider
+import at.shockbytes.dante.backup.provider.csv.LocalCsvBackupProvider
 import at.shockbytes.dante.storage.DefaultExternalStorageInteractor
 import at.shockbytes.dante.backup.provider.external.ExternalStorageBackupProvider
 import at.shockbytes.dante.storage.ExternalStorageInteractor
@@ -99,6 +100,9 @@ class AppModule(private val app: Application) {
                 Gson(),
                 externalStorageInteractor,
                 permissionManager
+            ),
+            LocalCsvBackupProvider(
+                schedulerFacade
             )
         )
     }

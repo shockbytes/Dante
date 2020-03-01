@@ -38,12 +38,12 @@ class ShockbytesHerokuServerBackupProvider(
     override fun backup(books: List<BookEntity>): Completable {
         return signInManager.getAuthorizationHeader()
             .flatMapCompletable { token ->
-            shockbytesHerokuApi.makeBackup(token, books)
-                .flatMapCompletable { entry ->
-                    Timber.d(entry.toString())
-                    // TODO What to do with entry? Store in UI?
-                    Completable.complete()
-                }
+                shockbytesHerokuApi.makeBackup(token, books)
+                    .flatMapCompletable { entry ->
+                        Timber.d(entry.toString())
+                        // TODO What to do with entry? Store in UI?
+                        Completable.complete()
+                    }
         }
     }
 

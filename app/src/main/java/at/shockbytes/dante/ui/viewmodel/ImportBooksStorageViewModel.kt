@@ -1,6 +1,8 @@
 package at.shockbytes.dante.ui.viewmodel
 
-class ImportBooksStorageViewModel: BaseViewModel() {
+import javax.inject.Inject
+
+class ImportBooksStorageViewModel @Inject constructor(): BaseViewModel() {
 
 
 }

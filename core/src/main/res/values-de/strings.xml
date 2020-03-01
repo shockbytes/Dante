@@ -259,5 +259,6 @@
     <string name="storage_local">Am Gerät</string>
     <string name="storage_remote">Online</string>
     <string name="storage_import">Importieren</string>
+    <string name="backup_storage_provider_rationale_csv">TODO!</string>
 
 </resources>

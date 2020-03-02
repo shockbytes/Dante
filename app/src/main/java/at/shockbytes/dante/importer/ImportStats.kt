@@ -1,8 +1,13 @@
 package at.shockbytes.dante.importer
 
-data class ImportStats(
-    val importedBooks: Int,
-    val readLaterBooks: Int,
-    val currentlyReadingBooks: Int,
-    val readBooks: Int
-)
+sealed class ImportStats {
+
+    data class Success(
+        val importedBooks: Int,
+        val readLaterBooks: Int,
+        val currentlyReadingBooks: Int,
+        val readBooks: Int
+    ) : ImportStats()
+
+    object NoBooks : ImportStats()
+}

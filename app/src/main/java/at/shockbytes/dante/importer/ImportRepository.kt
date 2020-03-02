@@ -1,9 +1,11 @@
 package at.shockbytes.dante.importer
 
+import io.reactivex.Completable
 import io.reactivex.Single
-import java.io.File
 
 interface ImportRepository {
 
-    fun import(importer: Importer, file: File): Single<ImportStats>
+    fun parse(importer: Importer, content: String): Single<ImportStats>
+
+    fun import(): Completable
 }

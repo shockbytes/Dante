@@ -6,7 +6,6 @@ import at.shockbytes.dante.storage.reader.CsvReader
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Single
 import org.joda.time.format.DateTimeFormat
-import java.io.File
 
 class GoodreadsCsvImportProvider(
     private val csvReader: CsvReader,
@@ -17,8 +16,8 @@ class GoodreadsCsvImportProvider(
 
     private val goodReadsDateFormat = DateTimeFormat.forPattern("yyyy/MM/dd")
 
-    override fun importFromFile(file: File): Single<List<BookEntity>> {
-        return csvReader.readCsvFile(file)
+    override fun importFromContent(content: String): Single<List<BookEntity>> {
+        return csvReader.readCsvContent(content)
             .subscribeOn(schedulers.io)
             .map { lines ->
                 lines

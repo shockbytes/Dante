@@ -5,6 +5,8 @@ import java.io.File
 
 class CsvReader : FileReader {
 
+    private val csvRegex = (",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*\$)".toRegex())
+
     override fun readFile(file: File): Sequence<String> {
         return file.useLines { it }
     }
@@ -15,13 +17,16 @@ class CsvReader : FileReader {
         }
     }
 
-    fun readCsvFile(file: File): Single<Sequence<List<String>>> {
+    fun readCsvContent(content: String): Single<Sequence<List<String>>> {
         return Single.fromCallable {
-            readFile(file).map { line ->
-                line
-                    .split(",")
-                    .map { it.trim() }
-            }
+            content
+                .split("\n")
+                .asSequence()
+                .map { line ->
+                    line
+                        .split(csvRegex)
+                        .map { it.trim() }
+                }
         }
     }
 }

@@ -70,9 +70,17 @@ class ImportBooksStorageFragment : BaseFragment() {
 
                 startActivityForResult(intent, REQUEST_SAF)
             }
-            is ImportBooksStorageViewModel.ImportState.Parsed -> TODO()
-            is ImportBooksStorageViewModel.ImportState.Error -> TODO()
-            ImportBooksStorageViewModel.ImportState.Imported -> TODO()
+            is ImportBooksStorageViewModel.ImportState.Parsed -> {
+                // TODO Open import approval dialog
+                viewModel.import()
+            }
+            is ImportBooksStorageViewModel.ImportState.Error -> {
+                showSnackbar(importState.throwable.toString())
+            }
+            ImportBooksStorageViewModel.ImportState.Imported -> {
+                showToast("IMPORT SUCCESS!!!")
+                viewModel.confirmImport()
+            }
         }
     }
 
@@ -80,7 +88,7 @@ class ImportBooksStorageFragment : BaseFragment() {
         if (requestCode == REQUEST_SAF) {
             if (resultCode == RESULT_OK && data != null) {
                 runBlocking(Dispatchers.Unconfined) {
-                    data.data?.read(requireContext()).let(viewModel::importFromString)
+                    data.data?.read(requireContext()).let(viewModel::parseFromString)
                 }
             }
         } else {

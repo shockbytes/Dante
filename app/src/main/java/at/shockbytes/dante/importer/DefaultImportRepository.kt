@@ -4,8 +4,8 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import io.reactivex.Completable
 import io.reactivex.Single
-import java.io.File
 
 class DefaultImportRepository(
     private val importProvider: Array<ImportProvider>,
@@ -13,29 +13,47 @@ class DefaultImportRepository(
     private val schedulers: SchedulerFacade
 ) : ImportRepository {
 
-    override fun import(importer: Importer, file: File): Single<ImportStats> {
+    private var parsedBooks: List<BookEntity>? = null
+
+    override fun parse(importer: Importer, content: String): Single<ImportStats> {
         val provider = findImportProvider(importer)
 
-        return provider.importFromFile(file)
+        return provider.importFromContent(content)
             .subscribeOn(schedulers.io)
-            .doOnSuccess(::storeBooks)
+            .doOnSuccess(::cacheBooks)
             .map { books ->
 
                 val readBooks = books.filter { it.state == BookState.READ }.count()
                 val readingBooks = books.filter { it.state == BookState.READING }.count()
                 val readLaterBooks = books.filter { it.state == BookState.READ_LATER }.count()
 
-                ImportStats(
-                    importedBooks = books.size,
-                    readBooks = readBooks,
-                    currentlyReadingBooks = readingBooks,
-                    readLaterBooks = readLaterBooks
-                )
+                if (books.isNotEmpty()) {
+                    ImportStats.Success(
+                        importedBooks = books.size,
+                        readBooks = readBooks,
+                        currentlyReadingBooks = readingBooks,
+                        readLaterBooks = readLaterBooks
+                    )
+                } else {
+                    ImportStats.NoBooks
+                }
             }
     }
 
-    private fun storeBooks(books: List<BookEntity>) {
-        books.forEach(bookRepository::create)
+    override fun import(): Completable {
+        return Completable.create { emitter ->
+
+            if (parsedBooks != null) {
+                parsedBooks?.forEach(bookRepository::create)
+                emitter.onComplete()
+            } else {
+                emitter.onError(IllegalStateException("No books parsed!"))
+            }
+        }
+    }
+
+    private fun cacheBooks(books: List<BookEntity>) {
+        parsedBooks = books
     }
 
     private fun findImportProvider(importer: Importer): ImportProvider {

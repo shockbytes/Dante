@@ -6,7 +6,6 @@ import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.storage.reader.CsvReader
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Single
-import java.io.File
 
 class DanteCsvImportProvider(
     private val csvReader: CsvReader,
@@ -15,8 +14,8 @@ class DanteCsvImportProvider(
 
     override val importer = Importer.DANTE_CSV
 
-    override fun importFromFile(file: File): Single<List<BookEntity>> {
-        return csvReader.readCsvFile(file)
+    override fun importFromContent(content: String): Single<List<BookEntity>> {
+        return csvReader.readCsvContent(content)
             .subscribeOn(schedulers.io)
             .map { lines ->
                 lines

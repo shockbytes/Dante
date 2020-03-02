@@ -11,6 +11,7 @@
     <string name="label_timeline">Your timeline</string>
     <string name="label_my_notes">My notes</string>
     <string name="not_available">N/A</string>
+    <string name="importing">import</string>
 
     <string name="currently_reading">Currently reading</string>
 
@@ -347,4 +348,7 @@
 
     <string name="storage_local">Local</string>
     <string name="storage_import">Import</string>
+    <string name="import_goodreads_title">Goodreads</string>
+    <string name="import_goodreads_description">Goodreads CSV import description</string>
+    <string name="import_dante_description">Dante CSV import description</string>
 </resources>

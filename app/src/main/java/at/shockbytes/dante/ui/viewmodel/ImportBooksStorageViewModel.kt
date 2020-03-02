@@ -1,9 +1,9 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.importer.ImportRepository
 import at.shockbytes.dante.importer.Importer
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class ImportBooksStorageViewModel @Inject constructor(
@@ -14,7 +14,7 @@ class ImportBooksStorageViewModel @Inject constructor(
 
         object Idle : ImportState()
 
-        object ImportStarted : ImportState()
+        data class AskForFile(val mimeType: String) : ImportState()
 
         data class Parsed(
             val booksImported: Int
@@ -25,17 +25,19 @@ class ImportBooksStorageViewModel @Inject constructor(
         object Imported : ImportState()
     }
 
-    private val importState = MutableLiveData<ImportState>()
-    fun getImportState(): LiveData<ImportState> = importState
+    private val importState = PublishSubject.create<ImportState>()
+    fun getImportState(): Observable<ImportState> = importState
 
     init {
-        importState.postValue(ImportState.Idle)
+        importState.onNext(ImportState.Idle)
     }
 
     fun startImport(importer: Importer) {
         // TODO
-        if (importState.value == ImportState.Idle) {
-            importState.postValue(ImportState.ImportStarted)
-        }
+        importState.onNext(ImportState.AskForFile(importer.mimeType))
+    }
+
+    fun importFromString(content: String?) {
+
     }
 }

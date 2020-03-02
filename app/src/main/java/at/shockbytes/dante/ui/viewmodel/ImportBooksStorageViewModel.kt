@@ -2,10 +2,13 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import at.shockbytes.dante.importer.ImportRepository
 import at.shockbytes.dante.importer.Importer
 import javax.inject.Inject
 
-class ImportBooksStorageViewModel @Inject constructor() : BaseViewModel() {
+class ImportBooksStorageViewModel @Inject constructor(
+    private val importRepository: ImportRepository
+) : BaseViewModel() {
 
     sealed class ImportState {
 

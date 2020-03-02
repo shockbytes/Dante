@@ -6,5 +6,7 @@ import java.io.File
 
 interface ImportProvider {
 
+    val importer: Importer
+
     fun importFromFile(file: File): Single<List<BookEntity>>
 }

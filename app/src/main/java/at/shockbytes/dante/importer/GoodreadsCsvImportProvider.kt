@@ -11,7 +11,9 @@ import java.io.File
 class GoodreadsCsvImportProvider(
     private val csvReader: CsvReader,
     private val schedulers: SchedulerFacade
-): ImportProvider {
+) : ImportProvider {
+
+    override val importer = Importer.GOODREADS_CSV
 
     private val goodReadsDateFormat = DateTimeFormat.forPattern("yyyy/MM/dd")
 
@@ -20,10 +22,12 @@ class GoodreadsCsvImportProvider(
             .subscribeOn(schedulers.io)
             .map { lines ->
                 lines
+                    .drop(1)
                     .mapNotNull(::createBookEntityFromLine)
                     .toList()
             }
     }
+
     private fun createBookEntityFromLine(line: List<String>): BookEntity? {
 
         val title = line.getOrNull(TITLE_COL) ?: ""

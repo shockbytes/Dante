@@ -3,9 +3,11 @@ package at.shockbytes.dante.ui.adapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
@@ -20,10 +22,9 @@ import kotlinx.android.synthetic.main.item_backup_entry.*
  */
 class BackupEntryAdapter(
     ctx: Context,
-    onItemClickListener: OnItemClickListener<BackupMetadataState>
+    onItemClickListener: OnItemClickListener<BackupMetadataState>,
+    private val onItemOverflowMenuClickedListener: OnBackupOverflowItemListener
 ) : BaseAdapter<BackupMetadataState>(ctx, onItemClickListener), ItemTouchHelperAdapter {
-
-    var onItemDeleteClickListener: ((BackupMetadata, Int) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BackupMetadataState> {
         return BackupViewHolder(inflater.inflate(R.layout.item_backup_entry, parent, false))
@@ -58,16 +59,38 @@ class BackupEntryAdapter(
                 if (content is BackupMetadataState.Active) {
 
                     item_backup_entry_card.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
-                    item_backup_entry_btn_delete.setVisible(true)
-                    item_backup_entry_btn_delete.setOnClickListener {
-                        onItemDeleteClickListener?.invoke(this, getLocation(content))
-                    }
+                    item_backup_entry_btn_overflow.setVisible(true)
+                    setupOverflowMenu(content)
                 } else {
                     item_backup_entry_card.setBackgroundColor(ContextCompat.getColor(context, R.color.disabled_view))
-                    item_backup_entry_btn_delete.visibility = View.INVISIBLE
-                    item_backup_entry_btn_delete.setOnClickListener(null)
+                    item_backup_entry_btn_overflow.visibility = View.INVISIBLE
+                    item_backup_entry_btn_overflow.setOnClickListener(null)
                 }
             }
+        }
+
+        private fun setupOverflowMenu(content: BackupMetadataState) {
+
+            val popupMenu = PopupMenu(context, item_backup_entry_btn_overflow)
+
+            popupMenu.menuInflater.inflate(R.menu.menu_backup_item_overflow, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.menu_backup_delete -> {
+                        onItemOverflowMenuClickedListener.onBackupItemDeleted(content.entry, getLocation(content))
+                    }
+                    R.id.menu_backup_download_request -> {
+                        onItemOverflowMenuClickedListener.onBackupItemDownloadRequest(content.entry)
+                    }
+                }
+                true
+            }
+            popupMenu.menu.findItem(R.id.menu_backup_download_request)?.isVisible = content.isFileDownloadable
+
+            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_backup_entry_btn_overflow)
+            menuHelper.setForceShowIcon(true)
+
+            item_backup_entry_btn_overflow.setOnClickListener { menuHelper.show() }
         }
     }
 }

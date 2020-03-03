@@ -80,12 +80,12 @@ class ImportBooksStorageFragment : BaseFragment() {
         }
     }
 
-    private fun handleParsedState(importState: ImportBooksStorageViewModel.ImportState.Parsed) {
+    private fun handleParsedState(state: ImportBooksStorageViewModel.ImportState.Parsed) {
 
-        when (importState.importStats) {
+        when (state.importStats) {
             is ImportStats.Success -> {
                 ImportApprovalDialogFragment
-                    .newInstance(importState.providerName, importState.importStats)
+                    .newInstance(state.providerRes, state.providerIconRes, state.importStats)
                     .setOnApplyListener {
                         viewModel.import()
                     }
@@ -93,7 +93,9 @@ class ImportBooksStorageFragment : BaseFragment() {
                     .show(childFragmentManager, "ask-for-import-confirmation-dialog")
             }
             ImportStats.NoBooks -> {
-                showSnackbar(getString(R.string.import_no_books), getString(R.string.button_ok), showIndefinite = true)
+                showSnackbar(getString(R.string.import_no_books), getString(R.string.button_ok), showIndefinite = true) {
+                    viewModel.reset()
+                }
             }
         }
     }

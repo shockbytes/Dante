@@ -35,6 +35,7 @@ import at.shockbytes.dante.storage.reader.CsvReader
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.tracking.Tracker
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
@@ -67,9 +68,10 @@ class AppModule(private val app: Application) {
     @Provides
     fun provideBackupRepository(
         backupProvider: Array<BackupProvider>,
-        preferences: SharedPreferences
+        preferences: SharedPreferences,
+        tracker: Tracker
     ): BackupRepository {
-        return DefaultBackupRepository(backupProvider.toList(), preferences)
+        return DefaultBackupRepository(backupProvider.toList(), preferences, tracker)
     }
 
     @Provides

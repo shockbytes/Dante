@@ -7,6 +7,9 @@ sealed class BackupMetadataState {
     val timestamp: Long
         get() = entry.timestamp
 
+    val isFileDownloadable: Boolean
+        get() = entry.storageProvider.isLocalFileExportable
+
     data class Active(override val entry: BackupMetadata) : BackupMetadataState()
 
     data class Inactive(override val entry: BackupMetadata) : BackupMetadataState()

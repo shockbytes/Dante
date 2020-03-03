@@ -21,18 +21,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        tools:text="61 books from Goodreads"
-        android:textStyle="bold"
         android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_approve_import_header" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_approve_import_icon"
+        tools:text="61 books from Goodreads" />
 
     <LinearLayout
         android:id="@+id/layout_approve_import_stats"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:orientation="horizontal"
         android:weightSum="3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,11 +69,11 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        style="@style/AppTheme.RoundedButton.Outlined"
         android:id="@+id/btn_approve_import_import"
+        style="@style/AppTheme.RoundedButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:text="@string/importing"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,10 +84,21 @@
         style="@style/AppTheme.BorderlessButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:text="@string/cancel"
         android:textColor="@color/color_error"
         app:layout_constraintEnd_toStartOf="@+id/btn_approve_import_import"
         app:layout_constraintTop_toBottomOf="@+id/layout_approve_import_stats" />
+
+    <ImageView
+        android:id="@+id/iv_approve_import_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_approve_import_header"
+        tools:srcCompat="@drawable/ic_import_goodreads" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

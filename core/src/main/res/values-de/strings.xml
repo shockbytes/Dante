@@ -265,8 +265,15 @@
     <string name="online_storage_active_development">Gerade in Entwicklung!</string>
     <string name="online_storage_development_explanation">Das nächste große Ding wird die Online-Synchronisation werden. Dieses Feature macht manuelle Backups bei einem Gerätewechsel unnötig (obwohl manuelle Backups auch weiterhin zur Verfügung stehen). Deine Daten werden in die Cloud hochgeladen und können von anderen Geräten geöffnet werden (eventuell auch einmal von einer Web App &#128586;).</string>
     <string name="import_success">Importieren erfolgreich!</string>
-    <string name="import_goodreads_description">Goodreads CSV import Beschreibung</string>
-    <string name="import_dante_description">Dante CSV import Beschreibung</string>
+    <string name="import_goodreads_description">Importiere deine Goodreads Bibliothek von einer CSV-Datei. \n\nWichtig: Dieses Feature ist nocht immer in der Beta-Phase. Es können unter anderem keine Buchcovers importiert werden.</string>
+    <string name="import_dante_description">Importiere deine Bibliothekt von einem vorherigen exportierten Dante CSV Backup. Du kannst hier nur CSV Backups importieren.</string>
     <string name="importing">Importieren</string>
+    <string name="import_books">Bücher importieren</string>
+    <string name="import_no_books">Es können keine Bücher importiert werden</string>
+    <string name="import_approval_title">Importiere %d Bücher von %s</string>
+    <string name="import_read_later">%d Bücher\n Für später</string>
+    <string name="import_reading">%d Bücher\n Lesen</string>
+    <string name="import_read">%d Bücher\n Gelesen</string>
+    <string name="cancel">Abbrechen</string>
 
 </resources>

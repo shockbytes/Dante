@@ -1,8 +1,12 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import at.shockbytes.dante.importer.ImportRepository
 import at.shockbytes.dante.importer.ImportStats
 import at.shockbytes.dante.importer.Importer
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
@@ -10,7 +14,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ImportBooksStorageViewModel @Inject constructor(
-    private val importRepository: ImportRepository
+    private val importRepository: ImportRepository,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     sealed class ImportState {
@@ -20,7 +25,8 @@ class ImportBooksStorageViewModel @Inject constructor(
         data class AskForFile(val mimeType: String) : ImportState()
 
         data class Parsed(
-            val providerName: String,
+            @StringRes val providerRes: Int,
+            @DrawableRes val providerIconRes: Int,
             val importStats: ImportStats
         ) : ImportState()
 
@@ -51,6 +57,7 @@ class ImportBooksStorageViewModel @Inject constructor(
     fun startImport(importer: Importer) {
         selectedImporter = importer
         importState = ImportState.AskForFile(importer.mimeType)
+        tracker.track(DanteTrackingEvent.StartImport(importer.name))
     }
 
     fun parseFromString(content: String?) {
@@ -63,7 +70,7 @@ class ImportBooksStorageViewModel @Inject constructor(
         if (selectedImporter != null) {
             importRepository.parse(selectedImporter!!, content)
                 .map { stats ->
-                    ImportState.Parsed(selectedImporter!!.name, stats)
+                    ImportState.Parsed(selectedImporter!!.title, selectedImporter!!.icon, stats)
                 }
                 .doOnError { throwable ->
                     importState = ImportState.Error(throwable)

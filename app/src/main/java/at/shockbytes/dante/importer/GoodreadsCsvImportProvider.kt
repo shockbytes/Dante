@@ -20,11 +20,28 @@ class GoodreadsCsvImportProvider(
         return csvReader.readCsvContent(content)
             .subscribeOn(schedulers.io)
             .map { lines ->
-                lines
-                    .drop(1)
-                    .mapNotNull(::createBookEntityFromLine)
-                    .toList()
+
+                if (verifyCsvFormat(lines.firstOrNull())) {
+                    lines
+                        .drop(1)
+                        .mapNotNull(::createBookEntityFromLine)
+                        .toList()
+                } else {
+                    // Return a list of empty books and indicate that no books could be imported
+                    // NOTE: This can be vastly improved by returning an exception
+                    listOf()
+                }
             }
+    }
+
+    /**
+     * Verify the first and the last column in the CSV format
+     */
+    private fun verifyCsvFormat(initialLine: List<String>?): Boolean {
+        return initialLine?.let { line ->
+            line.getOrNull(TITLE_COL) == TITLE_COL_NAME &&
+                line.getOrNull(NOTES_COL) == NOTES_COL_NAME
+        } ?: false
     }
 
     private fun createBookEntityFromLine(line: List<String>): BookEntity? {
@@ -88,6 +105,9 @@ class GoodreadsCsvImportProvider(
     }
 
     companion object {
+
+        private const val TITLE_COL_NAME = "Title"
+        private const val NOTES_COL_NAME = "Private Notes"
 
         private const val TITLE_COL = 1
         private const val AUTHOR_COL = 2

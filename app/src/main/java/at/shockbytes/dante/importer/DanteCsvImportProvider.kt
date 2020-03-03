@@ -18,11 +18,28 @@ class DanteCsvImportProvider(
         return csvReader.readCsvContent(content)
             .subscribeOn(schedulers.io)
             .map { lines ->
-                lines
-                    .drop(1)
-                    .mapNotNull(::createBookEntityFromLine)
-                    .toList()
+
+                if (verifyCsvFormat(lines.firstOrNull())) {
+                    lines
+                        .drop(1)
+                        .mapNotNull(::createBookEntityFromLine)
+                        .toList()
+                } else {
+                    // Return a list of empty books and indicate that no books could be imported
+                    // NOTE: This can be vastly improved by returning an exception
+                    listOf()
+                }
             }
+    }
+
+    /**
+     * Verify the first and the last column in the CSV format
+     */
+    private fun verifyCsvFormat(initialLine: List<String>?): Boolean {
+        return initialLine?.let { line ->
+            line.getOrNull(TITLE_COL) == TITLE_COL_NAME &&
+                line.getOrNull(LABELS_COL) == LABELS_COL_NAME
+        } ?: false
     }
 
     private fun createBookEntityFromLine(line: List<String>): BookEntity? {
@@ -83,6 +100,9 @@ class DanteCsvImportProvider(
     }
 
     companion object {
+
+        private const val TITLE_COL_NAME = "title"
+        private const val LABELS_COL_NAME = "labels"
 
         private const val TITLE_COL = 0
         private const val SUBTITLE_COL = 1

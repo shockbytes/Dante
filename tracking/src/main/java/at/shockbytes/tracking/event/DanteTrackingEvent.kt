@@ -7,9 +7,9 @@ sealed class DanteTrackingEvent(
     val props: List<TrackingProperty> = listOf()
 ) {
 
-    class BackupMadeEvent : DanteTrackingEvent(
+    class BackupMadeEvent(backupProvider: String) : DanteTrackingEvent(
         "backup_made",
-        listOf(TrackingProperty("backupMade", 1))
+        listOf(TrackingProperty("backup_provider", backupProvider))
     )
 
     class BackupRestoredEvent : DanteTrackingEvent(
@@ -95,5 +95,10 @@ sealed class DanteTrackingEvent(
     class InterestedInOnlineStorageEvent : DanteTrackingEvent(
         "interested_in_online_storage",
         listOf()
+    )
+
+    class StartImport(name: String) : DanteTrackingEvent(
+        "start_import",
+        listOf(TrackingProperty("importer_name", name))
     )
 }

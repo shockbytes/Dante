@@ -13,6 +13,8 @@
     <string name="label_my_notes">My notes</string>
     <string name="not_available">N/A</string>
     <string name="importing">import</string>
+    <string name="beta" translatable="false">BETA</string>
+    <string name="download">Download</string>
 
     <string name="currently_reading">Currently reading</string>
 
@@ -267,7 +269,7 @@
     <string name="backup_storage_provider_rationale_gdrive">Backup your data on Google Drive. This requires you to be logged in with your same Google account if used on multiple devices.</string>
     <string name="backup_storage_provider_rationale_shockbytes">Just upload your data to our servers. The data still belongs only to you. This is the preferred way of backing up your data.</string>
     <string name="backup_storage_provider_rationale_external_storage">Save your data to your external storage. Note that this requires you to move it to another device manually.</string>
-    <string name="backup_storage_provider_rationale_csv">TODO!</string>
+    <string name="backup_storage_provider_rationale_csv">Save your data to your external storage as a CSV file. This allows you to import your data either in Dante or in other apps that support this format.</string>
 
     <string name="rationale_ask_ok">Sure</string>
     <string name="rationale_ask_cancel">No way</string>
@@ -352,8 +354,12 @@
     <string name="import_success">Import succeeded!</string>
     <string name="import_books">Import books</string>
     <string name="import_goodreads_title" translatable="false">Goodreads</string>
-    <string name="import_goodreads_description">Goodreads CSV import description</string>
-    <string name="import_dante_description">Dante CSV import description</string>
+    <string name="import_goodreads_description">Import your library from Goodreads from a CSV file. \n\nNote that this feature is still in beta and the book covers can\'t be imported at the moment.</string>
+    <string name="import_dante_description">Import your library from a previously exported Dante CSV backup. You can only import CSV backups.</string>
     <string name="import_approval_title">Import %d books from %s</string>
     <string name="import_no_books">There are no books to import</string>
+    <string name="import_read_later">%d books\n read later</string>
+    <string name="import_reading">%d books\n reading</string>
+    <string name="import_read">%d books\n read</string>
+
 </resources>

@@ -12,6 +12,7 @@ import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
+import at.shockbytes.dante.ui.adapter.OnBackupOverflowItemListener
 import at.shockbytes.dante.ui.fragment.dialog.InactiveResourceDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
@@ -39,6 +40,22 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
     private lateinit var viewModel: BackupViewModel
 
+    private val entryAdapter: BackupEntryAdapter by lazy {
+        BackupEntryAdapter(
+            requireContext(),
+            onItemClickListener = this,
+            onItemOverflowMenuClickedListener = object: OnBackupOverflowItemListener {
+                override fun onBackupItemDeleted(content: BackupMetadata, location: Int) {
+                    onItemDismissed(content, location)
+                }
+
+                override fun onBackupItemDownloadRequest(content: BackupMetadata) {
+                    // TODO
+                }
+            }
+        )
+    }
+
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
     }
@@ -49,9 +66,6 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     }
 
     override fun setupViews() {
-        val entryAdapter = BackupEntryAdapter(requireContext(), onItemClickListener = this).apply {
-            onItemDeleteClickListener = { entry, position -> onItemDismissed(entry, position) }
-        }
         rv_fragment_backup_restore.apply {
             layoutManager = getLayoutManagerForAdapter()
             adapter = entryAdapter
@@ -87,7 +101,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
             when (state) {
                 is BackupViewModel.LoadBackupState.Success -> {
-                    (rv_fragment_backup_restore.adapter as BackupEntryAdapter).updateData(state.backups)
+                    entryAdapter.updateData(state.backups)
                     rv_fragment_backup_restore.scrollToPosition(0)
 
                     showLoadingView(false)

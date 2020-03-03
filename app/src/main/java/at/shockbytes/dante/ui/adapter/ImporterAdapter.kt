@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.importer.Importer
+import at.shockbytes.dante.util.Stability
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_importer.*
@@ -36,6 +38,8 @@ class ImporterAdapter(
                 btn_item_import.setOnClickListener {
                     onImportClickedListener(this)
                 }
+
+                tv_item_import_beta.setVisible(stability == Stability.BETA)
             }
         }
     }

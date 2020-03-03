@@ -44,7 +44,7 @@ enum class BackupStorageProvider(
     ),
     @SerializedName("ext_storage")
     EXTERNAL_STORAGE(
-        "ext_storage",
+        "ext-storage",
         "External Storage",
         R.drawable.ic_external_storage,
         R.string.backup_storage_provider_rationale_external_storage,
@@ -53,7 +53,7 @@ enum class BackupStorageProvider(
     ),
     @SerializedName("csv_local")
     LOCAL_CSV(
-        "csv_local",
+        "csv-local",
         "CSV Export",
         R.drawable.ic_csv,
         R.string.backup_storage_provider_rationale_csv,

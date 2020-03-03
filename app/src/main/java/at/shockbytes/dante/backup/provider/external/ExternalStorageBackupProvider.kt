@@ -33,7 +33,6 @@ class ExternalStorageBackupProvider(
 ) : BackupProvider {
 
     override val backupStorageProvider = BackupStorageProvider.EXTERNAL_STORAGE
-
     override var isEnabled: Boolean = true
 
     override fun initialize(activity: FragmentActivity?): Completable {
@@ -167,7 +166,7 @@ class ExternalStorageBackupProvider(
 
     private fun getMetadata(books: Int, fileName: String, timestamp: Long): BackupMetadata {
         return BackupMetadata(
-            id = "",
+            id = fileName,
             fileName = fileName,
             timestamp = timestamp,
             books = books,
@@ -177,7 +176,7 @@ class ExternalStorageBackupProvider(
     }
 
     private fun createFileName(timestamp: Long): String {
-        return "$timestamp${BackupRepository.BACKUP_ITEM_SUFFIX}"
+        return "dante-backup-$timestamp${BackupRepository.BACKUP_ITEM_SUFFIX}"
     }
 
     companion object {

@@ -91,7 +91,8 @@ class AppModule(private val app: Application) {
         shockbytesHerokuApi: ShockbytesHerokuApi,
         inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage,
         externalStorageInteractor: ExternalStorageInteractor,
-        permissionManager: PermissionManager
+        permissionManager: PermissionManager,
+        csvImportProvider: DanteCsvImportProvider
     ): Array<BackupProvider> {
         return arrayOf(
             GoogleDriveBackupProvider(
@@ -111,7 +112,10 @@ class AppModule(private val app: Application) {
                 permissionManager
             ),
             LocalCsvBackupProvider(
-                schedulerFacade
+                schedulerFacade,
+                externalStorageInteractor,
+                permissionManager,
+                csvImportProvider
             )
         )
     }
@@ -141,12 +145,18 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
+    fun provideDanteCsvImportProvider(schedulers: SchedulerFacade): DanteCsvImportProvider {
+        return DanteCsvImportProvider(CsvReader(), schedulers)
+    }
+
+    @Provides
     fun provideImportProvider(
-        schedulers: SchedulerFacade
+        schedulers: SchedulerFacade,
+        danteCsvImportProvider: DanteCsvImportProvider
     ): Array<ImportProvider> {
         return arrayOf(
             GoodreadsCsvImportProvider(CsvReader(), schedulers),
-            DanteCsvImportProvider(CsvReader(), schedulers)
+            danteCsvImportProvider
         )
     }
 

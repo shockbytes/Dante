@@ -264,5 +264,9 @@
     <string name="online_storage_already_interested">Wir informieren dich</string>
     <string name="online_storage_active_development">Gerade in Entwicklung!</string>
     <string name="online_storage_development_explanation">Das nächste große Ding wird die Online-Synchronisation werden. Dieses Feature macht manuelle Backups bei einem Gerätewechsel unnötig (obwohl manuelle Backups auch weiterhin zur Verfügung stehen). Deine Daten werden in die Cloud hochgeladen und können von anderen Geräten geöffnet werden (eventuell auch einmal von einer Web App &#128586;).</string>
+    <string name="import_success">Importieren erfolgreich!</string>
+    <string name="import_goodreads_description">Goodreads CSV import Beschreibung</string>
+    <string name="import_dante_description">Dante CSV import Beschreibung</string>
+    <string name="importing">Importieren</string>
 
 </resources>

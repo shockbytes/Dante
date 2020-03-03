@@ -1,6 +1,7 @@
 package at.shockbytes.dante.ui.fragment.dialog
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import android.view.View
@@ -16,6 +17,7 @@ import at.shockbytes.dante.R
 abstract class InteractiveViewDialogFragment<T> : BaseDialogFragment() {
 
     protected var applyListener: ((T) -> Unit)? = null
+    protected var onDismissListener: (() -> Unit)? = null
 
     abstract val containerView: View
 
@@ -25,14 +27,20 @@ abstract class InteractiveViewDialogFragment<T> : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context!!)
-                .setView(containerView)
-                .create()
+        return AlertDialog.Builder(requireContext())
+            .setView(containerView)
+            .create()
     }
 
     fun setOnApplyListener(listener: (T) -> Unit): InteractiveViewDialogFragment<T> {
         applyListener = listener
         return this
+    }
+
+    fun setOnDismissListener(listener: () -> Unit): InteractiveViewDialogFragment<T> {
+        return this.apply {
+            onDismissListener = listener
+        }
     }
 
     override fun onResume() {

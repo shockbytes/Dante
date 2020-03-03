@@ -7,9 +7,11 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
+import at.shockbytes.dante.importer.ImportStats
 import at.shockbytes.dante.importer.Importer
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.ImporterAdapter
+import at.shockbytes.dante.ui.fragment.dialog.ImportApprovalDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ImportBooksStorageViewModel
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.viewModelOf
@@ -63,33 +65,51 @@ class ImportBooksStorageFragment : BaseFragment() {
 
         when (importState) {
             is ImportBooksStorageViewModel.ImportState.AskForFile -> {
-
-                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-                    .setType(importState.mimeType)
-                    .addCategory(Intent.CATEGORY_OPENABLE)
-
-                startActivityForResult(intent, REQUEST_SAF)
+                openAskForFileActivity(importState.mimeType)
             }
             is ImportBooksStorageViewModel.ImportState.Parsed -> {
-                // TODO Open import approval dialog
-                viewModel.import()
+                handleParsedState(importState)
             }
             is ImportBooksStorageViewModel.ImportState.Error -> {
                 showSnackbar(importState.throwable.toString())
             }
             ImportBooksStorageViewModel.ImportState.Imported -> {
-                showToast("IMPORT SUCCESS!!!")
+                showSnackbar(getString(R.string.import_success))
                 viewModel.confirmImport()
             }
         }
     }
 
+    private fun handleParsedState(importState: ImportBooksStorageViewModel.ImportState.Parsed) {
+
+        when (importState.importStats) {
+            is ImportStats.Success -> {
+                ImportApprovalDialogFragment
+                    .newInstance(importState.providerName, importState.importStats)
+                    .setOnApplyListener {
+                        viewModel.import()
+                    }
+                    .setOnDismissListener(viewModel::reset)
+                    .show(childFragmentManager, "ask-for-import-confirmation-dialog")
+            }
+            ImportStats.NoBooks -> {
+                showSnackbar(getString(R.string.import_no_books), getString(R.string.button_ok), showIndefinite = true)
+            }
+        }
+    }
+
+    private fun openAskForFileActivity(mimeType: String) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            .setType(mimeType)
+            .addCategory(Intent.CATEGORY_OPENABLE)
+
+        startActivityForResult(intent, REQUEST_SAF)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_SAF) {
-            if (resultCode == RESULT_OK && data != null) {
-                runBlocking(Dispatchers.Unconfined) {
-                    data.data?.read(requireContext()).let(viewModel::parseFromString)
-                }
+        if (requestCode == REQUEST_SAF && resultCode == RESULT_OK && data != null) {
+            runBlocking(Dispatchers.Unconfined) {
+                data.data?.read(requireContext()).let(viewModel::parseFromString)
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)

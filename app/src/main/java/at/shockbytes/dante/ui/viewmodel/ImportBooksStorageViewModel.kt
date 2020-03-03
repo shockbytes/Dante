@@ -3,10 +3,10 @@ package at.shockbytes.dante.ui.viewmodel
 import at.shockbytes.dante.importer.ImportRepository
 import at.shockbytes.dante.importer.ImportStats
 import at.shockbytes.dante.importer.Importer
-import at.shockbytes.dante.util.ExceptionHandlers
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 class ImportBooksStorageViewModel @Inject constructor(
@@ -20,6 +20,7 @@ class ImportBooksStorageViewModel @Inject constructor(
         data class AskForFile(val mimeType: String) : ImportState()
 
         data class Parsed(
+            val providerName: String,
             val importStats: ImportStats
         ) : ImportState()
 
@@ -28,37 +29,53 @@ class ImportBooksStorageViewModel @Inject constructor(
         object Imported : ImportState()
     }
 
-    private val importState = PublishSubject.create<ImportState>()
-    fun getImportState(): Observable<ImportState> = importState
+    private var importState: ImportState = ImportState.Idle
+        set(value) {
+            field = value
+            importSubject.onNext(value)
+        }
+
+    private val importSubject = PublishSubject.create<ImportState>()
+    fun getImportState(): Observable<ImportState> = importSubject
 
     private var selectedImporter: Importer? = null
 
     init {
-        importState.onNext(ImportState.Idle)
+        reset()
+    }
+
+    fun reset() {
+        importState = ImportState.Idle
     }
 
     fun startImport(importer: Importer) {
         selectedImporter = importer
-        importState.onNext(ImportState.AskForFile(importer.mimeType))
+        importState = ImportState.AskForFile(importer.mimeType)
     }
 
     fun parseFromString(content: String?) {
 
         if (content == null) {
-            importState.onNext(ImportState.Error(IllegalStateException("Content is null!")))
+            importState = ImportState.Error(IllegalStateException("Content is null!"))
             return
         }
 
         if (selectedImporter != null) {
             importRepository.parse(selectedImporter!!, content)
-                .map(ImportState::Parsed)
-                .doOnError { throwable ->
-                    importState.onNext(ImportState.Error(throwable))
+                .map { stats ->
+                    ImportState.Parsed(selectedImporter!!.name, stats)
                 }
-                .subscribe(importState::onNext, ExceptionHandlers::defaultExceptionHandler)
+                .doOnError { throwable ->
+                    importState = ImportState.Error(throwable)
+                }
+                .subscribe({ parsedState ->
+                    importState = parsedState
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
                 .addTo(compositeDisposable)
         } else {
-            importState.onNext(ImportState.Error(IllegalStateException("No importer selected")))
+            importState = ImportState.Error(IllegalStateException("No importer selected"))
         }
     }
 
@@ -66,14 +83,14 @@ class ImportBooksStorageViewModel @Inject constructor(
 
         importRepository.import()
             .subscribe({
-                importState.onNext(ImportState.Imported)
+                importState = ImportState.Imported
             }, { throwable ->
-                importState.onNext(ImportState.Error(throwable))
+                importState = ImportState.Error(throwable)
             })
             .addTo(compositeDisposable)
     }
 
     fun confirmImport() {
-        importState.onNext(ImportState.Idle)
+        importState = ImportState.Idle
     }
 }

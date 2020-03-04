@@ -259,7 +259,7 @@
     <string name="storage_local">Am Gerät</string>
     <string name="storage_remote">Online</string>
     <string name="storage_import">Importieren</string>
-    <string name="backup_storage_provider_rationale_csv">TODO!</string>
+    <string name="backup_storage_provider_rationale_csv">Speichere deine Bibliothek in eine CSV-Datei. Das erlaubt anderen Apps deine Daten in diesen Format zu importieren. Du kannst diese Daten auch in Daten wieder importieren.</string>
     <string name="online_storage_interested">Ich bin interessiert</string>
     <string name="online_storage_already_interested">Wir informieren dich</string>
     <string name="online_storage_active_development">Gerade in Entwicklung!</string>
@@ -280,6 +280,6 @@
     <string name="library_deletion_succeeded">Wir haben deine Bibliothek verbrannt!</string>
     <string name="library_deletion_failed">Bibliothek konnte nicht gelöscht werden.</string>
     <string name="download">Herunterladen</string>
-    <string name="download_backup">Herunterladen (coming soon)</string>
+    <string name="download_backup">Herunterladen</string>
 
 </resources>

@@ -5,7 +5,6 @@ import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.data.BookEntityDao
 import io.reactivex.disposables.CompositeDisposable
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps
@@ -15,13 +14,14 @@ import android.content.Intent
 import android.graphics.Bitmap
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.toBitmap
 
 class DanteRemoteViewsFactory(
     private val context: Context,
-    private val bookEntityDao: BookEntityDao,
+    private val bookRepository: BookRepository,
     private val danteSettings: DanteSettings
 ) : RemoteViewsService.RemoteViewsFactory {
 
@@ -43,7 +43,7 @@ class DanteRemoteViewsFactory(
     override fun onDataSetChanged() {
 
         val sorter = SortComparators.of(danteSettings.sortStrategy)
-        currentBooks = ArrayList(bookEntityDao.booksCurrentlyReading.sortedWith(sorter))
+        currentBooks = ArrayList(bookRepository.booksCurrentlyReading.sortedWith(sorter))
 
         Timber.d("appwidget - remoteviews factory - onDataSetChanged() - books: ${currentBooks.size}")
     }

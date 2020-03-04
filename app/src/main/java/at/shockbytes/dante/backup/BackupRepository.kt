@@ -3,12 +3,11 @@ package at.shockbytes.dante.backup
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
-import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 
@@ -24,7 +23,6 @@ interface BackupRepository {
 
     fun getBackups(): Single<List<BackupMetadataState>>
 
-    @Throws(BackupServiceConnectionException::class)
     fun initialize(activity: FragmentActivity, forceReload: Boolean): Completable
 
     fun close(): Completable
@@ -37,7 +35,7 @@ interface BackupRepository {
 
     fun restoreBackup(
         entry: BackupMetadata,
-        bookDao: BookEntityDao,
+        bookRepository: BookRepository,
         strategy: RestoreStrategy
     ): Completable
 

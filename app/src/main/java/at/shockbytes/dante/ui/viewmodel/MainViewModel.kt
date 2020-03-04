@@ -7,7 +7,11 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -19,7 +23,8 @@ import javax.inject.Inject
  */
 class MainViewModel @Inject constructor(
     private val signInManager: SignInManager,
-    private val announcementProvider: AnnouncementProvider
+    private val announcementProvider: AnnouncementProvider,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     sealed class UserEvent {
@@ -40,41 +45,51 @@ class MainViewModel @Inject constructor(
 
     private fun initialize() {
         signInManager.setup()
-        signInManager.isSignedIn().subscribe { isSignedIn ->
-
-            if (isSignedIn) { // <- User signed in, TOP!
-                userEvent.postValue(
-                    UserEvent.SuccessEvent(
-                        signInManager.getAccount(),
-                        signInManager.showWelcomeScreen
-                    )
-                )
-            } else if (!isSignedIn) { // <- User not signed in, reset UI
-                userEvent.postValue(UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen))
+        signInManager.observeSignInState()
+            .map { userState ->
+                when {
+                    userState is UserState.SignedInUser -> {
+                        UserEvent.SuccessEvent(userState.user, signInManager.showWelcomeScreen)
+                    }
+                    userState is UserState.AnonymousUser && !signInManager.maybeLater -> {
+                        UserEvent.LoginEvent(signInManager.signInIntent)
+                    }
+                    else -> UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen)
+                }
             }
-
-            // User not signed in and did not opt-out for login screen
-            if (!isSignedIn && !signInManager.maybeLater) {
-                userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
-            }
-        }
-        .addTo(compositeDisposable)
+            .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
-    fun signIn(data: Intent, signInToBackend: Boolean) {
-        signInManager.signIn(data, signInToBackend).subscribe({ account ->
-            userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
-        }, { throwable: Throwable ->
-            Timber.e(throwable)
-            userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
-        }).addTo(compositeDisposable)
+    fun signIn(data: Intent) {
+        signInManager.signIn(data)
+            .subscribe({ account ->
+                userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
+            }, { throwable: Throwable ->
+                Timber.e(throwable)
+                userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
+            })
+            .addTo(compositeDisposable)
     }
 
     fun loginLogout() {
+        signInManager.getAccount()
+            .subscribeOn(schedulers.io)
+            .doOnError {
+                userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+            }
+            .flatMapCompletable { userState ->
+                when (userState) {
+                    is UserState.SignedInUser -> signInManager.signOut()
+                    UserState.AnonymousUser -> postSignInEvent()
+                }
+            }
+            .subscribe({ }, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
+    }
 
-        if (signInManager.getAccount() != null) {
-            signInManager.signOut().subscribe { }.addTo(compositeDisposable)
-        } else {
+    private fun postSignInEvent(): Completable {
+        return Completable.fromAction {
             userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
         }
     }

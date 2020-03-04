@@ -9,14 +9,17 @@ import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesLongPropertyDelegate
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Completable
 import io.reactivex.Single
 
 class DefaultBackupRepository(
     override val backupProvider: List<BackupProvider>,
-    preferences: SharedPreferences
+    preferences: SharedPreferences,
+    private val tracker: Tracker
 ) : BackupRepository {
 
     private val activeBackupProvider: List<BackupProvider>
@@ -69,19 +72,20 @@ class DefaultBackupRepository(
             ?.backup(books)
             ?.doOnComplete {
                 lastBackupTime = System.currentTimeMillis()
+                tracker.track(DanteTrackingEvent.BackupMadeEvent(backupStorageProvider.acronym))
             }
             ?: Completable.error(BackupStorageProviderNotAvailableException())
     }
 
     override fun restoreBackup(
         entry: BackupMetadata,
-        bookDao: BookEntityDao,
+        bookRepository: BookRepository,
         strategy: RestoreStrategy
     ): Completable {
 
         return getBackupProvider(entry.storageProvider)?.mapEntryToBooks(entry)
             ?.flatMapCompletable { books ->
-                bookDao.restoreBackup(books, strategy)
+                bookRepository.restoreBackup(books, strategy)
             } ?: Completable.error(BackupStorageProviderNotAvailableException())
     }
 

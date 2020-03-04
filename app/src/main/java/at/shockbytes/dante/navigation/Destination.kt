@@ -7,7 +7,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeCaptureActivity
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.createSharingIntent
-import at.shockbytes.dante.ui.activity.BackupActivity
+import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity
@@ -83,10 +83,10 @@ sealed class Destination {
         }
     }
 
-    object Backup : Destination() {
+    object BookStorage : Destination() {
 
         override fun provideIntent(context: Context): Intent {
-            return BackupActivity.newIntent(context)
+            return BookStorageActivity.newIntent(context)
         }
     }
 

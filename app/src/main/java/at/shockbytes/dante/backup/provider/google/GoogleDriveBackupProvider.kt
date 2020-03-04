@@ -9,7 +9,7 @@ import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.signin.GoogleSignInManager
+import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.android.gms.drive.Drive
 import com.google.android.gms.drive.DriveFile
@@ -30,7 +30,7 @@ import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
 class GoogleDriveBackupProvider(
-    private val signInManager: GoogleSignInManager,
+    private val signInManager: GoogleFirebaseSignInManager,
     private val schedulers: SchedulerFacade,
     private val gson: Gson
 ) : BackupProvider {
@@ -83,16 +83,23 @@ class GoogleDriveBackupProvider(
     override fun initialize(activity: FragmentActivity?): Completable {
 
         if (activity == null) {
+            isEnabled = false
             throw BackupServiceConnectionException("This backup provider requires an activity!")
         }
 
-        return Completable
-            .fromAction {
-                signInManager.getGoogleAccount()?.let { account ->
-                    client = Drive.getDriveResourceClient(activity, account)
-                }
-                    ?: throw BackupServiceConnectionException("Cannot access Google Account. Account = null")
+        return Completable.fromAction {
+
+            val initializedClient = signInManager.getGoogleAccount()?.let { account ->
+                Drive.getDriveResourceClient(activity, account)
             }
+
+            if (initializedClient != null) {
+                isEnabled = true
+                client = initializedClient
+            } else {
+                isEnabled = false
+            }
+        }
     }
 
     override fun teardown(): Completable {
@@ -111,6 +118,10 @@ class GoogleDriveBackupProvider(
                 entries
                     .mapTo(mutableListOf<BackupMetadataState>()) { BackupMetadataState.Active(it) }
                     .toList()
+            }
+            .onErrorReturn { throwable ->
+                Timber.e(throwable)
+                listOf()
             }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)

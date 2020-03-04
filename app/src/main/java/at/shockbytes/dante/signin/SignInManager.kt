@@ -26,13 +26,15 @@ interface SignInManager {
 
     fun setup()
 
-    fun signIn(data: Intent, signInToOnlineBackend: Boolean): Single<DanteUser?>
+    fun signIn(data: Intent): Single<DanteUser>
 
     fun signOut(): Completable
 
-    fun isSignedIn(): Observable<Boolean>
+    fun observeSignInState(): Observable<UserState>
 
-    fun getAccount(): DanteUser?
+    fun getAccount(): Single<UserState>
 
-    fun getAuthorizationHeader(): String
+    fun getAuthorizationHeader(): Single<String>
+
+    fun close()
 }

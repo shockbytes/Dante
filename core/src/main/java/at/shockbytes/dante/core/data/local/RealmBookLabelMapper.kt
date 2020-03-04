@@ -1,7 +1,8 @@
-package at.shockbytes.dante.core.data
+package at.shockbytes.dante.core.data.local
 
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.realm.RealmBookLabel
+import at.shockbytes.dante.core.data.Mapper
 
 class RealmBookLabelMapper : Mapper<RealmBookLabel, BookLabel>() {
 

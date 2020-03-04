@@ -8,10 +8,13 @@ import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
+import io.reactivex.Completable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,9 +24,10 @@ import javax.inject.Inject
  * Date:    10.11.2018
  */
 class BackupViewModel @Inject constructor(
-    private val bookDao: BookEntityDao,
+    private val bookRepository: BookRepository,
     private val backupRepository: BackupRepository,
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     private val loadBackupState = MutableLiveData<LoadBackupState>()
@@ -42,6 +46,7 @@ class BackupViewModel @Inject constructor(
 
     fun connect(activity: FragmentActivity, forceReload: Boolean = false) {
         backupRepository.initialize(activity, forceReload)
+            .doOnComplete(::postActiveBackupProviders)
             .subscribe({
                 loadBackupState()
                 updateLastBackupTime()
@@ -51,8 +56,6 @@ class BackupViewModel @Inject constructor(
                 loadBackupState.postValue(LoadBackupState.Error(throwable))
             })
             .addTo(compositeDisposable)
-
-        postActiveBackupProviders()
     }
 
     fun disconnect() {
@@ -60,7 +63,7 @@ class BackupViewModel @Inject constructor(
     }
 
     fun applyBackup(t: BackupMetadata, strategy: RestoreStrategy) {
-        backupRepository.restoreBackup(t, bookDao, strategy)
+        backupRepository.restoreBackup(t, bookRepository, strategy)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({
@@ -74,7 +77,7 @@ class BackupViewModel @Inject constructor(
     }
 
     fun makeBackup(backupStorageProvider: BackupStorageProvider) {
-        backupRepository.backup(bookDao.bookObservable.blockingFirst(listOf()), backupStorageProvider)
+        backupRepository.backup(bookRepository.bookObservable.blockingFirst(listOf()), backupStorageProvider)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({
@@ -147,6 +150,27 @@ class BackupViewModel @Inject constructor(
             .map { it.backupStorageProvider }
 
         activeBackupStorageProviders.postValue(providers)
+    }
+
+    fun deleteLibrary(): Completable {
+        return Completable
+            .create { emitter ->
+
+                val books = bookRepository.bookObservable.blockingFirst()
+
+                if (books.isEmpty()) {
+                    emitter.onError(IllegalStateException("No library to burn down"))
+                }
+
+                books
+                    .map { it.id }
+                    .forEach(bookRepository::delete)
+
+                emitter.onComplete()
+            }
+            .doOnComplete {
+                tracker.track(DanteTrackingEvent.BurnDownLibrary())
+            }
     }
 
     // -------------------------- State classes --------------------------

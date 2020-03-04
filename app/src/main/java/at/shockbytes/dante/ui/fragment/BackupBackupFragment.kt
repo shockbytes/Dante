@@ -49,9 +49,7 @@ class BackupBackupFragment : BaseFragment() {
             tv_fragment_backup_last_backup.text = getString(R.string.last_backup, lastBackup)
         })
 
-        viewModel.getActiveBackupProviders().observe(this, Observer { providers ->
-            setupBackupProviderUI(providers)
-        })
+        viewModel.getActiveBackupProviders().observe(this, Observer(::setupBackupProviderUI))
 
         viewModel.makeBackupEvent
             .observeOn(AndroidSchedulers.mainThread())

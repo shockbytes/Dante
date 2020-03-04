@@ -53,9 +53,7 @@ class BackupFragment : BaseFragment() {
             })
             .addTo(compositeDisposable)
 
-        activity?.let { act ->
-            viewModel.connect(act)
-        }
+        viewModel.connect(requireActivity())
     }
 
     override fun unbindViewModel() {

@@ -3,14 +3,14 @@ package at.shockbytes.dante.ui.widget
 import android.content.Intent
 import android.widget.RemoteViewsService
 import at.shockbytes.dante.DanteApp
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.settings.DanteSettings
 import javax.inject.Inject
 
 class DanteRemoteViewsService : RemoteViewsService() {
 
     @Inject
-    lateinit var bookEntityDao: BookEntityDao
+    lateinit var bookRepository: BookRepository
 
     @Inject
     lateinit var danteSettings: DanteSettings
@@ -21,6 +21,6 @@ class DanteRemoteViewsService : RemoteViewsService() {
     }
 
     override fun onGetViewFactory(intent: Intent?): RemoteViewsFactory {
-        return DanteRemoteViewsFactory(this, bookEntityDao, danteSettings)
+        return DanteRemoteViewsFactory(this, bookRepository, danteSettings)
     }
 }

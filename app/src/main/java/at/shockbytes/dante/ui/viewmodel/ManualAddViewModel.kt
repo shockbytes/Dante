@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.image.ImagePicker
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailUri
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -22,7 +22,7 @@ import javax.inject.Inject
  * Date:    30.08.2018
  */
 class ManualAddViewModel @Inject constructor(
-    private val bookDao: BookEntityDao,
+    private val bookRepository: BookRepository,
     private val imagePicker: ImagePicker
 ) : BaseViewModel() {
 
@@ -110,7 +110,7 @@ class ManualAddViewModel @Inject constructor(
         )
 
         if (entity != null) {
-            bookDao.create(entity)
+            bookRepository.create(entity)
             addEvent.onNext(AddEvent.Success)
         } else {
             addEvent.onNext(AddEvent.Error)
@@ -133,7 +133,7 @@ class ManualAddViewModel @Inject constructor(
             viewState.value?.let { v ->
                 if (v is ViewState.UpdateBook) {
                     val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
-                    bookDao.update(updatedEntity)
+                    bookRepository.update(updatedEntity)
                     addEvent.onNext(AddEvent.Updated(updatedEntity.state))
                 } else {
                     addEvent.onNext(AddEvent.Error)

@@ -20,6 +20,7 @@
             app:tabSelectedTextColor="@color/danteAccent"
             app:tabIndicatorColor="@color/danteAccent"
             android:layout_width="match_parent"
+            app:tabUnboundedRipple="true"
             app:tabMode="scrollable"
             app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_height="wrap_content"

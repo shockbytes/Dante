@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.FrameLayout
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupStorageProvider
+import at.shockbytes.dante.util.Stability
+import at.shockbytes.dante.util.setVisible
 import kotlinx.android.synthetic.main.backup_storage_provider_view.view.*
 
 /**
@@ -29,6 +31,8 @@ class BackupStorageProviderView : FrameLayout {
             tv_backup_storage_provider_rationale.setText(rationale)
 
             root_backup_storage_provider.setOnClickListener { click?.invoke(this) }
+            tv_backup_item_beta.setVisible(backupStorageProvider.stability == Stability.BETA)
+            tv_backup_item_discontinued.setVisible(backupStorageProvider.stability == Stability.DISCONTINUED)
         }
     }
 }

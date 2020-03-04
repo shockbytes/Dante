@@ -10,6 +10,7 @@ import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.importer.DanteCsvImportProvider
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.util.permission.PermissionManager
@@ -98,8 +99,14 @@ class LocalCsvBackupProvider(
                 checkCsvItem(b.currentPage.toString()),
                 checkCsvItem(b.notes),
                 checkCsvItem(b.summary),
-                checkCsvItem(b.labels.joinToString(";"))
+                checkCsvItem(prepareLabels(b.labels))
             ).joinToString(",")
+        }
+    }
+
+    private fun prepareLabels(labels: List<BookLabel>): String {
+        return labels.joinToString(";") { label ->
+            "${label.title}:${label.hexColor}"
         }
     }
 

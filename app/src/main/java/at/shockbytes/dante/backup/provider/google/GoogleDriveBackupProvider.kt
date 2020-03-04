@@ -119,6 +119,10 @@ class GoogleDriveBackupProvider(
                     .mapTo(mutableListOf<BackupMetadataState>()) { BackupMetadataState.Active(it) }
                     .toList()
             }
+            .onErrorReturn { throwable ->
+                Timber.e(throwable)
+                listOf()
+            }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
     }

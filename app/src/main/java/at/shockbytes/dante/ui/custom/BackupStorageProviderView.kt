@@ -32,6 +32,7 @@ class BackupStorageProviderView : FrameLayout {
 
             root_backup_storage_provider.setOnClickListener { click?.invoke(this) }
             tv_backup_item_beta.setVisible(backupStorageProvider.stability == Stability.BETA)
+            tv_backup_item_discontinued.setVisible(backupStorageProvider.stability == Stability.DISCONTINUED)
         }
     }
 }

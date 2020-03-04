@@ -9,6 +9,6 @@
     <item
         android:id="@+id/menu_backup_download_request"
         android:icon="@drawable/ic_import_storage"
-        android:title="@string/download"
+        android:title="@string/download_backup"
         app:iconTint="@color/colorAccent" />
 </menu>

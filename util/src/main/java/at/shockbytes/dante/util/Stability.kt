@@ -4,5 +4,6 @@ enum class Stability {
     RELEASE,
     ALPHA,
     BETA,
-    CANARY
+    CANARY,
+    DISCONTINUED
 }

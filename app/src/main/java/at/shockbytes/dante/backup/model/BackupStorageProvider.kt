@@ -45,7 +45,7 @@ enum class BackupStorageProvider(
         R.string.backup_storage_provider_rationale_gdrive,
         Priority.HIGH,
         isLocalFileExportable = false,
-        stability = Stability.RELEASE
+        stability = Stability.DISCONTINUED
     ),
     @SerializedName("ext_storage")
     EXTERNAL_STORAGE(

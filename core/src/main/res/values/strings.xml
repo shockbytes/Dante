@@ -14,7 +14,9 @@
     <string name="not_available">N/A</string>
     <string name="importing">import</string>
     <string name="beta" translatable="false">BETA</string>
+    <string name="discontinued" translatable="false">DISCONTINUED</string>
     <string name="download">Download</string>
+    <string name="download_backup">Download (coming soon)</string>
 
     <string name="currently_reading">Currently reading</string>
 

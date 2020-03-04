@@ -91,8 +91,16 @@ class DanteCsvImportProvider(
     }
 
     private fun labelsFromCsv(labels: String): List<BookLabel> {
-        // TODO Check serialized format
-        return listOf()
+        return labels
+            .split(";")
+            .mapNotNull { label ->
+                val parts = label.split(":")
+                if (parts.size == 2) {
+                    BookLabel.unassignedLabel(title = parts[0], hexColor = parts[1])
+                } else {
+                    null
+                }
+            }
     }
 
     private fun areMandatoryFieldsAvailable(title: String?, author: String?, pages: Int?): Boolean {

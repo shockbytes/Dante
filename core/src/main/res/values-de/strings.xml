@@ -280,5 +280,6 @@
     <string name="library_deletion_succeeded">Wir haben deine Bibliothek verbrannt!</string>
     <string name="library_deletion_failed">Bibliothek konnte nicht gelöscht werden.</string>
     <string name="download">Herunterladen</string>
+    <string name="download_backup">Herunterladen (coming soon)</string>
 
 </resources>

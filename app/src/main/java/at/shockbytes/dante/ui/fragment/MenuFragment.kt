@@ -38,13 +38,17 @@ class MenuFragment : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate( R.layout.bottom_sheet_menu, container, false)
+        return inflater.inflate(R.layout.bottom_sheet_menu, container, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        bindViewModel()
     }
 
     override fun onResume() {
         super.onResume()
         setupViews()
-        bindViewModel()
     }
 
     private fun bindViewModel() {

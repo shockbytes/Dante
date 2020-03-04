@@ -76,7 +76,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         handleIntentExtras()
         setupUI()
         initializeNavigation()
-        bindViewModel()
         setupDarkMode()
         checkForOnboardingHints()
         saveLauncherIconState()
@@ -117,6 +116,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     override fun onStop() {
         super.onStop()
         DanteAppWidgetManager.refresh(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bindViewModel()
     }
 
     override fun onPageSelected(position: Int) {
@@ -343,13 +347,13 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun showGoogleWelcomeScreen(account: DanteUser, showWelcomeScreen: Boolean) {
-        if (showWelcomeScreen) {
+        if (showWelcomeScreen && supportFragmentManager.findFragmentByTag(GOOGLE_SIGNIN_FRAGMENT) == null) {
             GoogleWelcomeScreenDialogFragment
                     .newInstance(account.givenName, account.photoUrl)
                     .setOnAcknowledgedListener {
                         viewModel.showSignInWelcomeScreen(false)
                     }
-                    .show(supportFragmentManager, "google_welcome_dialog_fragment")
+                    .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
         }
     }
 
@@ -422,6 +426,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     companion object {
+
+        private const val GOOGLE_SIGNIN_FRAGMENT = "google_welcome_dialog_fragment"
 
         private const val ARG_OPEN_CAMERA_AFTER_LAUNCH = "arg_open_camera_after_lunch"
         private const val ARG_OPEN_BOOK_DETAIL_FOR_ID = "arg_open_book_detail_for_id"

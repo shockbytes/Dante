@@ -33,15 +33,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
-            android:layout_toRightOf="@+id/item_backup_entry_imgview_provider"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_delete"
+            app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_backup_entry_imgview_provider"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Time information" />
@@ -53,7 +50,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
-            android:layout_toRightOf="@+id/item_backup_entry_imgview_provider"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/item_backup_entry_iv_books"
@@ -69,7 +65,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
-            android:layout_toRightOf="@+id/item_backup_entry_imgview_provider"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -79,16 +74,15 @@
             tools:text="Nokia 7.1" />
 
         <ImageButton
-            android:id="@+id/item_backup_entry_btn_delete"
+            android:id="@+id/item_backup_entry_btn_overflow"
             style="?android:borderlessButtonStyle"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_grayscale" />
+            app:srcCompat="@drawable/ic_overflow" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -106,7 +100,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_delete"
+            app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_overflow"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toBottomOf="@+id/item_backup_entry_txt_time"
             app:srcCompat="@drawable/ic_phone" />

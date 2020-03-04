@@ -71,6 +71,7 @@
     <color name="modal_background">#59000000</color>
 
     <color name="border">#AAA</color>
+    <color name="hot">#B71C1C</color>
 
     <color name="bottom_menu_background">@android:color/transparent</color>
     <color name="transparent_black">#00000000</color>

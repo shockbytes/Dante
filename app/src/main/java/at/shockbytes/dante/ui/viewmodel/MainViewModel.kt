@@ -7,8 +7,11 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -43,24 +46,18 @@ class MainViewModel @Inject constructor(
     private fun initialize() {
         signInManager.setup()
         signInManager.observeSignInState()
-            .subscribe { isSignedIn ->
-
-                if (isSignedIn) { // <- User signed in, TOP!
-                    userEvent.postValue(
-                        UserEvent.SuccessEvent(
-                            signInManager.getAccount().blockingGet(), // TODO rework this
-                            signInManager.showWelcomeScreen
-                        )
-                    )
-                } else { // <- User not signed in, reset UI
-                    userEvent.postValue(UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen))
-                }
-
-                // User not signed in and did not opt-out for login screen
-                if (!isSignedIn && !signInManager.maybeLater) {
-                    userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+            .map { userState ->
+                when {
+                    userState is UserState.SignedInUser -> {
+                        UserEvent.SuccessEvent(userState.user, signInManager.showWelcomeScreen)
+                    }
+                    userState is UserState.AnonymousUser && !signInManager.maybeLater -> {
+                        UserEvent.LoginEvent(signInManager.signInIntent)
+                    }
+                    else -> UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen)
                 }
             }
+            .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
@@ -81,13 +78,20 @@ class MainViewModel @Inject constructor(
             .doOnError {
                 userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
             }
-            .flatMapCompletable { signInManager.signOut() }
-            .subscribe({
-                Timber.d("Successfully logged out!")
-            }, { throwable ->
-                Timber.e(throwable)
-            })
+            .flatMapCompletable { userState ->
+                when (userState) {
+                    is UserState.SignedInUser -> signInManager.signOut()
+                    UserState.AnonymousUser -> postSignInEvent()
+                }
+            }
+            .subscribe({ }, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    private fun postSignInEvent(): Completable {
+        return Completable.fromAction {
+            userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+        }
     }
 
     fun signInMaybeLater(maybeLater: Boolean) {

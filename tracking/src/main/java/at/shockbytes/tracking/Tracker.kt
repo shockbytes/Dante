@@ -9,6 +9,10 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 abstract class Tracker {
 
     var isTrackingAllowed: Boolean = true
+        set(value) {
+            field = value
+            trackEvent(DanteTrackingEvent.TrackingStateChanged(value))
+        }
 
     fun track(event: DanteTrackingEvent) {
         if (isTrackingAllowed) {
@@ -16,5 +20,5 @@ abstract class Tracker {
         }
     }
 
-    abstract fun trackEvent(event: DanteTrackingEvent)
+    internal abstract fun trackEvent(event: DanteTrackingEvent)
 }

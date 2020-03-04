@@ -47,6 +47,29 @@ fun BookEntity.toJson(): JsonObject {
     }
 }
 
+fun BookEntity.toCsvLine(): String {
+    return listOf(
+        title,
+        subTitle,
+        author,
+        state.name,
+        pageCount.toString(),
+        publishedDate,
+        isbn,
+        thumbnailAddress,
+        googleBooksLink,
+        startDate.toString(),
+        endDate.toString(),
+        wishlistDate.toString(),
+        language,
+        rating.toString(),
+        currentPage.toString(),
+        notes,
+        summary,
+        labels.joinToString(separator = ";")
+    ).joinToString(separator = ",")
+}
+
 fun BookEntity.createSharingIntent(c: Context): Intent {
     val msg = c.getString(R.string.share_template, this.title, this.googleBooksLink)
     return Intent()

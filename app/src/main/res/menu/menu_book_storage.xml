@@ -3,11 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_book_storage_online"
-        android:icon="@drawable/ic_remote_storage"
-        android:title="@string/storage_remote" />
-    <item
-        android:id="@+id/menu_book_storage_local"
-        android:icon="@drawable/ic_local_storage"
-        android:title="@string/storage_local" />
+        android:id="@+id/menu_book_storage_delete_library"
+        android:icon="@drawable/ic_burn"
+        android:title="@string/ask_for_library_deletion"
+        app:showAsAction="never" />
 </menu>

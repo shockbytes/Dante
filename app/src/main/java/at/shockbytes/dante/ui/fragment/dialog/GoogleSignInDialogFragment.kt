@@ -21,14 +21,13 @@ import kotterknife.bindView
 class GoogleSignInDialogFragment : BaseDialogFragment() {
 
     private val signInButton: SignInButton by bindView(R.id.dialogfragment_login_sign_in_button)
-
     private val laterButton: Button by bindView(R.id.dialogfragment_login_btn_later)
 
     private val loginView: View
         get() = LayoutInflater.from(context)
-                .inflate(R.layout.dialogfragment_login, null, false)
+            .inflate(R.layout.dialogfragment_login, null, false)
 
-    private var signInListener: ((Boolean) -> Unit)? = null
+    private var signInListener: (() -> Unit)? = null
 
     private var maybeLaterListener: (() -> Unit)? = null
 
@@ -37,10 +36,10 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context!!)
-                .setView(loginView)
-                .create()
-                .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
+        return AlertDialog.Builder(requireContext())
+            .setView(loginView)
+            .create()
+            .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
     }
 
     override fun onStart() {
@@ -48,7 +47,7 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
         setupViews()
     }
 
-    fun setSignInListener(listener: (Boolean) -> Unit): GoogleSignInDialogFragment {
+    fun setSignInListener(listener: () -> Unit): GoogleSignInDialogFragment {
         signInListener = listener
         return this
     }
@@ -60,17 +59,19 @@ class GoogleSignInDialogFragment : BaseDialogFragment() {
 
     private fun setupViews() {
 
-        RxView.clicks(signInButton).subscribe {
-            signInListener?.invoke(false)
-            dismiss()
-        }.addTo(compositeDisposable)
+        RxView.clicks(signInButton)
+            .subscribe {
+                signInListener?.invoke()
+                dismiss()
+            }
+            .addTo(compositeDisposable)
 
-        // TODO Add a online sign in check box!!!
-
-        RxView.clicks(laterButton).subscribe {
-            maybeLaterListener?.invoke()
-            dismiss()
-        }.addTo(compositeDisposable)
+        RxView.clicks(laterButton)
+            .subscribe {
+                maybeLaterListener?.invoke()
+                dismiss()
+            }
+            .addTo(compositeDisposable)
     }
 
     companion object {

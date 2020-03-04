@@ -30,9 +30,9 @@ interface SignInManager {
 
     fun signOut(): Completable
 
-    fun observeSignInState(): Observable<Boolean>
+    fun observeSignInState(): Observable<UserState>
 
-    fun getAccount(): Single<DanteUser>
+    fun getAccount(): Single<UserState>
 
     fun getAuthorizationHeader(): Single<String>
 

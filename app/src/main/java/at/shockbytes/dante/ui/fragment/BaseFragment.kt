@@ -56,12 +56,12 @@ abstract class BaseFragment : Fragment() {
         text: String,
         actionText: String,
         showIndefinite: Boolean = false,
-        action: Snackbar.() -> Unit
+        action: (Snackbar.() -> Unit)? = null
     ) {
         view?.let { v ->
             val duration = if (showIndefinite) Snackbar.LENGTH_INDEFINITE else Snackbar.LENGTH_LONG
             val snackBar = Snackbar.make(v, text, duration)
-            snackBar.setAction(actionText) { action(snackBar) }
+            snackBar.setAction(actionText) { action?.invoke(snackBar) }
             snackBar.show()
         }
     }

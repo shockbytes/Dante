@@ -253,10 +253,33 @@
     <string name="prefs_tracking_title">Tracking</string>
     <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
     <string name="not_available">N/A</string>
-    <string name="launcher_icon_change_description">Eine Änderung des Icons \\n führt voraussichtlich zu einem Neustart</string>
-    <string name="restarting_app">Die App startet sich voraussichtlich neu...</string>
+    <string name="launcher_icon_change_description">Eine Änderung des Icons \n führt voraussichtlich zu einem Neustart</string>
+    <string name="restarting_app">Die App startet sich voraussichtlich neu&#8230;</string>
     <string name="menu_main_book_storage">Buchspeicherung</string>
     <string name="storage_local">Am Gerät</string>
     <string name="storage_remote">Online</string>
+    <string name="storage_import">Importieren</string>
+    <string name="backup_storage_provider_rationale_csv">TODO!</string>
+    <string name="online_storage_interested">Ich bin interessiert</string>
+    <string name="online_storage_already_interested">Wir informieren dich</string>
+    <string name="online_storage_active_development">Gerade in Entwicklung!</string>
+    <string name="online_storage_development_explanation">Das nächste große Ding wird die Online-Synchronisation werden. Dieses Feature macht manuelle Backups bei einem Gerätewechsel unnötig (obwohl manuelle Backups auch weiterhin zur Verfügung stehen). Deine Daten werden in die Cloud hochgeladen und können von anderen Geräten geöffnet werden (eventuell auch einmal von einer Web App &#128586;).</string>
+    <string name="import_success">Importieren erfolgreich!</string>
+    <string name="import_goodreads_description">Importiere deine Goodreads Bibliothek von einer CSV-Datei. \n\nWichtig: Dieses Feature ist nocht immer in der Beta-Phase. Es können unter anderem keine Buchcovers importiert werden.</string>
+    <string name="import_dante_description">Importiere deine Bibliothekt von einem vorherigen exportierten Dante CSV Backup. Du kannst hier nur CSV Backups importieren.</string>
+    <string name="importing">Importieren</string>
+    <string name="import_books">Bücher importieren</string>
+    <string name="import_no_books">Es können keine Bücher importiert werden</string>
+    <string name="import_approval_title">Importiere %d Bücher von %s</string>
+    <string name="import_read_later">%d Bücher\n Für später</string>
+    <string name="import_reading">%d Bücher\n Lesen</string>
+    <string name="import_read">%d Bücher\n Gelesen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="ask_for_library_deletion">Bibliothek löschen</string>
+    <string name="ask_for_library_deletion_msg">Willst du deine ganze Bibliothek löschen? Sollen wir wirklich die gesamte Sammlung verbrennen?</string>
+    <string name="library_deletion_succeeded">Wir haben deine Bibliothek verbrannt!</string>
+    <string name="library_deletion_failed">Bibliothek konnte nicht gelöscht werden.</string>
+    <string name="download">Herunterladen</string>
+    <string name="download_backup">Herunterladen (coming soon)</string>
 
 </resources>

@@ -25,7 +25,6 @@ import at.shockbytes.util.view.EqualSpaceItemDecoration
 import com.google.android.gms.common.api.ApiException
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup_restore.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -45,14 +44,13 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
         BackupEntryAdapter(
             requireContext(),
             onItemClickListener = this,
-            onItemOverflowMenuClickedListener = object: OnBackupOverflowItemListener {
+            onItemOverflowMenuClickedListener = object : OnBackupOverflowItemListener {
                 override fun onBackupItemDeleted(content: BackupMetadata, location: Int) {
                     onItemDismissed(content, location)
                 }
 
                 override fun onBackupItemDownloadRequest(content: BackupMetadata) {
-                    // TODO
-                    Timber.d(content.fileName)
+                    // TODO Download file
                 }
             }
         )

@@ -43,7 +43,7 @@ class GoogleFirebaseSignInManager(
 
     private val fbAuth = FirebaseAuth.getInstance()
 
-    private val signInSubject: BehaviorSubject<Boolean> = BehaviorSubject.create()
+    private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
     override var maybeLater: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, "prefs_google_login_maybe_later", defaultValue = true)
 
@@ -63,11 +63,11 @@ class GoogleFirebaseSignInManager(
 
             getAccount()
                 .subscribeOn(schedulers.io)
-                .subscribe({
-                    signInSubject.onNext(true)
+                .subscribe({ userState ->
+                    signInSubject.onNext(userState)
                 }, { throwable ->
                     Timber.e(throwable)
-                    signInSubject.onNext(false)
+                    signInSubject.onNext(UserState.AnonymousUser)
                 })
                 .addTo(compositeDisposable)
         }
@@ -83,8 +83,8 @@ class GoogleFirebaseSignInManager(
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
-            .doOnSuccess {
-                signInSubject.onNext(true)
+            .doOnSuccess { user ->
+                signInSubject.onNext(UserState.SignedInUser(user))
             }
     }
 
@@ -102,29 +102,32 @@ class GoogleFirebaseSignInManager(
         return Completable
             .fromAction(fbAuth::signOut)
             .doOnComplete {
-                signInSubject.onNext(false)
+                signInSubject.onNext(UserState.AnonymousUser)
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
     }
 
-    override fun observeSignInState(): Observable<Boolean> {
+    override fun observeSignInState(): Observable<UserState> {
         return signInSubject
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
     }
 
-    override fun getAccount(): Single<DanteUser> {
+    override fun getAccount(): Single<UserState> {
         return Single
             .fromCallable {
-                fbAuth.currentUser?.toDanteUser() ?: throw IllegalStateException("No account signed in")
+                fbAuth.currentUser?.toDanteUser()
+                    ?.let(UserState::SignedInUser)
+                    ?: UserState.AnonymousUser
             }
             .subscribeOn(schedulers.io)
     }
 
     override fun getAuthorizationHeader(): Single<String> {
-        return getAccount().map { account ->
-            SignInManager.getAuthorizationHeader(account.authToken ?: "")
+        return getAccount().map { acc ->
+            val authToken = if (acc is UserState.SignedInUser) acc.user.authToken ?: "" else ""
+            SignInManager.getAuthorizationHeader(authToken)
         }
     }
 
@@ -133,6 +136,10 @@ class GoogleFirebaseSignInManager(
     }
 
     fun getGoogleAccount(): GoogleSignInAccount? {
-        return GoogleSignIn.getLastSignedInAccount(context)
+        return if (getAccount().blockingGet() is UserState.SignedInUser) {
+            GoogleSignIn.getLastSignedInAccount(context)
+        } else {
+            null
+        }
     }
 }

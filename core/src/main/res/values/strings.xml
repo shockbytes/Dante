@@ -361,5 +361,9 @@
     <string name="import_read_later">%d books\n read later</string>
     <string name="import_reading">%d books\n reading</string>
     <string name="import_read">%d books\n read</string>
+    <string name="ask_for_library_deletion">Delete Library</string>
+    <string name="ask_for_library_deletion_msg">Do you really want to delete your whole library? Should we really set the lib on fire?</string>
+    <string name="library_deletion_succeeded">We successfully burned down your library!</string>
+    <string name="library_deletion_failed">An error occurred while deleting your books.</string>
 
 </resources>

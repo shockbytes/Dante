@@ -12,6 +12,9 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
+import io.reactivex.Completable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,7 +26,8 @@ import javax.inject.Inject
 class BackupViewModel @Inject constructor(
     private val bookRepository: BookRepository,
     private val backupRepository: BackupRepository,
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     private val loadBackupState = MutableLiveData<LoadBackupState>()
@@ -42,6 +46,7 @@ class BackupViewModel @Inject constructor(
 
     fun connect(activity: FragmentActivity, forceReload: Boolean = false) {
         backupRepository.initialize(activity, forceReload)
+            .doOnComplete(::postActiveBackupProviders)
             .subscribe({
                 loadBackupState()
                 updateLastBackupTime()
@@ -51,8 +56,6 @@ class BackupViewModel @Inject constructor(
                 loadBackupState.postValue(LoadBackupState.Error(throwable))
             })
             .addTo(compositeDisposable)
-
-        postActiveBackupProviders()
     }
 
     fun disconnect() {
@@ -147,6 +150,27 @@ class BackupViewModel @Inject constructor(
             .map { it.backupStorageProvider }
 
         activeBackupStorageProviders.postValue(providers)
+    }
+
+    fun deleteLibrary(): Completable {
+        return Completable
+            .create { emitter ->
+
+                val books = bookRepository.bookObservable.blockingFirst()
+
+                if (books.isEmpty()) {
+                    emitter.onError(IllegalStateException("No library to burn down"))
+                }
+
+                books
+                    .map { it.id }
+                    .forEach(bookRepository::delete)
+
+                emitter.onComplete()
+            }
+            .doOnComplete {
+                tracker.track(DanteTrackingEvent.BurnDownLibrary())
+            }
     }
 
     // -------------------------- State classes --------------------------

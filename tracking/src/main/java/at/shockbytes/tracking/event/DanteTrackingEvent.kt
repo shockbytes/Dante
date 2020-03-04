@@ -101,4 +101,9 @@ sealed class DanteTrackingEvent(
         "start_import",
         listOf(TrackingProperty("importer_name", name))
     )
+
+    class BurnDownLibrary : DanteTrackingEvent(
+        "burn_down_library",
+        listOf()
+    )
 }

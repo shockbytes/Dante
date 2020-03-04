@@ -4,8 +4,6 @@ import android.Manifest
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.BackupRepository
-import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
@@ -20,7 +18,6 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import timber.log.Timber
 import java.io.File
-import java.lang.Long.parseLong
 
 class LocalCsvBackupProvider(
     private val schedulers: SchedulerFacade,

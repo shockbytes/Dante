@@ -83,16 +83,23 @@ class GoogleDriveBackupProvider(
     override fun initialize(activity: FragmentActivity?): Completable {
 
         if (activity == null) {
+            isEnabled = false
             throw BackupServiceConnectionException("This backup provider requires an activity!")
         }
 
-        return Completable
-            .fromAction {
-                signInManager.getGoogleAccount()?.let { account ->
-                    client = Drive.getDriveResourceClient(activity, account)
-                }
-                    ?: throw BackupServiceConnectionException("Cannot access Google Account. Account = null")
+        return Completable.fromAction {
+
+            val initializedClient = signInManager.getGoogleAccount()?.let { account ->
+                Drive.getDriveResourceClient(activity, account)
             }
+
+            if (initializedClient != null) {
+                isEnabled = true
+                client = initializedClient
+            } else {
+                isEnabled = false
+            }
+        }
     }
 
     override fun teardown(): Completable {

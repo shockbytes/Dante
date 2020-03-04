@@ -150,7 +150,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuTimeline" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnMenuBackup"
+                android:id="@+id/btnMenuBookStorage"
                 style="@style/AppTheme.BorderlessButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -166,8 +166,6 @@
                 android:textColor="@color/danteAccent"
                 android:text="@string/menu_main_book_storage"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:visibility="gone"
-                tools:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMenuSortStrategy" />
@@ -191,7 +189,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnMenuBackup" />
+                app:layout_constraintTop_toBottomOf="@+id/btnMenuBookStorage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

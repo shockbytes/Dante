@@ -275,5 +275,10 @@
     <string name="import_reading">%d Bücher\n Lesen</string>
     <string name="import_read">%d Bücher\n Gelesen</string>
     <string name="cancel">Abbrechen</string>
+    <string name="ask_for_library_deletion">Bibliothek löschen</string>
+    <string name="ask_for_library_deletion_msg">Willst du deine ganze Bibliothek löschen? Sollen wir wirklich die gesamte Sammlung verbrennen?</string>
+    <string name="library_deletion_succeeded">Wir haben deine Bibliothek verbrannt!</string>
+    <string name="library_deletion_failed">Bibliothek konnte nicht gelöscht werden.</string>
+    <string name="download">Herunterladen</string>
 
 </resources>

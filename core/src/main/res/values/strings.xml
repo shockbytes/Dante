@@ -60,7 +60,7 @@
     <string name="contentdesc_listitem_img_thumb" translatable="false">Thumbnail for book cover</string>
     <string name="contentdesc_listitem_img_overflow" translatable="false">Overflow icon for list item</string>
     <string name="send_to">Share your book</string>
-    <string name="label_book_storage">Manage book storage</string>
+    <string name="label_book_storage">Manage your books</string>
     <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
 
@@ -69,7 +69,7 @@
 
     <string name="last_backup">Last backup: %s</string>
     <string name="backup_books_amount">%d books</string>
-    <string name="menu_main_book_storage">Book storage</string>
+    <string name="menu_main_book_storage">Book management</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>
     <string name="backup_strategy_overwrite">Overwrite</string>
@@ -268,7 +268,7 @@
     <string name="fab_hint_prompt_message">Tap on the + icon and start scanning your first book!</string>
 
     <string name="backup_provider_rationale">Dante allows you to backup your data in several ways. It offers you a handy way to transfer data between devices. Backup your data on one device and restore it on your new device. Just click on your preferred way to backup.</string>
-    <string name="backup_storage_provider_rationale_gdrive">Backup your data on Google Drive. This requires you to be logged in with your same Google account if used on multiple devices.</string>
+    <string name="backup_storage_provider_rationale_gdrive">This service is discontinued from Google. We searching for other ways to still use this feature in the app.</string>
     <string name="backup_storage_provider_rationale_shockbytes">Just upload your data to our servers. The data still belongs only to you. This is the preferred way of backing up your data.</string>
     <string name="backup_storage_provider_rationale_external_storage">Save your data to your external storage. Note that this requires you to move it to another device manually.</string>
     <string name="backup_storage_provider_rationale_csv">Save your data to your external storage as a CSV file. This allows you to import your data either in Dante or in other apps that support this format.</string>

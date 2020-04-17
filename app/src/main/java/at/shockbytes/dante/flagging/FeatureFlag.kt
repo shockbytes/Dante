@@ -1,14 +1,14 @@
 package at.shockbytes.dante.flagging
 
-sealed class FeatureFlag(val key: String, val displayName: String, val defaultValue: Boolean) {
+enum class FeatureFlag(val key: String, val displayName: String, val defaultValue: Boolean) {
 
-    object BookSuggestions : FeatureFlag("book_suggestions", "Book suggestions", false)
-    object OverflowMenu : FeatureFlag("remove_overflow_menu", "Replace Overflow menu", false)
+    BOOK_SUGGESTIONS("book_suggestions", "Suggestions", false),
+    OVERFLOW_MENU("remove_overflow_menu", "Overflow v2", false);
 
     companion object {
 
         fun activeFlags(): List<FeatureFlag> {
-            return listOf(BookSuggestions, OverflowMenu)
+            return listOf(BOOK_SUGGESTIONS, OVERFLOW_MENU)
         }
     }
 }

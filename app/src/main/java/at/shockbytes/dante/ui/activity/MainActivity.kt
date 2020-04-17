@@ -315,7 +315,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun initializeNavigation() {
 
         // Setup the ViewPager
-        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BookSuggestions],
+        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BOOK_SUGGESTIONS],
                 supportFragmentManager)
         viewPager.adapter = pagerAdapter
         viewPager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
@@ -327,7 +327,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
             true
         }
-        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging[FeatureFlag.BookSuggestions]
+        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging[FeatureFlag.BOOK_SUGGESTIONS]
         mainBottomNavigation.selectedItemId = tabId
     }
 

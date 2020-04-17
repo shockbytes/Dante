@@ -25,6 +25,6 @@ enum class Importer(
         R.drawable.ic_brand_app_logo,
         R.string.import_dante_description,
         mimeType = "text/csv",
-        stability = Stability.RELEASE
+        stability = Stability.BETA
     )
 }

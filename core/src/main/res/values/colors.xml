@@ -10,7 +10,7 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorTertiaryText">#323232</color>
-    <color name="mainBackground">#F5F5F5</color>
+    <color name="mainBackground">#FFFF</color>
     <color name="darkLaunchScreen">#1E1E1E</color>
 
     <color name="colorPrimaryTextLight">#FFF</color>
@@ -70,7 +70,7 @@
     <color name="iconColorSettings">@color/colorAccent</color>
     <color name="modal_background">#59000000</color>
 
-    <color name="border">#AAA</color>
+    <color name="border">#BBB</color>
     <color name="hot">#B71C1C</color>
 
     <color name="bottom_menu_background">@android:color/transparent</color>

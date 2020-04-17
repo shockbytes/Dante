@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
+import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
@@ -79,6 +80,18 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setupDarkMode()
         checkForOnboardingHints()
         saveLauncherIconState()
+        // goingEdgeToEdge()
+    }
+
+    private fun goingEdgeToEdge() {
+        window.decorView.systemUiVisibility =
+            // Tells the system that the window wishes the content to
+            // be laid out at the most extreme scenario. See the docs for
+            // more information on the specifics
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                // Tells the system that the window wishes the content to
+                // be laid out as if the navigation bar was hidden
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     }
 
     private fun animateTitle() {
@@ -176,11 +189,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
 
                     GoogleSignInDialogFragment.newInstance()
-                            .setSignInListener {
-                                startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
-                            }
-                            .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
-                            .show(supportFragmentManager, "sign-in-fragment")
+                        .setSignInListener {
+                            startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                        }
+                        .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
+                        .show(supportFragmentManager, "sign-in-fragment")
                 }
 
                 is MainViewModel.UserEvent.ErrorEvent -> {
@@ -233,9 +246,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun setupUI() {
         imgButtonMainToolbarSearch.setOnClickListener {
             ActivityNavigator.navigateTo(
-                    this,
-                    Destination.Search,
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                this,
+                Destination.Search,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
             )
         }
         imgButtonMainToolbarMore.setOnClickListener {
@@ -316,7 +329,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         // Setup the ViewPager
         pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BOOK_SUGGESTIONS],
-                supportFragmentManager)
+            supportFragmentManager)
         viewPager.adapter = pagerAdapter
         viewPager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
         viewPager.addOnPageChangeListener(this)
@@ -349,11 +362,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showGoogleWelcomeScreen(account: DanteUser, showWelcomeScreen: Boolean) {
         if (showWelcomeScreen && supportFragmentManager.findFragmentByTag(GOOGLE_SIGNIN_FRAGMENT) == null) {
             GoogleWelcomeScreenDialogFragment
-                    .newInstance(account.givenName, account.photoUrl)
-                    .setOnAcknowledgedListener {
-                        viewModel.showSignInWelcomeScreen(false)
-                    }
-                    .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
+                .newInstance(account.givenName, account.photoUrl)
+                .setOnAcknowledgedListener {
+                    viewModel.showSignInWelcomeScreen(false)
+                }
+                .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
         }
     }
 

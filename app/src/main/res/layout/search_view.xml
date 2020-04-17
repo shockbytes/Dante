@@ -4,8 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:layout_margin="2dp"
-    app:cardBackgroundColor="@color/searchBarColor"
-    app:cardCornerRadius="24dp">
+    app:cardBackgroundColor="@color/mainBackground"
+    app:strokeWidth="0.8dp"
+    app:strokeColor="@color/colorAccent"
+    app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

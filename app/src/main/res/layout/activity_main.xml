@@ -11,6 +11,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -33,7 +34,7 @@
                     android:gravity="center"
                     android:text="@string/app_name"
                     android:textColor="@color/actionBarItemColor"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:alpha="0"
                     android:scaleX="0.9"
                     android:scaleY="0.9"

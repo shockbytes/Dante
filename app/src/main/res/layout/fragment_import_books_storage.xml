@@ -6,5 +6,6 @@
     android:layout_height="match_parent"
     android:id="@+id/rv_fragment_import"
     android:padding="16dp"
+    android:background="@color/mainBackground"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     tools:listitem="@layout/item_importer" />

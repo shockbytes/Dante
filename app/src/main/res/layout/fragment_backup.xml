@@ -17,6 +17,7 @@
         <com.google.android.material.tabs.TabLayout
             style="@style/Widget.MaterialComponents.TabLayout"
             android:id="@+id/tabs_fragment_backup"
+            android:background="@color/mainBackground"
             app:tabSelectedTextColor="@color/danteAccent"
             app:tabIndicatorColor="@color/danteAccent"
             android:layout_width="match_parent"

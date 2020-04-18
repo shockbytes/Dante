@@ -9,7 +9,6 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.LoginFragment
-import at.shockbytes.dante.ui.fragment.OnboardingFragment
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.util.viewModelOf
 import javax.inject.Inject
@@ -39,7 +38,8 @@ class LoginActivity : BaseActivity() {
         viewModel.getLoginState().observe(this, Observer { state ->
             when (state) {
                 is LoginViewModel.LoginState.FirstAppOpen -> {
-                    showOnboardingFragment()
+                    // TODO Maybe offer instant sign-on solution later
+                    ActivityNavigator.navigateTo(this, Destination.Main())
                 }
                 is LoginViewModel.LoginState.LoggedIn -> {
                     ActivityNavigator.navigateTo(this, Destination.Main())
@@ -55,13 +55,6 @@ class LoginActivity : BaseActivity() {
         supportFragmentManager
                 .beginTransaction()
                 .replace(android.R.id.content, LoginFragment.newInstance())
-                .commit()
-    }
-
-    private fun showOnboardingFragment() {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(android.R.id.content, OnboardingFragment.newInstance())
                 .commit()
     }
 }

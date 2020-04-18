@@ -59,7 +59,7 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="12dp"
             android:text="@string/create_new_label"
-            app:icon="@drawable/ic_add"
+            app:icon="@drawable/ic_add_round"
             app:iconTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

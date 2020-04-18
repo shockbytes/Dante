@@ -74,7 +74,7 @@ class BookStatsLanguageViewHolder(
                 formToTextSpace = 5f
                 textColor = ContextCompat.getColor(context, R.color.colorSecondaryText)
                 form = Legend.LegendForm.CIRCLE
-                textSize = 17f
+                textSize = 13f
                 orientation = Legend.LegendOrientation.HORIZONTAL
                 isWordWrapEnabled = true
                 setDrawInside(false)

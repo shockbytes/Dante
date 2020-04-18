@@ -251,7 +251,10 @@ class BookAdapter(
         private fun updateTexts(t: BookEntity) {
             item_book_txt_title.text = t.title
             item_book_txt_author.text = t.author
-            item_book_txt_subtitle.text = t.subTitle
+            item_book_txt_subtitle.apply {
+                text = t.subTitle
+                setVisible(t.subTitle.isNotEmpty())
+            }
         }
 
         private fun setupOverflowMenu(book: BookEntity) {

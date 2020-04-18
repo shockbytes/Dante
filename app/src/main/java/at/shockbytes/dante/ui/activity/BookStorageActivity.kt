@@ -89,15 +89,12 @@ class BookStorageActivity : BackNavigableActivity(), EasyPermissions.PermissionC
             when (item.itemId) {
 
                 R.id.menu_book_storage_online -> {
-                    setActionBarElevation(AppUtils.convertDpInPixel(4, this).toFloat())
                     showFragment(OnlineStorageFragment.newInstance())
                 }
                 R.id.menu_book_storage_local -> {
-                    setActionBarElevation(0f)
                     showFragment(BackupFragment.newInstance())
                 }
                 R.id.menu_book_storage_import -> {
-                    setActionBarElevation(AppUtils.convertDpInPixel(4, this).toFloat())
                     showFragment(ImportBooksStorageFragment.newInstance())
                 }
             }
@@ -106,10 +103,6 @@ class BookStorageActivity : BackNavigableActivity(), EasyPermissions.PermissionC
         }
 
         bottom_navigation_book_storage.selectedItemId = R.id.menu_book_storage_local
-    }
-
-    private fun setActionBarElevation(elevation: Float) {
-        supportActionBar?.elevation = elevation
     }
 
     private fun showFragment(fragment: Fragment) {

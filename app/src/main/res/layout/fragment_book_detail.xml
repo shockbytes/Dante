@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:cardCornerRadius="12dp"
+    app:cardCornerRadius="0dp"
+    app:cardBackgroundColor="@color/mainBackground"
     android:transitionName="@string/transition_name_card"
     app:cardElevation="0dp">
 
@@ -279,7 +280,7 @@
                             android:backgroundTint="@color/colorAccent"
                             android:textColor="@color/white"
                             app:iconTint="@color/white"
-                            app:icon="@drawable/ic_add"
+                            app:icon="@drawable/ic_add_round"
                             app:cornerRadius="20dp"
                             android:layout_height="match_parent"
                             android:layout_marginStart="4dp"

@@ -11,6 +11,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:elevation="0dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -33,7 +34,7 @@
                     android:gravity="center"
                     android:text="@string/app_name"
                     android:textColor="@color/actionBarItemColor"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
                     android:alpha="0"
                     android:scaleX="0.9"
                     android:scaleY="0.9"
@@ -86,29 +87,145 @@
         android:layout_below="@+id/appbar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
-        android:id="@+id/mainFabMenuOverlay"
+    <com.google.android.material.circularreveal.CircularRevealLinearLayout
+        android:id="@+id/dial"
+        android:layout_height="200dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:clickable_overlay="true"
-        android:background="@color/fab_overlay"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="vertical"
+        android:layout_gravity="bottom|center_horizontal"
+        android:visibility="invisible"
+        android:layout_marginBottom="0dp"
+        app:layout_anchor="@id/mainFab"
+        app:layout_anchorGravity="top|center_horizontal"
+        android:background="@color/colorAccent"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_behavior="com.google.android.material.transformation.FabTransformationSheetBehavior">
 
-    <com.leinardi.android.speeddial.SpeedDialView
-        android:id="@+id/mainFabMenu"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <FrameLayout
+                android:id="@+id/dial_btn_manual"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_round_border_white"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/white"
+                    android:drawableTop="@drawable/ic_edit"
+                    android:layout_width="match_parent"
+                    android:textSize="13sp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_fab_manual" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/dial_btn_scan"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_round_border_white"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"
+                    android:drawableTop="@drawable/ic_camera"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_fab_scan" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/dial_btn_search_by_title"
+                android:layout_width="0dp"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_round_border_white"
+                android:layout_weight="1"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:drawablePadding="8dp"
+                    android:textColor="@color/white"
+                    app:drawableTint="@color/white"
+                    android:textSize="13sp"
+                    android:drawableTop="@drawable/ic_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/menu_fab_title" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:background="#424242"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" >
+
+            <TextView
+                android:text="@string/add_book_to_library_hint"
+                android:textColor="@color/white"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+            <ImageButton
+                android:id="@+id/dial_back"
+                style="@style/AppTheme.BorderlessButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_close"/>
+
+        </RelativeLayout>
+
+    </com.google.android.material.circularreveal.CircularRevealLinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mainFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="2dp"
-        app:layout_behavior="@string/speeddial_scrolling_view_snackbar_behavior"
-        app:sdExpansionMode="top"
-        app:sdUseReverseAnimationOnClose="true"
-        app:sdMainFabAnimationRotateAngle="90"
-        app:sdMainFabClosedIconColor="@color/white"
-        app:sdMainFabOpenedIconColor="@color/white"
-        app:sdMainFabClosedSrc="@drawable/ic_add"
-        app:sdMainFabOpenedSrc="@drawable/ic_close"
-        app:sdOverlayLayout="@id/mainFabMenuOverlay" />
+        android:layout_margin="16dp"
+        app:backgroundTint="@color/colorAccent"
+        app:tint="@color/white"
+        app:layout_behavior="at.shockbytes.dante.util.ScrollAndMorphAwareFloatingActionButtonBehavior"
+        app:srcCompat="@drawable/ic_add"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mainBottomNavigation"

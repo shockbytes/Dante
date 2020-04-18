@@ -151,7 +151,7 @@ class MainBookFragment :
         bookAdapter = BookAdapter(
             fragment_book_main_rv,
             imageLoader,
-            featureFlagging[FeatureFlag.OverflowMenu],
+            featureFlagging[FeatureFlag.OVERFLOW_MENU],
             onActionClickedListener = this,
             onItemClickListener = this,
             onItemMoveListener = this,

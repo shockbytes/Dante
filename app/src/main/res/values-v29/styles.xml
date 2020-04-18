@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.Bridge">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/hero_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/hero_transition</item>
+
+        <item name="md_font_title">@font/montserrat</item>
+        <item name="md_font_body">@font/montserrat</item>
+        <item name="md_font_button">@font/montserrat</item>
+        <item name="md_color_button_text">@color/colorAccent</item>
+
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+</resources>

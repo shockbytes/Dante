@@ -10,8 +10,8 @@ import android.os.Handler
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
+import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
@@ -36,12 +36,12 @@ import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.retrieveActiveActivityAlias
+import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.settings.LauncherIconState
 import at.shockbytes.dante.util.settings.ThemeState
-import at.shockbytes.dante.util.toggleVisibility
+import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
-import com.leinardi.android.speeddial.SpeedDialActionItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
@@ -79,6 +79,48 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setupDarkMode()
         checkForOnboardingHints()
         saveLauncherIconState()
+        // goingEdgeToEdge()
+        setupFabMorph()
+    }
+
+    private fun setupFabMorph() {
+        mainFab.setOnClickListener {
+            mainFab.isExpanded = !mainFab.isExpanded
+        }
+        dial_back.setOnClickListener {
+            mainFab.isExpanded = !mainFab.isExpanded
+        }
+        dial_btn_manual.setOnClickListener {
+            dial_back.callOnClick()
+            // For whatever reason, this transition needs to take place
+            // slightly later to not mess up the FAB morph transformation
+            runDelayed(350) {
+                navigateToManualAdd()
+            }
+        }
+        dial_btn_scan.setOnClickListener {
+            dial_back.callOnClick()
+            runDelayed(300) {
+                navigateToCamera()
+            }
+        }
+        dial_btn_search_by_title.setOnClickListener {
+            dial_back.callOnClick()
+            runDelayed(300) {
+                showAddByTitleDialog()
+            }
+        }
+    }
+
+    private fun goingEdgeToEdge() {
+        window.decorView.systemUiVisibility =
+            // Tells the system that the window wishes the content to
+            // be laid out at the most extreme scenario. See the docs for
+            // more information on the specifics
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                // Tells the system that the window wishes the content to
+                // be laid out as if the navigation bar was hidden
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     }
 
     private fun animateTitle() {
@@ -108,11 +150,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         outState.putInt("tabId", tabId)
     }
 
-    override fun onStart() {
-        super.onStart()
-        setupFabMenu()
-    }
-
     override fun onStop() {
         super.onStop()
         DanteAppWidgetManager.refresh(this)
@@ -129,7 +166,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mainBottomNavigation.selectedItemId = tabId
 
         appBar.setExpanded(true, true)
-        mainFabMenu.toggleVisibility()
+        mainFab.toggle()
     }
 
     override fun onPageScrollStateChanged(state: Int) = Unit
@@ -176,11 +213,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                     imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
 
                     GoogleSignInDialogFragment.newInstance()
-                            .setSignInListener {
-                                startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
-                            }
-                            .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
-                            .show(supportFragmentManager, "sign-in-fragment")
+                        .setSignInListener {
+                            startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                        }
+                        .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
+                        .show(supportFragmentManager, "sign-in-fragment")
                 }
 
                 is MainViewModel.UserEvent.ErrorEvent -> {
@@ -233,51 +270,13 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun setupUI() {
         imgButtonMainToolbarSearch.setOnClickListener {
             ActivityNavigator.navigateTo(
-                    this,
-                    Destination.Search,
-                    ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+                this,
+                Destination.Search,
+                ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
             )
         }
         imgButtonMainToolbarMore.setOnClickListener {
             MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
-        }
-    }
-
-    private fun setupFabMenu() {
-
-        val menu = MenuBuilder(this)
-        menuInflater.inflate(R.menu.menu_fab, menu)
-
-        val bgColors = listOf(R.color.tabcolor_upcoming, R.color.tabcolor_done, R.color.color_error)
-        menu.visibleItems.forEachIndexed { idx, item ->
-            mainFabMenu.addActionItem(
-                SpeedDialActionItem.Builder(item.itemId, item.icon)
-                    .setLabel(item.title.toString())
-                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
-                    .setFabBackgroundColor(ContextCompat.getColor(this, bgColors[idx]))
-                    .create()
-            )
-        }
-
-        mainFabMenu.setOnActionSelectedListener { item ->
-            mainFabMenuOverlay.hide(false)
-
-            when (item.id) {
-
-                R.id.menu_fab_add_camera -> {
-                    navigateToCamera()
-                    false
-                }
-                R.id.menu_fab_add_title -> {
-                    showAddByTitleDialog()
-                    false
-                }
-                R.id.menu_fab_add_manually -> {
-                    navigateToManualAdd()
-                    false
-                }
-                else -> true
-            }
         }
     }
 
@@ -302,7 +301,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showOnboardingHintViews() {
 
         MaterialTapTargetPrompt.Builder(this)
-            .setTarget(R.id.mainFabMenu)
+            .setTarget(R.id.mainFab)
             .setFocalColour(ContextCompat.getColor(this, android.R.color.transparent))
             .setPrimaryTextColour(ContextCompat.getColor(this, R.color.colorPrimaryTextLight))
             .setSecondaryTextColour(ContextCompat.getColor(this, R.color.colorSecondaryTextLight))
@@ -315,8 +314,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun initializeNavigation() {
 
         // Setup the ViewPager
-        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BookSuggestions],
-                supportFragmentManager)
+        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BOOK_SUGGESTIONS],
+            supportFragmentManager)
         viewPager.adapter = pagerAdapter
         viewPager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
         viewPager.addOnPageChangeListener(this)
@@ -327,14 +326,14 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
             true
         }
-        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging[FeatureFlag.BookSuggestions]
+        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging[FeatureFlag.BOOK_SUGGESTIONS]
         mainBottomNavigation.selectedItemId = tabId
     }
 
     private fun colorNavigationItems(item: MenuItem) {
 
         val stateListRes: Int = when (item.itemId) {
-            R.id.menu_navigation_upcoming -> R.drawable.navigation_item
+            R.id.menu_navigation_upcoming -> R.drawable.navigation_item_upcoming
             R.id.menu_navigation_current -> R.drawable.navigation_item_current
             R.id.menu_navigation_done -> R.drawable.navigation_item_done
             R.id.menu_navigation_suggestions -> R.drawable.navigation_item_suggestions
@@ -349,11 +348,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showGoogleWelcomeScreen(account: DanteUser, showWelcomeScreen: Boolean) {
         if (showWelcomeScreen && supportFragmentManager.findFragmentByTag(GOOGLE_SIGNIN_FRAGMENT) == null) {
             GoogleWelcomeScreenDialogFragment
-                    .newInstance(account.givenName, account.photoUrl)
-                    .setOnAcknowledgedListener {
-                        viewModel.showSignInWelcomeScreen(false)
-                    }
-                    .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
+                .newInstance(account.givenName, account.photoUrl)
+                .setOnAcknowledgedListener {
+                    viewModel.showSignInWelcomeScreen(false)
+                }
+                .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
         }
     }
 
@@ -373,11 +372,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             Destination.BarcodeScanner,
             ActivityOptionsCompat
                 .makeClipRevealAnimation(
-                    mainFabMenu,
-                    mainFabMenu.x.toInt(),
-                    mainFabMenu.y.toInt(),
-                    mainFabMenu.width,
-                    mainFabMenu.height
+                    mainFab,
+                    mainFab.x.toInt(),
+                    mainFab.y.toInt(),
+                    mainFab.width,
+                    mainFab.height
                 )
                 .toBundle()
         )

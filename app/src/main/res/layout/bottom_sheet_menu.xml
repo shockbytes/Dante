@@ -9,29 +9,29 @@
 
     <ImageView
         android:id="@+id/imageViewMenuUser"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtMenuUserMail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtMenuUserName"
         app:srcCompat="@drawable/ic_user_template_dark" />
 
     <TextView
         android:id="@+id/txtMenuUserName"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="4dp"
         android:gravity="bottom"
         android:text="@string/anonymous_user"
         android:textColor="@color/colorPrimaryText"
         android:textSize="13sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/txtMenuUserMail"
         app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
         app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
-        app:layout_constraintTop_toTopOf="@+id/imageViewMenuUser" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtMenuUserMail"
@@ -40,11 +40,11 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="4dp"
         android:gravity="bottom"
-        android:textColor="@color/colorSecondaryText"
+        android:textColor="@color/colorPrimaryText"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewMenuUser"
         app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
         app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
+        app:layout_constraintTop_toBottomOf="@+id/txtMenuUserName"
         tools:text="anonymous@gmail.com" />
 
     <View
@@ -52,17 +52,15 @@
         android:layout_width="match_parent"
         android:layout_height="0.25dp"
         android:layout_marginTop="16dp"
-        android:background="@color/blue_gray_900"
+        android:background="@color/border"
         app:layout_constraintTop_toBottomOf="@+id/imageViewMenuUser" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMenuLogin"
         style="@style/AppTheme.RoundedButton.Outlined"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
         android:text="@string/login"
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/viewMenuSeparator"

@@ -14,6 +14,7 @@ import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.ImageButton
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
@@ -39,9 +40,10 @@ import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.retrieveActiveActivityAlias
 import at.shockbytes.dante.util.settings.LauncherIconState
 import at.shockbytes.dante.util.settings.ThemeState
-import at.shockbytes.dante.util.toggleVisibility
+import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -81,6 +83,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         checkForOnboardingHints()
         saveLauncherIconState()
         // goingEdgeToEdge()
+        setupFabMorph()
+    }
+
+    private fun setupFabMorph() {
+        fab.setOnClickListener { fab.isExpanded = !fab.isExpanded } // this sets isExpanded as true
+        back.setOnClickListener{  fab.isExpanded = !fab.isExpanded } // this sets isExpanded as false
     }
 
     private fun goingEdgeToEdge() {
@@ -142,7 +150,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mainBottomNavigation.selectedItemId = tabId
 
         appBar.setExpanded(true, true)
-        mainFabMenu.toggleVisibility()
+        fab.toggle()
     }
 
     override fun onPageScrollStateChanged(state: Int) = Unit
@@ -258,6 +266,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun setupFabMenu() {
 
+        /* TODO Remove later
         val menu = MenuBuilder(this)
         menuInflater.inflate(R.menu.menu_fab, menu)
 
@@ -292,6 +301,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 else -> true
             }
         }
+        */
     }
 
     private fun checkForOnboardingHints() {
@@ -315,7 +325,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showOnboardingHintViews() {
 
         MaterialTapTargetPrompt.Builder(this)
-            .setTarget(R.id.mainFabMenu)
+            .setTarget(R.id.fab)
             .setFocalColour(ContextCompat.getColor(this, android.R.color.transparent))
             .setPrimaryTextColour(ContextCompat.getColor(this, R.color.colorPrimaryTextLight))
             .setSecondaryTextColour(ContextCompat.getColor(this, R.color.colorSecondaryTextLight))
@@ -386,11 +396,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             Destination.BarcodeScanner,
             ActivityOptionsCompat
                 .makeClipRevealAnimation(
-                    mainFabMenu,
-                    mainFabMenu.x.toInt(),
-                    mainFabMenu.y.toInt(),
-                    mainFabMenu.width,
-                    mainFabMenu.height
+                    fab,
+                    fab.x.toInt(),
+                    fab.y.toInt(),
+                    fab.width,
+                    fab.height
                 )
                 .toBundle()
         )

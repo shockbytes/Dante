@@ -111,9 +111,7 @@ dependencies {
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
-    implementation "com.leinardi.android:speed-dial:3.1.1"
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
     implementation 'com.github.myinnos:AppIconNameChanger:1.0.7'
 
@@ -127,8 +125,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'androidx.test:core:1.2.0'
     testImplementation 'org.mockito:mockito-core:2.28.2'
-    testImplementation "com.google.truth:truth:1.0"
-    testImplementation 'joda-time:joda-time:2.10.3'
+    testImplementation "com.google.truth:truth:1.0.1"
+    testImplementation 'joda-time:joda-time:2.10.5'
     androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'org.mockito:mockito-android:2.28.2'
 
@@ -139,7 +137,7 @@ dependencies {
     // Assertions
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.ext:truth:1.2.0'
-    androidTestImplementation 'com.google.truth:truth:1.0'
+    androidTestImplementation 'com.google.truth:truth:1.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -24,7 +24,6 @@ import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
-import at.shockbytes.dante.ui.fragment.OnboardingFragment
 import at.shockbytes.dante.ui.fragment.OnlineStorageFragment
 import at.shockbytes.dante.ui.fragment.RateFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
@@ -95,8 +94,6 @@ interface AppComponent {
     fun inject(fragment: RateFragment)
 
     fun inject(fragment: LoginFragment)
-
-    fun inject(fragment: OnboardingFragment)
 
     fun inject(fragment: FeatureFlagConfigFragment)
 

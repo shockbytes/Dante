@@ -1,8 +1,10 @@
 package at.shockbytes.dante.ui.activity.core
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
 
@@ -17,6 +19,7 @@ abstract class BackNavigableActivity : BaseActivity() {
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
             val drawable = DanteUtils.vector2Drawable(applicationContext, upIndicator)
+            drawable.setColorFilter(ContextCompat.getColor(this@BackNavigableActivity, R.color.actionBarItemColor), PorterDuff.Mode.SRC_IN)
             setHomeAsUpIndicator(drawable)
         }
     }

@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.Color
+import android.graphics.ColorFilter
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.os.Build

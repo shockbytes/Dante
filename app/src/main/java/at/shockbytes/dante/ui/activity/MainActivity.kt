@@ -10,11 +10,9 @@ import android.os.Handler
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.view.menu.MenuBuilder
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.ImageButton
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
@@ -43,8 +41,6 @@ import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.leinardi.android.speeddial.SpeedDialActionItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
@@ -87,8 +83,21 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun setupFabMorph() {
-        fab.setOnClickListener { fab.isExpanded = !fab.isExpanded } // this sets isExpanded as true
-        back.setOnClickListener{  fab.isExpanded = !fab.isExpanded } // this sets isExpanded as false
+        mainFab.setOnClickListener {
+            mainFab.isExpanded = !mainFab.isExpanded
+        }
+        dial_back.setOnClickListener {
+            mainFab.isExpanded = !mainFab.isExpanded
+        }
+        dial_btn_manual.setOnClickListener {
+            navigateToManualAdd()
+        }
+        dial_btn_scan.setOnClickListener {
+            navigateToCamera()
+        }
+        dial_btn_search_by_title.setOnClickListener {
+            showAddByTitleDialog()
+        }
     }
 
     private fun goingEdgeToEdge() {
@@ -129,11 +138,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         outState.putInt("tabId", tabId)
     }
 
-    override fun onStart() {
-        super.onStart()
-        setupFabMenu()
-    }
-
     override fun onStop() {
         super.onStop()
         DanteAppWidgetManager.refresh(this)
@@ -150,7 +154,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mainBottomNavigation.selectedItemId = tabId
 
         appBar.setExpanded(true, true)
-        fab.toggle()
+        mainFab.toggle()
     }
 
     override fun onPageScrollStateChanged(state: Int) = Unit
@@ -264,46 +268,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
     }
 
-    private fun setupFabMenu() {
-
-        /* TODO Remove later
-        val menu = MenuBuilder(this)
-        menuInflater.inflate(R.menu.menu_fab, menu)
-
-        val bgColors = listOf(R.color.tabcolor_upcoming, R.color.tabcolor_done, R.color.color_error)
-        menu.visibleItems.forEachIndexed { idx, item ->
-            mainFabMenu.addActionItem(
-                SpeedDialActionItem.Builder(item.itemId, item.icon)
-                    .setLabel(item.title.toString())
-                    .setFabImageTintColor(ContextCompat.getColor(this, R.color.white))
-                    .setFabBackgroundColor(ContextCompat.getColor(this, bgColors[idx]))
-                    .create()
-            )
-        }
-
-        mainFabMenu.setOnActionSelectedListener { item ->
-            mainFabMenuOverlay.hide(false)
-
-            when (item.id) {
-
-                R.id.menu_fab_add_camera -> {
-                    navigateToCamera()
-                    false
-                }
-                R.id.menu_fab_add_title -> {
-                    showAddByTitleDialog()
-                    false
-                }
-                R.id.menu_fab_add_manually -> {
-                    navigateToManualAdd()
-                    false
-                }
-                else -> true
-            }
-        }
-        */
-    }
-
     private fun checkForOnboardingHints() {
 
         // It has to be delayed, otherwise it will appear on the wrong
@@ -325,7 +289,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun showOnboardingHintViews() {
 
         MaterialTapTargetPrompt.Builder(this)
-            .setTarget(R.id.fab)
+            .setTarget(R.id.mainFab)
             .setFocalColour(ContextCompat.getColor(this, android.R.color.transparent))
             .setPrimaryTextColour(ContextCompat.getColor(this, R.color.colorPrimaryTextLight))
             .setSecondaryTextColour(ContextCompat.getColor(this, R.color.colorSecondaryTextLight))
@@ -396,11 +360,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             Destination.BarcodeScanner,
             ActivityOptionsCompat
                 .makeClipRevealAnimation(
-                    fab,
-                    fab.x.toInt(),
-                    fab.y.toInt(),
-                    fab.width,
-                    fab.height
+                    mainFab,
+                    mainFab.x.toInt(),
+                    mainFab.y.toInt(),
+                    mainFab.width,
+                    mainFab.height
                 )
                 .toBundle()
         )

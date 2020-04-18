@@ -91,7 +91,7 @@
     <string name="invalid_time_range_wishlist">Datum der Wunschliste muss vor den anderen Daten liegen…</string>
     <string name="invalid_time_range_start">Das Startdatum muss zwischen den anderen Daten liegen…</string>
     <string name="invalid_time_range_end">Das Enddatum muss später sein als die anderen Daten…</string>
-    <string name="menu_fab_scan">ISBN scannen</string>
+    <string name="menu_fab_scan">Buchcode\nscannen</string>
     <string name="menu_fab_title">Titelsuche</string>
     <string name="menu_fab_manual">Manuell eingeben</string>
     <string name="sort_strategy_pages">Seiten</string>

@@ -3,14 +3,22 @@ package at.shockbytes.dante.ui.activity.core
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import android.view.MenuItem
+import at.shockbytes.dante.R
+import at.shockbytes.dante.util.DanteUtils
 
 abstract class BackNavigableActivity : BaseActivity() {
+
+    protected var upIndicator: Int = R.drawable.ic_back
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.apply {
+            setHomeButtonEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            val drawable = DanteUtils.vector2Drawable(applicationContext, upIndicator)
+            setHomeAsUpIndicator(drawable)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

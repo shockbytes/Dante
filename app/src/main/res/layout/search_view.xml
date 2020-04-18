@@ -18,11 +18,11 @@
             android:layout_width="48dp"
             android:layout_height="0dp"
             android:background="@drawable/bg_rounded_ripple"
-            android:padding="10dp"
+            android:padding="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_back_arrow" />
+            app:srcCompat="@drawable/ic_back" />
 
         <ImageView
             android:id="@+id/search_view_imgbtn_cancel"

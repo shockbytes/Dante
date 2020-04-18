@@ -20,7 +20,7 @@
     <TextView
         android:id="@+id/txtMenuUserName"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="4dp"
         android:gravity="bottom"
@@ -28,7 +28,6 @@
         android:textColor="@color/colorPrimaryText"
         android:textSize="13sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/txtMenuUserMail"
         app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
         app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
         app:layout_constraintTop_toTopOf="@+id/imageViewMenuUser" />
@@ -42,9 +41,9 @@
         android:gravity="bottom"
         android:textColor="@color/colorPrimaryText"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewMenuUser"
         app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
         app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
+        app:layout_constraintTop_toBottomOf="@+id/txtMenuUserName"
         tools:text="anonymous@gmail.com" />
 
     <View

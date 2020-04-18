@@ -27,8 +27,6 @@ abstract class TintableBackNavigableActivity : BackNavigableActivity() {
     private val abTextDefColor = android.R.color.white
     private val sbDefColor = R.color.colorPrimaryDark
 
-    private var upIndicator: Int = R.drawable.ic_back_arrow
-
     @ColorInt
     private var textColor: Int = 0 // Will be initialized in the onCreate method
 

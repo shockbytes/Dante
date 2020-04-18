@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppTheme.CardLayout"
@@ -8,6 +8,10 @@
     android:layout_gravity="center"
     android:layout_margin="2dp"
     android:clickable="true"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="@color/mainBackground"
+    app:strokeWidth="0.8dp"
+    app:strokeColor="@color/border"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground">
 
@@ -37,7 +41,7 @@
             android:layout_marginEnd="8dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             app:layout_constraintEnd_toStartOf="@+id/item_backup_entry_btn_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_backup_entry_imgview_provider"
             app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +54,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/item_backup_entry_iv_books"
             app:layout_constraintStart_toStartOf="@id/item_backup_entry_iv_books"
@@ -66,7 +70,7 @@
             android:layout_marginBottom="16dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/item_backup_entry_iv_device"
             app:layout_constraintStart_toStartOf="@id/item_backup_entry_iv_device"
@@ -120,4 +124,4 @@
             app:srcCompat="@drawable/ic_book_count" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

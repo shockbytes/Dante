@@ -12,9 +12,9 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtMenuUserMail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtMenuUserName"
         app:srcCompat="@drawable/ic_user_template_dark" />
 
     <TextView
@@ -22,6 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="4dp"
         android:gravity="bottom"
         android:text="@string/anonymous_user"
@@ -30,7 +31,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/btnMenuLogin"
         app:layout_constraintStart_toEndOf="@+id/imageViewMenuUser"
-        app:layout_constraintTop_toTopOf="@+id/imageViewMenuUser" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txtMenuUserMail"

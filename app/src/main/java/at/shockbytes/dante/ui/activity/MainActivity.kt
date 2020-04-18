@@ -36,6 +36,7 @@ import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.retrieveActiveActivityAlias
+import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.settings.LauncherIconState
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
@@ -90,13 +91,24 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             mainFab.isExpanded = !mainFab.isExpanded
         }
         dial_btn_manual.setOnClickListener {
-            navigateToManualAdd()
+            dial_back.callOnClick()
+            // For whatever reason, this transition needs to take place
+            // slightly later to not mess up the FAB morph transformation
+            runDelayed(350) {
+                navigateToManualAdd()
+            }
         }
         dial_btn_scan.setOnClickListener {
-            navigateToCamera()
+            dial_back.callOnClick()
+            runDelayed(300) {
+                navigateToCamera()
+            }
         }
         dial_btn_search_by_title.setOnClickListener {
-            showAddByTitleDialog()
+            dial_back.callOnClick()
+            runDelayed(300) {
+                showAddByTitleDialog()
+            }
         }
     }
 

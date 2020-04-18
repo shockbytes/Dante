@@ -280,7 +280,7 @@
                             android:backgroundTint="@color/colorAccent"
                             android:textColor="@color/white"
                             app:iconTint="@color/white"
-                            app:icon="@drawable/ic_add"
+                            app:icon="@drawable/ic_add_round"
                             app:cornerRadius="20dp"
                             android:layout_height="match_parent"
                             android:layout_marginStart="4dp"

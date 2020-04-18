@@ -19,6 +19,7 @@
     <string name="download_backup">Download</string>
 
     <string name="currently_reading">Currently reading</string>
+    <string name="add_book_to_library_hint">Add a book to your library</string>
 
     <string name="edit">Edit</string>
     <string name="menu_main_stats">Statistics</string>
@@ -180,7 +181,7 @@
     <string name="manual_add_error">Please specify at least title, authors and amount of pages.</string>
 
     <!-- Statistics -->
-    <string name="statistics_header_pages">Pages &amp; Books</string>
+    <string name="statistics_header_pages">Pages and Books</string>
     <string name="statistics_header_time">Reading time</string>
     <string name="statistics_header_languages">Languages</string>
     <string name="statistics_header_labels">Labels</string>

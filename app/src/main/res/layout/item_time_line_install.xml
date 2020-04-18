@@ -27,7 +27,7 @@
             android:gravity="center"
             android:text="@string/dante_install"
             android:textColor="@color/colorAccent"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
     </com.google.android.material.card.MaterialCardView>
 

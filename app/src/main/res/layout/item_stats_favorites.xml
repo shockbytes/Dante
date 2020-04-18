@@ -37,7 +37,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
                 android:text="@string/statistics_favourite_author"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <at.shockbytes.dante.ui.custom.MultiBareBoneBookView
                 android:id="@+id/multi_bare_bone_book_favorite_author"
@@ -52,7 +52,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="32dp"
                 android:text="@string/statistics_first_five_star_book"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
 
             <at.shockbytes.dante.ui.custom.BareBoneBookView
                 android:id="@+id/bare_bone_book_view_first_five_star"

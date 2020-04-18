@@ -197,7 +197,7 @@
             android:layout_height="50dp" >
 
             <TextView
-                android:text="Add a book to your library"
+                android:text="@string/add_book_to_library_hint"
                 android:textColor="@color/white"
                 android:gravity="center_vertical"
                 android:layout_marginStart="16dp"

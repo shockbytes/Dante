@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="300dp"
-        android:layout_height="48dp"
+        android:layout_width="260dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
         android:gravity="center"
         app:cardElevation="0dp"
@@ -23,7 +23,7 @@
             android:gravity="center"
             tools:text="February 2020"
             android:textColor="@color/colorAccent"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
     </com.google.android.material.card.MaterialCardView>
 

@@ -281,5 +281,6 @@
     <string name="library_deletion_failed">Bibliothek konnte nicht gelöscht werden.</string>
     <string name="download">Herunterladen</string>
     <string name="download_backup">Herunterladen</string>
+    <string name="add_book_to_library_hint">Ein Buch hinzufügen</string>
 
 </resources>

@@ -4,44 +4,35 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Matrix
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.HandlerThread
-import android.util.DisplayMetrics
-import android.util.Rational
 import android.util.Size
-import android.view.MotionEvent
-import android.view.Surface
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.core.graphics.toRectF
-import at.shockbytes.dante.camera.overlay.BarcodeObject
-import at.shockbytes.dante.camera.overlay.BarcodeBoundsOverlay
-import at.shockbytes.dante.camera.overlay.PositionTranslator
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import androidx.camera.core.CameraX.LensFacing
-import androidx.camera.core.CameraX
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageAnalysisConfig
 import androidx.camera.core.Preview
-import androidx.camera.core.PreviewConfig
-import androidx.camera.core.UseCase
 import android.transition.Slide
 import android.view.Gravity
-import at.shockbytes.dante.camera.focus.FocusComputation
-import at.shockbytes.dante.camera.preview.AutoFitPreviewBuilder
+import androidx.camera.core.AspectRatio
+import androidx.camera.core.CameraSelector
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.graphics.toRectF
 import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
+import at.shockbytes.dante.camera.overlay.BarcodeBoundsOverlay
+import at.shockbytes.dante.camera.overlay.BarcodeObject
+import at.shockbytes.dante.camera.overlay.PositionTranslator
+import at.shockbytes.dante.util.addTo
+import com.google.common.util.concurrent.ListenableFuture
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
+import java.util.concurrent.Executors
 
 /**
  * Note: Instead of calling `startCamera()` on the main thread, we use `view_finder.post { ... }`
@@ -49,16 +40,16 @@ import timber.log.Timber
  */
 class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
-    private lateinit var useCases: Array<UseCase>
-    private lateinit var preview: Preview
+    private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+
+    private lateinit var imagePreview: Preview
+    private lateinit var imageAnalysis: ImageAnalysis
 
     private val overlay = BarcodeBoundsOverlay()
-    private val barcodeAnalyzer = BarcodeAnalyzer()
+
+    private val executor = Executors.newSingleThreadExecutor()
 
     private val compositeDisposable = CompositeDisposable()
-    private val focusComputation by lazy {
-        FocusComputation(view_finder)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +62,14 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
 
+        cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+
         checkPermissions()
     }
 
     private fun checkPermissions() {
         if (allPermissionsGranted()) {
-            view_finder.post {
+            preview_view.post {
                 startCamera()
             }
         } else {
@@ -86,69 +79,56 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun startCamera() {
 
-        val metrics = DisplayMetrics().also { view_finder.display.getRealMetrics(it) }
-        val screenAspectRatio = Rational(metrics.widthPixels, metrics.heightPixels)
+        val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+        cameraProviderFuture.addListener(Runnable {
+            val cameraProvider = cameraProviderFuture.get()
 
-        preview = buildPreviewUseCase(screenAspectRatio)
-        val analyzer = buildAnalyzerUseCase(screenAspectRatio)
-
-        useCases = arrayOf(preview, analyzer)
-
-        // Bind use cases to lifecycle
-        CameraX.bindToLifecycle(this, *useCases)
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        event?.let {
-            focusComputation.compute(event)
-        }
-        return false
-    }
-
-    private fun buildAnalyzerUseCase(screenAspectRatio: Rational): ImageAnalysis {
-
-        // Setup image analysis pipeline that computes average pixel luminance
-        val analyzerConfig = ImageAnalysisConfig.Builder()
-            .apply {
-                // Use a worker thread for image analysis to prevent glitches
-                val analyzerThread = HandlerThread("BarcodeAnalysis").apply { start() }
-                setCallbackHandler(Handler(analyzerThread.looper))
-                // In our analysis, we care more about the latest image than analyzing *every* image
-                setImageReaderMode(ImageAnalysis.ImageReaderMode.ACQUIRE_LATEST_IMAGE)
-                setTargetAspectRatio(screenAspectRatio)
-            }
-            .build()
-
-        // Build the image analysis use case and instantiate our analyzer
-        return ImageAnalysis(analyzerConfig).apply {
-            analyzer = barcodeAnalyzer
-        }
-    }
-
-    private fun buildPreviewUseCase(screenAspectRatio: Rational): Preview {
-
-        val previewConfig = PreviewConfig.Builder()
-            .apply {
-                setTargetAspectRatio(screenAspectRatio)
-                setLensFacing(LensFacing.BACK)
-            }
-            .build()
-
-        return AutoFitPreviewBuilder.build(previewConfig, view_finder).apply {
-            // Every time the viewfinder is updated, recompute layout
-            setOnPreviewOutputUpdateListener { previewOutput ->
-
-                // To update the SurfaceTexture, we have to remove it and re-add it
-                (view_finder.parent as ViewGroup).apply {
-                    removeView(view_finder)
-                    addView(view_finder, 0)
+            imageAnalysis = ImageAnalysis.Builder()
+                .apply {
+                    setImageQueueDepth(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 }
+                .build()
 
-                view_finder.surfaceTexture = previewOutput.surfaceTexture
-                updateTransform()
-            }
-        }
+
+            val barcodeAnalyzer = BarcodeAnalyzer(preview_view.display.rotation)
+            barcodeAnalyzer.getBarcodeStream()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ (isbn, _, bounds, sourceSize, sourceRotationDegrees) ->
+                    Toast.makeText(this, isbn, Toast.LENGTH_LONG).show()
+
+                    addOverlayToViewFinder(isbn, bounds, sourceSize, sourceRotationDegrees)
+                    BarcodeScanResultBottomSheetDialogFragment.newInstance(isbn, askForAnotherScan = true)
+                        .setOnCloseListener {
+                            overlay.showBarcodeObject(null)
+                            startCamera()
+                        }
+                        .show(supportFragmentManager, "show-bottom-sheet-with-book")
+
+
+                }, { throwable ->
+                    Timber.e(throwable)
+                })
+                .addTo(compositeDisposable)
+
+
+            imageAnalysis.setAnalyzer(executor, barcodeAnalyzer)
+
+
+            imagePreview = Preview.Builder()
+                .apply {
+                    setTargetAspectRatio(AspectRatio.RATIO_16_9)
+                    setTargetRotation(preview_view.display.rotation)
+                }
+                .build()
+
+            val camera = cameraProvider.bindToLifecycle(this, cameraSelector, imagePreview)
+
+            imagePreview.setSurfaceProvider(preview_view.createSurfaceProvider(camera.cameraInfo))
+
+        }, ContextCompat.getMainExecutor(this))
     }
+
 
     private fun addOverlayToViewFinder(
         isbn: String,
@@ -165,62 +145,9 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         }
     }
 
-    private fun updateTransform() {
-        val matrix = Matrix()
-
-        // Compute the center of the view finder
-        val centerX = view_finder.width / 2f
-        val centerY = view_finder.height / 2f
-
-        // Correct preview output to account for display rotation
-        val rotationDegrees = when (view_finder.display.rotation) {
-            Surface.ROTATION_0 -> 0
-            Surface.ROTATION_90 -> 90
-            Surface.ROTATION_180 -> 180
-            Surface.ROTATION_270 -> 270
-            else -> return
-        }
-        matrix.postRotate(-rotationDegrees.toFloat(), centerX, centerY)
-
-        // Finally, apply transformations to our TextureView
-        view_finder.setTransform(matrix)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        barcodeAnalyzer.getBarcodeStream()
-            .subscribe { (isbn, _, bounds, sourceSize, sourceRotationDegrees) ->
-                focusComputation.rotationDegrees = sourceRotationDegrees
-
-                addOverlayToViewFinder(isbn, bounds, sourceSize, sourceRotationDegrees)
-                BarcodeScanResultBottomSheetDialogFragment.newInstance(isbn, askForAnotherScan = true)
-                    .setOnCloseListener {
-                        overlay.showBarcodeObject(null)
-                        startCamera()
-                    }
-                    .show(supportFragmentManager, "show-bottom-sheet-with-book")
-                CameraX.unbind(*useCases)
-            }
-            .addTo(compositeDisposable)
-
-        focusComputation.onFocusEvent
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (_, _) ->
-                // TODO Enable later
-                // view_finder.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                // preview.focus(focusRect, meteringRect)
-            }, { throwable ->
-                Timber.e(throwable)
-            })
-            .addTo(compositeDisposable)
-
-        // Every time the provided texture view changes, recompute layout
-        view_finder.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            updateTransform()
-        }
-
-        overlay_view.add(overlay)
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
     }
 
     /**
@@ -234,7 +161,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                view_finder.post {
+                preview_view.post {
                     startCamera()
                 }
             } else {

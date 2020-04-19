@@ -15,7 +15,7 @@ import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class BarcodeAnalyzer : ImageAnalysis.Analyzer {
+class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer {
 
     private val detector: FirebaseVisionBarcodeDetector
 
@@ -41,7 +41,7 @@ class BarcodeAnalyzer : ImageAnalysis.Analyzer {
             .getVisionBarcodeDetector(options)
     }
 
-    override fun analyze(imageProxy: ImageProxy, rotationDegrees: Int) {
+    override fun analyze(imageProxy: ImageProxy) {
 
         val currentTimestamp = System.currentTimeMillis()
         // Only search for ISBN with f=10
@@ -100,6 +100,9 @@ class BarcodeAnalyzer : ImageAnalysis.Analyzer {
             }
 
         lastAnalyzedTimestamp = currentTimestamp
+
+        // Close proxy at the end
+        imageProxy.close()
     }
 
     private fun getRotation(rotationCompensation: Int): Int {

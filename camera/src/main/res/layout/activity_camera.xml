@@ -9,23 +9,14 @@
         android:keepScreenOn="true"
         tools:context=".BarcodeCaptureActivity">
 
-    <TextureView
-            android:id="@+id/view_finder"
+    <androidx.camera.view.PreviewView
+            android:id="@+id/preview_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-    <TextView
-            android:textColor="#fff"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_output"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/view_finder"
-            android:layout_marginBottom="64dp"/>
 
     <at.shockbytes.dante.camera.overlay.BarcodeOverlayView
             android:id="@+id/overlay_view"

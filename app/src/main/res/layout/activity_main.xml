@@ -128,6 +128,7 @@
                     android:drawablePadding="8dp"
                     android:textColor="@color/white"
                     android:drawableTop="@drawable/ic_edit"
+                    app:drawableTint="@color/white"
                     android:layout_width="match_parent"
                     android:textSize="13sp"
                     android:layout_height="wrap_content"
@@ -152,6 +153,7 @@
                     android:drawablePadding="8dp"
                     android:textColor="@color/white"
                     android:textSize="16sp"
+                    app:drawableTint="@color/white"
                     android:layout_marginBottom="8dp"
                     android:drawableTop="@drawable/ic_camera"
                     android:layout_width="match_parent"
@@ -192,7 +194,7 @@
 
 
         <RelativeLayout
-            android:background="#424242"
+            android:background="@color/tabcolor_current_dark"
             android:layout_width="match_parent"
             android:layout_height="50dp" >
 

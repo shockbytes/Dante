@@ -30,6 +30,8 @@ class MenuFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
+    override fun getTheme() = R.style.BottomSheetDialogTheme
+
     private val viewModel: MainViewModel by lazy { viewModelOf<MainViewModel>(vmFactory) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -19,17 +19,17 @@ import android.text.Spanned
 import androidx.annotation.AnimRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.appcompat.widget.AppCompatDrawableManager
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import at.shockbytes.util.AppUtils
 import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.Date
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 
 /**

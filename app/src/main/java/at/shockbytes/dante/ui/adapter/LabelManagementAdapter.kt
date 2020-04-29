@@ -9,7 +9,9 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
+import at.shockbytes.dante.util.ColorUtils
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -20,6 +22,8 @@ class LabelManagementAdapter(
     onItemClickListener: OnItemClickListener<BookLabel>,
     private val onLabelActionClickedListener: OnLabelActionClickedListener
 ) : BaseAdapter<BookLabel>(context, onItemClickListener) {
+
+    private val isNightModeEnabled = context.isNightModeEnabled()
 
     fun updateData(labels: List<BookLabel>) {
         data.clear()
@@ -41,10 +45,16 @@ class LabelManagementAdapter(
             with(content) {
                 tv_item_label_management.text = title
 
+                val color = if (isNightModeEnabled) {
+                    ColorUtils.desaturateAndDevalue(Color.parseColor(hexColor), by = 0.25f)
+                } else {
+                    Color.parseColor(hexColor)
+                }
+
                 DanteUtils.createRoundedBitmapFromColor(
                     context,
                     AppUtils.convertDpInPixel(32, context),
-                    Color.parseColor(hexColor)
+                    color
                 ).let { rbd ->
                     iv_item_label_management.setImageDrawable(rbd)
                 }

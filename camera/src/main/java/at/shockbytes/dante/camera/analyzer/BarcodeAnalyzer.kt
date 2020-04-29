@@ -1,6 +1,11 @@
 package at.shockbytes.dante.camera.analyzer
 
+import android.app.Activity
 import android.util.Size
+import android.view.Surface.ROTATION_180
+import android.view.Surface.ROTATION_270
+import android.view.Surface.ROTATION_90
+import android.widget.Toast
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import at.shockbytes.dante.camera.IsbnVisionBarcode
@@ -43,10 +48,14 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
 
     override fun analyze(imageProxy: ImageProxy) {
 
+        Timber.d("IMAGE: Analyze new frame")
+
         val currentTimestamp = System.currentTimeMillis()
         // Only search for ISBN with f=10
+        // TODO Fix this
         if (currentTimestamp - lastAnalyzedTimestamp < TimeUnit.MILLISECONDS.toMillis(100)) {
-            return
+            Timber.d("IMAGE: Are you kidding me?")
+            // return
         }
 
         val size = Size(imageProxy.width, imageProxy.height)
@@ -74,8 +83,6 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
 
         detector.detectInImage(image)
             .addOnSuccessListener { codes ->
-                // Task completed successfully
-                // ...
                 if (codes.isNotEmpty()) {
 
                     codes
@@ -91,12 +98,15 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
                                 sourceRotationDegrees = rotationDegrees
                             )
 
+                            imageProxy.close()
                             publisher.onNext(isbnBarcode)
                         }
                 }
+                imageProxy.close()
             }
             .addOnFailureListener { exception ->
-                Timber.e(exception, "On failure ${exception.message}")
+                Timber.e(exception)
+                imageProxy.close()
             }
 
         lastAnalyzedTimestamp = currentTimestamp
@@ -107,9 +117,9 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
 
     private fun getRotation(rotationCompensation: Int): Int {
         return when (rotationCompensation) {
-            90 -> FirebaseVisionImageMetadata.ROTATION_90
-            180 -> FirebaseVisionImageMetadata.ROTATION_180
-            270 -> FirebaseVisionImageMetadata.ROTATION_270
+            ROTATION_90 -> FirebaseVisionImageMetadata.ROTATION_90
+            ROTATION_180 -> FirebaseVisionImageMetadata.ROTATION_180
+            ROTATION_270 -> FirebaseVisionImageMetadata.ROTATION_270
             else -> FirebaseVisionImageMetadata.ROTATION_0
         }
     }

@@ -8,8 +8,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseUser
 
 fun FloatingActionButton.toggle(millis: Long = 300) {
-    this.hide()
-    Handler().postDelayed({ this.show() }, millis)
+
+    if (isExpanded) {
+        isExpanded = false
+    } else {
+        hide()
+        Handler().postDelayed({ show() }, millis)
+    }
 }
 
 fun GoogleSignInAccount.toDanteUser(): DanteUser {

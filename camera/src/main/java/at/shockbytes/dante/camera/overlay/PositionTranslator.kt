@@ -2,6 +2,10 @@ package at.shockbytes.dante.camera.overlay
 
 import android.graphics.RectF
 import android.util.Size
+import android.view.Surface.ROTATION_0
+import android.view.Surface.ROTATION_180
+import android.view.Surface.ROTATION_270
+import android.view.Surface.ROTATION_90
 import kotlin.math.ceil
 import kotlin.math.max
 
@@ -18,10 +22,10 @@ class PositionTranslator(
 
     fun processObject(barcodeObject: BarcodeObject): BarcodeObject {
 
-            // Rotate Size
+            // Rotate Size TODO Check this
             val rotatedSize = when (barcodeObject.sourceRotationDegrees) {
-                90, 270 -> Size(barcodeObject.sourceSize.height, barcodeObject.sourceSize.width)
-                0, 180 -> barcodeObject.sourceSize
+                ROTATION_90, ROTATION_270 -> barcodeObject.sourceSize // Size(barcodeObject.sourceSize.height, barcodeObject.sourceSize.width)
+                ROTATION_0, ROTATION_180 -> Size(barcodeObject.sourceSize.height, barcodeObject.sourceSize.width) // barcodeObject.sourceSize
                 else -> throw IllegalArgumentException("Unsupported rotation. Must be 0, 90, 180 or 270")
             }
 

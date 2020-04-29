@@ -23,10 +23,10 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@+id/view_finder"
+            app:layout_constraintTop_toTopOf="@+id/preview_view"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/view_finder">
+            app:layout_constraintBottom_toBottomOf="@+id/preview_view">
     </at.shockbytes.dante.camera.overlay.BarcodeOverlayView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

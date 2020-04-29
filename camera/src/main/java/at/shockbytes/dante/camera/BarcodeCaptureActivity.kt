@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Point
 import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,7 +19,9 @@ import androidx.camera.core.Preview
 import android.transition.Slide
 import android.view.Gravity
 import androidx.camera.core.AspectRatio
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.graphics.toRectF
 import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
@@ -41,6 +44,7 @@ import java.util.concurrent.Executors
 class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
     private lateinit var cameraProviderFuture: ListenableFuture<ProcessCameraProvider>
+    private lateinit var camera: Camera
 
     private lateinit var imagePreview: Preview
     private lateinit var imageAnalysis: ImageAnalysis
@@ -64,6 +68,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
+        overlay_view.add(overlay)
         checkPermissions()
     }
 
@@ -83,21 +88,26 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         cameraProviderFuture.addListener(Runnable {
             val cameraProvider = cameraProviderFuture.get()
 
+            val rotation = preview_view.display.rotation
+
             imageAnalysis = ImageAnalysis.Builder()
-                .apply {
-                    setImageQueueDepth(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                }
+                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+                .setTargetRotation(rotation)
+                .setImageQueueDepth(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                 .build()
 
-
-            val barcodeAnalyzer = BarcodeAnalyzer(preview_view.display.rotation)
+            val barcodeAnalyzer = BarcodeAnalyzer(rotation)
             barcodeAnalyzer.getBarcodeStream()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ (isbn, _, bounds, sourceSize, sourceRotationDegrees) ->
+                .subscribe({ (isbn, points, bounds, sourceSize, sourceRotationDegrees) ->
                     Toast.makeText(this, isbn, Toast.LENGTH_LONG).show()
 
-                    addOverlayToViewFinder(isbn, bounds, sourceSize, sourceRotationDegrees)
+                    if (::camera.isInitialized) {
+                        cameraProvider.unbindAll()
+                    }
+
+                    addOverlayToViewFinder(isbn, points, bounds, sourceSize, sourceRotationDegrees)
                     BarcodeScanResultBottomSheetDialogFragment.newInstance(isbn, askForAnotherScan = true)
                         .setOnCloseListener {
                             overlay.showBarcodeObject(null)
@@ -105,38 +115,48 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
                         }
                         .show(supportFragmentManager, "show-bottom-sheet-with-book")
 
-
                 }, { throwable ->
                     Timber.e(throwable)
                 })
                 .addTo(compositeDisposable)
 
-
             imageAnalysis.setAnalyzer(executor, barcodeAnalyzer)
 
-
             imagePreview = Preview.Builder()
-                .apply {
-                    setTargetAspectRatio(AspectRatio.RATIO_16_9)
-                    setTargetRotation(preview_view.display.rotation)
-                }
+                .setTargetAspectRatio(AspectRatio.RATIO_16_9)
+                .setTargetRotation(preview_view.display.rotation)
                 .build()
 
-            val camera = cameraProvider.bindToLifecycle(this, cameraSelector, imagePreview)
+            cameraProvider.unbindAll()
+
+            camera = cameraProvider.bindToLifecycle(this, cameraSelector, imagePreview, imageAnalysis)
 
             imagePreview.setSurfaceProvider(preview_view.createSurfaceProvider(camera.cameraInfo))
 
         }, ContextCompat.getMainExecutor(this))
     }
 
+    // TODO Incorporate this
+    private fun toggleTorch() {
+
+        if (::camera.isInitialized) {
+            if (camera.cameraInfo.torchState.value == TorchState.ON) {
+                camera.cameraControl.enableTorch(false)
+            } else {
+                camera.cameraControl.enableTorch(true)
+            }
+        }
+    }
 
     private fun addOverlayToViewFinder(
         isbn: String,
+        points: List<Point>?,
         bounds: Rect?,
         size: Size,
         rotationDegrees: Int
     ) {
 
+        // TODO Incorporate points
         bounds?.let {
             PositionTranslator(overlay_view.width, overlay_view.height)
                 .processObject(BarcodeObject(isbn, bounds.toRectF(), size, rotationDegrees)).run {

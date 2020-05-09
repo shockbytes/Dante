@@ -4,11 +4,8 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Point
-import android.graphics.Rect
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Size
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -24,11 +21,8 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.graphics.toRectF
 import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
 import at.shockbytes.dante.camera.overlay.BarcodeBoundsOverlay
-import at.shockbytes.dante.camera.overlay.BarcodeObject
-import at.shockbytes.dante.camera.overlay.PositionTranslator
 import at.shockbytes.dante.util.addTo
 import com.google.common.util.concurrent.ListenableFuture
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -69,7 +63,6 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
-        overlay_view.add(overlay)
         checkPermissions()
     }
 
@@ -116,13 +109,12 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
             barcodeAnalyzer.getBarcodeStream()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ (isbn, points, bounds, sourceSize, sourceRotationDegrees) ->
+                .subscribe({ (isbn, _, _, _, _) ->
 
                     if (::camera.isInitialized) {
                         cameraProvider.unbindAll()
                     }
 
-                    addOverlayToViewFinder(isbn, points, bounds, sourceSize, sourceRotationDegrees)
                     BarcodeScanResultBottomSheetDialogFragment.newInstance(isbn, askForAnotherScan = true)
                         .setOnCloseListener {
                             overlay.showBarcodeObject(null)
@@ -160,23 +152,6 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
             } else {
                 camera.cameraControl.enableTorch(true)
             }
-        }
-    }
-
-    private fun addOverlayToViewFinder(
-        isbn: String,
-        points: List<Point>?,
-        bounds: Rect?,
-        size: Size,
-        rotationDegrees: Int
-    ) {
-
-        // TODO Incorporate points
-        bounds?.let {
-            PositionTranslator(overlay_view.width, overlay_view.height)
-                .processObject(BarcodeObject(isbn, bounds.toRectF(), size, rotationDegrees)).run {
-                    overlay.showBarcodeObject(this)
-                }
         }
     }
 

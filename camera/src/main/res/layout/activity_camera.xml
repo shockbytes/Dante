@@ -18,15 +18,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-    <at.shockbytes.dante.camera.overlay.BarcodeOverlayView
-            android:id="@+id/overlay_view"
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toTopOf="@+id/preview_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/preview_view">
-    </at.shockbytes.dante.camera.overlay.BarcodeOverlayView>
+    <at.shockbytes.dante.camera.overlay.BarcodeScanTargetView
+        android:layout_width="match_parent"
+        app:bg_color="@color/scan_target_background"
+        app:target_size="300dp"
+        app:corner_radius="12dp"
+        app:target_outline_width="1dp"
+        android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

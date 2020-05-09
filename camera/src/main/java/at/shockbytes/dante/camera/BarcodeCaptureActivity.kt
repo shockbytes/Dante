@@ -21,6 +21,7 @@ import android.view.Gravity
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.graphics.toRectF
@@ -90,6 +91,21 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
             val rotation = preview_view.display.rotation
 
+            preview_view.setOnTouchListener { view, motionEvent ->
+
+                val x = motionEvent.x
+                val y = motionEvent.y
+
+                val factory = preview_view.createMeteringPointFactory(cameraSelector)
+                val point = factory.createPoint(x, y)
+                val action = FocusMeteringAction.Builder(point).build()
+                camera.cameraControl.startFocusAndMetering(action)
+
+                true
+            }
+
+            Timber.e("CAM: $rotation")
+
             imageAnalysis = ImageAnalysis.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .setTargetRotation(rotation)
@@ -101,7 +117,6 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ (isbn, points, bounds, sourceSize, sourceRotationDegrees) ->
-                    Toast.makeText(this, isbn, Toast.LENGTH_LONG).show()
 
                     if (::camera.isInitialized) {
                         cameraProvider.unbindAll()

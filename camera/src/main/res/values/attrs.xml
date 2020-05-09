@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BarcodeScanTargetView">
+        <attr name="target_size" format="dimension" />
+        <attr name="target_outline_width" format="dimension" />
+        <attr name="corner_radius" format="dimension" />
+        <attr name="bg_color" format="reference" />
+        <attr name="target_color" format="reference" />
+    </declare-styleable>
+</resources>

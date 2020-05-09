@@ -82,8 +82,6 @@ dependencies {
     implementation "androidx.preference:preference:$androidXPreferenceVersion"
     implementation 'androidx.fragment:fragment-ktx:1.2.2'
 
-    implementation "com.google.android.material:material:${rootProject.materialVersion}"
-
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -112,7 +110,6 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
-    implementation 'uk.co.samuelwall:material-tap-target-prompt:2.14.0'
     implementation 'com.github.myinnos:AppIconNameChanger:1.0.7'
 
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"

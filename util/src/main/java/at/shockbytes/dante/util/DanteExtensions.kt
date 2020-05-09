@@ -104,6 +104,10 @@ fun Drawable.toBitmap(): Bitmap {
     return bitmap
 }
 
+fun Context.isNightModeEnabled(): Boolean {
+    return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+}
+
 fun runDelayed(delay: Long, action: () -> Unit) {
     Handler().postDelayed({
         action()

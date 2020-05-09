@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.dante.R
+import at.shockbytes.dante.util.ColorUtils
+import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -15,6 +17,8 @@ class ColorItemAdapter(
     context: Context,
     onItemClickListener: OnItemClickListener<ColorPickerItem>
 ) : BaseAdapter<ColorPickerItem>(context, onItemClickListener) {
+
+    private val isNightModeEnabled = context.isNightModeEnabled()
 
     fun updateData(colors: List<ColorPickerItem>) {
         val diffResult = DiffUtil.calculateDiff(ColorItemDiffUtilCallback(data, colors))
@@ -53,7 +57,14 @@ class ColorItemAdapter(
 
         override fun bindToView(content: ColorPickerItem, position: Int) {
             with(content) {
-                view_color_picker_item.setCardBackgroundColor(ContextCompat.getColor(context, colorRes))
+
+                val chipColor = if (isNightModeEnabled) {
+                    ColorUtils.desaturateAndDevalue(ContextCompat.getColor(context, colorRes), by = 0.25f)
+                } else {
+                    ContextCompat.getColor(context, colorRes)
+                }
+
+                view_color_picker_item.setCardBackgroundColor(chipColor)
                 iv_color_picker_item_selected.setVisible(isSelected)
             }
         }

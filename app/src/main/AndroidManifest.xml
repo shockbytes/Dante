@@ -104,7 +104,8 @@
             android:name=".ui.activity.LoginActivity"
             android:exported="true" />
 
-        <activity android:name=".camera.BarcodeCaptureActivity" />
+        <activity android:name=".camera.BarcodeCaptureActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.TimeLineActivity"
             android:label="@string/label_timeline" />

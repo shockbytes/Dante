@@ -42,6 +42,8 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: BarcodeResultViewModel
 
+    override fun getTheme() = R.style.BottomSheetDialogTheme
+
     @Inject
     lateinit var booksDownloader: BookDownloader
 
@@ -77,17 +79,6 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_barcode_scan_bottom_sheet, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupViews()
-    }
-
-    private fun setupViews() {
-        btn_barcode_result_close.setOnClickListener {
-            dismiss()
-        }
     }
 
     override fun onResume() {

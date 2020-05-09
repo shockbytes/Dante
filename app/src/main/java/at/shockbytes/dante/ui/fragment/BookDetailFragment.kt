@@ -42,9 +42,11 @@ import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
+import at.shockbytes.dante.util.ColorUtils
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import com.google.android.material.chip.Chip
@@ -585,14 +587,25 @@ class BookDetailFragment : BaseFragment(),
 
         chips_detail_label.removeAllViews()
 
+        val isNightModeEnabled = requireContext().isNightModeEnabled()
+
         labels
-            .map(::buildChipViewFromLabel)
+            .map { label ->
+                buildChipViewFromLabel(label, isNightModeEnabled)
+            }
             .forEach(chips_detail_label::addView)
     }
 
-    private fun buildChipViewFromLabel(label: BookLabel): Chip {
+    private fun buildChipViewFromLabel(label: BookLabel, isNightModeEnabled: Boolean): Chip {
+
+        val chipColor = if (isNightModeEnabled) {
+            ColorUtils.desaturateAndDevalue(Color.parseColor(label.hexColor), by = 0.25f)
+        } else {
+            Color.parseColor(label.hexColor)
+        }
+
         return Chip(requireContext()).apply {
-            chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(label.hexColor))
+            chipBackgroundColor = ColorStateList.valueOf(chipColor)
             text = label.title
             setTextColor(Color.WHITE)
             closeIconTint = ColorStateList.valueOf(Color.WHITE)

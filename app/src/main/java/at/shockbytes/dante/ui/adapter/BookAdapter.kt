@@ -16,7 +16,9 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.util.ColorUtils.desaturateAndDevalue
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
@@ -116,14 +118,25 @@ class BookAdapter(
         private fun updateLabels(labels: List<BookLabel>) {
             chips_item_book_label.removeAllViews()
 
+            val isNightModeEnabled = context.isNightModeEnabled()
+
             labels
-                .map(::buildChipViewFromLabel)
+                .map { label ->
+                    buildChipViewFromLabel(label, isNightModeEnabled)
+                }
                 .forEach(chips_item_book_label::addView)
         }
 
-        private fun buildChipViewFromLabel(label: BookLabel): Chip {
+        private fun buildChipViewFromLabel(label: BookLabel, isNightModeEnabled: Boolean): Chip {
+
+            val chipColor = if (isNightModeEnabled) {
+                desaturateAndDevalue(Color.parseColor(label.hexColor), by = 0.25f)
+            } else {
+                Color.parseColor(label.hexColor)
+            }
+
             return Chip(containerView.context).apply {
-                chipBackgroundColor = ColorStateList.valueOf(Color.parseColor(label.hexColor))
+                chipBackgroundColor = ColorStateList.valueOf(chipColor)
                 text = label.title
                 setTextColor(Color.WHITE)
                 setOnClickListener {

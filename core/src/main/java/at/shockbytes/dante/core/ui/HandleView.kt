@@ -1,10 +1,10 @@
-package at.shockbytes.dante.ui.custom
+package at.shockbytes.dante.core.ui
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import at.shockbytes.dante.R
+import at.shockbytes.dante.core.R
 
 class HandleView @JvmOverloads constructor(
     context: Context,

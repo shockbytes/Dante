@@ -1,5 +1,6 @@
 package at.shockbytes.dante.camera.analyzer
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Size
 import android.view.Surface.ROTATION_180
@@ -46,40 +47,21 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
             .getVisionBarcodeDetector(options)
     }
 
+    @SuppressLint("UnsafeExperimentalUsageError")
     override fun analyze(imageProxy: ImageProxy) {
 
-        Timber.d("IMAGE: Analyze new frame")
-
         val currentTimestamp = System.currentTimeMillis()
-        // Only search for ISBN with f=10
-        // TODO Fix this
-        if (currentTimestamp - lastAnalyzedTimestamp < TimeUnit.MILLISECONDS.toMillis(100)) {
-            Timber.d("IMAGE: Are you kidding me?")
-            // return
-        }
 
         val size = Size(imageProxy.width, imageProxy.height)
 
-        val metadata = FirebaseVisionImageMetadata.Builder()
-            .setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_YV12)
-            .setHeight(imageProxy.height)
-            .setWidth(imageProxy.width)
-            .setRotation(getRotation(rotationDegrees))
-            .build()
+        val proxImage = imageProxy.image
+        if (proxImage == null) {
+            Timber.e("CAM: Image is null")
+            return
+        }
 
-        val y = imageProxy.planes[0]
-        val u = imageProxy.planes[1]
-        val v = imageProxy.planes[2]
-
-        val yb = y.buffer.remaining()
-        val ub = u.buffer.remaining()
-        val vb = v.buffer.remaining()
-        val data = ByteArray(yb + ub + vb)
-
-        y.buffer.get(data, 0, yb)
-        u.buffer.get(data, yb, ub)
-        v.buffer.get(data, yb + ub, vb)
-        val image = FirebaseVisionImage.fromByteArray(data, metadata)
+        val rotationCompensation = getRotation(rotationDegrees)
+        val image = FirebaseVisionImage.fromMediaImage(proxImage, rotationCompensation)
 
         detector.detectInImage(image)
             .addOnSuccessListener { codes ->

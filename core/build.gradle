@@ -50,6 +50,8 @@ dependencies {
     api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
     api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
 
+    api "com.google.android.material:material:${rootProject.materialVersion}"
+
     api "com.airbnb.android:lottie:$lottieVersion"
 
     api "net.danlew:android.joda:$jodaTimeVersion"

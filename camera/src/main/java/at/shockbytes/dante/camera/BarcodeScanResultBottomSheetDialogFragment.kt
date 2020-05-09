@@ -42,6 +42,8 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private lateinit var viewModel: BarcodeResultViewModel
 
+    override fun getTheme() = R.style.BottomSheetDialogTheme
+
     @Inject
     lateinit var booksDownloader: BookDownloader
 

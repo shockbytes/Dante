@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/mainBackground"
     android:minHeight="300dp"
     android:orientation="vertical">
 
@@ -21,26 +20,25 @@
     <ImageView
         android:id="@+id/iv_barcode_scan_result_cover"
         android:layout_width="wrap_content"
-        android:layout_height="84dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="104dp"
         android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_placeholder"
         tools:layout_width="64dp" />
-
 
     <LinearLayout
         android:id="@+id/layout_barcode_result_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="12dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_barcode_scan_result_cover">
+        app:layout_constraintTop_toBottomOf="@+id/tv_barcode_result_author">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_for_later"
@@ -127,12 +125,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
         android:maxLines="2"
-        app:layout_constraintEnd_toStartOf="@+id/btn_barcode_result_close"
-        app:layout_constraintStart_toEndOf="@+id/iv_barcode_scan_result_cover"
-        app:layout_constraintTop_toTopOf="@+id/iv_barcode_scan_result_cover"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_barcode_scan_result_cover"
         tools:text="Their darkest hour" />
 
     <TextView
@@ -140,11 +139,13 @@
         style="@style/TextAuthor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:maxLines="2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_barcode_result_title"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_barcode_result_title"
         tools:text="Laurence Rees" />
 
@@ -178,11 +179,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:text="@string/download_suggestion_other"
         android:textColor="@color/colorPrimaryText"
         app:cornerRadius="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_barcode_result_buttons"

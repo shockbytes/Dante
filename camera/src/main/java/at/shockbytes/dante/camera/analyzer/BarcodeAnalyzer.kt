@@ -1,12 +1,10 @@
 package at.shockbytes.dante.camera.analyzer
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.util.Size
 import android.view.Surface.ROTATION_180
 import android.view.Surface.ROTATION_270
 import android.view.Surface.ROTATION_90
-import android.widget.Toast
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import at.shockbytes.dante.camera.IsbnVisionBarcode

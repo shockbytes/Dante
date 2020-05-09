@@ -84,21 +84,6 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
             val rotation = preview_view.display.rotation
 
-            preview_view.setOnTouchListener { view, motionEvent ->
-
-                val x = motionEvent.x
-                val y = motionEvent.y
-
-                val factory = preview_view.createMeteringPointFactory(cameraSelector)
-                val point = factory.createPoint(x, y)
-                val action = FocusMeteringAction.Builder(point).build()
-                camera.cameraControl.startFocusAndMetering(action)
-
-                true
-            }
-
-            Timber.e("CAM: $rotation")
-
             imageAnalysis = ImageAnalysis.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)
                 .setTargetRotation(rotation)
@@ -121,7 +106,6 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
                             startCamera()
                         }
                         .show(supportFragmentManager, "show-bottom-sheet-with-book")
-
                 }, { throwable ->
                     Timber.e(throwable)
                 })
@@ -138,8 +122,8 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, imagePreview, imageAnalysis)
 
+            enableTapToFocus(cameraSelector)
             imagePreview.setSurfaceProvider(preview_view.createSurfaceProvider(camera.cameraInfo))
-
         }, ContextCompat.getMainExecutor(this))
     }
 
@@ -152,6 +136,21 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
             } else {
                 camera.cameraControl.enableTorch(true)
             }
+        }
+    }
+
+    private fun enableTapToFocus(cameraSelector: CameraSelector) {
+        preview_view.setOnTouchListener { _, motionEvent ->
+
+            val x = motionEvent.x
+            val y = motionEvent.y
+
+            val factory = preview_view.createMeteringPointFactory(cameraSelector)
+            val point = factory.createPoint(x, y)
+            val action = FocusMeteringAction.Builder(point).build()
+            camera.cameraControl.startFocusAndMetering(action)
+
+            true
         }
     }
 

@@ -20,5 +20,4 @@ object ColorUtils {
         hsv[1] -= by
         return HSVToColor(hsv)
     }
-
 }

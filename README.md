@@ -35,16 +35,31 @@ the user during the login process.
 
 ### Backlog
 - [ ] Use Firebase Data for book suggestions
-- [ ] Add onboarding
-- [ ] Introduce Shockbytes Backups
-- [ ] Redesign overflow menu
-- [ ] Update to a stable CameraX version as soon as it's ready
+- [ ] Introduce Shockbytes Backups?
+- [ ] Wishlist
 
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add online sync capability
   - [ ] Login with Firebase
   - [ ] Migrate from local to remote storage
-  - [ ] Rework Backup screen into Book management screen (Local and online tab)
+
+### Version 3.13
+- [ ] Update Crashlytics SDK
+- [ ] Add Onboarding
+- [ ] Redesign overflow menu
+
+### Version 3.12 - GO FLAT
+* Go Flat: Flatten the whole layout
+* Update to a stable CameraX version 1.0.0-beta03
+* Desaturate label colors when in night mode
+
+### Version 3.11 - IMPORT & EXPORT
+* Allow Dante CSV import
+* Dante CSV export
+* Goodreads CSV import
+* Deprecate Google Drive Backup
+* Support remote book repository capability
+* Rework Backup screen into Book management screen (Local and Online tab)
 
 ### Version 3.10 - SETTINGS AND TRACKING
 * Dark Mode options DARK, LIGHT, SYSTEM_DEFAULT
@@ -69,14 +84,14 @@ the user during the login process.
 * Improve Backups 
 * Open source Dante
 
-### Version 3.5
+### Version 3.5 - ADD ANDROID FRAMEWORK AWESOMENESS
 * App shortcuts
 * App Widget
 * Use this for FAB <https://github.com/sjwall/MaterialTapTargetPrompt>
 
 ### Version 3.4 - SUBTLE SEXY FEATURES
 * Investigate shared element transition missing end anchor and check for layout bugs
-* Refactor to Android X
+* Refactor to AndroidX
 * Add UI for Feature flags
 * Add +/- buttons for page overlay
 * Android 5 as minSdk

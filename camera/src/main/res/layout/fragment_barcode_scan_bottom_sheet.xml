@@ -7,15 +7,14 @@
     android:minHeight="300dp"
     android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/btn_barcode_result_close"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:tint="@color/colorTertiaryText"
-        app:layout_constraintEnd_toEndOf="parent"
+    <at.shockbytes.dante.core.ui.HandleView
+        android:id="@+id/handle_view_barcode_scan_result"
+        android:layout_marginTop="2dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_close" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/group_barcode_result" />
 
     <ImageView
         android:id="@+id/iv_barcode_scan_result_cover"
@@ -153,7 +152,7 @@
         android:id="@+id/group_barcode_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="layout_barcode_result_buttons,btn_barcode_result_close,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover" />
+        app:constraint_referenced_ids="layout_barcode_result_buttons,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/pb_barcode_result"

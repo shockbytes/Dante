@@ -81,17 +81,6 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.fragment_barcode_scan_bottom_sheet, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupViews()
-    }
-
-    private fun setupViews() {
-        btn_barcode_result_close.setOnClickListener {
-            dismiss()
-        }
-    }
-
     override fun onResume() {
         super.onResume()
         viewModel.getBookLoadingState().observe(this, Observer { state ->

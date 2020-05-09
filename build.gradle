@@ -52,7 +52,7 @@ ext {
     firebaseVersionCore = "17.2.3"
     firebaseVersionConfig = "19.1.2"
     firebaseVersionAuth = "19.2.0"
-    firebaseMLVision = "24.0.2"
+    firebaseMLVision = "24.0.3"
     firebaseAnalyticsVersion = "17.2.2"
 
     playServicesVersionVision = "17.0.2"

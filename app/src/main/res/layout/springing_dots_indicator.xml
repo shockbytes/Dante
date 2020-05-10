@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_springing_dots_indicator"
+    android:layout_width="8dp"
+    android:layout_height="8dp"
+    android:layout_margin="4dp"
+    app:cardBackgroundColor="#ade"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp" />

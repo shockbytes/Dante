@@ -9,6 +9,12 @@ class OnboardingFragment: BaseFragment() {
     override val layoutId: Int = at.shockbytes.dante.R.layout.fragment_onboarding
 
     override fun setupViews() {
+        vp2_onboarding.apply {
+            isUserInputEnabled = false
+            adapter = OnboardingAdapter(requireActivity())
+        }
+
+        vp_dots.setupWithViewPager2(vp2_onboarding)
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -16,10 +22,6 @@ class OnboardingFragment: BaseFragment() {
     }
 
     override fun bindViewModel() {
-        vp2_onboarding.apply {
-            isUserInputEnabled = false
-            adapter = OnboardingAdapter(requireActivity())
-        }
     }
 
     override fun unbindViewModel() {

@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
@@ -26,11 +27,16 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         viewModel = viewModelOf(vmFactory)
 
-        bindViewModel()
+        goingEdgeToEdge()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        bindViewModel()
     }
 
     private fun bindViewModel() {
@@ -53,6 +59,18 @@ class LoginActivity : BaseActivity() {
                 }
             }
         })
+    }
+
+
+    private fun goingEdgeToEdge() {
+        window.decorView.systemUiVisibility =
+            // Tells the system that the window wishes the content to
+            // be laid out at the most extreme scenario. See the docs for
+            // more information on the specifics
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                // Tells the system that the window wishes the content to
+                // be laid out as if the navigation bar was hidden
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     }
 
     private fun showLoginFragment() {

@@ -13,12 +13,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- SpringDots -->
-    <View
+    <at.shockbytes.dante.ui.custom.SpringingDotsIndicator
         android:id="@+id/vp_dots"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="#dea"
+        android:layout_height="wrap_content"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:layout_marginBottom="64dp"
         app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

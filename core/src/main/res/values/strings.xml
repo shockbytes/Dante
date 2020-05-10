@@ -17,6 +17,8 @@
     <string name="discontinued" translatable="false">DISCONTINUED</string>
     <string name="download">Download</string>
     <string name="download_backup">Download</string>
+    <string name="setup_now">Setup now</string>
+    <string name="no_account_explanation">No account?\nLet\'s setup one in a minute</string>
 
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>

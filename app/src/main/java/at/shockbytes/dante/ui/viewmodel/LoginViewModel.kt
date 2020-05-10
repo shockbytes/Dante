@@ -13,12 +13,17 @@ class LoginViewModel @Inject constructor(
     fun getLoginState(): LiveData<LoginState> = loginState
 
     fun requestLoginState() {
-        loginState.postValue(LoginState.FirstAppOpen)
+        loginState.postValue(LoginState.LoggedOut)
     }
 
     fun login() {
         danteSettings.lastLogin = System.currentTimeMillis()
         // TODO log the user in
+        loginState.postValue(LoginState.LoggedIn)
+    }
+
+    fun showOnboarding() {
+        // TODO
     }
 
     sealed class LoginState {

@@ -106,7 +106,6 @@ dependencies {
 
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 
-    implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'

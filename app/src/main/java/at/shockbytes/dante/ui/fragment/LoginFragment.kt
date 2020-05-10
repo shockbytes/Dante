@@ -29,6 +29,10 @@ class LoginFragment : BaseFragment() {
         fragment_login_btn_login.setOnClickListener {
             viewModel.login()
         }
+
+        fragment_login_btn_setup.setOnClickListener {
+            viewModel.showOnboarding()
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

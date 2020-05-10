@@ -9,6 +9,7 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.LoginFragment
+import at.shockbytes.dante.ui.fragment.OnboardingFragment
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.util.viewModelOf
 import javax.inject.Inject
@@ -47,6 +48,9 @@ class LoginActivity : BaseActivity() {
                 is LoginViewModel.LoginState.LoggedOut -> {
                     showLoginFragment()
                 }
+                is LoginViewModel.LoginState.ShowOnboarding -> {
+                    showOnboardingFragment()
+                }
             }
         })
     }
@@ -56,5 +60,13 @@ class LoginActivity : BaseActivity() {
                 .beginTransaction()
                 .replace(android.R.id.content, LoginFragment.newInstance())
                 .commit()
+    }
+
+    private fun showOnboardingFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+            .replace(android.R.id.content, OnboardingFragment.newInstance())
+            .commit()
     }
 }

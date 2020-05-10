@@ -24,6 +24,7 @@ import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
+import at.shockbytes.dante.ui.fragment.OnboardingFragment
 import at.shockbytes.dante.ui.fragment.OnlineStorageFragment
 import at.shockbytes.dante.ui.fragment.RateFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
@@ -34,6 +35,7 @@ import at.shockbytes.dante.ui.fragment.TimeLineFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
+import at.shockbytes.dante.ui.fragment.onboarding.OnboardingLoginFragment
 import at.shockbytes.dante.ui.widget.DanteAppWidget
 import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
 import dagger.Component
@@ -120,4 +122,8 @@ interface AppComponent {
     fun inject(fragment: OnlineStorageFragment)
 
     fun inject(fragment: ImportBooksStorageFragment)
+
+    fun inject(fragment: OnboardingFragment)
+
+    fun inject(fragment: OnboardingLoginFragment)
 }

@@ -24,6 +24,7 @@ class LoginViewModel @Inject constructor(
 
     fun showOnboarding() {
         // TODO
+        loginState.postValue(LoginState.ShowOnboarding)
     }
 
     sealed class LoginState {
@@ -31,6 +32,8 @@ class LoginViewModel @Inject constructor(
         object LoggedIn : LoginState()
 
         object LoggedOut : LoginState()
+
+        object ShowOnboarding : LoginState()
 
         object FirstAppOpen : LoginState()
     }

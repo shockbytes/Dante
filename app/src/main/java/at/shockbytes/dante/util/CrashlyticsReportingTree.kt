@@ -1,17 +1,17 @@
 package at.shockbytes.dante.util
 
 import android.util.Log
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
 class CrashlyticsReportingTree : Timber.Tree() {
 
-    override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        Crashlytics.log(priority, tag, message)
+    override fun log(priority: Int, tag: String?, message: String, throwable: Throwable?) {
+        FirebaseCrashlytics.getInstance().run {
+            log(priority, tag, message)
 
-        t?.let { throwable ->
-            if (priority == Log.ERROR) {
-                Crashlytics.logException(throwable)
+            if (throwable != null && priority == Log.ERROR) {
+                recordException(throwable)
             }
         }
     }

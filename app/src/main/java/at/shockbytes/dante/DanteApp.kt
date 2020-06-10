@@ -16,9 +16,7 @@ import at.shockbytes.dante.injection.FirebaseModule
 import at.shockbytes.dante.util.CrashlyticsReportingTree
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.tracking.Tracker
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.answers.Answers
-import io.fabric.sdk.android.Fabric
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.plugins.RxJavaPlugins
 import io.realm.Realm
 import net.danlew.android.joda.JodaTimeAndroid
@@ -70,7 +68,7 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
         Realm.init(this)
         JodaTimeAndroid.init(this)
 
-        configureFabric()
+        configureCrashlytics()
         configureLogging()
         configureRxJavaErrorHandling()
         configureTracker()
@@ -98,13 +96,12 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
         }
     }
 
-    private fun configureFabric() {
+    private fun configureCrashlytics() {
 
-        // Configure Crashlytics anyway
-        Fabric.with(Fabric.Builder(this)
-                .kits(Crashlytics(), Answers())
-                .debuggable(BuildConfig.DEBUG)
-                .build())
+        // Only enable crash collection data in release mode
+        if (!BuildConfig.DEBUG) {
+            FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
+        }
 
         // to catch and send crash report to crashlytics when app crashes
         val defaultExceptionHandler = Thread.getDefaultUncaughtExceptionHandler()

@@ -3,7 +3,7 @@ def ktlintVersion = "0.31.0"
 
 buildscript {
 
-    def realmVersion = "6.1.0"
+    def realmVersion = "7.0.0"
     ext.kotlin_version = '1.3.72'
 
     repositories {

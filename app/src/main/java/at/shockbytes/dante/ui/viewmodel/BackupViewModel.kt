@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.viewmodel
 
-import android.os.Environment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -179,8 +178,12 @@ class BackupViewModel @Inject constructor(
     }
 
     fun prepareMailExport(content: BackupMetadata) {
-        // TODO
+        // TODO Retrieve CSV from external storage and attach it to intent
         Timber.d(content.toString())
+
+        // Build mail intent
+
+        // Forward intent to Fragment
     }
 
     // -------------------------- State classes --------------------------

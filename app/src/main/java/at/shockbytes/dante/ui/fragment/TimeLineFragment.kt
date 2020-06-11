@@ -68,9 +68,7 @@ class TimeLineFragment : BaseFragment() {
     }
 
     override fun bindViewModel() {
-        viewModel.getTimeLineState().observe(this, Observer { state ->
-            handleTimeLineState(state)
-        })
+        viewModel.getTimeLineState().observe(this, Observer(::handleTimeLineState))
     }
 
     private fun handleTimeLineState(state: TimelineViewModel.TimeLineState) {

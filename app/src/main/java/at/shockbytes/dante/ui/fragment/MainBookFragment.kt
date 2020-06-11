@@ -25,7 +25,6 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
@@ -39,8 +38,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
 
-class MainBookFragment :
-    BaseFragment(),
+class MainBookFragment : BaseFragment(),
     BaseAdapter.OnItemClickListener<BookEntity>,
     BaseAdapter.OnItemMoveListener<BookEntity>,
     OnBookActionClickedListener {
@@ -63,6 +61,11 @@ class MainBookFragment :
     private val onLabelClickedListener: ((BookLabel) -> Unit) = { label ->
         LabelCategoryBottomSheetFragment.newInstance(label)
             .show(childFragmentManager, "show-label-bottom-sheet")
+    }
+
+    private val onBookOverflowClickedListener: ((BookEntity) -> Unit) = { book ->
+        BookActionBottomSheetFragment.newInstance(book)
+            .show(childFragmentManager, "book-action-bottom-sheet")
     }
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {
@@ -149,10 +152,9 @@ class MainBookFragment :
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         bookAdapter = BookAdapter(
-            fragment_book_main_rv,
+            requireContext(),
             imageLoader,
-            featureFlagging[FeatureFlag.OVERFLOW_MENU],
-            onActionClickedListener = this,
+            onOverflowActionClickedListener = onBookOverflowClickedListener,
             onItemClickListener = this,
             onItemMoveListener = this,
             onLabelClickedListener = onLabelClickedListener
@@ -196,6 +198,7 @@ class MainBookFragment :
             positiveButton(R.string.action_delete) {
                 onDeletionConfirmed(true)
                 viewModel.deleteBook(book)
+                bookAdapter.deleteEntity(book)
             }
             negativeButton(android.R.string.no) {
                 onDeletionConfirmed(false)
@@ -218,11 +221,20 @@ class MainBookFragment :
         )
     }
 
-    override fun onMoveToUpcoming(book: BookEntity) = viewModel.moveBookToUpcomingList(book)
+    override fun onMoveToUpcoming(book: BookEntity) {
+        viewModel.moveBookToUpcomingList(book)
+        bookAdapter.deleteEntity(book)
+    }
 
-    override fun onMoveToCurrent(book: BookEntity) = viewModel.moveBookToCurrentList(book)
+    override fun onMoveToCurrent(book: BookEntity) {
+        viewModel.moveBookToCurrentList(book)
+        bookAdapter.deleteEntity(book)
+    }
 
-    override fun onMoveToDone(book: BookEntity) = viewModel.moveBookToDoneList(book)
+    override fun onMoveToDone(book: BookEntity) {
+        viewModel.moveBookToDoneList(book)
+        bookAdapter.deleteEntity(book)
+    }
 
     // --------------------------------------------------------------
 

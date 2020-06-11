@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical">
+
+    <at.shockbytes.dante.core.ui.HandleView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_book_action_move_to_upcoming"
+        style="@style/AppTheme.BorderlessButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start|center_vertical"
+        android:padding="8dp"
+        android:text="@string/action_move_to_upcoming"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/danteAccent"
+        app:icon="@drawable/ic_tab_upcoming_colored"
+        app:iconPadding="16dp"
+        app:iconTint="@color/tabcolor_upcoming" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_book_action_move_to_current"
+        style="@style/AppTheme.BorderlessButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start|center_vertical"
+        android:padding="8dp"
+        android:text="@string/action_move_to_reading"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/danteAccent"
+        app:icon="@drawable/ic_tab_current_colored"
+        app:iconPadding="16dp"
+        app:iconTint="@color/tabcolor_current" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_book_action_move_to_done"
+        style="@style/AppTheme.BorderlessButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start|center_vertical"
+        android:padding="8dp"
+        android:text="@string/action_move_to_done"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/danteAccent"
+        app:icon="@drawable/ic_tab_done_colored"
+        app:iconPadding="16dp"
+        app:iconTint="@color/tabcolor_done" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_book_action_share"
+        style="@style/AppTheme.BorderlessButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start|center_vertical"
+        android:padding="8dp"
+        android:text="@string/action_share"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/danteAccent"
+        app:icon="@drawable/ic_share"
+        app:iconPadding="16dp"
+        app:iconTint="#3f51b5" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_book_action_edit"
+        style="@style/AppTheme.BorderlessButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start|center_vertical"
+        android:padding="8dp"
+        android:text="@string/edit"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/danteAccent"
+        app:icon="@drawable/ic_edit"
+        app:iconPadding="16dp"
+        app:iconTint="@color/danteAccent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_book_action_delete"
+        style="@style/AppTheme.BorderlessButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="start|center_vertical"
+        android:padding="8dp"
+        android:text="@string/action_delete"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/color_error"
+        app:icon="@drawable/ic_delete"
+        app:iconPadding="16dp"
+        app:iconTint="@color/color_error" />
+
+</LinearLayout>

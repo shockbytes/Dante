@@ -142,8 +142,6 @@ class TimeLineFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): TimeLineFragment {
-            return TimeLineFragment()
-        }
+        fun newInstance() = TimeLineFragment()
     }
 }

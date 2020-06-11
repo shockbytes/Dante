@@ -9,8 +9,10 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
+import at.shockbytes.dante.util.getStringList
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 
 class TimeLineActivity : ContainerBackNavigableActivity() {
 
@@ -26,15 +28,17 @@ class TimeLineActivity : ContainerBackNavigableActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        if (item.itemId == R.id.menu_timeline_help) {
+        if (item.itemId == R.id.menu_timeline_sort_by) {
             MaterialDialog(this)
-                .title(R.string.label_timeline)
-                .message(R.string.timeline_explanation)
-                .icon(R.drawable.ic_menu_timeline)
+                .title(R.string.dialogfragment_sort_by)
+                .message(R.string.timeline_sort_explanation)
+                .listItemsSingleChoice(items = getStringList(R.array.sort_timeline) ,initialSelection = 1)
+                .icon(R.drawable.ic_timeline_sort)
                 .cornerRadius(AppUtils.convertDpInPixel(6, this).toFloat())
                 .cancelOnTouchOutside(true)
-                .positiveButton(R.string.got_it) {
+                .positiveButton(R.string.apply) {
                     it.dismiss()
+                    // TODO Inform ViewModel
                 }
                 .show()
         }

@@ -15,6 +15,8 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.ArrayRes
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -82,6 +84,10 @@ fun Fragment.isPortrait(): Boolean {
 
 fun Activity.isPortrait(): Boolean {
     return resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+}
+
+fun Activity.getStringList(@ArrayRes arrayRes: Int): List<String> {
+    return resources.getStringArray(arrayRes).toList()
 }
 
 fun Activity.retrieveActiveActivityAlias(): String? {

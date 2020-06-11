@@ -1,16 +1,14 @@
 package at.shockbytes.dante.ui.adapter
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.transition.TransitionManager
-import android.view.HapticFeedbackConstants
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
@@ -19,7 +17,6 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.ColorUtils.desaturateAndDevalue
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.isNightModeEnabled
-import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.BookDiffUtilCallback
 import at.shockbytes.util.adapter.BaseAdapter
@@ -35,20 +32,17 @@ import java.util.Collections
  * Date:    30.12.2017
  */
 class BookAdapter(
-    private val recyclerView: RecyclerView,
+    context: Context,
     private val imageLoader: ImageLoader,
-    private val useNewOverflowReplacement: Boolean,
     private val onActionClickedListener: OnBookActionClickedListener,
     private val onLabelClickedListener: ((BookLabel) -> Unit),
     onItemClickListener: OnItemClickListener<BookEntity>,
     onItemMoveListener: OnItemMoveListener<BookEntity>
 ) : BaseAdapter<BookEntity>(
-    recyclerView.context,
+    context,
     onItemClickListener = onItemClickListener,
     onItemMoveListener = onItemMoveListener
 ), ItemTouchHelperAdapter {
-
-    private var expandedPosition = -1
 
     init {
         setHasStableIds(false)
@@ -107,12 +101,7 @@ class BookAdapter(
             updateImageThumbnail(content.thumbnailAddress)
             updateProgress(content)
             updateLabels(content.labels)
-
-            if (useNewOverflowReplacement) {
-                setActionButtons(content)
-            } else {
-                setupOverflowMenu(content)
-            }
+            setupOverflowMenu(content)
         }
 
         private fun updateLabels(labels: List<BookLabel>) {
@@ -141,74 +130,6 @@ class BookAdapter(
                 setTextColor(Color.WHITE)
                 setOnClickListener {
                     onLabelClickedListener(label)
-                }
-            }
-        }
-
-        private fun setActionButtons(item: BookEntity) {
-            setActionButtonListener(item)
-            hideObsoleteActionButton(item.state)
-            setActionButtonAnimations(item)
-        }
-
-        private fun setActionButtonListener(item: BookEntity) {
-            item_book_actions_btn_move_to_upcoming.setOnClickListener { v ->
-                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                onActionClickedListener.onMoveToUpcoming(item)
-                deleteEntity(item)
-                expandedPosition = -1
-            }
-            item_book_actions_btn_move_to_reading.setOnClickListener { v ->
-                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                onActionClickedListener.onMoveToCurrent(item)
-                deleteEntity(item)
-                expandedPosition = -1
-            }
-            item_book_actions_btn_move_to_read.setOnClickListener { v ->
-                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                onActionClickedListener.onMoveToDone(item)
-                deleteEntity(item)
-                expandedPosition = -1
-            }
-            item_book_actions_btn_share.setOnClickListener { v ->
-                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                onActionClickedListener.onShare(item)
-            }
-            item_book_actions_btn_delete.setOnClickListener { v ->
-                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-                onActionClickedListener.onDelete(item) { onDeletionConfirmed ->
-                    if (onDeletionConfirmed) {
-                        deleteEntity(item)
-                        expandedPosition = -1
-                    }
-                }
-            }
-        }
-
-        private fun hideObsoleteActionButton(state: BookState) {
-            val actionButton = when (state) {
-                BookState.READ_LATER -> item_book_actions_btn_move_to_upcoming
-                BookState.READING -> item_book_actions_btn_move_to_reading
-                BookState.READ -> item_book_actions_btn_move_to_read
-            }
-            actionButton.setVisible(false)
-        }
-
-        private fun setActionButtonAnimations(item: BookEntity) {
-            val position = getLocation(item)
-            val isExpanded = position == expandedPosition
-
-            item_book_container_actions.setVisible(isExpanded)
-            containerView.isActivated = isExpanded
-
-            item_book_img_overflow.setOnClickListener { v ->
-                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-
-                expandedPosition = if (isExpanded) -1 else position
-
-                runDelayed(100) {
-                    TransitionManager.beginDelayedTransition(recyclerView)
-                    notifyDataSetChanged()
                 }
             }
         }

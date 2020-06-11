@@ -25,7 +25,6 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.adapter.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
@@ -149,9 +148,8 @@ class MainBookFragment :
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         bookAdapter = BookAdapter(
-            fragment_book_main_rv,
+            requireContext(),
             imageLoader,
-            featureFlagging[FeatureFlag.OVERFLOW_MENU],
             onActionClickedListener = this,
             onItemClickListener = this,
             onItemMoveListener = this,

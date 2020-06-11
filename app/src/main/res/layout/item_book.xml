@@ -132,81 +132,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="50%" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item_book_container_actions"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chips_item_book_label">
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/item_book_actions_btn_delete"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_delete" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/item_book_actions_btn_share"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/item_book_actions_btn_delete"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_share" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/item_book_actions_btn_move_to_upcoming"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:tint="@color/tabcolor_upcoming"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_tab_upcoming" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/item_book_actions_btn_move_to_reading"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:tint="@color/tabcolor_current"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_book_actions_btn_move_to_upcoming"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_tab_current" />
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/item_book_actions_btn_move_to_read"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:tint="@color/tabcolor_done"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/item_book_actions_btn_move_to_reading"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_tab_done" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chips_item_book_label"
             android:layout_width="0dp"
@@ -219,7 +144,6 @@
             android:paddingEnd="12dp"
             app:chipSpacingHorizontal="8dp"
             app:chipSpacingVertical="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/item_book_container_actions"
             app:layout_constraintEnd_toStartOf="@+id/item_book_tv_progress"
             app:layout_constraintHeight_min="40dp"
             app:layout_constraintStart_toStartOf="parent"

@@ -198,7 +198,7 @@ class MainBookFragment : BaseFragment(),
             positiveButton(R.string.action_delete) {
                 onDeletionConfirmed(true)
                 viewModel.deleteBook(book)
-                viewModel.moveBookToUpcomingList(book)
+                bookAdapter.deleteEntity(book)
             }
             negativeButton(android.R.string.no) {
                 onDeletionConfirmed(false)

@@ -42,11 +42,13 @@ the user during the login process.
 - [ ] Add online sync capability
   - [ ] Login with Firebase
   - [ ] Migrate from local to remote storage
+- [ ] Add Onboarding
 
 ### Version 3.13
-- [ ] Update Crashlytics SDK
-- [ ] Add Onboarding
+- [x] Update Crashlytics SDK
 - [ ] Redesign overflow menu
+- [ ] Send CSV data via Mail
+- [ ] Timeline improvements (click on book, sort by start/end date)
 
 ### Version 3.12 - GO FLAT
 * Go Flat: Flatten the whole layout

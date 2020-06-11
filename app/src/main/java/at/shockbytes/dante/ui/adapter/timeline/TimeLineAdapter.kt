@@ -8,8 +8,9 @@ import at.shockbytes.util.adapter.MultiViewHolderBaseAdapter
 
 class TimeLineAdapter(
     context: Context,
-    imageLoader: ImageLoader
-) : MultiViewHolderBaseAdapter<TimeLineItem>(context) {
+    imageLoader: ImageLoader,
+    onItemClickListener: OnItemClickListener<TimeLineItem>
+) : MultiViewHolderBaseAdapter<TimeLineItem>(context, onItemClickListener) {
 
     override val vhFactory = TimeLineViewHolderFactory(LayoutInflater.from(context), imageLoader)
 }

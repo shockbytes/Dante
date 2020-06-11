@@ -3,6 +3,7 @@ package at.shockbytes.dante.timeline
 sealed class TimeLineItem {
 
     data class BookTimeLineItem(
+        val bookId: Long,
         val title: String,
         val image: String?
     ) : TimeLineItem()

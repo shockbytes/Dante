@@ -29,7 +29,7 @@ object TimeLineBuilder {
                 content.add(TimeLineItem.MonthHeader(monthAndYear.month, monthAndYear.year))
 
                 books.mapTo(content) { book ->
-                    TimeLineItem.BookTimeLineItem(book.title, book.thumbnailAddress)
+                    TimeLineItem.BookTimeLineItem(book.id, book.title, book.thumbnailAddress)
                 }
         }
 

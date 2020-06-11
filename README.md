@@ -36,19 +36,21 @@ the user during the login process.
 ### Backlog
 - [ ] Use Firebase Data for book suggestions
 - [ ] Introduce Shockbytes Backups?
-- [ ] Wishlist
+- [ ] Wishlist for books that are not purchased yet
 
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add online sync capability
   - [ ] Login with Firebase
   - [ ] Migrate from local to remote storage
+
+### Version 3.14
+- [ ] Send csv export via Mail
 - [ ] Add Onboarding
 
-### Version 3.13
-- [x] Update Crashlytics SDK
-- [ ] Redesign overflow menu
-- [ ] Send CSV data via Mail
-- [ ] Timeline improvements (click on book, sort by start/end date)
+### Version 3.13 - SMALL STEPS
+* Update Crashlytics SDK
+* Redesign overflow menu
+* Timeline improvements (click on book, sort by start/end date)
 
 ### Version 3.12 - GO FLAT
 * Go Flat: Flatten the whole layout

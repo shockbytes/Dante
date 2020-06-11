@@ -5,8 +5,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.menu.MenuBuilder
-import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.dante.R
@@ -34,8 +32,8 @@ import java.util.Collections
 class BookAdapter(
     context: Context,
     private val imageLoader: ImageLoader,
-    private val onActionClickedListener: OnBookActionClickedListener,
-    private val onLabelClickedListener: ((BookLabel) -> Unit),
+    private val onOverflowActionClickedListener: (BookEntity) -> Unit,
+    private val onLabelClickedListener: (BookLabel) -> Unit,
     onItemClickListener: OnItemClickListener<BookEntity>,
     onItemMoveListener: OnItemMoveListener<BookEntity>
 ) : BaseAdapter<BookEntity>(
@@ -101,7 +99,13 @@ class BookAdapter(
             updateImageThumbnail(content.thumbnailAddress)
             updateProgress(content)
             updateLabels(content.labels)
-            setupOverflowMenu(content)
+
+            // TODO Remove later
+            // setupOverflowMenu(content)
+
+            item_book_img_overflow.setOnClickListener {
+                onOverflowActionClickedListener(content)
+            }
         }
 
         private fun updateLabels(labels: List<BookLabel>) {
@@ -193,6 +197,7 @@ class BookAdapter(
 
         private fun setupOverflowMenu(book: BookEntity) {
 
+            /* TODO Move this sort of code into the other view
             val popupMenu = PopupMenu(context, item_book_img_overflow)
 
             popupMenu.menuInflater.inflate(R.menu.menu_book_item_overflow, popupMenu.menu)
@@ -233,6 +238,8 @@ class BookAdapter(
             popupMenu.hideSelectedPopupItem(book.state)
 
             item_book_img_overflow.setOnClickListener { menuHelper.show() }
+
+             */
         }
 
         private fun PopupMenu.hideSelectedPopupItem(state: BookState) {

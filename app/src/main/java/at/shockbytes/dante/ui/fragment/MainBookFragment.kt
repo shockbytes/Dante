@@ -38,8 +38,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
 
-class MainBookFragment :
-    BaseFragment(),
+class MainBookFragment : BaseFragment(),
     BaseAdapter.OnItemClickListener<BookEntity>,
     BaseAdapter.OnItemMoveListener<BookEntity>,
     OnBookActionClickedListener {
@@ -62,6 +61,10 @@ class MainBookFragment :
     private val onLabelClickedListener: ((BookLabel) -> Unit) = { label ->
         LabelCategoryBottomSheetFragment.newInstance(label)
             .show(childFragmentManager, "show-label-bottom-sheet")
+    }
+
+    private val onBookOverflowClickedListener: ((BookEntity) -> Unit) = { book ->
+        showToast("Show overflow menu for ${book.title}")
     }
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {
@@ -150,7 +153,7 @@ class MainBookFragment :
         bookAdapter = BookAdapter(
             requireContext(),
             imageLoader,
-            onActionClickedListener = this,
+            onOverflowActionClickedListener = onBookOverflowClickedListener,
             onItemClickListener = this,
             onItemMoveListener = this,
             onLabelClickedListener = onLabelClickedListener

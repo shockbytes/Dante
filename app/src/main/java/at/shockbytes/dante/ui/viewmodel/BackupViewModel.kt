@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import android.os.Environment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -173,8 +174,13 @@ class BackupViewModel @Inject constructor(
             }
     }
 
+    fun prepareDownload(content: BackupMetadata) {
+        // TODO
+    }
+
     fun prepareMailExport(content: BackupMetadata) {
         // TODO
+        Timber.d(content.toString())
     }
 
     // -------------------------- State classes --------------------------

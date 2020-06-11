@@ -49,7 +49,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
                     onItemDismissed(content, location)
                 }
                 override fun onBackupItemDownloadRequest(content: BackupMetadata) {
-                    // TODO Download file
+                    viewModel.prepareDownload(content)
                 }
                 override fun onBackupItemExportViaMailRequest(content: BackupMetadata) {
                     viewModel.prepareMailExport(content)

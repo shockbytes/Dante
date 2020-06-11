@@ -156,23 +156,9 @@ class BookAdapter(
 
         private fun animateBookProgress(progress: Int) {
             item_book_pb.progress = progress
-
-            /* TODO This does not work when the ViewHolder is recycled
-            val previousProgress = item_book_pb.progress
-            ValueAnimator.ofInt(previousProgress, progress).apply {
-                interpolator = AccelerateDecelerateInterpolator()
-                addUpdateListener { animator ->
-                    val current = animator.animatedValue as Int
-                    item_book_pb.progress = current
-                }
-                start()
-            } */
         }
 
         private fun updateImageThumbnail(address: String?) {
-
-            Timber.d("Set image thumbnail in adapter: <$address>")
-
             if (!address.isNullOrEmpty()) {
                 imageLoader.loadImageWithCornerRadius(
                     context,

@@ -64,7 +64,8 @@ class MainBookFragment : BaseFragment(),
     }
 
     private val onBookOverflowClickedListener: ((BookEntity) -> Unit) = { book ->
-        showToast("Show overflow menu for ${book.title}")
+        BookActionBottomSheetFragment.newInstance(book)
+            .show(childFragmentManager, "book-action-bottom-sheet")
     }
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {

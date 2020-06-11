@@ -198,6 +198,7 @@ class MainBookFragment : BaseFragment(),
             positiveButton(R.string.action_delete) {
                 onDeletionConfirmed(true)
                 viewModel.deleteBook(book)
+                viewModel.moveBookToUpcomingList(book)
             }
             negativeButton(android.R.string.no) {
                 onDeletionConfirmed(false)
@@ -220,11 +221,20 @@ class MainBookFragment : BaseFragment(),
         )
     }
 
-    override fun onMoveToUpcoming(book: BookEntity) = viewModel.moveBookToUpcomingList(book)
+    override fun onMoveToUpcoming(book: BookEntity) {
+        viewModel.moveBookToUpcomingList(book)
+        bookAdapter.deleteEntity(book)
+    }
 
-    override fun onMoveToCurrent(book: BookEntity) = viewModel.moveBookToCurrentList(book)
+    override fun onMoveToCurrent(book: BookEntity) {
+        viewModel.moveBookToCurrentList(book)
+        bookAdapter.deleteEntity(book)
+    }
 
-    override fun onMoveToDone(book: BookEntity) = viewModel.moveBookToDoneList(book)
+    override fun onMoveToDone(book: BookEntity) {
+        viewModel.moveBookToDoneList(book)
+        bookAdapter.deleteEntity(book)
+    }
 
     // --------------------------------------------------------------
 

@@ -5,12 +5,10 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
-import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.ColorUtils.desaturateAndDevalue
 import at.shockbytes.dante.util.DanteUtils
@@ -22,7 +20,6 @@ import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import com.google.android.material.chip.Chip
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_book.*
-import timber.log.Timber
 import java.util.Collections
 
 /**
@@ -99,13 +96,7 @@ class BookAdapter(
             updateImageThumbnail(content.thumbnailAddress)
             updateProgress(content)
             updateLabels(content.labels)
-
-            // TODO Remove later
-            // setupOverflowMenu(content)
-
-            item_book_img_overflow.setOnClickListener {
-                onOverflowActionClickedListener(content)
-            }
+            setOverflowClickListener(content)
         }
 
         private fun updateLabels(labels: List<BookLabel>) {
@@ -135,6 +126,12 @@ class BookAdapter(
                 setOnClickListener {
                     onLabelClickedListener(label)
                 }
+            }
+        }
+
+        private fun setOverflowClickListener(content: BookEntity) {
+            item_book_img_overflow.setOnClickListener {
+                onOverflowActionClickedListener(content)
             }
         }
 
@@ -179,64 +176,6 @@ class BookAdapter(
                 text = t.subTitle
                 setVisible(t.subTitle.isNotEmpty())
             }
-        }
-
-        private fun setupOverflowMenu(book: BookEntity) {
-
-            /* TODO Move this sort of code into the other view
-            val popupMenu = PopupMenu(context, item_book_img_overflow)
-
-            popupMenu.menuInflater.inflate(R.menu.menu_book_item_overflow, popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.popup_item_delete -> {
-                        onActionClickedListener.onDelete(book) { onDeletionConfirmed ->
-                            if (onDeletionConfirmed) {
-                                deleteEntity(book)
-                            }
-                        }
-                    }
-                    R.id.popup_item_share -> {
-                        onActionClickedListener.onShare(book)
-                    }
-                    R.id.popup_item_move_to_current -> {
-                        onActionClickedListener.onMoveToCurrent(book)
-                        deleteEntity(book)
-                    }
-                    R.id.popup_item_edit -> {
-                        onActionClickedListener.onEdit(book)
-                    }
-                    R.id.popup_item_move_to_upcoming -> {
-                        onActionClickedListener.onMoveToUpcoming(book)
-                        deleteEntity(book)
-                    }
-                    R.id.popup_item_move_to_done -> {
-                        onActionClickedListener.onMoveToDone(book)
-                        deleteEntity(book)
-                    }
-                }
-                true
-            }
-
-            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_book_img_overflow)
-            menuHelper.setForceShowIcon(true)
-
-            popupMenu.hideSelectedPopupItem(book.state)
-
-            item_book_img_overflow.setOnClickListener { menuHelper.show() }
-
-             */
-        }
-
-        private fun PopupMenu.hideSelectedPopupItem(state: BookState) {
-
-            val item = when (state) {
-
-                BookState.READ_LATER -> this.menu.findItem(R.id.popup_item_move_to_upcoming)
-                BookState.READING -> this.menu.findItem(R.id.popup_item_move_to_current)
-                BookState.READ -> this.menu.findItem(R.id.popup_item_move_to_done)
-            }
-            item?.isVisible = false
         }
     }
 }

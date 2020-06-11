@@ -131,6 +131,7 @@
     <string name="no_internet_connection">No internet connection at the moment</string>
     <string name="percentage_formatter" translatable="false">%d%%</string>
     <string name="prefs_sort_strategy_key" translatable="false">prefs_sort_strategy_key</string>
+    <string name="prefs_timeline_sort_strategy_key" translatable="false">prefs_timeline_sort_strategy_key</string>
     <string name="download_attachment_error">Oh, something terribly went wrong!</string>
     <string name="menu_main_sort">Sort books</string>
     <string name="anonymous_user">Anonymous bookworm</string>
@@ -325,7 +326,7 @@
 
     <string name="date_month_and_year" translatable="false">%s %s</string>
     <string name="dante_install">You installed Dante</string>
-    <string name="timeline_explanation">The timeline shows you exactly when you read each and every book in your library. Each book is associated to the month when you started reading it.</string>
+    <string name="timeline_sort_explanation">The timeline shows you exactly when you read each and every book in your library. You can choose how it should be sorted.</string>
     <string name="statistics_first_five_star">First 5 star book</string>
     <string name="language_other">Other</string>
     <string name="language_english_full">English</string>

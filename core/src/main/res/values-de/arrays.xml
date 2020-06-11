@@ -36,4 +36,9 @@
         <item>Systemweites Theme</item>
     </string-array>
 
+    <string-array name="sort_timeline">
+        <item>Sortieren nach Startdatum</item>
+        <item>Sortieren nach Enddatum</item>
+    </string-array>
+
 </resources>

@@ -10,6 +10,7 @@ import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
+import at.shockbytes.dante.ui.activity.TimeLineActivity
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.fragment.BackupBackupFragment
 import at.shockbytes.dante.ui.fragment.BackupFragment
@@ -120,4 +121,6 @@ interface AppComponent {
     fun inject(fragment: OnlineStorageFragment)
 
     fun inject(fragment: ImportBooksStorageFragment)
+
+    fun inject(activity: TimeLineActivity)
 }

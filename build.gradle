@@ -73,7 +73,7 @@ ext {
 
     jodaTimeVersion = "2.10.3"
     timberVersion = "4.7.1"
-    materialDialogsVersion = "3.1.1"
+    materialDialogsVersion = "3.3.0"
 }
 
 

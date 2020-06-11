@@ -200,7 +200,7 @@
     <string name="book_added_to_library">%s wurde hinzugefügt</string>
     <string name="scan_another_book">Willst du noch ein weiteres Buch scannen?</string>
     <string name="dante_install">Installation von Dante</string>
-    <string name="timeline_explanation">Die Timeline ordnet deine gelesenen Bücher chronologisch an. Jedes Buch wird dem Monat zugeordnet, in welchem du es begonnen hast.</string>
+    <string name="timeline_sort_explanation">Die Timeline ordnet deine gelesenen Bücher chronologisch an. Du kannst entscheiden, wie die Timeline sortiert werden soll.</string>
     <string name="label_my_notes">Meine Notizen</string>
     <string name="statistics_first_five_star_book">Erstes 5-Sterne Buch</string>
     <string name="statistics_duration_fastest_book">Schnellstes Buch</string>

@@ -6,11 +6,14 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.timeline.TimeLineBuilder
 import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.dante.util.sort.TimeLineSortStrategy
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class TimelineViewModel @Inject constructor(
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
+    private val danteSettings: DanteSettings
 ) : BaseViewModel() {
 
     sealed class TimeLineState {
@@ -21,6 +24,9 @@ class TimelineViewModel @Inject constructor(
         data class Success(val content: List<TimeLineItem>) : TimeLineState()
     }
 
+    val selectedTimeLineSortStrategyIndex: Int
+        get() = danteSettings.timeLineSortStrategy.ordinal
+
     private val timeLineState = MutableLiveData<TimeLineState>()
     fun getTimeLineState(): LiveData<TimeLineState> = timeLineState
 
@@ -28,7 +34,9 @@ class TimelineViewModel @Inject constructor(
         bookRepository.bookObservable
             .doOnSubscribe { postState(TimeLineState.Loading) }
             .doOnError { postState(TimeLineState.Error) }
-            .map(TimeLineBuilder::buildTimeLineItems)
+            .map { books ->
+                TimeLineBuilder.buildTimeLineItems(books, danteSettings.timeLineSortStrategy)
+            }
             .map(::mapItemsToState)
             .subscribe(::postState, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
@@ -43,6 +51,14 @@ class TimelineViewModel @Inject constructor(
             TimeLineState.Success(items)
         } else {
             TimeLineState.Empty
+        }
+    }
+
+    fun updateSortStrategy(index: Int) {
+        if (selectedTimeLineSortStrategyIndex != index) {
+            danteSettings.timeLineSortStrategy = TimeLineSortStrategy.ofOrdinal(index)
+
+            requestTimeline()
         }
     }
 }

@@ -6,6 +6,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesStringPropertyDelegate
 import at.shockbytes.dante.util.sort.SortStrategy
+import at.shockbytes.dante.util.sort.TimeLineSortStrategy
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -53,6 +54,17 @@ class DanteSettings(
             prefs.edit()
                     .putInt(context.getString(R.string.prefs_sort_strategy_key), value.ordinal)
                     .apply()
+        }
+
+    var timeLineSortStrategy: TimeLineSortStrategy
+        get() {
+            val ordinal = prefs.getInt(context.getString(R.string.prefs_timeline_sort_strategy_key), 0)
+            return TimeLineSortStrategy.values()[ordinal]
+        }
+        set(value) {
+            prefs.edit()
+                .putInt(context.getString(R.string.prefs_timeline_sort_strategy_key), value.ordinal)
+                .apply()
         }
 
     var lastLogin: Long

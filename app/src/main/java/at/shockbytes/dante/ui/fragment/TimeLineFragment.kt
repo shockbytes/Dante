@@ -17,7 +17,7 @@ import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.ui.adapter.timeline.TimeLineAdapter
 import at.shockbytes.dante.ui.viewmodel.TimelineViewModel
 import at.shockbytes.dante.util.setVisible
-import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.synthetic.main.fragment_timeline.*
@@ -48,7 +48,6 @@ class TimeLineFragment : BaseFragment() {
                             BookDetail(BookDetailInfo(content.bookId, content.title)))
                     }
                 }
-
             }
         )
     }
@@ -56,7 +55,7 @@ class TimeLineFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = viewModelOf(vmFactory)
+        viewModel = viewModelOfActivity(requireActivity(), vmFactory)
         viewModel.requestTimeline()
     }
 

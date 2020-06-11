@@ -16,7 +16,6 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ArrayRes
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel

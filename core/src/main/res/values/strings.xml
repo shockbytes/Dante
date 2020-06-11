@@ -17,6 +17,7 @@
     <string name="discontinued" translatable="false">DISCONTINUED</string>
     <string name="download">Download</string>
     <string name="download_backup">Download</string>
+    <string name="export_mail">Export via Mail</string>
 
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>

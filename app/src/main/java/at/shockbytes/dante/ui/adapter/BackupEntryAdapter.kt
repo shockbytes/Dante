@@ -82,10 +82,14 @@ class BackupEntryAdapter(
                     R.id.menu_backup_download_request -> {
                         onItemOverflowMenuClickedListener.onBackupItemDownloadRequest(content.entry)
                     }
+                    R.id.menu_backup_export_mail_request -> {
+                        onItemOverflowMenuClickedListener.onBackupItemExportViaMailRequest(content.entry)
+                    }
                 }
                 true
             }
             popupMenu.menu.findItem(R.id.menu_backup_download_request)?.isVisible = content.isFileDownloadable
+            popupMenu.menu.findItem(R.id.menu_backup_export_mail_request)?.isVisible = content.isExportableViaMail
 
             val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_backup_entry_btn_overflow)
             menuHelper.setForceShowIcon(true)

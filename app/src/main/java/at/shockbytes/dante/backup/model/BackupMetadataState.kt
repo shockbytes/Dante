@@ -10,6 +10,9 @@ sealed class BackupMetadataState {
     val isFileDownloadable: Boolean
         get() = entry.storageProvider.isLocalFileExportable
 
+    val isExportableViaMail: Boolean
+        get() = entry.storageProvider.isExportableViaMail
+
     data class Active(override val entry: BackupMetadata) : BackupMetadataState()
 
     data class Inactive(override val entry: BackupMetadata) : BackupMetadataState()

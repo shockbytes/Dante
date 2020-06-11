@@ -3,12 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_backup_delete"
-        android:icon="@drawable/ic_delete"
-        android:title="@string/action_delete" />
-    <item
         android:id="@+id/menu_backup_download_request"
         android:icon="@drawable/ic_import_storage"
         android:title="@string/download_backup"
         app:iconTint="@color/colorAccent" />
+
+    <item
+        android:id="@+id/menu_backup_export_mail_request"
+        android:icon="@drawable/ic_email"
+        android:title="@string/export_mail"
+        app:iconTint="@color/gmail_red" />
+
+    <item
+        android:id="@+id/menu_backup_delete"
+        android:icon="@drawable/ic_delete"
+        android:title="@string/action_delete" />
 </menu>

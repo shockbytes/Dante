@@ -14,6 +14,7 @@ enum class BackupStorageProvider(
     @StringRes val rationale: Int,
     val priority: Priority,
     val isLocalFileExportable: Boolean,
+    val isExportableViaMail: Boolean,
     val stability: Stability
 ) {
 
@@ -25,6 +26,7 @@ enum class BackupStorageProvider(
         R.string.na,
         Priority.LOW,
         isLocalFileExportable = false,
+        isExportableViaMail = false,
         stability = Stability.RELEASE
     ),
     @SerializedName("shock_server")
@@ -35,6 +37,7 @@ enum class BackupStorageProvider(
         R.string.backup_storage_provider_rationale_shockbytes,
         Priority.HIGH,
         isLocalFileExportable = false,
+        isExportableViaMail = false,
         stability = Stability.CANARY
     ),
     @SerializedName("gdrive")
@@ -45,6 +48,7 @@ enum class BackupStorageProvider(
         R.string.backup_storage_provider_rationale_gdrive,
         Priority.HIGH,
         isLocalFileExportable = false,
+        isExportableViaMail = false,
         stability = Stability.DISCONTINUED
     ),
     @SerializedName("ext_storage")
@@ -55,6 +59,7 @@ enum class BackupStorageProvider(
         R.string.backup_storage_provider_rationale_external_storage,
         Priority.MEDIUM,
         isLocalFileExportable = false,
+        isExportableViaMail = false,
         stability = Stability.RELEASE
     ),
     @SerializedName("csv_local")
@@ -65,6 +70,7 @@ enum class BackupStorageProvider(
         R.string.backup_storage_provider_rationale_csv,
         Priority.MEDIUM,
         isLocalFileExportable = false,
+        isExportableViaMail = true,
         stability = Stability.BETA
     );
 

@@ -7,4 +7,6 @@ interface OnBackupOverflowItemListener {
     fun onBackupItemDeleted(content: BackupMetadata, location: Int)
 
     fun onBackupItemDownloadRequest(content: BackupMetadata)
+
+    fun onBackupItemExportViaMailRequest(content: BackupMetadata)
 }

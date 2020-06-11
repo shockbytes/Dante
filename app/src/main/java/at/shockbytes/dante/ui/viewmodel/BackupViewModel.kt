@@ -173,6 +173,10 @@ class BackupViewModel @Inject constructor(
             }
     }
 
+    fun prepareMailExport(content: BackupMetadata) {
+        // TODO
+    }
+
     // -------------------------- State classes --------------------------
 
     sealed class LoadBackupState {

@@ -48,9 +48,11 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
                 override fun onBackupItemDeleted(content: BackupMetadata, location: Int) {
                     onItemDismissed(content, location)
                 }
-
                 override fun onBackupItemDownloadRequest(content: BackupMetadata) {
                     // TODO Download file
+                }
+                override fun onBackupItemExportViaMailRequest(content: BackupMetadata) {
+                    viewModel.prepareMailExport(content)
                 }
             }
         )

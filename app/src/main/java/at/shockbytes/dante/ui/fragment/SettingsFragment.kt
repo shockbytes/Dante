@@ -9,6 +9,7 @@ import androidx.preference.SwitchPreferenceCompat
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
+import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.settings.DanteSettings
@@ -24,8 +25,8 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     lateinit var tracker: Tracker
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         (activity?.application as? DanteApp)?.appComponent?.inject(this)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
@@ -34,6 +35,20 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         findPreference<ListPreference>(getString(R.string.prefs_dark_mode_key))?.apply {
             this.onPreferenceChangeListener = this@SettingsFragment
             summary = this.entry
+        }
+
+        findPreference<Preference>(getString(R.string.prefs_sort_strategy_key))?.apply {
+            this.summary = getString(R.string.sorted_by, getString(danteSettings.sortStrategy.displayTitle))
+
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                SortStrategyDialogFragment.newInstance()
+                        .setOnApplyListener {
+                            this.summary = getString(R.string.sorted_by, getString(danteSettings.sortStrategy.displayTitle))
+                        }
+                        .show(childFragmentManager, "sort-dialog-fragment")
+
+                true
+            }
         }
 
         findPreference<SwitchPreferenceCompat>(getString(R.string.prefs_tracking_key))?.apply {

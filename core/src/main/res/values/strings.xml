@@ -137,7 +137,7 @@
     <string name="anonymous_user">Anonymous bookworm</string>
 
     <!-- Sorting -->
-    <string name="sort_strategy_default">Default</string>
+    <string name="sort_strategy_default">Position (Default)</string>
     <string name="sort_strategy_author">Author</string>
     <string name="sort_strategy_title">Title</string>
     <string name="sort_strategy_progress">Progress</string>
@@ -214,11 +214,17 @@
     <string name="pages_read">%d pages read</string>
     <string name="pages_waiting">%d pages waiting</string>
 
+
+    <string name="sorted_by">Sorted by %s</string>
+
     <string name="prefs_category_books_appearance">Appearance</string>
     <string name="prefs_dark_mode_key" translatable="false">prefs_night_mode_string_key</string>
     <string name="prefs_launcher_icon_state_key" translatable="false">prefs_launcher_icon_state_key</string>
     <string name="prefs_dark_mode_default_value" translatable="false">system</string>
     <string name="prefs_dark_mode_title">Theme</string>
+
+
+    <string name="prefs_category_books">Books</string>
 
     <string name="prefs_category_books_privacy">Privacy</string>
     <string name="prefs_tracking_key" translatable="false">prefs_tracking_key</string>

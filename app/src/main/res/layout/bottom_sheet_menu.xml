@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
         android:gravity="bottom"
         android:text="@string/anonymous_user"
@@ -111,27 +111,6 @@
         app:layout_constraintTop_toBottomOf="@+id/btnMenuStatistics" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnMenuSortStrategy"
-        style="@style/AppTheme.BorderlessButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:gravity="start|center_vertical"
-        android:padding="8dp"
-        android:text="@string/menu_main_sort"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="@color/danteAccent"
-        app:icon="@drawable/ic_sort"
-        app:iconPadding="16dp"
-        app:iconTint="@color/danteAccent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnMenuTimeline" />
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMenuBookStorage"
         style="@style/AppTheme.BorderlessButton"
         android:layout_width="0dp"
@@ -150,7 +129,7 @@
         app:iconTint="@color/danteAccent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnMenuSortStrategy" />
+        app:layout_constraintTop_toBottomOf="@+id/btnMenuTimeline" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnMenuSettings"

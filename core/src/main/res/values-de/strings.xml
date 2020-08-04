@@ -79,7 +79,7 @@
     <string name="download_attachment_error">Oh, da ist was mächtig schiefgelaufen!</string>
     <string name="menu_main_sort">Bücher sortieren</string>
     <string name="anonymous_user">Unbekannter Bücherwurm</string>
-    <string name="sort_strategy_default">Standard</string>
+    <string name="sort_strategy_default">Position (Standard)</string>
     <string name="sort_strategy_author">Autor</string>
     <string name="sort_strategy_title">Buchtitel</string>
     <string name="sort_strategy_progress">Lesefortschritt</string>
@@ -282,5 +282,7 @@
     <string name="download">Herunterladen</string>
     <string name="download_backup">Herunterladen</string>
     <string name="add_book_to_library_hint">Ein Buch hinzufügen</string>
+    <string name="prefs_category_books">Bücher</string>
+    <string name="sorted_by">Sortiert nach %s</string>
 
 </resources>

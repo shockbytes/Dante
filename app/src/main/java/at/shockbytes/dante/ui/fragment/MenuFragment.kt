@@ -13,7 +13,6 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
@@ -111,14 +110,6 @@ class MenuFragment : BottomSheetDialogFragment() {
                 sceneTransition
             )
             dismiss()
-        }
-
-        btnMenuSortStrategy.setOnClickListener {
-            SortStrategyDialogFragment.newInstance()
-                .setOnApplyListener {
-                    dismiss()
-                }
-                .show(childFragmentManager, "sort-dialog-fragment")
         }
 
         btnMenuBookStorage.setOnClickListener {

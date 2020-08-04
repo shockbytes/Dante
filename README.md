@@ -34,18 +34,30 @@ the user during the login process.
 ## Versions
 
 ### Backlog
-- [ ] Use Firebase Data for book suggestions
-- [ ] Introduce Shockbytes Backups?
+Empty...
+
+### Version 4.2
 - [ ] Wishlist for books that are not purchased yet
+
+### Version 4.1
+- [ ] Use Firebase Data for book suggestions
 
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add online sync capability
-  - [ ] Login with Firebase
   - [ ] Migrate from local to remote storage
 
-### Version 3.14
+### Version 3.16
+- [ ] Login with Firebase
+- [ ] Add Onboarding + Login
+
+### Version 3.15
 - [ ] Send csv export via Mail
-- [ ] Add Onboarding
+- [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
+
+### Version 3.14
+- [x] Move sort into settings
+- [x] Improve Main UI
+- [ ] Add pick random for reading button
 
 ### Version 3.13 - SMALL STEPS
 * Update Crashlytics SDK

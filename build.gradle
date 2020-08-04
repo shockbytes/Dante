@@ -59,8 +59,8 @@ ext {
     playServicesVersionAuth = "18.1.0"
 
     daggerVersion = "2.26"
-    retrofitVersion = "2.7.0"
-    okHttpVersion = "3.14.1"
+    retrofitVersion = "2.9.0"
+    okHttpVersion = "3.14.9"
     leakCanaryVersion = "2.2"
     shockUtilVersion = "6.1.2"
     crashlyticsVersion = "2.10.1"

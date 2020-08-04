@@ -26,7 +26,7 @@ class ShockbytesHerokuServerBackupProvider(
 ) : BackupProvider {
 
     // Enable it only in debug mode
-    override var isEnabled: Boolean = BuildConfig.DEBUG
+    override var isEnabled: Boolean = false // Only initialize when ever needed
 
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 

@@ -6,13 +6,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
 import android.view.MenuItem
-import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
@@ -26,21 +24,16 @@ import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
-import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
-import at.shockbytes.dante.util.retrieveActiveActivityAlias
-import at.shockbytes.dante.util.runDelayed
+import at.shockbytes.dante.util.*
 import at.shockbytes.dante.util.settings.LauncherIconState
 import at.shockbytes.dante.util.settings.ThemeState
-import at.shockbytes.dante.util.toggle
-import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -112,25 +105,29 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
     }
 
-    private fun goingEdgeToEdge() {
-        window.decorView.systemUiVisibility =
-            // Tells the system that the window wishes the content to
-            // be laid out at the most extreme scenario. See the docs for
-            // more information on the specifics
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
-                // Tells the system that the window wishes the content to
-                // be laid out as if the navigation bar was hidden
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+    private fun animateActionBarItems() {
+        animateTitle()
+        animateSearchIcon()
     }
 
     private fun animateTitle() {
         txtMainToolbarTitle.animate()
-            .alpha(1f)
-            .scaleX(1f)
-            .scaleY(1f)
-            .translationY(0f)
-            .setInterpolator(AccelerateDecelerateInterpolator())
-            .start()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f)
+                .translationY(0f)
+                .setDuration(500L)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
+    }
+
+    private fun animateSearchIcon() {
+        imgButtonMainToolbarSearch.animate()
+                .alpha(1f)
+                .translationX(0f)
+                .setDuration(500L)
+                .setInterpolator(DecelerateInterpolator())
+                .start()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -200,12 +197,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                         if (photoUrl != null) {
                             loadImageUrl(photoUrl)
                         } else {
-                            animateTitle()
+                            animateActionBarItems()
                         }
                         showGoogleWelcomeScreen(event.user, event.showWelcomeScreen)
                     } else {
                         imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
-                        animateTitle()
+                        animateActionBarItems()
                     }
                 }
 
@@ -229,16 +226,14 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun loadImageUrl(photoUrl: Uri) {
 
-        photoUrl
-            .loadBitmap(this)
+        photoUrl.loadBitmap(this)
             .doFinally {
-                animateTitle()
+                animateActionBarItems()
             }
-            .subscribe({ bm ->
-                imgButtonMainToolbarMore.setImageDrawable(AppUtils.createRoundedBitmap(this, bm))
-            }, { throwable: Throwable ->
-                throwable.printStackTrace()
-            })
+            .map { bitmap ->
+                AppUtils.createRoundedBitmap(this, bitmap)
+            }
+            .subscribe(imgButtonMainToolbarMore::setImageDrawable, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
@@ -284,12 +279,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         // It has to be delayed, otherwise it will appear on the wrong
         // position on top of the BottomNavigationBar
-        Handler().postDelayed({
+        runDelayed(1500) {
             if (danteSettings.isFirstAppOpen) {
                 danteSettings.isFirstAppOpen = false
                 showOnboardingHintViews()
             }
-        }, 1500)
+        }
     }
 
     private fun saveLauncherIconState() {

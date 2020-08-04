@@ -32,16 +32,17 @@
                     android:layout_gravity="center"
                     android:alpha="0"
                     android:fontFamily="@font/montserrat_bold"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:scaleX="0.9"
                     android:scaleY="0.9"
                     android:text="@string/app_name"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Overline"
                     android:textColor="@color/actionBarItemColor"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:translationY="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarMore"
-                    app:layout_constraintStart_toEndOf="@+id/imgButtonMainToolbarSearch"
+                    app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarSearch"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:alpha="1"
                     tools:scaleX="1"
@@ -64,16 +65,21 @@
 
                 <ImageView
                     android:id="@+id/imgButtonMainToolbarSearch"
-                    android:background="@drawable/bg_rounded_ripple"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:padding="8dp"
                     android:adjustViewBounds="true"
+                    android:background="@drawable/bg_rounded_ripple"
+                    android:padding="8dp"
+                    android:alpha="0.4"
+                    android:translationX="20dp"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarMore"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_search" />
+                    app:srcCompat="@drawable/ic_search"
+                    tools:alpha="1"
+                    tools:translationX="2dp"
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>

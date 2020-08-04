@@ -15,7 +15,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.3'
         classpath "io.realm:realm-gradle-plugin:$realmVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.1'
+        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
     }
 }
 
@@ -38,25 +38,25 @@ ext {
 
     archXVersion = '2.2.0'
     androidXVersion = '1.0.0'
-    androidXCoreVersion = '1.0.2'
-    androidXPreferenceVersion = '1.1.0'
+    androidXCoreVersion = '1.3.1'
+    androidXPreferenceVersion = '1.1.1'
     androidXAppCompatVersion = '1.1.0'
-    materialVersion = '1.2.0-alpha06'
+    materialVersion = '1.2.0-rc01'
 
     rxJavaVersion = "2.2.17"
     rxAndroidVersion = "2.1.1"
     rxBindingsVersion = "2.2.0"
 
-    firebaseVersionCore = "17.2.3"
-    firebaseVersionConfig = "19.1.2"
-    firebaseVersionAuth = "19.2.0"
+    firebaseVersionCore = "17.4.4"
+    firebaseVersionConfig = "19.2.0"
+    firebaseVersionAuth = "19.3.2"
     firebaseMLVision = "24.0.3"
     firebaseAnalyticsVersion = "17.2.2"
-    firebaseCrashlyticsVersion = "17.0.0"
+    firebaseCrashlyticsVersion = "17.1.1"
 
     playServicesVersionVision = "17.0.2"
     playServicesVersionDrive = "17.0.0"
-    playServicesVersionAuth = "17.0.0"
+    playServicesVersionAuth = "18.1.0"
 
     daggerVersion = "2.26"
     retrofitVersion = "2.7.0"

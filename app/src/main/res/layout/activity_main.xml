@@ -70,7 +70,7 @@
                     android:adjustViewBounds="true"
                     android:background="@drawable/bg_rounded_ripple"
                     android:padding="8dp"
-                    android:alpha="0.4"
+                    android:alpha="0.0"
                     android:translationX="20dp"
                     android:scaleType="fitCenter"
                     app:layout_constraintBottom_toBottomOf="parent"

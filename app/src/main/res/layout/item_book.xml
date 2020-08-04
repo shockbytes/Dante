@@ -57,7 +57,9 @@
             android:transitionName="@string/transition_name_thumb"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_book_pb"
-            app:srcCompat="@drawable/ic_placeholder" />
+            app:srcCompat="@drawable/ic_placeholder"
+            tools:layout_width="40dp"
+            tools:srcCompat="@drawable/darkest_hour"/>
 
         <ProgressBar
             android:id="@+id/item_book_pb"
@@ -86,7 +88,7 @@
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
             app:layout_constraintTop_toBottomOf="@+id/item_book_txt_title"
-            tools:text="Subtitle" />
+            tools:text="People Tested to The Extreme in WWII" />
 
         <TextView
             android:id="@+id/item_book_txt_author"
@@ -102,7 +104,7 @@
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
             app:layout_constraintTop_toBottomOf="@+id/item_book_txt_subtitle"
-            tools:text="Author" />
+            tools:text="Laurence Rees" />
 
         <TextView
             android:id="@+id/item_book_txt_title"
@@ -111,13 +113,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="0dp"
+            android:fontFamily="@font/montserrat_bold"
             android:transitionName="@string/transition_name_title"
             app:layout_constraintBottom_toTopOf="@+id/item_book_txt_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
             app:layout_constraintTop_toBottomOf="@id/item_book_pb"
-            tools:text="Title" />
+            tools:text="Their darkest hour" />
 
         <TextView
             android:id="@+id/item_book_tv_progress"

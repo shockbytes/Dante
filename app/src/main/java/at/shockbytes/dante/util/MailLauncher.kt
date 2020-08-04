@@ -11,7 +11,7 @@ object MailLauncher {
     fun sendMail(
         activity: Activity,
         subject: String,
-        body: String,
+        body: String = "",
         recipient: String = SHOCKBYTES_STUDIO_MAIL
     ) {
 

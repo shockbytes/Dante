@@ -284,5 +284,7 @@
     <string name="add_book_to_library_hint">Ein Buch hinzufügen</string>
     <string name="prefs_category_books">Bücher</string>
     <string name="sorted_by">Sortiert nach %s</string>
+    <string name="prefs_feedback_summary">Sende uns via Mail dein Feedback!</string>
+    <string name="mail_feedback">Wie ich Dante verbessern würde</string>
 
 </resources>

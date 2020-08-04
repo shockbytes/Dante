@@ -58,6 +58,12 @@
             android:title="@string/prefs_contribute_code_title" />
 
         <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_feedback"
+            android:key="@string/prefs_feedback_key"
+            android:summary="@string/prefs_feedback_summary"
+            android:title="@string/prefs_feedback_title" />
+
+        <androidx.preference.Preference
             android:icon="@drawable/ic_settings_language"
             android:key="@string/prefs_translation_key"
             android:summary="@string/prefs_translation_summary"

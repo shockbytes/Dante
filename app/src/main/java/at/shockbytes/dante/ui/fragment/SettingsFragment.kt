@@ -11,6 +11,7 @@ import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.tracking.Tracker
@@ -83,6 +84,15 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
                 true
             }
         }
+
+        findPreference<Preference>(getString(R.string.prefs_feedback_key))?.apply {
+            this.setOnPreferenceClickListener {
+                val body = "\n\n\nVersion ${BuildConfig.VERSION_NAME} - ${BuildConfig.VERSION_CODE}"
+                MailLauncher.sendMail(requireActivity(), getString(R.string.mail_feedback), body)
+                true
+            }
+        }
+
         findPreference<Preference>(getString(R.string.prefs_translation_key))?.apply {
             isVisible = false
 

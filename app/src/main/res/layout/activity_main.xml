@@ -11,7 +11,7 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:elevation="0dp"
+        app:liftOnScroll="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
@@ -19,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorActionBar"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,22 +30,23 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/app_name"
-                    android:textColor="@color/actionBarItemColor"
-                    android:textSize="18sp"
                     android:alpha="0"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:gravity="center"
                     android:scaleX="0.9"
                     android:scaleY="0.9"
+                    android:text="@string/app_name"
+                    android:textColor="@color/actionBarItemColor"
+                    android:textSize="20sp"
                     android:translationY="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarMore"
                     app:layout_constraintStart_toEndOf="@+id/imgButtonMainToolbarSearch"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:alpha="1"
-                    tools:translationY="0dp"
                     tools:scaleX="1"
-                    tools:scaleY="1"/>
+                    tools:scaleY="1"
+                    tools:translationY="0dp" />
 
                 <ImageView
                     android:id="@+id/imgButtonMainToolbarMore"

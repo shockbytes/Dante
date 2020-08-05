@@ -106,8 +106,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun animateActionBarItems() {
-        animateTitle()
-        animateSearchIcon()
+        runDelayed(300) {
+            animateTitle()
+            animateSearchIcon()
+        }
     }
 
     private fun animateTitle() {

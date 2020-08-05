@@ -3,7 +3,9 @@ package at.shockbytes.dante.ui.adapter.main
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
@@ -117,14 +119,14 @@ class BookViewHolder(
 
     companion object {
 
-        fun fromView(
-                view: View,
+        fun forParent(
+                parent: ViewGroup,
                 imageLoader: ImageLoader,
                 onOverflowActionClickedListener: (BookEntity) -> Unit,
                 onLabelClickedListener: (BookLabel) -> Unit
         ): BookViewHolder {
             return BookViewHolder(
-                    view,
+                    LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false),
                     imageLoader,
                     onOverflowActionClickedListener,
                     onLabelClickedListener

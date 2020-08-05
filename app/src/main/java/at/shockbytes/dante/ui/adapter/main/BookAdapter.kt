@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.adapter.main
 import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.image.ImageLoader
@@ -37,13 +36,27 @@ class BookAdapter(
         return data[position].id
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseAdapter.ViewHolder<BookAdapterEntity> {
-        return BookViewHolder.fromView(
-                inflater.inflate(R.layout.item_book, parent, false),
-                imageLoader,
-                onOverflowActionClickedListener,
-                onLabelClickedListener
-        )
+    override fun getItemViewType(position: Int): Int {
+        return data[position].viewType
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BookAdapterEntity> {
+
+        return when (viewType) {
+
+            BookAdapterEntity.VIEW_TYPE_BOOK -> {
+                BookViewHolder.forParent(
+                        parent,
+                        imageLoader,
+                        onOverflowActionClickedListener,
+                        onLabelClickedListener
+                )
+            }
+            BookAdapterEntity.VIEW_TYPE_RANDOM_PICK -> {
+                RandomPickViewHolder.forParent(parent)
+            }
+            else -> throw IllegalStateException("Unknown view type $viewType")
+        }
     }
 
     override fun onItemDismiss(position: Int) {

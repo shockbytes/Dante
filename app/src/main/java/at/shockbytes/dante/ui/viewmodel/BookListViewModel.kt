@@ -69,8 +69,8 @@ class BookListViewModel @Inject constructor(
 
             // TODO Replace true with DanteSettings value
             val bookAdapterEntities = if (state == BookState.READ_LATER) {
-                books.toAdapterEntities().apply {
-                    toMutableList().add(0, BookAdapterEntity.RandomPick)
+                books.toAdapterEntities().toMutableList().apply {
+                    add(0, BookAdapterEntity.RandomPick)
                 }
             } else {
                 books.toAdapterEntities()
@@ -83,7 +83,9 @@ class BookListViewModel @Inject constructor(
     }
 
     private fun List<BookEntity>.toAdapterEntities(): List<BookAdapterEntity> {
-        return this.map(BookAdapterEntity::Book)
+        return this.map { entity ->
+            BookAdapterEntity.Book(entity)
+        }
     }
 
     private fun listenToSettings() {

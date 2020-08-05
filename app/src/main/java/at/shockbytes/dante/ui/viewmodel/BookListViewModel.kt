@@ -42,10 +42,11 @@ class BookListViewModel @Inject constructor(
     private val books = MutableLiveData<BookLoadingState>()
     fun getBooks(): LiveData<BookLoadingState> = books
 
-    private val sortComparator: Comparator<BookEntity> = SortComparators.of(settings.sortStrategy)
+    private val sortComparator: Comparator<BookEntity>
+        get() = SortComparators.of(settings.sortStrategy)
 
     init {
-        // listenToSettings()
+        listenToSettings()
     }
 
     private fun loadBooks() {
@@ -80,18 +81,10 @@ class BookListViewModel @Inject constructor(
     private fun listenToSettings() {
         settings.observeSortStrategy()
             .observeOn(schedulers.ui)
-            .subscribe { strategy ->
-                // sortComparator = SortComparators.of(strategy)
-                updateIfBooksLoaded()
+            .subscribe {
+                loadBooks()
             }
             .addTo(compositeDisposable)
-    }
-
-    private fun updateIfBooksLoaded() {
-        val state = books.value
-        if (state is BookLoadingState.Success) {
-           // books.postValue(state.copy(books = state.books.sortedWith(sortComparator)))
-        }
     }
 
     fun deleteBook(book: BookEntity) {

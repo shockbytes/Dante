@@ -57,18 +57,26 @@ class BookListViewModel @Inject constructor(
                     .sortedWith(sortComparator)
             }
             .map(::mapBooksToBookLoadingState)
-            .subscribe({ state ->
-                books.postValue(state)
-            }, { throwable ->
+            .subscribe(books::postValue) { throwable ->
                 Timber.e(throwable, "Cannot fetch books from storage!")
                 books.postValue(BookLoadingState.Error(throwable))
-            })
+            }
             .addTo(compositeDisposable)
     }
 
     private fun mapBooksToBookLoadingState(books: List<BookEntity>): BookLoadingState {
         return if (books.isNotEmpty()) {
-            BookLoadingState.Success(books.toAdapterEntities())
+
+            // TODO Replace true with DanteSettings value
+            val bookAdapterEntities = if (state == BookState.READ_LATER) {
+                books.toAdapterEntities().apply {
+                    toMutableList().add(0, BookAdapterEntity.RandomPick)
+                }
+            } else {
+                books.toAdapterEntities()
+            }
+
+            BookLoadingState.Success(bookAdapterEntities)
         } else {
             BookLoadingState.Empty
         }

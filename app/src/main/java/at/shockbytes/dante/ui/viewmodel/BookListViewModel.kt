@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -31,7 +32,7 @@ class BookListViewModel @Inject constructor(
 
     sealed class BookLoadingState {
 
-        data class Success(val books: List<BookEntity>) : BookLoadingState()
+        data class Success(val books: List<BookAdapterEntity>) : BookLoadingState()
 
         data class Error(val throwable: Throwable) : BookLoadingState()
 
@@ -41,10 +42,10 @@ class BookListViewModel @Inject constructor(
     private val books = MutableLiveData<BookLoadingState>()
     fun getBooks(): LiveData<BookLoadingState> = books
 
-    private var sortComparator: Comparator<BookEntity> = SortComparators.of(settings.sortStrategy)
+    private val sortComparator: Comparator<BookEntity> = SortComparators.of(settings.sortStrategy)
 
     init {
-        listenToSettings()
+        // listenToSettings()
     }
 
     private fun loadBooks() {
@@ -66,17 +67,21 @@ class BookListViewModel @Inject constructor(
 
     private fun mapBooksToBookLoadingState(books: List<BookEntity>): BookLoadingState {
         return if (books.isNotEmpty()) {
-            BookLoadingState.Success(books)
+            BookLoadingState.Success(books.toAdapterEntities())
         } else {
             BookLoadingState.Empty
         }
+    }
+
+    private fun List<BookEntity>.toAdapterEntities(): List<BookAdapterEntity> {
+        return this.map(BookAdapterEntity::Book)
     }
 
     private fun listenToSettings() {
         settings.observeSortStrategy()
             .observeOn(schedulers.ui)
             .subscribe { strategy ->
-                sortComparator = SortComparators.of(strategy)
+                // sortComparator = SortComparators.of(strategy)
                 updateIfBooksLoaded()
             }
             .addTo(compositeDisposable)
@@ -85,7 +90,7 @@ class BookListViewModel @Inject constructor(
     private fun updateIfBooksLoaded() {
         val state = books.value
         if (state is BookLoadingState.Success) {
-            books.postValue(state.copy(books = state.books.sortedWith(sortComparator)))
+           // books.postValue(state.copy(books = state.books.sortedWith(sortComparator)))
         }
     }
 
@@ -93,10 +98,12 @@ class BookListViewModel @Inject constructor(
         bookRepository.delete(book.id)
     }
 
-    fun updateBookPositions(data: MutableList<BookEntity>) {
-        data.forEachIndexed { index, book ->
-            book.position = index
-            bookRepository.update(book)
+    fun updateBookPositions(data: MutableList<BookAdapterEntity>) {
+        data.forEachIndexed { index, entity ->
+            if (entity is BookAdapterEntity.Book) {
+                entity.bookEntity.position = index
+                bookRepository.update(entity.bookEntity)
+            }
         }
 
         // Update book strategy, because this means user falls back to default strategy

@@ -23,12 +23,14 @@ import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
-import at.shockbytes.dante.ui.adapter.BookAdapter
+import at.shockbytes.dante.navigation.Destination.BookDetail.BookDetailInfo
+import at.shockbytes.dante.ui.adapter.main.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
+import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
@@ -39,8 +41,8 @@ import kotlinx.android.synthetic.main.fragment_book_main.*
 import javax.inject.Inject
 
 class MainBookFragment : BaseFragment(),
-    BaseAdapter.OnItemClickListener<BookEntity>,
-    BaseAdapter.OnItemMoveListener<BookEntity>,
+    BaseAdapter.OnItemClickListener<BookAdapterEntity>,
+    BaseAdapter.OnItemMoveListener<BookAdapterEntity>,
     OnBookActionClickedListener {
 
     override val layoutId = R.layout.fragment_book_main
@@ -152,12 +154,12 @@ class MainBookFragment : BaseFragment(),
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         bookAdapter = BookAdapter(
-            requireContext(),
-            imageLoader,
-            onOverflowActionClickedListener = onBookOverflowClickedListener,
-            onItemClickListener = this,
-            onItemMoveListener = this,
-            onLabelClickedListener = onLabelClickedListener
+                requireContext(),
+                imageLoader,
+                onOverflowActionClickedListener = onBookOverflowClickedListener,
+                onItemClickListener = this,
+                onItemMoveListener = this,
+                onLabelClickedListener = onLabelClickedListener
         )
 
         fragment_book_main_rv.apply {
@@ -173,20 +175,24 @@ class MainBookFragment : BaseFragment(),
         itemTouchHelper.attachToRecyclerView(fragment_book_main_rv)
     }
 
-    override fun onItemClick(content: BookEntity, position: Int, v: View) {
-        ActivityNavigator.navigateTo(
-            context,
-            Destination.BookDetail(
-                Destination.BookDetail.BookDetailInfo(content.id, content.title)
-            ),
-            getTransitionBundle(v)
-        )
+    override fun onItemClick(content: BookAdapterEntity, position: Int, v: View) {
+
+        when (content) {
+            is BookAdapterEntity.Book -> {
+                ActivityNavigator.navigateTo(
+                        context,
+                        Destination.BookDetail(BookDetailInfo(content.id, content.title)),
+                        getTransitionBundle(v)
+                )
+            }
+            BookAdapterEntity.RandomPick -> Unit // Do nothing
+        }
     }
 
-    override fun onItemDismissed(t: BookEntity, position: Int) = Unit
+    override fun onItemDismissed(t: BookAdapterEntity, position: Int) = Unit
 
     // Do nothing, only react to move actions in the on item move finished method
-    override fun onItemMove(t: BookEntity, from: Int, to: Int) = Unit
+    override fun onItemMove(t: BookAdapterEntity, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() = viewModel.updateBookPositions(bookAdapter.data)
 
@@ -198,7 +204,7 @@ class MainBookFragment : BaseFragment(),
             positiveButton(R.string.action_delete) {
                 onDeletionConfirmed(true)
                 viewModel.deleteBook(book)
-                bookAdapter.deleteEntity(book)
+                bookAdapter.deleteEntity(book.toAdapterEntity())
             }
             negativeButton(android.R.string.no) {
                 onDeletionConfirmed(false)
@@ -223,17 +229,17 @@ class MainBookFragment : BaseFragment(),
 
     override fun onMoveToUpcoming(book: BookEntity) {
         viewModel.moveBookToUpcomingList(book)
-        bookAdapter.deleteEntity(book)
+        bookAdapter.deleteEntity(book.toAdapterEntity())
     }
 
     override fun onMoveToCurrent(book: BookEntity) {
         viewModel.moveBookToCurrentList(book)
-        bookAdapter.deleteEntity(book)
+        bookAdapter.deleteEntity(book.toAdapterEntity())
     }
 
     override fun onMoveToDone(book: BookEntity) {
         viewModel.moveBookToDoneList(book)
-        bookAdapter.deleteEntity(book)
+        bookAdapter.deleteEntity(book.toAdapterEntity())
     }
 
     // --------------------------------------------------------------
@@ -265,6 +271,8 @@ class MainBookFragment : BaseFragment(),
             fragment_book_main_empty_view.alpha = (alpha)
         }
     }
+
+    private fun BookEntity.toAdapterEntity(): BookAdapterEntity = BookAdapterEntity.Book(this)
 
     companion object {
 

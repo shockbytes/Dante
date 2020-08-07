@@ -81,7 +81,7 @@ class BookListViewModel @Inject constructor(
         return if (books.isNotEmpty()) {
 
             // TODO Replace true with DanteSettings value
-            val bookAdapterEntities = if (state == BookState.READ_LATER) {
+            val bookAdapterEntities = if (state == BookState.READ_LATER && books.size > 1) {
                 books.toAdapterEntities().toMutableList().apply {
                     add(0, BookAdapterEntity.RandomPick)
                 }
@@ -163,5 +163,9 @@ class BookListViewModel @Inject constructor(
                 ?: RandomPickEvent.NoBookAvailable
 
         pickRandomBookSubject.onNext(event)
+    }
+
+    fun onDismissRandomBookPicker() {
+        // TODO
     }
 }

@@ -31,6 +31,7 @@ import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
+import at.shockbytes.dante.ui.adapter.main.RandomPickCallback
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOf
@@ -71,8 +72,15 @@ class MainBookFragment : BaseFragment(),
             .show(childFragmentManager, "book-action-bottom-sheet")
     }
 
-    private val onRandomPickClickListener: () -> Unit = {
-        viewModel.pickRandomBookToRead()
+    private val randomPickCallback = object : RandomPickCallback {
+        override fun onDismiss() {
+            viewModel.onDismissRandomBookPicker()
+            bookAdapter.deleteEntity(BookAdapterEntity.RandomPick)
+        }
+
+        override fun onRandomPickClicked() {
+            viewModel.pickRandomBookToRead()
+        }
     }
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {
@@ -184,7 +192,7 @@ class MainBookFragment : BaseFragment(),
                 onItemClickListener = this,
                 onItemMoveListener = this,
                 onLabelClickedListener = onLabelClickedListener,
-                onRandomPickClickListener = onRandomPickClickListener
+                randomPickCallback = randomPickCallback
         )
 
         fragment_book_main_rv.apply {

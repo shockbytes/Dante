@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.13</string>
+    <string name="app_version" translatable="false">3.14</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -380,5 +380,8 @@
     <string name="ask_for_library_deletion_msg">Do you really want to delete your whole library? Should we really set the lib on fire?</string>
     <string name="library_deletion_succeeded">We successfully burned down your library!</string>
     <string name="library_deletion_failed">An error occurred while deleting your books.</string>
+
+    <string name="random_pick_action">Pick random book</string>
+    <string name="random_pick_explanation">Can\'t decide which book to read next? We\'ve got you covered. Let us decide for you what you should read next.</string>
 
 </resources>

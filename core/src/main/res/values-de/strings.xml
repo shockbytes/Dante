@@ -287,4 +287,7 @@
     <string name="prefs_feedback_summary">Sende uns via Mail dein Feedback!</string>
     <string name="mail_feedback">Wie ich Dante verbessern würde</string>
 
+    <string name="random_pick_action">Zufälliges Buch wählen</string>
+    <string name="random_pick_explanation">Unschlüssig was als nächstes gelesen werden solll? Wir haben da was für dich. Lass uns das einfach entscheiden.</string>
+
 </resources>

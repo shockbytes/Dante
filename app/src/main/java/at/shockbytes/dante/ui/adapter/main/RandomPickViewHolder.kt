@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_random_pick.*
 
 class RandomPickViewHolder(
         override val containerView: View,
@@ -13,7 +14,10 @@ class RandomPickViewHolder(
 ) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
 
     override fun bindToView(content: BookAdapterEntity, position: Int) {
-        // TODO
+
+        btn_item_random_pick.setOnClickListener {
+            onRandomPickClickListener()
+        }
     }
 
     companion object {

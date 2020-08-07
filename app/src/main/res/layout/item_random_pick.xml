@@ -1,7 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_book_card"
+    style="@style/AppTheme.CardLayout"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="#dea">
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/item_book_horizontal_spacing"
+    android:layout_marginLeft="@dimen/item_book_horizontal_spacing"
+    android:layout_marginTop="6dp"
+    android:layout_marginEnd="@dimen/item_book_horizontal_spacing"
+    android:layout_marginRight="@dimen/item_book_horizontal_spacing"
+    android:layout_marginBottom="6dp"
+    android:elevation="0dp"
+    app:cardElevation="0dp"
+    android:minHeight="80dp"
+    android:padding="2dp"
+    app:strokeColor="@color/border"
+    app:strokeWidth="0.8dp"
+    android:transitionName="@string/transition_name_card">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageView
+            android:id="@+id/iv_item_random_pick_dismiss"
+            android:layout_width="48dp"
+            android:background="@drawable/bg_rounded_ripple"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/contentdesc_listitem_img_overflow"
+            android:scaleType="center"
+            android:layout_gravity="end"
+            android:tint="@color/actionBarItemColor"
+            app:srcCompat="@drawable/ic_close_grayscale" />
+
+        <TextView
+            android:layout_margin="16dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:id="@+id/tv_item_random_pick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/random_pick_explanation"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_random_pick_dismiss" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_item_random_pick"
+            style="@style/AppTheme.RoundedButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/random_pick_action" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -11,6 +11,8 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,6 +46,17 @@ class BookListViewModel @Inject constructor(
 
     private val sortComparator: Comparator<BookEntity>
         get() = SortComparators.of(settings.sortStrategy)
+
+
+    sealed class RandomPickEvent {
+
+        data class RandomPick(val book: BookEntity): RandomPickEvent()
+
+        object NoBookAvailable : RandomPickEvent()
+    }
+
+    private val pickRandomBookSubject = PublishSubject.create<RandomPickEvent>()
+    val onPickRandomBookEvent: Observable<RandomPickEvent> = pickRandomBookSubject
 
     init {
         listenToSettings()
@@ -132,5 +145,23 @@ class BookListViewModel @Inject constructor(
         if (updatedBookState == state) {
             loadBooks()
         }
+    }
+
+    fun pickRandomBookToRead() {
+
+        val event = books.value
+                ?.let { state ->
+                    (state as? BookLoadingState.Success)?.books
+                }
+                ?.let { books ->
+                    val randomPick = books
+                            .filterIsInstance<BookAdapterEntity.Book>()
+                            .random()
+                            .bookEntity
+                    RandomPickEvent.RandomPick(randomPick)
+                }
+                ?: RandomPickEvent.NoBookAvailable
+
+        pickRandomBookSubject.onNext(event)
     }
 }

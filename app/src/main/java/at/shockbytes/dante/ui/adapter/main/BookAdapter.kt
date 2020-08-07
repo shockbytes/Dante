@@ -20,6 +20,7 @@ class BookAdapter(
         private val imageLoader: ImageLoader,
         private val onOverflowActionClickedListener: (BookEntity) -> Unit,
         private val onLabelClickedListener: (BookLabel) -> Unit,
+        private val onRandomPickClickListener: () -> Unit,
         onItemClickListener: OnItemClickListener<BookAdapterEntity>,
         onItemMoveListener: OnItemMoveListener<BookAdapterEntity>
 ) : BaseAdapter<BookAdapterEntity>(
@@ -53,7 +54,10 @@ class BookAdapter(
                 )
             }
             BookAdapterEntity.VIEW_TYPE_RANDOM_PICK -> {
-                RandomPickViewHolder.forParent(parent)
+                RandomPickViewHolder.forParent(
+                        parent,
+                        onRandomPickClickListener
+                )
             }
             else -> throw IllegalStateException("Unknown view type $viewType")
         }

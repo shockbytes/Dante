@@ -8,7 +8,8 @@ import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 
 class RandomPickViewHolder(
-        override val containerView: View
+        override val containerView: View,
+        private val onRandomPickClickListener: () -> Unit
 ) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
 
     override fun bindToView(content: BookAdapterEntity, position: Int) {
@@ -17,9 +18,13 @@ class RandomPickViewHolder(
 
     companion object {
 
-        fun forParent(parent: ViewGroup) : RandomPickViewHolder {
+        fun forParent(
+                parent: ViewGroup,
+                onRandomPickClickListener: () -> Unit
+        ) : RandomPickViewHolder {
             return RandomPickViewHolder(
-                    containerView = LayoutInflater.from(parent.context).inflate(R.layout.item_random_pick, parent, false)
+                    containerView = LayoutInflater.from(parent.context).inflate(R.layout.item_random_pick, parent, false),
+                    onRandomPickClickListener = onRandomPickClickListener
             )
         }
     }

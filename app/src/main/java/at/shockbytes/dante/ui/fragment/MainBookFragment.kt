@@ -32,6 +32,7 @@ import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
@@ -68,6 +69,10 @@ class MainBookFragment : BaseFragment(),
     private val onBookOverflowClickedListener: ((BookEntity) -> Unit) = { book ->
         BookActionBottomSheetFragment.newInstance(book)
             .show(childFragmentManager, "book-action-bottom-sheet")
+    }
+
+    private val onRandomPickClickListener: () -> Unit = {
+        viewModel.pickRandomBookToRead()
     }
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {
@@ -127,24 +132,43 @@ class MainBookFragment : BaseFragment(),
     }
 
     override fun bindViewModel() {
-        viewModel.getBooks().observe(this, Observer { state ->
+        viewModel.getBooks().observe(this, Observer(::handleBookLoadingState))
 
-            when (state) {
-                is BookListViewModel.BookLoadingState.Success -> {
-                    updateEmptyView(hide = true, animate = false)
-                    bookAdapter.updateData(state.books)
-                    fragment_book_main_rv.smoothScrollToPosition(0)
-                }
+        viewModel.onPickRandomBookEvent
+                .subscribe(::handleRandomPickEvent)
+                .addTo(compositeDisposable)
+    }
 
-                is BookListViewModel.BookLoadingState.Empty -> {
-                    updateEmptyView(hide = false, animate = true)
-                }
+    private fun handleBookLoadingState(state: BookListViewModel.BookLoadingState) {
 
-                is BookListViewModel.BookLoadingState.Error -> {
-                    showSnackbar(getString(R.string.load_error), showLong = true)
-                }
+        when (state) {
+            is BookListViewModel.BookLoadingState.Success -> {
+                updateEmptyView(hide = true, animate = false)
+                bookAdapter.updateData(state.books)
+                fragment_book_main_rv.smoothScrollToPosition(0)
             }
-        })
+
+            is BookListViewModel.BookLoadingState.Empty -> {
+                updateEmptyView(hide = false, animate = true)
+            }
+
+            is BookListViewModel.BookLoadingState.Error -> {
+                showSnackbar(getString(R.string.load_error), showLong = true)
+            }
+        }
+    }
+
+    private fun handleRandomPickEvent(event: BookListViewModel.RandomPickEvent) {
+
+        when (event) {
+            is BookListViewModel.RandomPickEvent.RandomPick -> {
+                // TODO
+                showToast(event.book.title)
+            }
+            BookListViewModel.RandomPickEvent.NoBookAvailable -> {
+                //TODO
+            }
+        }
     }
 
     override fun unbindViewModel() = Unit
@@ -159,7 +183,8 @@ class MainBookFragment : BaseFragment(),
                 onOverflowActionClickedListener = onBookOverflowClickedListener,
                 onItemClickListener = this,
                 onItemMoveListener = this,
-                onLabelClickedListener = onLabelClickedListener
+                onLabelClickedListener = onLabelClickedListener,
+                onRandomPickClickListener = onRandomPickClickListener
         )
 
         fragment_book_main_rv.apply {
@@ -206,7 +231,7 @@ class MainBookFragment : BaseFragment(),
                 viewModel.deleteBook(book)
                 bookAdapter.deleteEntity(book.toAdapterEntity())
             }
-            negativeButton(android.R.string.no) {
+            negativeButton(android.R.string.cancel) {
                 onDeletionConfirmed(false)
                 dismiss()
             }

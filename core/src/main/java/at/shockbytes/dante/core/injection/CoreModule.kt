@@ -5,7 +5,9 @@ import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.local.DanteRealmMigration
 import at.shockbytes.dante.core.data.DefaultBookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.data.local.RealmBookEntityDao
+import at.shockbytes.dante.core.data.local.RealmPageRecordDao
 import at.shockbytes.dante.core.data.remote.FirebaseBookDao
 import at.shockbytes.dante.core.image.GlideImageLoader
 import at.shockbytes.dante.core.image.ImageLoader
@@ -37,6 +39,12 @@ class CoreModule {
     @Named(LOCAL_BOOK_DAO)
     fun provideBookDao(realm: RealmInstanceProvider): BookEntityDao {
         return RealmBookEntityDao(realm)
+    }
+
+    @Provides
+    @Singleton
+    fun providePageRecordDao(realm: RealmInstanceProvider): PageRecordDao {
+        return RealmPageRecordDao(realm)
     }
 
     @Provides

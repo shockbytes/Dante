@@ -7,6 +7,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
@@ -20,7 +21,8 @@ import javax.inject.Inject
  */
 class BookDetailViewModel @Inject constructor(
     private val bookRepository: BookRepository,
-    private val settings: DanteSettings
+    private val settings: DanteSettings,
+    private val pageRecordDao: PageRecordDao
 ) : BaseViewModel() {
 
     data class DetailViewState(

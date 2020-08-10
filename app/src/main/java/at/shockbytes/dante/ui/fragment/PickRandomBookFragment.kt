@@ -6,7 +6,6 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.arguments.argumentNullable
 import kotlinx.android.synthetic.main.fragment_pick_random_book.*
-import kotlinx.android.synthetic.main.fragment_rating.*
 import javax.inject.Inject
 
 class PickRandomBookFragment : BaseFragment() {
@@ -14,7 +13,7 @@ class PickRandomBookFragment : BaseFragment() {
     override val layoutId: Int = R.layout.fragment_pick_random_book
 
     @Inject
-    internal lateinit var imageLoader: ImageLoader
+    protected lateinit var imageLoader: ImageLoader
 
     private var title by argument<String>()
     private var iconUrl by argumentNullable<String>()
@@ -26,15 +25,22 @@ class PickRandomBookFragment : BaseFragment() {
         iconUrl?.let(::loadIcon)
 
         btn_random_pick_pick.setOnClickListener {
+            closeFragment()
             onPickClickListener?.invoke()
         }
+
+        btn_random_pick_close.setOnClickListener {
+            closeFragment()
+        }
     }
+
+    private fun closeFragment() = parentFragmentManager.popBackStack()
 
     private fun loadIcon(url: String) {
         imageLoader.loadImageWithCornerRadius(
                 requireContext(),
                 url,
-                iv_rating_cover,
+                iv_random_pick_cover,
                 R.drawable.ic_placeholder,
                 cornerDimension = resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
         )

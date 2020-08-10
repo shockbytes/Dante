@@ -14,6 +14,7 @@ import at.shockbytes.dante.util.sort.SortStrategy
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -57,6 +58,7 @@ class BookListViewModel @Inject constructor(
 
     private val pickRandomBookSubject = PublishSubject.create<RandomPickEvent>()
     val onPickRandomBookEvent: Observable<RandomPickEvent> = pickRandomBookSubject
+            .delay(300L, TimeUnit.MILLISECONDS) // Delay it a bit, otherwise the UI appears too fast
 
     init {
         listenToSettings()

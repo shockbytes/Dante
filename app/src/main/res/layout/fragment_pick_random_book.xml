@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_rating"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/modal_background"
@@ -45,11 +44,11 @@
                 android:textColor="@color/colorPrimaryText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_rating_close"
+                app:layout_constraintTop_toBottomOf="@+id/btn_random_pick_close"
                 tools:text="Moby Dick" />
 
             <ImageButton
-                android:id="@+id/btn_rating_close"
+                android:id="@+id/btn_random_pick_close"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="48dp"
                 android:layout_height="wrap_content"

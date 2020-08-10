@@ -39,7 +39,10 @@
             app:srcCompat="@drawable/ic_close_grayscale" />
 
         <TextView
-            android:layout_margin="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:id="@+id/tv_item_random_pick"
             android:layout_width="wrap_content"

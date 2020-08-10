@@ -289,5 +289,7 @@
 
     <string name="random_pick_action">Zufälliges Buch wählen</string>
     <string name="random_pick_explanation">Unschlüssig was als nächstes gelesen werden solll? Wir haben da was für dich. Lass uns das einfach entscheiden.</string>
+    <string name="another_try">Weiterer Versuch</string>
+    <string name="pick">Wählen</string>
 
 </resources>

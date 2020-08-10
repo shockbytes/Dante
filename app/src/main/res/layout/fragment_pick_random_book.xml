@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_rating"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/modal_background"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        app:cardCornerRadius="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_random_pick_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textColor="@color/colorPrimaryText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_rating_close"
+                tools:text="Moby Dick" />
+
+            <ImageButton
+                android:id="@+id/btn_rating_close"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_close_grayscale" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_random_pick_pick"
+                style="@style/AppTheme.RoundedButton.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:paddingStart="48dp"
+                android:paddingEnd="48dp"
+                android:text="@string/pick"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_random_pick_cover" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_random_pick_cover"
+                android:layout_width="92dp"
+                android:layout_height="92dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_random_pick_title"
+                app:srcCompat="@drawable/ic_placeholder" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

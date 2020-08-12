@@ -14,6 +14,8 @@
     <color name="colorPrimaryTextLight">#424242</color>
     <color name="colorSecondaryTextLight">#767676</color>
 
+    <color name="page_record_data">#FFF</color>
+
     <color name="colorPrimaryInvert">#FFF</color>
 
     <color name="menuItemColor">#E0E0E0</color>

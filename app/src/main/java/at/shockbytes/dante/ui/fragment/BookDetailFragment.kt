@@ -9,6 +9,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -40,6 +41,7 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
+import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.ColorUtils
@@ -49,6 +51,15 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import com.github.mikephil.charting.components.IMarker
+import com.github.mikephil.charting.components.MarkerView
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -390,8 +401,66 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun handlePageRecords(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {
-        dataPoints.forEach {
-            Timber.e("TEST: $it")
+
+        val entries: List<Entry> = dataPoints
+                .mapIndexed { index, dp ->
+                    Entry(index.inc().toFloat(), dp.page.toFloat())
+                }
+                .toMutableList()
+                .apply {
+                    add(0, BarEntry(0f, 0f)) // Initial entry
+                }
+
+        val dataSet = LineDataSet(entries, "").apply {
+            setColor(ContextCompat.getColor(requireContext(), R.color.page_record_data), 255)
+            setDrawValues(false)
+            setDrawIcons(false)
+            setDrawFilled(true)
+            setDrawHighlightIndicators(false)
+            isHighlightEnabled = true
+            setCircleColor(ContextCompat.getColor(requireContext(), R.color.page_record_data))
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.page_record_gradient)
+        }
+
+        lc_page_records.apply {
+            description.isEnabled = false
+            legend.isEnabled = false
+
+            setDrawGridBackground(false)
+            setScaleEnabled(false)
+            setTouchEnabled(true)
+
+            xAxis.apply {
+                isEnabled = true
+                position = XAxis.XAxisPosition.BOTTOM
+                labelCount = entries.size
+                setDrawAxisLine(false)
+                setDrawGridLines(false)
+                setDrawAxisLine(false)
+                setDrawGridBackground(false)
+                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
+                valueFormatter = IndexAxisValueFormatter(dataPoints.map { it.formattedDate })
+            }
+
+            getAxis(YAxis.AxisDependency.LEFT).apply {
+                isEnabled = false
+                setDrawAxisLine(false)
+                setDrawGridLines(false)
+                setDrawZeroLine(false)
+                setDrawAxisLine(false)
+            }
+            getAxis(YAxis.AxisDependency.RIGHT).apply {
+                isEnabled = false
+                setDrawAxisLine(false)
+                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
+            }
+
+            setDrawMarkers(true)
+            marker = DanteMarkerView(requireContext())
+
+            data = LineData(dataSet)
+            invalidate()
         }
     }
 

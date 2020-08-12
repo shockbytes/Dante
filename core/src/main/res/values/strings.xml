@@ -24,6 +24,9 @@
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>
 
+    <string name="reading_behavior">Reading behavior</string>
+    <string name="pages_formatted">%d pages</string>
+
     <string name="edit">Edit</string>
     <string name="menu_main_stats">Statistics</string>
     <string name="menu_main_timeline">Timeline</string>

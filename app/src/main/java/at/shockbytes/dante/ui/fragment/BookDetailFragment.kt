@@ -215,7 +215,7 @@ class BookDetailFragment : BaseFragment(),
             .observeOn(AndroidSchedulers.mainThread())
             .map(::createBookFinishedFragment)
             .subscribe { fragment ->
-                fragment.show(parentFragmentManager, "book-finished-dialogfragment")
+                fragment.show(parentFragmentManager, "book-finished-dialog-fragment")
             }
             .addTo(compositeDisposable)
 
@@ -295,11 +295,12 @@ class BookDetailFragment : BaseFragment(),
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        viewModel.onPageCountMayChanged()
         LocalBroadcastManager.getInstance(requireContext()).apply {
             unregisterReceiver(notesReceiver)
             unregisterReceiver(bookUpdatedReceiver)
         }
+        super.onDestroy()
     }
 
     override fun onBackwardAnimation() {

@@ -11,7 +11,7 @@ interface PageRecordDao {
             fromPage: Int,
             toPage: Int,
             nowInMillis: Long
-    ): Completable
+    )
 
     fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>>
 }

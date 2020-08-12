@@ -64,6 +64,7 @@ class BookDetailViewModel @Inject constructor(
     val onAddLabelsRequest: Observable<List<BookLabel>> = addLabelsSubject
 
     private var bookId: Long = -1L
+    private var pagesAtInit: Int? = null
 
     fun initializeWithBookId(id: Long) {
         this.bookId = id
@@ -73,6 +74,9 @@ class BookDetailViewModel @Inject constructor(
 
     private fun fetchBook(bookId: Long) {
         bookRepository.get(bookId)
+                ?.also { entity ->
+                    pagesAtInit = entity.currentPage
+                }
                 ?.let(::craftViewState)
                 ?.let(viewState::postValue)
     }
@@ -261,6 +265,20 @@ class BookDetailViewModel @Inject constructor(
 
         // Reload the book once a label got deleted
         fetchBook(bookId)
+    }
+
+    fun onPageCountMayChanged() {
+
+        val currentPage = getBookFromLiveData()?.currentPage ?: 0
+        val startPage = pagesAtInit ?: 0
+        if (currentPage != startPage) {
+            pageRecordDao.insertPageRecordForId(
+                    id = bookId,
+                    fromPage = startPage,
+                    toPage = currentPage,
+                    nowInMillis = System.currentTimeMillis()
+            )
+        }
     }
 
     data class PageInfo(

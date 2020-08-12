@@ -20,7 +20,7 @@
     app:strokeWidth="0.8dp"
     android:transitionName="@string/transition_name_card">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
@@ -28,38 +28,63 @@
         <ImageView
             android:id="@+id/iv_item_random_pick_dismiss"
             android:layout_width="48dp"
-            android:background="@drawable/bg_rounded_ripple"
             android:layout_height="48dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_rounded_ripple"
             android:contentDescription="@string/contentdesc_listitem_img_overflow"
             android:scaleType="center"
-            android:layout_gravity="end"
             android:tint="@color/actionBarItemColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_close_grayscale" />
 
         <TextView
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
             android:id="@+id/tv_item_random_pick"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@string/random_pick_explanation"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_item_random_pick_dismiss" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_item_random_pick"
             style="@style/AppTheme.RoundedButton.Outlined"
             android:layout_width="wrap_content"
-            android:layout_gravity="center"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/random_pick_action" />
+            android:text="@string/random_pick_action"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_random_pick" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_random_pick_decoration_start"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:alpha="0.15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_random" />
+
+        <ImageView
+            android:id="@+id/iv_random_pick_decoration_end"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:alpha="0.15"
+            android:rotation="180"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_shuffle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

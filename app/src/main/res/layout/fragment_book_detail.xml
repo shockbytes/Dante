@@ -255,6 +255,12 @@
                     app:layout_constraintTop_toTopOf="@id/sb_detail_pages"
                     tools:text="1000 / 1000" />
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_page_records"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="tv_page_record_header,lc_page_records"/>
+
                 <TextView
                     android:id="@+id/tv_page_record_header"
                     android:layout_width="0dp"

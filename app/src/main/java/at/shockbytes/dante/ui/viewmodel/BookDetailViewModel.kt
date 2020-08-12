@@ -13,6 +13,7 @@ import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
@@ -35,6 +36,13 @@ class BookDetailViewModel @Inject constructor(
         val showSummary: Boolean
     )
 
+    sealed class PageRecordsViewState {
+
+        data class Present(val dataPoints: List<PageRecordDataPoint>): PageRecordsViewState()
+
+        object Absent : PageRecordsViewState()
+    }
+
     data class PageRecordDataPoint(
         val page: Int,
         val formattedDate: String
@@ -43,8 +51,8 @@ class BookDetailViewModel @Inject constructor(
     private val viewState = MutableLiveData<DetailViewState>()
     fun getViewState(): LiveData<DetailViewState> = viewState
 
-    private val pageRecords = MutableLiveData<List<PageRecordDataPoint>>()
-    fun getPageRecords(): LiveData<List<PageRecordDataPoint>> = pageRecords
+    private val pageRecords = MutableLiveData<PageRecordsViewState>()
+    fun getPageRecordsViewState(): LiveData<PageRecordsViewState> = pageRecords
 
     private val showBookFinishedDialogSubject = PublishSubject.create<String>()
     val showBookFinishedDialogEvent: Observable<String> = showBookFinishedDialogSubject
@@ -67,10 +75,21 @@ class BookDetailViewModel @Inject constructor(
     private var bookId: Long = -1L
     private var pagesAtInit: Int? = null
 
+    /**
+     * Special composite disposable which gets cleared when the attached view gets destroyed
+     */
+    private val viewCompositeDisposable = CompositeDisposable()
+
     fun initializeWithBookId(id: Long) {
         this.bookId = id
         fetchBook(bookId)
         fetchPageRecords(bookId)
+    }
+
+    fun onFragmentDestroyed() {
+        viewCompositeDisposable.clear()
+
+        onPageCountMayChanged()
     }
 
     private fun fetchBook(bookId: Long) {
@@ -86,24 +105,29 @@ class BookDetailViewModel @Inject constructor(
         pageRecordDao.pageRecordsForBook(bookId)
                 .map(::mapPageRecordsToDataPoints)
                 .subscribe(pageRecords::postValue, ExceptionHandlers::defaultExceptionHandler)
-                .addTo(compositeDisposable)
+                .addTo(viewCompositeDisposable)
     }
 
-    private fun mapPageRecordsToDataPoints(pageRecords: List<PageRecord>): List<PageRecordDataPoint> {
+    private fun mapPageRecordsToDataPoints(pageRecords: List<PageRecord>): PageRecordsViewState {
 
-        val format = DateTimeFormat.forPattern("dd/MM/yy")
-        return pageRecords
-                .groupBy { record ->
-                    DateTime(record.timestamp).withTimeAtStartOfDay()
-                }
-                .mapNotNull { (dtTimestamp, pageRecords) ->
-                    pageRecords.maxBy { it.timestamp }?.let { record ->
-                        PageRecordDataPoint(
-                                page = record.toPage,
-                                formattedDate = format.print(dtTimestamp)
-                        )
+        return if (pageRecords.isEmpty()) {
+            PageRecordsViewState.Absent
+        } else {
+            val format = DateTimeFormat.forPattern("dd/MM/yy")
+            pageRecords
+                    .groupBy { record ->
+                        DateTime(record.timestamp).withTimeAtStartOfDay()
                     }
-                }
+                    .mapNotNull { (dtTimestamp, pageRecords) ->
+                        pageRecords.maxBy { it.timestamp }?.let { record ->
+                            PageRecordDataPoint(
+                                    page = record.toPage,
+                                    formattedDate = format.print(dtTimestamp)
+                            )
+                        }
+                    }
+                    .let(PageRecordsViewState::Present)
+        }
     }
 
     fun requestNotesDialog() {
@@ -269,7 +293,7 @@ class BookDetailViewModel @Inject constructor(
         fetchBook(bookId)
     }
 
-    fun onPageCountMayChanged() {
+    private fun onPageCountMayChanged() {
 
         val currentPage = getBookFromLiveData()?.currentPage ?: 0
         val startPage = pagesAtInit ?: 0

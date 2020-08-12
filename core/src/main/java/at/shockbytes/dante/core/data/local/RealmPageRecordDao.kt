@@ -37,6 +37,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     override fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>> {
         return realm.instance.where(pageRecordClass)
+                .equalTo("bookId", bookId)
                 .sort("timestamp", Sort.ASCENDING)
                 .findAllAsync()
                 .asFlowable()

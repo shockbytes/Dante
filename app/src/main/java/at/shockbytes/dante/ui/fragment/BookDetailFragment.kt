@@ -9,7 +9,6 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -51,15 +50,10 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
-import com.github.mikephil.charting.components.IMarker
-import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
-import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -222,7 +216,7 @@ class BookDetailFragment : BaseFragment(),
         })
 
 
-        viewModel.getPageRecords().observe(this, Observer(::handlePageRecords))
+        viewModel.getPageRecordsViewState().observe(this, Observer(::handlePageRecordViewState))
 
         viewModel.showBookFinishedDialogEvent
             .observeOn(AndroidSchedulers.mainThread())
@@ -308,7 +302,7 @@ class BookDetailFragment : BaseFragment(),
     }
 
     override fun onDestroy() {
-        viewModel.onPageCountMayChanged()
+        viewModel.onFragmentDestroyed()
         LocalBroadcastManager.getInstance(requireContext()).apply {
             unregisterReceiver(notesReceiver)
             unregisterReceiver(bookUpdatedReceiver)
@@ -398,6 +392,20 @@ class BookDetailFragment : BaseFragment(),
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
         setupLabels(book.labels)
+    }
+
+    private fun handlePageRecordViewState(
+            pageRecordViewState: BookDetailViewModel.PageRecordsViewState
+    ) {
+        when (pageRecordViewState) {
+            is BookDetailViewModel.PageRecordsViewState.Present -> {
+                group_page_records.setVisible(true)
+                handlePageRecords(pageRecordViewState.dataPoints)
+            }
+            BookDetailViewModel.PageRecordsViewState.Absent -> {
+                group_page_records.setVisible(false)
+            }
+        }
     }
 
     private fun handlePageRecords(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {

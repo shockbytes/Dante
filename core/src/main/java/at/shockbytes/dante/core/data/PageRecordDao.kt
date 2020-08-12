@@ -1,6 +1,6 @@
 package at.shockbytes.dante.core.data
 
-import at.shockbytes.dante.core.book.realm.PageRecord
+import at.shockbytes.dante.core.book.PageRecord
 import io.reactivex.Completable
 import io.reactivex.Observable
 

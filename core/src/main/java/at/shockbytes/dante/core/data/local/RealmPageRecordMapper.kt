@@ -1,6 +1,6 @@
 package at.shockbytes.dante.core.data.local
 
-import at.shockbytes.dante.core.book.realm.PageRecord
+import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.book.realm.RealmPageRecord
 import at.shockbytes.dante.core.data.Mapper
 
@@ -11,7 +11,7 @@ class RealmPageRecordMapper : Mapper<RealmPageRecord, PageRecord>() {
                 bookId = data.bookId,
                 fromPage = data.fromPage,
                 toPage = data.toPage,
-                date = data.date
+                timestamp = data.timestamp
         )
     }
 
@@ -20,7 +20,7 @@ class RealmPageRecordMapper : Mapper<RealmPageRecord, PageRecord>() {
                 bookId = data.bookId,
                 fromPage = data.fromPage,
                 toPage = data.toPage,
-                date = data.date
+                timestamp = data.timestamp
         )
     }
 }

@@ -6,13 +6,17 @@ import android.os.Parcelable
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.navigation.NotesBundle
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
+import org.joda.time.format.DateTimeFormat
 import javax.inject.Inject
 
 /**
@@ -30,8 +34,16 @@ class BookDetailViewModel @Inject constructor(
         val showSummary: Boolean
     )
 
+    data class PageRecordDataPoint(
+        val page: Int,
+        val formattedDate: String
+    )
+
     private val viewState = MutableLiveData<DetailViewState>()
     fun getViewState(): LiveData<DetailViewState> = viewState
+
+    private val pageRecords = MutableLiveData<List<PageRecordDataPoint>>()
+    fun getPageRecords(): LiveData<List<PageRecordDataPoint>> = pageRecords
 
     private val showBookFinishedDialogSubject = PublishSubject.create<String>()
     val showBookFinishedDialogEvent: Observable<String> = showBookFinishedDialogSubject
@@ -56,12 +68,36 @@ class BookDetailViewModel @Inject constructor(
     fun initializeWithBookId(id: Long) {
         this.bookId = id
         fetchBook(bookId)
+        fetchPageRecords(bookId)
     }
 
     private fun fetchBook(bookId: Long) {
-        bookRepository.get(bookId)?.let { entity ->
-            viewState.postValue(craftViewSate(entity))
-        }
+        bookRepository.get(bookId)
+                ?.let(::craftViewState)
+                ?.let(viewState::postValue)
+    }
+
+    private fun fetchPageRecords(bookId: Long) {
+        pageRecordDao.pageRecordsForBook(bookId)
+                .map(::mapPageRecordsToDataPoints)
+                .subscribe(pageRecords::postValue, ExceptionHandlers::defaultExceptionHandler)
+                .addTo(compositeDisposable)
+    }
+
+    private fun mapPageRecordsToDataPoints(pageRecords: List<PageRecord>): List<PageRecordDataPoint> {
+
+        val format = DateTimeFormat.forPattern("dd/mm/yy")
+        return pageRecords
+                .groupBy { it.timestamp }
+                .toSortedMap()
+                .mapNotNull { (timestamp, pageRecords) ->
+                    pageRecords.maxBy { it.timestamp }?.let { record ->
+                        PageRecordDataPoint(
+                                page = record.pages,
+                                formattedDate = format.print(timestamp)
+                        )
+                    }
+                }
     }
 
     fun requestNotesDialog() {
@@ -186,13 +222,13 @@ class BookDetailViewModel @Inject constructor(
         return viewState.value?.book
     }
 
-    private fun craftViewSate(book: BookEntity): DetailViewState {
+    private fun craftViewState(book: BookEntity): DetailViewState {
         return DetailViewState(book, settings.showSummary)
     }
 
     private fun updateDaoAndObserver(b: BookEntity) {
         bookRepository.update(b)
-        viewState.postValue(craftViewSate(b))
+        viewState.postValue(craftViewState(b))
     }
 
     fun requestEditBook() {

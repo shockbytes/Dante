@@ -6,5 +6,5 @@ open class RealmPageRecord(
         var bookId: Long = -1L,
         var fromPage: Int = 0,
         var toPage: Int = 0,
-        var date: String = "" // TODO Find suitable data type
+        var timestamp: Long = 0L
 ) : RealmObject()

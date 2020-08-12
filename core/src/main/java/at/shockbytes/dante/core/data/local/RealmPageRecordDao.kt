@@ -1,6 +1,6 @@
 package at.shockbytes.dante.core.data.local
 
-import at.shockbytes.dante.core.book.realm.PageRecord
+import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.book.realm.RealmPageRecord
 import at.shockbytes.dante.core.data.PageRecordDao
@@ -22,21 +22,15 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
     ): Completable {
         return Completable.fromAction {
 
-            val date = formatDate(nowInMillis)
-
             insert(
                     PageRecord(
                             bookId = id,
                             fromPage = fromPage,
                             toPage = toPage,
-                            date = date
+                            timestamp = nowInMillis
                     )
             )
         }
-    }
-
-    private fun formatDate(nowInMillis: Long): String {
-        return "TODO"
     }
 
     private fun insert(pageRecord: PageRecord) {

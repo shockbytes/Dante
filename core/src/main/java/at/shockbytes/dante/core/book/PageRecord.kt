@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core.book.realm
+package at.shockbytes.dante.core.book
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -8,7 +8,7 @@ data class PageRecord(
         val bookId: Long,
         val fromPage: Int,
         val toPage: Int,
-        val date: String // TODO Find suitable data type
+        val timestamp: Long
 ) : Parcelable {
 
     val pages: Int

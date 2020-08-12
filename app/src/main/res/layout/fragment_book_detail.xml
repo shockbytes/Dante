@@ -255,12 +255,21 @@
                     app:layout_constraintTop_toTopOf="@id/sb_detail_pages"
                     tools:text="1000 / 1000" />
 
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lc_page_records"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout_additional_book_info"
+                    android:background="#dea"/>
+
+
                 <HorizontalScrollView
                     android:id="@+id/hsv_labels"
                     android:layout_width="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout_additional_book_info"
+                    app:layout_constraintTop_toBottomOf="@+id/lc_page_records"
                     android:layout_height="48dp"
                     android:scrollbars="none"
                     tools:background="#eda" >

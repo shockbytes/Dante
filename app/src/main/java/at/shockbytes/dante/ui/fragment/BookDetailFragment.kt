@@ -205,11 +205,12 @@ class BookDetailFragment : BaseFragment(),
 
     override fun bindViewModel() {
         viewModel.getViewState().observe(this, Observer { viewState ->
-            viewState?.let {
-                initializeBookInformation(viewState.book, viewState.showSummary)
-                initializeTimeInformation(viewState.book)
-            }
+            initializeBookInformation(viewState.book, viewState.showSummary)
+            initializeTimeInformation(viewState.book)
         })
+
+
+        viewModel.getPageRecords().observe(this, Observer(::handlePageRecords))
 
         viewModel.showBookFinishedDialogEvent
             .observeOn(AndroidSchedulers.mainThread())
@@ -385,6 +386,12 @@ class BookDetailFragment : BaseFragment(),
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
         setupLabels(book.labels)
+    }
+
+    private fun handlePageRecords(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {
+        dataPoints.forEach {
+            Timber.e("TEST: $it")
+        }
     }
 
     private fun setupViewListener() {

@@ -25,7 +25,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
                         fromPage = fromPage,
                         toPage = toPage,
                         timestamp = nowInMillis
-                ).also { print(it) }
+                )
         )
     }
 

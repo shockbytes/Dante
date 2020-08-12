@@ -9,8 +9,4 @@ data class PageRecord(
         val fromPage: Int,
         val toPage: Int,
         val timestamp: Long
-) : Parcelable {
-
-    val pages: Int
-        get() = toPage - fromPage
-}
+) : Parcelable

@@ -16,6 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
+import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import javax.inject.Inject
 
@@ -90,15 +91,16 @@ class BookDetailViewModel @Inject constructor(
 
     private fun mapPageRecordsToDataPoints(pageRecords: List<PageRecord>): List<PageRecordDataPoint> {
 
-        val format = DateTimeFormat.forPattern("dd/mm/yy")
+        val format = DateTimeFormat.forPattern("dd/MM/yy")
         return pageRecords
-                .groupBy { it.timestamp }
-                .toSortedMap()
-                .mapNotNull { (timestamp, pageRecords) ->
+                .groupBy { record ->
+                    DateTime(record.timestamp).withTimeAtStartOfDay()
+                }
+                .mapNotNull { (dtTimestamp, pageRecords) ->
                     pageRecords.maxBy { it.timestamp }?.let { record ->
                         PageRecordDataPoint(
-                                page = record.pages,
-                                formattedDate = format.print(timestamp)
+                                page = record.toPage,
+                                formattedDate = format.print(dtTimestamp)
                         )
                     }
                 }

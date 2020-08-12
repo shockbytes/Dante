@@ -18,7 +18,8 @@ class DanteRealmMigration : RealmMigration {
         NAME_REFACTORING,
         SUMMARY_AND_LABELS,
         LABEL_OBJECT,
-        LABEL_BOOK_ID
+        LABEL_BOOK_ID,
+        PAGES_RECORD
     }
 
     override fun migrate(realm: DynamicRealm, oldVersion: Long, newVersion: Long) {
@@ -51,6 +52,10 @@ class DanteRealmMigration : RealmMigration {
         }
         if (versionCounter == Migrations.LABEL_OBJECT.v()) {
             migrateToLabelBookIds(schema)
+            versionCounter++
+        }
+        if (versionCounter == Migrations.LABEL_BOOK_ID.v()) {
+            migrateToPagesRecord(schema)
         }
     }
 
@@ -101,10 +106,19 @@ class DanteRealmMigration : RealmMigration {
             ?.addField("bookId", Long::class.java)
     }
 
+    private fun migrateToPagesRecord(schema: RealmSchema) {
+
+        schema.create("RealmPageRecord")
+                .addField("bookId", Long::class.java)
+                .addField("fromPage", Int::class.java)
+                .addField("toPage", Int::class.java)
+                .addField("timestamp", Long::class.java)
+    }
+
     companion object {
 
         private fun Migrations.v(): Long = this.ordinal.toLong()
 
-        val migrationVersion = Migrations.LABEL_BOOK_ID.v()
+        val migrationVersion = Migrations.PAGES_RECORD.v()
     }
 }

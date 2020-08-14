@@ -24,6 +24,7 @@ import androidx.annotation.ColorInt
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -428,7 +429,7 @@ class BookDetailFragment : BaseFragment(),
             setDrawHighlightIndicators(false)
             isHighlightEnabled = true
             setCircleColor(ContextCompat.getColor(requireContext(), R.color.page_record_data))
-            mode = LineDataSet.Mode.CUBIC_BEZIER
+            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
             fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.page_record_gradient)
         }
 
@@ -443,9 +444,12 @@ class BookDetailFragment : BaseFragment(),
             xAxis.apply {
                 isEnabled = true
                 position = XAxis.XAxisPosition.BOTTOM
-                labelCount = entries.size
+                labelCount = entries.size / 2
                 setDrawAxisLine(false)
+                labelRotationAngle = -30f
+                textSize = 8f
                 setDrawGridLines(false)
+                typeface = ResourcesCompat.getFont(requireContext(), R.font.montserrat)
                 setDrawAxisLine(false)
                 setDrawGridBackground(false)
                 textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)

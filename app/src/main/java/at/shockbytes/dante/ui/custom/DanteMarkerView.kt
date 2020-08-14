@@ -13,7 +13,7 @@ class DanteMarkerView(
         context: Context
 ): MarkerView(context, R.layout.dante_marker_view), LayoutContainer {
 
-    override val containerView: View?
+    override val containerView: View
         get() = this
 
     override fun refreshContent(e: Entry?, highlight: Highlight?) {

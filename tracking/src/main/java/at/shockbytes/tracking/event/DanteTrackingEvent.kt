@@ -5,27 +5,21 @@ sealed class DanteTrackingEvent(
     val props: List<TrackingProperty> = listOf()
 ) {
 
-    class BackupMadeEvent(backupProvider: String) : DanteTrackingEvent(
+    data class BackupMadeEvent(val backupProvider: String) : DanteTrackingEvent(
         "backup_made",
         listOf(TrackingProperty("backup_provider", backupProvider))
     )
 
-    class InterestedInOnlineStorageEvent : DanteTrackingEvent(
-        "interested_in_online_storage",
-        listOf()
-    )
+    object InterestedInOnlineStorageEvent : DanteTrackingEvent("interested_in_online_storage")
 
-    class StartImport(name: String) : DanteTrackingEvent(
+    data class StartImport(val importer: String) : DanteTrackingEvent(
         "start_import",
-        listOf(TrackingProperty("importer_name", name))
+        listOf(TrackingProperty("importer_name", importer))
     )
 
-    class BurnDownLibrary : DanteTrackingEvent(
-        "burn_down_library",
-        listOf()
-    )
+    object BurnDownLibrary : DanteTrackingEvent("burn_down_library")
 
-    class TrackingStateChanged(state: Boolean) : DanteTrackingEvent(
+    data class TrackingStateChanged(val state: Boolean) : DanteTrackingEvent(
         "tracking_state_changed",
         listOf(TrackingProperty("state", state))
     )

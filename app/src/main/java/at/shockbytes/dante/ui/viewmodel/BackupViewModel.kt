@@ -169,7 +169,7 @@ class BackupViewModel @Inject constructor(
                 emitter.onComplete()
             }
             .doOnComplete {
-                tracker.track(DanteTrackingEvent.BurnDownLibrary())
+                tracker.track(DanteTrackingEvent.BurnDownLibrary)
             }
     }
 

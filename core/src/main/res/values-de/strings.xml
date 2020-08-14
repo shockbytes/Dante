@@ -289,5 +289,11 @@
 
     <string name="random_pick_action">Zufälliges Buch wählen</string>
     <string name="random_pick_explanation">Unschlüssig was als nächstes gelesen werden solll? Wir haben da was für dich. Lass uns das einfach entscheiden.</string>
+    <string name="another_try">Weiterer Versuch</string>
+    <string name="pick">Wählen</string>
+    <string name="prefs_pick_random_title">Zufälliges Buch</string>
+    <string name="prefs_pick_random_summary_off">Die Interaktion um ein zufälliges Buch auszuwählen ist ausgeblendet</string>
+    <string name="prefs_pick_random_summary_on">Die Interaktion um ein zufälliges Buch auszuwählen ist eingeblendet</string>
+    <string name="random_pick_restore_instruction">Du kannst es später wieder anzeigen, wenn du es in den Einstellungen wieder aktivierst</string>
 
 </resources>

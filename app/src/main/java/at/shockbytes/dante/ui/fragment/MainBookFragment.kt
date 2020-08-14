@@ -33,6 +33,7 @@ import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 import at.shockbytes.dante.ui.adapter.main.RandomPickCallback
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
@@ -74,6 +75,7 @@ class MainBookFragment : BaseFragment(),
 
     private val randomPickCallback = object : RandomPickCallback {
         override fun onDismiss() {
+            showToast(R.string.random_pick_restore_instruction)
             viewModel.onDismissRandomBookPicker()
             bookAdapter.deleteEntity(BookAdapterEntity.RandomPick)
         }
@@ -170,8 +172,21 @@ class MainBookFragment : BaseFragment(),
 
         when (event) {
             is BookListViewModel.RandomPickEvent.RandomPick -> {
-                // TODO
-                showToast(event.book.title)
+
+                PickRandomBookFragment
+                        .newInstance(event.book.title, event.book.normalizedThumbnailUrl)
+                        .setOnPickClickListener {
+                            viewModel.moveBookToCurrentList(event.book)
+                        }
+                        .let { fragment ->
+                            DanteUtils.addFragmentToActivity(
+                                    parentFragmentManager,
+                                    fragment,
+                                    android.R.id.content,
+                                    true
+                            )
+                        }
+
             }
             BookListViewModel.RandomPickEvent.NoBookAvailable -> {
                 //TODO

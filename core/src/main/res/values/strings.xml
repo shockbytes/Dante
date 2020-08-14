@@ -18,6 +18,8 @@
     <string name="download">Download</string>
     <string name="download_backup">Download</string>
     <string name="mail_feedback">How I would improve Dante</string>
+    <string name="pick">Pick</string>
+    <string name="another_try">Another try</string>
 
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>
@@ -232,6 +234,11 @@
     <string name="prefs_tracking_summary">Improve the app by sending anonymous data to our servers</string>
     <string name="prefs_tracking_title">Tracking</string>
 
+    <string name="prefs_pick_random_key" translatable="false">prefs_pick_random_key</string>
+    <string name="prefs_pick_random_summary_on">Show the interaction allowing you to pick a random book</string>
+    <string name="prefs_pick_random_summary_off">Hide the interaction allowing you to pick a random book</string>
+    <string name="prefs_pick_random_title">Random book picking</string>
+
     <string name="prefs_change_icon_key" translatable="false">prefs_change_icon_key</string>
     <string name="prefs_change_icon_title">Change launcher icon</string>
 
@@ -383,5 +390,6 @@
 
     <string name="random_pick_action">Pick random book</string>
     <string name="random_pick_explanation">Can\'t decide which book to read next? We\'ve got you covered. Let us decide for you what you should read next.</string>
+    <string name="random_pick_restore_instruction">You can show it again by switching it on in the settings later</string>
 
 </resources>

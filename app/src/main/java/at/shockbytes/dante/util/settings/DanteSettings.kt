@@ -3,14 +3,13 @@ package at.shockbytes.dante.util.settings
 import android.content.Context
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
-import at.shockbytes.dante.util.settings.delegate.SharedPreferencesStringPropertyDelegate
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.dante.util.settings.delegate.boolDelegate
+import at.shockbytes.dante.util.settings.delegate.stringDelegate
 import at.shockbytes.dante.util.sort.SortStrategy
 import at.shockbytes.dante.util.sort.TimeLineSortStrategy
 import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Author:  Martin Macheiner
@@ -18,14 +17,17 @@ import io.reactivex.schedulers.Schedulers
  */
 class DanteSettings(
     private val context: Context,
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+    private val schedulers: SchedulerFacade
 ) {
 
     private val rxPrefs: RxSharedPreferences = RxSharedPreferences.create(prefs)
 
-    var isFirstAppOpen: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_first_app_open_key), defaultValue = true)
+    var isFirstAppOpen: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_first_app_open_key))
 
-    private val darkModeString: String by SharedPreferencesStringPropertyDelegate(prefs, context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
+    private val darkModeString: String by prefs.stringDelegate(context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
+
+    var showRandomPickInteraction: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_pick_random_key))
 
     var selectedLauncherIconState: LauncherIconState
         get() {
@@ -41,9 +43,9 @@ class DanteSettings(
     val themeState: ThemeState
         get() = ThemeState.ofString(darkModeString) ?: ThemeState.SYSTEM
 
-    var showSummary: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_show_summary_key), defaultValue = true)
+    var showSummary: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_show_summary_key))
 
-    var trackingEnabled: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_tracking_key), defaultValue = false)
+    var trackingEnabled: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_tracking_key), defaultValue = false)
 
     var sortStrategy: SortStrategy
         get() {
@@ -81,8 +83,8 @@ class DanteSettings(
                 .map { ordinal ->
                     SortStrategy.values()[ordinal]
                 }
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulers.computation)
+                .observeOn(schedulers.ui)
     }
 
     fun observeThemeChanged(): Observable<ThemeState> {
@@ -91,7 +93,15 @@ class DanteSettings(
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
             .map(ThemeState.Companion::ofStringWithDefault)
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(schedulers.computation)
+            .observeOn(schedulers.ui)
+    }
+
+    fun observeRandomPickInteraction(): Observable<Boolean> {
+        return rxPrefs.getBoolean(context.getString(R.string.prefs_pick_random_key))
+                .asObservable()
+                .distinctUntilChanged()
+                .subscribeOn(schedulers.computation)
+                .observeOn(schedulers.ui)
     }
 }

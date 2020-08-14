@@ -290,11 +290,11 @@
                 <HorizontalScrollView
                     android:id="@+id/hsv_labels"
                     android:layout_width="0dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lc_page_records"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
                     android:scrollbars="none"
                     tools:background="#eda" >
 
@@ -308,15 +308,16 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_add_label"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="@string/add_label"
                             android:backgroundTint="@color/colorAccent"
                             android:textColor="@color/white"
                             app:iconTint="@color/white"
                             app:icon="@drawable/ic_add_round"
                             app:cornerRadius="20dp"
-                            android:layout_height="match_parent"
+                            android:layout_marginBottom="24dp"
                             android:layout_marginStart="4dp"
-                            android:layout_marginEnd="8dp"/>
+                            android:layout_marginEnd="16dp"/>
 
                         <com.google.android.material.chip.ChipGroup
                             android:id="@+id/chips_detail_label"

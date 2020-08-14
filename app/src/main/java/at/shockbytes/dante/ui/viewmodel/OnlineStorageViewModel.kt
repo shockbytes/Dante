@@ -41,7 +41,7 @@ class OnlineStorageViewModel @Inject constructor(
     }
 
     private fun trackIsInterested() {
-        tracker.track(DanteTrackingEvent.InterestedInOnlineStorageEvent())
+        tracker.track(DanteTrackingEvent.InterestedInOnlineStorageEvent)
     }
 
     companion object {

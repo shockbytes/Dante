@@ -234,6 +234,11 @@
     <string name="prefs_tracking_summary">Improve the app by sending anonymous data to our servers</string>
     <string name="prefs_tracking_title">Tracking</string>
 
+    <string name="prefs_pick_random_key" translatable="false">prefs_pick_random_key</string>
+    <string name="prefs_pick_random_summary_on">Show the interaction allowing you to pick a random book</string>
+    <string name="prefs_pick_random_summary_off">Hide the interaction allowing you to pick a random book</string>
+    <string name="prefs_pick_random_title">Random book picking</string>
+
     <string name="prefs_change_icon_key" translatable="false">prefs_change_icon_key</string>
     <string name="prefs_change_icon_title">Change launcher icon</string>
 

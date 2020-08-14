@@ -65,6 +65,23 @@ class BookListViewModel @Inject constructor(
         listenToSettings()
     }
 
+    private fun listenToSettings() {
+        // Reload books whenever the sort strategy changes
+        settings.observeSortStrategy()
+                .observeOn(schedulers.ui)
+                .subscribe { loadBooks() }
+                .addTo(compositeDisposable)
+
+        // Reload books whenever the random pick interaction setting changes but only if we
+        // are in the correct tab
+        if (state == BookState.READ_LATER) {
+            settings.observeRandomPickInteraction()
+                    .subscribe { loadBooks() }
+                    .addTo(compositeDisposable)
+        }
+    }
+
+
     private fun loadBooks() {
         bookRepository.bookObservable
             .map { fetchedBooks ->
@@ -111,15 +128,6 @@ class BookListViewModel @Inject constructor(
         return this.map { entity ->
             BookAdapterEntity.Book(entity)
         }
-    }
-
-    private fun listenToSettings() {
-        settings.observeSortStrategy()
-            .observeOn(schedulers.ui)
-            .subscribe {
-                loadBooks()
-            }
-            .addTo(compositeDisposable)
     }
 
     fun deleteBook(book: BookEntity) {

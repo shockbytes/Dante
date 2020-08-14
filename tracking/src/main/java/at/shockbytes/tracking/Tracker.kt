@@ -8,14 +8,17 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
  */
 abstract class Tracker {
 
-    var isTrackingAllowed: Boolean = true
+    var isTrackingAllowed: Boolean? = true
         set(value) {
+            // Only track event if value isn't null and there's a previous value (stored in field) too
+            if (value != null && field != null) {
+                trackEvent(DanteTrackingEvent.TrackingStateChanged(value))
+            }
             field = value
-            trackEvent(DanteTrackingEvent.TrackingStateChanged(value))
         }
 
     fun track(event: DanteTrackingEvent) {
-        if (isTrackingAllowed) {
+        if (isTrackingAllowed == true) {
             trackEvent(event)
         }
     }

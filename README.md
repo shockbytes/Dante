@@ -57,7 +57,8 @@ Empty...
 ### Version 3.14
 - [x] Move sort into settings
 - [x] Improve Main UI
-- [ ] Add pick random for reading button
+- [x] Add pick random for reading button
+- [ ] Pages statistics
 
 ### Version 3.13 - SMALL STEPS
 * Update Crashlytics SDK

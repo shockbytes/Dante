@@ -27,7 +27,7 @@ class DanteSettings(
 
     private val darkModeString: String by prefs.stringDelegate(context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
 
-    val showRandomPickInteraction: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_pick_random_key))
+    var showRandomPickInteraction: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_pick_random_key))
 
     var selectedLauncherIconState: LauncherIconState
         get() {

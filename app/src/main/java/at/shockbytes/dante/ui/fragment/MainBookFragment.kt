@@ -75,6 +75,7 @@ class MainBookFragment : BaseFragment(),
 
     private val randomPickCallback = object : RandomPickCallback {
         override fun onDismiss() {
+            showToast(R.string.random_pick_restore_instruction)
             viewModel.onDismissRandomBookPicker()
             bookAdapter.deleteEntity(BookAdapterEntity.RandomPick)
         }

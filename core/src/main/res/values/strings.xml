@@ -390,5 +390,6 @@
 
     <string name="random_pick_action">Pick random book</string>
     <string name="random_pick_explanation">Can\'t decide which book to read next? We\'ve got you covered. Let us decide for you what you should read next.</string>
+    <string name="random_pick_restore_instruction">You can show it again by switching it on in the settings later</string>
 
 </resources>

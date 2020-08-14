@@ -24,7 +24,8 @@ import javax.inject.Inject
 class BookListViewModel @Inject constructor(
     private val bookRepository: BookRepository,
     private val settings: DanteSettings,
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val danteSettings: DanteSettings
 ) : BaseViewModel() {
 
     var state: BookState = BookState.READING
@@ -82,8 +83,7 @@ class BookListViewModel @Inject constructor(
     private fun mapBooksToBookLoadingState(books: List<BookEntity>): BookLoadingState {
         return if (books.isNotEmpty()) {
 
-            // TODO Replace true with DanteSettings value
-            val bookAdapterEntities = if (state == BookState.READ_LATER && books.size > 1) {
+            val bookAdapterEntities = if (shouldShowRandomPickInteraction(books.size)) {
                 books.toAdapterEntities().toMutableList().apply {
                     add(0, BookAdapterEntity.RandomPick)
                 }
@@ -95,6 +95,16 @@ class BookListViewModel @Inject constructor(
         } else {
             BookLoadingState.Empty
         }
+    }
+
+    /**
+     * Show random pick interaction if:
+     * - User is in read_later tab
+     * - There is more than 1 book in this tab
+     * - And the user did not explicitly opt-out for it in the settings
+     */
+    private fun shouldShowRandomPickInteraction(size: Int): Boolean {
+        return state == BookState.READ_LATER && size > 1 && danteSettings.showRandomPickInteraction
     }
 
     private fun List<BookEntity>.toAdapterEntities(): List<BookAdapterEntity> {
@@ -168,6 +178,6 @@ class BookListViewModel @Inject constructor(
     }
 
     fun onDismissRandomBookPicker() {
-        // TODO
+        danteSettings.showRandomPickInteraction = false
     }
 }

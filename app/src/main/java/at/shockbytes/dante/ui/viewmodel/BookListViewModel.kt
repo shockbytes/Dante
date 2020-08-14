@@ -11,6 +11,8 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -25,7 +27,8 @@ class BookListViewModel @Inject constructor(
     private val bookRepository: BookRepository,
     private val settings: DanteSettings,
     private val schedulers: SchedulerFacade,
-    private val danteSettings: DanteSettings
+    private val danteSettings: DanteSettings,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     var state: BookState = BookState.READING
@@ -72,13 +75,15 @@ class BookListViewModel @Inject constructor(
                 .subscribe { loadBooks() }
                 .addTo(compositeDisposable)
 
-        // Reload books whenever the random pick interaction setting changes but only if we
-        // are in the correct tab
-        if (state == BookState.READ_LATER) {
-            settings.observeRandomPickInteraction()
-                    .subscribe { loadBooks() }
-                    .addTo(compositeDisposable)
-        }
+        // Reload books whenever the random pick interaction setting changes
+        // but only if we are in the correct tab
+        settings.observeRandomPickInteraction()
+                .subscribe {
+                    if (state == BookState.READ_LATER) {
+                        loadBooks()
+                    }
+                }
+                .addTo(compositeDisposable)
     }
 
 
@@ -173,6 +178,10 @@ class BookListViewModel @Inject constructor(
                 ?.let { state ->
                     (state as? BookLoadingState.Success)?.books
                 }
+                ?.also { adapterEntities ->
+                    val books = adapterEntities.filterIsInstance<BookAdapterEntity.Book>().count()
+                    tracker.track(DanteTrackingEvent.PickRandomBook(books))
+                }
                 ?.let { books ->
                     val randomPick = books
                             .filterIsInstance<BookAdapterEntity.Book>()
@@ -187,5 +196,7 @@ class BookListViewModel @Inject constructor(
 
     fun onDismissRandomBookPicker() {
         danteSettings.showRandomPickInteraction = false
+
+        tracker.track(DanteTrackingEvent.DisableRandomBookInteraction)
     }
 }

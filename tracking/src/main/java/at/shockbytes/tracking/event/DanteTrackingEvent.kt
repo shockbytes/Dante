@@ -29,4 +29,11 @@ sealed class DanteTrackingEvent(
         "tracking_state_changed",
         listOf(TrackingProperty("state", state))
     )
+
+    data class PickRandomBook(val booksInBacklog: Int): DanteTrackingEvent(
+        "pick_random_book",
+        listOf(TrackingProperty("backlog_count", booksInBacklog))
+    )
+
+    object DisableRandomBookInteraction : DanteTrackingEvent("disable_random_book_interaction")
 }

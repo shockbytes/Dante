@@ -3,8 +3,8 @@ package at.shockbytes.dante.util.settings
 import android.content.Context
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
-import at.shockbytes.dante.util.settings.delegate.SharedPreferencesStringPropertyDelegate
+import at.shockbytes.dante.util.settings.delegate.boolDelegate
+import at.shockbytes.dante.util.settings.delegate.stringDelegate
 import at.shockbytes.dante.util.sort.SortStrategy
 import at.shockbytes.dante.util.sort.TimeLineSortStrategy
 import com.f2prateek.rx.preferences2.RxSharedPreferences
@@ -23,9 +23,11 @@ class DanteSettings(
 
     private val rxPrefs: RxSharedPreferences = RxSharedPreferences.create(prefs)
 
-    var isFirstAppOpen: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_first_app_open_key), defaultValue = true)
+    var isFirstAppOpen: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_first_app_open_key))
 
-    private val darkModeString: String by SharedPreferencesStringPropertyDelegate(prefs, context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
+    private val darkModeString: String by prefs.stringDelegate(context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
+
+    val showRandomPickInteraction: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_pick_random_key))
 
     var selectedLauncherIconState: LauncherIconState
         get() {
@@ -41,9 +43,9 @@ class DanteSettings(
     val themeState: ThemeState
         get() = ThemeState.ofString(darkModeString) ?: ThemeState.SYSTEM
 
-    var showSummary: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_show_summary_key), defaultValue = true)
+    var showSummary: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_show_summary_key))
 
-    var trackingEnabled: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, context.getString(R.string.prefs_tracking_key), defaultValue = false)
+    var trackingEnabled: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_tracking_key), defaultValue = false)
 
     var sortStrategy: SortStrategy
         get() {

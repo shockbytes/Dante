@@ -2,10 +2,7 @@ package at.shockbytes.dante.stats
 
 import android.graphics.Color
 import at.shockbytes.dante.core.bareBone
-import at.shockbytes.dante.core.book.BareBoneBook
-import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.book.BookState
-import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.core.book.*
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.util.AppUtils
 import org.joda.time.DateTime
@@ -14,9 +11,13 @@ import org.joda.time.Months
 
 object BookStatsBuilder {
 
-    fun createFrom(books: List<BookEntity>): List<BookStatsViewItem> {
+    fun createFrom(
+            books: List<BookEntity>,
+            pageRecords: List<PageRecord>
+    ): List<BookStatsViewItem> {
         return listOf(
             createBooksAndPagesItem(books),
+            createPagesOverTimeItem(books, pageRecords),
             createReadingDurationItem(books),
             createFavoriteItem(books),
             createLanguageItem(books),
@@ -56,6 +57,15 @@ object BookStatsBuilder {
             )
         )
     }
+
+    private fun createPagesOverTimeItem(
+            books: List<BookEntity>,
+            pageRecords: List<PageRecord>
+    ): BookStatsViewItem {
+        // TODO Implement this method later...
+        return BookStatsViewItem.Pages.Empty
+    }
+
 
     private fun createReadingDurationItem(books: List<BookEntity>): BookStatsViewItem {
 

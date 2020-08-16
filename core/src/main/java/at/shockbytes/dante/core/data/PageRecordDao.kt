@@ -14,4 +14,6 @@ interface PageRecordDao {
     )
 
     fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>>
+
+    fun allPageRecords(): Observable<List<PageRecord>>
 }

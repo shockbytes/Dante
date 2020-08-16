@@ -99,8 +99,7 @@ class BookDetailFragment : BaseFragment(),
             btn_detail_rate,
             btn_detail_notes,
             btn_detail_published,
-            tv_page_record_header,
-            lc_page_records,
+            pages_diagram_view,
             hsv_labels,
             layout_detail_dates,
             btn_detail_wishhlist_date,
@@ -401,11 +400,11 @@ class BookDetailFragment : BaseFragment(),
     ) {
         when (pageRecordViewState) {
             is BookDetailViewModel.PageRecordsViewState.Present -> {
-                group_page_records.setVisible(true)
+                pages_diagram_view.setVisible(true)
                 handlePageRecords(pageRecordViewState.dataPoints)
             }
             BookDetailViewModel.PageRecordsViewState.Absent -> {
-                group_page_records.setVisible(false)
+                pages_diagram_view.setVisible(false)
             }
         }
     }
@@ -433,7 +432,7 @@ class BookDetailFragment : BaseFragment(),
             fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.page_record_gradient)
         }
 
-        lc_page_records.apply {
+        pages_diagram_view.chart.apply {
             description.isEnabled = false
             legend.isEnabled = false
 

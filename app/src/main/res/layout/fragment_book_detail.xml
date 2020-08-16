@@ -255,37 +255,21 @@
                     app:layout_constraintTop_toTopOf="@id/sb_detail_pages"
                     tools:text="1000 / 1000" />
 
-                <androidx.constraintlayout.widget.Group
-                    android:id="@+id/group_page_records"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:constraint_referenced_ids="tv_page_record_header,lc_page_records"/>
 
-                <TextView
-                    android:id="@+id/tv_page_record_header"
+
+
+                <at.shockbytes.dante.ui.custom.PagesDiagramView
+                    android:id="@+id/pages_diagram_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:minHeight="200dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginEnd="16dp"
-                    android:text="@string/reading_behavior"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayout_additional_book_info" />
-
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/lc_page_records"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:minHeight="200dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_page_record_header"
-                    tools:background="#dea" />
 
                 <HorizontalScrollView
                     android:id="@+id/hsv_labels"
@@ -293,7 +277,7 @@
                     android:layout_marginTop="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/lc_page_records"
+                    app:layout_constraintTop_toBottomOf="@+id/pages_diagram_view"
                     android:layout_height="wrap_content"
                     android:scrollbars="none"
                     tools:background="#eda" >

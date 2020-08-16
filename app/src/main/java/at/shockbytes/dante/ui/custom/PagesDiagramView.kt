@@ -18,5 +18,4 @@ class PagesDiagramView @JvmOverloads constructor(
 
     val chart: LineChart
         get() = lc_page_records
-
 }

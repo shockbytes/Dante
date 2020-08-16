@@ -256,25 +256,33 @@
                     tools:text="1000 / 1000" />
 
 
-
+                <View
+                    android:id="@+id/divider_book_details_extras"
+                    android:layout_width="0dp"
+                    android:layout_height="0.2dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/recycler_divider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout_additional_book_info" />
 
                 <at.shockbytes.dante.ui.custom.PagesDiagramView
                     android:id="@+id/pages_diagram_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:minHeight="200dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="0dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
+                    android:minHeight="200dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayout_additional_book_info" />
+                    app:layout_constraintTop_toBottomOf="@+id/divider_book_details_extras" />
 
                 <HorizontalScrollView
                     android:id="@+id/hsv_labels"
                     android:layout_width="0dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="32dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pages_diagram_view"

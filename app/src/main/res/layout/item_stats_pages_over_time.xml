@@ -18,14 +18,14 @@
         android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/item_stats_books_and_pages_empty"
+            android:id="@+id/item_pages_over_time_empty"
             layout="@layout/item_stats_empty_indicator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
         <LinearLayout
-            android:id="@+id/item_stats_pages_content"
+            android:id="@+id/item_stats_pages_over_time_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

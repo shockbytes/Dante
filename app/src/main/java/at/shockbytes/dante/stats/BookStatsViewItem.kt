@@ -20,13 +20,13 @@ sealed class BookStatsViewItem {
         data class Present(val booksAndPages: BooksPagesInfo) : BooksAndPages()
     }
 
-    sealed class Pages : BookStatsViewItem() {
+    sealed class PagesOverTime : BookStatsViewItem() {
 
         override val layoutId: Int = R.layout.item_stats_pages_over_time
 
-        object Empty : Pages()
+        object Empty : PagesOverTime()
 
-        data class Present(val pagesPerMonths: List<PagesPerMonth>) : Pages()
+        data class Present(val pagesPerMonths: List<PagesPerMonth>) : PagesOverTime()
     }
 
     sealed class ReadingDuration : BookStatsViewItem() {

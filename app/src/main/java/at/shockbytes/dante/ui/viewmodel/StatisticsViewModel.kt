@@ -7,6 +7,7 @@ import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
+import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.stats.BookStatsBuilder
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -17,8 +18,11 @@ import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(
         private val bookRepository: BookRepository,
-        private val recordDao: PageRecordDao
+        private val recordDao: PageRecordDao,
+        featureFlagging: FeatureFlagging
 ) : BaseViewModel() {
+
+    private val bookStatsBuilder = BookStatsBuilder(featureFlagging)
 
     private val statisticsItems = MutableLiveData<List<BookStatsViewItem>>()
     fun getStatistics(): LiveData<List<BookStatsViewItem>> = statisticsItems
@@ -33,7 +37,7 @@ class StatisticsViewModel @Inject constructor(
                         }
                 )
                 .map { (books, pageRecords) ->
-                    BookStatsBuilder.createFrom(books, pageRecords)
+                    bookStatsBuilder.createFrom(books, pageRecords)
                 }
                 .subscribe(statisticsItems::postValue, ExceptionHandlers::defaultExceptionHandler)
                 .addTo(compositeDisposable)

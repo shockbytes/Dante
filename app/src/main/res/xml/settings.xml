@@ -36,6 +36,7 @@
             android:title="@string/menu_main_sort" />
 
         <androidx.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
             android:icon="@drawable/ic_random"
             android:key="@string/prefs_pick_random_key"
             android:summaryOn="@string/prefs_pick_random_summary_on"

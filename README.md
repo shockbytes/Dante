@@ -53,6 +53,7 @@ Empty...
 ### Version 3.15
 - [ ] Statistics pages over time / month + Goal per month
 - [ ] Reset page statistics per book
+- [ ] Hide page statistics in details page
 - [ ] Send csv export via Mail
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 

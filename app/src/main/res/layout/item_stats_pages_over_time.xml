@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/stats_section_margin_top"
+    android:orientation="vertical">
+
+    <at.shockbytes.dante.ui.custom.StatsHeaderView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:header_title="@string/statistics_header_pages_over_time"
+        app:show_divider="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/item_stats_books_and_pages_empty"
+            layout="@layout/item_stats_empty_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/item_stats_pages_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="TODO Implement this later"
+                />
+
+
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+</LinearLayout>

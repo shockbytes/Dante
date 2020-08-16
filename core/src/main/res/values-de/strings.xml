@@ -298,5 +298,6 @@
 
     <string name="reading_behavior">Leseverhalten</string>
     <string name="pages_formatted">%d Seiten</string>
+    <string name="statistics_header_pages_over_time">Seiten pro Monat</string>
 
 </resources>

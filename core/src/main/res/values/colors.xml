@@ -22,6 +22,8 @@
 
     <color name="colorPrimaryDarkPre23">#CCC</color>
 
+    <color name="page_record_data">@color/colorAccent</color>
+
     <color name="tabcolor_upcoming">#8BC34A</color>
     <color name="tabcolor_upcoming_dark">#689F38</color>
     <color name="tabcolor_current">#2196F3</color>

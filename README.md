@@ -51,13 +51,17 @@ Empty...
 - [ ] Add Onboarding + Login
 
 ### Version 3.15
+- [ ] Statistics pages over time / month + Goal per month
+- [ ] Reset page statistics per book
+- [ ] Hide page statistics in details page
 - [ ] Send csv export via Mail
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 
-### Version 3.14
-- [x] Move sort into settings
-- [x] Improve Main UI
-- [ ] Add pick random for reading button
+### Version 3.14 - SUMMER CLEANUP
+* Move sort into settings
+* Improve Main UI
+* Add pick random for reading button
+* Pages statistics
 
 ### Version 3.13 - SMALL STEPS
 * Update Crashlytics SDK

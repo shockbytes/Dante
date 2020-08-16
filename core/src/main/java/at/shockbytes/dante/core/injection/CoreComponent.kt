@@ -2,6 +2,7 @@ package at.shockbytes.dante.core.injection
 
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImagePicker
 import at.shockbytes.dante.core.network.BookDownloader
@@ -21,6 +22,7 @@ import javax.inject.Singleton
 interface CoreComponent {
 
     fun getBookRepository(): BookRepository
+    fun getPageRecordDao(): PageRecordDao
     fun getBookDownloader(): BookDownloader
     fun getRealmInstanceProvider(): RealmInstanceProvider
 

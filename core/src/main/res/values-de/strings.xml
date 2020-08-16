@@ -296,4 +296,8 @@
     <string name="prefs_pick_random_summary_on">Die Interaktion um ein zufälliges Buch auszuwählen ist eingeblendet</string>
     <string name="random_pick_restore_instruction">Du kannst es später wieder anzeigen, wenn du es in den Einstellungen wieder aktivierst</string>
 
+    <string name="reading_behavior">Leseverhalten</string>
+    <string name="pages_formatted">%d Seiten</string>
+    <string name="statistics_header_pages_over_time">Seiten pro Monat</string>
+
 </resources>

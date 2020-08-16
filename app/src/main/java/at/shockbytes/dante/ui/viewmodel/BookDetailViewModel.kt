@@ -6,12 +6,19 @@ import android.os.Parcelable
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.navigation.NotesBundle
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import javax.inject.Inject
 
 /**
@@ -20,7 +27,8 @@ import javax.inject.Inject
  */
 class BookDetailViewModel @Inject constructor(
     private val bookRepository: BookRepository,
-    private val settings: DanteSettings
+    private val settings: DanteSettings,
+    private val pageRecordDao: PageRecordDao
 ) : BaseViewModel() {
 
     data class DetailViewState(
@@ -28,8 +36,23 @@ class BookDetailViewModel @Inject constructor(
         val showSummary: Boolean
     )
 
+    sealed class PageRecordsViewState {
+
+        data class Present(val dataPoints: List<PageRecordDataPoint>): PageRecordsViewState()
+
+        object Absent : PageRecordsViewState()
+    }
+
+    data class PageRecordDataPoint(
+        val page: Int,
+        val formattedDate: String
+    )
+
     private val viewState = MutableLiveData<DetailViewState>()
     fun getViewState(): LiveData<DetailViewState> = viewState
+
+    private val pageRecords = MutableLiveData<PageRecordsViewState>()
+    fun getPageRecordsViewState(): LiveData<PageRecordsViewState> = pageRecords
 
     private val showBookFinishedDialogSubject = PublishSubject.create<String>()
     val showBookFinishedDialogEvent: Observable<String> = showBookFinishedDialogSubject
@@ -50,15 +73,60 @@ class BookDetailViewModel @Inject constructor(
     val onAddLabelsRequest: Observable<List<BookLabel>> = addLabelsSubject
 
     private var bookId: Long = -1L
+    private var pagesAtInit: Int? = null
+
+    /**
+     * Special composite disposable which gets cleared when the attached view gets destroyed
+     */
+    private val viewCompositeDisposable = CompositeDisposable()
 
     fun initializeWithBookId(id: Long) {
         this.bookId = id
         fetchBook(bookId)
+        fetchPageRecords(bookId)
+    }
+
+    fun onFragmentDestroyed() {
+        viewCompositeDisposable.clear()
+
+        onPageCountMayChanged()
     }
 
     private fun fetchBook(bookId: Long) {
-        bookRepository.get(bookId)?.let { entity ->
-            viewState.postValue(craftViewSate(entity))
+        bookRepository.get(bookId)
+                ?.also { entity ->
+                    pagesAtInit = entity.currentPage
+                }
+                ?.let(::craftViewState)
+                ?.let(viewState::postValue)
+    }
+
+    private fun fetchPageRecords(bookId: Long) {
+        pageRecordDao.pageRecordsForBook(bookId)
+                .map(::mapPageRecordsToDataPoints)
+                .subscribe(pageRecords::postValue, ExceptionHandlers::defaultExceptionHandler)
+                .addTo(viewCompositeDisposable)
+    }
+
+    private fun mapPageRecordsToDataPoints(pageRecords: List<PageRecord>): PageRecordsViewState {
+
+        return if (pageRecords.isEmpty()) {
+            PageRecordsViewState.Absent
+        } else {
+            val format = DateTimeFormat.forPattern("dd/MM/yy")
+            pageRecords
+                    .groupBy { record ->
+                        DateTime(record.timestamp).withTimeAtStartOfDay()
+                    }
+                    .mapNotNull { (dtTimestamp, pageRecords) ->
+                        pageRecords.maxBy { it.timestamp }?.let { record ->
+                            PageRecordDataPoint(
+                                    page = record.toPage,
+                                    formattedDate = format.print(dtTimestamp)
+                            )
+                        }
+                    }
+                    .let(PageRecordsViewState::Present)
         }
     }
 
@@ -184,13 +252,13 @@ class BookDetailViewModel @Inject constructor(
         return viewState.value?.book
     }
 
-    private fun craftViewSate(book: BookEntity): DetailViewState {
+    private fun craftViewState(book: BookEntity): DetailViewState {
         return DetailViewState(book, settings.showSummary)
     }
 
     private fun updateDaoAndObserver(b: BookEntity) {
         bookRepository.update(b)
-        viewState.postValue(craftViewSate(b))
+        viewState.postValue(craftViewState(b))
     }
 
     fun requestEditBook() {
@@ -223,6 +291,20 @@ class BookDetailViewModel @Inject constructor(
 
         // Reload the book once a label got deleted
         fetchBook(bookId)
+    }
+
+    private fun onPageCountMayChanged() {
+
+        val currentPage = getBookFromLiveData()?.currentPage ?: 0
+        val startPage = pagesAtInit ?: 0
+        if (currentPage != startPage) {
+            pageRecordDao.insertPageRecordForId(
+                    id = bookId,
+                    fromPage = startPage,
+                    toPage = currentPage,
+                    nowInMillis = System.currentTimeMillis()
+            )
+        }
     }
 
     data class PageInfo(

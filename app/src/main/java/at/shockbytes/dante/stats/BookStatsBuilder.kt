@@ -2,27 +2,33 @@ package at.shockbytes.dante.stats
 
 import android.graphics.Color
 import at.shockbytes.dante.core.bareBone
-import at.shockbytes.dante.core.book.BareBoneBook
-import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.book.BookState
-import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.core.book.*
+import at.shockbytes.dante.flagging.FeatureFlag
+import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.util.AppUtils
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.joda.time.Months
 
-object BookStatsBuilder {
+class BookStatsBuilder(private val featureFlagging: FeatureFlagging) {
 
-    fun createFrom(books: List<BookEntity>): List<BookStatsViewItem> {
-        return listOf(
+    fun createFrom(
+            books: List<BookEntity>,
+            pageRecords: List<PageRecord>
+    ): List<BookStatsViewItem> {
+        return mutableListOf(
             createBooksAndPagesItem(books),
             createReadingDurationItem(books),
             createFavoriteItem(books),
             createLanguageItem(books),
             createLabelItem(books),
             createOthersItem(books)
-        )
+        ).apply {
+            if (featureFlagging[FeatureFlag.PAGE_RECORD_STATISTICS]) {
+                this.add(1, createPagesOverTimeItem(pageRecords))
+            }
+        }
     }
 
     private fun createBooksAndPagesItem(books: List<BookEntity>): BookStatsViewItem {
@@ -56,6 +62,12 @@ object BookStatsBuilder {
             )
         )
     }
+
+    private fun createPagesOverTimeItem(pageRecords: List<PageRecord>): BookStatsViewItem {
+        // TODO Implement this method later...
+        return BookStatsViewItem.PagesOverTime.Empty
+    }
+
 
     private fun createReadingDurationItem(books: List<BookEntity>): BookStatsViewItem {
 

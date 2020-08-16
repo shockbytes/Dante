@@ -5,12 +5,7 @@ import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.stats.BookStatsViewItem
-import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsBookAndPagesViewHolder
-import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsFavoritesViewHolder
-import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsLabelsViewHolder
-import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsLanguageViewHolder
-import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsOthersViewHolder
-import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsReadingDurationViewHolder
+import at.shockbytes.dante.ui.adapter.stats.viewholder.*
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ViewHolderTypeFactory
 
@@ -31,6 +26,7 @@ class StatsViewHolderFactory(
             R.layout.item_stats_languages -> BookStatsLanguageViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_others -> BookStatsOthersViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_labels -> BookStatsLabelsViewHolder(inflater.inflate(viewType, parent, false))
+            R.layout.item_stats_pages_over_time -> BookStatsPagesOverTimeViewHolder(inflater.inflate(viewType, parent, false))
             else -> throw IllegalStateException("Unknown view type $viewType")
         }
     }

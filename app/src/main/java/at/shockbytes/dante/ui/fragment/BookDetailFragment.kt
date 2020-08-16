@@ -24,6 +24,7 @@ import androidx.annotation.ColorInt
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -40,6 +41,7 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
+import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.ColorUtils
@@ -49,6 +51,10 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -93,6 +99,8 @@ class BookDetailFragment : BaseFragment(),
             btn_detail_rate,
             btn_detail_notes,
             btn_detail_published,
+            divider_book_details_extras,
+            pages_diagram_view,
             hsv_labels,
             layout_detail_dates,
             btn_detail_wishhlist_date,
@@ -205,17 +213,18 @@ class BookDetailFragment : BaseFragment(),
 
     override fun bindViewModel() {
         viewModel.getViewState().observe(this, Observer { viewState ->
-            viewState?.let {
-                initializeBookInformation(viewState.book, viewState.showSummary)
-                initializeTimeInformation(viewState.book)
-            }
+            initializeBookInformation(viewState.book, viewState.showSummary)
+            initializeTimeInformation(viewState.book)
         })
+
+
+        viewModel.getPageRecordsViewState().observe(this, Observer(::handlePageRecordViewState))
 
         viewModel.showBookFinishedDialogEvent
             .observeOn(AndroidSchedulers.mainThread())
             .map(::createBookFinishedFragment)
             .subscribe { fragment ->
-                fragment.show(parentFragmentManager, "book-finished-dialogfragment")
+                fragment.show(parentFragmentManager, "book-finished-dialog-fragment")
             }
             .addTo(compositeDisposable)
 
@@ -295,11 +304,12 @@ class BookDetailFragment : BaseFragment(),
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        viewModel.onFragmentDestroyed()
         LocalBroadcastManager.getInstance(requireContext()).apply {
             unregisterReceiver(notesReceiver)
             unregisterReceiver(bookUpdatedReceiver)
         }
+        super.onDestroy()
     }
 
     override fun onBackwardAnimation() {
@@ -384,6 +394,87 @@ class BookDetailFragment : BaseFragment(),
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
         setupLabels(book.labels)
+    }
+
+    private fun handlePageRecordViewState(
+            pageRecordViewState: BookDetailViewModel.PageRecordsViewState
+    ) {
+        when (pageRecordViewState) {
+            is BookDetailViewModel.PageRecordsViewState.Present -> {
+                pages_diagram_view.setVisible(true)
+                handlePageRecords(pageRecordViewState.dataPoints)
+            }
+            BookDetailViewModel.PageRecordsViewState.Absent -> {
+                pages_diagram_view.setVisible(false)
+            }
+        }
+    }
+
+    private fun handlePageRecords(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {
+
+        val entries: List<Entry> = dataPoints
+                .mapIndexed { index, dp ->
+                    Entry(index.inc().toFloat(), dp.page.toFloat())
+                }
+                .toMutableList()
+                .apply {
+                    add(0, BarEntry(0f, 0f)) // Initial entry
+                }
+
+        val dataSet = LineDataSet(entries, "").apply {
+            setColor(ContextCompat.getColor(requireContext(), R.color.page_record_data), 255)
+            setDrawValues(false)
+            setDrawIcons(false)
+            setDrawFilled(true)
+            setDrawHighlightIndicators(false)
+            isHighlightEnabled = true
+            setCircleColor(ContextCompat.getColor(requireContext(), R.color.page_record_data))
+            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+            fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.page_record_gradient)
+        }
+
+        pages_diagram_view.chart.apply {
+            description.isEnabled = false
+            legend.isEnabled = false
+
+            setDrawGridBackground(false)
+            setScaleEnabled(false)
+            setTouchEnabled(true)
+
+            xAxis.apply {
+                isEnabled = true
+                position = XAxis.XAxisPosition.BOTTOM
+                labelCount = entries.size / 2
+                setDrawAxisLine(false)
+                labelRotationAngle = -30f
+                textSize = 8f
+                setDrawGridLines(false)
+                typeface = ResourcesCompat.getFont(requireContext(), R.font.montserrat)
+                setDrawAxisLine(false)
+                setDrawGridBackground(false)
+                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
+                valueFormatter = IndexAxisValueFormatter(dataPoints.map { it.formattedDate })
+            }
+
+            getAxis(YAxis.AxisDependency.LEFT).apply {
+                isEnabled = false
+                setDrawAxisLine(false)
+                setDrawGridLines(false)
+                setDrawZeroLine(false)
+                setDrawAxisLine(false)
+            }
+            getAxis(YAxis.AxisDependency.RIGHT).apply {
+                isEnabled = false
+                setDrawAxisLine(false)
+                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
+            }
+
+            setDrawMarkers(true)
+            marker = DanteMarkerView(requireContext())
+
+            data = LineData(dataSet)
+            invalidate()
+        }
     }
 
     private fun setupViewListener() {

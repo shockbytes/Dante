@@ -256,10 +256,16 @@
                     tools:text="1000 / 1000" />
 
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_details_pages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="divider_book_details_extras,pages_diagram_view"/>
+
                 <View
                     android:id="@+id/divider_book_details_extras"
                     android:layout_width="0dp"
-                    android:layout_height="0.2dp"
+                    android:layout_height="0.5dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/recycler_divider"
@@ -282,7 +288,7 @@
                 <HorizontalScrollView
                     android:id="@+id/hsv_labels"
                     android:layout_width="0dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pages_diagram_view"
@@ -308,7 +314,7 @@
                             app:icon="@drawable/ic_add_round"
                             app:cornerRadius="20dp"
                             android:layout_marginBottom="24dp"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginEnd="16dp"/>
 
                         <com.google.android.material.chip.ChipGroup

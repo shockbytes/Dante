@@ -401,11 +401,11 @@ class BookDetailFragment : BaseFragment(),
     ) {
         when (pageRecordViewState) {
             is BookDetailViewModel.PageRecordsViewState.Present -> {
-                pages_diagram_view.setVisible(true)
+                group_details_pages.setVisible(true)
                 handlePageRecords(pageRecordViewState.dataPoints)
             }
             BookDetailViewModel.PageRecordsViewState.Absent -> {
-                pages_diagram_view.setVisible(false)
+                group_details_pages.setVisible(false)
             }
         }
     }

@@ -12,6 +12,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.realm.Case
 import io.realm.Sort
+import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -126,6 +127,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
                 .equalTo("bookId", bookLabel.bookId)
                 .findFirst()
                 ?.deleteFromRealm()
+                ?: Timber.e(RealmBookLabelDeletionException(bookLabel.title))
         }
     }
 

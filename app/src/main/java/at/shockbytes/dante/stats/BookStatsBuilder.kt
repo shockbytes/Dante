@@ -61,8 +61,27 @@ object BookStatsBuilder {
     }
 
     private fun createPagesOverTimeItem(pageRecords: List<PageRecord>): BookStatsViewItem {
-        // TODO Implement this method later...
-        return BookStatsViewItem.PagesOverTime.Empty
+
+        if (pageRecords.isEmpty()) {
+            return BookStatsViewItem.PagesOverTime.Empty
+        }
+
+        return pageRecords
+                .groupBy { record ->
+                    val dt = record.dateTime
+                    MonthYear(dt.monthOfYear, dt.year)
+                }
+                .toSortedMap()
+                .map { (monthYear, records) ->
+
+                    val pages = records
+                            // Filter records where user moved pages to a previous state
+                            .filter { it.diffPages < 0 }
+                            .sumBy { it.diffPages }
+
+                    PagesPerMonth(pages = pages, date = monthYear)
+                }
+                .let(BookStatsViewItem.PagesOverTime::Present)
     }
 
 

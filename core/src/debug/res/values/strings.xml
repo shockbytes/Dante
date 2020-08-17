@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">Dante Debug</string>
-    <string name="app_version" translatable="false">3.14 (Debug Build)</string>
+    <string name="app_name" translatable="false">Dante BETA</string>
+    <string name="app_version" translatable="false">3.15 (Beta Build)</string>
 
 </resources>

@@ -9,7 +9,8 @@ import at.shockbytes.util.adapter.ViewHolderTypeFactory
 
 class StatsAdapter(
     context: Context,
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val onChangeGoalActionListener: () -> Unit
 ) : MultiViewHolderBaseAdapter<BookStatsViewItem>(context) {
 
     fun updateData(items: List<BookStatsViewItem>) {
@@ -20,5 +21,5 @@ class StatsAdapter(
     }
 
     override val vhFactory: ViewHolderTypeFactory<BookStatsViewItem>
-        get() = StatsViewHolderFactory(LayoutInflater.from(context), imageLoader)
+        get() = StatsViewHolderFactory(LayoutInflater.from(context), imageLoader, onChangeGoalActionListener)
 }

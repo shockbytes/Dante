@@ -11,7 +11,8 @@ import at.shockbytes.util.adapter.ViewHolderTypeFactory
 
 class StatsViewHolderFactory(
     private val inflater: LayoutInflater,
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val onChangeGoalActionListener: () -> Unit
 ) : ViewHolderTypeFactory<BookStatsViewItem> {
 
     override fun type(item: BookStatsViewItem): Int {
@@ -26,7 +27,7 @@ class StatsViewHolderFactory(
             R.layout.item_stats_languages -> BookStatsLanguageViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_others -> BookStatsOthersViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_labels -> BookStatsLabelsViewHolder(inflater.inflate(viewType, parent, false))
-            R.layout.item_stats_pages_over_time -> BookStatsPagesOverTimeViewHolder(inflater.inflate(viewType, parent, false))
+            R.layout.item_stats_pages_over_time -> BookStatsPagesOverTimeViewHolder(inflater.inflate(viewType, parent, false), onChangeGoalActionListener)
             else -> throw IllegalStateException("Unknown view type $viewType")
         }
     }

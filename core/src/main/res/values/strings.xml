@@ -27,6 +27,9 @@
     <string name="reading_behavior">Reading behavior</string>
     <string name="pages_formatted">%d pages</string>
 
+    <string name="reading_goal">Reading goal</string>
+    <string name="set_goal">Set goal</string>
+
     <string name="edit">Edit</string>
     <string name="menu_main_stats">Statistics</string>
     <string name="menu_main_timeline">Timeline</string>

@@ -9,6 +9,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.util.setVisible
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarEntry
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.synthetic.main.pages_diagram_view.view.*
+
 
 class PagesDiagramView @JvmOverloads constructor(
         context: Context,
@@ -44,11 +46,11 @@ class PagesDiagramView @JvmOverloads constructor(
 
     fun registerOnActionClick(cAction: () -> Unit) {
         when (action) {
-                PagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction() }
-                PagesDiagramAction.Gone -> Unit // Do nothing
-                is PagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction() }
-            }
+            PagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction() }
+            PagesDiagramAction.Gone -> Unit // Do nothing
+            is PagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction() }
         }
+    }
 
     private fun setActionVisibility(value: PagesDiagramAction) {
         when (value) {
@@ -69,6 +71,41 @@ class PagesDiagramView @JvmOverloads constructor(
             }
         }
     }
+
+    var readingGoal: Int? = null
+        set(value) {
+            field = value
+
+            if (value != null) {
+                LimitLine(value.toFloat(), context.getString(R.string.reading_goal))
+                        .apply {
+                            lineColor = ContextCompat.getColor(context, R.color.tabcolor_done)
+                            lineWidth = 0.8f
+                            enableDashedLine(20f, 20f, 0f)
+                            labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
+                            typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                            textSize = 10f
+                            textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
+                        }
+                        .let { line ->
+                            chart.getAxis(YAxis.AxisDependency.LEFT).apply {
+                                setDrawGridLines(true)
+                                addLimitLine(line)
+
+                                when (isLimitLineShown(value.toFloat())) {
+                                    LimitLinePosition.EXCEEDS_UPPER_BOUND -> {
+                                        axisMinimum = value.minus(LIMIT_LINE_OFFSET).toFloat()
+                                    }
+                                    LimitLinePosition.EXCEEDS_LOWER_BOUND -> {
+                                        axisMaximum = value.plus(LIMIT_LINE_OFFSET).toFloat()
+                                    }
+                                    LimitLinePosition.IS_VISIBLE -> Unit
+                                }
+                            }
+                            invalidate()
+                        }
+            }
+        }
 
     fun updateData(dataPoints: List<PageRecordDataPoint>, initialZero: Boolean = false) {
 
@@ -119,11 +156,13 @@ class PagesDiagramView @JvmOverloads constructor(
             }
 
             getAxis(YAxis.AxisDependency.LEFT).apply {
-                isEnabled = false
-                setDrawAxisLine(false)
+                isEnabled = true
+                setDrawLimitLinesBehindData(true)
                 setDrawGridLines(false)
                 setDrawZeroLine(false)
                 setDrawAxisLine(false)
+                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
             }
             getAxis(YAxis.AxisDependency.RIGHT).apply {
                 isEnabled = false
@@ -137,5 +176,24 @@ class PagesDiagramView @JvmOverloads constructor(
             data = LineData(dataSet)
             invalidate()
         }
+    }
+
+    companion object {
+        private const val LIMIT_LINE_OFFSET = 20
+    }
+}
+
+private enum class LimitLinePosition {
+    EXCEEDS_UPPER_BOUND,
+    EXCEEDS_LOWER_BOUND,
+    IS_VISIBLE
+}
+
+private fun YAxis.isLimitLineShown(limit: Float): LimitLinePosition {
+
+    return when {
+        limit < axisMinimum -> LimitLinePosition.EXCEEDS_LOWER_BOUND
+        limit > axisMaximum -> LimitLinePosition.EXCEEDS_UPPER_BOUND
+        else -> LimitLinePosition.IS_VISIBLE
     }
 }

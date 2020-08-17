@@ -3,8 +3,6 @@ package at.shockbytes.dante.stats
 import android.graphics.Color
 import at.shockbytes.dante.core.bareBone
 import at.shockbytes.dante.core.book.*
-import at.shockbytes.dante.flagging.FeatureFlag
-import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
 import at.shockbytes.util.AppUtils
@@ -78,9 +76,11 @@ object BookStatsBuilder {
                 .map { (monthYear, records) ->
 
                     val pages = records
-                            // Filter records where user moved pages to a previous state
-                            .filter { it.diffPages > 0 }
                             .sumBy { it.diffPages }
+                            // There can be negative values, hard bounce them at 0
+                            // Example: User logs 100 pages in July but deletes 20 pages in August
+                            // which leads to a value of -20. This should not happen!
+                            .coerceAtLeast(0)
 
                     PageRecordDataPoint(pages, formattedDate = format.print(monthYear.dateTime))
                 }

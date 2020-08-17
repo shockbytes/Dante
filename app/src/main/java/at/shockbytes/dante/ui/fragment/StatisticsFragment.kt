@@ -26,7 +26,13 @@ class StatisticsFragment : BaseFragment() {
     private lateinit var viewModel: StatisticsViewModel
 
     private val statsAdapter: StatsAdapter by lazy {
-        StatsAdapter(requireContext(), imageLoader)
+        StatsAdapter(
+                requireContext(),
+                imageLoader,
+                onChangeGoalActionListener = {
+                    showToast("Change goal!")
+                }
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

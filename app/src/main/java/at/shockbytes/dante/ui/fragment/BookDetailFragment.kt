@@ -42,6 +42,7 @@ import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.custom.DanteMarkerView
+import at.shockbytes.dante.ui.custom.PagesDiagramView
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.ColorUtils
@@ -411,69 +412,10 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun handlePageRecords(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {
-
-        val entries: List<Entry> = dataPoints
-                .mapIndexed { index, dp ->
-                    Entry(index.inc().toFloat(), dp.page.toFloat())
-                }
-                .toMutableList()
-                .apply {
-                    add(0, BarEntry(0f, 0f)) // Initial entry
-                }
-
-        val dataSet = LineDataSet(entries, "").apply {
-            setColor(ContextCompat.getColor(requireContext(), R.color.page_record_data), 255)
-            setDrawValues(false)
-            setDrawIcons(false)
-            setDrawFilled(true)
-            setDrawHighlightIndicators(false)
-            isHighlightEnabled = true
-            setCircleColor(ContextCompat.getColor(requireContext(), R.color.page_record_data))
-            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-            fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.page_record_gradient)
-        }
-
-        pages_diagram_view.chart.apply {
-            description.isEnabled = false
-            legend.isEnabled = false
-
-            setDrawGridBackground(false)
-            setScaleEnabled(false)
-            setTouchEnabled(true)
-
-            xAxis.apply {
-                isEnabled = true
-                position = XAxis.XAxisPosition.BOTTOM
-                labelCount = entries.size / 2
-                setDrawAxisLine(false)
-                labelRotationAngle = -30f
-                textSize = 8f
-                setDrawGridLines(false)
-                typeface = ResourcesCompat.getFont(requireContext(), R.font.montserrat)
-                setDrawAxisLine(false)
-                setDrawGridBackground(false)
-                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
-                valueFormatter = IndexAxisValueFormatter(dataPoints.map { it.formattedDate })
-            }
-
-            getAxis(YAxis.AxisDependency.LEFT).apply {
-                isEnabled = false
-                setDrawAxisLine(false)
-                setDrawGridLines(false)
-                setDrawZeroLine(false)
-                setDrawAxisLine(false)
-            }
-            getAxis(YAxis.AxisDependency.RIGHT).apply {
-                isEnabled = false
-                setDrawAxisLine(false)
-                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
-            }
-
-            setDrawMarkers(true)
-            marker = DanteMarkerView(requireContext())
-
-            data = LineData(dataSet)
-            invalidate()
+        pages_diagram_view.apply {
+            updateData(dataPoints)
+            action = PagesDiagramView.PagesDiagramAction.Gone
+            headerTitle = getString(R.string.reading_behavior)
         }
     }
 

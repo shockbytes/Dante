@@ -28,6 +28,17 @@
         app:srcCompat="@drawable/ic_overflow"
         tools:visibility="visible" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_page_record_action"
+        style="@style/AppTheme.RoundedButton.Outlined"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:text="Set goal"
+        app:layout_constraintBottom_toTopOf="@+id/lc_page_records"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc_page_records"
         android:layout_width="0dp"
@@ -36,7 +47,7 @@
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_page_record_overflow"
+        app:layout_constraintTop_toBottomOf="@id/iv_page_record_overflow"
         tools:background="#dea" />
 
 

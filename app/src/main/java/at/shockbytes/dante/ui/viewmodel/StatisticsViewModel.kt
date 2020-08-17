@@ -18,11 +18,9 @@ import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(
         private val bookRepository: BookRepository,
-        private val recordDao: PageRecordDao,
-        featureFlagging: FeatureFlagging
+        private val recordDao: PageRecordDao
 ) : BaseViewModel() {
 
-    private val bookStatsBuilder = BookStatsBuilder(featureFlagging)
 
     private val statisticsItems = MutableLiveData<List<BookStatsViewItem>>()
     fun getStatistics(): LiveData<List<BookStatsViewItem>> = statisticsItems
@@ -37,7 +35,7 @@ class StatisticsViewModel @Inject constructor(
                         }
                 )
                 .map { (books, pageRecords) ->
-                    bookStatsBuilder.createFrom(books, pageRecords)
+                    BookStatsBuilder.createFrom(books, pageRecords)
                 }
                 .subscribe(statisticsItems::postValue, ExceptionHandlers::defaultExceptionHandler)
                 .addTo(compositeDisposable)

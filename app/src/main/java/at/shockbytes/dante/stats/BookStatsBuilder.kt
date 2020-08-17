@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.joda.time.Months
 
-class BookStatsBuilder(private val featureFlagging: FeatureFlagging) {
+object BookStatsBuilder {
 
     fun createFrom(
             books: List<BookEntity>,
@@ -19,16 +19,13 @@ class BookStatsBuilder(private val featureFlagging: FeatureFlagging) {
     ): List<BookStatsViewItem> {
         return mutableListOf(
             createBooksAndPagesItem(books),
+            createPagesOverTimeItem(pageRecords),
             createReadingDurationItem(books),
             createFavoriteItem(books),
             createLanguageItem(books),
             createLabelItem(books),
             createOthersItem(books)
-        ).apply {
-            if (featureFlagging[FeatureFlag.PAGE_RECORD_STATISTICS]) {
-                this.add(1, createPagesOverTimeItem(pageRecords))
-            }
-        }
+        )
     }
 
     private fun createBooksAndPagesItem(books: List<BookEntity>): BookStatsViewItem {

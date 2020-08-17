@@ -30,17 +30,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
-            <TextView
+            <at.shockbytes.dante.ui.custom.pages.PagesDiagramView
+                android:id="@+id/item_pages_stats_diagram_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="TODO Implement this later"
-                />
-
+                android:layout_margin="16dp"
+                android:layout_height="wrap_content"
+                android:minHeight="200dp"/>
 
         </LinearLayout>
-
 
     </FrameLayout>
 

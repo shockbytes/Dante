@@ -5,6 +5,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
+import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
 
 sealed class BookStatsViewItem {
 
@@ -26,7 +27,7 @@ sealed class BookStatsViewItem {
 
         object Empty : PagesOverTime()
 
-        data class Present(val pagesPerMonths: List<PagesPerMonth>) : PagesOverTime()
+        data class Present(val pagesPerMonths: List<PageRecordDataPoint>) : PagesOverTime()
     }
 
     sealed class ReadingDuration : BookStatsViewItem() {

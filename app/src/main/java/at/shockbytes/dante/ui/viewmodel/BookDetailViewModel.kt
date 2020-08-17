@@ -10,6 +10,7 @@ import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.navigation.NotesBundle
+import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
@@ -42,11 +43,6 @@ class BookDetailViewModel @Inject constructor(
 
         object Absent : PageRecordsViewState()
     }
-
-    data class PageRecordDataPoint(
-        val page: Int,
-        val formattedDate: String
-    )
 
     private val viewState = MutableLiveData<DetailViewState>()
     fun getViewState(): LiveData<DetailViewState> = viewState

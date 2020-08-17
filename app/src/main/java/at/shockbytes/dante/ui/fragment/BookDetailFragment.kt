@@ -24,7 +24,6 @@ import androidx.annotation.ColorInt
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -41,8 +40,8 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
-import at.shockbytes.dante.ui.custom.DanteMarkerView
-import at.shockbytes.dante.ui.custom.PagesDiagramView
+import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
+import at.shockbytes.dante.ui.custom.pages.PagesDiagramAction
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.ColorUtils
@@ -52,10 +51,6 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -411,10 +406,10 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun handlePageRecords(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {
+    private fun handlePageRecords(dataPoints: List<PageRecordDataPoint>) {
         pages_diagram_view.apply {
-            updateData(dataPoints)
-            action = PagesDiagramView.PagesDiagramAction.Gone
+            updateData(dataPoints, initialZero = true)
+            action = PagesDiagramAction.Gone
             headerTitle = getString(R.string.reading_behavior)
         }
     }

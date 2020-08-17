@@ -9,10 +9,11 @@
     <TextView
         android:id="@+id/tv_page_record_header"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
         android:text="@string/reading_behavior"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-        app:layout_constraintBottom_toTopOf="@+id/lc_page_records"
+        app:layout_constraintHeight_min="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,6 +24,7 @@
         android:background="@drawable/bg_rounded_ripple"
         android:scaleType="center"
         android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/lc_page_records"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_overflow"
@@ -34,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:visibility="gone"
         tools:text="Set goal"
         app:layout_constraintBottom_toTopOf="@+id/lc_page_records"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +50,7 @@
         android:padding="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_page_record_overflow"
+        app:layout_constraintTop_toBottomOf="@+id/tv_page_record_header"
         tools:background="#dea" />
 
 

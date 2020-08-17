@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.custom
+package at.shockbytes.dante.ui.custom.pages
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,7 +6,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
-import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
+import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.util.setVisible
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.XAxis
@@ -16,20 +16,12 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.jakewharton.rxbinding2.view.RxView
-import io.reactivex.Observable
 import kotlinx.android.synthetic.main.pages_diagram_view.view.*
 
 class PagesDiagramView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
-
-    sealed class PagesDiagramAction {
-        object Gone : PagesDiagramAction()
-        object Overflow : PagesDiagramAction()
-        data class Action(val title: String): PagesDiagramAction()
-    }
 
     init {
         inflate(context, R.layout.pages_diagram_view, this)
@@ -50,12 +42,11 @@ class PagesDiagramView @JvmOverloads constructor(
             setActionVisibility(value)
         }
 
-    val onActionClick: Observable<Unit>
-        get() {
-            return when (action) {
-                PagesDiagramAction.Overflow -> RxView.clicks(iv_page_record_overflow).map { Unit }
-                PagesDiagramAction.Gone -> Observable.empty()
-                is PagesDiagramAction.Action -> RxView.clicks(btn_page_record_action).map { Unit }
+    fun registerOnActionClick(cAction: () -> Unit) {
+        when (action) {
+                PagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction() }
+                PagesDiagramAction.Gone -> Unit // Do nothing
+                is PagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction() }
             }
         }
 
@@ -79,7 +70,7 @@ class PagesDiagramView @JvmOverloads constructor(
         }
     }
 
-    fun updateData(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {
+    fun updateData(dataPoints: List<PageRecordDataPoint>, initialZero: Boolean = false) {
 
         val entries: List<Entry> = dataPoints
                 .mapIndexed { index, dp ->
@@ -87,7 +78,9 @@ class PagesDiagramView @JvmOverloads constructor(
                 }
                 .toMutableList()
                 .apply {
-                    add(0, BarEntry(0f, 0f)) // Initial entry
+                    if (initialZero) {
+                        add(0, BarEntry(0f, 0f)) // Initial entry
+                    }
                 }
 
         val dataSet = LineDataSet(entries, "").apply {

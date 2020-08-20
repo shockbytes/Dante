@@ -2,6 +2,7 @@ package at.shockbytes.dante.util
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -20,8 +21,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import io.reactivex.Scheduler
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -129,4 +133,16 @@ inline fun <reified T : ViewModel> Fragment.viewModelOfActivity(activity: Fragme
 
 inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewModelProvider.Factory): T {
     return ViewModelProvider(this.viewModelStore, factory)[T::class.java]
+}
+
+fun <T> singleOf(
+        subscribeOn: Scheduler = Schedulers.computation(),
+        block: () -> T
+): Single<T> {
+    return Single.just(block()).subscribeOn(subscribeOn)
+}
+
+fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {
+    val value = getInt(key, default)
+    return if (value != default) value else null
 }

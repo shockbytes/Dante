@@ -4,23 +4,38 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.PageRecord
-import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
-import at.shockbytes.dante.flagging.FeatureFlagging
+import at.shockbytes.dante.core.data.ReadingGoalRepository
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.stats.BookStatsBuilder
 import at.shockbytes.dante.util.ExceptionHandlers
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function4
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(
         private val bookRepository: BookRepository,
-        private val recordDao: PageRecordDao
+        private val recordDao: PageRecordDao,
+        private val readingGoalRepository: ReadingGoalRepository
 ) : BaseViewModel() {
 
+    private data class ZipContent(
+            val books: List<BookEntity>,
+            val records: List<PageRecord>,
+            val pagesReadingGoal: ReadingGoal.PagesPerMonthReadingGoal,
+            val booksReadingGoal: ReadingGoal.BooksPerMonthReadingGoal
+    )
+
+    private val zipper = Function4 {
+        books: List<BookEntity>,
+        records: List<PageRecord>,
+        pagesReadingGoal: ReadingGoal.PagesPerMonthReadingGoal,
+        booksReadingGoal: ReadingGoal.BooksPerMonthReadingGoal ->
+        ZipContent(books, records, pagesReadingGoal, booksReadingGoal)
+    }
 
     private val statisticsItems = MutableLiveData<List<BookStatsViewItem>>()
     fun getStatistics(): LiveData<List<BookStatsViewItem>> = statisticsItems
@@ -30,12 +45,12 @@ class StatisticsViewModel @Inject constructor(
                 .zip(
                         bookRepository.bookObservable,
                         recordDao.allPageRecords(),
-                        BiFunction { books: List<BookEntity>, records: List<PageRecord> ->
-                            books to records
-                        }
+                        readingGoalRepository.retrievePagesPerMonthReadingGoal().toObservable(),
+                        readingGoalRepository.retrieveBookPerMonthReadingGoal().toObservable(),
+                        zipper
                 )
-                .map { (books, pageRecords) ->
-                    BookStatsBuilder.createFrom(books, pageRecords)
+                .map { (books, pageRecords, pagesReadingGoal, _) ->
+                    BookStatsBuilder.createFrom(books, pageRecords, pagesReadingGoal)
                 }
                 .subscribe(statisticsItems::postValue, ExceptionHandlers::defaultExceptionHandler)
                 .addTo(compositeDisposable)

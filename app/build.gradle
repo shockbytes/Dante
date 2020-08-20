@@ -79,7 +79,6 @@ dependencies {
     implementation "androidx.cardview:cardview:${rootProject.androidXVersion}"
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "androidx.core:core:$androidXCoreVersion"
-    implementation "androidx.preference:preference:$androidXPreferenceVersion"
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'

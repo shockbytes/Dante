@@ -37,7 +37,7 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
 
     private val coreComponent: CoreComponent by lazy {
         DaggerCoreComponent.builder()
-            .coreModule(CoreModule())
+            .coreModule(CoreModule(this))
             .networkModule(NetworkModule())
             .build()
     }

@@ -15,11 +15,12 @@ object BookStatsBuilder {
 
     fun createFrom(
             books: List<BookEntity>,
-            pageRecords: List<PageRecord>
+            pageRecords: List<PageRecord>,
+            pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal
     ): List<BookStatsViewItem> {
         return mutableListOf(
             createBooksAndPagesItem(books),
-            createPagesOverTimeItem(pageRecords),
+            createPagesOverTimeItem(pageRecords, pagesPerMonthGoal),
             createReadingDurationItem(books),
             createFavoriteItem(books),
             createLanguageItem(books),
@@ -60,7 +61,10 @@ object BookStatsBuilder {
         )
     }
 
-    private fun createPagesOverTimeItem(pageRecords: List<PageRecord>): BookStatsViewItem {
+    private fun createPagesOverTimeItem(
+            pageRecords: List<PageRecord>,
+            pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal
+    ): BookStatsViewItem {
 
         if (pageRecords.isEmpty()) {
             return BookStatsViewItem.PagesOverTime.Empty
@@ -84,7 +88,9 @@ object BookStatsBuilder {
 
                     PageRecordDataPoint(pages, formattedDate = format.print(monthYear.dateTime))
                 }
-                .let(BookStatsViewItem.PagesOverTime::Present)
+                .let {pageRecordDataPoints ->
+                    BookStatsViewItem.PagesOverTime.Present(pageRecordDataPoints, pagesPerMonthGoal)
+                }
     }
 
 

@@ -23,7 +23,7 @@ class BookStatsPagesOverTimeViewHolder(
                     showEmptyState()
                 }
                 is BookStatsViewItem.PagesOverTime.Present -> {
-                    showPagesPerMonth(pagesPerMonths)
+                    showPagesPerMonth(pagesPerMonths, readingGoal.pagesPerMonth)
                 }
             }
         }
@@ -34,16 +34,22 @@ class BookStatsPagesOverTimeViewHolder(
         item_stats_pages_over_time_content.setVisible(false)
     }
 
-    private fun showPagesPerMonth(dataPoints: List<PageRecordDataPoint>) {
+    private fun showPagesPerMonth(
+            dataPoints: List<PageRecordDataPoint>,
+            pagesPerMonthGoal: Int?
+    ) {
         item_pages_over_time_empty.setVisible(false)
         item_stats_pages_over_time_content.setVisible(true)
 
-        // TODO Do not hardcode strings
         item_pages_stats_diagram_view.apply {
-            headerTitle = "Goal: 100 pages / month"
+
+            headerTitle = if (pagesPerMonthGoal != null) {
+                context.getString(R.string.set_goal_header_with_goal, pagesPerMonthGoal)
+            } else context.getString(R.string.set_goal_header_no_goal)
+
             action = PagesDiagramAction.Action(context.getString(R.string.set_goal))
             registerOnActionClick(onChangeGoalActionListener)
-            readingGoal = 100 // TODO Load from storage
+            readingGoal = pagesPerMonthGoal
             updateData(dataPoints)
         }
     }

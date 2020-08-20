@@ -88,6 +88,7 @@ class PagesDiagramView @JvmOverloads constructor(
                             textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
                         }
                         .let { line ->
+                            chart.setScaleEnabled(true)
                             chart.getAxis(YAxis.AxisDependency.LEFT).apply {
                                 setDrawGridLines(true)
                                 addLimitLine(line)

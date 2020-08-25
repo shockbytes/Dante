@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.setVisible
 import kotlinx.android.synthetic.main.stats_header_view.view.*
@@ -37,6 +38,10 @@ class StatsHeaderView @JvmOverloads constructor(
 
     fun setHeaderTitle(title: CharSequence) {
         tv_stats_header_view.text = title
+    }
+
+    fun setHeaderTitleResource(@StringRes titleRes: Int) {
+        tv_stats_header_view.setText(titleRes)
     }
 
     fun showDivider(showDivider: Boolean) {

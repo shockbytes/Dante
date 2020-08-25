@@ -1,6 +1,7 @@
 package at.shockbytes.dante.stats
 
 import android.graphics.Color
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.bareBone
 import at.shockbytes.dante.core.book.*
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
@@ -66,10 +67,10 @@ object BookStatsBuilder {
     private fun createPagesOverTimeItem(
             pageRecords: List<PageRecord>,
             pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal
-    ): BookStatsViewItem.PagesOverTime {
+    ): BookStatsViewItem.BooksAndPagesOverTime {
 
         if (pageRecords.isEmpty()) {
-            return BookStatsViewItem.PagesOverTime.Empty
+            return BookStatsViewItem.BooksAndPagesOverTime.Empty(R.string.statistics_header_pages_over_time)
         }
         val format = DateTimeFormat.forPattern("MMM yy")
 
@@ -91,17 +92,17 @@ object BookStatsBuilder {
                     BooksAndPageRecordDataPoint(pages, formattedDate = format.print(monthYear.dateTime))
                 }
                 .let {pageRecordDataPoints ->
-                    BookStatsViewItem.PagesOverTime.Present(pageRecordDataPoints, pagesPerMonthGoal)
+                    BookStatsViewItem.BooksAndPagesOverTime.Present.Pages(pageRecordDataPoints, pagesPerMonthGoal)
                 }
     }
 
     private fun createBooksOverTimeItem(
             books: List<BookEntity>,
             booksPerMonthGoal: ReadingGoal.BooksPerMonthReadingGoal
-    ): BookStatsViewItem.BooksOverTime {
+    ): BookStatsViewItem.BooksAndPagesOverTime {
 
         if (books.isEmpty()) {
-            return BookStatsViewItem.BooksOverTime.Empty
+            return BookStatsViewItem.BooksAndPagesOverTime.Empty(R.string.statistics_header_books_over_time)
         }
         val format = DateTimeFormat.forPattern("MMM yy")
 
@@ -119,7 +120,7 @@ object BookStatsBuilder {
                     )
                 }
                 .let {pageRecordDataPoints ->
-                    BookStatsViewItem.BooksOverTime.Present(pageRecordDataPoints, booksPerMonthGoal)
+                    BookStatsViewItem.BooksAndPagesOverTime.Present.Books(pageRecordDataPoints, booksPerMonthGoal)
                 }
     }
 

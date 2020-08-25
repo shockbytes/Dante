@@ -1,6 +1,7 @@
 package at.shockbytes.dante.stats
 
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.Languages
@@ -22,28 +23,25 @@ sealed class BookStatsViewItem {
         data class Present(val booksAndPages: BooksPagesInfo) : BooksAndPages()
     }
 
-    sealed class PagesOverTime : BookStatsViewItem() {
+    sealed class BooksAndPagesOverTime : BookStatsViewItem() {
 
         override val layoutId: Int = R.layout.item_stats_pages_over_time
 
-        object Empty : PagesOverTime()
+        data class Empty(@StringRes val headerRes: Int) : BooksAndPagesOverTime()
 
-        data class Present(
-                val pagesPerMonths: List<BooksAndPageRecordDataPoint>,
-                val readingGoal: ReadingGoal.PagesPerMonthReadingGoal
-        ) : PagesOverTime()
-    }
+        sealed class Present : BooksAndPagesOverTime() {
 
-    sealed class BooksOverTime : BookStatsViewItem() {
+            data class Pages(
+                    val pagesPerMonths: List<BooksAndPageRecordDataPoint>,
+                    val readingGoal: ReadingGoal.PagesPerMonthReadingGoal
+            ) : Present()
 
-        override val layoutId: Int = R.layout.item_stats_books_over_time
+            data class Books(
+                    val booksPerMonths: List<BooksAndPageRecordDataPoint>,
+                    val readingGoal: ReadingGoal.BooksPerMonthReadingGoal
+            ) : Present()
+        }
 
-        object Empty : BooksOverTime()
-
-        data class Present(
-                val booksPerMonths: List<BooksAndPageRecordDataPoint>,
-                val readingGoal: ReadingGoal.BooksPerMonthReadingGoal
-        ) : BooksOverTime()
     }
 
     sealed class ReadingDuration : BookStatsViewItem() {

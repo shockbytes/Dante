@@ -10,6 +10,7 @@
     <at.shockbytes.dante.ui.custom.StatsHeaderView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/item_books_pages_over_time_header"
         app:header_title="@string/statistics_header_pages_over_time"
         app:show_divider="true" />
 

@@ -301,7 +301,6 @@
     <string name="statistics_header_pages_over_time">Seiten pro Monat</string>
     <string name="reading_goal">Leseziel</string>
     <string name="set_goal">Ziel setzen</string>
-    <string name="set_goal_header_with_goal">Ziel: %d Seiten / Monat</string>
     <string name="set_goal_header_no_goal">Kein Ziel gesetzt</string>
     <string name="reading_goal_level_0">Schmökerer</string>
     <string name="reading_goal_level_3">Buchzauberer</string>
@@ -310,5 +309,8 @@
     <string name="books_formatted">%d Bücher</string>
     <string name="reading_goal_pages">Seitenziel</string>
     <string name="reading_goal_books">Buchziel</string>
+    <string name="statistics_header_books_over_time">Bücher pro Monat</string>
+    <string name="set_pages_goal_header_with_goal">Ziel: %d Seiten / Monat</string>
+    <string name="set_books_goal_header_with_goal">Ziel: %d Bücher / Monat</string>
 
 </resources>

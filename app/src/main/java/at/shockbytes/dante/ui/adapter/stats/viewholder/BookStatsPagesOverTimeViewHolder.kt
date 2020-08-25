@@ -1,6 +1,7 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
+import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
@@ -16,19 +17,23 @@ class BookStatsPagesOverTimeViewHolder(
 ) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
-        with(content as BookStatsViewItem.PagesOverTime) {
+        with(content as BookStatsViewItem.BooksAndPagesOverTime) {
             when (this) {
-                BookStatsViewItem.PagesOverTime.Empty -> {
-                    showEmptyState()
+                is BookStatsViewItem.BooksAndPagesOverTime.Empty -> {
+                    showEmptyState(headerRes)
                 }
-                is BookStatsViewItem.PagesOverTime.Present -> {
+                is BookStatsViewItem.BooksAndPagesOverTime.Present.Pages -> {
                     showPagesPerMonth(pagesPerMonths, readingGoal.pagesPerMonth)
+                }
+                is BookStatsViewItem.BooksAndPagesOverTime.Present.Books -> {
+                    showBooksPerMonth(booksPerMonths, readingGoal.booksPerMonth)
                 }
             }
         }
     }
 
-    private fun showEmptyState() {
+    private fun showEmptyState(@StringRes headerRes: Int) {
+        item_books_pages_over_time_header.setHeaderTitleResource(headerRes)
         item_pages_over_time_empty.setVisible(true)
         item_stats_pages_over_time_content.setVisible(false)
     }
@@ -37,18 +42,40 @@ class BookStatsPagesOverTimeViewHolder(
             dataPoints: List<BooksAndPageRecordDataPoint>,
             pagesPerMonthGoal: Int?
     ) {
+        item_books_pages_over_time_header.setHeaderTitleResource(R.string.statistics_header_pages_over_time)
         item_pages_over_time_empty.setVisible(false)
         item_stats_pages_over_time_content.setVisible(true)
 
         item_pages_stats_diagram_view.apply {
 
             headerTitle = if (pagesPerMonthGoal != null) {
-                context.getString(R.string.set_goal_header_with_goal, pagesPerMonthGoal)
+                context.getString(R.string.set_pages_goal_header_with_goal, pagesPerMonthGoal)
             } else context.getString(R.string.set_goal_header_no_goal)
 
             action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
             registerOnActionClick(onChangeGoalActionListener)
             readingGoal = pagesPerMonthGoal
+            updateData(dataPoints)
+        }
+    }
+
+    private fun showBooksPerMonth(
+            dataPoints: List<BooksAndPageRecordDataPoint>,
+            booksPerMonthGoal: Int?
+    ) {
+        item_books_pages_over_time_header.setHeaderTitleResource(R.string.statistics_header_books_over_time)
+        item_pages_over_time_empty.setVisible(false)
+        item_stats_pages_over_time_content.setVisible(true)
+
+        item_pages_stats_diagram_view.apply {
+
+            headerTitle = if (booksPerMonthGoal != null) {
+                context.getString(R.string.set_books_goal_header_with_goal, booksPerMonthGoal)
+            } else context.getString(R.string.set_goal_header_no_goal)
+
+            action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
+            registerOnActionClick(onChangeGoalActionListener) // TODO Add type to callback
+            readingGoal = booksPerMonthGoal
             updateData(dataPoints)
         }
     }

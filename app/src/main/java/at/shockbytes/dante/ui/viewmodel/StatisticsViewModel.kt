@@ -62,8 +62,8 @@ class StatisticsViewModel @Inject constructor(
                         readingGoalRepository.retrieveBookPerMonthReadingGoal().toObservable(),
                         zipper
                 )
-                .map { (books, pageRecords, pagesReadingGoal, _) ->
-                    BookStatsBuilder.createFrom(books, pageRecords, pagesReadingGoal)
+                .map { (books, pageRecords, pagesReadingGoal, booksReadingGoal) ->
+                    BookStatsBuilder.build(books, pageRecords, pagesReadingGoal, booksReadingGoal)
                 }
                 .subscribe(statisticsItems::postValue, ExceptionHandlers::defaultExceptionHandler)
                 .addTo(compositeDisposable)

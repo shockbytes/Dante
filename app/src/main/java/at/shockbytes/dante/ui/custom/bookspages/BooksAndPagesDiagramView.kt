@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.custom.pages
+package at.shockbytes.dante.ui.custom.bookspages
 
 import android.content.Context
 import android.util.AttributeSet
@@ -38,7 +38,7 @@ class PagesDiagramView @JvmOverloads constructor(
             tv_page_record_header.text = value
         }
 
-    var action: PagesDiagramAction = PagesDiagramAction.Gone
+    var action: BooksAndPagesDiagramAction = BooksAndPagesDiagramAction.Gone
         set(value) {
             field = value
             setActionVisibility(value)
@@ -46,23 +46,23 @@ class PagesDiagramView @JvmOverloads constructor(
 
     fun registerOnActionClick(cAction: () -> Unit) {
         when (action) {
-            PagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction() }
-            PagesDiagramAction.Gone -> Unit // Do nothing
-            is PagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction() }
+            BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction() }
+            BooksAndPagesDiagramAction.Gone -> Unit // Do nothing
+            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction() }
         }
     }
 
-    private fun setActionVisibility(value: PagesDiagramAction) {
+    private fun setActionVisibility(value: BooksAndPagesDiagramAction) {
         when (value) {
-            PagesDiagramAction.Overflow -> {
+            BooksAndPagesDiagramAction.Overflow -> {
                 iv_page_record_overflow.setVisible(true)
                 btn_page_record_action.setVisible(false)
             }
-            PagesDiagramAction.Gone -> {
+            BooksAndPagesDiagramAction.Gone -> {
                 iv_page_record_overflow.setVisible(false)
                 btn_page_record_action.setVisible(false)
             }
-            is PagesDiagramAction.Action -> {
+            is BooksAndPagesDiagramAction.Action -> {
                 iv_page_record_overflow.setVisible(false)
                 btn_page_record_action.apply {
                     setVisible(true)
@@ -114,11 +114,11 @@ class PagesDiagramView @JvmOverloads constructor(
             }
         }
 
-    fun updateData(dataPoints: List<PageRecordDataPoint>, initialZero: Boolean = false) {
+    fun updateData(dataPoints: List<BooksAndPageRecordDataPoint>, initialZero: Boolean = false) {
 
         val entries: List<Entry> = dataPoints
                 .mapIndexed { index, dp ->
-                    Entry(index.inc().toFloat(), dp.page.toFloat())
+                    Entry(index.inc().toFloat(), dp.value.toFloat())
                 }
                 .toMutableList()
                 .apply {

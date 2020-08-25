@@ -10,7 +10,7 @@ import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.navigation.NotesBundle
-import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Observable
@@ -39,7 +39,7 @@ class BookDetailViewModel @Inject constructor(
 
     sealed class PageRecordsViewState {
 
-        data class Present(val dataPoints: List<PageRecordDataPoint>): PageRecordsViewState()
+        data class Present(val dataPoints: List<BooksAndPageRecordDataPoint>): PageRecordsViewState()
 
         object Absent : PageRecordsViewState()
     }
@@ -116,8 +116,8 @@ class BookDetailViewModel @Inject constructor(
                     }
                     .mapNotNull { (dtTimestamp, pageRecords) ->
                         pageRecords.maxBy { it.timestamp }?.let { record ->
-                            PageRecordDataPoint(
-                                    page = record.toPage,
+                            BooksAndPageRecordDataPoint(
+                                    value = record.toPage,
                                     formattedDate = format.print(dtTimestamp)
                             )
                         }

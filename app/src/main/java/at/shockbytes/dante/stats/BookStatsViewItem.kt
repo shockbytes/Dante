@@ -6,7 +6,7 @@ import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
-import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 
 sealed class BookStatsViewItem {
 
@@ -29,9 +29,21 @@ sealed class BookStatsViewItem {
         object Empty : PagesOverTime()
 
         data class Present(
-                val pagesPerMonths: List<PageRecordDataPoint>,
+                val pagesPerMonths: List<BooksAndPageRecordDataPoint>,
                 val readingGoal: ReadingGoal.PagesPerMonthReadingGoal
         ) : PagesOverTime()
+    }
+
+    sealed class BooksOverTime : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_books_over_time
+
+        object Empty : BooksOverTime()
+
+        data class Present(
+                val booksPerMonths: List<BooksAndPageRecordDataPoint>,
+                val readingGoal: ReadingGoal.BooksPerMonthReadingGoal
+        ) : BooksOverTime()
     }
 
     sealed class ReadingDuration : BookStatsViewItem() {

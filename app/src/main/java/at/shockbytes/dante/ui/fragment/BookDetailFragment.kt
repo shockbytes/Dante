@@ -40,8 +40,8 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
-import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
-import at.shockbytes.dante.ui.custom.pages.PagesDiagramAction
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.ColorUtils
@@ -406,10 +406,10 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun handlePageRecords(dataPoints: List<PageRecordDataPoint>) {
+    private fun handlePageRecords(dataPoints: List<BooksAndPageRecordDataPoint>) {
         pages_diagram_view.apply {
             updateData(dataPoints, initialZero = true)
-            action = PagesDiagramAction.Gone
+            action = BooksAndPagesDiagramAction.Gone
             headerTitle = getString(R.string.reading_behavior)
         }
     }

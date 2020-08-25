@@ -10,7 +10,7 @@
     <at.shockbytes.dante.ui.custom.StatsHeaderView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:header_title="@string/statistics_header_pages_over_time"
+        app:header_title="@string/statistics_header_books_over_time"
         app:show_divider="true" />
 
     <FrameLayout
@@ -18,20 +18,20 @@
         android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/item_pages_over_time_empty"
+            android:id="@+id/item_books_over_time_empty"
             layout="@layout/item_stats_empty_indicator"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
         <LinearLayout
-            android:id="@+id/item_stats_pages_over_time_content"
+            android:id="@+id/item_stats_books_over_time_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <at.shockbytes.dante.ui.custom.bookspages.PagesDiagramView
-                android:id="@+id/item_pages_stats_diagram_view"
+                android:id="@+id/item_books_stats_diagram_view"
                 android:layout_width="match_parent"
                 android:layout_margin="16dp"
                 android:layout_height="wrap_content"

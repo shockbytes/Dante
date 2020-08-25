@@ -1,11 +1,10 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
-import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsViewItem
-import at.shockbytes.dante.ui.custom.pages.PageRecordDataPoint
-import at.shockbytes.dante.ui.custom.pages.PagesDiagramAction
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -35,7 +34,7 @@ class BookStatsPagesOverTimeViewHolder(
     }
 
     private fun showPagesPerMonth(
-            dataPoints: List<PageRecordDataPoint>,
+            dataPoints: List<BooksAndPageRecordDataPoint>,
             pagesPerMonthGoal: Int?
     ) {
         item_pages_over_time_empty.setVisible(false)
@@ -47,7 +46,7 @@ class BookStatsPagesOverTimeViewHolder(
                 context.getString(R.string.set_goal_header_with_goal, pagesPerMonthGoal)
             } else context.getString(R.string.set_goal_header_no_goal)
 
-            action = PagesDiagramAction.Action(context.getString(R.string.set_goal))
+            action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
             registerOnActionClick(onChangeGoalActionListener)
             readingGoal = pagesPerMonthGoal
             updateData(dataPoints)

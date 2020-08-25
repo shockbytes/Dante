@@ -77,8 +77,11 @@ class PagesDiagramView @JvmOverloads constructor(
             field = value
 
             // Anyway, remove all limit lines
-            chart.getAxis(YAxis.AxisDependency.LEFT).removeAllLimitLines()
-
+            chart.getAxis(YAxis.AxisDependency.LEFT).apply {
+                removeAllLimitLines()
+                setDrawGridLines(false)
+            }
+            // TODO Fix this buggy implementation
             if (value != null) {
                 LimitLine(value.toFloat(), context.getString(R.string.reading_goal))
                         .apply {

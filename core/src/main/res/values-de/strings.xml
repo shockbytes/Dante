@@ -307,5 +307,8 @@
     <string name="reading_goal_level_3">Buchzauberer</string>
     <string name="reading_goal_level_2">Lesehirn</string>
     <string name="reading_goal_level_1">Ernsthafter Leser</string>
+    <string name="books_formatted">%d Bücher</string>
+    <string name="reading_goal_pages">Seitenziel</string>
+    <string name="reading_goal_books">Buchziel</string>
 
 </resources>

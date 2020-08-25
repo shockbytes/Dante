@@ -408,7 +408,7 @@ class BookDetailFragment : BaseFragment(),
 
     private fun handlePageRecords(dataPoints: List<BooksAndPageRecordDataPoint>) {
         pages_diagram_view.apply {
-            updateData(dataPoints, initialZero = true)
+            setData(dataPoints, initialZero = true, markerTemplateResource = R.string.pages_formatted)
             action = BooksAndPagesDiagramAction.Gone
             headerTitle = getString(R.string.reading_behavior)
         }

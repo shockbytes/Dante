@@ -55,7 +55,7 @@ class BookStatsPagesOverTimeViewHolder(
             action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
             registerOnActionClick(onChangeGoalActionListener)
             readingGoal = pagesPerMonthGoal
-            updateData(dataPoints)
+            setData(dataPoints, markerTemplateResource = R.string.pages_formatted)
         }
     }
 
@@ -76,7 +76,7 @@ class BookStatsPagesOverTimeViewHolder(
             action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
             registerOnActionClick(onChangeGoalActionListener) // TODO Add type to callback
             readingGoal = booksPerMonthGoal
-            updateData(dataPoints)
+            setData(dataPoints, markerTemplateResource = R.string.books_formatted)
         }
     }
 }

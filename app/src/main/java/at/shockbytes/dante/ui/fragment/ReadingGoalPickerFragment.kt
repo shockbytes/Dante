@@ -1,9 +1,8 @@
 package at.shockbytes.dante.ui.fragment
 
-import androidx.annotation.StringRes
 import at.shockbytes.dante.R
-import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.arguments.argumentNullable
 import kotlinx.android.synthetic.main.fragment_reading_goal_picker.*
@@ -12,22 +11,14 @@ class ReadingGoalPickerFragment : BaseFragment() {
 
     interface OnReadingGoalPickedListener {
 
-        fun onGoalPicked(goal: Int)
+        fun onGoalPicked(goal: Int, goalType: ReadingGoalType)
 
-        fun onDelete()
-    }
-
-    private enum class GoalType(
-            @StringRes val title: Int,
-            @StringRes val labelTemplate: Int
-    ) {
-        PAGES(R.string.reading_goal_pages, R.string.pages_formatted),
-        BOOKS(R.string.reading_goal_books, R.string.books_formatted)
+        fun onDelete(goalType: ReadingGoalType)
     }
 
     override val layoutId: Int = R.layout.fragment_reading_goal_picker
 
-    private var type: GoalType by argument()
+    private var type: ReadingGoalType by argument()
     private var initialValue: Int? by argumentNullable()
 
     private var onReadingGoalPickedListener: OnReadingGoalPickedListener? = null
@@ -44,12 +35,12 @@ class ReadingGoalPickerFragment : BaseFragment() {
 
     private fun setupCallbackListeners() {
         btn_reading_goal_delete.setOnClickListener {
-            onReadingGoalPickedListener?.onDelete()
+            onReadingGoalPickedListener?.onDelete(type)
             closeFragment()
         }
 
         btn_reading_goal_apply.setOnClickListener {
-            onReadingGoalPickedListener?.onGoalPicked(slider_reading_goal.value.toInt())
+            onReadingGoalPickedListener?.onGoalPicked(slider_reading_goal.value.toInt(), type)
             closeFragment()
         }
     }
@@ -75,10 +66,17 @@ class ReadingGoalPickerFragment : BaseFragment() {
     }
 
     private fun setupSlider() {
-        slider_reading_goal.addOnChangeListener { slider, value, _ ->
-            computeLottieFrame(slider.valueFrom, slider.valueTo, value)
-            updateLevel(slider.valueFrom, slider.valueTo, value)
-            updateGoalLabel(value.toInt())
+        slider_reading_goal.apply {
+
+            valueTo = type.sliderValueTo
+            valueFrom = type.sliderValueFrom
+            stepSize = type.sliderStepSize
+
+            addOnChangeListener { slider, value, _ ->
+                computeLottieFrame(slider.valueFrom, slider.valueTo, value)
+                updateLevel(slider.valueFrom, slider.valueTo, value)
+                updateGoalLabel(value.toInt())
+            }
         }
     }
 
@@ -127,17 +125,9 @@ class ReadingGoalPickerFragment : BaseFragment() {
         private const val MIN_FRAME = 18
         private const val MAX_FRAME = 28
 
-        fun newPagesInstance(initialValue: Int? = null): ReadingGoalPickerFragment {
-            return newInstance(initialValue, type = GoalType.PAGES)
-        }
-
-        fun newBooksInstance(initialValue: Int? = null): ReadingGoalPickerFragment {
-            return newInstance(initialValue, type = GoalType.BOOKS)
-        }
-
-        private fun newInstance(
+        fun newInstance(
                 initialValue: Int? = null,
-                type: GoalType
+                type: ReadingGoalType
         ): ReadingGoalPickerFragment {
             return ReadingGoalPickerFragment().apply {
                 this.initialValue = initialValue

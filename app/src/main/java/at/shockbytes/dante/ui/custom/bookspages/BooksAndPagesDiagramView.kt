@@ -7,6 +7,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
+import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.util.setVisible
 import com.github.mikephil.charting.charts.LineChart
@@ -45,11 +46,11 @@ class PagesDiagramView @JvmOverloads constructor(
             setActionVisibility(value)
         }
 
-    fun registerOnActionClick(cAction: () -> Unit) {
+    fun registerOnActionClick(cAction: (ReadingGoalType) -> Unit, type: ReadingGoalType) {
         when (action) {
-            BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction() }
+            BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction(type) }
             BooksAndPagesDiagramAction.Gone -> Unit // Do nothing
-            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction() }
+            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction(type) }
         }
     }
 
@@ -191,6 +192,7 @@ class PagesDiagramView @JvmOverloads constructor(
     }
 
     companion object {
+        // TODO This does not work for books
         private const val LIMIT_LINE_OFFSET = 20
     }
 }

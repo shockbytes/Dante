@@ -13,4 +13,8 @@ interface ReadingGoalRepository {
     fun resetPagesPerMonthReadingGoal(): Completable
 
     fun retrieveBookPerMonthReadingGoal(): Single<ReadingGoal.BooksPerMonthReadingGoal>
+
+    fun storeBooksPerMonthReadingGoal(goal: Int): Completable
+
+    fun resetBooksPerMonthReadingGoal(): Completable
 }

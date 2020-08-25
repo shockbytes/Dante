@@ -10,9 +10,12 @@ import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.data.ReadingGoalRepository
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.stats.BookStatsBuilder
+import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.functions.Function4
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
@@ -42,9 +45,27 @@ class StatisticsViewModel @Inject constructor(
 
     sealed class ReadingGoalState {
 
-        data class Present(val goal: Int): ReadingGoalState()
+        abstract val goalType: ReadingGoalType
 
-        data class Absent(val defaultGoal: Int) : ReadingGoalState()
+        sealed class Present : ReadingGoalState() {
+
+            abstract val goal: Int
+
+            data class Pages(
+                    override val goal: Int,
+                    override val goalType: ReadingGoalType = ReadingGoalType.PAGES
+            ): Present()
+
+            data class Books(
+                    override val goal: Int,
+                    override val goalType: ReadingGoalType = ReadingGoalType.BOOKS
+            ): Present()
+        }
+
+        data class Absent(
+                val defaultGoal: Int,
+                override val goalType: ReadingGoalType
+        ) : ReadingGoalState()
     }
 
     private val statisticsItems = MutableLiveData<List<BookStatsViewItem>>()
@@ -69,35 +90,69 @@ class StatisticsViewModel @Inject constructor(
                 .addTo(compositeDisposable)
     }
 
-    fun requestPageGoalChangeAction() {
-        readingGoalRepository.retrievePagesPerMonthReadingGoal()
-                .map { goal ->
-                    if (goal.pagesPerMonth != null) {
-                        ReadingGoalState.Present(goal.pagesPerMonth!!)
-                    } else {
-                        ReadingGoalState.Absent(PAGES_DEFAULT_GOAL)
-                    }
-                }
+    fun requestPageGoalChangeAction(type: ReadingGoalType) {
+
+        goalChangeObservableSourceByType(type)
                 .subscribe(pageGoalChangeEvent::onNext)
                 .addTo(compositeDisposable)
     }
 
-    fun onPagesGoalPicked(pagesReadingGoal: Int) {
-        readingGoalRepository.storePagesPerMonthReadingGoal(pagesReadingGoal)
+    private fun goalChangeObservableSourceByType(type: ReadingGoalType): Single<ReadingGoalState> {
+        return when (type) {
+            ReadingGoalType.PAGES -> {
+                readingGoalRepository.retrievePagesPerMonthReadingGoal()
+                        .map { goal ->
+                            if (goal.pagesPerMonth != null) {
+                                ReadingGoalState.Present.Pages(goal.pagesPerMonth!!)
+                            } else {
+                                ReadingGoalState.Absent(PAGES_DEFAULT_GOAL, ReadingGoalType.PAGES)
+                            }
+                        }
+            }
+            ReadingGoalType.BOOKS -> {
+                readingGoalRepository.retrieveBookPerMonthReadingGoal()
+                        .map { goal ->
+                            if (goal.booksPerMonth != null) {
+                                ReadingGoalState.Present.Books(goal.booksPerMonth!!)
+                            } else {
+                                ReadingGoalState.Absent(BOOKS_DEFAULT_GOAL, ReadingGoalType.BOOKS)
+                            }
+                        }
+            }
+        }
+    }
+
+    fun onGoalPicked(readingGoal: Int, goalType: ReadingGoalType) {
+        getGoalStorageSource(readingGoal, goalType)
                 .observeOn(schedulers.ui)
                 .subscribe(::requestStatistics)
                 .addTo(compositeDisposable)
     }
 
-    fun onPagesGoalDeleted() {
-        readingGoalRepository.resetPagesPerMonthReadingGoal()
+    private fun getGoalStorageSource(readingGoal: Int, goalType: ReadingGoalType): Completable {
+        return when (goalType) {
+            ReadingGoalType.PAGES -> readingGoalRepository.storePagesPerMonthReadingGoal(readingGoal)
+            ReadingGoalType.BOOKS -> readingGoalRepository.storeBooksPerMonthReadingGoal(readingGoal)
+        }
+    }
+
+    fun onGoalDeleted(goalType: ReadingGoalType) {
+        getGoalResetSource(goalType)
                 .observeOn(schedulers.ui)
                 .subscribe(::requestStatistics)
                 .addTo(compositeDisposable)
+    }
+
+    private fun getGoalResetSource(goalType: ReadingGoalType): Completable {
+        return when (goalType) {
+            ReadingGoalType.PAGES -> readingGoalRepository.resetPagesPerMonthReadingGoal()
+            ReadingGoalType.BOOKS -> readingGoalRepository.resetBooksPerMonthReadingGoal()
+        }
     }
 
     companion object {
 
         private const val PAGES_DEFAULT_GOAL = 600
+        private const val BOOKS_DEFAULT_GOAL = 4
     }
 }

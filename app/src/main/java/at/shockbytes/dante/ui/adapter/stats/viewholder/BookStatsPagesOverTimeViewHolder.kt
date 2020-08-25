@@ -4,6 +4,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsViewItem
+import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.util.setVisible
@@ -13,7 +14,7 @@ import kotlinx.android.synthetic.main.item_stats_pages_over_time.*
 
 class BookStatsPagesOverTimeViewHolder(
         override val containerView: View,
-        private val onChangeGoalActionListener: () -> Unit
+        private val onChangeGoalActionListener: (ReadingGoalType) -> Unit
 ) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
@@ -53,7 +54,7 @@ class BookStatsPagesOverTimeViewHolder(
             } else context.getString(R.string.set_goal_header_no_goal)
 
             action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
-            registerOnActionClick(onChangeGoalActionListener)
+            registerOnActionClick(onChangeGoalActionListener, ReadingGoalType.PAGES)
             readingGoal = pagesPerMonthGoal
             setData(dataPoints, markerTemplateResource = R.string.pages_formatted)
         }
@@ -74,7 +75,7 @@ class BookStatsPagesOverTimeViewHolder(
             } else context.getString(R.string.set_goal_header_no_goal)
 
             action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
-            registerOnActionClick(onChangeGoalActionListener) // TODO Add type to callback
+            registerOnActionClick(onChangeGoalActionListener, ReadingGoalType.BOOKS)
             readingGoal = booksPerMonthGoal
             setData(dataPoints, markerTemplateResource = R.string.books_formatted)
         }

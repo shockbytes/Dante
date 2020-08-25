@@ -8,6 +8,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.stats.StatsAdapter
+import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
@@ -68,11 +69,15 @@ class StatisticsFragment : BaseFragment() {
         }
 
         val fragment = ReadingGoalPickerFragment
-                .newPagesInstance(initialValue)
+                .newInstance(initialValue, state.goalType)
                 .setOnReadingGoalPickedListener(object: ReadingGoalPickerFragment.OnReadingGoalPickedListener {
-                    override fun onGoalPicked(goal: Int) = viewModel.onPagesGoalPicked(goal)
+                    override fun onGoalPicked(goal: Int, goalType: ReadingGoalType) {
+                        viewModel.onGoalPicked(goal, goalType)
+                    }
 
-                    override fun onDelete() = viewModel.onPagesGoalDeleted()
+                    override fun onDelete(goalType: ReadingGoalType) {
+                        viewModel.onGoalDeleted(goalType)
+                    }
                 })
         DanteUtils.addFragmentToActivity(parentFragmentManager, fragment, android.R.id.content, true)
 

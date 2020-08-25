@@ -39,6 +39,16 @@ class SharedPrefsBackedReadingGoalRepository(
         }
     }
 
+    override fun storeBooksPerMonthReadingGoal(goal: Int): Completable {
+        return completableOf(subscribeOn = schedulers.io) {
+            sharedPreferences.edit().putInt(KEY_BOOKS_READING_GOAL, goal).apply()
+        }
+    }
+
+    override fun resetBooksPerMonthReadingGoal(): Completable {
+        return storeBooksPerMonthReadingGoal(DEFAULT_VALUE)
+    }
+
     companion object {
         private const val KEY_PAGES_READING_GOAL = "key_pages_reading_goal"
         private const val KEY_BOOKS_READING_GOAL = "key_books_reading_goal"

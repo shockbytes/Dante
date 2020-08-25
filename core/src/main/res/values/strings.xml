@@ -26,8 +26,11 @@
 
     <string name="reading_behavior">Reading behavior</string>
     <string name="pages_formatted">%d pages</string>
+    <string name="books_formatted">%d books</string>
 
     <string name="reading_goal">Reading goal</string>
+    <string name="reading_goal_pages">Pages goal</string>
+    <string name="reading_goal_books">Books goal</string>
     <string name="set_goal">Set goal</string>
     <string name="set_goal_header_with_goal">Goal: %d pages / month</string>
     <string name="set_goal_header_no_goal">Goal not set</string>

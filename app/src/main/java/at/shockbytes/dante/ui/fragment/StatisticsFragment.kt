@@ -68,7 +68,7 @@ class StatisticsFragment : BaseFragment() {
         }
 
         val fragment = ReadingGoalPickerFragment
-                .newInstance(initialValue)
+                .newPagesInstance(initialValue)
                 .setOnReadingGoalPickedListener(object: ReadingGoalPickerFragment.OnReadingGoalPickedListener {
                     override fun onGoalPicked(goal: Int) = viewModel.onPagesGoalPicked(goal)
 

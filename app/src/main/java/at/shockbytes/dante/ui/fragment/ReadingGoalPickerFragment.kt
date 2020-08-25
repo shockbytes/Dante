@@ -1,7 +1,10 @@
 package at.shockbytes.dante.ui.fragment
 
+import androidx.annotation.StringRes
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.arguments.argumentNullable
 import kotlinx.android.synthetic.main.fragment_reading_goal_picker.*
 
@@ -14,8 +17,17 @@ class ReadingGoalPickerFragment : BaseFragment() {
         fun onDelete()
     }
 
+    private enum class GoalType(
+            @StringRes val title: Int,
+            @StringRes val labelTemplate: Int
+    ) {
+        PAGES(R.string.reading_goal_pages, R.string.pages_formatted),
+        BOOKS(R.string.reading_goal_books, R.string.books_formatted)
+    }
+
     override val layoutId: Int = R.layout.fragment_reading_goal_picker
 
+    private var type: GoalType by argument()
     private var initialValue: Int? by argumentNullable()
 
     private var onReadingGoalPickedListener: OnReadingGoalPickedListener? = null
@@ -25,6 +37,7 @@ class ReadingGoalPickerFragment : BaseFragment() {
         setupCloseListeners()
         setupSlider()
         setupCallbackListeners()
+        setupType()
 
         initialValue?.toFloat()?.let(slider_reading_goal::setValue)
     }
@@ -91,8 +104,12 @@ class ReadingGoalPickerFragment : BaseFragment() {
         tv_reading_goal_level.setText(levelRes)
     }
 
+    private fun setupType() {
+        tv_fragment_reading_goal_header.setText(type.title)
+    }
+
     private fun updateGoalLabel(value: Int) {
-        tv_reading_goal_label.text = getString(R.string.pages_formatted, value)
+        tv_reading_goal_label.text = getString(type.labelTemplate, value)
     }
 
     fun setOnReadingGoalPickedListener(listener: OnReadingGoalPickedListener): ReadingGoalPickerFragment {
@@ -110,9 +127,21 @@ class ReadingGoalPickerFragment : BaseFragment() {
         private const val MIN_FRAME = 18
         private const val MAX_FRAME = 28
 
-        fun newInstance(initialValue: Int? = null): ReadingGoalPickerFragment {
+        fun newPagesInstance(initialValue: Int? = null): ReadingGoalPickerFragment {
+            return newInstance(initialValue, type = GoalType.PAGES)
+        }
+
+        fun newBooksInstance(initialValue: Int? = null): ReadingGoalPickerFragment {
+            return newInstance(initialValue, type = GoalType.BOOKS)
+        }
+
+        private fun newInstance(
+                initialValue: Int? = null,
+                type: GoalType
+        ): ReadingGoalPickerFragment {
             return ReadingGoalPickerFragment().apply {
                 this.initialValue = initialValue
+                this.type = type
             }
         }
     }

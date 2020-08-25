@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.multi_bare_bone_book_view.view.*
 
 class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
+    private val booksToDisplay = 8
+
     init {
         inflate(context, R.layout.multi_bare_bone_book_view, this)
     }
@@ -23,7 +25,7 @@ class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayou
         container_multi_bare_bone_book_view.removeAllViews()
 
         urls
-            .mapNotNull { url ->
+            .mapIndexedNotNull { _,  url ->
                 url?.let {
                     createImageView().apply {
                         imageLoader.loadImageWithCornerRadius(
@@ -35,15 +37,17 @@ class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayou
                     }
                 }
             }
-            .take(5)
+            .take(booksToDisplay)
             .forEach(container_multi_bare_bone_book_view::addView)
     }
 
     private fun createImageView(): ImageView {
         return ImageView(context).apply {
             layoutParams = MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT).apply {
+                height = AppUtils.convertDpInPixel(72, context)
                 marginStart = AppUtils.convertDpInPixel(-16, context)
             }
+            scaleType = ImageView.ScaleType.FIT_XY
         }
     }
 }

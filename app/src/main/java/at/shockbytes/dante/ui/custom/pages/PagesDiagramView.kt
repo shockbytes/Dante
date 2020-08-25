@@ -76,6 +76,9 @@ class PagesDiagramView @JvmOverloads constructor(
         set(value) {
             field = value
 
+            // Anyway, remove all limit lines
+            chart.getAxis(YAxis.AxisDependency.LEFT).removeAllLimitLines()
+
             if (value != null) {
                 LimitLine(value.toFloat(), context.getString(R.string.reading_goal))
                         .apply {

@@ -299,5 +299,13 @@
     <string name="reading_behavior">Leseverhalten</string>
     <string name="pages_formatted">%d Seiten</string>
     <string name="statistics_header_pages_over_time">Seiten pro Monat</string>
+    <string name="reading_goal">Leseziel</string>
+    <string name="set_goal">Ziel setzen</string>
+    <string name="set_goal_header_with_goal">Ziel: %d Seiten / Monat</string>
+    <string name="set_goal_header_no_goal">Kein Ziel gesetzt</string>
+    <string name="reading_goal_level_0">Schmökerer</string>
+    <string name="reading_goal_level_3">Buchzauberer</string>
+    <string name="reading_goal_level_2">Lesehirn</string>
+    <string name="reading_goal_level_1">Ernsthafter Leser</string>
 
 </resources>

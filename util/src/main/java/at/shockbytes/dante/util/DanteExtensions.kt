@@ -21,10 +21,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import io.reactivex.Completable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Action
 import io.reactivex.schedulers.Schedulers
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -140,6 +142,13 @@ fun <T> singleOf(
         block: () -> T
 ): Single<T> {
     return Single.just(block()).subscribeOn(subscribeOn)
+}
+
+fun completableOf(
+        subscribeOn: Scheduler = Schedulers.computation(),
+        block: () -> Unit
+): Completable{
+    return Completable.fromAction(Action(block)).subscribeOn(subscribeOn)
 }
 
 fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {

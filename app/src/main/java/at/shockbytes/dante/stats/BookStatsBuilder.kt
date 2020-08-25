@@ -133,7 +133,6 @@ object BookStatsBuilder {
 
     private fun favoriteAuthor(books: List<BookEntity>): FavoriteAuthor? {
         return books
-            .asSequence()
             .groupBy { book ->
                 book.author
             }

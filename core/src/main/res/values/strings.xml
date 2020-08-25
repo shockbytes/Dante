@@ -32,6 +32,11 @@
     <string name="set_goal_header_with_goal">Goal: %d pages / month</string>
     <string name="set_goal_header_no_goal">Goal not set</string>
 
+    <string name="reading_goal_level_0">Rookie</string>
+    <string name="reading_goal_level_1">Serious reader</string>
+    <string name="reading_goal_level_2">Reading brain</string>
+    <string name="reading_goal_level_3">Book wizard</string>
+
     <string name="edit">Edit</string>
     <string name="menu_main_stats">Statistics</string>
     <string name="menu_main_timeline">Timeline</string>

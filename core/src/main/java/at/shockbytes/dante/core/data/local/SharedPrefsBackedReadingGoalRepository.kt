@@ -3,9 +3,11 @@ package at.shockbytes.dante.core.data.local
 import android.content.SharedPreferences
 import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.core.data.ReadingGoalRepository
+import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.getIntOrNullIfDefault
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class SharedPrefsBackedReadingGoalRepository(
@@ -18,6 +20,16 @@ class SharedPrefsBackedReadingGoalRepository(
             val readingGoal = sharedPreferences.getIntOrNullIfDefault(KEY_PAGES_READING_GOAL, DEFAULT_VALUE)
             ReadingGoal.PagesPerMonthReadingGoal(readingGoal)
         }
+    }
+
+    override fun storePagesPerMonthReadingGoal(goal: Int): Completable {
+        return completableOf(subscribeOn = schedulers.io) {
+            sharedPreferences.edit().putInt(KEY_PAGES_READING_GOAL, goal).apply()
+        }
+    }
+
+    override fun resetPagesPerMonthReadingGoal(): Completable {
+        return storePagesPerMonthReadingGoal(DEFAULT_VALUE)
     }
 
     override fun retrieveBookPerMonthReadingGoal(): Single<ReadingGoal.BooksPerMonthReadingGoal> {

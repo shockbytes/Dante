@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.15</string>
+    <string name="app_version" translatable="false">3.15-beta02</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -25,8 +25,8 @@
     <string name="add_book_to_library_hint">Add a book to your library</string>
 
     <string name="reading_behavior">Reading behavior</string>
-    <string name="pages_formatted">%d pages</string>
-    <string name="books_formatted">%d books</string>
+    <string name="pages_formatted">%d pages / %s</string>
+    <string name="books_formatted">%d books / %s</string>
 
     <string name="reading_goal">Reading goal</string>
     <string name="reading_goal_pages">Pages goal</string>

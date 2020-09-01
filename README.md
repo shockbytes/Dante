@@ -56,8 +56,14 @@ Empty...
 
 ### Version 3.15
 - [ ] Statistics pages/books over time / month + Goal per month
+    - [ ] Make books per month touchable
+    - [ ] Show months where no books were read in books per month
+    - [ ] Fix problems when setting books per month reading goal offset
+    - [ ] Fix issues with pages per month reading goal update
+    - [ ] Change toolbar behavior in Statistics screen
 - [ ] Reset page statistics per book
 - [ ] Hide page statistics in details page
+- [ ] Experimental remote storage Firestore implementation
 
 ### Version 3.14 - SUMMER CLEANUP
 * Move sort into settings

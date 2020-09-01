@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.graphics.drawable.DrawableWrapper
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
@@ -42,6 +43,7 @@ import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
+import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.ColorUtils
@@ -408,7 +410,11 @@ class BookDetailFragment : BaseFragment(),
 
     private fun handlePageRecords(dataPoints: List<BooksAndPageRecordDataPoint>) {
         pages_diagram_view.apply {
-            setData(dataPoints, initialZero = true, markerTemplateResource = R.string.pages_formatted)
+            setData(
+                    dataPoints,
+                    initialZero = true,
+                    options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
+            )
             action = BooksAndPagesDiagramAction.Gone
             headerTitle = getString(R.string.reading_behavior)
         }
@@ -416,38 +422,20 @@ class BookDetailFragment : BaseFragment(),
 
     private fun setupViewListener() {
 
-        btn_detail_pages.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestPageDialog()
-        }
-        btn_detail_published.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_PUBLISHED_DATE)
-        }
-        btn_detail_notes.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestNotesDialog()
-        }
-        btn_detail_rate.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestRatingDialog()
-        }
-        btn_detail_wishhlist_date.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_WISHLIST_DATE)
-        }
-        btn_detail_start_date.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_START_DATE)
-        }
-        btn_detail_end_date.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_END_DATE)
-        }
+        btn_detail_pages.setHapticClickListener(viewModel::requestPageDialog)
+        btn_detail_published.setHapticClickListener { showDatePicker(DATE_TARGET_PUBLISHED_DATE) }
+        btn_detail_notes.setHapticClickListener(viewModel::requestNotesDialog)
+        btn_detail_rate.setHapticClickListener(viewModel::requestRatingDialog)
+        btn_detail_wishhlist_date.setHapticClickListener { showDatePicker(DATE_TARGET_WISHLIST_DATE) }
+        btn_detail_start_date.setHapticClickListener { showDatePicker(DATE_TARGET_START_DATE) }
+        btn_detail_end_date.setHapticClickListener { showDatePicker(DATE_TARGET_END_DATE) }
+        btn_add_label.setHapticClickListener(viewModel::requestAddLabels)
+    }
 
-        btn_add_label.setOnClickListener { v ->
+    private fun View.setHapticClickListener(action: () -> Unit) {
+        this.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestAddLabels()
+            action()
         }
     }
 
@@ -459,15 +447,15 @@ class BookDetailFragment : BaseFragment(),
             }
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (drawable, v) ->
-                v.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
-            }, { throwable ->
-                throwable.printStackTrace()
-            }, {
-                // In the end start the component animations in onComplete()
-                startComponentAnimations()
-            })
+            // In the end (onComplete) start the component animations in onComplete()
+            .subscribe(::setCompoundDrawable, ExceptionHandlers::defaultExceptionHandler, ::startComponentAnimations)
             .addTo(compositeDisposable)
+    }
+
+    private fun setCompoundDrawable(pair: Pair<Drawable, TextView>) {
+
+        val (drawable, view) = pair
+        view.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
     }
 
     private fun startComponentAnimations() {

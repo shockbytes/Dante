@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.custom.bookspages
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
@@ -119,7 +118,7 @@ class PagesDiagramView @JvmOverloads constructor(
     fun setData(
             dataPoints: List<BooksAndPageRecordDataPoint>,
             initialZero: Boolean = false,
-            @StringRes markerTemplateResource: Int
+            options: MarkerViewOptions
     ) {
 
         val entries: List<Entry> = dataPoints
@@ -184,7 +183,7 @@ class PagesDiagramView @JvmOverloads constructor(
             }
 
             setDrawMarkers(true)
-            marker = DanteMarkerView(context, markerTemplateResource)
+            marker = DanteMarkerView(context, chart, options)
 
             data = LineData(dataSet)
             invalidate()

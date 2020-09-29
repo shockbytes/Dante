@@ -22,6 +22,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private val searchState = MutableLiveData<SearchState>()
+    fun getSearchState(): LiveData<SearchState> = searchState
 
     private val bookDownloadSubject = PublishSubject.create<BookSearchItem>()
 
@@ -35,25 +36,25 @@ class SearchViewModel @Inject constructor(
         searchState.postValue(SearchState.InitialState)
     }
 
-    fun getSearchState(): LiveData<SearchState> = searchState
-
     fun showBooks(query: CharSequence, keepLocal: Boolean) {
 
         if (query.isNotEmpty()) {
 
-            searchState.postValue(SearchState.LoadingState)
-
             resolveSource(query.toString(), keepLocal)
-                    .subscribe({
-                        if (it.isNotEmpty()) {
-                            searchState.postValue(SearchState.SuccessState(it))
+                    .doOnSubscribe {
+                        searchState.postValue(SearchState.LoadingState)
+                    }
+                    .map { bookSearchItems ->
+                        if (bookSearchItems.isNotEmpty()) {
+                            SearchState.SuccessState(bookSearchItems)
                         } else {
-                            searchState.postValue(SearchState.EmptyState)
+                            SearchState.EmptyState
                         }
-                    }, {
-                        Timber.e(it)
-                        searchState.postValue(SearchState.ErrorState(it))
-                    })
+                    }
+                    .doOnError { throwable ->
+                        searchState.postValue(SearchState.ErrorState(throwable))
+                    }
+                    .subscribe(searchState::postValue, Timber::e)
                     .addTo(compositeDisposable)
         }
     }

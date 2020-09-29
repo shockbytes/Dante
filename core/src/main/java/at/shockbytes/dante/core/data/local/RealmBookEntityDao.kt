@@ -95,6 +95,10 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     override fun search(query: String): Observable<List<BookEntity>> {
         return realm.instance.where(bookClass)
                 .contains("title", query, Case.INSENSITIVE)
+                .or()
+                .contains("author", query, Case.INSENSITIVE)
+                .or()
+                .contains("subTitle", query, Case.INSENSITIVE)
                 .findAll()
                 .asFlowable()
                 .map { mapper.mapTo(it) }

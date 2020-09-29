@@ -56,6 +56,7 @@ Empty...
 
 ### Version 3.15
 - [ ] Statistics pages/books over time / month + Goal per month
+    - [x] Fix issue where MarkerView draws out of ChartView bounds
     - [ ] Make books per month touchable
     - [ ] Show months where no books were read in books per month
     - [ ] Fix problems when setting books per month reading goal offset

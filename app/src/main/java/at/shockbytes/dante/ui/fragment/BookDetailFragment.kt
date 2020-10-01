@@ -11,7 +11,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.DrawableWrapper
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
@@ -415,9 +414,17 @@ class BookDetailFragment : BaseFragment(),
                     initialZero = true,
                     options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
             )
-            action = BooksAndPagesDiagramAction.Gone
+            action = BooksAndPagesDiagramAction.Overflow
+            registerOnActionClick {
+                showPageRecordsOverview()
+            }
             headerTitle = getString(R.string.reading_behavior)
         }
+    }
+
+    private fun showPageRecordsOverview() {
+        // TODO
+        showToast("Page records overview...")
     }
 
     private fun setupViewListener() {

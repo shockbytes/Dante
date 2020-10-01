@@ -45,11 +45,11 @@ class PagesDiagramView @JvmOverloads constructor(
             setActionVisibility(value)
         }
 
-    fun registerOnActionClick(cAction: (ReadingGoalType) -> Unit, type: ReadingGoalType) {
+    fun registerOnActionClick(clickAction: () -> Unit) {
         when (action) {
-            BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction(type) }
+            BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { clickAction() }
             BooksAndPagesDiagramAction.Gone -> Unit // Do nothing
-            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction(type) }
+            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { clickAction() }
         }
     }
 

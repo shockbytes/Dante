@@ -105,4 +105,6 @@ interface AppComponent {
     fun inject(activity: TimeLineActivity)
 
     fun inject(fragment: PickRandomBookFragment)
+
+    fun inject(fragment: PageRecordsDetailFragment)
 }

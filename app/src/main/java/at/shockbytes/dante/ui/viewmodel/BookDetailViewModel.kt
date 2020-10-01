@@ -39,7 +39,10 @@ class BookDetailViewModel @Inject constructor(
 
     sealed class PageRecordsViewState {
 
-        data class Present(val dataPoints: List<BooksAndPageRecordDataPoint>): PageRecordsViewState()
+        data class Present(
+                val bookId: Long,
+                val dataPoints: List<BooksAndPageRecordDataPoint>
+        ): PageRecordsViewState()
 
         object Absent : PageRecordsViewState()
     }
@@ -122,7 +125,9 @@ class BookDetailViewModel @Inject constructor(
                             )
                         }
                     }
-                    .let(PageRecordsViewState::Present)
+                    .let { dataPoints ->
+                        PageRecordsViewState.Present(bookId, dataPoints)
+                    }
         }
     }
 

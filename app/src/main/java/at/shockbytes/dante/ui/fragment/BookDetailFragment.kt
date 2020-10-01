@@ -393,7 +393,7 @@ class BookDetailFragment : BaseFragment(),
         when (pageRecordViewState) {
             is BookDetailViewModel.PageRecordsViewState.Present -> {
                 group_details_pages.setVisible(true)
-                handlePageRecords(pageRecordViewState.dataPoints)
+                handlePageRecords(pageRecordViewState.dataPoints, pageRecordViewState.bookId)
             }
             BookDetailViewModel.PageRecordsViewState.Absent -> {
                 group_details_pages.setVisible(false)
@@ -401,7 +401,10 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun handlePageRecords(dataPoints: List<BooksAndPageRecordDataPoint>) {
+    private fun handlePageRecords(
+            dataPoints: List<BooksAndPageRecordDataPoint>,
+            bookId: Long
+    ) {
         pages_diagram_view.apply {
             setData(
                     dataPoints,
@@ -410,20 +413,25 @@ class BookDetailFragment : BaseFragment(),
             )
             action = BooksAndPagesDiagramAction.Overflow
             registerOnActionClick {
-                showPageRecordsOverview()
+                showPageRecordsOverview(bookId)
             }
             headerTitle = getString(R.string.reading_behavior)
         }
     }
 
-    private fun showPageRecordsOverview() {
+    private fun showPageRecordsOverview(bookId: Long) {
         registerForPopupMenu(
                 pages_diagram_view.actionView,
                 R.menu.menu_page_records_details,
                 PopupMenu.OnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.menu_page_records_details -> {
-                            showToast("show details")
+                            DanteUtils.addFragmentToActivity(
+                                    parentFragmentManager,
+                                    PageRecordsDetailFragment.newInstance(bookId),
+                                    android.R.id.content,
+                                    addToBackStack = true
+                            )
                         }
                         R.id.menu_page_records_reset -> {
                             showToast("reset")

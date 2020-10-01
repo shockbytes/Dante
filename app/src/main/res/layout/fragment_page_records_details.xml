@@ -11,12 +11,11 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
         android:layout_marginTop="64dp"
+        android:layout_marginBottom="64dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         app:cardCornerRadius="12dp"
         android:clickable="true"
         android:focusable="true"
@@ -39,6 +38,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_close_grayscale" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_page_records_details"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#ade"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_page_records_details_close" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

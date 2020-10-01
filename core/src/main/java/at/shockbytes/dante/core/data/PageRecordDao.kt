@@ -13,6 +13,8 @@ interface PageRecordDao {
             nowInMillis: Long
     )
 
+    fun deletePageRecordForBook(pageRecord: PageRecord): Completable
+
     fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>>
 
     fun allPageRecords(): Observable<List<PageRecord>>

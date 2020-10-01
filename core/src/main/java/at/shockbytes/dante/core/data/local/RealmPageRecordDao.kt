@@ -4,6 +4,7 @@ import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.book.realm.RealmPageRecord
 import at.shockbytes.dante.core.data.PageRecordDao
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.realm.Sort
 
@@ -27,6 +28,19 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
                         timestamp = nowInMillis
                 )
         )
+    }
+
+    override fun deletePageRecordForBook(pageRecord: PageRecord): Completable {
+        return Completable.fromAction {
+            realm.instance.executeTransaction { realm ->
+                realm.where(RealmPageRecord::class.java)
+                        .equalTo("bookId", pageRecord.bookId)
+                        .and()
+                        .equalTo("timestamp", pageRecord.timestamp)
+                        .findFirst()
+                        ?.deleteFromRealm()
+            }
+        }
     }
 
     private fun insert(pageRecord: PageRecord) {

@@ -312,5 +312,6 @@
     <string name="statistics_header_books_over_time">Bücher pro Monat</string>
     <string name="set_pages_goal_header_with_goal">Ziel: %d Seiten / Monat</string>
     <string name="set_books_goal_header_with_goal">Ziel: %d Bücher / Monat</string>
+    <string name="reset">Zurücksetzen</string>
 
 </resources>

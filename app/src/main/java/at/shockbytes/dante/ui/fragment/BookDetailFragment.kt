@@ -21,6 +21,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
@@ -44,14 +45,7 @@ import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
-import at.shockbytes.dante.util.AnimationUtils
-import at.shockbytes.dante.util.ColorUtils
-import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.ExceptionHandlers
-import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.isNightModeEnabled
-import at.shockbytes.dante.util.setVisible
-import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.dante.util.*
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -423,8 +417,21 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun showPageRecordsOverview() {
-        // TODO
-        showToast("Page records overview...")
+        registerForPopupMenu(
+                pages_diagram_view.actionView,
+                R.menu.menu_page_records_details,
+                PopupMenu.OnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.menu_page_records_details -> {
+                            showToast("show details")
+                        }
+                        R.id.menu_page_records_reset -> {
+                            showToast("reset")
+                        }
+                    }
+                    true
+                }
+        )
     }
 
     private fun setupViewListener() {

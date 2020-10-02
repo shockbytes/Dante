@@ -331,9 +331,7 @@ class BookDetailViewModel @Inject constructor(
 
     private fun resetCurrentPageToZero(): Completable {
         return Completable.fromAction {
-            getBookFromLiveData()?.copy(currentPage = 0)
-                    ?.let(bookRepository::update)
-                    ?: throw IllegalStateException("Could not resolve book from LiveData")
+            bookRepository.updateCurrentPage(bookId, currentPage = 0)
         }
     }
 

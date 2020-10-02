@@ -28,6 +28,10 @@ class FirebaseBookDao : BookEntityDao {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun updateCurrentPage(bookId: Long, currentPage: Int) {
+        TODO("Not yet implemented")
+    }
+
     override fun delete(id: Long) {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }

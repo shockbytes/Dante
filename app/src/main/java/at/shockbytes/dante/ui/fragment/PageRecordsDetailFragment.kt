@@ -25,6 +25,7 @@ class PageRecordsDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: PageRecordsDetailViewModel
 
+    // TODO Add header to layout
     override val layoutId: Int = R.layout.fragment_page_records_details
 
     private val recordsAdapter: PageRecordsAdapter by lazy {

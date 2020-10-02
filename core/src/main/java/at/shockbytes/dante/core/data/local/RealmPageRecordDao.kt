@@ -6,6 +6,7 @@ import at.shockbytes.dante.core.book.realm.RealmPageRecord
 import at.shockbytes.dante.core.data.PageRecordDao
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.realm.Realm
 import io.realm.Sort
 
 class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordDao {
@@ -30,17 +31,38 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
         )
     }
 
+    override fun updatePageRecord(
+            pageRecord: PageRecord,
+            fromPage: Int?,
+            toPage: Int?
+    ): Completable {
+        return Completable.fromAction {
+            realm.instance.executeTransaction { realm ->
+                realm.findPageRecord(pageRecord)?.let { realmRecord ->
+
+                    fromPage?.let { realmRecord.fromPage = fromPage }
+                    toPage?.let { realmRecord.toPage = toPage }
+
+                    realm.copyToRealmOrUpdate(realmRecord)
+                }
+            }
+        }
+    }
+
     override fun deletePageRecordForBook(pageRecord: PageRecord): Completable {
         return Completable.fromAction {
             realm.instance.executeTransaction { realm ->
-                realm.where(pageRecordClass)
-                        .equalTo("bookId", pageRecord.bookId)
-                        .and()
-                        .equalTo("timestamp", pageRecord.timestamp)
-                        .findFirst()
-                        ?.deleteFromRealm()
+                realm.findPageRecord(pageRecord)?.deleteFromRealm()
             }
         }
+    }
+
+    private fun Realm.findPageRecord(pageRecord: PageRecord): RealmPageRecord? {
+        return where(pageRecordClass)
+                .equalTo("bookId", pageRecord.bookId)
+                .and()
+                .equalTo("timestamp", pageRecord.timestamp)
+                .findFirst()
     }
 
     override fun deleteAllPageRecordsForBookId(bookId: Long): Completable {

@@ -13,6 +13,8 @@ interface PageRecordDao {
             nowInMillis: Long
     )
 
+    fun updatePageRecord(pageRecord: PageRecord, fromPage: Int?, toPage: Int?): Completable
+
     fun deletePageRecordForBook(pageRecord: PageRecord): Completable
 
     fun deleteAllPageRecordsForBookId(bookId: Long): Completable

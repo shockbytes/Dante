@@ -3,18 +3,23 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.PageRecord
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.ui.adapter.pagerecords.PageRecordDetailItem
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.indexOfOrNull
+import at.shockbytes.dante.util.isLastIndexIn
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import io.reactivex.Completable
 import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
 import javax.inject.Inject
 
 class PageRecordsDetailViewModel @Inject constructor(
         private val pageRecordDao: PageRecordDao,
-        private val schedulers: SchedulerFacade
-): BaseViewModel() {
+        private val schedulers: SchedulerFacade,
+        private val bookRepository: BookRepository
+) : BaseViewModel() {
 
     private val dateFormat = DateTimeFormat.forPattern("dd.MM.yyyy")
 
@@ -23,13 +28,20 @@ class PageRecordsDetailViewModel @Inject constructor(
 
     private var bookId: Long = -1L
 
+    private var cachedRecords = listOf<PageRecord>()
+
     fun initialize(bookId: Long) {
         this.bookId = bookId
         pageRecordDao.pageRecordsForBook(bookId)
+                .doOnNext(::cachePageRecords)
                 .map(::mapPageRecordToPageRecordDetailItem)
                 .subscribeOn(schedulers.io)
                 .subscribe(records::postValue, Timber::e)
                 .addTo(compositeDisposable)
+    }
+
+    private fun cachePageRecords(cached: List<PageRecord>) {
+        cachedRecords = cached
     }
 
     private fun mapPageRecordToPageRecordDetailItem(
@@ -40,22 +52,52 @@ class PageRecordsDetailViewModel @Inject constructor(
             val formattedPagesRead = "${record.fromPage} - ${record.toPage}"
             val formattedDate = dateFormat.print(record.timestamp)
 
-            PageRecordDetailItem(record,formattedPagesRead, formattedDate)
+            PageRecordDetailItem(record, formattedPagesRead, formattedDate)
         }
     }
 
     fun deletePageRecord(pageRecord: PageRecord) {
 
-        // TODO Stitch next record properly...
-        // TODO Set current page accordingly, if last entry was deleted
+        val index = cachedRecords.indexOfOrNull(pageRecord) ?: return
 
-        pageRecordDao.deletePageRecordForBook(pageRecord)
+        val preAction = when {
+            // Single entry, reset current page to 0
+            index == 0 && cachedRecords.size == 1 -> {
+                updateCurrentPage(0)
+            }
+            // Last index, just update current page to page of previous entry
+            index.isLastIndexIn(cachedRecords) -> {
+                val previousRecord = cachedRecords[index.dec()]
+                updateCurrentPage(previousRecord.toPage)
+            }
+            // More than one entries and not last entry, perform normal stitching
+            else -> {
+                val nextRecord = cachedRecords[index.inc()]
+                pageRecordDao.updatePageRecord(nextRecord, fromPage = pageRecord.fromPage, toPage = null)
+            }
+        }
+
+        Completable
+                .concat(
+                        listOf(
+                                preAction,
+                                pageRecordDao.deletePageRecordForBook(pageRecord) // Eventually delete page record
+                        )
+                )
                 .subscribeOn(schedulers.io)
                 .subscribe({
+                    // TODO Inform underlying BookDetailFragment to update currentPage too...
                     initialize(bookId)
                 }, { throwable ->
                     Timber.e(throwable)
                 })
                 .addTo(compositeDisposable)
     }
+
+    private fun updateCurrentPage(currentPage: Int): Completable {
+        return Completable.fromAction {
+            bookRepository.updateCurrentPage(bookId, currentPage)
+        }
+    }
+
 }

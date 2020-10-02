@@ -161,6 +161,21 @@ fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {
     return if (value != default) value else null
 }
 
+fun <T> List<T>.indexOfOrNull(value: T): Int? {
+    return this.indexOf(value)
+            .let { index ->
+                if (index > -1) {
+                    index
+                } else {
+                    null
+                }
+            }
+}
+
+fun Int.isLastIndexIn(list: List<*>): Boolean {
+    return (this == list.size - 1)
+}
+
 @SuppressLint("RestrictedApi")
 fun Fragment.registerForPopupMenu(
         anchor: View,

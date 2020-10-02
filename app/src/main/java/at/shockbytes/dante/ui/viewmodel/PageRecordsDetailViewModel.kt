@@ -9,7 +9,6 @@ import at.shockbytes.dante.ui.adapter.pagerecords.PageRecordDetailItem
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.indexOfOrNull
 import at.shockbytes.dante.util.isLastIndexIn
-import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Completable
 import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
@@ -17,7 +16,6 @@ import javax.inject.Inject
 
 class PageRecordsDetailViewModel @Inject constructor(
         private val pageRecordDao: PageRecordDao,
-        private val schedulers: SchedulerFacade,
         private val bookRepository: BookRepository
 ) : BaseViewModel() {
 
@@ -35,7 +33,6 @@ class PageRecordsDetailViewModel @Inject constructor(
         pageRecordDao.pageRecordsForBook(bookId)
                 .doOnNext(::cachePageRecords)
                 .map(::mapPageRecordToPageRecordDetailItem)
-                .subscribeOn(schedulers.io)
                 .subscribe(records::postValue, Timber::e)
                 .addTo(compositeDisposable)
     }
@@ -84,7 +81,6 @@ class PageRecordsDetailViewModel @Inject constructor(
                                 pageRecordDao.deletePageRecordForBook(pageRecord) // Eventually delete page record
                         )
                 )
-                .subscribeOn(schedulers.io)
                 .subscribe({
                     // TODO Inform underlying BookDetailFragment to update currentPage too...
                     initialize(bookId)

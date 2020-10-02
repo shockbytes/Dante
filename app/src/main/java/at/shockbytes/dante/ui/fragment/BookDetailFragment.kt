@@ -46,6 +46,8 @@ import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.*
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -434,7 +436,19 @@ class BookDetailFragment : BaseFragment(),
                             )
                         }
                         R.id.menu_page_records_reset -> {
-                            showToast("reset")
+                            MaterialDialog(requireContext()).show {
+                                icon(R.drawable.ic_delete)
+                                title(text = getString(R.string.ask_for_all_page_record_deletion_title))
+                                message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
+                                positiveButton(R.string.action_delete) {
+                                    viewModel.deleteAllPageRecords()
+                                }
+                                negativeButton(android.R.string.cancel) {
+                                    dismiss()
+                                }
+                                cancelOnTouchOutside(false)
+                                cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+                            }
                         }
                     }
                     true

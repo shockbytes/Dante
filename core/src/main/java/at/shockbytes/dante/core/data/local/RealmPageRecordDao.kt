@@ -14,15 +14,15 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     private val pageRecordClass = RealmPageRecord::class.java
 
-    override fun insertPageRecordForId(
-            id: Long,
+    override fun insertPageRecordForBookId(
+            bookId: Long,
             fromPage: Int,
             toPage: Int,
             nowInMillis: Long
     ) {
         insert(
                 PageRecord(
-                        bookId = id,
+                        bookId = bookId,
                         fromPage = fromPage,
                         toPage = toPage,
                         timestamp = nowInMillis
@@ -33,12 +33,23 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
     override fun deletePageRecordForBook(pageRecord: PageRecord): Completable {
         return Completable.fromAction {
             realm.instance.executeTransaction { realm ->
-                realm.where(RealmPageRecord::class.java)
+                realm.where(pageRecordClass)
                         .equalTo("bookId", pageRecord.bookId)
                         .and()
                         .equalTo("timestamp", pageRecord.timestamp)
                         .findFirst()
                         ?.deleteFromRealm()
+            }
+        }
+    }
+
+    override fun deleteAllPageRecordsForBookId(bookId: Long): Completable {
+        return Completable.fromAction {
+            realm.instance.executeTransaction { realm ->
+                realm.where(pageRecordClass)
+                        .equalTo("bookId", bookId)
+                        .findAll()
+                        ?.deleteAllFromRealm()
             }
         }
     }

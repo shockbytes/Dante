@@ -40,7 +40,7 @@ import java.math.RoundingMode
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
-fun CharSequence.colored(@ColorInt color: Int): SpannableString {
+fun CharSequence.colored(@ColorInt color: Int): CharSequence {
     return SpannableString(this).apply {
         setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }

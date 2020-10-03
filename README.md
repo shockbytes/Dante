@@ -63,8 +63,8 @@ Empty...
     - [ ] Fix problems when setting books per month reading goal offset
     - [ ] Fix issues with pages per month reading goal update
     - [ ] Change toolbar behavior in Statistics screen
-- [ ] Reset page statistics per book
-- [ ] Hide page statistics in details page
+- [x] Reset page statistics per book
+- [x] Hide page statistics in details page
 
 ### Version 3.14 - SUMMER CLEANUP
 * Move sort into settings

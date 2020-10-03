@@ -412,6 +412,8 @@
     <string name="random_pick_explanation">Can\'t decide which book to read next? We\'ve got you covered. Let us decide for you what you should read next.</string>
     <string name="random_pick_restore_instruction">You can show it again by switching it on in the settings later</string>
 
+    <string name="page_records_details">Page records details</string>
+
     <string name="ask_for_page_record_deletion_title">Delete page record</string>
     <string name="ask_for_page_record_deletion_msg">Do you really want to delete this particular page record? It can\'t be recovered later.</string>
 

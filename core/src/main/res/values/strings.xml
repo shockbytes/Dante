@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.15-beta02</string>
+    <string name="app_version" translatable="false">3.15-beta03</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -20,6 +20,7 @@
     <string name="mail_feedback">How I would improve Dante</string>
     <string name="pick">Pick</string>
     <string name="another_try">Another try</string>
+    <string name="reset">Reset</string>
 
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>
@@ -410,5 +411,13 @@
     <string name="random_pick_action">Pick random book</string>
     <string name="random_pick_explanation">Can\'t decide which book to read next? We\'ve got you covered. Let us decide for you what you should read next.</string>
     <string name="random_pick_restore_instruction">You can show it again by switching it on in the settings later</string>
+
+    <string name="page_records_details">Page records details</string>
+
+    <string name="ask_for_page_record_deletion_title">Delete page record</string>
+    <string name="ask_for_page_record_deletion_msg">Do you really want to delete this particular page record? It can\'t be recovered later.</string>
+
+    <string name="ask_for_all_page_record_deletion_title">Delete all page records</string>
+    <string name="ask_for_all_page_record_deletion_msg">Deleting all page records means effectively deleting the whole reading history for this book. This will also set the current page to 0. Are you sure you want to proceed?</string>
 
 </resources>

@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.custom.bookspages
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -45,11 +46,20 @@ class PagesDiagramView @JvmOverloads constructor(
             setActionVisibility(value)
         }
 
-    fun registerOnActionClick(cAction: (ReadingGoalType) -> Unit, type: ReadingGoalType) {
+    val actionView: View
+        get() {
+            return when (action) {
+                is BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow
+                is BooksAndPagesDiagramAction.Action -> btn_page_record_action
+                is BooksAndPagesDiagramAction.Gone -> throw IllegalStateException("No action view for action type GONE")
+            }
+        }
+
+    fun registerOnActionClick(clickAction: () -> Unit) {
         when (action) {
-            BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { cAction(type) }
-            BooksAndPagesDiagramAction.Gone -> Unit // Do nothing
-            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { cAction(type) }
+            is BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { clickAction() }
+            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { clickAction() }
+            is BooksAndPagesDiagramAction.Gone -> Unit // Do nothing
         }
     }
 

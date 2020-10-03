@@ -209,7 +209,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     private fun sendBookUpdatedBroadcast(bookState: BookState) {
         LocalBroadcastManager.getInstance(requireContext())
             .sendBroadcast(
-                Intent(ManualAddActivity.ACTION_BOOK_UPDATED)
+                Intent(BookDetailFragment.ACTION_BOOK_CHANGED)
                     .putExtra(ManualAddActivity.EXTRA_UPDATED_BOOK_STATE, bookState)
             )
     }

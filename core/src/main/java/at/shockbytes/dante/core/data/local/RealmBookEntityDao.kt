@@ -83,6 +83,18 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }
     }
 
+    override fun updateCurrentPage(bookId: Long, currentPage: Int) {
+        realm.instance.executeTransaction { realm ->
+            realm.where(bookClass)
+                    .equalTo("id", bookId)
+                    .findFirst()
+                    ?.let { realmBook ->
+                        realmBook.currentPage = currentPage
+                        realm.copyToRealmOrUpdate(realmBook)
+                    }
+        }
+    }
+
     override fun delete(id: Long) {
         realm.instance.executeTransaction { realm ->
             realm.where(bookClass)

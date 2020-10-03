@@ -11,7 +11,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.drawable.DrawableWrapper
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
@@ -22,6 +21,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
@@ -45,14 +45,9 @@ import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
-import at.shockbytes.dante.util.AnimationUtils
-import at.shockbytes.dante.util.ColorUtils
-import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.ExceptionHandlers
-import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.isNightModeEnabled
-import at.shockbytes.dante.util.setVisible
-import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.dante.util.*
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -157,7 +152,7 @@ class BookDetailFragment : BaseFragment(),
     private fun registerLocalBroadcastReceiver() {
         LocalBroadcastManager.getInstance(requireContext()).apply {
             registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
-            registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
+            registerReceiver(bookUpdatedReceiver, IntentFilter(ACTION_BOOK_CHANGED))
         }
     }
 
@@ -400,7 +395,7 @@ class BookDetailFragment : BaseFragment(),
         when (pageRecordViewState) {
             is BookDetailViewModel.PageRecordsViewState.Present -> {
                 group_details_pages.setVisible(true)
-                handlePageRecords(pageRecordViewState.dataPoints)
+                handlePageRecords(pageRecordViewState.dataPoints, pageRecordViewState.bookId)
             }
             BookDetailViewModel.PageRecordsViewState.Absent -> {
                 group_details_pages.setVisible(false)
@@ -408,16 +403,57 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun handlePageRecords(dataPoints: List<BooksAndPageRecordDataPoint>) {
+    private fun handlePageRecords(
+            dataPoints: List<BooksAndPageRecordDataPoint>,
+            bookId: Long
+    ) {
         pages_diagram_view.apply {
             setData(
                     dataPoints,
                     initialZero = true,
                     options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
             )
-            action = BooksAndPagesDiagramAction.Gone
+            action = BooksAndPagesDiagramAction.Overflow
+            registerOnActionClick {
+                showPageRecordsOverview(bookId)
+            }
             headerTitle = getString(R.string.reading_behavior)
         }
+    }
+
+    private fun showPageRecordsOverview(bookId: Long) {
+        registerForPopupMenu(
+                pages_diagram_view.actionView,
+                R.menu.menu_page_records_details,
+                PopupMenu.OnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.menu_page_records_details -> {
+                            DanteUtils.addFragmentToActivity(
+                                    parentFragmentManager,
+                                    PageRecordsDetailFragment.newInstance(bookId),
+                                    android.R.id.content,
+                                    addToBackStack = true
+                            )
+                        }
+                        R.id.menu_page_records_reset -> {
+                            MaterialDialog(requireContext()).show {
+                                icon(R.drawable.ic_delete)
+                                title(text = getString(R.string.ask_for_all_page_record_deletion_title))
+                                message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
+                                positiveButton(R.string.action_delete) {
+                                    viewModel.deleteAllPageRecords()
+                                }
+                                negativeButton(android.R.string.cancel) {
+                                    dismiss()
+                                }
+                                cancelOnTouchOutside(false)
+                                cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+                            }
+                        }
+                    }
+                    true
+                }
+        )
     }
 
     private fun setupViewListener() {
@@ -645,6 +681,9 @@ class BookDetailFragment : BaseFragment(),
     }
 
     companion object {
+
+        const val ACTION_BOOK_CHANGED = "action_book_changed"
+
 
         // Const callback values for time picker
         private const val DATE_TARGET_PUBLISHED_DATE = 1

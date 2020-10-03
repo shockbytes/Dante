@@ -6,12 +6,18 @@ import io.reactivex.Observable
 
 interface PageRecordDao {
 
-    fun insertPageRecordForId(
-            id: Long,
+    fun insertPageRecordForBookId(
+            bookId: Long,
             fromPage: Int,
             toPage: Int,
             nowInMillis: Long
     )
+
+    fun updatePageRecord(pageRecord: PageRecord, fromPage: Int?, toPage: Int?): Completable
+
+    fun deletePageRecordForBook(pageRecord: PageRecord): Completable
+
+    fun deleteAllPageRecordsForBookId(bookId: Long): Completable
 
     fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>>
 

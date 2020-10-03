@@ -55,7 +55,9 @@ class BookStatsPagesOverTimeViewHolder(
             } else context.getString(R.string.set_goal_header_no_goal)
 
             action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
-            registerOnActionClick(onChangeGoalActionListener, ReadingGoalType.PAGES)
+            registerOnActionClick {
+                onChangeGoalActionListener(ReadingGoalType.PAGES)
+            }
             readingGoal = pagesPerMonthGoal
             setData(
                     dataPoints,
@@ -79,7 +81,9 @@ class BookStatsPagesOverTimeViewHolder(
             } else context.getString(R.string.set_goal_header_no_goal)
 
             action = BooksAndPagesDiagramAction.Action(context.getString(R.string.set_goal))
-            registerOnActionClick(onChangeGoalActionListener, ReadingGoalType.BOOKS)
+            registerOnActionClick {
+                onChangeGoalActionListener(ReadingGoalType.BOOKS)
+            }
             readingGoal = booksPerMonthGoal
             setData(
                     dataPoints,

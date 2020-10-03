@@ -53,6 +53,7 @@ Empty...
 ### Version 3.16
 - [ ] Send csv export via Mail
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
+- [ ] Experimental remote storage Firestore implementation
 
 ### Version 3.15
 - [ ] Statistics pages/books over time / month + Goal per month
@@ -62,9 +63,8 @@ Empty...
     - [ ] Fix problems when setting books per month reading goal offset
     - [ ] Fix issues with pages per month reading goal update
     - [ ] Change toolbar behavior in Statistics screen
-- [ ] Reset page statistics per book
-- [ ] Hide page statistics in details page
-- [ ] Experimental remote storage Firestore implementation
+- [x] Reset page statistics per book
+- [x] Hide page statistics in details page
 
 ### Version 3.14 - SUMMER CLEANUP
 * Move sort into settings

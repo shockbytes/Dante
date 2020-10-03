@@ -13,6 +13,7 @@ import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -20,6 +21,7 @@ import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -39,7 +41,10 @@ class BookDetailViewModel @Inject constructor(
 
     sealed class PageRecordsViewState {
 
-        data class Present(val dataPoints: List<BooksAndPageRecordDataPoint>): PageRecordsViewState()
+        data class Present(
+                val bookId: Long,
+                val dataPoints: List<BooksAndPageRecordDataPoint>
+        ): PageRecordsViewState()
 
         object Absent : PageRecordsViewState()
     }
@@ -122,7 +127,9 @@ class BookDetailViewModel @Inject constructor(
                             )
                         }
                     }
-                    .let(PageRecordsViewState::Present)
+                    .let { dataPoints ->
+                        PageRecordsViewState.Present(bookId, dataPoints)
+                    }
         }
     }
 
@@ -294,12 +301,37 @@ class BookDetailViewModel @Inject constructor(
         val currentPage = getBookFromLiveData()?.currentPage ?: 0
         val startPage = pagesAtInit ?: 0
         if (currentPage != startPage) {
-            pageRecordDao.insertPageRecordForId(
-                    id = bookId,
+            pageRecordDao.insertPageRecordForBookId(
+                    bookId = bookId,
                     fromPage = startPage,
                     toPage = currentPage,
                     nowInMillis = System.currentTimeMillis()
             )
+        }
+    }
+
+    /**
+     * 1. Delete all page records for this particular book
+     * 2. Reset the current page to 0
+     * 3. Reload the whole view
+     */
+    fun deleteAllPageRecords() {
+
+        Completable
+                .concat(
+                    listOf(
+                            pageRecordDao.deleteAllPageRecordsForBookId(bookId),
+                            resetCurrentPageToZero()
+                    )
+                )
+                .subscribe(::reload, Timber::e)
+                .addTo(compositeDisposable)
+
+    }
+
+    private fun resetCurrentPageToZero(): Completable {
+        return Completable.fromAction {
+            bookRepository.updateCurrentPage(bookId, currentPage = 0)
         }
     }
 

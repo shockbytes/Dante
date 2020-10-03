@@ -49,6 +49,10 @@ class DefaultBookRepository(
         selectedBookDao.update(entity)
     }
 
+    override fun updateCurrentPage(bookId: Long, currentPage: Int) {
+        selectedBookDao.updateCurrentPage(bookId, currentPage)
+    }
+
     override fun delete(id: Long) {
         selectedBookDao.delete(id)
     }

@@ -312,5 +312,11 @@
     <string name="statistics_header_books_over_time">Bücher pro Monat</string>
     <string name="set_pages_goal_header_with_goal">Ziel: %d Seiten / Monat</string>
     <string name="set_books_goal_header_with_goal">Ziel: %d Bücher / Monat</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="page_records_details">Seitenaufzeichnung</string>
+    <string name="ask_for_page_record_deletion_title">Seitenaufzeichnung löschen</string>
+    <string name="ask_for_all_page_record_deletion_title">Alle Seitenaufzeichnungen löschen</string>
+    <string name="ask_for_page_record_deletion_msg">Willst du wirklich diese Seitenaufzeichnung löschen? Es kann nicht mehr wiederhergestellt werden.</string>
+    <string name="ask_for_all_page_record_deletion_msg">Alle Seitenaufzeichnungen löschen heißt effektiv, dass die gesamte Lesehistorie für dieses Buch gelöscht wird. Bist du sicher, dass du fortfahren willst?</string>
 
 </resources>

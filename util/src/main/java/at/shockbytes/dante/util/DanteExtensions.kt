@@ -1,5 +1,6 @@
 package at.shockbytes.dante.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
@@ -17,6 +18,10 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ArrayRes
+import androidx.annotation.MenuRes
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -35,7 +40,7 @@ import java.math.RoundingMode
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
-fun CharSequence.colored(@ColorInt color: Int): SpannableString {
+fun CharSequence.colored(@ColorInt color: Int): CharSequence {
     return SpannableString(this).apply {
         setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
@@ -43,8 +48,8 @@ fun CharSequence.colored(@ColorInt color: Int): SpannableString {
 
 fun String.removeBrackets(): String {
     return this
-        .replace("(", "")
-        .replace(")", "")
+            .replace("(", "")
+            .replace(")", "")
 }
 
 fun Activity.hideKeyboard() {
@@ -147,11 +152,46 @@ fun <T> singleOf(
 fun completableOf(
         subscribeOn: Scheduler = Schedulers.computation(),
         block: () -> Unit
-): Completable{
+): Completable {
     return Completable.fromAction(Action(block)).subscribeOn(subscribeOn)
 }
 
 fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {
     val value = getInt(key, default)
     return if (value != default) value else null
+}
+
+fun <T> List<T>.indexOfOrNull(value: T): Int? {
+    return this.indexOf(value)
+            .let { index ->
+                if (index > -1) {
+                    index
+                } else {
+                    null
+                }
+            }
+}
+
+fun Int.isLastIndexIn(list: List<*>): Boolean {
+    return (this == list.size - 1)
+}
+
+@SuppressLint("RestrictedApi")
+fun Fragment.registerForPopupMenu(
+        anchor: View,
+        @MenuRes menuRes: Int,
+        onMenuItemListener: PopupMenu.OnMenuItemClickListener
+) {
+
+    val popupMenu = PopupMenu(requireContext(), anchor)
+
+    popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
+    popupMenu.setOnMenuItemClickListener(onMenuItemListener)
+
+    val menuHelper = MenuPopupHelper(requireContext(), popupMenu.menu as MenuBuilder, anchor)
+            .apply {
+                setForceShowIcon(true)
+            }
+
+    anchor.setOnClickListener { menuHelper.show() }
 }

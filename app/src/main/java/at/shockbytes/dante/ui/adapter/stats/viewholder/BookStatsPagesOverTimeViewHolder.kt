@@ -7,6 +7,7 @@ import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramView
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
@@ -58,7 +59,7 @@ class BookStatsPagesOverTimeViewHolder(
             registerOnActionClick {
                 onChangeGoalActionListener(ReadingGoalType.PAGES)
             }
-            readingGoal = pagesPerMonthGoal
+            readingGoal(pagesPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.PAGES)
             setData(
                     dataPoints,
                     options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
@@ -84,7 +85,7 @@ class BookStatsPagesOverTimeViewHolder(
             registerOnActionClick {
                 onChangeGoalActionListener(ReadingGoalType.BOOKS)
             }
-            readingGoal = booksPerMonthGoal
+            readingGoal(booksPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.BOOKS)
             setData(
                     dataPoints,
                     options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.books_formatted)

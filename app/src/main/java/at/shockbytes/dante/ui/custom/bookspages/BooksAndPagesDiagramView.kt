@@ -82,15 +82,14 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
         }
     }
 
-    var readingGoal: Int? = null
-        set(value) {
-            field = value
+    fun readingGoal(value: Int?, offsetType: LimitLineOffsetType) {
 
             // Anyway, remove all limit lines
             chart.getAxis(YAxis.AxisDependency.LEFT).apply {
                 removeAllLimitLines()
                 setDrawGridLines(false)
             }
+
             // TODO Fix this buggy implementation
             if (value != null) {
                 LimitLine(value.toFloat(), context.getString(R.string.reading_goal))
@@ -111,10 +110,10 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
 
                                 when (isLimitLineShown(value.toFloat())) {
                                     LimitLinePosition.EXCEEDS_UPPER_BOUND -> {
-                                        axisMinimum = value.minus(LIMIT_LINE_OFFSET).toFloat()
+                                        axisMinimum = value.minus(offsetType.offset).toFloat()
                                     }
                                     LimitLinePosition.EXCEEDS_LOWER_BOUND -> {
-                                        axisMaximum = value.plus(LIMIT_LINE_OFFSET).toFloat()
+                                        axisMaximum = value.plus(offsetType.offset).toFloat()
                                     }
                                     LimitLinePosition.IS_VISIBLE -> Unit
                                 }
@@ -213,8 +212,8 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
         }
     }
 
-    companion object {
-        // TODO This does not work for books
-        private const val LIMIT_LINE_OFFSET = 20
+    enum class LimitLineOffsetType(val offset: Int) {
+        PAGES(offset = 20),
+        BOOKS(offset = 1)
     }
 }

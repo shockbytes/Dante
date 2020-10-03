@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <at.shockbytes.dante.ui.custom.bookspages.PagesDiagramView
+            <at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramView
                 android:id="@+id/item_pages_stats_diagram_view"
                 android:layout_width="match_parent"
                 android:layout_margin="16dp"

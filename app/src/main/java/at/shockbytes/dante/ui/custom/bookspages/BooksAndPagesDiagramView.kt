@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
-import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.util.setVisible
 import com.github.mikephil.charting.charts.LineChart
@@ -22,7 +21,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.synthetic.main.pages_diagram_view.view.*
 
 
-class PagesDiagramView @JvmOverloads constructor(
+class BooksAndPagesDiagramView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
@@ -200,23 +199,22 @@ class PagesDiagramView @JvmOverloads constructor(
         }
     }
 
+    private enum class LimitLinePosition {
+        EXCEEDS_UPPER_BOUND,
+        EXCEEDS_LOWER_BOUND,
+        IS_VISIBLE
+    }
+
+    private fun YAxis.isLimitLineShown(limit: Float): LimitLinePosition {
+        return when {
+            limit < axisMinimum -> LimitLinePosition.EXCEEDS_LOWER_BOUND
+            limit > axisMaximum -> LimitLinePosition.EXCEEDS_UPPER_BOUND
+            else -> LimitLinePosition.IS_VISIBLE
+        }
+    }
+
     companion object {
         // TODO This does not work for books
         private const val LIMIT_LINE_OFFSET = 20
-    }
-}
-
-private enum class LimitLinePosition {
-    EXCEEDS_UPPER_BOUND,
-    EXCEEDS_LOWER_BOUND,
-    IS_VISIBLE
-}
-
-private fun YAxis.isLimitLineShown(limit: Float): LimitLinePosition {
-
-    return when {
-        limit < axisMinimum -> LimitLinePosition.EXCEEDS_LOWER_BOUND
-        limit > axisMaximum -> LimitLinePosition.EXCEEDS_UPPER_BOUND
-        else -> LimitLinePosition.IS_VISIBLE
     }
 }

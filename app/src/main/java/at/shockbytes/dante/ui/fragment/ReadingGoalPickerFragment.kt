@@ -107,10 +107,12 @@ class ReadingGoalPickerFragment : BaseFragment() {
     }
 
     private fun updateGoalLabel(value: Int) {
-        tv_reading_goal_label.text = getString(type.labelTemplate, value)
+        tv_reading_goal_label.text = getString(type.labelTemplate, value, getString(R.string.month))
     }
 
-    fun setOnReadingGoalPickedListener(listener: OnReadingGoalPickedListener): ReadingGoalPickerFragment {
+    fun setOnReadingGoalPickedListener(
+            listener: OnReadingGoalPickedListener
+    ): ReadingGoalPickerFragment {
         return apply {
             onReadingGoalPickedListener = listener
         }

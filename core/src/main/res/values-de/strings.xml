@@ -318,5 +318,6 @@
     <string name="ask_for_all_page_record_deletion_title">Alle Seitenaufzeichnungen löschen</string>
     <string name="ask_for_page_record_deletion_msg">Willst du wirklich diese Seitenaufzeichnung löschen? Es kann nicht mehr wiederhergestellt werden.</string>
     <string name="ask_for_all_page_record_deletion_msg">Alle Seitenaufzeichnungen löschen heißt effektiv, dass die gesamte Lesehistorie für dieses Buch gelöscht wird. Bist du sicher, dass du fortfahren willst?</string>
+    <string name="month">Monat</string>
 
 </resources>

@@ -152,7 +152,7 @@ class BookDetailFragment : BaseFragment(),
     private fun registerLocalBroadcastReceiver() {
         LocalBroadcastManager.getInstance(requireContext()).apply {
             registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
-            registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
+            registerReceiver(bookUpdatedReceiver, IntentFilter(ACTION_BOOK_CHANGED))
         }
     }
 
@@ -681,6 +681,9 @@ class BookDetailFragment : BaseFragment(),
     }
 
     companion object {
+
+        const val ACTION_BOOK_CHANGED = "action_book_changed"
+
 
         // Const callback values for time picker
         private const val DATE_TARGET_PUBLISHED_DATE = 1

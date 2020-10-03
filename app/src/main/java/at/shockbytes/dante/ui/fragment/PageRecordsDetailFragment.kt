@@ -1,9 +1,11 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.viewmodel.PageRecordsDetailViewModel
 import at.shockbytes.dante.util.arguments.argument
@@ -11,6 +13,7 @@ import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.ui.adapter.pagerecords.PageRecordsAdapter
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.fragment_page_records_details.*
@@ -25,7 +28,6 @@ class PageRecordsDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: PageRecordsDetailViewModel
 
-    // TODO Add header to layout
     override val layoutId: Int = R.layout.fragment_page_records_details
 
     private val recordsAdapter: PageRecordsAdapter by lazy {
@@ -70,7 +72,17 @@ class PageRecordsDetailFragment : BaseFragment() {
 
     override fun bindViewModel() {
         viewModel.initialize(bookId)
+
         viewModel.getRecords().observe(this, Observer(recordsAdapter::updateData))
+
+        viewModel.onBookChangedEvent()
+                .subscribe(::sendBookChangedBroadcast)
+                .addTo(compositeDisposable)
+    }
+
+    private fun sendBookChangedBroadcast(unused: Unit) {
+        LocalBroadcastManager.getInstance(requireContext())
+                .sendBroadcast(Intent(BookDetailFragment.ACTION_BOOK_CHANGED))
     }
 
     override fun unbindViewModel() = Unit

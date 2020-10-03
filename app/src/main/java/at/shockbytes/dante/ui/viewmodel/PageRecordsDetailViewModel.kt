@@ -10,6 +10,8 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.indexOfOrNull
 import at.shockbytes.dante.util.isLastIndexIn
 import io.reactivex.Completable
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
 import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,6 +25,9 @@ class PageRecordsDetailViewModel @Inject constructor(
 
     private val records = MutableLiveData<List<PageRecordDetailItem>>()
     fun getRecords(): LiveData<List<PageRecordDetailItem>> = records
+
+    private val onBookChangedSubject = PublishSubject.create<Unit>()
+    fun onBookChangedEvent(): Observable<Unit> = onBookChangedSubject
 
     private var bookId: Long = -1L
 
@@ -82,8 +87,8 @@ class PageRecordsDetailViewModel @Inject constructor(
                         )
                 )
                 .subscribe({
-                    // TODO Inform underlying BookDetailFragment to update currentPage too...
                     initialize(bookId)
+                    onBookChangedSubject.onNext(Unit)
                 }, { throwable ->
                     Timber.e(throwable)
                 })

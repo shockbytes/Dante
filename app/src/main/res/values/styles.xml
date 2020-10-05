@@ -15,6 +15,11 @@
         <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 
+    <style name="Theme.TextAppearance.Title" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:textColor">@color/actionBarItemColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 
     <style name="Widget.App.Slider" parent="Widget.MaterialComponents.Slider">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Slider</item>

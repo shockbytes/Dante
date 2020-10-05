@@ -12,7 +12,9 @@ import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import kotlinx.android.synthetic.main.dante_toolbar.*
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import javax.inject.Inject
 
@@ -41,7 +43,19 @@ class StatisticsFragment : BaseFragment() {
         viewModel = viewModelOf(vmFactory)
     }
 
+    private fun setupToolbar() {
+        dante_toolbar_title.setText(R.string.label_stats)
+        dante_toolbar_back.apply {
+            setVisible(true)
+            setOnClickListener {
+                activity?.onBackPressed()
+            }
+        }
+    }
+
     override fun setupViews() {
+        setupToolbar()
+
         fragment_statistics_rv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = statsAdapter

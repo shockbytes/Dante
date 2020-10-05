@@ -31,29 +31,38 @@ Download the client secret file from the Google Cloud Console.
 This file is necessary in order to retrieve the JWT request token of 
 the user during the login process.
 
-## Versions
+## Backlog
+The backlog is currently empty.
 
-### Backlog
-Empty...
+## Outlook & planned features
 
-### Version 4.2
-- [ ] Wishlist for books that are not purchased yet
+### Versions 5.x
+- [ ] Use Firebase Data for book suggestions
+- [ ] Let users suggest favorite books to others
+- [ ] Improved search database lookup query
+- [ ] Simplify book management
+    - [ ] Remove local backup
+    - [ ] Add online Shockbytes backup as only way to backup data
+    - [ ] Move Goodreads CSV import from BETA to RELEASE state
+    - [ ] Switch between online and offline storage (user has full control over the data)
+- [ ] Add web client support
+- [ ] Paged request when user clicks on "not my book" in book download view
 
 ### Version 4.1
-- [ ] Use Firebase Data for book suggestions
+- [ ] Wishlist for books that are not purchased yet
 
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add online sync capability
   - [ ] Migrate from local to remote storage
-
-### Version 3.17
 - [ ] Login with Firebase
-- [ ] Add Onboarding + Login
 
 ### Version 3.16
 - [ ] Send csv export via Mail
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
-- [ ] Experimental remote storage Firestore implementation
+- [ ] Add Onboarding + optional Login
+- [ ] Experimental remote storage Firestore implementation (for test account)
+
+## Current development
 
 ### Version 3.15
 - [ ] Statistics pages/books over time / month + Goal per month
@@ -64,6 +73,8 @@ Empty...
     - [ ] Fix issues with pages per month reading goal update
 - [x] Reset page statistics per book
 - [x] Hide page statistics in details page
+
+## Changelog
 
 ### Version 3.14 - SUMMER CLEANUP
 * Move sort into settings

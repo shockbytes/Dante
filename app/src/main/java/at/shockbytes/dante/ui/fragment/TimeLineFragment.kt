@@ -16,10 +16,14 @@ import at.shockbytes.dante.navigation.Destination.BookDetail.BookDetailInfo
 import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.ui.adapter.timeline.TimeLineAdapter
 import at.shockbytes.dante.ui.viewmodel.TimelineViewModel
+import at.shockbytes.dante.util.getStringList
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import kotlinx.android.synthetic.main.dante_toolbar.*
 import kotlinx.android.synthetic.main.fragment_timeline.*
 import javax.inject.Inject
 
@@ -79,7 +83,45 @@ class TimeLineFragment : BaseFragment() {
                 }
             })
         }
+        setupToolbar()
     }
+
+    private fun setupToolbar() {
+        dante_toolbar_title.setText(R.string.label_timeline)
+        dante_toolbar_back.apply {
+            setVisible(true)
+            setOnClickListener {
+                activity?.onBackPressed()
+            }
+        }
+        dante_toolbar_primary_action.apply {
+            setVisible(true)
+            setImageResource(R.drawable.ic_timeline_sort)
+            setOnClickListener {
+                showTimeLineDisplayPicker()
+            }
+        }
+    }
+
+    private fun showTimeLineDisplayPicker() {
+        MaterialDialog(requireContext())
+                .title(R.string.dialogfragment_sort_by)
+                .message(R.string.timeline_sort_explanation)
+                .listItemsSingleChoice(
+                        items = getStringList(R.array.sort_timeline),
+                        initialSelection = viewModel.selectedTimeLineSortStrategyIndex
+                ) { _, index, _ ->
+                    viewModel.updateSortStrategy(index)
+                }
+                .icon(R.drawable.ic_timeline_sort)
+                .cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+                .cancelOnTouchOutside(true)
+                .positiveButton(R.string.apply) {
+                    it.dismiss()
+                }
+                .show()
+    }
+
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)

@@ -100,6 +100,10 @@ fun Activity.getStringList(@ArrayRes arrayRes: Int): List<String> {
     return resources.getStringArray(arrayRes).toList()
 }
 
+fun Fragment.getStringList(@ArrayRes arrayRes: Int): List<String> {
+    return resources.getStringArray(arrayRes).toList()
+}
+
 fun Activity.retrieveActiveActivityAlias(): String? {
     return this.intent.component?.let { component ->
         packageManager.getActivityInfo(component, PackageManager.GET_META_DATA).name

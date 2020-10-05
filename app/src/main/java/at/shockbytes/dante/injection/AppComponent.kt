@@ -10,7 +10,6 @@ import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
-import at.shockbytes.dante.ui.activity.TimeLineActivity
 import at.shockbytes.dante.ui.fragment.*
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
@@ -101,8 +100,6 @@ interface AppComponent {
     fun inject(fragment: OnlineStorageFragment)
 
     fun inject(fragment: ImportBooksStorageFragment)
-
-    fun inject(activity: TimeLineActivity)
 
     fun inject(fragment: PickRandomBookFragment)
 

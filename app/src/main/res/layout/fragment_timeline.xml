@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
+    <include layout="@layout/dante_toolbar" />
+
     <!-- Error layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_timeline_error"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -19,13 +22,15 @@
         android:id="@+id/pb_timeline_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <!-- Empty layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_timeline_empty"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -35,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layoutAnimation="@anim/rv_fall_down_animation"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

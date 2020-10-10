@@ -5,10 +5,7 @@ import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
-import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
-import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
-import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramView
-import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
+import at.shockbytes.dante.ui.custom.bookspages.*
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -88,6 +85,7 @@ class BookStatsPagesOverTimeViewHolder(
             readingGoal(booksPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.BOOKS)
             setData(
                     dataPoints,
+                    diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
                     options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.books_formatted)
             )
         }

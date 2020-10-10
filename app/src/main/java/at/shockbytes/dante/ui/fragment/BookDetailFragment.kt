@@ -43,6 +43,7 @@ import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramOptions
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.*
@@ -410,7 +411,7 @@ class BookDetailFragment : BaseFragment(),
         pages_diagram_view.apply {
             setData(
                     dataPoints,
-                    initialZero = true,
+                    diagramOptions = BooksAndPagesDiagramOptions(initialZero = true),
                     options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
             )
             action = BooksAndPagesDiagramAction.Overflow

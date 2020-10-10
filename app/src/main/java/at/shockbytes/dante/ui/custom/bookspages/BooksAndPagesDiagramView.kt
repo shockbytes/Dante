@@ -125,7 +125,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
 
     fun setData(
             dataPoints: List<BooksAndPageRecordDataPoint>,
-            initialZero: Boolean = false,
+            diagramOptions: BooksAndPagesDiagramOptions = BooksAndPagesDiagramOptions(),
             options: MarkerViewOptions
     ) {
 
@@ -135,7 +135,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
                 }
                 .toMutableList()
                 .apply {
-                    if (initialZero) {
+                    if (diagramOptions.initialZero) {
                         add(0, BarEntry(0f, 0f)) // Initial entry
                     }
                 }
@@ -156,9 +156,10 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
             description.isEnabled = false
             legend.isEnabled = false
 
-            setDrawGridBackground(false)
-            setScaleEnabled(false)
             setTouchEnabled(true)
+            setDrawGridBackground(false)
+            setScaleEnabled(diagramOptions.isZoomable)
+            isDragEnabled = diagramOptions.isZoomable
 
             xAxis.apply {
                 isEnabled = true

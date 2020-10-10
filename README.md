@@ -39,7 +39,8 @@ The backlog is currently empty.
 ### Versions 5.x
 - [ ] Use Firebase Data for book suggestions
 - [ ] Let users suggest favorite books to others
-- [ ] Improved search database lookup query
+- [ ] Improved search database (Google Books API) lookup query
+- [ ] Shockbytes Backup
 - [ ] Simplify book management
     - [ ] Remove local backup
     - [ ] Add online Shockbytes backup as only way to backup data

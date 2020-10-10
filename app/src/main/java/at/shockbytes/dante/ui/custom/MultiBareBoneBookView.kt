@@ -26,16 +26,16 @@ class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayou
 
         urls
             .mapIndexedNotNull { _,  url ->
-                url?.let {
+                if (!url.isNullOrEmpty()) {
                     createImageView().apply {
                         imageLoader.loadImageWithCornerRadius(
-                            context = context,
-                            url = url,
-                            target = this,
-                            cornerDimension = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                                context = context,
+                                url = url,
+                                target = this,
+                                cornerDimension = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                         )
                     }
-                }
+                } else null
             }
             .take(booksToDisplay)
             .forEach(container_multi_bare_bone_book_view::addView)

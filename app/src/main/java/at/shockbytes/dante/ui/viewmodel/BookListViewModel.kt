@@ -52,10 +52,9 @@ class BookListViewModel @Inject constructor(
     private val sortComparator: Comparator<BookEntity>
         get() = SortComparators.of(settings.sortStrategy)
 
-
     sealed class RandomPickEvent {
 
-        data class RandomPick(val book: BookEntity): RandomPickEvent()
+        data class RandomPick(val book: BookEntity) : RandomPickEvent()
 
         object NoBookAvailable : RandomPickEvent()
     }
@@ -85,7 +84,6 @@ class BookListViewModel @Inject constructor(
                 }
                 .addTo(compositeDisposable)
     }
-
 
     private fun loadBooks() {
         bookRepository.bookObservable

@@ -5,15 +5,19 @@ import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
-import at.shockbytes.dante.ui.custom.bookspages.*
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramOptions
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramView
+import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_stats_pages_over_time.*
 
 class BookStatsPagesOverTimeViewHolder(
-        override val containerView: View,
-        private val onChangeGoalActionListener: (ReadingGoalType) -> Unit
+    override val containerView: View,
+    private val onChangeGoalActionListener: (ReadingGoalType) -> Unit
 ) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
@@ -39,8 +43,8 @@ class BookStatsPagesOverTimeViewHolder(
     }
 
     private fun showPagesPerMonth(
-            dataPoints: List<BooksAndPageRecordDataPoint>,
-            pagesPerMonthGoal: Int?
+        dataPoints: List<BooksAndPageRecordDataPoint>,
+        pagesPerMonthGoal: Int?
     ) {
         item_books_pages_over_time_header.setHeaderTitleResource(R.string.statistics_header_pages_over_time)
         item_pages_over_time_empty.setVisible(false)
@@ -58,16 +62,16 @@ class BookStatsPagesOverTimeViewHolder(
             }
             readingGoal(pagesPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.PAGES)
             setData(
-                    dataPoints,
-                    diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
-                    options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
+                dataPoints,
+                diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
+                options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
             )
         }
     }
 
     private fun showBooksPerMonth(
-            dataPoints: List<BooksAndPageRecordDataPoint>,
-            booksPerMonthGoal: Int?
+        dataPoints: List<BooksAndPageRecordDataPoint>,
+        booksPerMonthGoal: Int?
     ) {
         item_books_pages_over_time_header.setHeaderTitleResource(R.string.statistics_header_books_over_time)
         item_pages_over_time_empty.setVisible(false)
@@ -85,9 +89,9 @@ class BookStatsPagesOverTimeViewHolder(
             }
             readingGoal(booksPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.BOOKS)
             setData(
-                    dataPoints,
-                    diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
-                    options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.books_formatted)
+                dataPoints,
+                diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
+                options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.books_formatted)
             )
         }
     }

@@ -22,24 +22,23 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(
-        private val bookRepository: BookRepository,
-        private val recordDao: PageRecordDao,
-        private val readingGoalRepository: ReadingGoalRepository,
-        private val schedulers: SchedulerFacade
+    private val bookRepository: BookRepository,
+    private val recordDao: PageRecordDao,
+    private val readingGoalRepository: ReadingGoalRepository,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     private data class ZipContent(
-            val books: List<BookEntity>,
-            val records: List<PageRecord>,
-            val pagesReadingGoal: ReadingGoal.PagesPerMonthReadingGoal,
-            val booksReadingGoal: ReadingGoal.BooksPerMonthReadingGoal
+        val books: List<BookEntity>,
+        val records: List<PageRecord>,
+        val pagesReadingGoal: ReadingGoal.PagesPerMonthReadingGoal,
+        val booksReadingGoal: ReadingGoal.BooksPerMonthReadingGoal
     )
 
-    private val zipper = Function4 {
-        books: List<BookEntity>,
-        records: List<PageRecord>,
-        pagesReadingGoal: ReadingGoal.PagesPerMonthReadingGoal,
-        booksReadingGoal: ReadingGoal.BooksPerMonthReadingGoal ->
+    private val zipper = Function4 { books: List<BookEntity>,
+                                     records: List<PageRecord>,
+                                     pagesReadingGoal: ReadingGoal.PagesPerMonthReadingGoal,
+                                     booksReadingGoal: ReadingGoal.BooksPerMonthReadingGoal ->
         ZipContent(books, records, pagesReadingGoal, booksReadingGoal)
     }
 
@@ -52,19 +51,19 @@ class StatisticsViewModel @Inject constructor(
             abstract val goal: Int
 
             data class Pages(
-                    override val goal: Int,
-                    override val goalType: ReadingGoalType = ReadingGoalType.PAGES
-            ): Present()
+                override val goal: Int,
+                override val goalType: ReadingGoalType = ReadingGoalType.PAGES
+            ) : Present()
 
             data class Books(
-                    override val goal: Int,
-                    override val goalType: ReadingGoalType = ReadingGoalType.BOOKS
-            ): Present()
+                override val goal: Int,
+                override val goalType: ReadingGoalType = ReadingGoalType.BOOKS
+            ) : Present()
         }
 
         data class Absent(
-                val defaultGoal: Int,
-                override val goalType: ReadingGoalType
+            val defaultGoal: Int,
+            override val goalType: ReadingGoalType
         ) : ReadingGoalState()
     }
 
@@ -76,57 +75,57 @@ class StatisticsViewModel @Inject constructor(
 
     fun requestStatistics() {
         Observable
-                .zip(
-                        bookRepository.bookObservable,
-                        recordDao.allPageRecords(),
-                        readingGoalRepository.retrievePagesPerMonthReadingGoal().toObservable(),
-                        readingGoalRepository.retrieveBookPerMonthReadingGoal().toObservable(),
-                        zipper
-                )
-                .map { (books, pageRecords, pagesReadingGoal, booksReadingGoal) ->
-                    BookStatsBuilder.build(books, pageRecords, pagesReadingGoal, booksReadingGoal)
-                }
-                .subscribe(statisticsItems::postValue, ExceptionHandlers::defaultExceptionHandler)
-                .addTo(compositeDisposable)
+            .zip(
+                bookRepository.bookObservable,
+                recordDao.allPageRecords(),
+                readingGoalRepository.retrievePagesPerMonthReadingGoal().toObservable(),
+                readingGoalRepository.retrieveBookPerMonthReadingGoal().toObservable(),
+                zipper
+            )
+            .map { (books, pageRecords, pagesReadingGoal, booksReadingGoal) ->
+                BookStatsBuilder.build(books, pageRecords, pagesReadingGoal, booksReadingGoal)
+            }
+            .subscribe(statisticsItems::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     fun requestPageGoalChangeAction(type: ReadingGoalType) {
 
         goalChangeObservableSourceByType(type)
-                .subscribe(pageGoalChangeEvent::onNext)
-                .addTo(compositeDisposable)
+            .subscribe(pageGoalChangeEvent::onNext)
+            .addTo(compositeDisposable)
     }
 
     private fun goalChangeObservableSourceByType(type: ReadingGoalType): Single<ReadingGoalState> {
         return when (type) {
             ReadingGoalType.PAGES -> {
                 readingGoalRepository.retrievePagesPerMonthReadingGoal()
-                        .map { goal ->
-                            if (goal.pagesPerMonth != null) {
-                                ReadingGoalState.Present.Pages(goal.pagesPerMonth!!)
-                            } else {
-                                ReadingGoalState.Absent(PAGES_DEFAULT_GOAL, ReadingGoalType.PAGES)
-                            }
+                    .map { goal ->
+                        if (goal.pagesPerMonth != null) {
+                            ReadingGoalState.Present.Pages(goal.pagesPerMonth!!)
+                        } else {
+                            ReadingGoalState.Absent(PAGES_DEFAULT_GOAL, ReadingGoalType.PAGES)
                         }
+                    }
             }
             ReadingGoalType.BOOKS -> {
                 readingGoalRepository.retrieveBookPerMonthReadingGoal()
-                        .map { goal ->
-                            if (goal.booksPerMonth != null) {
-                                ReadingGoalState.Present.Books(goal.booksPerMonth!!)
-                            } else {
-                                ReadingGoalState.Absent(BOOKS_DEFAULT_GOAL, ReadingGoalType.BOOKS)
-                            }
+                    .map { goal ->
+                        if (goal.booksPerMonth != null) {
+                            ReadingGoalState.Present.Books(goal.booksPerMonth!!)
+                        } else {
+                            ReadingGoalState.Absent(BOOKS_DEFAULT_GOAL, ReadingGoalType.BOOKS)
                         }
+                    }
             }
         }
     }
 
     fun onGoalPicked(readingGoal: Int, goalType: ReadingGoalType) {
         getGoalStorageSource(readingGoal, goalType)
-                .observeOn(schedulers.ui)
-                .subscribe(::requestStatistics)
-                .addTo(compositeDisposable)
+            .observeOn(schedulers.ui)
+            .subscribe(::requestStatistics)
+            .addTo(compositeDisposable)
     }
 
     private fun getGoalStorageSource(readingGoal: Int, goalType: ReadingGoalType): Completable {
@@ -138,9 +137,9 @@ class StatisticsViewModel @Inject constructor(
 
     fun onGoalDeleted(goalType: ReadingGoalType) {
         getGoalResetSource(goalType)
-                .observeOn(schedulers.ui)
-                .subscribe(::requestStatistics)
-                .addTo(compositeDisposable)
+            .observeOn(schedulers.ui)
+            .subscribe(::requestStatistics)
+            .addTo(compositeDisposable)
     }
 
     private fun getGoalResetSource(goalType: ReadingGoalType): Completable {

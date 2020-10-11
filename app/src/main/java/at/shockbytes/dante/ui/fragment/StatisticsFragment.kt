@@ -84,7 +84,7 @@ class StatisticsFragment : BaseFragment() {
 
         val fragment = ReadingGoalPickerFragment
                 .newInstance(initialValue, state.goalType)
-                .setOnReadingGoalPickedListener(object: ReadingGoalPickerFragment.OnReadingGoalPickedListener {
+                .setOnReadingGoalPickedListener(object : ReadingGoalPickerFragment.OnReadingGoalPickedListener {
                     override fun onGoalPicked(goal: Int, goalType: ReadingGoalType) {
                         viewModel.onGoalPicked(goal, goalType)
                     }
@@ -94,7 +94,6 @@ class StatisticsFragment : BaseFragment() {
                     }
                 })
         DanteUtils.addFragmentToActivity(parentFragmentManager, fragment, android.R.id.content, true)
-
     }
 
     override fun unbindViewModel() {

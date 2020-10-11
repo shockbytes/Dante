@@ -2,7 +2,23 @@ package at.shockbytes.dante.injection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import at.shockbytes.dante.ui.viewmodel.*
+import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
+import at.shockbytes.dante.ui.viewmodel.BackupViewModel
+import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
+import at.shockbytes.dante.ui.viewmodel.BookListViewModel
+import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
+import at.shockbytes.dante.ui.viewmodel.ImportBooksStorageViewModel
+import at.shockbytes.dante.ui.viewmodel.LabelCategoryViewModel
+import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
+import at.shockbytes.dante.ui.viewmodel.LauncherIconPickerViewModel
+import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.ui.viewmodel.MainViewModel
+import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
+import at.shockbytes.dante.ui.viewmodel.OnlineStorageViewModel
+import at.shockbytes.dante.ui.viewmodel.PageRecordsDetailViewModel
+import at.shockbytes.dante.ui.viewmodel.SearchViewModel
+import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
+import at.shockbytes.dante.ui.viewmodel.TimelineViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module

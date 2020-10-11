@@ -13,14 +13,16 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.BarEntry
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.synthetic.main.pages_diagram_view.view.*
 
-
 class BooksAndPagesDiagramView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null
+    context: Context,
+    attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
 
     init {
@@ -52,9 +54,9 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
         }
 
     fun setData(
-            dataPoints: List<BooksAndPageRecordDataPoint>,
-            diagramOptions: BooksAndPagesDiagramOptions = BooksAndPagesDiagramOptions(),
-            options: MarkerViewOptions
+        dataPoints: List<BooksAndPageRecordDataPoint>,
+        diagramOptions: BooksAndPagesDiagramOptions = BooksAndPagesDiagramOptions(),
+        options: MarkerViewOptions
     ) {
 
         val formattedDates = dataPoints.map { it.formattedDate }
@@ -64,19 +66,19 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
     }
 
     private fun createDataSetEntries(
-            dataPoints: List<BooksAndPageRecordDataPoint>,
-            initialZero: Boolean
+        dataPoints: List<BooksAndPageRecordDataPoint>,
+        initialZero: Boolean
     ): List<Entry> {
         return dataPoints
-                .mapIndexed { index, dp ->
-                    Entry(index.inc().toFloat(), dp.value.toFloat())
+            .mapIndexed { index, dp ->
+                Entry(index.inc().toFloat(), dp.value.toFloat())
+            }
+            .toMutableList()
+            .apply {
+                if (initialZero) {
+                    add(0, BarEntry(0f, 0f)) // Initial entry
                 }
-                .toMutableList()
-                .apply {
-                    if (initialZero) {
-                        add(0, BarEntry(0f, 0f)) // Initial entry
-                    }
-                }
+            }
     }
 
     private fun createDataSet(entries: List<Entry>): LineDataSet {
@@ -94,10 +96,10 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
     }
 
     private fun styleChartAndSetData(
-            dataSet: LineDataSet,
-            markerViewOptions: MarkerViewOptions,
-            formattedDates: List<String>,
-            isZoomable: Boolean
+        dataSet: LineDataSet,
+        markerViewOptions: MarkerViewOptions,
+        formattedDates: List<String>,
+        isZoomable: Boolean
     ) {
         chart.apply {
             // Clear old values first, might be null (Java...)
@@ -187,7 +189,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
 
         if (value != null) {
             createLimitLine(value.toFloat())
-                    .let(::addLimitLineToChart)
+                .let(::addLimitLineToChart)
 
             checkLineBoundaries(value.toFloat(), offsetType)
         }

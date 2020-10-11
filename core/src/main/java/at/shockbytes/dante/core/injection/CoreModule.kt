@@ -3,9 +3,12 @@ package at.shockbytes.dante.core.injection
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
-import at.shockbytes.dante.core.data.*
+import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.DefaultBookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
+import at.shockbytes.dante.core.data.ReadingGoalRepository
 import at.shockbytes.dante.core.data.local.DanteRealmMigration
 import at.shockbytes.dante.core.data.local.RealmBookEntityDao
 import at.shockbytes.dante.core.data.local.RealmPageRecordDao
@@ -58,8 +61,8 @@ class CoreModule(private val app: Application) {
 
     @Provides
     fun provideReadingGoalRepository(
-            @Named(READING_GOAL_SHARED_PREFERENCES) sharedPreferences: SharedPreferences,
-            schedulerFacade: SchedulerFacade
+        @Named(READING_GOAL_SHARED_PREFERENCES) sharedPreferences: SharedPreferences,
+        schedulerFacade: SchedulerFacade
     ): ReadingGoalRepository {
         return SharedPrefsBackedReadingGoalRepository(sharedPreferences, schedulerFacade)
     }

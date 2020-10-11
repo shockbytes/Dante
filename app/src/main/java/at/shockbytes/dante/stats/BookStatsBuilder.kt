@@ -3,7 +3,12 @@ package at.shockbytes.dante.stats
 import android.graphics.Color
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.bareBone
-import at.shockbytes.dante.core.book.*
+import at.shockbytes.dante.core.book.BareBoneBook
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.core.book.PageRecord
+import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.util.AppUtils
@@ -15,10 +20,10 @@ import org.joda.time.format.DateTimeFormat
 object BookStatsBuilder {
 
     fun build(
-            books: List<BookEntity>,
-            pageRecords: List<PageRecord>,
-            pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal,
-            booksPerMonthGoal: ReadingGoal.BooksPerMonthReadingGoal
+        books: List<BookEntity>,
+        pageRecords: List<PageRecord>,
+        pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal,
+        booksPerMonthGoal: ReadingGoal.BooksPerMonthReadingGoal
     ): List<BookStatsViewItem> {
         return mutableListOf(
             createBooksAndPagesItem(books),
@@ -65,8 +70,8 @@ object BookStatsBuilder {
     }
 
     private fun createPagesOverTimeItem(
-            pageRecords: List<PageRecord>,
-            pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal
+        pageRecords: List<PageRecord>,
+        pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal
     ): BookStatsViewItem.BooksAndPagesOverTime {
 
         if (pageRecords.isEmpty()) {
@@ -75,30 +80,30 @@ object BookStatsBuilder {
         val format = DateTimeFormat.forPattern("MMM yy")
 
         return pageRecords
-                .groupBy { record ->
-                    val dt = record.dateTime
-                    MonthYear(dt.monthOfYear, dt.year)
-                }
-                .toSortedMap()
-                .map { (monthYear, records) ->
+            .groupBy { record ->
+                val dt = record.dateTime
+                MonthYear(dt.monthOfYear, dt.year)
+            }
+            .toSortedMap()
+            .map { (monthYear, records) ->
 
-                    val pages = records
-                            .sumBy { it.diffPages }
-                            // There can be negative values, hard bounce them at 0
-                            // Example: User logs 100 pages in July but deletes 20 pages in August
-                            // which leads to a value of -20. This should not happen!
-                            .coerceAtLeast(0)
+                val pages = records
+                    .sumBy { it.diffPages }
+                    // There can be negative values, hard bounce them at 0
+                    // Example: User logs 100 pages in July but deletes 20 pages in August
+                    // which leads to a value of -20. This should not happen!
+                    .coerceAtLeast(0)
 
-                    BooksAndPageRecordDataPoint(pages, formattedDate = format.print(monthYear.dateTime))
-                }
-                .let {pageRecordDataPoints ->
-                    BookStatsViewItem.BooksAndPagesOverTime.Present.Pages(pageRecordDataPoints, pagesPerMonthGoal)
-                }
+                BooksAndPageRecordDataPoint(pages, formattedDate = format.print(monthYear.dateTime))
+            }
+            .let { pageRecordDataPoints ->
+                BookStatsViewItem.BooksAndPagesOverTime.Present.Pages(pageRecordDataPoints, pagesPerMonthGoal)
+            }
     }
 
     private fun createBooksOverTimeItem(
-            books: List<BookEntity>,
-            booksPerMonthGoal: ReadingGoal.BooksPerMonthReadingGoal
+        books: List<BookEntity>,
+        booksPerMonthGoal: ReadingGoal.BooksPerMonthReadingGoal
     ): BookStatsViewItem.BooksAndPagesOverTime {
 
         if (books.isEmpty()) {
@@ -107,21 +112,21 @@ object BookStatsBuilder {
         val format = DateTimeFormat.forPattern("MMM yy")
 
         return books
-                .filter { it.state == BookState.READ }
-                .groupBy { book ->
-                    val dt = DateTime(book.endDate)
-                    MonthYear(dt.monthOfYear, dt.year)
-                }
-                .toSortedMap()
-                .map { (monthYear, booksPerMonth) ->
-                    BooksAndPageRecordDataPoint(
-                            value = booksPerMonth.count(),
-                            formattedDate = format.print(monthYear.dateTime)
-                    )
-                }
-                .let {pageRecordDataPoints ->
-                    BookStatsViewItem.BooksAndPagesOverTime.Present.Books(pageRecordDataPoints, booksPerMonthGoal)
-                }
+            .filter { it.state == BookState.READ }
+            .groupBy { book ->
+                val dt = DateTime(book.endDate)
+                MonthYear(dt.monthOfYear, dt.year)
+            }
+            .toSortedMap()
+            .map { (monthYear, booksPerMonth) ->
+                BooksAndPageRecordDataPoint(
+                    value = booksPerMonth.count(),
+                    formattedDate = format.print(monthYear.dateTime)
+                )
+            }
+            .let { pageRecordDataPoints ->
+                BookStatsViewItem.BooksAndPagesOverTime.Present.Books(pageRecordDataPoints, booksPerMonthGoal)
+            }
     }
 
     private fun createReadingDurationItem(books: List<BookEntity>): BookStatsViewItem {

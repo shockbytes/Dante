@@ -12,9 +12,9 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.dante_marker_view.*
 
 class DanteMarkerView(
-        context: Context,
-        chartView: Chart<*>,
-        private val options: MarkerViewOptions
+    context: Context,
+    chartView: Chart<*>,
+    private val options: MarkerViewOptions
 ) : MarkerView(context, R.layout.dante_marker_view), LayoutContainer {
 
     init {

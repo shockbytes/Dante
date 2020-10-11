@@ -11,8 +11,8 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 class SharedPrefsBackedReadingGoalRepository(
-        private val sharedPreferences: SharedPreferences,
-        private val schedulers: SchedulerFacade
+    private val sharedPreferences: SharedPreferences,
+    private val schedulers: SchedulerFacade
 ) : ReadingGoalRepository {
 
     override fun retrievePagesPerMonthReadingGoal(): Single<ReadingGoal.PagesPerMonthReadingGoal> {

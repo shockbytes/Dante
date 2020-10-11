@@ -39,14 +39,21 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
-import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramOptions
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
-import at.shockbytes.dante.util.*
+import at.shockbytes.dante.util.AnimationUtils
+import at.shockbytes.dante.util.ColorUtils
+import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.isNightModeEnabled
+import at.shockbytes.dante.util.registerForPopupMenu
+import at.shockbytes.dante.util.setVisible
+import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
@@ -210,7 +217,6 @@ class BookDetailFragment : BaseFragment(),
             initializeBookInformation(viewState.book, viewState.showSummary)
             initializeTimeInformation(viewState.book)
         })
-
 
         viewModel.getPageRecordsViewState().observe(this, Observer(::handlePageRecordViewState))
 
@@ -391,7 +397,7 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun handlePageRecordViewState(
-            pageRecordViewState: BookDetailViewModel.PageRecordsViewState
+        pageRecordViewState: BookDetailViewModel.PageRecordsViewState
     ) {
         when (pageRecordViewState) {
             is BookDetailViewModel.PageRecordsViewState.Present -> {
@@ -405,14 +411,14 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun handlePageRecords(
-            dataPoints: List<BooksAndPageRecordDataPoint>,
-            bookId: Long
+        dataPoints: List<BooksAndPageRecordDataPoint>,
+        bookId: Long
     ) {
         pages_diagram_view.apply {
             setData(
-                    dataPoints,
-                    diagramOptions = BooksAndPagesDiagramOptions(initialZero = true),
-                    options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
+                dataPoints,
+                diagramOptions = BooksAndPagesDiagramOptions(initialZero = true),
+                options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
             )
             action = BooksAndPagesDiagramAction.Overflow
             registerOnActionClick {
@@ -424,36 +430,36 @@ class BookDetailFragment : BaseFragment(),
 
     private fun showPageRecordsOverview(bookId: Long) {
         registerForPopupMenu(
-                pages_diagram_view.actionView,
-                R.menu.menu_page_records_details,
-                PopupMenu.OnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.menu_page_records_details -> {
-                            DanteUtils.addFragmentToActivity(
-                                    parentFragmentManager,
-                                    PageRecordsDetailFragment.newInstance(bookId),
-                                    android.R.id.content,
-                                    addToBackStack = true
-                            )
-                        }
-                        R.id.menu_page_records_reset -> {
-                            MaterialDialog(requireContext()).show {
-                                icon(R.drawable.ic_delete)
-                                title(text = getString(R.string.ask_for_all_page_record_deletion_title))
-                                message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
-                                positiveButton(R.string.action_delete) {
-                                    viewModel.deleteAllPageRecords()
-                                }
-                                negativeButton(android.R.string.cancel) {
-                                    dismiss()
-                                }
-                                cancelOnTouchOutside(false)
-                                cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+            pages_diagram_view.actionView,
+            R.menu.menu_page_records_details,
+            PopupMenu.OnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_page_records_details -> {
+                        DanteUtils.addFragmentToActivity(
+                            parentFragmentManager,
+                            PageRecordsDetailFragment.newInstance(bookId),
+                            android.R.id.content,
+                            addToBackStack = true
+                        )
+                    }
+                    R.id.menu_page_records_reset -> {
+                        MaterialDialog(requireContext()).show {
+                            icon(R.drawable.ic_delete)
+                            title(text = getString(R.string.ask_for_all_page_record_deletion_title))
+                            message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
+                            positiveButton(R.string.action_delete) {
+                                viewModel.deleteAllPageRecords()
                             }
+                            negativeButton(android.R.string.cancel) {
+                                dismiss()
+                            }
+                            cancelOnTouchOutside(false)
+                            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
                         }
                     }
-                    true
                 }
+                true
+            }
         )
     }
 
@@ -684,7 +690,6 @@ class BookDetailFragment : BaseFragment(),
     companion object {
 
         const val ACTION_BOOK_CHANGED = "action_book_changed"
-
 
         // Const callback values for time picker
         private const val DATE_TARGET_PUBLISHED_DATE = 1

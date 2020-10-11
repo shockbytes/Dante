@@ -111,7 +111,7 @@ class ReadingGoalPickerFragment : BaseFragment() {
     }
 
     fun setOnReadingGoalPickedListener(
-            listener: OnReadingGoalPickedListener
+        listener: OnReadingGoalPickedListener
     ): ReadingGoalPickerFragment {
         return apply {
             onReadingGoalPickedListener = listener
@@ -128,8 +128,8 @@ class ReadingGoalPickerFragment : BaseFragment() {
         private const val MAX_FRAME = 28
 
         fun newInstance(
-                initialValue: Int? = null,
-                type: ReadingGoalType
+            initialValue: Int? = null,
+            type: ReadingGoalType
         ): ReadingGoalPickerFragment {
             return ReadingGoalPickerFragment().apply {
                 this.initialValue = initialValue

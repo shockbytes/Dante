@@ -17,8 +17,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class PageRecordsDetailViewModel @Inject constructor(
-        private val pageRecordDao: PageRecordDao,
-        private val bookRepository: BookRepository
+    private val pageRecordDao: PageRecordDao,
+    private val bookRepository: BookRepository
 ) : BaseViewModel() {
 
     private val dateFormat = DateTimeFormat.forPattern("dd.MM.yyyy")
@@ -36,10 +36,10 @@ class PageRecordsDetailViewModel @Inject constructor(
     fun initialize(bookId: Long) {
         this.bookId = bookId
         pageRecordDao.pageRecordsForBook(bookId)
-                .doOnNext(::cachePageRecords)
-                .map(::mapPageRecordToPageRecordDetailItem)
-                .subscribe(records::postValue, Timber::e)
-                .addTo(compositeDisposable)
+            .doOnNext(::cachePageRecords)
+            .map(::mapPageRecordToPageRecordDetailItem)
+            .subscribe(records::postValue, Timber::e)
+            .addTo(compositeDisposable)
     }
 
     private fun cachePageRecords(cached: List<PageRecord>) {
@@ -47,7 +47,7 @@ class PageRecordsDetailViewModel @Inject constructor(
     }
 
     private fun mapPageRecordToPageRecordDetailItem(
-            pageRecords: List<PageRecord>
+        pageRecords: List<PageRecord>
     ): List<PageRecordDetailItem> {
         return pageRecords.map { record ->
 
@@ -80,19 +80,19 @@ class PageRecordsDetailViewModel @Inject constructor(
         }
 
         Completable
-                .concat(
-                        listOf(
-                                preAction,
-                                pageRecordDao.deletePageRecordForBook(pageRecord) // Eventually delete page record
-                        )
+            .concat(
+                listOf(
+                    preAction,
+                    pageRecordDao.deletePageRecordForBook(pageRecord) // Eventually delete page record
                 )
-                .subscribe({
-                    initialize(bookId)
-                    onBookChangedSubject.onNext(Unit)
-                }, { throwable ->
-                    Timber.e(throwable)
-                })
-                .addTo(compositeDisposable)
+            )
+            .subscribe({
+                initialize(bookId)
+                onBookChangedSubject.onNext(Unit)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun updateCurrentPage(currentPage: Int): Completable {
@@ -100,5 +100,4 @@ class PageRecordsDetailViewModel @Inject constructor(
             bookRepository.updateCurrentPage(bookId, currentPage)
         }
     }
-
 }

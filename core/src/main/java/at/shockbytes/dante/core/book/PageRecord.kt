@@ -6,10 +6,10 @@ import org.joda.time.DateTime
 
 @Parcelize
 data class PageRecord(
-        val bookId: Long,
-        val fromPage: Int,
-        val toPage: Int,
-        val timestamp: Long
+    val bookId: Long,
+    val fromPage: Int,
+    val toPage: Int,
+    val timestamp: Long
 ) : Parcelable {
 
     val diffPages: Int

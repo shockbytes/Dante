@@ -9,8 +9,8 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_random_pick.*
 
 class RandomPickViewHolder(
-        override val containerView: View,
-        private val callback: RandomPickCallback
+    override val containerView: View,
+    private val callback: RandomPickCallback
 ) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
 
     override fun bindToView(content: BookAdapterEntity, position: Int) {
@@ -27,12 +27,12 @@ class RandomPickViewHolder(
     companion object {
 
         fun forParent(
-                parent: ViewGroup,
-                callback: RandomPickCallback
-        ) : RandomPickViewHolder {
+            parent: ViewGroup,
+            callback: RandomPickCallback
+        ): RandomPickViewHolder {
             return RandomPickViewHolder(
-                    containerView = LayoutInflater.from(parent.context).inflate(R.layout.item_random_pick, parent, false),
-                    callback = callback
+                containerView = LayoutInflater.from(parent.context).inflate(R.layout.item_random_pick, parent, false),
+                callback = callback
             )
         }
     }

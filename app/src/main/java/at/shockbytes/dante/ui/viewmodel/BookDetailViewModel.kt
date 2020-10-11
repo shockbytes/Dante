@@ -42,9 +42,9 @@ class BookDetailViewModel @Inject constructor(
     sealed class PageRecordsViewState {
 
         data class Present(
-                val bookId: Long,
-                val dataPoints: List<BooksAndPageRecordDataPoint>
-        ): PageRecordsViewState()
+            val bookId: Long,
+            val dataPoints: List<BooksAndPageRecordDataPoint>
+        ) : PageRecordsViewState()
 
         object Absent : PageRecordsViewState()
     }
@@ -95,18 +95,18 @@ class BookDetailViewModel @Inject constructor(
 
     private fun fetchBook(bookId: Long) {
         bookRepository.get(bookId)
-                ?.also { entity ->
-                    pagesAtInit = entity.currentPage
-                }
-                ?.let(::craftViewState)
-                ?.let(viewState::postValue)
+            ?.also { entity ->
+                pagesAtInit = entity.currentPage
+            }
+            ?.let(::craftViewState)
+            ?.let(viewState::postValue)
     }
 
     private fun fetchPageRecords(bookId: Long) {
         pageRecordDao.pageRecordsForBook(bookId)
-                .map(::mapPageRecordsToDataPoints)
-                .subscribe(pageRecords::postValue, ExceptionHandlers::defaultExceptionHandler)
-                .addTo(viewCompositeDisposable)
+            .map(::mapPageRecordsToDataPoints)
+            .subscribe(pageRecords::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(viewCompositeDisposable)
     }
 
     private fun mapPageRecordsToDataPoints(pageRecords: List<PageRecord>): PageRecordsViewState {
@@ -116,20 +116,20 @@ class BookDetailViewModel @Inject constructor(
         } else {
             val format = DateTimeFormat.forPattern("dd/MM/yy")
             pageRecords
-                    .groupBy { record ->
-                        DateTime(record.timestamp).withTimeAtStartOfDay()
+                .groupBy { record ->
+                    DateTime(record.timestamp).withTimeAtStartOfDay()
+                }
+                .mapNotNull { (dtTimestamp, pageRecords) ->
+                    pageRecords.maxBy { it.timestamp }?.let { record ->
+                        BooksAndPageRecordDataPoint(
+                            value = record.toPage,
+                            formattedDate = format.print(dtTimestamp)
+                        )
                     }
-                    .mapNotNull { (dtTimestamp, pageRecords) ->
-                        pageRecords.maxBy { it.timestamp }?.let { record ->
-                            BooksAndPageRecordDataPoint(
-                                    value = record.toPage,
-                                    formattedDate = format.print(dtTimestamp)
-                            )
-                        }
-                    }
-                    .let { dataPoints ->
-                        PageRecordsViewState.Present(bookId, dataPoints)
-                    }
+                }
+                .let { dataPoints ->
+                    PageRecordsViewState.Present(bookId, dataPoints)
+                }
         }
     }
 
@@ -302,10 +302,10 @@ class BookDetailViewModel @Inject constructor(
         val startPage = pagesAtInit ?: 0
         if (currentPage != startPage) {
             pageRecordDao.insertPageRecordForBookId(
-                    bookId = bookId,
-                    fromPage = startPage,
-                    toPage = currentPage,
-                    nowInMillis = System.currentTimeMillis()
+                bookId = bookId,
+                fromPage = startPage,
+                toPage = currentPage,
+                nowInMillis = System.currentTimeMillis()
             )
         }
     }
@@ -318,15 +318,14 @@ class BookDetailViewModel @Inject constructor(
     fun deleteAllPageRecords() {
 
         Completable
-                .concat(
-                    listOf(
-                            pageRecordDao.deleteAllPageRecordsForBookId(bookId),
-                            resetCurrentPageToZero()
-                    )
+            .concat(
+                listOf(
+                    pageRecordDao.deleteAllPageRecordsForBookId(bookId),
+                    resetCurrentPageToZero()
                 )
-                .subscribe(::reload, Timber::e)
-                .addTo(compositeDisposable)
-
+            )
+            .subscribe(::reload, Timber::e)
+            .addTo(compositeDisposable)
     }
 
     private fun resetCurrentPageToZero(): Completable {

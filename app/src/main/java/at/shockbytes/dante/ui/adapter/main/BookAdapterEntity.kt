@@ -8,8 +8,8 @@ sealed class BookAdapterEntity {
     abstract val viewType: Int
 
     data class Book(
-            val bookEntity: BookEntity,
-            override val viewType: Int = VIEW_TYPE_BOOK
+        val bookEntity: BookEntity,
+        override val viewType: Int = VIEW_TYPE_BOOK
     ) : BookAdapterEntity() {
 
         override val id: Long

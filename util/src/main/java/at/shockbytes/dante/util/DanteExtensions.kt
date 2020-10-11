@@ -48,8 +48,8 @@ fun CharSequence.colored(@ColorInt color: Int): CharSequence {
 
 fun String.removeBrackets(): String {
     return this
-            .replace("(", "")
-            .replace(")", "")
+        .replace("(", "")
+        .replace(")", "")
 }
 
 fun Activity.hideKeyboard() {
@@ -147,15 +147,15 @@ inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewMod
 }
 
 fun <T> singleOf(
-        subscribeOn: Scheduler = Schedulers.computation(),
-        block: () -> T
+    subscribeOn: Scheduler = Schedulers.computation(),
+    block: () -> T
 ): Single<T> {
     return Single.just(block()).subscribeOn(subscribeOn)
 }
 
 fun completableOf(
-        subscribeOn: Scheduler = Schedulers.computation(),
-        block: () -> Unit
+    subscribeOn: Scheduler = Schedulers.computation(),
+    block: () -> Unit
 ): Completable {
     return Completable.fromAction(Action(block)).subscribeOn(subscribeOn)
 }
@@ -167,13 +167,13 @@ fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {
 
 fun <T> List<T>.indexOfOrNull(value: T): Int? {
     return this.indexOf(value)
-            .let { index ->
-                if (index > -1) {
-                    index
-                } else {
-                    null
-                }
+        .let { index ->
+            if (index > -1) {
+                index
+            } else {
+                null
             }
+        }
 }
 
 fun Int.isLastIndexIn(list: List<*>): Boolean {
@@ -182,9 +182,9 @@ fun Int.isLastIndexIn(list: List<*>): Boolean {
 
 @SuppressLint("RestrictedApi")
 fun Fragment.registerForPopupMenu(
-        anchor: View,
-        @MenuRes menuRes: Int,
-        onMenuItemListener: PopupMenu.OnMenuItemClickListener
+    anchor: View,
+    @MenuRes menuRes: Int,
+    onMenuItemListener: PopupMenu.OnMenuItemClickListener
 ) {
 
     val popupMenu = PopupMenu(requireContext(), anchor)
@@ -193,9 +193,9 @@ fun Fragment.registerForPopupMenu(
     popupMenu.setOnMenuItemClickListener(onMenuItemListener)
 
     val menuHelper = MenuPopupHelper(requireContext(), popupMenu.menu as MenuBuilder, anchor)
-            .apply {
-                setForceShowIcon(true)
-            }
+        .apply {
+            setForceShowIcon(true)
+        }
 
     anchor.setOnClickListener { menuHelper.show() }
 }

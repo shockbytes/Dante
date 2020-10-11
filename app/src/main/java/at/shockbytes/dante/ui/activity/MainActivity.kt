@@ -31,9 +31,15 @@ import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
-import at.shockbytes.dante.util.*
+import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.retrieveActiveActivityAlias
+import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.settings.LauncherIconState
 import at.shockbytes.dante.util.settings.ThemeState
+import at.shockbytes.dante.util.toggle
+import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*

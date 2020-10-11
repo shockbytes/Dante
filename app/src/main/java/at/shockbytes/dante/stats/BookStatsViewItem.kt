@@ -32,16 +32,15 @@ sealed class BookStatsViewItem {
         sealed class Present : BooksAndPagesOverTime() {
 
             data class Pages(
-                    val pagesPerMonths: List<BooksAndPageRecordDataPoint>,
-                    val readingGoal: ReadingGoal.PagesPerMonthReadingGoal
+                val pagesPerMonths: List<BooksAndPageRecordDataPoint>,
+                val readingGoal: ReadingGoal.PagesPerMonthReadingGoal
             ) : Present()
 
             data class Books(
-                    val booksPerMonths: List<BooksAndPageRecordDataPoint>,
-                    val readingGoal: ReadingGoal.BooksPerMonthReadingGoal
+                val booksPerMonths: List<BooksAndPageRecordDataPoint>,
+                val readingGoal: ReadingGoal.BooksPerMonthReadingGoal
             ) : Present()
         }
-
     }
 
     sealed class ReadingDuration : BookStatsViewItem() {

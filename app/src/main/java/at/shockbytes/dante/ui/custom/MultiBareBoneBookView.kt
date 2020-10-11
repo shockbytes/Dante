@@ -25,7 +25,7 @@ class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayou
         container_multi_bare_bone_book_view.removeAllViews()
 
         urls
-            .mapIndexedNotNull { _,  url ->
+            .mapIndexedNotNull { _, url ->
                 if (!url.isNullOrEmpty()) {
                     createImageView().apply {
                         imageLoader.loadImageWithCornerRadius(

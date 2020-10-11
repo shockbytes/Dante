@@ -186,10 +186,9 @@ class MainBookFragment : BaseFragment(),
                                     true
                             )
                         }
-
             }
             BookListViewModel.RandomPickEvent.NoBookAvailable -> {
-                //TODO
+                // TODO
             }
         }
     }

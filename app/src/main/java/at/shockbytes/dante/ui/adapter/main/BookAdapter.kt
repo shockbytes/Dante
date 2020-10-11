@@ -16,13 +16,13 @@ import java.util.Collections
  * Date:    30.12.2017
  */
 class BookAdapter(
-        context: Context,
-        private val imageLoader: ImageLoader,
-        private val onOverflowActionClickedListener: (BookEntity) -> Unit,
-        private val onLabelClickedListener: (BookLabel) -> Unit,
-        private val randomPickCallback: RandomPickCallback,
-        onItemClickListener: OnItemClickListener<BookAdapterEntity>,
-        onItemMoveListener: OnItemMoveListener<BookAdapterEntity>
+    context: Context,
+    private val imageLoader: ImageLoader,
+    private val onOverflowActionClickedListener: (BookEntity) -> Unit,
+    private val onLabelClickedListener: (BookLabel) -> Unit,
+    private val randomPickCallback: RandomPickCallback,
+    onItemClickListener: OnItemClickListener<BookAdapterEntity>,
+    onItemMoveListener: OnItemMoveListener<BookAdapterEntity>
 ) : BaseAdapter<BookAdapterEntity>(
     context,
     onItemClickListener = onItemClickListener,
@@ -47,16 +47,16 @@ class BookAdapter(
 
             BookAdapterEntity.VIEW_TYPE_BOOK -> {
                 BookViewHolder.forParent(
-                        parent,
-                        imageLoader,
-                        onOverflowActionClickedListener,
-                        onLabelClickedListener
+                    parent,
+                    imageLoader,
+                    onOverflowActionClickedListener,
+                    onLabelClickedListener
                 )
             }
             BookAdapterEntity.VIEW_TYPE_RANDOM_PICK -> {
                 RandomPickViewHolder.forParent(
-                        parent,
-                        randomPickCallback
+                    parent,
+                    randomPickCallback
                 )
             }
             else -> throw IllegalStateException("Unknown view type $viewType")
@@ -98,6 +98,4 @@ class BookAdapter(
 
         diffResult.dispatchUpdatesTo(this)
     }
-
-
 }

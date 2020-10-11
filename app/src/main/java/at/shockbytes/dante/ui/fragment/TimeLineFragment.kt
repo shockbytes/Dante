@@ -122,7 +122,6 @@ class TimeLineFragment : BaseFragment() {
                 .show()
     }
 
-
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
     }

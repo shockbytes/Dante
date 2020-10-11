@@ -20,10 +20,10 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_book.*
 
 class BookViewHolder(
-        override val containerView: View,
-        private val imageLoader: ImageLoader,
-        private val onOverflowActionClickedListener: (BookEntity) -> Unit,
-        private val onLabelClickedListener: (BookLabel) -> Unit
+    override val containerView: View,
+    private val imageLoader: ImageLoader,
+    private val onOverflowActionClickedListener: (BookEntity) -> Unit,
+    private val onLabelClickedListener: (BookLabel) -> Unit
 ) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
 
     private fun context(): Context = containerView.context
@@ -44,10 +44,10 @@ class BookViewHolder(
         val isNightModeEnabled = context().isNightModeEnabled()
 
         labels
-                .map { label ->
-                    buildChipViewFromLabel(label, isNightModeEnabled)
-                }
-                .forEach(chips_item_book_label::addView)
+            .map { label ->
+                buildChipViewFromLabel(label, isNightModeEnabled)
+            }
+            .forEach(chips_item_book_label::addView)
     }
 
     private fun buildChipViewFromLabel(label: BookLabel, isNightModeEnabled: Boolean): Chip {
@@ -80,8 +80,8 @@ class BookViewHolder(
 
         if (showProgress) {
             val progress = DanteUtils.computePercentage(
-                    t.currentPage.toDouble(),
-                    t.pageCount.toDouble()
+                t.currentPage.toDouble(),
+                t.pageCount.toDouble()
             )
             animateBookProgress(progress)
             item_book_tv_progress.text = context().getString(R.string.percentage_formatter, progress)
@@ -97,10 +97,10 @@ class BookViewHolder(
     private fun updateImageThumbnail(address: String?) {
         if (!address.isNullOrEmpty()) {
             imageLoader.loadImageWithCornerRadius(
-                    context(),
-                    address,
-                    item_book_img_thumb,
-                    cornerDimension = context().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                context(),
+                address,
+                item_book_img_thumb,
+                cornerDimension = context().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
             )
         } else {
             // Books with no image will recycle another cover if not cleared here
@@ -120,16 +120,16 @@ class BookViewHolder(
     companion object {
 
         fun forParent(
-                parent: ViewGroup,
-                imageLoader: ImageLoader,
-                onOverflowActionClickedListener: (BookEntity) -> Unit,
-                onLabelClickedListener: (BookLabel) -> Unit
+            parent: ViewGroup,
+            imageLoader: ImageLoader,
+            onOverflowActionClickedListener: (BookEntity) -> Unit,
+            onLabelClickedListener: (BookLabel) -> Unit
         ): BookViewHolder {
             return BookViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false),
-                    imageLoader,
-                    onOverflowActionClickedListener,
-                    onLabelClickedListener
+                LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false),
+                imageLoader,
+                onOverflowActionClickedListener,
+                onLabelClickedListener
             )
         }
     }

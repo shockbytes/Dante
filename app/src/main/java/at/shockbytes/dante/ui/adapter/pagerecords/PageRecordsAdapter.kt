@@ -10,9 +10,9 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_page_records_detail.*
 
 class PageRecordsAdapter(
-        context: Context,
-        private val onItemDeletedListener: (PageRecord) -> Unit
-): BaseAdapter<PageRecordDetailItem>(context) {
+    context: Context,
+    private val onItemDeletedListener: (PageRecord) -> Unit
+) : BaseAdapter<PageRecordDetailItem>(context) {
 
     fun updateData(updatedData: List<PageRecordDetailItem>) {
 
@@ -23,16 +23,16 @@ class PageRecordsAdapter(
     }
 
     override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+        parent: ViewGroup,
+        viewType: Int
     ): ViewHolder<PageRecordDetailItem> {
         val view = inflater.inflate(R.layout.item_page_records_detail, parent, false)
         return PageRecordsViewHolder(view)
     }
 
     inner class PageRecordsViewHolder(
-            override val containerView: View
-    ): BaseAdapter.ViewHolder<PageRecordDetailItem>(containerView), LayoutContainer {
+        override val containerView: View
+    ) : BaseAdapter.ViewHolder<PageRecordDetailItem>(containerView), LayoutContainer {
 
         override fun bindToView(content: PageRecordDetailItem, position: Int) {
             with(content) {

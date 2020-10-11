@@ -26,8 +26,8 @@
     <string name="add_book_to_library_hint">Add a book to your library</string>
 
     <string name="reading_behavior">Reading behavior</string>
-    <string name="pages_formatted">%d pages / %s</string>
-    <string name="books_formatted">%d books / %s</string>
+    <string name="pages_formatted">%d pages &#8226; %s</string>
+    <string name="books_formatted">%d books &#8226; %s</string>
     <string name="month">month</string>
 
     <string name="reading_goal">Reading goal</string>

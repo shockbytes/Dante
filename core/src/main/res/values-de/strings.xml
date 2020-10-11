@@ -297,7 +297,7 @@
     <string name="random_pick_restore_instruction">Du kannst es später wieder anzeigen, wenn du es in den Einstellungen wieder aktivierst</string>
 
     <string name="reading_behavior">Leseverhalten</string>
-    <string name="pages_formatted">%d Seiten / %s</string>
+    <string name="pages_formatted">%d Seiten &#8226; %s</string>
     <string name="statistics_header_pages_over_time">Seiten pro Monat</string>
     <string name="reading_goal">Leseziel</string>
     <string name="set_goal">Ziel setzen</string>
@@ -306,7 +306,7 @@
     <string name="reading_goal_level_3">Buchzauberer</string>
     <string name="reading_goal_level_2">Lesehirn</string>
     <string name="reading_goal_level_1">Ernsthafter Leser</string>
-    <string name="books_formatted">%d Bücher / %s</string>
+    <string name="books_formatted">%d Bücher &#8226; %s</string>
     <string name="reading_goal_pages">Seitenziel</string>
     <string name="reading_goal_books">Buchziel</string>
     <string name="statistics_header_books_over_time">Bücher pro Monat</string>

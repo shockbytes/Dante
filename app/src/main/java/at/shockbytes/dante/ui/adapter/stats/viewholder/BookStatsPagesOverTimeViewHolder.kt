@@ -59,6 +59,7 @@ class BookStatsPagesOverTimeViewHolder(
             readingGoal(pagesPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.PAGES)
             setData(
                     dataPoints,
+                    diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
                     options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
             )
         }

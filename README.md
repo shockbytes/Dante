@@ -72,6 +72,9 @@ The backlog is currently empty.
     - [x] Make books per month zoomable
     - [ ] Fix problems when setting books per month reading goal offset
     - [ ] Fix issues with pages per month reading goal update
+- [ ] Fix bug with local book covers
+    - [ ] In MultiBareBoneBookView (not showing up)
+    - [ ] In the label overview (too big)
 - [x] Reset page statistics per book
 - [x] Hide page statistics in details page
 

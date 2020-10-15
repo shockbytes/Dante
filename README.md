@@ -57,6 +57,8 @@ The backlog is currently empty.
   - [ ] Migrate from local to remote storage
 - [ ] Login with Firebase
 
+## Current development
+
 ### Version 3.16
 - [ ] Send csv export via Mail
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
@@ -66,19 +68,17 @@ The backlog is currently empty.
     - [ ] In MultiBareBoneBookView (not showing up)
     - [ ] In the label overview (too big)
 
-## Current development
+## Changelog
 
 ### Version 3.15
-- [x] Statistics pages/books over time / month + Goal per month
-    - [x] Fix issue where MarkerView draws out of ChartView bounds
-    - [x] Change toolbar behavior in Statistics screen
-    - [x] Make books per month zoomable
-    - [x] Fix problems when setting books per month reading goal offset
-    - [x] Fix issues with pages per month reading goal update
-- [x] Reset page statistics per book
-- [x] Hide page statistics in details page
-
-## Changelog
+* Statistics pages/books over time / month + Goal per month
+    * Fix issue where MarkerView draws out of ChartView bounds
+    * Change toolbar behavior in Statistics screen
+    * Make books per month zoomable
+    * Fix problems when setting books per month reading goal offset
+    * Fix issues with pages per month reading goal update
+* Reset page statistics per book
+* Hide page statistics in details page
 
 ### Version 3.14 - SUMMER CLEANUP
 * Move sort into settings

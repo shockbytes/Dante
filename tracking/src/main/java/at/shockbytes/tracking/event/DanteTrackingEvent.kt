@@ -24,7 +24,7 @@ sealed class DanteTrackingEvent(
         listOf(TrackingProperty("state", state))
     )
 
-    data class PickRandomBook(val booksInBacklog: Int): DanteTrackingEvent(
+    data class PickRandomBook(val booksInBacklog: Int) : DanteTrackingEvent(
         "pick_random_book",
         listOf(TrackingProperty("backlog_count", booksInBacklog))
     )

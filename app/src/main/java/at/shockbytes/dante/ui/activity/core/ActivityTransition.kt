@@ -5,16 +5,16 @@ import android.transition.Fade
 import android.transition.Transition
 
 data class ActivityTransition(
-        val enterTransition: Transition,
-        val exitTransition: Transition
+    val enterTransition: Transition,
+    val exitTransition: Transition
 ) {
 
     companion object {
 
         fun default(): ActivityTransition {
             return ActivityTransition(
-                    enterTransition = Explode(),
-                    exitTransition = Fade()
+                enterTransition = Explode(),
+                exitTransition = Fade()
             )
         }
     }

@@ -21,10 +21,10 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -39,9 +39,11 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
-import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
-import at.shockbytes.dante.ui.custom.DanteMarkerView
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramOptions
+import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.ColorUtils
@@ -49,12 +51,11 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isNightModeEnabled
+import at.shockbytes.dante.util.registerForPopupMenu
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -159,7 +160,7 @@ class BookDetailFragment : BaseFragment(),
     private fun registerLocalBroadcastReceiver() {
         LocalBroadcastManager.getInstance(requireContext()).apply {
             registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
-            registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
+            registerReceiver(bookUpdatedReceiver, IntentFilter(ACTION_BOOK_CHANGED))
         }
     }
 
@@ -216,7 +217,6 @@ class BookDetailFragment : BaseFragment(),
             initializeBookInformation(viewState.book, viewState.showSummary)
             initializeTimeInformation(viewState.book)
         })
-
 
         viewModel.getPageRecordsViewState().observe(this, Observer(::handlePageRecordViewState))
 
@@ -397,12 +397,12 @@ class BookDetailFragment : BaseFragment(),
     }
 
     private fun handlePageRecordViewState(
-            pageRecordViewState: BookDetailViewModel.PageRecordsViewState
+        pageRecordViewState: BookDetailViewModel.PageRecordsViewState
     ) {
         when (pageRecordViewState) {
             is BookDetailViewModel.PageRecordsViewState.Present -> {
                 group_details_pages.setVisible(true)
-                handlePageRecords(pageRecordViewState.dataPoints)
+                handlePageRecords(pageRecordViewState.dataPoints, pageRecordViewState.bookId)
             }
             BookDetailViewModel.PageRecordsViewState.Absent -> {
                 group_details_pages.setVisible(false)
@@ -410,107 +410,75 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun handlePageRecords(dataPoints: List<BookDetailViewModel.PageRecordDataPoint>) {
-
-        val entries: List<Entry> = dataPoints
-                .mapIndexed { index, dp ->
-                    Entry(index.inc().toFloat(), dp.page.toFloat())
-                }
-                .toMutableList()
-                .apply {
-                    add(0, BarEntry(0f, 0f)) // Initial entry
-                }
-
-        val dataSet = LineDataSet(entries, "").apply {
-            setColor(ContextCompat.getColor(requireContext(), R.color.page_record_data), 255)
-            setDrawValues(false)
-            setDrawIcons(false)
-            setDrawFilled(true)
-            setDrawHighlightIndicators(false)
-            isHighlightEnabled = true
-            setCircleColor(ContextCompat.getColor(requireContext(), R.color.page_record_data))
-            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-            fillDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.page_record_gradient)
+    private fun handlePageRecords(
+        dataPoints: List<BooksAndPageRecordDataPoint>,
+        bookId: Long
+    ) {
+        pages_diagram_view.apply {
+            setData(
+                dataPoints,
+                diagramOptions = BooksAndPagesDiagramOptions(initialZero = true),
+                labelFactory = MarkerViewLabelFactory.ofBooksAndPageRecordDataPoints(dataPoints, R.string.pages_formatted)
+            )
+            action = BooksAndPagesDiagramAction.Overflow
+            registerOnActionClick {
+                showPageRecordsOverview(bookId)
+            }
+            headerTitle = getString(R.string.reading_behavior)
         }
+    }
 
-        pages_diagram_view.chart.apply {
-            description.isEnabled = false
-            legend.isEnabled = false
-
-            setDrawGridBackground(false)
-            setScaleEnabled(false)
-            setTouchEnabled(true)
-
-            xAxis.apply {
-                isEnabled = true
-                position = XAxis.XAxisPosition.BOTTOM
-                labelCount = entries.size / 2
-                setDrawAxisLine(false)
-                labelRotationAngle = -30f
-                textSize = 8f
-                setDrawGridLines(false)
-                typeface = ResourcesCompat.getFont(requireContext(), R.font.montserrat)
-                setDrawAxisLine(false)
-                setDrawGridBackground(false)
-                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
-                valueFormatter = IndexAxisValueFormatter(dataPoints.map { it.formattedDate })
+    private fun showPageRecordsOverview(bookId: Long) {
+        registerForPopupMenu(
+            pages_diagram_view.actionView,
+            R.menu.menu_page_records_details,
+            PopupMenu.OnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_page_records_details -> {
+                        DanteUtils.addFragmentToActivity(
+                            parentFragmentManager,
+                            PageRecordsDetailFragment.newInstance(bookId),
+                            android.R.id.content,
+                            addToBackStack = true
+                        )
+                    }
+                    R.id.menu_page_records_reset -> {
+                        MaterialDialog(requireContext()).show {
+                            icon(R.drawable.ic_delete)
+                            title(text = getString(R.string.ask_for_all_page_record_deletion_title))
+                            message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
+                            positiveButton(R.string.action_delete) {
+                                viewModel.deleteAllPageRecords()
+                            }
+                            negativeButton(android.R.string.cancel) {
+                                dismiss()
+                            }
+                            cancelOnTouchOutside(false)
+                            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+                        }
+                    }
+                }
+                true
             }
-
-            getAxis(YAxis.AxisDependency.LEFT).apply {
-                isEnabled = false
-                setDrawAxisLine(false)
-                setDrawGridLines(false)
-                setDrawZeroLine(false)
-                setDrawAxisLine(false)
-            }
-            getAxis(YAxis.AxisDependency.RIGHT).apply {
-                isEnabled = false
-                setDrawAxisLine(false)
-                textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
-            }
-
-            setDrawMarkers(true)
-            marker = DanteMarkerView(requireContext())
-
-            data = LineData(dataSet)
-            invalidate()
-        }
+        )
     }
 
     private fun setupViewListener() {
 
-        btn_detail_pages.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestPageDialog()
-        }
-        btn_detail_published.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_PUBLISHED_DATE)
-        }
-        btn_detail_notes.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestNotesDialog()
-        }
-        btn_detail_rate.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestRatingDialog()
-        }
-        btn_detail_wishhlist_date.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_WISHLIST_DATE)
-        }
-        btn_detail_start_date.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_START_DATE)
-        }
-        btn_detail_end_date.setOnClickListener { v ->
-            v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            showDatePicker(DATE_TARGET_END_DATE)
-        }
+        btn_detail_pages.setHapticClickListener(viewModel::requestPageDialog)
+        btn_detail_published.setHapticClickListener { showDatePicker(DATE_TARGET_PUBLISHED_DATE) }
+        btn_detail_notes.setHapticClickListener(viewModel::requestNotesDialog)
+        btn_detail_rate.setHapticClickListener(viewModel::requestRatingDialog)
+        btn_detail_wishhlist_date.setHapticClickListener { showDatePicker(DATE_TARGET_WISHLIST_DATE) }
+        btn_detail_start_date.setHapticClickListener { showDatePicker(DATE_TARGET_START_DATE) }
+        btn_detail_end_date.setHapticClickListener { showDatePicker(DATE_TARGET_END_DATE) }
+        btn_add_label.setHapticClickListener(viewModel::requestAddLabels)
+    }
 
-        btn_add_label.setOnClickListener { v ->
+    private fun View.setHapticClickListener(action: () -> Unit) {
+        this.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.requestAddLabels()
+            action()
         }
     }
 
@@ -522,15 +490,15 @@ class BookDetailFragment : BaseFragment(),
             }
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (drawable, v) ->
-                v.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
-            }, { throwable ->
-                throwable.printStackTrace()
-            }, {
-                // In the end start the component animations in onComplete()
-                startComponentAnimations()
-            })
+            // In the end (onComplete) start the component animations in onComplete()
+            .subscribe(::setCompoundDrawable, ExceptionHandlers::defaultExceptionHandler, ::startComponentAnimations)
             .addTo(compositeDisposable)
+    }
+
+    private fun setCompoundDrawable(pair: Pair<Drawable, TextView>) {
+
+        val (drawable, view) = pair
+        view.setCompoundDrawablesWithIntrinsicBounds(null, drawable, null, null)
     }
 
     private fun startComponentAnimations() {
@@ -720,6 +688,8 @@ class BookDetailFragment : BaseFragment(),
     }
 
     companion object {
+
+        const val ACTION_BOOK_CHANGED = "action_book_changed"
 
         // Const callback values for time picker
         private const val DATE_TARGET_PUBLISHED_DATE = 1

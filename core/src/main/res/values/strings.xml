@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.14</string>
+    <string name="app_version" translatable="false">3.15</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -20,12 +20,28 @@
     <string name="mail_feedback">How I would improve Dante</string>
     <string name="pick">Pick</string>
     <string name="another_try">Another try</string>
+    <string name="reset">Reset</string>
 
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>
 
     <string name="reading_behavior">Reading behavior</string>
-    <string name="pages_formatted">%d pages</string>
+    <string name="pages_formatted">%d pages &#8226; %s</string>
+    <string name="books_formatted">%d books &#8226; %s</string>
+    <string name="month">month</string>
+
+    <string name="reading_goal">Reading goal</string>
+    <string name="reading_goal_pages">Pages goal</string>
+    <string name="reading_goal_books">Books goal</string>
+    <string name="set_goal">Set goal</string>
+    <string name="set_pages_goal_header_with_goal">Goal: %d pages / month</string>
+    <string name="set_books_goal_header_with_goal">Goal: %d books / month</string>
+    <string name="set_goal_header_no_goal">Goal not set</string>
+
+    <string name="reading_goal_level_0">Rookie</string>
+    <string name="reading_goal_level_1">Serious reader</string>
+    <string name="reading_goal_level_2">Reading brain</string>
+    <string name="reading_goal_level_3">Book wizard</string>
 
     <string name="edit">Edit</string>
     <string name="menu_main_stats">Statistics</string>
@@ -75,7 +91,7 @@
     <string name="backup_title">Backup</string>
 
     <string name="last_backup">Last backup: %s</string>
-    <string name="backup_books_amount">%d books</string>
+    <string name="books_amount">%d books</string>
     <string name="menu_main_book_storage">Book management</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>
@@ -193,6 +209,7 @@
     <string name="statistics_header_languages">Languages</string>
     <string name="statistics_header_labels">Labels</string>
     <string name="statistics_header_pages_over_time">Pages over time</string>
+    <string name="statistics_header_books_over_time">Books over time</string>
     <string name="statistics_header_favs">Favorites</string>
     <string name="statistics_header_other">Others</string>
 
@@ -395,5 +412,13 @@
     <string name="random_pick_action">Pick random book</string>
     <string name="random_pick_explanation">Can\'t decide which book to read next? We\'ve got you covered. Let us decide for you what you should read next.</string>
     <string name="random_pick_restore_instruction">You can show it again by switching it on in the settings later</string>
+
+    <string name="page_records_details">Page records details</string>
+
+    <string name="ask_for_page_record_deletion_title">Delete page record</string>
+    <string name="ask_for_page_record_deletion_msg">Do you really want to delete this particular page record? It can\'t be recovered later.</string>
+
+    <string name="ask_for_all_page_record_deletion_title">Delete all page records</string>
+    <string name="ask_for_all_page_record_deletion_msg">Deleting all page records means effectively deleting the whole reading history for this book. This will also set the current page to 0. Are you sure you want to proceed?</string>
 
 </resources>

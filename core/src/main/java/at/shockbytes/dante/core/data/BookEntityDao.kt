@@ -24,6 +24,8 @@ interface BookEntityDao {
 
     fun update(entity: BookEntity)
 
+    fun updateCurrentPage(bookId: Long, currentPage: Int)
+
     fun delete(id: Long)
 
     fun search(query: String): Observable<List<BookEntity>>

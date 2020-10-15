@@ -40,7 +40,8 @@ dependencies {
 
     implementation project(':util')
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    api "androidx.preference:preference:$androidXPreferenceVersion"
 
     api "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"

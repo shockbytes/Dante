@@ -4,12 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.stats.BookStatsViewItem
+import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.util.adapter.MultiViewHolderBaseAdapter
 import at.shockbytes.util.adapter.ViewHolderTypeFactory
 
 class StatsAdapter(
     context: Context,
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val onChangeGoalActionListener: (ReadingGoalType) -> Unit
 ) : MultiViewHolderBaseAdapter<BookStatsViewItem>(context) {
 
     fun updateData(items: List<BookStatsViewItem>) {
@@ -20,5 +22,5 @@ class StatsAdapter(
     }
 
     override val vhFactory: ViewHolderTypeFactory<BookStatsViewItem>
-        get() = StatsViewHolderFactory(LayoutInflater.from(context), imageLoader)
+        get() = StatsViewHolderFactory(LayoutInflater.from(context), imageLoader, onChangeGoalActionListener)
 }

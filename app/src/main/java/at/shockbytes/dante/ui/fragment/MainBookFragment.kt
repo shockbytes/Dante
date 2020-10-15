@@ -27,11 +27,11 @@ import at.shockbytes.dante.navigation.Destination.BookDetail.BookDetailInfo
 import at.shockbytes.dante.ui.adapter.main.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.flagging.FeatureFlagging
-import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 import at.shockbytes.dante.ui.adapter.main.RandomPickCallback
+import at.shockbytes.dante.ui.fragment.BookDetailFragment.Companion.ACTION_BOOK_CHANGED
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
@@ -119,7 +119,7 @@ class MainBookFragment : BaseFragment(),
 
     private fun registerBookUpdatedBroadcastReceiver() {
         LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(bookUpdatedReceiver, IntentFilter(ManualAddActivity.ACTION_BOOK_UPDATED))
+            .registerReceiver(bookUpdatedReceiver, IntentFilter(ACTION_BOOK_CHANGED))
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -186,10 +186,9 @@ class MainBookFragment : BaseFragment(),
                                     true
                             )
                         }
-
             }
             BookListViewModel.RandomPickEvent.NoBookAvailable -> {
-                //TODO
+                // TODO
             }
         }
     }

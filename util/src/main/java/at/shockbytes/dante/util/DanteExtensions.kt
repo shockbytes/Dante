@@ -1,7 +1,9 @@
 package at.shockbytes.dante.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
@@ -16,12 +18,21 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ArrayRes
+import androidx.annotation.MenuRes
+import androidx.appcompat.view.menu.MenuBuilder
+import androidx.appcompat.view.menu.MenuPopupHelper
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import io.reactivex.Completable
+import io.reactivex.Scheduler
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Action
+import io.reactivex.schedulers.Schedulers
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -29,7 +40,7 @@ import java.math.RoundingMode
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
-fun CharSequence.colored(@ColorInt color: Int): SpannableString {
+fun CharSequence.colored(@ColorInt color: Int): CharSequence {
     return SpannableString(this).apply {
         setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
@@ -89,6 +100,10 @@ fun Activity.getStringList(@ArrayRes arrayRes: Int): List<String> {
     return resources.getStringArray(arrayRes).toList()
 }
 
+fun Fragment.getStringList(@ArrayRes arrayRes: Int): List<String> {
+    return resources.getStringArray(arrayRes).toList()
+}
+
 fun Activity.retrieveActiveActivityAlias(): String? {
     return this.intent.component?.let { component ->
         packageManager.getActivityInfo(component, PackageManager.GET_META_DATA).name
@@ -129,4 +144,58 @@ inline fun <reified T : ViewModel> Fragment.viewModelOfActivity(activity: Fragme
 
 inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewModelProvider.Factory): T {
     return ViewModelProvider(this.viewModelStore, factory)[T::class.java]
+}
+
+fun <T> singleOf(
+    subscribeOn: Scheduler = Schedulers.computation(),
+    block: () -> T
+): Single<T> {
+    return Single.just(block()).subscribeOn(subscribeOn)
+}
+
+fun completableOf(
+    subscribeOn: Scheduler = Schedulers.computation(),
+    block: () -> Unit
+): Completable {
+    return Completable.fromAction(Action(block)).subscribeOn(subscribeOn)
+}
+
+fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {
+    val value = getInt(key, default)
+    return if (value != default) value else null
+}
+
+fun <T> List<T>.indexOfOrNull(value: T): Int? {
+    return this.indexOf(value)
+        .let { index ->
+            if (index > -1) {
+                index
+            } else {
+                null
+            }
+        }
+}
+
+fun Int.isLastIndexIn(list: List<*>): Boolean {
+    return (this == list.size - 1)
+}
+
+@SuppressLint("RestrictedApi")
+fun Fragment.registerForPopupMenu(
+    anchor: View,
+    @MenuRes menuRes: Int,
+    onMenuItemListener: PopupMenu.OnMenuItemClickListener
+) {
+
+    val popupMenu = PopupMenu(requireContext(), anchor)
+
+    popupMenu.menuInflater.inflate(menuRes, popupMenu.menu)
+    popupMenu.setOnMenuItemClickListener(onMenuItemListener)
+
+    val menuHelper = MenuPopupHelper(requireContext(), popupMenu.menu as MenuBuilder, anchor)
+        .apply {
+            setForceShowIcon(true)
+        }
+
+    anchor.setOnClickListener { menuHelper.show() }
 }

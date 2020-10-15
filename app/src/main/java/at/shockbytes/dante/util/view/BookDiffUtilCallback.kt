@@ -9,8 +9,8 @@ import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
  * Date:    12.06.2018
  */
 class BookDiffUtilCallback(
-        private val oldList: List<BookAdapterEntity>,
-        private val newList: List<BookAdapterEntity>
+    private val oldList: List<BookAdapterEntity>,
+    private val newList: List<BookAdapterEntity>
 ) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

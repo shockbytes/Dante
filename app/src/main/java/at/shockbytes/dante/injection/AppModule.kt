@@ -55,8 +55,8 @@ class AppModule(private val app: Application) {
 
     @Provides
     fun provideDanteSettings(
-            sharedPreferences: SharedPreferences,
-            schedulers: SchedulerFacade
+        sharedPreferences: SharedPreferences,
+        schedulers: SchedulerFacade
     ): DanteSettings {
         return DanteSettings(app.applicationContext, sharedPreferences, schedulers)
     }

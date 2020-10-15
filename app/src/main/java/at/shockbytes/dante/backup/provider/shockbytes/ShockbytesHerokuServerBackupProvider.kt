@@ -1,7 +1,6 @@
 package at.shockbytes.dante.backup.provider.shockbytes
 
 import androidx.fragment.app.FragmentActivity
-import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider

@@ -1,10 +1,13 @@
 package at.shockbytes.dante.stats
 
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 
 sealed class BookStatsViewItem {
 
@@ -20,13 +23,24 @@ sealed class BookStatsViewItem {
         data class Present(val booksAndPages: BooksPagesInfo) : BooksAndPages()
     }
 
-    sealed class PagesOverTime : BookStatsViewItem() {
+    sealed class BooksAndPagesOverTime : BookStatsViewItem() {
 
         override val layoutId: Int = R.layout.item_stats_pages_over_time
 
-        object Empty : PagesOverTime()
+        data class Empty(@StringRes val headerRes: Int) : BooksAndPagesOverTime()
 
-        data class Present(val pagesPerMonths: List<PagesPerMonth>) : PagesOverTime()
+        sealed class Present : BooksAndPagesOverTime() {
+
+            data class Pages(
+                val pagesPerMonths: List<BooksAndPageRecordDataPoint>,
+                val readingGoal: ReadingGoal.PagesPerMonthReadingGoal
+            ) : Present()
+
+            data class Books(
+                val booksPerMonths: List<BooksAndPageRecordDataPoint>,
+                val readingGoal: ReadingGoal.BooksPerMonthReadingGoal
+            ) : Present()
+        }
     }
 
     sealed class ReadingDuration : BookStatsViewItem() {
@@ -70,9 +84,7 @@ sealed class BookStatsViewItem {
 
         object Empty : LabelStats()
 
-        data class Present(
-            val labels: Map<LabelStatsItem, Int>
-        ) : LabelStats()
+        data class Present(val labels: List<LabelStatsItem>) : LabelStats()
     }
 
     sealed class Others : BookStatsViewItem() {

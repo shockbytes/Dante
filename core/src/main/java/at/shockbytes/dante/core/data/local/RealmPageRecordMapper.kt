@@ -16,7 +16,10 @@ class RealmPageRecordMapper : Mapper<RealmPageRecord, PageRecord>() {
     }
 
     override fun mapFrom(data: PageRecord): RealmPageRecord {
+
+        val recordId = "${data.bookId}-${data.timestamp}"
         return RealmPageRecord(
+                recordId = recordId,
                 bookId = data.bookId,
                 fromPage = data.fromPage,
                 toPage = data.toPage,

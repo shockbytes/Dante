@@ -15,6 +15,32 @@
         <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 
+    <style name="Theme.TextAppearance.Title" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:textColor">@color/actionBarItemColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+    <style name="Widget.App.Slider" parent="Widget.MaterialComponents.Slider">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Slider</item>
+        <item name="labelStyle">@style/Widget.App.Tooltip</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Slider" parent="">
+        <item name="colorPrimary">@color/page_record_data</item>
+    </style>
+
+    <style name="Widget.App.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="android:textAppearance">@style/TextAppearance.App.Tooltip</item>
+        <item name="backgroundTint">@color/colorPrimaryInvert</item>
+    </style>
+
+    <style name="TextAppearance.App.Tooltip" parent="TextAppearance.MaterialComponents.Tooltip">
+        <item name="android:textColor">@color/colorPrimaryTextLight</item>
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:fontFamily">@font/montserrat</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -64,7 +90,7 @@
         <item name="hintTextColor">@color/colorAccent</item>
     </style>
 
-    <style name="TextInputStyle" >
+    <style name="TextInputStyle">
         <item name="android:textCursorDrawable">@null</item>
     </style>
 

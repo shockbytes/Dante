@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
@@ -38,16 +39,16 @@ class BookStatsLabelsViewHolder(
         chart_item_stats_labels.setVisible(false)
     }
 
-    private fun showLabelsCharts(labels: Map<LabelStatsItem, Int>) {
+    private fun showLabelsCharts(labels: List<LabelStatsItem>) {
         item_stats_labels_empty.setVisible(false)
         chart_item_stats_labels.setVisible(true)
 
-        val entries = labels.values.mapIndexed { index, count ->
-            BarEntry(index.toFloat(), count.toFloat())
+        val entries = labels.mapIndexed { index, item ->
+            BarEntry(index.toFloat(), item.size.toFloat())
         }
 
         val barDataSet = BarDataSet(entries, "").apply {
-            setColors(*labels.map { it.key.color }.toIntArray())
+            setColors(*labels.map { it.color }.toIntArray())
             setDrawValues(false)
             setDrawIcons(false)
         }
@@ -69,20 +70,24 @@ class BookStatsLabelsViewHolder(
                 setDrawGridLines(false)
                 setDrawAxisLine(false)
                 setDrawGridBackground(false)
+                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
                 textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
-                valueFormatter = IndexAxisValueFormatter(labels.map { it.key.title })
+                valueFormatter = IndexAxisValueFormatter(labels.map { it.title })
             }
 
             getAxis(YAxis.AxisDependency.LEFT).apply {
                 isEnabled = false
+                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
                 setDrawAxisLine(false)
                 setDrawGridLines(false)
                 setDrawZeroLine(false)
                 setDrawAxisLine(false)
             }
+
             getAxis(YAxis.AxisDependency.RIGHT).apply {
                 isEnabled = true
                 setDrawAxisLine(false)
+                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
                 textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
             }
 

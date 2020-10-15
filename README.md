@@ -31,31 +31,54 @@ Download the client secret file from the Google Cloud Console.
 This file is necessary in order to retrieve the JWT request token of 
 the user during the login process.
 
-## Versions
+## Backlog
+The backlog is currently empty.
 
-### Backlog
-Empty...
+## Outlook & planned features
 
-### Version 4.2
-- [ ] Wishlist for books that are not purchased yet
+### Versions 5.x
+- [ ] Use Firebase Data for book suggestions
+- [ ] Let users suggest favorite books to others
+- [ ] Improved search database (Google Books API) lookup query
+- [ ] Shockbytes Backup
+- [ ] Simplify book management
+    - [ ] Remove local backup
+    - [ ] Add online Shockbytes backup as only way to backup data
+    - [ ] Move Goodreads CSV import from BETA to RELEASE state
+    - [ ] Switch between online and offline storage (user has full control over the data)
+- [ ] Add web client support
+- [ ] Paged request when user clicks on "not my book" in book download view
 
 ### Version 4.1
-- [ ] Use Firebase Data for book suggestions
+- [ ] Wishlist for books that are not purchased yet
 
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add online sync capability
   - [ ] Migrate from local to remote storage
+- [ ] Login with Firebase
+
+## Current development
 
 ### Version 3.16
-- [ ] Login with Firebase
-- [ ] Add Onboarding + Login
-
-### Version 3.15
-- [ ] Statistics pages over time / month + Goal per month
-- [ ] Reset page statistics per book
-- [ ] Hide page statistics in details page
 - [ ] Send csv export via Mail
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
+- [ ] Add Onboarding + optional Login
+- [ ] Experimental remote storage Firestore implementation (for test account)
+- [ ] Fix bug with local book covers
+    - [ ] In MultiBareBoneBookView (not showing up)
+    - [ ] In the label overview (too big)
+
+## Changelog
+
+### Version 3.15
+* Statistics pages/books over time / month + Goal per month
+    * Fix issue where MarkerView draws out of ChartView bounds
+    * Change toolbar behavior in Statistics screen
+    * Make books per month zoomable
+    * Fix problems when setting books per month reading goal offset
+    * Fix issues with pages per month reading goal update
+* Reset page statistics per book
+* Hide page statistics in details page
 
 ### Version 3.14 - SUMMER CLEANUP
 * Move sort into settings

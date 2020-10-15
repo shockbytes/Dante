@@ -1,34 +1,40 @@
 package at.shockbytes.dante.stats
 
 import android.graphics.Color
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.bareBone
-import at.shockbytes.dante.core.book.*
-import at.shockbytes.dante.flagging.FeatureFlag
-import at.shockbytes.dante.flagging.FeatureFlagging
+import at.shockbytes.dante.core.book.BareBoneBook
+import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.core.book.PageRecord
+import at.shockbytes.dante.core.book.ReadingGoal
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
+import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.util.AppUtils
 import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.joda.time.Months
+import org.joda.time.format.DateTimeFormat
 
-class BookStatsBuilder(private val featureFlagging: FeatureFlagging) {
+object BookStatsBuilder {
 
-    fun createFrom(
-            books: List<BookEntity>,
-            pageRecords: List<PageRecord>
+    fun build(
+        books: List<BookEntity>,
+        pageRecords: List<PageRecord>,
+        pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal,
+        booksPerMonthGoal: ReadingGoal.BooksPerMonthReadingGoal
     ): List<BookStatsViewItem> {
         return mutableListOf(
             createBooksAndPagesItem(books),
+            createPagesOverTimeItem(pageRecords, pagesPerMonthGoal),
+            createBooksOverTimeItem(books, booksPerMonthGoal),
             createReadingDurationItem(books),
             createFavoriteItem(books),
             createLanguageItem(books),
             createLabelItem(books),
             createOthersItem(books)
-        ).apply {
-            if (featureFlagging[FeatureFlag.PAGE_RECORD_STATISTICS]) {
-                this.add(1, createPagesOverTimeItem(pageRecords))
-            }
-        }
+        )
     }
 
     private fun createBooksAndPagesItem(books: List<BookEntity>): BookStatsViewItem {
@@ -63,11 +69,65 @@ class BookStatsBuilder(private val featureFlagging: FeatureFlagging) {
         )
     }
 
-    private fun createPagesOverTimeItem(pageRecords: List<PageRecord>): BookStatsViewItem {
-        // TODO Implement this method later...
-        return BookStatsViewItem.PagesOverTime.Empty
+    private fun createPagesOverTimeItem(
+        pageRecords: List<PageRecord>,
+        pagesPerMonthGoal: ReadingGoal.PagesPerMonthReadingGoal
+    ): BookStatsViewItem.BooksAndPagesOverTime {
+
+        if (pageRecords.isEmpty()) {
+            return BookStatsViewItem.BooksAndPagesOverTime.Empty(R.string.statistics_header_pages_over_time)
+        }
+        val format = DateTimeFormat.forPattern("MMM yy")
+
+        return pageRecords
+            .groupBy { record ->
+                val dt = record.dateTime
+                MonthYear(dt.monthOfYear, dt.year)
+            }
+            .toSortedMap()
+            .map { (monthYear, records) ->
+
+                val pages = records
+                    .sumBy { it.diffPages }
+                    // There can be negative values, hard bounce them at 0
+                    // Example: User logs 100 pages in July but deletes 20 pages in August
+                    // which leads to a value of -20. This should not happen!
+                    .coerceAtLeast(0)
+
+                BooksAndPageRecordDataPoint(pages, formattedDate = format.print(monthYear.dateTime))
+            }
+            .let { pageRecordDataPoints ->
+                BookStatsViewItem.BooksAndPagesOverTime.Present.Pages(pageRecordDataPoints, pagesPerMonthGoal)
+            }
     }
 
+    private fun createBooksOverTimeItem(
+        books: List<BookEntity>,
+        booksPerMonthGoal: ReadingGoal.BooksPerMonthReadingGoal
+    ): BookStatsViewItem.BooksAndPagesOverTime {
+
+        if (books.isEmpty()) {
+            return BookStatsViewItem.BooksAndPagesOverTime.Empty(R.string.statistics_header_books_over_time)
+        }
+        val format = DateTimeFormat.forPattern("MMM yy")
+
+        return books
+            .filter { it.state == BookState.READ }
+            .groupBy { book ->
+                val dt = DateTime(book.endDate)
+                MonthYear(dt.monthOfYear, dt.year)
+            }
+            .toSortedMap()
+            .map { (monthYear, booksPerMonth) ->
+                BooksAndPageRecordDataPoint(
+                    value = booksPerMonth.count(),
+                    formattedDate = format.print(monthYear.dateTime)
+                )
+            }
+            .let { pageRecordDataPoints ->
+                BookStatsViewItem.BooksAndPagesOverTime.Present.Books(pageRecordDataPoints, booksPerMonthGoal)
+            }
+    }
 
     private fun createReadingDurationItem(books: List<BookEntity>): BookStatsViewItem {
 
@@ -108,7 +168,6 @@ class BookStatsBuilder(private val featureFlagging: FeatureFlagging) {
 
     private fun favoriteAuthor(books: List<BookEntity>): FavoriteAuthor? {
         return books
-            .asSequence()
             .groupBy { book ->
                 book.author
             }
@@ -150,8 +209,13 @@ class BookStatsBuilder(private val featureFlagging: FeatureFlagging) {
         val labels = books.asSequence()
             .map { it.labels }
             .flatten()
-            .groupBy { LabelStatsItem(it.title, Color.parseColor(it.hexColor)) }
+            .groupBy { Pair(it.title, it.hexColor) }
             .mapValues { it.value.size }
+            .map { (labelPair, size) ->
+                val (title, hexColor) = labelPair
+                LabelStatsItem(title, Color.parseColor(hexColor), size)
+            }
+            .sortedBy { it.size }
 
         return if (labels.isEmpty()) {
             BookStatsViewItem.LabelStats.Empty

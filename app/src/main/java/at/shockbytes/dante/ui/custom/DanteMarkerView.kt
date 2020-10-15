@@ -3,7 +3,7 @@ package at.shockbytes.dante.ui.custom
 import android.content.Context
 import android.view.View
 import at.shockbytes.dante.R
-import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
+import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.dante_marker_view.*
 class DanteMarkerView(
     context: Context,
     chartView: Chart<*>,
-    private val options: MarkerViewOptions
+    private val labelFactory: MarkerViewLabelFactory
 ) : MarkerView(context, R.layout.dante_marker_view), LayoutContainer {
 
     init {
@@ -30,9 +30,7 @@ class DanteMarkerView(
 
             val dateIdx = entry.x.toInt().dec()
             if (dateIdx >= 0) {
-                val date = options.formattedDates[dateIdx]
-                val content = entry.y.toInt()
-                tv_dante_marker_view.text = context.getString(options.markerTemplateResource, content, date)
+                tv_dante_marker_view.text = labelFactory.createLabelForIndex(context, dateIdx)
             }
         }
         super.refreshContent(e, highlight)

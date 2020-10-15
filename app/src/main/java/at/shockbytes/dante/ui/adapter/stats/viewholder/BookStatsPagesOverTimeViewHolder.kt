@@ -9,7 +9,7 @@ import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramOptions
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramView
-import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
+import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -63,7 +63,7 @@ class BookStatsPagesOverTimeViewHolder(
             setData(
                 dataPoints,
                 diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
-                options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
+                labelFactory = MarkerViewLabelFactory.ofBooksAndPageRecordDataPoints(dataPoints, R.string.pages_formatted)
             )
             readingGoal(pagesPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.PAGES)
         }
@@ -90,7 +90,7 @@ class BookStatsPagesOverTimeViewHolder(
             setData(
                 dataPoints,
                 diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
-                options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.books_formatted)
+                labelFactory = MarkerViewLabelFactory.ofBooksAndPageRecordDataPoints(dataPoints, R.string.books_formatted)
             )
             readingGoal(booksPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.BOOKS)
         }

@@ -56,13 +56,13 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
     fun setData(
         dataPoints: List<BooksAndPageRecordDataPoint>,
         diagramOptions: BooksAndPagesDiagramOptions = BooksAndPagesDiagramOptions(),
-        options: MarkerViewOptions
+        labelFactory: MarkerViewLabelFactory
     ) {
 
         val formattedDates = dataPoints.map { it.formattedDate }
         val dataSet = createDataSet(createDataSetEntries(dataPoints, diagramOptions.initialZero))
 
-        styleChartAndSetData(dataSet, options, formattedDates, diagramOptions.isZoomable)
+        styleChartAndSetData(dataSet, labelFactory, formattedDates, diagramOptions.isZoomable)
     }
 
     private fun createDataSetEntries(
@@ -97,7 +97,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
 
     private fun styleChartAndSetData(
         dataSet: LineDataSet,
-        markerViewOptions: MarkerViewOptions,
+        markerViewLabelFactory: MarkerViewLabelFactory,
         formattedDates: List<String>,
         isZoomable: Boolean
     ) {
@@ -144,7 +144,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
             }
 
             setDrawMarkers(true)
-            marker = DanteMarkerView(context, chart, markerViewOptions)
+            marker = DanteMarkerView(context, chart, markerViewLabelFactory)
 
             data = LineData(dataSet)
             invalidate()

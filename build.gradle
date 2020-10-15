@@ -47,14 +47,14 @@ ext {
     rxAndroidVersion = "2.1.1"
     rxBindingsVersion = "2.2.0"
 
-    firebaseVersionCore = "17.4.4"
+    firebaseVersionCore = "17.5.1"
     firebaseVersionConfig = "19.2.0"
-    firebaseVersionAuth = "19.3.2"
+    firebaseVersionAuth = "19.4.0"
     firebaseMLVision = "24.1.0"
     firebaseAnalyticsVersion = "17.6.0"
-    firebaseCrashlyticsVersion = "17.1.1"
+    firebaseCrashlyticsVersion = "17.2.2"
 
-    playServicesVersionVision = "17.0.2"
+    playServicesVersionVision = "20.1.2"
     playServicesVersionDrive = "17.0.0"
     playServicesVersionAuth = "18.1.0"
 

@@ -2,9 +2,12 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.stats.BookStatsViewItem
+import at.shockbytes.dante.ui.custom.DanteMarkerView
+import at.shockbytes.dante.ui.custom.bookspages.MarkerViewOptions
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import com.github.mikephil.charting.components.Legend
@@ -44,7 +47,7 @@ class BookStatsLanguageViewHolder(
 
         val entries = languages.map { (language, books) ->
             val title = containerView.context.getString(language.title)
-            val iconDrawable = containerView.context.getDrawable(language.image)
+            val iconDrawable = ContextCompat.getDrawable(containerView.context, language.image)
             PieEntry(books.toFloat(), title, iconDrawable)
         }
 
@@ -62,8 +65,8 @@ class BookStatsLanguageViewHolder(
             description.isEnabled = false
             setUsePercentValues(true)
             setDrawEntryLabels(false)
-            setTouchEnabled(false)
-            isRotationEnabled = false
+            setTouchEnabled(true)
+            isRotationEnabled = true
 
             legend.apply {
                 isWordWrapEnabled = true
@@ -75,10 +78,14 @@ class BookStatsLanguageViewHolder(
                 textColor = ContextCompat.getColor(context, R.color.colorSecondaryText)
                 form = Legend.LegendForm.CIRCLE
                 textSize = 13f
+                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
                 orientation = Legend.LegendOrientation.HORIZONTAL
                 isWordWrapEnabled = true
                 setDrawInside(false)
             }
+
+            setDrawMarkers(true)
+            marker = DanteMarkerView(context, chart_item_stats_language, MarkerViewOptions.ofEntries(entries, R.string.books_formatted))
 
             data = PieData(pieDataSet)
             animateXY(400, 400)

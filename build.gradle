@@ -50,7 +50,7 @@ ext {
     firebaseVersionCore = "17.4.4"
     firebaseVersionConfig = "19.2.0"
     firebaseVersionAuth = "19.3.2"
-    firebaseMLVision = "24.0.3"
+    firebaseMLVision = "24.1.0"
     firebaseAnalyticsVersion = "17.6.0"
     firebaseCrashlyticsVersion = "17.1.1"
 
@@ -58,9 +58,9 @@ ext {
     playServicesVersionDrive = "17.0.0"
     playServicesVersionAuth = "18.1.0"
 
-    daggerVersion = "2.26"
+    daggerVersion = "2.27"
     retrofitVersion = "2.9.0"
-    okHttpVersion = "3.14.9"
+    okHttpVersion = "4.9.0"
     leakCanaryVersion = "2.2"
     shockUtilVersion = "6.1.2"
     crashlyticsVersion = "2.10.1"
@@ -68,8 +68,8 @@ ext {
     lottieVersion = "3.0.1"
     rxImagePickerVersion = "2.2.0"
     rxKotlinVersion = "2.3.0"
-    cameraXVersion = "1.0.0-beta03"
-    cameraXExtensionVersion = "1.0.0-alpha10"
+    cameraXVersion = "1.0.0-beta11"
+    cameraXExtensionVersion = "1.0.0-alpha18"
 
     jodaTimeVersion = "2.10.3"
     timberVersion = "4.7.1"

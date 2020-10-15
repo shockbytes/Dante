@@ -7,6 +7,7 @@ import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.dante_marker_view.*
@@ -27,12 +28,23 @@ class DanteMarkerView(
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
 
         e?.let { entry ->
-
-            val dateIdx = entry.x.toInt().dec()
-            if (dateIdx >= 0) {
-                tv_dante_marker_view.text = labelFactory.createLabelForIndex(context, dateIdx)
+            when (entry) {
+                is PieEntry -> handlePieEntry(entry)
+                else -> handleGenericEntry(entry)
             }
         }
+
         super.refreshContent(e, highlight)
+    }
+
+    private fun handlePieEntry(entry: PieEntry) {
+        tv_dante_marker_view.text = labelFactory.createLabelForValue(context, entry.value)
+    }
+
+    private fun handleGenericEntry(entry: Entry) {
+        val idx = entry.x.toInt().dec()
+        if (idx >= 0) {
+            tv_dante_marker_view.text = labelFactory.createLabelForIndex(context, idx)
+        }
     }
 }

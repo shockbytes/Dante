@@ -6,6 +6,8 @@ import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.stats.BookStatsViewItem
+import at.shockbytes.dante.ui.custom.DanteMarkerView
+import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import com.github.mikephil.charting.components.Legend
@@ -63,7 +65,6 @@ class BookStatsLanguageViewHolder(
             description.isEnabled = false
             setUsePercentValues(true)
             setDrawEntryLabels(false)
-            setTouchEnabled(false)
             isRotationEnabled = true
 
             legend.apply {
@@ -82,9 +83,13 @@ class BookStatsLanguageViewHolder(
                 setDrawInside(false)
             }
 
-            // TODO Fix the DanteMarkerView implementation
-            // setDrawMarkers(true)
-            // marker = DanteMarkerView(context, chart_item_stats_language, MarkerViewOptions.ofEntries(entries, R.string.books_amount))
+            setTouchEnabled(true)
+            setDrawMarkers(true)
+            marker = DanteMarkerView(
+                context,
+                chart_item_stats_language,
+                MarkerViewLabelFactory.forPlainEntries(R.string.books_amount)
+            )
 
             data = PieData(pieDataSet)
             animateXY(400, 400)

@@ -62,19 +62,19 @@ The backlog is currently empty.
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 - [ ] Add Onboarding + optional Login
 - [ ] Experimental remote storage Firestore implementation (for test account)
+- [ ] Fix bug with local book covers
+    - [ ] In MultiBareBoneBookView (not showing up)
+    - [ ] In the label overview (too big)
 
 ## Current development
 
 ### Version 3.15
-- [ ] Statistics pages/books over time / month + Goal per month
+- [x] Statistics pages/books over time / month + Goal per month
     - [x] Fix issue where MarkerView draws out of ChartView bounds
     - [x] Change toolbar behavior in Statistics screen
     - [x] Make books per month zoomable
-    - [ ] Fix problems when setting books per month reading goal offset
-    - [ ] Fix issues with pages per month reading goal update
-- [ ] Fix bug with local book covers
-    - [ ] In MultiBareBoneBookView (not showing up)
-    - [ ] In the label overview (too big)
+    - [x] Fix problems when setting books per month reading goal offset
+    - [x] Fix issues with pages per month reading goal update
 - [x] Reset page statistics per book
 - [x] Hide page statistics in details page
 

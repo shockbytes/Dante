@@ -60,12 +60,12 @@ class BookStatsPagesOverTimeViewHolder(
             registerOnActionClick {
                 onChangeGoalActionListener(ReadingGoalType.PAGES)
             }
-            readingGoal(pagesPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.PAGES)
             setData(
                 dataPoints,
                 diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
                 options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.pages_formatted)
             )
+            readingGoal(pagesPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.PAGES)
         }
     }
 
@@ -87,12 +87,12 @@ class BookStatsPagesOverTimeViewHolder(
             registerOnActionClick {
                 onChangeGoalActionListener(ReadingGoalType.BOOKS)
             }
-            readingGoal(booksPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.BOOKS)
             setData(
                 dataPoints,
                 diagramOptions = BooksAndPagesDiagramOptions(isZoomable = true),
                 options = MarkerViewOptions.ofDataPoints(dataPoints, R.string.books_formatted)
             )
+            readingGoal(booksPerMonthGoal, BooksAndPagesDiagramView.LimitLineOffsetType.BOOKS)
         }
     }
 }

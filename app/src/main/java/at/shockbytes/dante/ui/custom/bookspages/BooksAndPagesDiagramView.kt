@@ -184,7 +184,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
         // Anyway, remove all limit lines
         chart.getAxis(YAxis.AxisDependency.LEFT).apply {
             removeAllLimitLines()
-            setDrawGridLines(false)
+            // setDrawGridLines(false)
         }
 
         if (value != null) {
@@ -237,7 +237,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
 
     private fun addLimitLineToChart(limitLine: LimitLine) {
         chart.getAxis(YAxis.AxisDependency.LEFT).apply {
-            setDrawGridLines(true)
+            // setDrawGridLines(true)
             addLimitLine(limitLine)
         }
         invalidate()

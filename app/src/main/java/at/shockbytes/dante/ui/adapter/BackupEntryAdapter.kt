@@ -53,7 +53,7 @@ class BackupEntryAdapter(
                 item_backup_entry_imgview_provider.setImageResource(storageProvider.icon)
 
                 item_backup_entry_txt_time.text = DanteUtils.formatTimestamp(timestamp)
-                item_backup_entry_txt_books.text = context.getString(R.string.backup_books_amount, books)
+                item_backup_entry_txt_books.text = context.getString(R.string.books_amount, books)
                 item_backup_entry_txt_device.text = device
 
                 if (content is BackupMetadataState.Active) {

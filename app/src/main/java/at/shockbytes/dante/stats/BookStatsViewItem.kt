@@ -84,9 +84,7 @@ sealed class BookStatsViewItem {
 
         object Empty : LabelStats()
 
-        data class Present(
-            val labels: Map<LabelStatsItem, Int>
-        ) : LabelStats()
+        data class Present(val labels: List<LabelStatsItem>) : LabelStats()
     }
 
     sealed class Others : BookStatsViewItem() {

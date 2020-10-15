@@ -209,8 +209,13 @@ object BookStatsBuilder {
         val labels = books.asSequence()
             .map { it.labels }
             .flatten()
-            .groupBy { LabelStatsItem(it.title, Color.parseColor(it.hexColor)) }
+            .groupBy { Pair(it.title, it.hexColor) }
             .mapValues { it.value.size }
+            .map { (labelPair, size) ->
+                val (title, hexColor) = labelPair
+                LabelStatsItem(title, Color.parseColor(hexColor), size)
+            }
+            .sortedBy { it.size }
 
         return if (labels.isEmpty()) {
             BookStatsViewItem.LabelStats.Empty

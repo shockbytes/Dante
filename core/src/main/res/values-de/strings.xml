@@ -28,7 +28,7 @@
     <string name="last_backup">Letzte Sicherung: %s</string>
     <string name="restore">Wiederherstellen (%d)</string>
     <string name="backup_now">Jetzt sichern</string>
-    <string name="backup_books_amount">%d Bücher</string>
+    <string name="books_amount">%d Bücher</string>
     <string name="backup">Backup</string>
     <string name="menu_main_timeline">Timeline</string>
     <string name="backup_strategy_merge">Zusammenfügen</string>

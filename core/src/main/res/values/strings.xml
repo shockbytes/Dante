@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.15-RC01-161020</string>
+    <string name="app_version" translatable="false">3.15</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -91,7 +91,7 @@
     <string name="backup_title">Backup</string>
 
     <string name="last_backup">Last backup: %s</string>
-    <string name="backup_books_amount">%d books</string>
+    <string name="books_amount">%d books</string>
     <string name="menu_main_book_storage">Book management</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>

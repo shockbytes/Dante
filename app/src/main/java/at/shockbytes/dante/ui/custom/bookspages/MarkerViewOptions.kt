@@ -18,10 +18,10 @@ class MarkerViewOptions private constructor(
         }
 
         fun ofEntries(
-            entries: List<Entry>,
+            values: List<String>,
             markerTemplateResource: Int
         ): MarkerViewOptions {
-            return MarkerViewOptions(markerTemplateResource, entries.map { it.x.toString() })
+            return MarkerViewOptions(markerTemplateResource, values)
         }
     }
 }

@@ -4,6 +4,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -17,7 +18,7 @@ interface BookRepository {
 
     val localBooksCount: Single<Int>
 
-    fun get(id: Long): BookEntity?
+    operator fun get(id: Long): Maybe<BookEntity>
 
     fun create(entity: BookEntity)
 

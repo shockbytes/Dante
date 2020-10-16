@@ -4,6 +4,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
 
@@ -37,8 +38,8 @@ class DefaultBookRepository(
             .first(listOf())
             .map { it.count() }
 
-    override fun get(id: Long): BookEntity? {
-        return selectedBookDao.get(id)
+    override operator fun get(id: Long): Maybe<BookEntity> {
+        return selectedBookDao[id]
     }
 
     override fun create(entity: BookEntity) {

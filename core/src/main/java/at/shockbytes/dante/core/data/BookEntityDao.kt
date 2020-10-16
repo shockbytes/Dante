@@ -20,7 +20,7 @@ interface BookEntityDao {
 
     val booksCurrentlyReading: List<BookEntity>
 
-    fun get(id: Long): Maybe<BookEntity>?
+    operator fun get(id: Long): Maybe<BookEntity>
 
     fun create(entity: BookEntity): Single<BookEntity>
 

@@ -94,12 +94,13 @@ class BookDetailViewModel @Inject constructor(
     }
 
     private fun fetchBook(bookId: Long) {
-        bookRepository.get(bookId)
-            ?.also { entity ->
+        bookRepository[bookId]
+            .doOnSuccess { entity ->
                 pagesAtInit = entity.currentPage
             }
-            ?.let(::craftViewState)
-            ?.let(viewState::postValue)
+            .map(::craftViewState)
+            .subscribe(viewState::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     private fun fetchPageRecords(bookId: Long) {

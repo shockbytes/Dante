@@ -8,7 +8,9 @@ import at.shockbytes.dante.core.book.realm.RealmBookLabel
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.RestoreStrategy
+import at.shockbytes.dante.util.maybeOf
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.realm.Case
 import io.realm.Sort
@@ -62,11 +64,10 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .findAll()
             .map { mapper.mapTo(it) }
 
-    override fun get(id: Long): BookEntity? {
-        val book = realm.instance.where(bookClass).equalTo("id", id).findFirst()
-        return if (book != null) {
-            mapper.mapTo(book)
-        } else null
+    override operator fun get(id: Long): Maybe<BookEntity> {
+        return maybeOf {
+            realm.instance.where(bookClass).equalTo("id", id).findFirst()
+        }.map(mapper::mapTo)
     }
 
     override fun create(entity: BookEntity) {

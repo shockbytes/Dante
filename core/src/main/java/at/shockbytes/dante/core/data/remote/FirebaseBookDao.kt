@@ -18,7 +18,7 @@ class FirebaseBookDao : BookEntityDao {
     override val booksCurrentlyReading: List<BookEntity>
         get() = TODO("Not yet implemented")
 
-    override fun get(id: Long): Maybe<BookEntity>? {
+    override fun get(id: Long): Maybe<BookEntity> {
         TODO("Not yet implemented")
     }
 

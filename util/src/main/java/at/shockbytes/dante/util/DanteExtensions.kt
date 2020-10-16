@@ -29,6 +29,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -166,6 +167,21 @@ fun completableOf(
     block: () -> Unit
 ): Completable {
     return Completable.fromAction(Action(block)).subscribeOn(subscribeOn)
+}
+
+fun <T> maybeOf(
+    subscribeOn: Scheduler = Schedulers.computation(),
+    block: () -> T?
+): Maybe<T> {
+    return Maybe
+        .create<T> { emitter ->
+            val value = block()
+            if (value != null) {
+                emitter.onSuccess(value)
+            }
+            emitter.onComplete()
+        }
+        .subscribeOn(subscribeOn)
 }
 
 fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {

@@ -20,13 +20,13 @@ interface BookRepository {
 
     operator fun get(id: Long): Maybe<BookEntity>
 
-    fun create(entity: BookEntity)
+    fun create(entity: BookEntity): Completable
 
-    fun update(entity: BookEntity)
+    fun update(entity: BookEntity): Completable
 
     fun updateCurrentPage(bookId: Long, currentPage: Int)
 
-    fun delete(id: Long)
+    fun delete(id: Long): Completable
 
     fun search(query: String): Observable<List<BookEntity>>
 

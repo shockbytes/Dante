@@ -42,8 +42,8 @@ class DefaultBookRepository(
         return selectedBookDao[id]
     }
 
-    override fun create(entity: BookEntity) {
-        selectedBookDao.create(entity)
+    override fun create(entity: BookEntity): Completable {
+        return selectedBookDao.create(entity)
     }
 
     override fun update(entity: BookEntity) {

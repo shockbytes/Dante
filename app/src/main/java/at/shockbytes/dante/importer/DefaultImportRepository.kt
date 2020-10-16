@@ -41,14 +41,11 @@ class DefaultImportRepository(
     }
 
     override fun import(): Completable {
-        return Completable.create { emitter ->
-
-            if (parsedBooks != null) {
-                parsedBooks?.forEach(bookRepository::create)
-                emitter.onComplete()
-            } else {
-                emitter.onError(IllegalStateException("No books parsed!"))
-            }
+        return if (parsedBooks != null) {
+            val sources = parsedBooks!!.map(bookRepository::create)
+            Completable.merge(sources)
+        } else {
+            Completable.error(IllegalStateException("No books parsed!"))
         }
     }
 

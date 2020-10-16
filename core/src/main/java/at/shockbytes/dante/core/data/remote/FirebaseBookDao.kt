@@ -22,11 +22,11 @@ class FirebaseBookDao : BookEntityDao {
         TODO("Not yet implemented")
     }
 
-    override fun create(entity: BookEntity): Single<BookEntity> {
+    override fun create(entity: BookEntity): Completable {
         TODO("Not yet implemented")
     }
 
-    override fun update(entity: BookEntity): Single<BookEntity> {
+    override fun update(entity: BookEntity): Completable {
         TODO("Not yet implemented")
     }
 

@@ -60,12 +60,15 @@ class BarcodeResultViewModel(
     }
 
     fun storeBook(bookEntity: BookEntity, state: BookState) {
-        bookRepository.create(
-            bookEntity.apply {
-                updateState(state)
-            }
-        )
-        bookStoredSubject.onNext(bookEntity.title)
+        bookRepository
+            .create(bookEntity.apply { updateState(state) })
+            .subscribe({
+                bookStoredSubject.onNext(bookEntity.title)
+            }, { throwable ->
+                Timber.e(throwable)
+                // TODO REACTIVE Inform user that something went wrong!
+            })
+            .addTo(compositeDisposable)
     }
 
     fun setSelectedBook(bookSuggestion: BookSuggestion, selectedBook: BookEntity) {

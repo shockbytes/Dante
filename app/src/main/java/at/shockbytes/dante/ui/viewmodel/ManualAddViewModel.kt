@@ -110,6 +110,7 @@ class ManualAddViewModel @Inject constructor(
         )
 
         if (entity != null) {
+            // TODO REACTIVE Subscribe to this
             bookRepository.create(entity)
             addEvent.onNext(AddEvent.Success)
         } else {

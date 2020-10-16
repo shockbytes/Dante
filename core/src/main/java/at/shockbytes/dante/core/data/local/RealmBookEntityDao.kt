@@ -8,10 +8,13 @@ import at.shockbytes.dante.core.book.realm.RealmBookLabel
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.RestoreStrategy
+import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.maybeOf
+import at.shockbytes.dante.util.singleOf
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.realm.Case
 import io.realm.Sort
 import timber.log.Timber
@@ -70,15 +73,17 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }.map(mapper::mapTo)
     }
 
-    override fun create(entity: BookEntity) {
-        realm.instance.executeTransaction { realm ->
-            val id = lastId
-            entity.id = id
-            realm.copyToRealm(mapper.mapFrom(entity))
+    override fun create(entity: BookEntity): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                val id = lastId
+                entity.id = id
+                realm.copyToRealm(mapper.mapFrom(entity))
+            }
         }
     }
 
-    override fun update(entity: BookEntity) {
+    override fun update(entity: BookEntity): Completable {
         realm.instance.executeTransaction { realm ->
             realm.copyToRealmOrUpdate(mapper.mapFrom(entity))
         }

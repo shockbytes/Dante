@@ -4,7 +4,9 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 
 /**
  * Author:  Martin Macheiner
@@ -18,15 +20,15 @@ interface BookEntityDao {
 
     val booksCurrentlyReading: List<BookEntity>
 
-    fun get(id: Long): BookEntity?
+    fun get(id: Long): Maybe<BookEntity>?
 
-    fun create(entity: BookEntity)
+    fun create(entity: BookEntity): Single<BookEntity>
 
-    fun update(entity: BookEntity)
+    fun update(entity: BookEntity): Single<BookEntity>
 
-    fun updateCurrentPage(bookId: Long, currentPage: Int)
+    fun updateCurrentPage(bookId: Long, currentPage: Int): Completable
 
-    fun delete(id: Long)
+    fun delete(id: Long): Completable
 
     fun search(query: String): Observable<List<BookEntity>>
 
@@ -35,7 +37,7 @@ interface BookEntityDao {
         strategy: RestoreStrategy
     ): Completable
 
-    fun createBookLabel(bookLabel: BookLabel)
+    fun createBookLabel(bookLabel: BookLabel): Completable
 
-    fun deleteBookLabel(bookLabel: BookLabel)
+    fun deleteBookLabel(bookLabel: BookLabel): Completable
 }

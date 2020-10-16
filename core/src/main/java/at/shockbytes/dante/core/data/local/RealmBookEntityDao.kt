@@ -84,8 +84,10 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     }
 
     override fun update(entity: BookEntity): Completable {
-        realm.instance.executeTransaction { realm ->
-            realm.copyToRealmOrUpdate(mapper.mapFrom(entity))
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.copyToRealmOrUpdate(mapper.mapFrom(entity))
+            }
         }
     }
 

@@ -42,12 +42,14 @@ class DefaultBookRepository(
         return selectedBookDao[id]
     }
 
+    // TODO REACTIVE Make one caller reactive too
     override fun create(entity: BookEntity): Completable {
         return selectedBookDao.create(entity)
     }
 
-    override fun update(entity: BookEntity) {
-        selectedBookDao.update(entity)
+    // TODO REACTIVE Make these calls reactive too!
+    override fun update(entity: BookEntity): Completable {
+        return selectedBookDao.update(entity)
     }
 
     override fun updateCurrentPage(bookId: Long, currentPage: Int) {

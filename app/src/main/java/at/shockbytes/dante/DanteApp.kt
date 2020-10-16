@@ -37,7 +37,13 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
 
     private val coreComponent: CoreComponent by lazy {
         DaggerCoreComponent.builder()
-            .coreModule(CoreModule(this))
+            .coreModule(
+                CoreModule(
+                    app = this,
+                    // TODO Set to false once DAO is reactive
+                    config = CoreModule.CoreModuleConfig(allowRealmExecutionOnUiThread = true)
+                )
+            )
             .networkModule(NetworkModule())
             .build()
     }
@@ -114,15 +120,15 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
     private fun setStrictMode() {
         if (BuildConfig.DEBUG) {
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
-                    .detectAll()
-                    .penaltyLog()
-                    .build())
+                .detectAll()
+                .penaltyLog()
+                .build())
 
             StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .penaltyLog()
-                    .penaltyDeath()
-                    .build())
+                .detectLeakedSqlLiteObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build())
         }
     }
 }

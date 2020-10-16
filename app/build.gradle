@@ -75,19 +75,19 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.legacy:legacy-support-v4:${rootProject.androidXVersion}"
-    implementation "androidx.palette:palette:${rootProject.androidXVersion}"
+    implementation "androidx.palette:palette-ktx:${rootProject.androidXVersion}"
     implementation "androidx.cardview:cardview:${rootProject.androidXVersion}"
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
-    implementation "androidx.core:core:$androidXCoreVersion"
+    implementation "androidx.core:core-ktx:$androidXCoreVersion"
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-rc1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.core:core-ktx:1.3.2'
 
     implementation "androidx.lifecycle:lifecycle-extensions:$archXVersion"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams:$archXVersion"
+    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$archXVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$archXVersion"
     implementation "com.google.android.gms:play-services-vision:$playServicesVersionVision"
     implementation "com.google.android.gms:play-services-drive:$playServicesVersionDrive"
@@ -117,20 +117,20 @@ dependencies {
 
     // Test libraries
     testImplementation 'junit:junit:4.12'
-    testImplementation 'androidx.test:core:1.2.0'
+    testImplementation 'androidx.test:core:1.3.0'
     testImplementation 'org.mockito:mockito-core:2.28.2'
     testImplementation "com.google.truth:truth:1.0.1"
     testImplementation 'joda-time:joda-time:2.10.6'
-    androidTestImplementation 'androidx.test:core:1.2.0'
+    androidTestImplementation 'androidx.test:core:1.3.0'
     androidTestImplementation 'org.mockito:mockito-android:2.28.2'
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
 
     // Assertions
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.ext:truth:1.3.0'
     androidTestImplementation 'com.google.truth:truth:1.0.1'
 }
 

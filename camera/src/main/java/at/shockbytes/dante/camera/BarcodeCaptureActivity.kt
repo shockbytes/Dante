@@ -1,6 +1,7 @@
 package at.shockbytes.dante.camera
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -79,7 +80,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
     private fun startCamera() {
 
         val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
-        cameraProviderFuture.addListener(Runnable {
+        cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
 
             val rotation = preview_view.display.rotation
@@ -122,8 +123,8 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, imagePreview, imageAnalysis)
 
-            enableTapToFocus(cameraSelector)
-            imagePreview.setSurfaceProvider(preview_view.createSurfaceProvider(camera.cameraInfo))
+            enableTapToFocus()
+            imagePreview.setSurfaceProvider(preview_view.surfaceProvider)
         }, ContextCompat.getMainExecutor(this))
     }
 
@@ -139,13 +140,14 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         }
     }
 
-    private fun enableTapToFocus(cameraSelector: CameraSelector) {
+    @SuppressLint("ClickableViewAccessibility")
+    private fun enableTapToFocus() {
         preview_view.setOnTouchListener { _, motionEvent ->
 
             val x = motionEvent.x
             val y = motionEvent.y
 
-            val factory = preview_view.createMeteringPointFactory(cameraSelector)
+            val factory = preview_view.meteringPointFactory
             val point = factory.createPoint(x, y)
             val action = FocusMeteringAction.Builder(point).build()
             camera.cameraControl.startFocusAndMetering(action)

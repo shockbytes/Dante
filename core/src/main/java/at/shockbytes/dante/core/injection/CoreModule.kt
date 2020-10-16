@@ -30,7 +30,10 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-class CoreModule(private val app: Application) {
+class CoreModule(
+    private val app: Application,
+    private val config: CoreModuleConfig
+) {
 
     @Provides
     @Singleton
@@ -93,6 +96,8 @@ class CoreModule(private val app: Application) {
     fun provideRealmInstanceProvider(): RealmInstanceProvider {
         return RealmInstanceProvider(RealmConfiguration.Builder()
             .schemaVersion(DanteRealmMigration.migrationVersion)
+            .allowWritesOnUiThread(config.allowRealmExecutionOnUiThread)
+            .allowQueriesOnUiThread(config.allowRealmExecutionOnUiThread)
             .migration(DanteRealmMigration())
             .build())
     }
@@ -121,4 +126,8 @@ class CoreModule(private val app: Application) {
         private const val REMOTE_BOOK_DAO = "remote_book_dao"
         private const val READING_GOAL_SHARED_PREFERENCES = "reading_goal_shared_preferences"
     }
+
+    data class CoreModuleConfig(
+        val allowRealmExecutionOnUiThread: Boolean
+    )
 }

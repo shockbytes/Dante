@@ -5,11 +5,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -41,7 +41,7 @@ dependencies {
     implementation project(':util')
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    api "androidx.preference:preference:$androidXPreferenceVersion"
+    api "androidx.preference:preference-ktx:$androidXPreferenceVersion"
 
     api "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"

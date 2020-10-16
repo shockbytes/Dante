@@ -52,12 +52,14 @@ class DefaultBookRepository(
         return selectedBookDao.update(entity)
     }
 
-    override fun updateCurrentPage(bookId: Long, currentPage: Int) {
-        selectedBookDao.updateCurrentPage(bookId, currentPage)
+    // TODO REACTIVE Make these calls reactive too!
+    override fun updateCurrentPage(bookId: Long, currentPage: Int): Completable {
+        return selectedBookDao.updateCurrentPage(bookId, currentPage)
     }
 
-    override fun delete(id: Long) {
-        selectedBookDao.delete(id)
+    // TODO REACTIVE Make these calls reactive too!
+    override fun delete(id: Long): Completable {
+        return selectedBookDao.delete(id)
     }
 
     override fun search(query: String): Observable<List<BookEntity>> {

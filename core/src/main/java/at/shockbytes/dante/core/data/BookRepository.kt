@@ -24,7 +24,7 @@ interface BookRepository {
 
     fun update(entity: BookEntity): Completable
 
-    fun updateCurrentPage(bookId: Long, currentPage: Int)
+    fun updateCurrentPage(bookId: Long, currentPage: Int): Completable
 
     fun delete(id: Long): Completable
 

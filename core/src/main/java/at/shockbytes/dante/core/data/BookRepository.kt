@@ -35,9 +35,9 @@ interface BookRepository {
         strategy: RestoreStrategy
     ): Completable
 
-    fun createBookLabel(bookLabel: BookLabel)
+    fun createBookLabel(bookLabel: BookLabel): Completable
 
-    fun deleteBookLabel(bookLabel: BookLabel)
+    fun deleteBookLabel(bookLabel: BookLabel): Completable
 
     fun migrateToRemoteStorage(): Completable
 }

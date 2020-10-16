@@ -70,12 +70,13 @@ class DefaultBookRepository(
         return selectedBookDao.restoreBackup(backupBooks, strategy)
     }
 
-    override fun createBookLabel(bookLabel: BookLabel) {
+    override fun createBookLabel(bookLabel: BookLabel): Completable {
         return selectedBookDao.createBookLabel(bookLabel)
     }
 
-    override fun deleteBookLabel(bookLabel: BookLabel) {
-        selectedBookDao.deleteBookLabel(bookLabel)
+    // TODO REACTIVE Make these calls reactive too!
+    override fun deleteBookLabel(bookLabel: BookLabel): Completable {
+        return selectedBookDao.deleteBookLabel(bookLabel)
     }
 
     override fun migrateToRemoteStorage(): Completable {

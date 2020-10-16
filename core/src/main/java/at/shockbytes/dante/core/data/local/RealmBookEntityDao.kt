@@ -10,11 +10,9 @@ import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.maybeOf
-import at.shockbytes.dante.util.singleOf
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.realm.Case
 import io.realm.Sort
 import timber.log.Timber
@@ -38,17 +36,17 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     private val lastId: Long
         get() {
             val config = realm.instance.where(configClass).findFirst()
-                    ?: realm.instance.createObject(configClass)
+                ?: realm.instance.createObject(configClass)
             return config.getLastPrimaryKey()
         }
 
     override val bookObservable: Observable<List<BookEntity>>
         get() = realm.instance.where(bookClass)
-                .sort("id", Sort.DESCENDING)
-                .findAllAsync()
-                .asFlowable()
-                .map { mapper.mapTo(it) }
-                .toObservable()
+            .sort("id", Sort.DESCENDING)
+            .findAllAsync()
+            .asFlowable()
+            .map { mapper.mapTo(it) }
+            .toObservable()
 
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.instance.where(labelClass)
@@ -118,15 +116,15 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override fun search(query: String): Observable<List<BookEntity>> {
         return realm.instance.where(bookClass)
-                .contains("title", query, Case.INSENSITIVE)
-                .or()
-                .contains("author", query, Case.INSENSITIVE)
-                .or()
-                .contains("subTitle", query, Case.INSENSITIVE)
-                .findAll()
-                .asFlowable()
-                .map { mapper.mapTo(it) }
-                .toObservable()
+            .contains("title", query, Case.INSENSITIVE)
+            .or()
+            .contains("author", query, Case.INSENSITIVE)
+            .or()
+            .contains("subTitle", query, Case.INSENSITIVE)
+            .findAll()
+            .asFlowable()
+            .map { mapper.mapTo(it) }
+            .toObservable()
     }
 
     override fun restoreBackup(
@@ -141,21 +139,25 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }
     }
 
-    override fun createBookLabel(bookLabel: BookLabel) {
-        realm.instance.executeTransaction { realm ->
-            realm.copyToRealm(labelMapper.mapFrom(bookLabel))
+    override fun createBookLabel(bookLabel: BookLabel): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.copyToRealm(labelMapper.mapFrom(bookLabel))
+            }
         }
     }
 
-    override fun deleteBookLabel(bookLabel: BookLabel) {
-        realm.instance.executeTransaction { realm ->
-            realm.where(labelClass)
-                .equalTo("title", bookLabel.title)
-                .and()
-                .equalTo("bookId", bookLabel.bookId)
-                .findFirst()
-                ?.deleteFromRealm()
-                ?: Timber.e(RealmBookLabelDeletionException(bookLabel.title))
+    override fun deleteBookLabel(bookLabel: BookLabel): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.where(labelClass)
+                    .equalTo("title", bookLabel.title)
+                    .and()
+                    .equalTo("bookId", bookLabel.bookId)
+                    .findFirst()
+                    ?.deleteFromRealm()
+                    ?: Timber.e(RealmBookLabelDeletionException(bookLabel.title))
+            }
         }
     }
 

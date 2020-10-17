@@ -154,7 +154,7 @@ inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewMod
 }
 
 fun <T> singleOf(
-    subscribeOn: Scheduler = Schedulers.computation(),
+    subscribeOn: Scheduler = Schedulers.io(),
     block: () -> T
 ): Single<T> {
     return Single.just(block()).subscribeOn(subscribeOn)
@@ -163,14 +163,14 @@ fun <T> singleOf(
 fun Iterable<Completable>.merge() = Completable.merge(this)
 
 fun completableOf(
-    subscribeOn: Scheduler = Schedulers.computation(),
+    subscribeOn: Scheduler = Schedulers.io(),
     block: () -> Unit
 ): Completable {
     return Completable.fromAction(Action(block)).subscribeOn(subscribeOn)
 }
 
 fun <T> maybeOf(
-    subscribeOn: Scheduler = Schedulers.computation(),
+    subscribeOn: Scheduler = Schedulers.io(),
     block: () -> T?
 ): Maybe<T> {
     return Maybe

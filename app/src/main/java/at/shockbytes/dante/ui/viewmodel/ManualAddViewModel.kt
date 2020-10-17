@@ -110,12 +110,21 @@ class ManualAddViewModel @Inject constructor(
         )
 
         if (entity != null) {
-            // TODO REACTIVE Subscribe to this
-            bookRepository.create(entity)
-            addEvent.onNext(AddEvent.Success)
+            storeBookInRepository(entity)
         } else {
             addEvent.onNext(AddEvent.Error)
         }
+    }
+
+    private fun storeBookInRepository(entity: BookEntity) {
+        bookRepository.create(entity)
+            .subscribe ({
+                addEvent.onNext(AddEvent.Success)
+            }, { throwable ->
+                addEvent.onNext(AddEvent.Error)
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun getImageUri(): String? {

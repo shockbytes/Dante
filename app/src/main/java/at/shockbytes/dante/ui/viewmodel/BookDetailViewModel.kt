@@ -121,7 +121,7 @@ class BookDetailViewModel @Inject constructor(
                     DateTime(record.timestamp).withTimeAtStartOfDay()
                 }
                 .mapNotNull { (dtTimestamp, pageRecords) ->
-                    pageRecords.maxBy { it.timestamp }?.let { record ->
+                    pageRecords.maxByOrNull { it.timestamp }?.let { record ->
                         BooksAndPageRecordDataPoint(
                             value = record.toPage,
                             formattedDate = format.print(dtTimestamp)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.camera.injection.DaggerCameraComponent
 import at.shockbytes.dante.camera.viewmodel.BarcodeResultViewModel
@@ -93,16 +94,23 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         viewModel.onBookStoredEvent()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ storedBook ->
+            .subscribe(::handleBookStoredEvent, Timber::e)
+            .addTo(compositeDisposable)
+    }
+
+    private fun handleBookStoredEvent(event: BarcodeResultViewModel.BookStoredEvent) {
+        when (event) {
+            is BarcodeResultViewModel.BookStoredEvent.Success -> {
                 if (askForAnotherScan) {
-                    showBookStoredDialog(storedBook)
+                    showBookStoredDialog(event.title)
                 } else {
                     dismiss()
                 }
-            }, { throwable ->
-                Timber.e(throwable)
-            })
-            .addTo(compositeDisposable)
+            }
+            is BarcodeResultViewModel.BookStoredEvent.Error -> {
+                Toast.makeText(context, event.reason, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun showBookStoredDialog(storedBook: String) {

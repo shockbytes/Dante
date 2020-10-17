@@ -96,8 +96,6 @@ class PageRecordsDetailViewModel @Inject constructor(
     }
 
     private fun updateCurrentPage(currentPage: Int): Completable {
-        return Completable.fromAction {
-            bookRepository.updateCurrentPage(bookId, currentPage)
-        }
+        return bookRepository.updateCurrentPage(bookId, currentPage)
     }
 }

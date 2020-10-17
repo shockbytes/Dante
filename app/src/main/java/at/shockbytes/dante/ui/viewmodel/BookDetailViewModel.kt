@@ -334,9 +334,7 @@ class BookDetailViewModel @Inject constructor(
     }
 
     private fun resetCurrentPageToZero(): Completable {
-        return Completable.fromAction {
-            bookRepository.updateCurrentPage(bookId, currentPage = 0)
-        }
+        return bookRepository.updateCurrentPage(bookId, currentPage = 0)
     }
 
     data class PageInfo(

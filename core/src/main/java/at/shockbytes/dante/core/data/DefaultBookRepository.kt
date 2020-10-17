@@ -51,7 +51,6 @@ class DefaultBookRepository(
         return selectedBookDao.update(entity)
     }
 
-    // TODO REACTIVE Make these calls reactive too!
     override fun updateCurrentPage(bookId: Long, currentPage: Int): Completable {
         return selectedBookDao.updateCurrentPage(bookId, currentPage)
     }

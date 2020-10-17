@@ -118,7 +118,7 @@ class ManualAddViewModel @Inject constructor(
 
     private fun storeBookInRepository(entity: BookEntity) {
         bookRepository.create(entity)
-            .subscribe ({
+            .subscribe({
                 addEvent.onNext(AddEvent.Success)
             }, { throwable ->
                 addEvent.onNext(AddEvent.Error)
@@ -140,18 +140,25 @@ class ManualAddViewModel @Inject constructor(
 
         if (bookUpdateData.isValid) {
 
-            viewState.value?.let { v ->
-                if (v is ViewState.UpdateBook) {
-                    val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
-                    bookRepository.update(updatedEntity)
-                    addEvent.onNext(AddEvent.Updated(updatedEntity.state))
-                } else {
-                    addEvent.onNext(AddEvent.Error)
+            (viewState.value as? ViewState.UpdateBook)
+                ?.let { v ->
+                    updateBookInRepository(v, bookUpdateData)
                 }
-            } ?: addEvent.onNext(AddEvent.Error)
+                ?: addEvent.onNext(AddEvent.Error)
         } else {
             addEvent.onNext(AddEvent.Error)
         }
+    }
+
+    private fun updateBookInRepository(v: ViewState.UpdateBook, bookUpdateData: BookUpdateData) {
+        val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
+        bookRepository.update(updatedEntity)
+            .subscribe({
+                addEvent.onNext(AddEvent.Updated(updatedEntity.state))
+            }, {
+                addEvent.onNext(AddEvent.Error)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun BookEntity.updateFromBookUpdateData(bookUpdateData: BookUpdateData): BookEntity {

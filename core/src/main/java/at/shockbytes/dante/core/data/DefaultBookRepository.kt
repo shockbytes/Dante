@@ -46,7 +46,6 @@ class DefaultBookRepository(
         return selectedBookDao.create(entity)
     }
 
-    // TODO REACTIVE Make these calls reactive too!
     override fun update(entity: BookEntity): Completable {
         return selectedBookDao.update(entity)
     }

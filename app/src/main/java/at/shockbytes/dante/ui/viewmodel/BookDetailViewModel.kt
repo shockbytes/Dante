@@ -262,7 +262,12 @@ class BookDetailViewModel @Inject constructor(
 
     private fun updateDaoAndObserver(b: BookEntity) {
         bookRepository.update(b)
-        viewState.postValue(craftViewState(b))
+            .subscribe({
+                viewState.postValue(craftViewState(b))
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun requestEditBook() {

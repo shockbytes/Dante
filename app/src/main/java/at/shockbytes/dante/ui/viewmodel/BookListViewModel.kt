@@ -136,7 +136,6 @@ class BookListViewModel @Inject constructor(
     fun deleteBook(book: BookEntity) {
         bookRepository.delete(book.id)
             .subscribe({
-                // TODO Do something here?
             }, { throwable ->
                 Timber.e(throwable)
             })
@@ -147,7 +146,7 @@ class BookListViewModel @Inject constructor(
         data.forEachIndexed { index, entity ->
             if (entity is BookAdapterEntity.Book) {
                 entity.bookEntity.position = index
-                bookRepository.update(entity.bookEntity)
+                updateBook(entity.bookEntity)
             }
         }
 
@@ -157,17 +156,27 @@ class BookListViewModel @Inject constructor(
 
     fun moveBookToUpcomingList(book: BookEntity) {
         book.updateState(BookState.READ_LATER)
-        bookRepository.update(book)
+        updateBook(book)
     }
 
     fun moveBookToCurrentList(book: BookEntity) {
         book.updateState(BookState.READING)
-        bookRepository.update(book)
+        updateBook(book)
     }
 
     fun moveBookToDoneList(book: BookEntity) {
         book.updateState(BookState.READ)
+        updateBook(book)
+    }
+
+    fun updateBook(book: BookEntity) {
         bookRepository.update(book)
+            .subscribe({
+                Timber.d("Successfully updated ${book.title}")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun onBookUpdatedEvent(updatedBookState: BookState) {

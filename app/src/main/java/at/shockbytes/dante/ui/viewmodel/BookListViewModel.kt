@@ -135,6 +135,12 @@ class BookListViewModel @Inject constructor(
 
     fun deleteBook(book: BookEntity) {
         bookRepository.delete(book.id)
+            .subscribe({
+                // TODO Do something here?
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun updateBookPositions(data: MutableList<BookAdapterEntity>) {

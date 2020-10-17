@@ -13,6 +13,7 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.util.DanteUtils.formatTimestamp
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.merge
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent

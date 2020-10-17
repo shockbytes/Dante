@@ -56,7 +56,6 @@ class DefaultBookRepository(
         return selectedBookDao.updateCurrentPage(bookId, currentPage)
     }
 
-    // TODO REACTIVE Make these calls reactive too!
     override fun delete(id: Long): Completable {
         return selectedBookDao.delete(id)
     }
@@ -73,7 +72,6 @@ class DefaultBookRepository(
         return selectedBookDao.createBookLabel(bookLabel)
     }
 
-    // TODO REACTIVE Make these calls reactive too!
     override fun deleteBookLabel(bookLabel: BookLabel): Completable {
         return selectedBookDao.deleteBookLabel(bookLabel)
     }

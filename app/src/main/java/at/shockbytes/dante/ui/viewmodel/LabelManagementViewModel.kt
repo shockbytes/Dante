@@ -48,16 +48,21 @@ class LabelManagementViewModel @Inject constructor(
     fun createNewBookLabel(newLabel: BookLabel) {
         bookRepository.createBookLabel(newLabel)
             .subscribe({
-                // TODO REACTIVE Notify that this is working
+                Timber.d("Successfully created book label ${newLabel.title}.")
             }, { throwable ->
                 Timber.e(throwable)
-                // TODO REACTIVE Notify that this failed
             })
             .addTo(compositeDisposable)
     }
 
     fun deleteBookLabel(bookLabel: BookLabel) {
         bookRepository.deleteBookLabel(bookLabel)
+            .subscribe({
+                Timber.d("Successfully deleted book label ${bookLabel.title}.")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun requestCreateNewLabel() {

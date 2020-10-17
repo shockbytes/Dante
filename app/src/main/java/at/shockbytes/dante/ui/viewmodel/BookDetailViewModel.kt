@@ -292,9 +292,13 @@ class BookDetailViewModel @Inject constructor(
 
     fun removeLabel(label: BookLabel) {
         bookRepository.deleteBookLabel(label)
-
-        // Reload the book once a label got deleted
-        fetchBook(bookId)
+            .subscribe({
+                // Reload the book once a label got deleted
+                fetchBook(bookId)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun onPageCountMayChanged() {

@@ -77,7 +77,11 @@ class BackupViewModel @Inject constructor(
     }
 
     fun makeBackup(backupStorageProvider: BackupStorageProvider) {
-        backupRepository.backup(bookRepository.bookObservable.blockingFirst(listOf()), backupStorageProvider)
+        bookRepository.bookObservable
+            .firstOrError()
+            .flatMapCompletable { books ->
+                backupRepository.backup(books, backupStorageProvider)
+            }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({

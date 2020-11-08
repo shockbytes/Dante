@@ -25,11 +25,14 @@ class DefaultBackupRepository(
     private val activeBackupProvider: List<BackupProvider>
         get() = backupProvider.filter { it.isEnabled }
 
+    // TODO Make this reactive
     override var lastBackupTime: Long by SharedPreferencesLongPropertyDelegate(preferences, BackupRepository.KEY_LAST_BACKUP, 0)
 
     override fun getBackups(): Single<List<BackupMetadataState>> {
 
-        return Single.merge(activeBackupProvider.map { it.getBackupEntries() })
+        val activeBackupProviderSources = activeBackupProvider.map { it.getBackupEntries() }
+
+        return Single.merge(activeBackupProviderSources)
             .collect(
                 { mutableListOf() },
                 { container: MutableList<BackupMetadataState>, value: List<BackupMetadataState> ->

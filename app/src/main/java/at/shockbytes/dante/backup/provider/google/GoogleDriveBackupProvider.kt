@@ -29,6 +29,10 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
 
+@Deprecated(
+    message = "Deprecated since the Google Drive API got deprecated",
+    replaceWith = ReplaceWith("GoogleDriveRestBackupProvider")
+)
 class GoogleDriveBackupProvider(
     private val signInManager: GoogleFirebaseSignInManager,
     private val schedulers: SchedulerFacade,
@@ -37,7 +41,7 @@ class GoogleDriveBackupProvider(
 
     private lateinit var client: DriveResourceClient
 
-    override var isEnabled: Boolean = true
+    override var isEnabled: Boolean = false
 
     override val backupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
 

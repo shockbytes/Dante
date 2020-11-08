@@ -143,6 +143,7 @@ class LocalCsvBackupProvider(
             val storageProvider = BackupStorageProvider.byAcronym(data[1])
             val timestamp = data[2].toLong()
             val books = Integer.parseInt(data[3])
+            // TODO There's a problem here... Seems like a good test candidate
             val device = data[4].substring(0, data[4].lastIndexOf("."))
 
             val metadata = BackupMetadata(

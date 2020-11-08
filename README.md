@@ -59,14 +59,21 @@ The backlog is currently empty.
 
 ## Current development
 
-### Version 3.16
-- [ ] Send csv export via Mail
+### Version 3.17
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 - [ ] Add Onboarding + optional Login
 - [ ] Experimental remote storage Firestore implementation (for test account)
 - [ ] Fix bug with local book covers
     - [ ] In MultiBareBoneBookView (not showing up)
     - [ ] In the label overview (too big)
+
+### Version 3.16 - BRING BACK BACKUP
+- [ ] Export local backups via Mail/other services
+- [ ] Google Drive REST Backup
+- [ ] Backup issues
+  - [ ] Fix Backup Proguard rules
+  - [ ] Make last backup time reactive
+  - [ ] Fix issues with CSV files on emulators
 
 ## Changelog
 

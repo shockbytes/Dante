@@ -23,7 +23,6 @@
 # - Retrofit
 # - Realm
 # - Gson
-# - Butterknife
 # - Jackson
 # - GMS
 # - Crashlytics
@@ -31,14 +30,11 @@
 # - Firebase
 # - SpeedDialView
 
+# Activity Transition
 -keep public class android.app.ActivityTransitionCoordinator
 
-# Never obfuscate model classes
--keepclassmembers class at.shockbytes.book.** {
-  *;
-}
-
--keepclassmembers class at.shockbytes.dante.backup.model.** {
+# Do not obfuscate backup models
+-keepclassmembers class at.shockbytes.dante.backup.model.* {
   *;
 }
 
@@ -70,7 +66,6 @@
 -keep @io.realm.internal.Keep class *
 -dontwarn javax.**
 -dontwarn io.realm.**
--keep class at.shockbytes.util.books.** { *; }
 
 # Retrofit
 -dontnote retrofit2.Platform
@@ -81,35 +76,16 @@
 # Gson
 -keepclassmembers enum * { *; }
 
-# ButterKnife
--keep class butterknife.*
--keepclasseswithmembernames class * { @butterknife.* <methods>; }
--keepclasseswithmembernames class * { @butterknife.* <fields>; }
-
-# Jackson
--keep class com.fasterxml.jackson.databind.ObjectMapper {
-    public <methods>;
-    protected <methods>;
-}
--keep class com.fasterxml.jackson.databind.ObjectWriter {
-    public ** writeValueAsString(**);
-}
--keepnames class com.fasterxml.jackson.** { *; }
--dontwarn com.fasterxml.jackson.databind.**
-
 # gms
--keep class com.google.android.gms.** { *; }
+-keep class com.google.android.gms.* { *; }
 -dontwarn com.google.android.gms.**
 
 # Crashlytics
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
--keep class com.crashlytics.** { *; }
+-keep class com.crashlytics.* { *; }
 -dontwarn com.crashlytics.**
 
 # Timber
 -dontwarn org.jetbrains.annotations.**
-
-# Activity Transition
--keep public class android.app.ActivityTransitionCoordinator

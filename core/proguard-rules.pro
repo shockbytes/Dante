@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Never obfuscate model classes
+-keepclassmembers class at.shockbytes.dante.core.book.* {
+  *;
+}

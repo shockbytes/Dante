@@ -8,6 +8,7 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
+import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
@@ -71,21 +72,26 @@ class BackupEntryAdapter(
 
         private fun setupOverflowMenu(content: BackupMetadataState) {
 
+            val entry = content.entry
             val popupMenu = PopupMenu(context, item_backup_entry_btn_overflow)
 
             popupMenu.menuInflater.inflate(R.menu.menu_backup_item_overflow, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.menu_backup_delete -> {
-                        onItemOverflowMenuClickedListener.onBackupItemDeleted(content.entry, getLocation(content))
+                        onItemOverflowMenuClickedListener.onBackupItemDeleted(entry, getLocation(content))
                     }
                     R.id.menu_backup_export_request -> {
-                        onItemOverflowMenuClickedListener.onBackupItemDownloadRequest(content.entry)
+                        if (entry is BackupMetadata.WithLocalFile) {
+                            onItemOverflowMenuClickedListener.onBackupItemDownloadRequest(entry)
+                        }
                     }
                 }
                 true
             }
-            popupMenu.menu.findItem(R.id.menu_backup_export_request)?.isVisible = content.isFileExportable
+
+            val showExportOption = content.isFileExportable && entry is BackupMetadata.WithLocalFile
+            popupMenu.menu.findItem(R.id.menu_backup_export_request)?.isVisible = showExportOption
 
             val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_backup_entry_btn_overflow)
             menuHelper.setForceShowIcon(true)

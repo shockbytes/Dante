@@ -7,6 +7,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.backup.model.BackupMetadata
+import at.shockbytes.dante.backup.model.BackupMetadata.Companion.attachLocalFile
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -74,7 +75,7 @@ class ExternalStorageBackupProvider(
         return Single.fromCallable {
             val timestamp = System.currentTimeMillis()
             val fileName = createFileName(timestamp)
-            val metadata = getMetadata(books.size, fileName, timestamp)
+            val metadata = bundleMetadataForStorage(books.size, fileName, timestamp)
 
             val content = gson.toJson(BackupItem(metadata, books))
 
@@ -101,13 +102,16 @@ class ExternalStorageBackupProvider(
 
         return try {
 
-            val metadata = externalStorageInteractor
-                .readFileContent(
-                    BASE_DIR_NAME,
-                    backupFile.name
-                ).let { content ->
-                    gson.fromJson(content, BackupItem::class.java).backupMetadata
-                }
+            val metadata = externalStorageInteractor.readFileContent(
+                BASE_DIR_NAME,
+                backupFile.name
+            ).let { content ->
+                gson.fromJson(content, BackupItem::class.java)
+                    .backupMetadata
+                    // This line is necessary because the local file path is not stored
+                    // within the serialized Json, it's only used when loaded
+                    .attachLocalFile(backupFile)
+            }
 
             // Can only be active, ExternalStorageBackupProvider does not support cached states
             BackupMetadataState.Active(metadata)
@@ -164,8 +168,12 @@ class ExternalStorageBackupProvider(
         }
     }
 
-    private fun getMetadata(books: Int, fileName: String, timestamp: Long): BackupMetadata {
-        return BackupMetadata(
+    private fun bundleMetadataForStorage(
+        books: Int,
+        fileName: String,
+        timestamp: Long
+    ): BackupMetadata.Standard {
+        return BackupMetadata.Standard(
             id = fileName,
             fileName = fileName,
             timestamp = timestamp,

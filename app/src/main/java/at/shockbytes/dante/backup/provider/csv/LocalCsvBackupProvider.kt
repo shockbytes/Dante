@@ -143,13 +143,14 @@ class LocalCsvBackupProvider(
             val books = Integer.parseInt(data[3])
             val device = fileName.substring(fileName.indexOf(data[4]), fileName.lastIndexOf("."))
 
-            val metadata = BackupMetadata(
+            val metadata = BackupMetadata.WithLocalFile(
                 id = fileName,
                 fileName = fileName,
                 device = device,
                 storageProvider = storageProvider,
                 books = books,
-                timestamp = timestamp
+                timestamp = timestamp,
+                localFilePath = backupFile
             )
 
             // Can only be active, ExternalStorageBackupProvider does not support cached states

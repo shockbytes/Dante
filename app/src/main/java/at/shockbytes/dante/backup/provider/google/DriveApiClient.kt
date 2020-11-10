@@ -137,7 +137,7 @@ class DriveApiClient(private val signInManager: GoogleFirebaseSignInManager) : D
                 val timestamp = java.lang.Long.parseLong(data[2])
                 val books = Integer.parseInt(data[3])
 
-                BackupMetadata(
+                BackupMetadata.Standard(
                     id = fileId,
                     fileName = fileName,
                     device = device,

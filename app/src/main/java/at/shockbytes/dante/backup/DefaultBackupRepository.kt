@@ -10,23 +10,34 @@ import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.data.BookRepository
-import at.shockbytes.dante.util.settings.delegate.SharedPreferencesLongPropertyDelegate
+import at.shockbytes.dante.util.settings.delegate.edit
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
+import com.f2prateek.rx.preferences2.RxSharedPreferences
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class DefaultBackupRepository(
     override val backupProvider: List<BackupProvider>,
-    preferences: SharedPreferences,
+    private val preferences: SharedPreferences,
     private val tracker: Tracker
 ) : BackupRepository {
 
     private val activeBackupProvider: List<BackupProvider>
         get() = backupProvider.filter { it.isEnabled }
 
-    // TODO Make this reactive
-    override var lastBackupTime: Long by SharedPreferencesLongPropertyDelegate(preferences, BackupRepository.KEY_LAST_BACKUP, 0)
+    override fun setLastBackupTime(timeInMillis: Long) {
+        preferences.edit {
+            putLong(KEY_LAST_BACKUP, timeInMillis)
+        }
+    }
+
+    override fun observeLastBackupTime(): Observable<Long> {
+        return RxSharedPreferences.create(preferences)
+            .getLong(KEY_LAST_BACKUP, 0)
+            .asObservable()
+    }
 
     override fun getBackups(): Single<List<BackupMetadataState>> {
 
@@ -74,10 +85,14 @@ class DefaultBackupRepository(
         return getBackupProvider(backupStorageProvider)
             ?.backup(books)
             ?.doOnComplete {
-                lastBackupTime = System.currentTimeMillis()
-                tracker.track(DanteTrackingEvent.BackupMadeEvent(backupStorageProvider.acronym))
+                setLastBackupTime(System.currentTimeMillis())
+                trackBackupMadeEvent(backupStorageProvider)
             }
             ?: Completable.error(BackupStorageProviderNotAvailableException())
+    }
+
+    private fun trackBackupMadeEvent(backupStorageProvider: BackupStorageProvider) {
+        tracker.track(DanteTrackingEvent.BackupMadeEvent(backupStorageProvider.acronym))
     }
 
     override fun restoreBackup(
@@ -94,5 +109,9 @@ class DefaultBackupRepository(
 
     private fun getBackupProvider(source: BackupStorageProvider): BackupProvider? {
         return activeBackupProvider.find { it.backupStorageProvider == source }
+    }
+
+    companion object {
+        private const val KEY_LAST_BACKUP = "key_last_backup"
     }
 }

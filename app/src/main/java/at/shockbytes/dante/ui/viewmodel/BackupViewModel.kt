@@ -9,12 +9,13 @@ import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.core.data.BookRepository
-import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.DanteUtils.formatTimestamp
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -33,8 +34,12 @@ class BackupViewModel @Inject constructor(
     private val loadBackupState = MutableLiveData<LoadBackupState>()
     fun getBackupState(): LiveData<LoadBackupState> = loadBackupState
 
-    private val lastBackupTime = MutableLiveData<String>()
-    fun getLastBackupTime(): LiveData<String> = lastBackupTime
+    fun getLastBackupTime(): Observable<String> {
+        return backupRepository.observeLastBackupTime()
+            .map { lastBackupMillis ->
+                if (lastBackupMillis > 0) formatTimestamp(lastBackupMillis) else "---"
+            }
+    }
 
     private val activeBackupStorageProviders = MutableLiveData<List<BackupStorageProvider>>()
     fun getActiveBackupProviders(): LiveData<List<BackupStorageProvider>> = activeBackupStorageProviders
@@ -49,7 +54,6 @@ class BackupViewModel @Inject constructor(
             .doOnComplete(::postActiveBackupProviders)
             .subscribe({
                 loadBackupState()
-                updateLastBackupTime()
             }, { throwable ->
                 Timber.e(throwable)
                 errorSubject.onNext(throwable)
@@ -67,7 +71,7 @@ class BackupViewModel @Inject constructor(
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({
-                val formattedTimestamp = DanteUtils.formatTimestamp(t.timestamp)
+                val formattedTimestamp = formatTimestamp(t.timestamp)
                 applyBackupEvent.onNext(ApplyBackupState.Success(formattedTimestamp))
             }) { throwable ->
                 Timber.e(throwable)
@@ -85,7 +89,6 @@ class BackupViewModel @Inject constructor(
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({
-                updateLastBackupTime()
                 loadBackupState()
                 makeBackupEvent.onNext(State.Success(switchToBackupTab = true))
             }) { throwable ->
@@ -104,7 +107,7 @@ class BackupViewModel @Inject constructor(
                 deleteBackupEvent.onNext(DeleteBackupState.Success(position, wasLastEntry))
 
                 if (wasLastEntry) {
-                    updateLastBackupTime(true)
+                    resetLastBackupTime()
                 }
             }) { throwable ->
                 Timber.e(throwable)
@@ -134,18 +137,11 @@ class BackupViewModel @Inject constructor(
         }.addTo(compositeDisposable)
     }
 
-    private fun updateLastBackupTime(resetValue: Boolean = false) {
-
-        // Reset the value if the last item was dismissed
-        if (resetValue) {
-            backupRepository.lastBackupTime = 0
-        }
-
-        val lastBackupMillis = backupRepository.lastBackupTime
-        val lastBackup = if (lastBackupMillis > 0)
-            DanteUtils.formatTimestamp(lastBackupMillis)
-        else "---"
-        lastBackupTime.postValue(lastBackup)
+    /**
+     * Reset the value if the last item was dismissed.
+     */
+    private fun resetLastBackupTime() {
+        backupRepository.setLastBackupTime(0L)
     }
 
     private fun postActiveBackupProviders() {

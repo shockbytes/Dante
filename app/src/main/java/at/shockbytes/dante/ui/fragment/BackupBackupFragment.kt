@@ -45,9 +45,12 @@ class BackupBackupFragment : BaseFragment() {
 
     override fun bindViewModel() {
 
-        viewModel.getLastBackupTime().observe(this, Observer { lastBackup ->
-            tv_fragment_backup_last_backup.text = getString(R.string.last_backup, lastBackup)
-        })
+        viewModel.getLastBackupTime()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { lastBackup ->
+                tv_fragment_backup_last_backup.text = getString(R.string.last_backup, lastBackup)
+            }
+            .addTo(compositeDisposable)
 
         viewModel.getActiveBackupProviders().observe(this, Observer(::setupBackupProviderUI))
 

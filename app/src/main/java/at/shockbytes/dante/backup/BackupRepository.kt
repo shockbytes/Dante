@@ -9,6 +9,7 @@ import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.data.BookRepository
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -19,7 +20,9 @@ interface BackupRepository {
 
     val backupProvider: List<BackupProvider>
 
-    var lastBackupTime: Long
+    fun setLastBackupTime(timeInMillis: Long)
+
+    fun observeLastBackupTime(): Observable<Long>
 
     fun getBackups(): Single<List<BackupMetadataState>>
 
@@ -40,8 +43,6 @@ interface BackupRepository {
     ): Completable
 
     companion object {
-        const val KEY_LAST_BACKUP = "key_last_backup"
-
         const val BACKUP_ITEM_SUFFIX = ".dbi"
     }
 }

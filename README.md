@@ -72,7 +72,7 @@ The backlog is currently empty.
 - [ ] Google Drive REST Backup
 - [ ] Backup issues
   - [ ] Fix Backup Proguard rules
-  - [ ] Make last backup time reactive
+  - [x] Make last backup time reactive
   - [ ] Fix issues with CSV files on emulators
 
 ## Changelog

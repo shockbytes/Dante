@@ -233,7 +233,7 @@ class BookDetailViewModel @Inject constructor(
 
     private fun checkDateBoundaries(wishlist: Long, start: Long, end: Long): Boolean {
 
-        // Wish list specific cases
+        // Wish listBackupFiles specific cases
         if ((wishlist <= start || start == 0L) && (wishlist <= end || end == 0L)) {
             return true
         }

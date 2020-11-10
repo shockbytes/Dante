@@ -50,7 +50,7 @@ class DefaultBackupRepository(
 
     override fun initialize(activity: FragmentActivity, forceReload: Boolean): Completable {
 
-        // If forceReload is set, then use the whole list of backup provider,
+        // If forceReload is set, then use the whole listBackupFiles of backup provider,
         // otherwise just use the active ones
         val provider = if (forceReload) backupProvider else activeBackupProvider
 

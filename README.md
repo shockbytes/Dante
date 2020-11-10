@@ -57,8 +57,6 @@ The backlog is currently empty.
   - [ ] Migrate from local to remote storage
 - [ ] Login with Firebase
 
-## Current development
-
 ### Version 3.17
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 - [ ] Add Onboarding + optional Login
@@ -66,6 +64,8 @@ The backlog is currently empty.
 - [ ] Fix bug with local book covers
     - [ ] In MultiBareBoneBookView (not showing up)
     - [ ] In the label overview (too big)
+
+## Current development
 
 ### Version 3.16 - BRING BACK BACKUP
 - [ ] Export local backups via Mail/other services

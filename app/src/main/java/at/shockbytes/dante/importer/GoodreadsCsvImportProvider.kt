@@ -27,7 +27,7 @@ class GoodreadsCsvImportProvider(
                         .mapNotNull(::createBookEntityFromLine)
                         .toList()
                 } else {
-                    // Return a list of empty books and indicate that no books could be imported
+                    // Return a listBackupFiles of empty books and indicate that no books could be imported
                     // NOTE: This can be vastly improved by returning an exception
                     listOf()
                 }

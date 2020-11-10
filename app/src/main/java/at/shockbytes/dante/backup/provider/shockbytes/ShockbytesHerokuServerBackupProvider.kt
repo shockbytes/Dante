@@ -8,7 +8,7 @@ import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
+import at.shockbytes.dante.signin.SignInManager
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +19,7 @@ import timber.log.Timber
  * Date:    09.05.2019
  */
 class ShockbytesHerokuServerBackupProvider(
-    private val signInManager: GoogleFirebaseSignInManager,
+    private val signInManager: SignInManager,
     private val shockbytesHerokuApi: ShockbytesHerokuApi,
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {

@@ -62,16 +62,15 @@ class LocalCsvBackupProvider(
             .subscribeOn(schedulers.io)
     }
 
-    /**
-     * Returns Pair<FileName, Content>
-     */
-    private fun getBackupContent(books: List<BookEntity>): Single<Pair<String, String>> {
+    private data class BackupFileContent(val fileName: String, val content: String)
+
+    private fun getBackupContent(books: List<BookEntity>): Single<BackupFileContent> {
         return Single.fromCallable {
             val timestamp = System.currentTimeMillis()
             val fileName = createFileName(timestamp, books.size)
             val content = createContent(books)
 
-            Pair(fileName, content)
+            BackupFileContent(fileName, content)
         }
     }
 

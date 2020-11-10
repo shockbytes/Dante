@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,7 +49,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
                 }
 
                 override fun onBackupItemDownloadRequest(content: BackupMetadata) {
-                    // TODO Download file
+                    exportFile(content)
                 }
             }
         )
@@ -97,7 +96,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
     override fun bindViewModel() {
 
-        viewModel.getBackupState().observe(this, Observer { state ->
+        viewModel.getBackupState().observe(this, { state ->
 
             when (state) {
                 is BackupViewModel.LoadBackupState.Success -> {
@@ -160,12 +159,17 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
             .addTo(compositeDisposable)
     }
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     private fun onItemDismissed(t: BackupMetadata, position: Int) {
         val currentItems = rv_fragment_backup_restore.adapter?.itemCount ?: -1
         viewModel.deleteItem(t, position, currentItems)
+    }
+
+
+    private fun exportFile(content: BackupMetadata) {
+        // TODO
+        showToast("Export this file: ${content.id}.")
     }
 
     private fun showLoadingView(show: Boolean) {

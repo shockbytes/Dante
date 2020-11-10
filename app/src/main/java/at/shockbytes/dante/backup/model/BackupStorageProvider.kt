@@ -54,7 +54,7 @@ enum class BackupStorageProvider(
         R.drawable.ic_external_storage,
         R.string.backup_storage_provider_rationale_external_storage,
         Priority.MEDIUM,
-        isLocalFileExportable = false,
+        isLocalFileExportable = true,
         stability = Stability.RELEASE
     ),
     @SerializedName("csv_local")
@@ -64,7 +64,7 @@ enum class BackupStorageProvider(
         R.drawable.ic_csv,
         R.string.backup_storage_provider_rationale_csv,
         Priority.MEDIUM,
-        isLocalFileExportable = false,
+        isLocalFileExportable = true,
         stability = Stability.BETA
     );
 

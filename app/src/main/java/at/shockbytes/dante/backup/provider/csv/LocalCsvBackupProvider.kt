@@ -138,13 +138,11 @@ class LocalCsvBackupProvider(
         return try {
 
             val fileName = backupFile.name
-            Timber.i("File name of backup file: $fileName")
             val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val storageProvider = BackupStorageProvider.byAcronym(data[1])
             val timestamp = data[2].toLong()
             val books = Integer.parseInt(data[3])
-            // TODO There's a problem here... Seems like a good test candidate
-            val device = data[4].substring(0, data[4].lastIndexOf("."))
+            val device = fileName.substring(fileName.indexOf(data[4]), fileName.lastIndexOf("."))
 
             val metadata = BackupMetadata(
                 id = fileName,

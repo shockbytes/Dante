@@ -56,21 +56,23 @@ class BackupBackupFragment : BaseFragment() {
 
         viewModel.makeBackupEvent
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { state ->
-                when (state) {
-                    is BackupViewModel.State.Success -> {
-                        showSnackbar(getString(R.string.backup_created), showLong = false)
+            .subscribe(::handleBackupState)
+            .addTo(compositeDisposable)
+    }
 
-                        if (state.switchToBackupTab) {
-                            switchToBackupTab()
-                        }
-                    }
-                    is BackupViewModel.State.Error -> {
-                        showSnackbar(getString(R.string.backup_not_created))
-                    }
+    private fun handleBackupState(state: BackupViewModel.State) {
+        when (state) {
+            is BackupViewModel.State.Success -> {
+                showSnackbar(getString(R.string.backup_created), showLong = false)
+
+                if (state.switchToBackupTab) {
+                    switchToBackupTab()
                 }
             }
-            .addTo(compositeDisposable)
+            is BackupViewModel.State.Error -> {
+                showSnackbar(getString(R.string.backup_not_created))
+            }
+        }
     }
 
     private fun switchToBackupTab() {

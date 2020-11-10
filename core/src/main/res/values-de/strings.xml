@@ -280,7 +280,7 @@
     <string name="library_deletion_succeeded">Wir haben deine Bibliothek verbrannt!</string>
     <string name="library_deletion_failed">Bibliothek konnte nicht gelöscht werden.</string>
     <string name="download">Herunterladen</string>
-    <string name="download_backup">Herunterladen</string>
+    <string name="export_backup">Backup exportieren</string>
     <string name="add_book_to_library_hint">Ein Buch hinzufügen</string>
     <string name="prefs_category_books">Bücher</string>
     <string name="sorted_by">Sortiert nach %s</string>

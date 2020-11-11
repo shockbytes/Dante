@@ -41,8 +41,4 @@ interface BackupRepository {
         bookRepository: BookRepository,
         strategy: RestoreStrategy
     ): Completable
-
-    companion object {
-        const val BACKUP_ITEM_SUFFIX = ".dbi"
-    }
 }

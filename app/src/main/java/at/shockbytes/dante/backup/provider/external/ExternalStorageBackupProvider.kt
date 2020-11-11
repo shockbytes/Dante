@@ -4,7 +4,6 @@ import android.Manifest
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
-import at.shockbytes.dante.backup.BackupRepository
 import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadata.Companion.attachLocalFile
@@ -91,7 +90,7 @@ class ExternalStorageBackupProvider(
             .listFilesInDirectory(
                 BASE_DIR_NAME,
                 filterPredicate = { fileName ->
-                    fileName.endsWith(BackupRepository.BACKUP_ITEM_SUFFIX)
+                    fileName.endsWith(BACKUP_ITEM_SUFFIX)
                 }
             ).map { files ->
                 files.mapNotNull { backupFile ->
@@ -185,12 +184,13 @@ class ExternalStorageBackupProvider(
     }
 
     private fun createFileName(timestamp: Long): String {
-        return "dante-backup-$timestamp${BackupRepository.BACKUP_ITEM_SUFFIX}"
+        return "dante-backup-$timestamp$BACKUP_ITEM_SUFFIX"
     }
 
     companion object {
 
         private const val BASE_DIR_NAME = "Dante"
+        private const val BACKUP_ITEM_SUFFIX = ".json"
         private const val MIME_TYPE_JSON = "application/json"
         private const val RC_READ_WRITE_EXT_STORAGE = 0x5321
 

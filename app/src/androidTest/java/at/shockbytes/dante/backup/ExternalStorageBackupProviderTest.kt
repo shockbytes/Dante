@@ -1,5 +1,6 @@
 package at.shockbytes.dante.backup
 
+import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
@@ -14,18 +15,17 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import at.shockbytes.dante.ui.activity.MainActivity
-import androidx.test.rule.ActivityTestRule
 import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.importer.DanteExternalStorageImportProvider
 import at.shockbytes.dante.util.permission.TestPermissionManager
 import at.shockbytes.test.ObjectCreator
 import at.shockbytes.test.TestResourceManager
 import at.shockbytes.test.any
 import io.reactivex.Single
-import org.junit.Rule
 import org.mockito.Mockito.`when`
 import java.io.File
 
@@ -40,9 +40,9 @@ class ExternalStorageBackupProviderTest {
     private lateinit var backupProvider: ExternalStorageBackupProvider
 
     private val externalStorageInteractor = mock(ExternalStorageInteractor::class.java)
+    private val externalStorageImporter = DanteExternalStorageImportProvider(Gson())
 
-    @get:Rule
-    var activityRule = ActivityTestRule(MainActivity::class.java)
+    private val activityScenario: ActivityScenario<MainActivity> = ActivityScenario.launch(MainActivity::class.java)
 
     @Before
     fun setup() {
@@ -50,7 +50,8 @@ class ExternalStorageBackupProviderTest {
             schedulerFacade,
             gson,
             externalStorageInteractor,
-            permissionManager
+            permissionManager,
+            externalStorageImporter
         )
     }
 
@@ -71,23 +72,27 @@ class ExternalStorageBackupProviderTest {
         `when`(externalStorageInteractor.createBaseDirectory("Dante"))
             .thenThrow(IllegalStateException::class.java)
 
-        backupProvider
-            .initialize(activityRule.activity)
-            .test()
-            .assertError(IllegalStateException::class.java)
+        activityScenario.onActivity { activity ->
+            backupProvider
+                .initialize(activity)
+                .test()
+                .assertError(IllegalStateException::class.java)
 
-        assertThat(backupProvider.isEnabled).isFalse()
+            assertThat(backupProvider.isEnabled).isFalse()
+        }
     }
 
     @Test
     fun test_initialize_working() {
 
-        backupProvider
-            .initialize(activityRule.activity)
-            .test()
-            .assertComplete()
+        activityScenario.onActivity { activity ->
+            backupProvider
+                .initialize(activity)
+                .test()
+                .assertComplete()
 
-        assertThat(backupProvider.isEnabled).isTrue()
+            assertThat(backupProvider.isEnabled).isTrue()
+        }
     }
 
     @Test
@@ -130,7 +135,7 @@ class ExternalStorageBackupProviderTest {
         val file1 = File("entry_1.dbi")
         val file2 = File("entry_2.dbi")
 
-        val metadata = gson.fromJson<List<BackupMetadata>>(TestResourceManager.getTestResourceAsString(javaClass, "/backup_entries.json"))
+        val metadata = gson.fromJson<List<BackupMetadata.Standard>>(TestResourceManager.getTestResourceAsString(javaClass, "/backup_entries.json"))
         val expected = metadata.map { BackupMetadataState.Active(it) }
 
         val backupItem1 = BackupItem(metadata[0], ObjectCreator.getPopulatedListOfBookEntities())
@@ -170,7 +175,7 @@ class ExternalStorageBackupProviderTest {
         val file1 = File("entry_1.dbi")
         val file2 = File("entry_2.dbi")
 
-        val metadata = gson.fromJson<List<BackupMetadata>>(TestResourceManager.getTestResourceAsString(javaClass, "/backup_entries.json"))
+        val metadata = gson.fromJson<List<BackupMetadata.Standard>>(TestResourceManager.getTestResourceAsString(javaClass, "/backup_entries.json"))
         val expected = listOf(metadata.map { BackupMetadataState.Active(it) }.first())
 
         val backupItem1 = BackupItem(metadata[0], ObjectCreator.getPopulatedListOfBookEntities())
@@ -197,13 +202,13 @@ class ExternalStorageBackupProviderTest {
     @Test
     fun test_mapEntryToBooks() {
 
-        val metadata = BackupMetadata(
+        val metadata = BackupMetadata.Standard(
             id = "12345",
             device = "Nokia 7.1",
             storageProvider = BackupStorageProvider.EXTERNAL_STORAGE,
             books = 3,
             timestamp = System.currentTimeMillis(),
-            fileName = "test_mapEntryToBooks${BackupRepository.BACKUP_ITEM_SUFFIX}"
+            fileName = "test_mapEntryToBooks.json"
         )
 
         val expected = ObjectCreator.getPopulatedListOfBookEntities()
@@ -220,13 +225,13 @@ class ExternalStorageBackupProviderTest {
     @Test
     fun test_mapEntryToBooks_corrupt_json() {
 
-        val metadata = BackupMetadata(
+        val metadata = BackupMetadata.Standard(
             id = "12345",
             device = "Nokia 7.1",
             storageProvider = BackupStorageProvider.EXTERNAL_STORAGE,
             books = 3,
             timestamp = System.currentTimeMillis(),
-            fileName = "test_mapEntryToBooks${BackupRepository.BACKUP_ITEM_SUFFIX}"
+            fileName = "test_mapEntryToBooks.json"
         )
 
         val expected = ObjectCreator.getPopulatedListOfBookEntities()

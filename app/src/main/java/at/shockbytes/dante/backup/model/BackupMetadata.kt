@@ -31,12 +31,13 @@ sealed class BackupMetadata {
         override val storageProvider: BackupStorageProvider,
         override val books: Int,
         override val timestamp: Long,
-        val localFilePath: File
+        val localFilePath: File,
+        val mimeType: String
     ) : BackupMetadata()
 
     companion object {
 
-        fun Standard.attachLocalFile(localFile: File): WithLocalFile {
+        fun Standard.attachLocalFile(localFile: File, mimeType: String): WithLocalFile {
             return WithLocalFile(
                 id = this.id,
                 fileName = this.fileName,
@@ -44,7 +45,8 @@ sealed class BackupMetadata {
                 storageProvider = this.storageProvider,
                 books = this.books,
                 timestamp = this.timestamp,
-                localFilePath = localFile
+                localFilePath = localFile,
+                mimeType = mimeType
             )
         }
     }

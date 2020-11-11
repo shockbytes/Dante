@@ -18,8 +18,8 @@ import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isPortrait
+import at.shockbytes.dante.util.openFile
 import at.shockbytes.dante.util.setVisible
-import at.shockbytes.dante.util.shareFile
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
@@ -51,7 +51,11 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
                 }
 
                 override fun onBackupItemDownloadRequest(content: BackupMetadata.WithLocalFile) {
-                    exportFile(content)
+                    // Not implemented yet...
+                }
+
+                override fun onBackupItemOpenFileRequest(content: BackupMetadata.WithLocalFile) {
+                    openFile(content)
                 }
             }
         )
@@ -169,13 +173,12 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     }
 
 
-    private fun exportFile(content: BackupMetadata.WithLocalFile) {
+    private fun openFile(content: BackupMetadata.WithLocalFile) {
         with(requireContext()) {
-            // TODO This does not work...
             Intent
                 .createChooser(
-                    shareFile(content.localFilePath),
-                    resources.getText(R.string.export_backup)
+                    openFile(content.localFilePath, content.mimeType),
+                    resources.getText(R.string.open_backup_file)
                 )
                 .let(::startActivity)
         }

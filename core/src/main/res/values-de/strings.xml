@@ -320,5 +320,6 @@
     <string name="ask_for_all_page_record_deletion_msg">Alle Seitenaufzeichnungen löschen heißt effektiv, dass die gesamte Lesehistorie für dieses Buch gelöscht wird. Bist du sicher, dass du fortfahren willst?</string>
     <string name="month">Monat</string>
     <string name="share_file_template">Exportiere deine exportierte Backup-Datei %s.</string>
+    <string name="open_backup_file">Backup-Datei öffnen</string>
 
 </resources>

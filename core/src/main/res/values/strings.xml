@@ -22,6 +22,8 @@
     <string name="another_try">Another try</string>
     <string name="reset">Reset</string>
 
+    <string name="open_backup_file">Open backup file</string>
+
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>
 

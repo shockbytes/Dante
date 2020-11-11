@@ -53,3 +53,13 @@ fun Context.shareFile(fileToPath: File): Intent {
         .putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fileToPath))
         .setType("text/plain")
 }
+
+fun Context.openFile(fileToPath: File, mimeType: String): Intent {
+
+    val uri = Uri.fromFile(fileToPath)
+
+    return Intent()
+        .setAction(Intent.ACTION_VIEW)
+        .setDataAndType(uri, mimeType)
+        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+}

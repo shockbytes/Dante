@@ -150,7 +150,8 @@ class LocalCsvBackupProvider(
                 storageProvider = storageProvider,
                 books = books,
                 timestamp = timestamp,
-                localFilePath = backupFile
+                localFilePath = backupFile,
+                mimeType = CSV_MIME_TYPE
             )
 
             // Can only be active, ExternalStorageBackupProvider does not support cached states
@@ -218,6 +219,7 @@ class LocalCsvBackupProvider(
 
     companion object {
 
+        private const val CSV_MIME_TYPE = "text/csv"
         private const val CSV_SUFFIX = ".csv"
         private const val BASE_DIR_NAME = "Dante"
         private const val RC_READ_WRITE_EXT_STORAGE = 0x5321

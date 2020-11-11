@@ -110,7 +110,7 @@ class ExternalStorageBackupProvider(
                     .backupMetadata
                     // This line is necessary because the local file path is not stored
                     // within the serialized Json, it's only used when loaded
-                    .attachLocalFile(backupFile)
+                    .attachLocalFile(backupFile, mimeType = MIME_TYPE_JSON)
             }
 
             // Can only be active, ExternalStorageBackupProvider does not support cached states
@@ -190,6 +190,7 @@ class ExternalStorageBackupProvider(
     companion object {
 
         private const val BASE_DIR_NAME = "Dante"
+        private const val MIME_TYPE_JSON = "application/json"
         private const val RC_READ_WRITE_EXT_STORAGE = 0x5321
 
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)

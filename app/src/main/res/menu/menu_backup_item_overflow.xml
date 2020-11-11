@@ -3,12 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_backup_export_request"
+        android:icon="@drawable/ic_export"
+        android:title="@string/export_backup"
+        app:iconTint="@color/colorAccent" />
+
+    <item
+        android:id="@+id/menu_backup_open_request"
+        android:icon="@drawable/ic_open"
+        android:title="@string/open_backup_file"
+        app:iconTint="@color/indigo" />
+
+    <item
         android:id="@+id/menu_backup_delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/action_delete" />
-    <item
-        android:id="@+id/menu_backup_export_request"
-        android:icon="@drawable/ic_import_storage"
-        android:title="@string/export_backup"
-        app:iconTint="@color/colorAccent" />
 </menu>

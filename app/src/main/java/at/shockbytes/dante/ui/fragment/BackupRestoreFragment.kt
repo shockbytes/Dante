@@ -56,6 +56,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
                 override fun onBackupItemOpenFileRequest(content: BackupMetadata.WithLocalFile) {
                     openFile(content)
+                    viewModel.trackOpenFileEvent(content.storageProvider)
                 }
             }
         )

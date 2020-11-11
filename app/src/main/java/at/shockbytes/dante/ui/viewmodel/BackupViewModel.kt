@@ -173,6 +173,10 @@ class BackupViewModel @Inject constructor(
             }
     }
 
+    fun trackOpenFileEvent(storageProvider: BackupStorageProvider) {
+        tracker.track(DanteTrackingEvent.OpenBackupFile(storageProvider.acronym))
+    }
+
     // -------------------------- State classes --------------------------
 
     sealed class LoadBackupState {

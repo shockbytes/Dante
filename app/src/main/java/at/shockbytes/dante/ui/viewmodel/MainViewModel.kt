@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.content.Intent
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
@@ -28,9 +29,12 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     sealed class UserEvent {
+
         data class SuccessEvent(val user: DanteUser?, val showWelcomeScreen: Boolean) : UserEvent()
-        class LoginEvent(val signInIntent: Intent?) : UserEvent()
-        data class ErrorEvent(val errorMsg: Int) : UserEvent()
+
+        data class LoginEvent(val signInIntent: Intent?) : UserEvent()
+
+        data class ErrorEvent(@StringRes val errorMsg: Int) : UserEvent()
     }
 
     private val userEvent = MutableLiveData<UserEvent>()

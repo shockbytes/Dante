@@ -8,6 +8,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import androidx.core.app.ActivityOptionsCompat
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.navigation.ActivityNavigator
@@ -54,7 +55,7 @@ class MenuFragment : BottomSheetDialogFragment() {
 
     private fun bindViewModel() {
 
-        viewModel.getUserEvent().observe(this, Observer { event ->
+        viewModel.getUserEvent().observe(this, { event ->
 
             when (event) {
 
@@ -85,6 +86,9 @@ class MenuFragment : BottomSheetDialogFragment() {
                         }
                         .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
                         .show(childFragmentManager, "sign-in-fragment")
+                }
+                is MainViewModel.UserEvent.ErrorEvent -> {
+                    Toast.makeText(context, event.errorMsg, Toast.LENGTH_LONG).show()
                 }
             }
         })

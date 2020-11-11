@@ -15,6 +15,7 @@ import at.shockbytes.dante.importer.DanteCsvImportProvider
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.dante.util.singleOf
 import io.reactivex.Completable
 import io.reactivex.Single
 import timber.log.Timber
@@ -175,8 +176,7 @@ class LocalCsvBackupProvider(
     }
 
     override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
-        return Single
-            .fromCallable {
+        return singleOf {
                 externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName)
             }
             .flatMap(csvImporter::importFromContent)

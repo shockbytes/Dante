@@ -29,6 +29,7 @@ import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.importer.DanteCsvImportProvider
+import at.shockbytes.dante.importer.DanteExternalStorageImportProvider
 import at.shockbytes.dante.importer.DefaultImportRepository
 import at.shockbytes.dante.importer.GoodreadsCsvImportProvider
 import at.shockbytes.dante.importer.ImportProvider
@@ -105,7 +106,8 @@ class AppModule(private val app: Application) {
         externalStorageInteractor: ExternalStorageInteractor,
         permissionManager: PermissionManager,
         csvImportProvider: DanteCsvImportProvider,
-        driveClient: DriveClient
+        driveClient: DriveClient,
+        danteExternalStorageImportProvider: DanteExternalStorageImportProvider
     ): Array<BackupProvider> {
         return arrayOf(
             GoogleDriveBackupProvider(
@@ -122,7 +124,8 @@ class AppModule(private val app: Application) {
                 schedulerFacade,
                 Gson(),
                 externalStorageInteractor,
-                permissionManager
+                permissionManager,
+                danteExternalStorageImportProvider
             ),
             LocalCsvBackupProvider(
                 schedulerFacade,
@@ -163,13 +166,20 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
+    fun provideDanteExternalStorageImportProvider(): DanteExternalStorageImportProvider {
+        return DanteExternalStorageImportProvider(gson = Gson())
+    }
+
+    @Provides
     fun provideImportProvider(
         schedulers: SchedulerFacade,
-        danteCsvImportProvider: DanteCsvImportProvider
+        danteCsvImportProvider: DanteCsvImportProvider,
+        danteExternalStorageImportProvider: DanteExternalStorageImportProvider
     ): Array<ImportProvider> {
         return arrayOf(
             GoodreadsCsvImportProvider(CsvReader(), schedulers),
-            danteCsvImportProvider
+            danteCsvImportProvider,
+            danteExternalStorageImportProvider
         )
     }
 

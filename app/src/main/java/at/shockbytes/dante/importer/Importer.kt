@@ -13,6 +13,20 @@ enum class Importer(
     val stability: Stability
 ) {
 
+    DANTE_EXTERNAL_STORAGE(
+        R.string.import_dante_external_title,
+        R.drawable.ic_external_storage,
+        R.string.import_external_storage_description,
+        mimeType = "application/json",
+        stability = Stability.RELEASE
+    ),
+    DANTE_CSV(
+        R.string.import_dante_csv_title,
+        R.drawable.ic_csv,
+        R.string.import_dante_description,
+        mimeType = "text/csv",
+        stability = Stability.BETA
+    ),
     GOODREADS_CSV(
         R.string.import_goodreads_title,
         R.drawable.ic_import_goodreads,
@@ -20,11 +34,4 @@ enum class Importer(
         mimeType = "text/csv",
         stability = Stability.BETA
     ),
-    DANTE_CSV(
-        R.string.app_name,
-        R.drawable.ic_brand_app_logo,
-        R.string.import_dante_description,
-        mimeType = "text/csv",
-        stability = Stability.BETA
-    )
 }

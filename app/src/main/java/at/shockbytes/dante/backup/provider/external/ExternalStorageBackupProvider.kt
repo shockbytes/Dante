@@ -13,9 +13,11 @@ import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.importer.DanteExternalStorageImportProvider
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.dante.util.singleOf
 import com.google.gson.Gson
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -30,7 +32,8 @@ class ExternalStorageBackupProvider(
     private val schedulers: SchedulerFacade,
     private val gson: Gson,
     private val externalStorageInteractor: ExternalStorageInteractor,
-    private val permissionManager: PermissionManager
+    private val permissionManager: PermissionManager,
+    private val externalStorageImporter: DanteExternalStorageImportProvider
 ) : BackupProvider {
 
     override val backupStorageProvider = BackupStorageProvider.EXTERNAL_STORAGE
@@ -134,12 +137,10 @@ class ExternalStorageBackupProvider(
     }
 
     override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
-        return Single
-            .fromCallable {
-                externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName).let { content ->
-                    gson.fromJson(content, BackupItem::class.java).books
-                }
+        return singleOf {
+                externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName)
             }
+            .flatMap(externalStorageImporter::importFromContent)
             .subscribeOn(schedulers.io)
     }
 

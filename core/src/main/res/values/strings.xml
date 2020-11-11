@@ -399,9 +399,13 @@
     <string name="storage_import">Import</string>
     <string name="import_success">Import succeeded!</string>
     <string name="import_books">Import books</string>
+
+    <string name="import_dante_csv_title" translatable="false">Dante CSV Backup</string>
+    <string name="import_dante_external_title" translatable="false">Dante External Storage Backup</string>
     <string name="import_goodreads_title" translatable="false">Goodreads</string>
     <string name="import_goodreads_description">Import your library from Goodreads from a CSV file. \n\nNote that this feature is still in beta and the book covers can\'t be imported at the moment.</string>
-    <string name="import_dante_description">Import your library from a previously exported Dante CSV backup. You can only import CSV backups.</string>
+    <string name="import_dante_description">Import your library from a previously exported Dante CSV backup. You can only import such CSV backups.</string>
+    <string name="import_external_storage_description">Import your library from a previously exported Dante external storage backup. You can only import such external storage backups.</string>
     <string name="import_approval_title">Import %d books from %s</string>
     <string name="import_no_books">There are no books to import</string>
     <string name="import_read_later">%d books\n read later</string>

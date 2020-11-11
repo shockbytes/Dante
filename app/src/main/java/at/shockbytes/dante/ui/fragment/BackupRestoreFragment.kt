@@ -173,7 +173,6 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
         viewModel.deleteItem(t, position, currentItems)
     }
 
-
     private fun openFile(content: BackupMetadata.WithLocalFile) {
         with(requireContext()) {
             Intent

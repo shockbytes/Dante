@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.fragment
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater

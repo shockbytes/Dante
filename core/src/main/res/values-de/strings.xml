@@ -161,7 +161,7 @@
     <string name="na">Nicht verfügbar</string>
     <string name="got_it">Alles klar</string>
     <string name="inactive_resource_message">Es sieht so aus wie wenn dein Backup nicht erreichbar ist. Es könnte sein, dass du nicht mit dem Internet verbunden bist.</string>
-    <string name="backup_storage_provider_rationale_gdrive">Dieser Service wird zurzeit nicht länger von Google unterstützt. Es wird nach einer anderen Lösung gesucht um dieses Feature zu unterstützen.</string>
+    <string name="backup_storage_provider_rationale_gdrive">Sichere deine Daten auf Google Drive. Diese Funktion kann nur genutzer werden, wenn du mit deinem Google Account eingeloggt bist. Stelle deine Backups auf anderen Geräten her, indem du dich mit denselben Account einloggst.</string>
     <string name="backup_storage_provider_rationale_shockbytes">Sichere deine Daten auf unsere Server. Deine Daten gehören immer noch dir. Wir empfehlen diese Art der Datensicherung.</string>
     <string name="backup_storage_provider_rationale_external_storage">Speichere deine Daten auf deinem externen Speicherplatz. Das Backup muss manuell auf andere Geräte übertragen werden.</string>
     <string name="backup_provider_rationale">Dante erlaubt es dir deine Daten auf verschiedenen Wegen zu sichern. Damit können deine Bücher zwischen verschiedenen Geräten synchronisiert werden. Sichere deine Bücher auf einen Gerät und stelle sie auf einem anderen Gerät wieder her. Klicke einfach auf deine bevorzugte Art.</string>

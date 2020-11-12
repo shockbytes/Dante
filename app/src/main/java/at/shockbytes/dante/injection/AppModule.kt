@@ -65,73 +65,8 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideInactiveShockbytesBackupStorage(
-        preferences: SharedPreferences
-    ): InactiveShockbytesBackupStorage {
-        return SharedPreferencesInactiveShockbytesBackupStorage(preferences)
-    }
-
-    @Provides
-    fun provideBackupRepository(
-        backupProvider: Array<BackupProvider>,
-        preferences: SharedPreferences,
-        tracker: Tracker
-    ): BackupRepository {
-        return DefaultBackupRepository(backupProvider.toList(), preferences, tracker)
-    }
-
-    @Provides
-    fun provideExternalStorageInteractor(): ExternalStorageInteractor {
-        return DefaultExternalStorageInteractor(app.applicationContext)
-    }
-
-    @Provides
     fun providePermissionManager(): PermissionManager {
         return AndroidPermissionManager()
-    }
-
-    @Provides
-    fun provideDriveClient(signInManager: SignInManager): DriveClient {
-        return DriveRestClient(signInManager as GoogleFirebaseSignInManager)
-    }
-
-    @Provides
-    fun provideBackupProvider(
-        schedulerFacade: SchedulerFacade,
-        signInManager: SignInManager,
-        shockbytesHerokuApi: ShockbytesHerokuApi,
-        inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage,
-        externalStorageInteractor: ExternalStorageInteractor,
-        permissionManager: PermissionManager,
-        csvImportProvider: DanteCsvImportProvider,
-        driveClient: DriveClient,
-        danteExternalStorageImportProvider: DanteExternalStorageImportProvider
-    ): Array<BackupProvider> {
-        return arrayOf(
-            GoogleDriveBackupProvider(
-                schedulerFacade,
-                Gson(),
-                driveClient
-            ),
-            ShockbytesHerokuServerBackupProvider(
-                signInManager,
-                shockbytesHerokuApi,
-                inactiveShockbytesBackupStorage
-            ),
-            ExternalStorageBackupProvider(
-                schedulerFacade,
-                Gson(),
-                externalStorageInteractor,
-                permissionManager,
-                danteExternalStorageImportProvider
-            ),
-            LocalCsvBackupProvider(
-                schedulerFacade,
-                externalStorageInteractor,
-                permissionManager,
-                csvImportProvider
-            )
-        )
     }
 
     @Provides
@@ -156,37 +91,5 @@ class AppModule(private val app: Application) {
     fun provideAnnouncementProvider(): AnnouncementProvider {
         val prefs = app.getSharedPreferences("announcements", Context.MODE_PRIVATE)
         return SharedPrefsAnnouncementProvider(prefs)
-    }
-
-    @Provides
-    fun provideDanteCsvImportProvider(schedulers: SchedulerFacade): DanteCsvImportProvider {
-        return DanteCsvImportProvider(CsvReader(), schedulers)
-    }
-
-    @Provides
-    fun provideDanteExternalStorageImportProvider(): DanteExternalStorageImportProvider {
-        return DanteExternalStorageImportProvider(gson = Gson())
-    }
-
-    @Provides
-    fun provideImportProvider(
-        schedulers: SchedulerFacade,
-        danteCsvImportProvider: DanteCsvImportProvider,
-        danteExternalStorageImportProvider: DanteExternalStorageImportProvider
-    ): Array<ImportProvider> {
-        return arrayOf(
-            GoodreadsCsvImportProvider(CsvReader(), schedulers),
-            danteCsvImportProvider,
-            danteExternalStorageImportProvider
-        )
-    }
-
-    @Provides
-    fun provideImportRepository(
-        importProvider: Array<ImportProvider>,
-        bookRepository: BookRepository,
-        schedulers: SchedulerFacade
-    ): ImportRepository {
-        return DefaultImportRepository(importProvider, bookRepository, schedulers)
     }
 }

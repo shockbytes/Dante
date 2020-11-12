@@ -55,7 +55,6 @@ ext {
     firebaseCrashlyticsVersion = "17.2.2"
 
     playServicesVersionVision = "20.1.2"
-    playServicesVersionDrive = "17.0.0"
     playServicesVersionAuth = "19.0.0"
 
     daggerVersion = "2.27"

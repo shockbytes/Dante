@@ -98,7 +98,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$archXVersion"
     implementation "androidx.lifecycle:lifecycle-common-java8:$archXVersion"
     implementation "com.google.android.gms:play-services-vision:$playServicesVersionVision"
-    implementation "com.google.android.gms:play-services-drive:$playServicesVersionDrive"
     implementation "com.google.android.gms:play-services-auth:$playServicesVersionAuth"
     implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
     implementation "com.google.firebase:firebase-core:$firebaseVersionCore"

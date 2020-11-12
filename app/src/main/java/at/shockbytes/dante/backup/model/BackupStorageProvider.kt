@@ -38,8 +38,18 @@ enum class BackupStorageProvider(
         stability = Stability.CANARY
     ),
     @SerializedName("gdrive")
-    GOOGLE_DRIVE(
+    GOOGLE_DRIVE_LEGACY(
         "gdrive",
+        "Google Drive",
+        R.drawable.ic_google_drive_legacy,
+        R.string.backup_storage_provider_rationale_gdrive,
+        Priority.HIGH,
+        isLocalFileExportable = false,
+        stability = Stability.RELEASE
+    ),
+    @SerializedName("google-drive")
+    GOOGLE_DRIVE(
+        "google-drive",
         "Google Drive",
         R.drawable.ic_google_drive,
         R.string.backup_storage_provider_rationale_gdrive,

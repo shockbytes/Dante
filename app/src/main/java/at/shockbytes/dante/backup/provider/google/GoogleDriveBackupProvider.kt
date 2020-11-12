@@ -22,7 +22,7 @@ class GoogleDriveBackupProvider(
     private val driveClient: DriveClient
 ) : BackupProvider {
 
-    override var isEnabled: Boolean = false
+    override var isEnabled: Boolean = true
 
     override val backupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
 

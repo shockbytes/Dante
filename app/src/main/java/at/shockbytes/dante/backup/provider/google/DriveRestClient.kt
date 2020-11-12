@@ -6,7 +6,7 @@ import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.merge
-import at.shockbytes.dante.util.singleOf
+import com.google.android.gms.tasks.Tasks
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.client.http.javanet.NetHttpTransport
@@ -20,16 +20,21 @@ import timber.log.Timber
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.lang.Exception
 import java.util.Collections
+import java.util.concurrent.Executors
 
+/**
+ * TODO Explain [selectedStorageProvider] necessity!
+ */
 class DriveRestClient(
     private val signInManager: GoogleFirebaseSignInManager,
-    private val mimeType: String = "application/json",
-    private val parentFolder: String = "appDataFolder", // TODO = AppFolder? root/appDataFolder
-    private val spaces: String = "appDataFolder" // TODO Verify?
+    private val selectedStorageProvider: BackupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
 ) : DriveClient {
 
     private lateinit var drive: Drive
+
+    private val executor = Executors.newSingleThreadExecutor()
 
     override fun initialize(activity: FragmentActivity): Completable {
         return completableOf {
@@ -51,29 +56,47 @@ class DriveRestClient(
     }
 
     override fun readFileAsString(fileId: String): Single<String> {
-        return singleOf {
-            // val metadata: File = drive.files().get(fileId).execute()
-            // val name: String = metadata.name
-            drive.files().get(fileId).executeMediaAsInputStream().use { inputStream ->
-                BufferedReader(InputStreamReader(inputStream)).use { it.readText() }
+        return Single.create { emitter ->
+
+            Tasks.call(executor) {
+                val metadata: File = drive.files().get(fileId).execute()
+                val name: String = metadata.name
+                Timber.e(name)
+
+                try {
+                    drive.files().get(fileId).executeMediaAsInputStream().use { inputStream ->
+                        val content = BufferedReader(InputStreamReader(inputStream)).use { it.readText() }
+                            .also(Timber::e) // TODO Remove after verification
+                        emitter.onSuccess(content)
+                    }
+                } catch (exception: Exception) {
+                    Timber.e(exception)
+                    emitter.tryOnError(exception)
+                }
             }
         }
     }
 
     override fun createFile(filename: String, content: String): Completable {
-        return completableOf {
+        return Completable.create { emitter ->
+            Tasks.call(executor) {
 
-            // 1. Create file
-            val metadata: File = File()
-                .setParents(Collections.singletonList(parentFolder))
-                .setMimeType(mimeType)
-                .setName(filename)
-            val createdFile: File = drive.files().create(metadata).execute()
-                ?: throw IOException("Null result when requesting file creation.")
+                try {
+                    val metadata: File = File()
+                        .setParents(Collections.singletonList(PARENT_FOLDER))
+                        .setMimeType(MIME_TYPE)
+                        .setName(filename)
 
-            // 2. Write to File
-            val contentStream = ByteArrayContent.fromString(mimeType, content)
-            drive.files().update(createdFile.id, metadata, contentStream).execute()
+                    val contentStream = ByteArrayContent.fromString(MIME_TYPE, content)
+
+                    drive.files().create(metadata, contentStream).execute()
+                        ?: throw IOException("Null result when requesting file creation.")
+
+                    emitter.onComplete()
+                } catch (e: Exception) {
+                    emitter.tryOnError(e)
+                }
+            }
         }
     }
 
@@ -95,26 +118,45 @@ class DriveRestClient(
     }
 
     override fun listBackupFiles(): Single<List<BackupMetadata>> {
-        return singleOf {
-            drive.files().list().setSpaces(spaces).execute().files.map { file ->
-                Timber.e(file.toPrettyString())
+        return Single.create { emitter ->
+            Tasks.call(executor) {
 
-                val fileName = file.name
-                val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                val storageProviderAcronym = data[0]
-                val storageProvider = BackupStorageProvider.byAcronym(storageProviderAcronym)
-                val device = data[4].substring(0, data[4].lastIndexOf("."))
-                val timestamp = java.lang.Long.parseLong(data[2])
-                val books = Integer.parseInt(data[3])
+                try {
 
-                BackupMetadata.Standard(
-                    id = file.id,
-                    fileName = fileName,
-                    device = device,
-                    storageProvider = storageProvider,
-                    books = books,
-                    timestamp = timestamp
-                )
+                    drive.files().list().setSpaces(SPACES)
+                        .execute()
+                        .files
+                        .mapNotNull { file ->
+
+                            val fileName = file.name
+                            val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                            val storageProvider = BackupStorageProvider.byAcronym(data[0])
+
+                            if (storageProvider == selectedStorageProvider) {
+                                Timber.d(file.toPrettyString())
+
+                                val device = fileName.substring(
+                                    fileName.indexOf(data[4]),
+                                    fileName.lastIndexOf(".")
+                                )
+
+                                val timestamp = data[2].toLong()
+                                val books = data[3].toInt()
+
+                                BackupMetadata.Standard(
+                                    id = file.id,
+                                    fileName = fileName,
+                                    device = device,
+                                    storageProvider = storageProvider,
+                                    books = books,
+                                    timestamp = timestamp
+                                )
+                            } else null
+                        }
+                        .let(emitter::onSuccess)
+                } catch (e: Exception) {
+                    emitter.tryOnError(e)
+                }
             }
         }
     }
@@ -122,5 +164,8 @@ class DriveRestClient(
     companion object {
 
         private const val APP_NAME = "Dante"
+        private const val MIME_TYPE = "application/json"
+        private const val PARENT_FOLDER = "appDataFolder"
+        private const val SPACES = "appDataFolder"
     }
 }

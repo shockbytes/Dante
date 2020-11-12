@@ -11,6 +11,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Handler
+import android.os.Looper
 import androidx.annotation.ColorInt
 import android.text.SpannableString
 import android.text.Spanned
@@ -129,7 +130,7 @@ fun Context.isNightModeEnabled(): Boolean {
 }
 
 fun runDelayed(delay: Long, action: () -> Unit) {
-    Handler().postDelayed({
+    Handler(Looper.getMainLooper()).postDelayed({
         action()
     }, delay)
 }

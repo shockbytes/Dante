@@ -30,7 +30,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/item_backup_entry_txt_device"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_google_drive" />
+            tools:src="@drawable/ic_google_drive_legacy" />
 
         <TextView
             android:id="@+id/item_backup_entry_txt_time"

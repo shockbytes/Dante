@@ -13,8 +13,8 @@ import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.csv.LocalCsvBackupProvider
 import at.shockbytes.dante.storage.DefaultExternalStorageInteractor
 import at.shockbytes.dante.backup.provider.external.ExternalStorageBackupProvider
-import at.shockbytes.dante.backup.provider.google.DriveApiClient
 import at.shockbytes.dante.backup.provider.google.DriveClient
+import at.shockbytes.dante.backup.provider.google.DriveRestClient
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.backup.provider.google.GoogleDriveBackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.ShockbytesHerokuServerBackupProvider
@@ -92,9 +92,7 @@ class AppModule(private val app: Application) {
 
     @Provides
     fun provideDriveClient(signInManager: SignInManager): DriveClient {
-        // TODO Replace with
-        // DriveRestClient(signInManager as GoogleFirebaseSignInManager)
-        return DriveApiClient(signInManager as GoogleFirebaseSignInManager)
+        return DriveRestClient(signInManager as GoogleFirebaseSignInManager)
     }
 
     @Provides

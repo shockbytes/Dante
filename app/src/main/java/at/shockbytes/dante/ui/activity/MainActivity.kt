@@ -353,7 +353,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             GoogleWelcomeScreenDialogFragment
                 .newInstance(account.givenName, account.photoUrl)
                 .setOnAcknowledgedListener {
-                    viewModel.showSignInWelcomeScreen(false)
+                    viewModel.disableShowWelcomeScreen()
                 }
                 .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
         }

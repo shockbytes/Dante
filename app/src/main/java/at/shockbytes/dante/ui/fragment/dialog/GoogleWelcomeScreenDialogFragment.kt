@@ -43,7 +43,7 @@ class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context!!)
+        return AlertDialog.Builder(requireContext())
                 .setView(welcomeView)
                 .setPositiveButton(getString(R.string.welcome_acknowledge)) { _, _ ->
                     listener?.invoke()

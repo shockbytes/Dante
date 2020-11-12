@@ -102,8 +102,15 @@ class MainViewModel @Inject constructor(
         signInManager.maybeLater = maybeLater
     }
 
-    fun showSignInWelcomeScreen(showWelcomeScreen: Boolean) {
-        signInManager.showWelcomeScreen = showWelcomeScreen
+    fun disableShowWelcomeScreen() {
+        signInManager.showWelcomeScreen = false
+        hideWelcomeScreenFlagFromPostedLiveData()
+    }
+
+    private fun hideWelcomeScreenFlagFromPostedLiveData() {
+        (userEvent.value as? UserEvent.SuccessEvent)?.let { event ->
+            userEvent.postValue(event.copy(showWelcomeScreen = false))
+        }
     }
 
     fun queryAnnouncements() {

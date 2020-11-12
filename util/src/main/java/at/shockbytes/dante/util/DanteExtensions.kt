@@ -153,6 +153,8 @@ fun <T> singleOf(
     return Single.just(block()).subscribeOn(subscribeOn)
 }
 
+fun Iterable<Completable>.merge() = Completable.merge(this)
+
 fun completableOf(
     subscribeOn: Scheduler = Schedulers.computation(),
     block: () -> Unit

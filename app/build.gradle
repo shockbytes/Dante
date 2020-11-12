@@ -98,6 +98,15 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebaseVersionAuth"
     implementation "com.google.firebase:firebase-ml-vision:$firebaseMLVision"
 
+
+    implementation 'com.google.http-client:google-http-client-gson:1.36.0'
+    implementation('com.google.api-client:google-api-client-android:1.30.11') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-drive:v3-rev197-1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 

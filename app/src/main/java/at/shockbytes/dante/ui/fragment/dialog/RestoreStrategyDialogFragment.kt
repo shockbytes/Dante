@@ -27,7 +27,7 @@ class RestoreStrategyDialogFragment : DialogFragment() {
         }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context!!)
+        return AlertDialog.Builder(requireContext())
             .setView(strategyView)
             .create()
             .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }

@@ -10,18 +10,17 @@
         android:id="@+id/txtDialogFragmentBackupRestoreStrategyHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:drawableLeft="@drawable/ic_google_drive_legacy"
         android:drawablePadding="16dp"
-        android:drawableStart="@drawable/ic_google_drive_legacy"
         android:text="@string/backup_restore_strategy_title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/menuItemColor"
+        app:drawableStartCompat="@drawable/ic_remote_storage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,33 +34,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
         android:layout_marginTop="16dp"
+        android:layout_marginBottom="0dp"
         android:weightSum="1">
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/dialogfragment_restore_strategy_btn_merge"
+            style="@style/AppTheme.RoundedButton.Outlined"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_marginEnd="2dp"
             android:layout_weight="0.5"
-            android:drawablePadding="4dp"
-            android:drawableTop="@drawable/ic_restore_merge"
             android:text="@string/backup_strategy_merge"
-            android:textColor="@android:color/white"
-            app:backgroundTint="@color/nice_color" />
+            android:textColor="@color/nice_color"
+            app:icon="@drawable/ic_restore_merge"
+            app:iconGravity="top"
+            app:iconTint="@color/nice_color"
+            app:rippleColor="@color/nice_color" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/dialogfragment_restore_strategy_btn_overwrite"
+            style="@style/AppTheme.RoundedButton.Outlined"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_marginStart="2dp"
             android:layout_weight="0.5"
-            android:drawablePadding="4dp"
-            android:drawableTop="@drawable/ic_restore_overwrite"
             android:text="@string/backup_strategy_overwrite"
-            android:textColor="@android:color/white"
-            app:backgroundTint="@color/iconColor" />
+            android:textColor="@color/iconColor"
+            app:icon="@drawable/ic_restore_overwrite"
+            app:iconGravity="top"
+            app:iconTint="@color/iconColor"
+            app:rippleColor="@color/iconColor" />
 
     </LinearLayout>
 

@@ -70,7 +70,7 @@ ext {
     cameraXVersion = "1.0.0-beta11"
     cameraXExtensionVersion = "1.0.0-alpha18"
 
-    jodaTimeVersion = "2.10.3"
+    jodaTimeVersion = "2.10.7.2"
     timberVersion = "4.7.1"
     materialDialogsVersion = "3.3.0"
 }

@@ -44,6 +44,7 @@ class DriveRestClient(
                 .apply {
                     selectedAccount = signInManager.getGoogleAccount()!!.account // Fail here if null
                 }
+
             drive = Drive
                 .Builder(
                     NetHttpTransport(),
@@ -61,13 +62,14 @@ class DriveRestClient(
             Tasks.call(executor) {
                 val metadata: File = drive.files().get(fileId).execute()
                 val name: String = metadata.name
-                Timber.e(name)
+                log("Read filename: $name")
 
                 try {
                     drive.files().get(fileId).executeMediaAsInputStream().use { inputStream ->
-                        val content = BufferedReader(InputStreamReader(inputStream)).use { it.readText() }
-                            .also(Timber::e) // TODO Remove after verification
-                        emitter.onSuccess(content)
+                        BufferedReader(InputStreamReader(inputStream))
+                            .use { it.readText() }
+                            .also(::log)
+                            .let(emitter::onSuccess)
                     }
                 } catch (exception: Exception) {
                     Timber.e(exception)
@@ -89,8 +91,13 @@ class DriveRestClient(
 
                     val contentStream = ByteArrayContent.fromString(MIME_TYPE, content)
 
-                    drive.files().create(metadata, contentStream).execute()
+
+                    log("Create file with content $content")
+
+                    val file = drive.files().create(metadata, contentStream).execute()
                         ?: throw IOException("Null result when requesting file creation.")
+
+                    log("File created with ID: <${file.id}>")
 
                     emitter.onComplete()
                 } catch (e: Exception) {
@@ -122,7 +129,6 @@ class DriveRestClient(
             Tasks.call(executor) {
 
                 try {
-
                     drive.files().list().setSpaces(SPACES)
                         .execute()
                         .files
@@ -133,7 +139,7 @@ class DriveRestClient(
                             val storageProvider = BackupStorageProvider.byAcronym(data[0])
 
                             if (storageProvider == selectedStorageProvider) {
-                                Timber.d(file.toPrettyString())
+                                log(file.toPrettyString())
 
                                 val device = fileName.substring(
                                     fileName.indexOf(data[4]),
@@ -159,6 +165,10 @@ class DriveRestClient(
                 }
             }
         }
+    }
+
+    private fun log(msg: String) {
+        Timber.d(msg)
     }
 
     companion object {

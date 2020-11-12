@@ -27,15 +27,23 @@
 # - GMS
 # - Crashlytics
 # - Timber
+# - Jackson
 # - Firebase
-# - SpeedDialView
 
 # Activity Transition
 -keep public class android.app.ActivityTransitionCoordinator
 
 # Do not obfuscate backup models
 -keepclassmembers class at.shockbytes.dante.backup.model.* {
-  *;
+    <fields>;
+    <init>();
+    <methods>;
+}
+-keep class at.shockbytes.dante.core.book.** {*;}
+-keepclassmembers class at.shockbytes.dante.core.book.* {
+    <fields>;
+    <init>();
+    <methods>;
 }
 
 -keepclassmembers class * extends java.lang.Enum {
@@ -73,18 +81,30 @@
 -keepattributes Signature
 -keepattributes Exceptions
 
+# Jackson
+-keep class com.fasterxml.jackson.databind.ObjectMapper {
+    public <methods>;
+    protected <methods>;
+}
+-keep class com.fasterxml.jackson.databind.ObjectWriter {
+    public ** writeValueAsString(**);
+}
+-keepnames class com.fasterxml.jackson.** { *; }
+-dontwarn com.fasterxml.jackson.databind.**
+
 # Gson
 -keepclassmembers enum * { *; }
+-keep class com.google.** { *;}
 
 # gms
--keep class com.google.android.gms.* { *; }
+-keep class com.google.android.gms.** { *; }
 -dontwarn com.google.android.gms.**
 
 # Crashlytics
 -keepattributes *Annotation*
 -keepattributes SourceFile,LineNumberTable
 -keep public class * extends java.lang.Exception
--keep class com.crashlytics.* { *; }
+-keep class com.crashlytics.** { *; }
 -dontwarn com.crashlytics.**
 
 # Timber

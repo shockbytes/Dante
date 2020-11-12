@@ -68,12 +68,22 @@ The backlog is currently empty.
 ## Current development
 
 ### Version 3.16 - BRING BACK BACKUP
-- [ ] Export local backups via Mail/other services
-- [ ] Google Drive REST Backup
-- [ ] Backup issues
-  - [ ] Fix Backup Proguard rules
+- [x] Google Drive REST Backup
+  - [x] Add DriveRestClient
+  - [x] Remove DriveApiClient + dependencies
+  - [x] Move dependencies in `BookStorageModule`
+  - [x] Polish Overwrite/Merge UI
+  - [x] Replace Google Drive icon
+- [x] Export local backups via Mail/other services
+  - [x] Open local backups via intent chooser
+  - [x] Allow external backup import in Import tab
+  - [x] Change export/import icon
+  - [x] Track open backup event (with provider)
+- [x] Replace ActionBar in BookManagement screen
+- [x] Backup issues
+  - [x] Fix Backup Proguard rules
   - [x] Make last backup time reactive
-  - [ ] Fix issues with CSV files on emulators
+  - [x] Fix issues with CSV files on emulators
 
 ## Changelog
 
@@ -131,7 +141,7 @@ The backlog is currently empty.
 
 ### Version 3.6 - GET EXCITED
 * Move to Android App Bundles
-* Improve Backups 
+* Improve Backups
 * Open source Dante
 
 ### Version 3.5 - ADD ANDROID FRAMEWORK AWESOMENESS
@@ -201,9 +211,9 @@ The backlog is currently empty.
 * Search feature
 
 ### Version 2.6 - DETAILED DESIGN
-* Rate books 
+* Rate books
 * 100% Kotlin Port if possible
-* Enter book page count manually 
+* Enter book page count manually
 * Adding notes to books
 
 ### Version 2.5 - REFACTOR RAMPAGE
@@ -216,6 +226,6 @@ The backlog is currently empty.
 * Add Crashlytics
 * Code cleanup and Kotlin Port
 * Introduction / Showcase View
-* DownloadBook / QueryCapture Activity merging 
+* DownloadBook / QueryCapture Activity merging
 * ViewPagerAdapter
 * Adaptive Icons

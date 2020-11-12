@@ -91,7 +91,6 @@ class DriveRestClient(
 
                     val contentStream = ByteArrayContent.fromString(MIME_TYPE, content)
 
-
                     log("Create file with content $content")
 
                     val file = drive.files().create(metadata, contentStream).execute()

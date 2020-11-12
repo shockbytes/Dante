@@ -13,7 +13,6 @@ import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_backup_entry.*
 
@@ -25,23 +24,16 @@ class BackupEntryAdapter(
     ctx: Context,
     onItemClickListener: OnItemClickListener<BackupMetadataState>,
     private val onItemOverflowMenuClickedListener: OnBackupOverflowItemListener
-) : BaseAdapter<BackupMetadataState>(ctx, onItemClickListener), ItemTouchHelperAdapter {
+) : BaseAdapter<BackupMetadataState>(ctx, onItemClickListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BackupMetadataState> {
         return BackupViewHolder(inflater.inflate(R.layout.item_backup_entry, parent, false))
     }
 
-    override fun onItemMove(from: Int, to: Int) = false
-
-    override fun onItemMoveFinished() = Unit
-
-    override fun onItemDismiss(position: Int) {
-        onItemMoveListener?.onItemDismissed(data[position], position)
-    }
-
-    fun updateData(backupStates: List<BackupMetadataState>) {
+    fun updateData(freshData: List<BackupMetadataState>) {
         data.clear()
-        data.addAll(backupStates)
+        data.addAll(freshData)
+        notifyDataSetChanged()
     }
 
     inner class BackupViewHolder(

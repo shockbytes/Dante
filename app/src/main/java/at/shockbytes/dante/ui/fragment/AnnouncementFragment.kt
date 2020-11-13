@@ -1,11 +1,12 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
-import androidx.lifecycle.Observer
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.Announcement
 import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
 import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
@@ -13,6 +14,7 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOfActivity
 import com.airbnb.lottie.LottieDrawable
 import kotlinx.android.synthetic.main.fragment_announcement.*
+import kotlinx.android.synthetic.main.fragment_book_action_sheet.view.*
 import javax.inject.Inject
 
 class AnnouncementFragment : BaseFragment() {
@@ -38,7 +40,7 @@ class AnnouncementFragment : BaseFragment() {
     override fun bindViewModel() {
         viewModel.requestAnnouncementState()
 
-        viewModel.getAnnouncementState().observe(this, Observer { announcementState ->
+        viewModel.getAnnouncementState().observe(this, { announcementState ->
             when (announcementState) {
                 is AnnouncementViewModel.AnnouncementState.Active -> {
                     populateAnnouncementViews(announcementState.announcement)
@@ -57,16 +59,31 @@ class AnnouncementFragment : BaseFragment() {
 
             when (illustration) {
                 is Announcement.Illustration.LottieIllustration -> {
+                    iv_announcement.setVisible(false)
                     lottie_announcement.apply {
                         setVisible(true)
                         repeatCount = LottieDrawable.INFINITE
                         setAnimation(illustration.lottieRes)
                     }
                 }
+                is Announcement.Illustration.ImageIllustration -> {
+                    lottie_announcement.setVisible(false, invisibilityState = View.INVISIBLE)
+                    iv_announcement.apply {
+                        setVisible(true)
+                        setImageResource(illustration.drawableRes)
+                    }
+                }
             }
 
-            card_announcement.setOnClickListener {
-                performAnnouncementAction(this.action)
+            btn_announcement_action.apply {
+                setVisible(hasAction)
+
+                this@with.action?.let { action ->
+                    setOnClickListener {
+                        performAnnouncementAction(action)
+                    }
+                    setText(action.actionLabel)
+                }
             }
 
             layout_announcement.setOnClickListener {
@@ -78,13 +95,16 @@ class AnnouncementFragment : BaseFragment() {
         }
     }
 
-    private fun performAnnouncementAction(action: Announcement.Action?) {
+    private fun performAnnouncementAction(action: Announcement.Action) {
         when (action) {
             is Announcement.Action.OpenUrl -> {
                 UrlLauncher.launchUrl(requireContext(), action.url)
             }
             is Announcement.Action.Mail -> {
                 MailLauncher.sendMail(requireActivity(), getString(action.subject), getString(R.string.mail_body_translation))
+            }
+            is Announcement.Action.OpenScreen -> {
+                ActivityNavigator.navigateTo(context, action.destination)
             }
         }
     }

@@ -25,6 +25,7 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.Completable
@@ -61,6 +62,10 @@ fun Activity.hideKeyboard() {
     }
 }
 
+fun FragmentManager.isFragmentShown(tag: String): Boolean {
+    return findFragmentByTag(tag) != null
+}
+
 fun Fragment.showKeyboard(focusView: View) {
     showKeyboard(requireContext(), focusView)
 }
@@ -71,8 +76,8 @@ fun showKeyboard(context: Context, view: View) {
     imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun View.setVisible(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
+fun View.setVisible(isVisible: Boolean, invisibilityState: Int = View.GONE) {
+    val visibility = if (isVisible) View.VISIBLE else invisibilityState
     this.visibility = visibility
 }
 

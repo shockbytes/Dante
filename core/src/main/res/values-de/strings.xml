@@ -166,14 +166,14 @@
     <string name="backup_storage_provider_rationale_external_storage">Speichere deine Daten auf deinem externen Speicherplatz. Das Backup muss manuell auf andere Geräte übertragen werden.</string>
     <string name="backup_provider_rationale">Dante erlaubt es dir deine Daten auf verschiedenen Wegen zu sichern. Damit können deine Bücher zwischen verschiedenen Geräten synchronisiert werden. Sichere deine Bücher auf einen Gerät und stelle sie auf einem anderen Gerät wieder her. Klicke einfach auf deine bevorzugte Art.</string>
     <string name="announcement_header">&#127881; Ankündigung &#127881;</string>
-    <string name="announcement_open_source_title">Dante ist jetzt Open Source!</string>
-    <string name="announcement_open_source_description">Dante wurde gerade auf Github veröffentlicht. Wenn du Kotlin Skills besitzt und weißt wie man eine Android App macht, dann mach einfach mit. Interessiert? Besuche \n\n<u>https://github.com/shockbytes/Dante</u></string>
     <string name="ask_for_book_deletion">Buch entfernen?</string>
     <string name="ask_for_book_deletion_msg">Willst du wirklich das Buch %s von deiner Bibliothek entfernen?</string>
     <string name="action_send_mail">Sende Mail</string>
-    <string name="announcement_translation_title">Hilf mit Dante zu übersetzen!</string>
+
+    <string name="announcement_fixed_backup_title">Backups sind zurück!</string>
+    <string name="announcement_fixed_backup_description">Die Backup Funktionalität war schon viel zu lange nicht ordentlich verfügbar und dafür mochten wir uns entschuldigen! Jetzt ist sie wieder verfügbar und funktioniert besser als zuvor.\n\n.Außerdem wollten wir auch noch sagen, dass wir bereits an besseren Datensynchronisationsmöglichkeiten arbeiten.</string>
+
     <string name="mail_subject_translation">Ich will übersetzen helfen</string>
-    <string name="announcement_translation_description">Falls du Dante schon immer in deiner Sprache sehen wolltest, dann ist jetzt der Zeitpunkt gekommen. Hilf beim Übersetzen. Klicke <u>hier</u> um dich anzumelden.</string>
     <string name="prefs_category_contribute">Mitwirken</string>
     <string name="prefs_translation_title">Übersetzen</string>
     <string name="prefs_translation_summary">Hilf Dante zu übersetzen</string>
@@ -322,5 +322,7 @@
     <string name="share_file_template">Exportiere deine exportierte Backup-Datei %s.</string>
     <string name="open_backup_file">Backup-Datei öffnen</string>
     <string name="import_external_storage_description">Importiere deine Bibliothek von einem vorherigen exportierten Dante externen Backup. Du kannst hier nur solche externen Backups importieren.</string>
+    <string name="open">Öffnen</string>
+    <string name="go_to_screen">Screen öffnen</string>
 
 </resources>

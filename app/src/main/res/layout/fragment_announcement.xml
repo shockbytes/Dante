@@ -63,7 +63,7 @@
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/lottie_announcement"
                 android:layout_width="0dp"
-                android:layout_height="120dp"
+                android:layout_height="140dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
@@ -73,6 +73,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_announcement_title"
                 app:lottie_autoPlay="true"
                 tools:background="#dea" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_announcement"
+                android:layout_width="0dp"
+                android:layout_height="140dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_announcement_title"
+                tools:background="#ade" />
 
             <TextView
                 android:id="@+id/tv_announcement_description"
@@ -99,6 +112,22 @@
                 android:text="@string/got_it"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_announcement_action"
+                style="@style/AppTheme.RoundedButton.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:paddingHorizontal="32dp"
+                android:layout_marginBottom="16dp"
+                tools:text="Action"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

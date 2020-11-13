@@ -13,7 +13,6 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
-import at.shockbytes.dante.util.merge
 import at.shockbytes.dante.util.settings.delegate.edit
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
@@ -110,22 +109,45 @@ class DefaultBackupRepository(
         return getBackupProvider(entry.storageProvider)
             .mapBackupToBackupContent(entry)
             .flatMapCompletable { (books, pageRecords) ->
+                val copyOfBooks = books.map { it.copy() }
                 bookRepository.restoreBackup(books, strategy)
-                    .andThen(restorePageRecords(bookRepository, books, pageRecords, strategy))
+                    .andThen(restorePageRecords(bookRepository, pageRecordDao, books = copyOfBooks, pageRecords, strategy))
             }
     }
 
     private fun restorePageRecords(
         bookRepository: BookRepository,
+        pageRecordDao: PageRecordDao,
         books: List<BookEntity>,
         pageRecords: List<PageRecord>,
         strategy: RestoreStrategy
     ): Completable {
-        return Completable.complete()
+        return bookRepository.bookObservable
+            .firstOrError()
+            .map { restoredBooks ->
+                val map = createIdMappingForRestoredBooks(restoredBooks, books)
+                pageRecords.map { pageRecord ->
+                    pageRecord.copy(bookId = map[pageRecord.bookId]
+                        ?: error("Cannot find previously restored book by map lookup!"))
+                }
+            }
+            .flatMapCompletable { mappedPageRecords ->
+                pageRecordDao.restoreBackup(mappedPageRecords, strategy)
+            }
     }
 
-    private fun createIdMappingForRestoredBooks(): Map<Long, Long> {
-        return mapOf()
+    private fun createIdMappingForRestoredBooks(
+        restoredBooks: List<BookEntity>,
+        backupBooks: List<BookEntity>
+    ): Map<Long, Long> {
+        return restoredBooks.associate { book ->
+
+            val backupBookId = backupBooks.find {
+                book.title == it.title && book.author == it.author
+            }?.id ?: throw IllegalStateException("Cannot find previously restored book by title lookup!")
+
+            backupBookId to book.id
+        }
     }
 
     private fun getBackupProvider(source: BackupStorageProvider): BackupProvider {

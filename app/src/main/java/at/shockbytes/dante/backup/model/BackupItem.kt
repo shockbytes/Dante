@@ -1,6 +1,7 @@
 package at.shockbytes.dante.backup.model
 
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.PageRecord
 
 /**
  * BackupItem holds both the metadata and the actual listBackupFiles of books
@@ -10,5 +11,6 @@ import at.shockbytes.dante.core.book.BookEntity
  */
 data class BackupItem(
     val backupMetadata: BackupMetadata.Standard,
-    val books: List<BookEntity>
+    val books: List<BookEntity>,
+    val records: List<PageRecord>
 )

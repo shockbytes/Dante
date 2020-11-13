@@ -2,6 +2,7 @@ package at.shockbytes.dante.backup
 
 import android.content.SharedPreferences
 import androidx.fragment.app.FragmentActivity
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
@@ -9,7 +10,10 @@ import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
+import at.shockbytes.dante.util.merge
 import at.shockbytes.dante.util.settings.delegate.edit
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
@@ -73,18 +77,20 @@ class DefaultBackupRepository(
     }
 
     override fun removeBackupEntry(entry: BackupMetadata): Completable {
-        return getBackupProvider(entry.storageProvider)?.removeBackupEntry(entry)
-            ?: Completable.error(BackupStorageProviderNotAvailableException())
+        return getBackupProvider(entry.storageProvider).removeBackupEntry(entry)
     }
 
     override fun removeAllBackupEntries(): Completable {
         return Completable.concat(activeBackupProvider.map { it.removeAllBackupEntries() })
     }
 
-    override fun backup(books: List<BookEntity>, backupStorageProvider: BackupStorageProvider): Completable {
+    override fun backup(
+        backupContent: BackupContent,
+        backupStorageProvider: BackupStorageProvider
+    ): Completable {
         return getBackupProvider(backupStorageProvider)
-            ?.backup(books)
-            ?.doOnComplete {
+            .backup(backupContent)
+            .doOnComplete {
                 setLastBackupTime(System.currentTimeMillis())
                 trackBackupMadeEvent(backupStorageProvider)
             }
@@ -98,17 +104,33 @@ class DefaultBackupRepository(
     override fun restoreBackup(
         entry: BackupMetadata,
         bookRepository: BookRepository,
+        pageRecordDao: PageRecordDao,
         strategy: RestoreStrategy
     ): Completable {
-
-        return getBackupProvider(entry.storageProvider)?.mapEntryToBooks(entry)
-            ?.flatMapCompletable { books ->
+        return getBackupProvider(entry.storageProvider)
+            .mapBackupToBackupContent(entry)
+            .flatMapCompletable { (books, pageRecords) ->
                 bookRepository.restoreBackup(books, strategy)
-            } ?: Completable.error(BackupStorageProviderNotAvailableException())
+                    .andThen(restorePageRecords(bookRepository, books, pageRecords, strategy))
+            }
     }
 
-    private fun getBackupProvider(source: BackupStorageProvider): BackupProvider? {
+    private fun restorePageRecords(
+        bookRepository: BookRepository,
+        books: List<BookEntity>,
+        pageRecords: List<PageRecord>,
+        strategy: RestoreStrategy
+    ): Completable {
+        return Completable.complete()
+    }
+
+    private fun createIdMappingForRestoredBooks(): Map<Long, Long> {
+        return mapOf()
+    }
+
+    private fun getBackupProvider(source: BackupStorageProvider): BackupProvider {
         return activeBackupProvider.find { it.backupStorageProvider == source }
+            ?: throw BackupStorageProviderNotAvailableException()
     }
 
     companion object {

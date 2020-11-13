@@ -2,23 +2,21 @@ package at.shockbytes.dante.backup.provider.google
 
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
+import at.shockbytes.dante.backup.BackupContentTransform
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupException
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
-import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.reactivex.Completable
 import io.reactivex.Single
 import timber.log.Timber
 
 class GoogleDriveBackupProvider(
     private val schedulers: SchedulerFacade,
-    private val gson: Gson,
     private val driveClient: DriveClient
 ) : BackupProvider {
 
@@ -26,36 +24,31 @@ class GoogleDriveBackupProvider(
 
     override val backupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
 
-    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
+    private val contentTransform = BackupContentTransform(backupStorageProvider, ::createFilename)
+
+    override fun mapBackupToBackupContent(entry: BackupMetadata): Single<BackupContent> {
         return driveClient.readFileAsString(entry.id)
-            .map(::fileContentToBooks)
+            .flatMap(contentTransform::createBackupContentFromBackupData)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
     }
 
-    private fun fileContentToBooks(content: String): List<BookEntity> {
-        return gson.fromJson(content, object : TypeToken<List<BookEntity>>() {}.type)
-    }
+    override fun backup(backupContent: BackupContent): Completable {
 
-    override fun backup(books: List<BookEntity>): Completable {
-
-        if (books.isEmpty()) {
+        if (backupContent.isEmpty) {
             return Completable.error(BackupException("No books to backup"))
         }
 
-        val content = gson.toJson(books)
-        val filename = createFilename(books.size)
-
-        return driveClient.createFile(filename, content)
+        return contentTransform.createActualBackupData(backupContent)
+            .flatMapCompletable { (filename, content) ->
+                driveClient.createFile(filename, content)
+            }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
     }
 
-    private fun createFilename(books: Int): String {
-
-        val timestamp = System.currentTimeMillis()
+    private fun createFilename(timestamp: Long, books: Int): String {
         val type = "man"
-
         return backupStorageProvider.acronym + "_" +
             type + "_" +
             timestamp + "_" +

@@ -1,13 +1,13 @@
 package at.shockbytes.dante.backup.provider.shockbytes
 
 import androidx.fragment.app.FragmentActivity
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
-import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.signin.SignInManager
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -34,10 +34,10 @@ class ShockbytesHerokuServerBackupProvider(
         return Completable.complete()
     }
 
-    override fun backup(books: List<BookEntity>): Completable {
+    override fun backup(backupContent: BackupContent): Completable {
         return signInManager.getAuthorizationHeader()
             .flatMapCompletable { token ->
-                shockbytesHerokuApi.makeBackup(token, books)
+                shockbytesHerokuApi.makeBackup(token, backupContent)
                     .flatMapCompletable { entry ->
                         Timber.d(entry.toString())
                         // TODO What to do with entry? Store in UI?
@@ -79,7 +79,7 @@ class ShockbytesHerokuServerBackupProvider(
             .flatMapCompletable(shockbytesHerokuApi::removeAllBackups)
     }
 
-    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
+    override fun mapBackupToBackupContent(entry: BackupMetadata): Single<BackupContent> {
         return signInManager.getAuthorizationHeader()
             .flatMap { token ->
                 shockbytesHerokuApi

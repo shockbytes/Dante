@@ -24,7 +24,7 @@
     <string name="dialogfragment_query_message">Gib den Titel oder den ISBN deines Buches ein.</string>
     <string name="book_finished">%s fertig</string>
     <string name="send_to">Teile dein Buch</string>
-    <string name="label_book_storage">Speicherung verwalten</string>
+    <string name="label_book_storage">Bücher verwalten</string>
     <string name="last_backup">Letzte Sicherung: %s</string>
     <string name="restore">Wiederherstellen (%d)</string>
     <string name="backup_now">Jetzt sichern</string>
@@ -259,7 +259,7 @@
     <string name="storage_local">Am Gerät</string>
     <string name="storage_remote">Online</string>
     <string name="storage_import">Importieren</string>
-    <string name="backup_storage_provider_rationale_csv">Speichere deine Bibliothek in eine CSV-Datei. Das erlaubt anderen Apps deine Daten in diesen Format zu importieren. Du kannst diese Daten auch in Daten wieder importieren.</string>
+    <string name="backup_storage_provider_rationale_csv">Speichere deine Bibliothek in eine CSV-Datei. Das erlaubt anderen Apps deine Daten in diesen Format zu importieren. WICHTIG: Es ist nicht möglich den Leseverlauf einzelnere Bücher zu sichern.</string>
     <string name="online_storage_interested">Ich bin interessiert</string>
     <string name="online_storage_already_interested">Wir informieren dich</string>
     <string name="online_storage_active_development">Gerade in Entwicklung!</string>

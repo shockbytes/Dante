@@ -5,16 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.BackupRepository
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.util.DanteUtils.formatTimestamp
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
-import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -26,6 +27,7 @@ import javax.inject.Inject
  */
 class BackupViewModel @Inject constructor(
     private val bookRepository: BookRepository,
+    private val pageRecordDao: PageRecordDao,
     private val backupRepository: BackupRepository,
     private val schedulers: SchedulerFacade,
     private val tracker: Tracker
@@ -67,7 +69,7 @@ class BackupViewModel @Inject constructor(
     }
 
     fun applyBackup(t: BackupMetadata, strategy: RestoreStrategy) {
-        backupRepository.restoreBackup(t, bookRepository, strategy)
+        backupRepository.restoreBackup(t, bookRepository, pageRecordDao, strategy)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({
@@ -81,16 +83,24 @@ class BackupViewModel @Inject constructor(
     }
 
     fun makeBackup(backupStorageProvider: BackupStorageProvider) {
-        bookRepository.bookObservable
+
+        Observable
+            .combineLatest(
+                bookRepository.bookObservable,
+                pageRecordDao.allPageRecords(),
+                { books, records -> BackupContent(books, records) }
+            )
             .firstOrError()
-            .flatMapCompletable { books ->
-                backupRepository.backup(books, backupStorageProvider)
+            .flatMapCompletable { backupContent ->
+                backupRepository.backup(backupContent, backupStorageProvider)
             }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
+            .doOnComplete {
+                makeBackupEvent.onNext(State.Success(switchToBackupTab = true))
+            }
             .subscribe({
                 loadBackupState()
-                makeBackupEvent.onNext(State.Success(switchToBackupTab = true))
             }) { throwable ->
                 Timber.e(throwable)
                 makeBackupEvent.onNext(State.Error(throwable))
@@ -124,17 +134,17 @@ class BackupViewModel @Inject constructor(
             .subscribeOn(schedulers.io)
             .subscribe({ backupEntries ->
 
-            // Check if backups are empty. One could argue that we can evaluate this in the fragment,
-            // this solution seems cleaner, because it doesn't bother the view with even the simplest logic
-            if (backupEntries.isNotEmpty()) {
-                loadBackupState.postValue(LoadBackupState.Success(backupEntries))
-            } else {
-                loadBackupState.postValue(LoadBackupState.Empty)
-            }
-        }) { throwable ->
-            Timber.e(throwable)
-            loadBackupState.postValue(LoadBackupState.Error(throwable))
-        }.addTo(compositeDisposable)
+                // Check if backups are empty. One could argue that we can evaluate this in the fragment,
+                // this solution seems cleaner, because it doesn't bother the view with even the simplest logic
+                if (backupEntries.isNotEmpty()) {
+                    loadBackupState.postValue(LoadBackupState.Success(backupEntries))
+                } else {
+                    loadBackupState.postValue(LoadBackupState.Empty)
+                }
+            }) { throwable ->
+                Timber.e(throwable)
+                loadBackupState.postValue(LoadBackupState.Error(throwable))
+            }.addTo(compositeDisposable)
     }
 
     /**
@@ -150,27 +160,6 @@ class BackupViewModel @Inject constructor(
             .map { it.backupStorageProvider }
 
         activeBackupStorageProviders.postValue(providers)
-    }
-
-    fun deleteLibrary(): Completable {
-        return Completable
-            .create { emitter ->
-
-                val books = bookRepository.bookObservable.blockingFirst()
-
-                if (books.isEmpty()) {
-                    emitter.onError(IllegalStateException("No library to burn down"))
-                }
-
-                books
-                    .map { it.id }
-                    .forEach(bookRepository::delete)
-
-                emitter.onComplete()
-            }
-            .doOnComplete {
-                tracker.track(DanteTrackingEvent.BurnDownLibrary)
-            }
     }
 
     fun trackOpenFileEvent(storageProvider: BackupStorageProvider) {

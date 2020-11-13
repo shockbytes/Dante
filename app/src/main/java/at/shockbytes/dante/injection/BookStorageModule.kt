@@ -71,13 +71,11 @@ class BookStorageModule(private val app: Application) {
         externalStorageInteractor: ExternalStorageInteractor,
         permissionManager: PermissionManager,
         csvImportProvider: DanteCsvImportProvider,
-        driveClient: DriveClient,
-        danteExternalStorageImportProvider: DanteExternalStorageImportProvider
+        driveClient: DriveClient
     ): Array<BackupProvider> {
         return arrayOf(
             GoogleDriveBackupProvider(
                 schedulerFacade,
-                Gson(),
                 driveClient
             ),
             ShockbytesHerokuServerBackupProvider(
@@ -89,8 +87,7 @@ class BookStorageModule(private val app: Application) {
                 schedulerFacade,
                 Gson(),
                 externalStorageInteractor,
-                permissionManager,
-                danteExternalStorageImportProvider
+                permissionManager
             ),
             LocalCsvBackupProvider(
                 schedulerFacade,

@@ -4,6 +4,8 @@ import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.book.realm.RealmPageRecord
 import at.shockbytes.dante.core.data.PageRecordDao
+import at.shockbytes.dante.util.RestoreStrategy
+import at.shockbytes.dante.util.completableOf
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.realm.Realm
@@ -99,5 +101,30 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
             .asFlowable()
             .map(mapper::mapTo)
             .toObservable()
+    }
+
+    override fun restoreBackup(pageRecords: List<PageRecord>, strategy: RestoreStrategy): Completable {
+
+        val preRestorationAction = when (strategy) {
+            RestoreStrategy.MERGE -> Completable.complete() // No previous action
+            RestoreStrategy.OVERWRITE -> deleteAllPageRecords()
+        }
+
+        val restorationAction = completableOf {
+            pageRecords.forEach(::insert)
+        }
+
+        return preRestorationAction
+            .andThen(restorationAction)
+    }
+
+    private fun deleteAllPageRecords(): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.where(pageRecordClass)
+                    .findAll()
+                    ?.deleteAllFromRealm()
+            }
+        }
     }
 }

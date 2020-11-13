@@ -100,7 +100,7 @@ class ExternalStorageBackupProviderTest {
 
         val books = listOf<BookEntity>()
 
-        backupProvider.backup(books)
+        backupProvider.backup()
             .test()
             .assertComplete()
     }
@@ -110,7 +110,7 @@ class ExternalStorageBackupProviderTest {
 
         val books = ObjectCreator.getPopulatedListOfBookEntities()
 
-        backupProvider.backup(books)
+        backupProvider.backup()
             .test()
             .assertComplete()
     }
@@ -123,7 +123,7 @@ class ExternalStorageBackupProviderTest {
 
         val books = ObjectCreator.getPopulatedListOfBookEntities()
 
-        backupProvider.backup(books)
+        backupProvider.backup()
             .test()
             .assertNotComplete()
             .assertError(IllegalStateException::class.java)
@@ -217,7 +217,7 @@ class ExternalStorageBackupProviderTest {
         `when`(externalStorageInteractor.readFileContent("Dante", metadata.fileName))
             .thenReturn(gson.toJson(backupItem))
 
-        backupProvider.mapEntryToBooks(metadata)
+        backupProvider.mapBackupToBackupContent(metadata)
             .test()
             .assertValue(expected)
     }
@@ -241,7 +241,7 @@ class ExternalStorageBackupProviderTest {
         `when`(externalStorageInteractor.readFileContent("Dante", metadata.fileName))
             .thenReturn(corruptJson)
 
-        backupProvider.mapEntryToBooks(metadata)
+        backupProvider.mapBackupToBackupContent(metadata)
             .test()
             .assertError(NullPointerException::class.java)
     }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
@@ -55,8 +56,8 @@ class LocalCsvBackupProvider(
         }
     }
 
-    override fun backup(books: List<BookEntity>): Completable {
-        return getBackupContent(books)
+    override fun backup(backupContent: BackupContent): Completable {
+        return createBackupDataFromBackupContent(backupContent.books)
             .flatMapCompletable { (fileName, content) ->
                 externalStorageInteractor.writeToFileInDirectory(BASE_DIR_NAME, fileName, content)
             }
@@ -65,7 +66,9 @@ class LocalCsvBackupProvider(
 
     private data class BackupFileContent(val fileName: String, val content: String)
 
-    private fun getBackupContent(books: List<BookEntity>): Single<BackupFileContent> {
+    private fun createBackupDataFromBackupContent(
+        books: List<BookEntity>
+    ): Single<BackupFileContent> {
         return Single.fromCallable {
             val timestamp = System.currentTimeMillis()
             val fileName = createFileName(timestamp, books.size)
@@ -175,11 +178,15 @@ class LocalCsvBackupProvider(
             .subscribeOn(schedulers.io)
     }
 
-    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
+    override fun mapBackupToBackupContent(entry: BackupMetadata): Single<BackupContent> {
         return singleOf {
                 externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName)
             }
             .flatMap(csvImporter::importFromContent)
+            .map { books ->
+                // Page records are not supported by this backup provider
+                BackupContent(books, listOf())
+            }
             .subscribeOn(schedulers.io)
     }
 

@@ -1,9 +1,10 @@
 package at.shockbytes.dante.backup.provider.external
 
 import android.Manifest
-import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
+import at.shockbytes.dante.backup.BackupContentTransform
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadata.Companion.attachLocalFile
@@ -11,7 +12,6 @@ import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
-import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.importer.DanteExternalStorageImportProvider
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.util.permission.PermissionManager
@@ -31,12 +31,13 @@ class ExternalStorageBackupProvider(
     private val schedulers: SchedulerFacade,
     private val gson: Gson,
     private val externalStorageInteractor: ExternalStorageInteractor,
-    private val permissionManager: PermissionManager,
-    private val externalStorageImporter: DanteExternalStorageImportProvider
+    private val permissionManager: PermissionManager
 ) : BackupProvider {
 
     override val backupStorageProvider = BackupStorageProvider.EXTERNAL_STORAGE
     override var isEnabled: Boolean = true
+
+    private val contentTransform = BackupContentTransform(backupStorageProvider, ::createFileName)
 
     override fun initialize(activity: FragmentActivity?): Completable {
         return Completable.fromAction {
@@ -62,27 +63,12 @@ class ExternalStorageBackupProvider(
         }
     }
 
-    override fun backup(books: List<BookEntity>): Completable {
-        return getBackupContent(books)
+    override fun backup(backupContent: BackupContent): Completable {
+        return contentTransform.createActualBackupData(backupContent)
             .flatMapCompletable { (fileName, content) ->
                 externalStorageInteractor.writeToFileInDirectory(BASE_DIR_NAME, fileName, content)
             }
             .subscribeOn(schedulers.io)
-    }
-
-    /**
-     * Returns Pair<FileName, Content>
-     */
-    private fun getBackupContent(books: List<BookEntity>): Single<Pair<String, String>> {
-        return Single.fromCallable {
-            val timestamp = System.currentTimeMillis()
-            val fileName = createFileName(timestamp)
-            val metadata = bundleMetadataForStorage(books.size, fileName, timestamp)
-
-            val content = gson.toJson(BackupItem(metadata, books))
-
-            Pair(fileName, content)
-        }
     }
 
     override fun getBackupEntries(): Single<List<BackupMetadataState>> {
@@ -135,11 +121,11 @@ class ExternalStorageBackupProvider(
             .subscribeOn(schedulers.io)
     }
 
-    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
+    override fun mapBackupToBackupContent(entry: BackupMetadata): Single<BackupContent> {
         return singleOf {
                 externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName)
             }
-            .flatMap(externalStorageImporter::importFromContent)
+            .flatMap(contentTransform::createBackupContentFromBackupData)
             .subscribeOn(schedulers.io)
     }
 
@@ -168,22 +154,7 @@ class ExternalStorageBackupProvider(
         }
     }
 
-    private fun bundleMetadataForStorage(
-        books: Int,
-        fileName: String,
-        timestamp: Long
-    ): BackupMetadata.Standard {
-        return BackupMetadata.Standard(
-            id = fileName,
-            fileName = fileName,
-            timestamp = timestamp,
-            books = books,
-            storageProvider = backupStorageProvider,
-            device = Build.MODEL
-        )
-    }
-
-    private fun createFileName(timestamp: Long): String {
+    private fun createFileName(timestamp: Long, books: Int): String {
         return "dante-backup-$timestamp$BACKUP_ITEM_SUFFIX"
     }
 

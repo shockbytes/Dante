@@ -1,6 +1,7 @@
 package at.shockbytes.dante.core.data
 
 import at.shockbytes.dante.core.book.PageRecord
+import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
 import io.reactivex.Observable
 
@@ -22,4 +23,6 @@ interface PageRecordDao {
     fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>>
 
     fun allPageRecords(): Observable<List<PageRecord>>
+
+    fun restoreBackup(pageRecords: List<PageRecord>, strategy: RestoreStrategy): Completable
 }

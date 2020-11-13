@@ -37,15 +37,15 @@ enum class BackupStorageProvider(
         isLocalFileExportable = false,
         stability = Stability.CANARY
     ),
-    @SerializedName("gdrive")
+    @SerializedName("google-drive")
     GOOGLE_DRIVE(
-        "gdrive",
+        "google-drive",
         "Google Drive",
         R.drawable.ic_google_drive,
         R.string.backup_storage_provider_rationale_gdrive,
         Priority.HIGH,
         isLocalFileExportable = false,
-        stability = Stability.DISCONTINUED
+        stability = Stability.RELEASE
     ),
     @SerializedName("ext_storage")
     EXTERNAL_STORAGE(

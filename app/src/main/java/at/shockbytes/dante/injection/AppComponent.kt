@@ -50,7 +50,8 @@ import dagger.Component
         (AppModule::class),
         (AppNetworkModule::class),
         (ViewModelModule::class),
-        (FirebaseModule::class)
+        (FirebaseModule::class),
+        (BookStorageModule::class)
     ],
     dependencies = [CoreComponent::class]
 )

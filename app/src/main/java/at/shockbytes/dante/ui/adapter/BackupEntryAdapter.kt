@@ -8,11 +8,11 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
+import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import at.shockbytes.util.adapter.ItemTouchHelperAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_backup_entry.*
 
@@ -24,23 +24,16 @@ class BackupEntryAdapter(
     ctx: Context,
     onItemClickListener: OnItemClickListener<BackupMetadataState>,
     private val onItemOverflowMenuClickedListener: OnBackupOverflowItemListener
-) : BaseAdapter<BackupMetadataState>(ctx, onItemClickListener), ItemTouchHelperAdapter {
+) : BaseAdapter<BackupMetadataState>(ctx, onItemClickListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BackupMetadataState> {
         return BackupViewHolder(inflater.inflate(R.layout.item_backup_entry, parent, false))
     }
 
-    override fun onItemMove(from: Int, to: Int) = false
-
-    override fun onItemMoveFinished() = Unit
-
-    override fun onItemDismiss(position: Int) {
-        onItemMoveListener?.onItemDismissed(data[position], position)
-    }
-
-    fun updateData(backupStates: List<BackupMetadataState>) {
+    fun updateData(freshData: List<BackupMetadataState>) {
         data.clear()
-        data.addAll(backupStates)
+        data.addAll(freshData)
+        notifyDataSetChanged()
     }
 
     inner class BackupViewHolder(
@@ -71,21 +64,32 @@ class BackupEntryAdapter(
 
         private fun setupOverflowMenu(content: BackupMetadataState) {
 
+            val entry = content.entry
             val popupMenu = PopupMenu(context, item_backup_entry_btn_overflow)
 
             popupMenu.menuInflater.inflate(R.menu.menu_backup_item_overflow, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.menu_backup_delete -> {
-                        onItemOverflowMenuClickedListener.onBackupItemDeleted(content.entry, getLocation(content))
+                        onItemOverflowMenuClickedListener.onBackupItemDeleted(entry, getLocation(content))
                     }
-                    R.id.menu_backup_download_request -> {
-                        onItemOverflowMenuClickedListener.onBackupItemDownloadRequest(content.entry)
+                    R.id.menu_backup_export_request -> {
+                        if (entry is BackupMetadata.WithLocalFile) {
+                            onItemOverflowMenuClickedListener.onBackupItemDownloadRequest(entry)
+                        }
+                    }
+                    R.id.menu_backup_open_request -> {
+                        if (entry is BackupMetadata.WithLocalFile) {
+                            onItemOverflowMenuClickedListener.onBackupItemOpenFileRequest(entry)
+                        }
                     }
                 }
                 true
             }
-            popupMenu.menu.findItem(R.id.menu_backup_download_request)?.isVisible = content.isFileDownloadable
+
+            val showExportOption = content.isFileExportable && entry is BackupMetadata.WithLocalFile
+            popupMenu.menu.findItem(R.id.menu_backup_open_request)?.isVisible = showExportOption
+            popupMenu.menu.findItem(R.id.menu_backup_export_request)?.isVisible = showExportOption
 
             val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_backup_entry_btn_overflow)
             menuHelper.setForceShowIcon(true)

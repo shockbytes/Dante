@@ -1,12 +1,13 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.15</string>
+    <string name="app_version" translatable="false">3.16</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
     <string name="help">Help</string>
     <string name="cancel">Cancel</string>
+    <string name="open">Open</string>
     <string name="label_settings">Settings</string>
     <string name="label_stats">Your statistics</string>
     <string name="label_timeline">Your timeline</string>
@@ -16,11 +17,14 @@
     <string name="beta" translatable="false">BETA</string>
     <string name="discontinued" translatable="false">DISCONTINUED</string>
     <string name="download">Download</string>
-    <string name="download_backup">Download</string>
+    <string name="export_backup">Export backup</string>
     <string name="mail_feedback">How I would improve Dante</string>
     <string name="pick">Pick</string>
     <string name="another_try">Another try</string>
     <string name="reset">Reset</string>
+    <string name="go_to_screen">Go to screen</string>
+
+    <string name="open_backup_file">Open backup file</string>
 
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to your library</string>
@@ -309,25 +313,24 @@
     <string name="fab_hint_prompt_message">Tap on the + icon and start scanning your first book!</string>
 
     <string name="backup_provider_rationale">Dante allows you to backup your data in several ways. It offers you a handy way to transfer data between devices. Backup your data on one device and restore it on your new device. Just click on your preferred way to backup.</string>
-    <string name="backup_storage_provider_rationale_gdrive">This service is discontinued from Google. We searching for other ways to still use this feature in the app.</string>
+    <string name="backup_storage_provider_rationale_gdrive">Backup your data on Google Drive. This requires you to be logged in with your Google account. Backups can be restored on other devices when logged in with the same account.</string>
     <string name="backup_storage_provider_rationale_shockbytes">Just upload your data to our servers. The data still belongs only to you. This is the preferred way of backing up your data.</string>
     <string name="backup_storage_provider_rationale_external_storage">Save your data to your external storage. Note that this requires you to move it to another device manually.</string>
-    <string name="backup_storage_provider_rationale_csv">Save your data to your external storage as a CSV file. This allows you to import your data either in Dante or in other apps that support this format.</string>
+    <string name="backup_storage_provider_rationale_csv">Save your data to your external storage as a CSV file. IMPORTANT: It is not possible to backup the read pages over time with this method.</string>
 
     <string name="rationale_ask_ok">Sure</string>
     <string name="rationale_ask_cancel">No way</string>
     <string name="external_storage_rationale">Hey, we would like to write backups on your external storage.</string>
     <string name="inactive_resource_message">It seems like this backup entry is unreachable. It could be that you are not connected to the internet.</string>
-    <string name="announcement_open_source_title">Dante is now open source!</string>
-    <string name="announcement_open_source_description">Dante got open-sourced on Github. If you have some Kotlin skills and know how to build an Android app, feel free to contribute to the app. Want to join? Visit \n\n<u>https://github.com/shockbytes/Dante</u></string>
     <string name="announcement_header">&#127881; Announcement &#127881;</string>
     <string name="ask_for_book_deletion">Delete book?</string>
     <string name="ask_for_book_deletion_msg">Do you want to remove %s from your library?</string>
 
+    <string name="announcement_fixed_backup_title">Backups are back!</string>
+    <string name="announcement_fixed_backup_description">The backup functionality was broken way too long and we sincerely apologize for any inconvenience caused by this situation! However, they are now back and are working better than ever!\n\nWe want you to know that we are currently working on even better data synchronization methods at the moment!</string>
+
     <string name="mail_subject_translation">I want to help you translate</string>
-    <string name="announcement_translation_title">Help translating Dante!</string>
-    <string name="action_send_mail">Send mail</string>
-    <string name="announcement_translation_description">If you want to see Dante in your native language then step up. Help translating Dante to another language. Just click <u>here</u> to get in touch.</string>
+    <string name="action_send_mail">Drop mail</string>
     <string name="prefs_category_contribute">Contribute</string>
     <string name="prefs_translation_key" translatable="false">prefs_translation_key</string>
     <string name="prefs_translation_title">Translate</string>
@@ -335,6 +338,7 @@
     <string name="mail_body_translation">Hey, I want to improve Dante!\n\n</string>
 
     <string name="share_template">Hey, I\'m currently reading %1$s and it\'s awesome!\nCheck it out: %2$s</string>
+    <string name="share_file_template">Export your backed up data file %s.</string>
 
     <string name="update_book_discard_title">Discard changes?</string>
     <string name="update_book_discard_message">Discard changes and go back to book details?</string>
@@ -396,9 +400,13 @@
     <string name="storage_import">Import</string>
     <string name="import_success">Import succeeded!</string>
     <string name="import_books">Import books</string>
+
+    <string name="import_dante_csv_title" translatable="false">Dante CSV Backup</string>
+    <string name="import_dante_external_title" translatable="false">Dante External Storage Backup</string>
     <string name="import_goodreads_title" translatable="false">Goodreads</string>
     <string name="import_goodreads_description">Import your library from Goodreads from a CSV file. \n\nNote that this feature is still in beta and the book covers can\'t be imported at the moment.</string>
-    <string name="import_dante_description">Import your library from a previously exported Dante CSV backup. You can only import CSV backups.</string>
+    <string name="import_dante_description">Import your library from a previously exported Dante CSV backup. You can only import such CSV backups.</string>
+    <string name="import_external_storage_description">Import your library from a previously exported Dante external storage backup. You can only import such external storage backups.</string>
     <string name="import_approval_title">Import %d books from %s</string>
     <string name="import_no_books">There are no books to import</string>
     <string name="import_read_later">%d books\n read later</string>

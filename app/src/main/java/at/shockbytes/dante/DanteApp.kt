@@ -11,6 +11,7 @@ import at.shockbytes.dante.core.injection.NetworkModule
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.injection.AppModule
 import at.shockbytes.dante.injection.AppNetworkModule
+import at.shockbytes.dante.injection.BookStorageModule
 import at.shockbytes.dante.injection.DaggerAppComponent
 import at.shockbytes.dante.injection.FirebaseModule
 import at.shockbytes.dante.util.CrashlyticsReportingTree
@@ -65,6 +66,7 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
             .appNetworkModule(AppNetworkModule())
             .appModule(AppModule(this))
             .firebaseModule(FirebaseModule(this))
+            .bookStorageModule(BookStorageModule(this))
             .coreComponent(provideCoreComponent())
             .build()
             .also { component ->

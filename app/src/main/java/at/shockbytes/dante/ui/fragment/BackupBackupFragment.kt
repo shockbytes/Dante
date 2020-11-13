@@ -45,29 +45,34 @@ class BackupBackupFragment : BaseFragment() {
 
     override fun bindViewModel() {
 
-        viewModel.getLastBackupTime().observe(this, Observer { lastBackup ->
-            tv_fragment_backup_last_backup.text = getString(R.string.last_backup, lastBackup)
-        })
+        viewModel.getLastBackupTime()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { lastBackup ->
+                tv_fragment_backup_last_backup.text = getString(R.string.last_backup, lastBackup)
+            }
+            .addTo(compositeDisposable)
 
         viewModel.getActiveBackupProviders().observe(this, Observer(::setupBackupProviderUI))
 
         viewModel.makeBackupEvent
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { state ->
-                when (state) {
-                    is BackupViewModel.State.Success -> {
-                        showSnackbar(getString(R.string.backup_created), showLong = false)
+            .subscribe(::handleBackupState)
+            .addTo(compositeDisposable)
+    }
 
-                        if (state.switchToBackupTab) {
-                            switchToBackupTab()
-                        }
-                    }
-                    is BackupViewModel.State.Error -> {
-                        showSnackbar(getString(R.string.backup_not_created))
-                    }
+    private fun handleBackupState(state: BackupViewModel.State) {
+        when (state) {
+            is BackupViewModel.State.Success -> {
+                showSnackbar(getString(R.string.backup_created), showLong = false)
+
+                if (state.switchToBackupTab) {
+                    switchToBackupTab()
                 }
             }
-            .addTo(compositeDisposable)
+            is BackupViewModel.State.Error -> {
+                showSnackbar(getString(R.string.backup_not_created))
+            }
+        }
     }
 
     private fun switchToBackupTab() {

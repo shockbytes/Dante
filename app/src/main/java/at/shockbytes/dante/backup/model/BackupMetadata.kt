@@ -1,14 +1,53 @@
 package at.shockbytes.dante.backup.model
 
+import java.io.File
+
 /**
  * Author:  Martin Macheiner
  * Date:    30.04.2017
  */
-data class BackupMetadata(
-    val id: String,
-    val fileName: String,
-    val device: String,
-    val storageProvider: BackupStorageProvider,
-    val books: Int,
-    val timestamp: Long
-)
+sealed class BackupMetadata {
+
+    abstract val id: String
+    abstract val fileName: String
+    abstract val device: String
+    abstract val storageProvider: BackupStorageProvider
+    abstract val books: Int
+    abstract val timestamp: Long
+
+    data class Standard(
+        override val id: String,
+        override val fileName: String,
+        override val device: String,
+        override val storageProvider: BackupStorageProvider,
+        override val books: Int,
+        override val timestamp: Long
+    ) : BackupMetadata()
+
+    data class WithLocalFile(
+        override val id: String,
+        override val fileName: String,
+        override val device: String,
+        override val storageProvider: BackupStorageProvider,
+        override val books: Int,
+        override val timestamp: Long,
+        val localFilePath: File,
+        val mimeType: String
+    ) : BackupMetadata()
+
+    companion object {
+
+        fun Standard.attachLocalFile(localFile: File, mimeType: String): WithLocalFile {
+            return WithLocalFile(
+                id = this.id,
+                fileName = this.fileName,
+                device = this.device,
+                storageProvider = this.storageProvider,
+                books = this.books,
+                timestamp = this.timestamp,
+                localFilePath = localFile,
+                mimeType = mimeType
+            )
+        }
+    }
+}

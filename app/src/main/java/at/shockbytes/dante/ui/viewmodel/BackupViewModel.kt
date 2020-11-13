@@ -5,16 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.BackupRepository
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.core.data.BookRepository
-import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.core.data.PageRecordDao
+import at.shockbytes.dante.util.DanteUtils.formatTimestamp
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
-import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -25,6 +27,7 @@ import javax.inject.Inject
  */
 class BackupViewModel @Inject constructor(
     private val bookRepository: BookRepository,
+    private val pageRecordDao: PageRecordDao,
     private val backupRepository: BackupRepository,
     private val schedulers: SchedulerFacade,
     private val tracker: Tracker
@@ -33,8 +36,12 @@ class BackupViewModel @Inject constructor(
     private val loadBackupState = MutableLiveData<LoadBackupState>()
     fun getBackupState(): LiveData<LoadBackupState> = loadBackupState
 
-    private val lastBackupTime = MutableLiveData<String>()
-    fun getLastBackupTime(): LiveData<String> = lastBackupTime
+    fun getLastBackupTime(): Observable<String> {
+        return backupRepository.observeLastBackupTime()
+            .map { lastBackupMillis ->
+                if (lastBackupMillis > 0) formatTimestamp(lastBackupMillis) else "---"
+            }
+    }
 
     private val activeBackupStorageProviders = MutableLiveData<List<BackupStorageProvider>>()
     fun getActiveBackupProviders(): LiveData<List<BackupStorageProvider>> = activeBackupStorageProviders
@@ -49,7 +56,6 @@ class BackupViewModel @Inject constructor(
             .doOnComplete(::postActiveBackupProviders)
             .subscribe({
                 loadBackupState()
-                updateLastBackupTime()
             }, { throwable ->
                 Timber.e(throwable)
                 errorSubject.onNext(throwable)
@@ -63,11 +69,11 @@ class BackupViewModel @Inject constructor(
     }
 
     fun applyBackup(t: BackupMetadata, strategy: RestoreStrategy) {
-        backupRepository.restoreBackup(t, bookRepository, strategy)
+        backupRepository.restoreBackup(t, bookRepository, pageRecordDao, strategy)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
             .subscribe({
-                val formattedTimestamp = DanteUtils.formatTimestamp(t.timestamp)
+                val formattedTimestamp = formatTimestamp(t.timestamp)
                 applyBackupEvent.onNext(ApplyBackupState.Success(formattedTimestamp))
             }) { throwable ->
                 Timber.e(throwable)
@@ -77,13 +83,24 @@ class BackupViewModel @Inject constructor(
     }
 
     fun makeBackup(backupStorageProvider: BackupStorageProvider) {
-        backupRepository.backup(bookRepository.bookObservable.blockingFirst(listOf()), backupStorageProvider)
+
+        Observable
+            .combineLatest(
+                bookRepository.bookObservable,
+                pageRecordDao.allPageRecords(),
+                { books, records -> BackupContent(books, records) }
+            )
+            .firstOrError()
+            .flatMapCompletable { backupContent ->
+                backupRepository.backup(backupContent, backupStorageProvider)
+            }
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)
-            .subscribe({
-                updateLastBackupTime()
-                loadBackupState()
+            .doOnComplete {
                 makeBackupEvent.onNext(State.Success(switchToBackupTab = true))
+            }
+            .subscribe({
+                loadBackupState()
             }) { throwable ->
                 Timber.e(throwable)
                 makeBackupEvent.onNext(State.Error(throwable))
@@ -100,7 +117,7 @@ class BackupViewModel @Inject constructor(
                 deleteBackupEvent.onNext(DeleteBackupState.Success(position, wasLastEntry))
 
                 if (wasLastEntry) {
-                    updateLastBackupTime(true)
+                    resetLastBackupTime()
                 }
             }) { throwable ->
                 Timber.e(throwable)
@@ -117,31 +134,24 @@ class BackupViewModel @Inject constructor(
             .subscribeOn(schedulers.io)
             .subscribe({ backupEntries ->
 
-            // Check if backups are empty. One could argue that we can evaluate this in the fragment,
-            // this solution seems cleaner, because it doesn't bother the view with even the simplest logic
-            if (backupEntries.isNotEmpty()) {
-                loadBackupState.postValue(LoadBackupState.Success(backupEntries))
-            } else {
-                loadBackupState.postValue(LoadBackupState.Empty)
-            }
-        }) { throwable ->
-            Timber.e(throwable)
-            loadBackupState.postValue(LoadBackupState.Error(throwable))
-        }.addTo(compositeDisposable)
+                // Check if backups are empty. One could argue that we can evaluate this in the fragment,
+                // this solution seems cleaner, because it doesn't bother the view with even the simplest logic
+                if (backupEntries.isNotEmpty()) {
+                    loadBackupState.postValue(LoadBackupState.Success(backupEntries))
+                } else {
+                    loadBackupState.postValue(LoadBackupState.Empty)
+                }
+            }) { throwable ->
+                Timber.e(throwable)
+                loadBackupState.postValue(LoadBackupState.Error(throwable))
+            }.addTo(compositeDisposable)
     }
 
-    private fun updateLastBackupTime(resetValue: Boolean = false) {
-
-        // Reset the value if the last item was dismissed
-        if (resetValue) {
-            backupRepository.lastBackupTime = 0
-        }
-
-        val lastBackupMillis = backupRepository.lastBackupTime
-        val lastBackup = if (lastBackupMillis > 0)
-            DanteUtils.formatTimestamp(lastBackupMillis)
-        else "---"
-        lastBackupTime.postValue(lastBackup)
+    /**
+     * Reset the value if the last item was dismissed.
+     */
+    private fun resetLastBackupTime() {
+        backupRepository.setLastBackupTime(0L)
     }
 
     private fun postActiveBackupProviders() {
@@ -152,25 +162,8 @@ class BackupViewModel @Inject constructor(
         activeBackupStorageProviders.postValue(providers)
     }
 
-    fun deleteLibrary(): Completable {
-        return Completable
-            .create { emitter ->
-
-                val books = bookRepository.bookObservable.blockingFirst()
-
-                if (books.isEmpty()) {
-                    emitter.onError(IllegalStateException("No library to burn down"))
-                }
-
-                books
-                    .map { it.id }
-                    .forEach(bookRepository::delete)
-
-                emitter.onComplete()
-            }
-            .doOnComplete {
-                tracker.track(DanteTrackingEvent.BurnDownLibrary)
-            }
+    fun trackOpenFileEvent(storageProvider: BackupStorageProvider) {
+        tracker.track(DanteTrackingEvent.OpenBackupFile(storageProvider.acronym))
     }
 
     // -------------------------- State classes --------------------------

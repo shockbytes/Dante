@@ -47,16 +47,15 @@ ext {
     rxAndroidVersion = "2.1.1"
     rxBindingsVersion = "2.2.0"
 
-    firebaseVersionCore = "17.5.1"
-    firebaseVersionConfig = "19.2.0"
-    firebaseVersionAuth = "19.4.0"
+    firebaseVersionCore = "18.0.0"
+    firebaseVersionConfig = "20.0.0"
+    firebaseVersionAuth = "20.0.0"
     firebaseMLVision = "24.1.0"
     firebaseAnalyticsVersion = "17.6.0"
     firebaseCrashlyticsVersion = "17.2.2"
 
     playServicesVersionVision = "20.1.2"
-    playServicesVersionDrive = "17.0.0"
-    playServicesVersionAuth = "18.1.0"
+    playServicesVersionAuth = "19.0.0"
 
     daggerVersion = "2.27"
     retrofitVersion = "2.9.0"
@@ -71,7 +70,7 @@ ext {
     cameraXVersion = "1.0.0-beta11"
     cameraXExtensionVersion = "1.0.0-alpha18"
 
-    jodaTimeVersion = "2.10.3"
+    jodaTimeVersion = "2.10.7.2"
     timberVersion = "4.7.1"
     materialDialogsVersion = "3.3.0"
 }

@@ -29,5 +29,10 @@ sealed class DanteTrackingEvent(
         listOf(TrackingProperty("backlog_count", booksInBacklog))
     )
 
+    data class OpenBackupFile(val providerAcronym: String) : DanteTrackingEvent(
+        "open_backup_file",
+        listOf(TrackingProperty("backup_provider", providerAcronym))
+    )
+
     object DisableRandomBookInteraction : DanteTrackingEvent("disable_random_book_interaction")
 }

@@ -11,6 +11,7 @@ import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Handler
+import android.os.Looper
 import androidx.annotation.ColorInt
 import android.text.SpannableString
 import android.text.Spanned
@@ -24,6 +25,7 @@ import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.Completable
@@ -60,6 +62,10 @@ fun Activity.hideKeyboard() {
     }
 }
 
+fun FragmentManager.isFragmentShown(tag: String): Boolean {
+    return findFragmentByTag(tag) != null
+}
+
 fun Fragment.showKeyboard(focusView: View) {
     showKeyboard(requireContext(), focusView)
 }
@@ -70,8 +76,8 @@ fun showKeyboard(context: Context, view: View) {
     imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun View.setVisible(isVisible: Boolean) {
-    val visibility = if (isVisible) View.VISIBLE else View.GONE
+fun View.setVisible(isVisible: Boolean, invisibilityState: Int = View.GONE) {
+    val visibility = if (isVisible) View.VISIBLE else invisibilityState
     this.visibility = visibility
 }
 
@@ -129,7 +135,7 @@ fun Context.isNightModeEnabled(): Boolean {
 }
 
 fun runDelayed(delay: Long, action: () -> Unit) {
-    Handler().postDelayed({
+    Handler(Looper.getMainLooper()).postDelayed({
         action()
     }, delay)
 }
@@ -152,6 +158,8 @@ fun <T> singleOf(
 ): Single<T> {
     return Single.just(block()).subscribeOn(subscribeOn)
 }
+
+fun Iterable<Completable>.merge() = Completable.merge(this)
 
 fun completableOf(
     subscribeOn: Scheduler = Schedulers.computation(),

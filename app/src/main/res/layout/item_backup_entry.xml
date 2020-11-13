@@ -67,11 +67,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_backup_entry_txt_books"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
             android:layout_toEndOf="@+id/item_backup_entry_imgview_provider"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/item_backup_entry_txt_books"
             app:layout_constraintEnd_toEndOf="@id/item_backup_entry_iv_device"
             app:layout_constraintStart_toStartOf="@id/item_backup_entry_iv_device"
             app:layout_constraintTop_toBottomOf="@id/item_backup_entry_iv_device"
@@ -117,11 +116,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
+            app:tint="@color/menuItemColor"
             android:layout_marginRight="8dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toEndOf="@+id/item_backup_entry_imgview_provider"
             app:layout_constraintTop_toBottomOf="@+id/item_backup_entry_txt_time"
-            app:srcCompat="@drawable/ic_book_count" />
+            app:srcCompat="@drawable/ic_tab_current" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

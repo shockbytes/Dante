@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import android.content.Intent
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
@@ -11,6 +12,7 @@ import at.shockbytes.dante.signin.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -24,13 +26,17 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val signInManager: SignInManager,
     private val announcementProvider: AnnouncementProvider,
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val danteSettings: DanteSettings
 ) : BaseViewModel() {
 
     sealed class UserEvent {
+
         data class SuccessEvent(val user: DanteUser?, val showWelcomeScreen: Boolean) : UserEvent()
-        class LoginEvent(val signInIntent: Intent?) : UserEvent()
-        data class ErrorEvent(val errorMsg: Int) : UserEvent()
+
+        data class LoginEvent(val signInIntent: Intent?) : UserEvent()
+
+        data class ErrorEvent(@StringRes val errorMsg: Int) : UserEvent()
     }
 
     private val userEvent = MutableLiveData<UserEvent>()
@@ -98,12 +104,22 @@ class MainViewModel @Inject constructor(
         signInManager.maybeLater = maybeLater
     }
 
-    fun showSignInWelcomeScreen(showWelcomeScreen: Boolean) {
-        signInManager.showWelcomeScreen = showWelcomeScreen
+    fun disableShowWelcomeScreen() {
+        signInManager.showWelcomeScreen = false
+        hideWelcomeScreenFlagFromPostedLiveData()
+    }
+
+    private fun hideWelcomeScreenFlagFromPostedLiveData() {
+        (userEvent.value as? UserEvent.SuccessEvent)?.let { event ->
+            userEvent.postValue(event.copy(showWelcomeScreen = false))
+        }
     }
 
     fun queryAnnouncements() {
         val hasActiveAnnouncement = announcementProvider.getActiveAnnouncement() != null
-        activeAnnouncement.onNext(hasActiveAnnouncement)
+        // Do not show announcements if the user first logs into the app, even though there would
+        // be a new announcement
+        val showAnnouncement = hasActiveAnnouncement && !danteSettings.isFirstAppOpen
+        activeAnnouncement.onNext(showAnnouncement)
     }
 }

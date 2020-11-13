@@ -1,8 +1,8 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +18,7 @@ import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isPortrait
+import at.shockbytes.dante.util.openFile
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
@@ -49,8 +50,13 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
                     onItemDismissed(content, location)
                 }
 
-                override fun onBackupItemDownloadRequest(content: BackupMetadata) {
-                    // TODO Download file
+                override fun onBackupItemDownloadRequest(content: BackupMetadata.WithLocalFile) {
+                    // Not implemented yet...
+                }
+
+                override fun onBackupItemOpenFileRequest(content: BackupMetadata.WithLocalFile) {
+                    openFile(content)
+                    viewModel.trackOpenFileEvent(content.storageProvider)
                 }
             }
         )
@@ -97,7 +103,7 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
 
     override fun bindViewModel() {
 
-        viewModel.getBackupState().observe(this, Observer { state ->
+        viewModel.getBackupState().observe(this, { state ->
 
             when (state) {
                 is BackupViewModel.LoadBackupState.Success -> {
@@ -160,12 +166,26 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
             .addTo(compositeDisposable)
     }
 
-    override fun unbindViewModel() {
-    }
+    override fun unbindViewModel() = Unit
 
     private fun onItemDismissed(t: BackupMetadata, position: Int) {
         val currentItems = rv_fragment_backup_restore.adapter?.itemCount ?: -1
         viewModel.deleteItem(t, position, currentItems)
+    }
+
+    /**
+     * TODO This implementation does not work on all devices...
+     * Use FileProvider instead
+     */
+    private fun openFile(content: BackupMetadata.WithLocalFile) {
+        with(requireContext()) {
+            Intent
+                .createChooser(
+                    openFile(content.localFilePath, content.mimeType),
+                    resources.getText(R.string.open_backup_file)
+                )
+                .let(::startActivity)
+        }
     }
 
     private fun showLoadingView(show: Boolean) {

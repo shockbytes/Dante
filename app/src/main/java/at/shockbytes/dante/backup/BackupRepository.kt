@@ -1,14 +1,16 @@
 package at.shockbytes.dante.backup
 
 import androidx.fragment.app.FragmentActivity
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
-import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.PageRecordDao
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -19,7 +21,9 @@ interface BackupRepository {
 
     val backupProvider: List<BackupProvider>
 
-    var lastBackupTime: Long
+    fun setLastBackupTime(timeInMillis: Long)
+
+    fun observeLastBackupTime(): Observable<Long>
 
     fun getBackups(): Single<List<BackupMetadataState>>
 
@@ -31,17 +35,15 @@ interface BackupRepository {
 
     fun removeAllBackupEntries(): Completable
 
-    fun backup(books: List<BookEntity>, backupStorageProvider: BackupStorageProvider): Completable
+    fun backup(
+        backupContent: BackupContent,
+        backupStorageProvider: BackupStorageProvider
+    ): Completable
 
     fun restoreBackup(
         entry: BackupMetadata,
         bookRepository: BookRepository,
+        pageRecordDao: PageRecordDao,
         strategy: RestoreStrategy
     ): Completable
-
-    companion object {
-        const val KEY_LAST_BACKUP = "key_last_backup"
-
-        const val BACKUP_ITEM_SUFFIX = ".dbi"
-    }
 }

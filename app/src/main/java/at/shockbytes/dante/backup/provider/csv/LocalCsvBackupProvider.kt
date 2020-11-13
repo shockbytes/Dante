@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.R
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
@@ -15,6 +16,7 @@ import at.shockbytes.dante.importer.DanteCsvImportProvider
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.dante.util.singleOf
 import io.reactivex.Completable
 import io.reactivex.Single
 import timber.log.Timber
@@ -54,24 +56,25 @@ class LocalCsvBackupProvider(
         }
     }
 
-    override fun backup(books: List<BookEntity>): Completable {
-        return getBackupContent(books)
+    override fun backup(backupContent: BackupContent): Completable {
+        return createBackupDataFromBackupContent(backupContent.books)
             .flatMapCompletable { (fileName, content) ->
                 externalStorageInteractor.writeToFileInDirectory(BASE_DIR_NAME, fileName, content)
             }
             .subscribeOn(schedulers.io)
     }
 
-    /**
-     * Returns Pair<FileName, Content>
-     */
-    private fun getBackupContent(books: List<BookEntity>): Single<Pair<String, String>> {
+    private data class BackupFileContent(val fileName: String, val content: String)
+
+    private fun createBackupDataFromBackupContent(
+        books: List<BookEntity>
+    ): Single<BackupFileContent> {
         return Single.fromCallable {
             val timestamp = System.currentTimeMillis()
             val fileName = createFileName(timestamp, books.size)
             val content = createContent(books)
 
-            Pair(fileName, content)
+            BackupFileContent(fileName, content)
         }
     }
 
@@ -138,20 +141,21 @@ class LocalCsvBackupProvider(
         return try {
 
             val fileName = backupFile.name
-            Timber.i("File name of backup file: $fileName")
             val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val storageProvider = BackupStorageProvider.byAcronym(data[1])
             val timestamp = data[2].toLong()
             val books = Integer.parseInt(data[3])
-            val device = data[4].substring(0, data[4].lastIndexOf("."))
+            val device = fileName.substring(fileName.indexOf(data[4]), fileName.lastIndexOf("."))
 
-            val metadata = BackupMetadata(
+            val metadata = BackupMetadata.WithLocalFile(
                 id = fileName,
                 fileName = fileName,
                 device = device,
                 storageProvider = storageProvider,
                 books = books,
-                timestamp = timestamp
+                timestamp = timestamp,
+                localFilePath = backupFile,
+                mimeType = CSV_MIME_TYPE
             )
 
             // Can only be active, ExternalStorageBackupProvider does not support cached states
@@ -174,12 +178,15 @@ class LocalCsvBackupProvider(
             .subscribeOn(schedulers.io)
     }
 
-    override fun mapEntryToBooks(entry: BackupMetadata): Single<List<BookEntity>> {
-        return Single
-            .fromCallable {
+    override fun mapBackupToBackupContent(entry: BackupMetadata): Single<BackupContent> {
+        return singleOf {
                 externalStorageInteractor.readFileContent(BASE_DIR_NAME, entry.fileName)
             }
             .flatMap(csvImporter::importFromContent)
+            .map { books ->
+                // Page records are not supported by this backup provider
+                BackupContent(books, listOf())
+            }
             .subscribeOn(schedulers.io)
     }
 
@@ -219,6 +226,7 @@ class LocalCsvBackupProvider(
 
     companion object {
 
+        private const val CSV_MIME_TYPE = "text/csv"
         private const val CSV_SUFFIX = ".csv"
         private const val BASE_DIR_NAME = "Dante"
         private const val RC_READ_WRITE_EXT_STORAGE = 0x5321

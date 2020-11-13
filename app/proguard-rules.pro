@@ -23,23 +23,27 @@
 # - Retrofit
 # - Realm
 # - Gson
-# - Butterknife
 # - Jackson
 # - GMS
 # - Crashlytics
 # - Timber
+# - Jackson
 # - Firebase
-# - SpeedDialView
 
+# Activity Transition
 -keep public class android.app.ActivityTransitionCoordinator
 
-# Never obfuscate model classes
--keepclassmembers class at.shockbytes.book.** {
-  *;
+# Do not obfuscate backup models
+-keepclassmembers class at.shockbytes.dante.backup.model.* {
+    <fields>;
+    <init>();
+    <methods>;
 }
-
--keepclassmembers class at.shockbytes.dante.backup.model.** {
-  *;
+-keep class at.shockbytes.dante.core.book.** {*;}
+-keepclassmembers class at.shockbytes.dante.core.book.* {
+    <fields>;
+    <init>();
+    <methods>;
 }
 
 -keepclassmembers class * extends java.lang.Enum {
@@ -70,21 +74,12 @@
 -keep @io.realm.internal.Keep class *
 -dontwarn javax.**
 -dontwarn io.realm.**
--keep class at.shockbytes.util.books.** { *; }
 
 # Retrofit
 -dontnote retrofit2.Platform
 -dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
 -keepattributes Exceptions
-
-# Gson
--keepclassmembers enum * { *; }
-
-# ButterKnife
--keep class butterknife.*
--keepclasseswithmembernames class * { @butterknife.* <methods>; }
--keepclasseswithmembernames class * { @butterknife.* <fields>; }
 
 # Jackson
 -keep class com.fasterxml.jackson.databind.ObjectMapper {
@@ -96,6 +91,10 @@
 }
 -keepnames class com.fasterxml.jackson.** { *; }
 -dontwarn com.fasterxml.jackson.databind.**
+
+# Gson
+-keepclassmembers enum * { *; }
+-keep class com.google.** { *;}
 
 # gms
 -keep class com.google.android.gms.** { *; }
@@ -110,6 +109,3 @@
 
 # Timber
 -dontwarn org.jetbrains.annotations.**
-
-# Activity Transition
--keep public class android.app.ActivityTransitionCoordinator

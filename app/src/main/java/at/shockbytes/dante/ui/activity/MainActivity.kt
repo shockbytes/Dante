@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.activity
 
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
@@ -34,6 +33,7 @@ import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.isFragmentShown
 import at.shockbytes.dante.util.retrieveActiveActivityAlias
 import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.settings.LauncherIconState
@@ -76,7 +76,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setupUI()
         initializeNavigation()
         setupDarkMode()
-        checkForOnboardingHints()
         saveLauncherIconState()
         // goingEdgeToEdge()
         setupFabMorph()
@@ -192,13 +191,15 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             })
             .addTo(compositeDisposable)
 
-        viewModel.getUserEvent().observe(this, Observer { event ->
+        viewModel.getUserEvent().observe(this, { event ->
 
             when (event) {
 
                 is MainViewModel.UserEvent.SuccessEvent -> {
                     // Only show announcements once the user is logged in
                     viewModel.queryAnnouncements()
+                    // Only show onboarding hints after the user login state is resolved
+                    checkForOnboardingHints()
 
                     if (event.user != null) {
                         val photoUrl = event.user.photoUrl
@@ -246,11 +247,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun showAnnouncementFragment() {
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(0, R.anim.fade_out, 0, R.anim.fade_out)
-            .add(android.R.id.content, AnnouncementFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+
+        with(supportFragmentManager) {
+            if (!isFragmentShown(TAG_ANNOUNCEMENT)) {
+                beginTransaction()
+                    .setCustomAnimations(0, R.anim.fade_out, 0, R.anim.fade_out)
+                    .add(android.R.id.content, AnnouncementFragment.newInstance(), TAG_ANNOUNCEMENT)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
     }
 
     private fun handleIntentExtras() {
@@ -287,7 +293,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         // It has to be delayed, otherwise it will appear on the wrong
         // position on top of the BottomNavigationBar
-        runDelayed(1500) {
+        runDelayed(1000) {
             if (danteSettings.isFirstAppOpen) {
                 danteSettings.isFirstAppOpen = false
                 showOnboardingHintViews()
@@ -302,7 +308,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun showOnboardingHintViews() {
-
         MaterialTapTargetPrompt.Builder(this)
             .setTarget(R.id.mainFab)
             .setFocalColour(ContextCompat.getColor(this, android.R.color.transparent))
@@ -353,7 +358,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             GoogleWelcomeScreenDialogFragment
                 .newInstance(account.givenName, account.photoUrl)
                 .setOnAcknowledgedListener {
-                    viewModel.showSignInWelcomeScreen(false)
+                    viewModel.disableShowWelcomeScreen()
                 }
                 .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
         }
@@ -428,6 +433,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     companion object {
+
+        private const val TAG_ANNOUNCEMENT = "announcement-tag"
 
         private const val GOOGLE_SIGNIN_FRAGMENT = "google_welcome_dialog_fragment"
 

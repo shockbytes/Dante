@@ -1,7 +1,7 @@
 package at.shockbytes.dante.backup.provider.shockbytes.api
 
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
-import at.shockbytes.dante.core.book.BookEntity
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Body
@@ -37,7 +37,7 @@ interface ShockbytesHerokuApi {
     fun getBooksBackupById(
         @Header("Authorization") bearerToken: String,
         @Path("backupId") backupId: String
-    ): Single<List<BookEntity>>
+    ): Single<BackupContent>
 
     @DELETE("backup/{backupId}")
     fun removeBackupById(
@@ -48,7 +48,7 @@ interface ShockbytesHerokuApi {
     @PUT("backup")
     fun makeBackup(
         @Header("Authorization") bearerToken: String,
-        @Body books: List<BookEntity>
+        @Body backupContent: BackupContent
     ): Single<BackupMetadata>
 
     companion object {

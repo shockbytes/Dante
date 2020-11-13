@@ -59,16 +59,36 @@ The backlog is currently empty.
 
 ## Current development
 
-### Version 3.16
-- [ ] Send csv export via Mail
+### Version 3.17
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 - [ ] Add Onboarding + optional Login
+- [ ] Backup file improvements
+    - [ ] Show path to local backup files
+    - [ ] Open file with FileProvider
 - [ ] Experimental remote storage Firestore implementation (for test account)
 - [ ] Fix bug with local book covers
     - [ ] In MultiBareBoneBookView (not showing up)
     - [ ] In the label overview (too big)
 
 ## Changelog
+
+### Version 3.16 - BRING BACK BACKUP
+* Google Drive REST Backup
+  * Add DriveRestClient
+  * Remove DriveApiClient + dependencies
+  * Move dependencies in `BookStorageModule`
+  * Polish Overwrite/Merge UI
+  * Replace Google Drive icon
+* Foundation for exporting local backups via Mail/other services
+  * Open local backups via intent chooser
+  * Allow external backup import in Import tab
+  * Change export/import icon
+  * Track open backup event (with provider)
+* Replace ActionBar in BookManagement screen
+* Backup issues
+  * Fix Backup Proguard rules
+  * Make last backup time reactive
+  * Fix issues with CSV files on emulators
 
 ### Version 3.15
 * Statistics pages/books over time / month + Goal per month
@@ -124,7 +144,7 @@ The backlog is currently empty.
 
 ### Version 3.6 - GET EXCITED
 * Move to Android App Bundles
-* Improve Backups 
+* Improve Backups
 * Open source Dante
 
 ### Version 3.5 - ADD ANDROID FRAMEWORK AWESOMENESS
@@ -194,9 +214,9 @@ The backlog is currently empty.
 * Search feature
 
 ### Version 2.6 - DETAILED DESIGN
-* Rate books 
+* Rate books
 * 100% Kotlin Port if possible
-* Enter book page count manually 
+* Enter book page count manually
 * Adding notes to books
 
 ### Version 2.5 - REFACTOR RAMPAGE
@@ -209,6 +229,6 @@ The backlog is currently empty.
 * Add Crashlytics
 * Code cleanup and Kotlin Port
 * Introduction / Showcase View
-* DownloadBook / QueryCapture Activity merging 
+* DownloadBook / QueryCapture Activity merging
 * ViewPagerAdapter
 * Adaptive Icons

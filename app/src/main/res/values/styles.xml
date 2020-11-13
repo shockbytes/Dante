@@ -9,6 +9,8 @@
         <item name="android:windowSharedElementEnterTransition">@transition/hero_transition</item>
         <item name="android:windowSharedElementExitTransition">@transition/hero_transition</item>
 
+        <item name="actionBarStyle">@style/AppTheme.Appearance.ActionBarStyle</item>
+
         <item name="md_font_title">@font/montserrat</item>
         <item name="md_font_body">@font/montserrat</item>
         <item name="md_font_button">@font/montserrat</item>
@@ -20,6 +22,10 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="AppTheme.Appearance.ActionBarStyle" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:titleTextStyle">@style/Theme.TextAppearance.Title</item>
+        <item name="titleTextAppearance">@style/Theme.TextAppearance.Title</item>
+    </style>
 
     <style name="Widget.App.Slider" parent="Widget.MaterialComponents.Slider">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Slider</item>

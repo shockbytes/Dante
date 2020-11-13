@@ -37,16 +37,6 @@ enum class BackupStorageProvider(
         isLocalFileExportable = false,
         stability = Stability.CANARY
     ),
-    @SerializedName("gdrive")
-    GOOGLE_DRIVE_LEGACY(
-        "gdrive",
-        "Google Drive",
-        R.drawable.ic_google_drive_legacy,
-        R.string.backup_storage_provider_rationale_gdrive,
-        Priority.HIGH,
-        isLocalFileExportable = false,
-        stability = Stability.RELEASE
-    ),
     @SerializedName("google-drive")
     GOOGLE_DRIVE(
         "google-drive",
@@ -64,7 +54,7 @@ enum class BackupStorageProvider(
         R.drawable.ic_external_storage,
         R.string.backup_storage_provider_rationale_external_storage,
         Priority.MEDIUM,
-        isLocalFileExportable = true,
+        isLocalFileExportable = false,
         stability = Stability.RELEASE
     ),
     @SerializedName("csv_local")
@@ -74,7 +64,7 @@ enum class BackupStorageProvider(
         R.drawable.ic_csv,
         R.string.backup_storage_provider_rationale_csv,
         Priority.MEDIUM,
-        isLocalFileExportable = true,
+        isLocalFileExportable = false,
         stability = Stability.BETA
     );
 

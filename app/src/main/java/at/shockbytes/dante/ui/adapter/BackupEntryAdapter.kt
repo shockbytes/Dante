@@ -89,8 +89,7 @@ class BackupEntryAdapter(
 
             val showExportOption = content.isFileExportable && entry is BackupMetadata.WithLocalFile
             popupMenu.menu.findItem(R.id.menu_backup_open_request)?.isVisible = showExportOption
-            // TODO This feature is disabled for now
-            popupMenu.menu.findItem(R.id.menu_backup_export_request)?.isVisible = false
+            popupMenu.menu.findItem(R.id.menu_backup_export_request)?.isVisible = showExportOption
 
             val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_backup_entry_btn_overflow)
             menuHelper.setForceShowIcon(true)

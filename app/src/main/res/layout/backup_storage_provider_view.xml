@@ -16,7 +16,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_google_drive_legacy" />
+        tools:srcCompat="@drawable/ic_google_drive" />
 
     <TextView
         android:id="@+id/tv_backup_storage_provider_title"

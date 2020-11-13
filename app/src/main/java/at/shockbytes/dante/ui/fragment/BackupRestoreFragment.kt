@@ -173,6 +173,10 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
         viewModel.deleteItem(t, position, currentItems)
     }
 
+    /**
+     * TODO This implementation does not work on all devices...
+     * Use FileProvider instead
+     */
     private fun openFile(content: BackupMetadata.WithLocalFile) {
         with(requireContext()) {
             Intent

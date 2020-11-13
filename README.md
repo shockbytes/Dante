@@ -57,35 +57,38 @@ The backlog is currently empty.
   - [ ] Migrate from local to remote storage
 - [ ] Login with Firebase
 
+## Current development
+
 ### Version 3.17
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 - [ ] Add Onboarding + optional Login
+- [ ] Backup file improvements
+    - [ ] Show path to local backup files
+    - [ ] Open file with FileProvider
 - [ ] Experimental remote storage Firestore implementation (for test account)
 - [ ] Fix bug with local book covers
     - [ ] In MultiBareBoneBookView (not showing up)
     - [ ] In the label overview (too big)
 
-## Current development
+## Changelog
 
 ### Version 3.16 - BRING BACK BACKUP
-- [x] Google Drive REST Backup
-  - [x] Add DriveRestClient
-  - [x] Remove DriveApiClient + dependencies
-  - [x] Move dependencies in `BookStorageModule`
-  - [x] Polish Overwrite/Merge UI
-  - [x] Replace Google Drive icon
-- [x] Export local backups via Mail/other services
-  - [x] Open local backups via intent chooser
-  - [x] Allow external backup import in Import tab
-  - [x] Change export/import icon
-  - [x] Track open backup event (with provider)
-- [x] Replace ActionBar in BookManagement screen
-- [x] Backup issues
-  - [x] Fix Backup Proguard rules
-  - [x] Make last backup time reactive
-  - [x] Fix issues with CSV files on emulators
-
-## Changelog
+* Google Drive REST Backup
+  * Add DriveRestClient
+  * Remove DriveApiClient + dependencies
+  * Move dependencies in `BookStorageModule`
+  * Polish Overwrite/Merge UI
+  * Replace Google Drive icon
+* Foundation for exporting local backups via Mail/other services
+  * Open local backups via intent chooser
+  * Allow external backup import in Import tab
+  * Change export/import icon
+  * Track open backup event (with provider)
+* Replace ActionBar in BookManagement screen
+* Backup issues
+  * Fix Backup Proguard rules
+  * Make last backup time reactive
+  * Fix issues with CSV files on emulators
 
 ### Version 3.15
 * Statistics pages/books over time / month + Goal per month

@@ -157,7 +157,7 @@ fun <T> singleOf(
     subscribeOn: Scheduler = Schedulers.io(),
     block: () -> T
 ): Single<T> {
-    return Single.just(block()).subscribeOn(subscribeOn)
+    return Single.fromCallable { block() }.subscribeOn(subscribeOn)
 }
 
 fun Iterable<Completable>.merge() = Completable.merge(this)
@@ -178,6 +178,8 @@ fun <T> maybeOf(
             val value = block()
             if (value != null) {
                 emitter.onSuccess(value)
+            } else {
+                emitter.onError(NullPointerException("No value found..."))
             }
             emitter.onComplete()
         }

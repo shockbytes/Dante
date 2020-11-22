@@ -9,11 +9,11 @@ import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.util.completableOf
-import at.shockbytes.dante.util.maybeOf
 import at.shockbytes.dante.util.merge
+import at.shockbytes.dante.util.singleOf
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.realm.Case
 import io.realm.Sort
 import timber.log.Timber
@@ -66,8 +66,8 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .findAll()
             .map { mapper.mapTo(it) }
 
-    override operator fun get(id: Long): Maybe<BookEntity> {
-        return maybeOf {
+    override operator fun get(id: Long): Single<BookEntity> {
+        return singleOf {
             realm.instance.where(bookClass).equalTo("id", id).findFirst()
         }.map(mapper::mapTo)
     }

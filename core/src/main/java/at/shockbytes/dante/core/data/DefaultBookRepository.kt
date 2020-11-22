@@ -6,11 +6,8 @@ import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Single
 
-class DefaultBookRepository(
-    private val localBookDao: BookEntityDao
-) : BookRepository {
+class DefaultBookRepository(private val localBookDao: BookEntityDao) : BookRepository {
 
     private var selectedBookDao: BookEntityDao
 
@@ -34,11 +31,6 @@ class DefaultBookRepository(
 
     override val booksCurrentlyReading: List<BookEntity>
         get() = selectedBookDao.booksCurrentlyReading
-
-    override val localBooksCount: Single<Int>
-        get() = localBookDao.bookObservable
-            .first(listOf())
-            .map { it.count() }
 
     override operator fun get(id: Long): Maybe<BookEntity> {
         return selectedBookDao[id]

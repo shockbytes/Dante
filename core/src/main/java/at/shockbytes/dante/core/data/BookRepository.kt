@@ -6,7 +6,6 @@ import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
-import io.reactivex.Single
 
 interface BookRepository {
 
@@ -15,8 +14,6 @@ interface BookRepository {
     val bookLabelObservable: Observable<List<BookLabel>>
 
     val booksCurrentlyReading: List<BookEntity>
-
-    val localBooksCount: Single<Int>
 
     operator fun get(id: Long): Maybe<BookEntity>
 

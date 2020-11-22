@@ -6,6 +6,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -135,10 +136,8 @@ class BookListViewModel @Inject constructor(
 
     fun deleteBook(book: BookEntity) {
         bookRepository.delete(book.id)
-            .subscribe({
-            }, { throwable ->
-                Timber.e(throwable)
-            })
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe()
             .addTo(compositeDisposable)
     }
 
@@ -169,7 +168,7 @@ class BookListViewModel @Inject constructor(
         updateBook(book)
     }
 
-    fun updateBook(book: BookEntity) {
+    private fun updateBook(book: BookEntity) {
         bookRepository.update(book)
             .subscribe({
                 Timber.d("Successfully updated ${book.title}")

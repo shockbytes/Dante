@@ -67,8 +67,10 @@ class BarcodeResultViewModel(
     }
 
     fun storeBook(bookEntity: BookEntity, state: BookState) {
-        bookRepository
-            .create(bookEntity.apply { updateState(state) })
+
+        val updated = bookEntity.apply { updateState(state) }
+
+        bookRepository.create(updated)
             .subscribe({
                 bookStoredSubject.onNext(BookStoredEvent.Success(bookEntity.title))
             }, { throwable ->

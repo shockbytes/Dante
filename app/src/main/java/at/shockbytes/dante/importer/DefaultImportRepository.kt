@@ -3,6 +3,7 @@ package at.shockbytes.dante.importer
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.util.merge
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -41,12 +42,10 @@ class DefaultImportRepository(
     }
 
     override fun import(): Completable {
-        return if (parsedBooks != null) {
-            val sources = parsedBooks!!.map(bookRepository::create)
-            Completable.merge(sources)
-        } else {
-            Completable.error(IllegalStateException("No books parsed!"))
-        }
+        return parsedBooks
+            ?.map(bookRepository::create)
+            ?.merge()
+            ?: Completable.error(IllegalStateException("No books parsed!"))
     }
 
     private fun cacheBooks(books: List<BookEntity>) {

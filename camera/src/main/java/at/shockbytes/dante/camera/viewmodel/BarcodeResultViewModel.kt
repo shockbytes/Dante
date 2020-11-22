@@ -30,7 +30,10 @@ class BarcodeResultViewModel(
 
     sealed class BookStoredEvent {
 
-        data class Success(val title: String) : BookStoredEvent()
+        data class Success(
+            val title: String,
+            val state: BookState
+        ) : BookStoredEvent()
 
         data class Error(val reason: String?) : BookStoredEvent()
     }
@@ -72,7 +75,7 @@ class BarcodeResultViewModel(
 
         bookRepository.create(updated)
             .subscribe({
-                bookStoredSubject.onNext(BookStoredEvent.Success(bookEntity.title))
+                bookStoredSubject.onNext(BookStoredEvent.Success(bookEntity.title, bookEntity.state))
             }, { throwable ->
                 Timber.e(throwable)
                 bookStoredSubject.onNext(BookStoredEvent.Error(throwable.localizedMessage))

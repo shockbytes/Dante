@@ -62,7 +62,7 @@ class BookListViewModel @Inject constructor(
 
     private val pickRandomBookSubject = PublishSubject.create<RandomPickEvent>()
     val onPickRandomBookEvent: Observable<RandomPickEvent> = pickRandomBookSubject
-            .delay(300L, TimeUnit.MILLISECONDS) // Delay it a bit, otherwise the UI appears too fast
+        .delay(300L, TimeUnit.MILLISECONDS) // Delay it a bit, otherwise the UI appears too fast
 
     init {
         listenToSettings()
@@ -71,19 +71,20 @@ class BookListViewModel @Inject constructor(
     private fun listenToSettings() {
         // Reload books whenever the sort strategy changes
         settings.observeSortStrategy()
-                .observeOn(schedulers.ui)
-                .subscribe { loadBooks() }
-                .addTo(compositeDisposable)
+            .observeOn(schedulers.ui)
+            .distinctUntilChanged()
+            .subscribe { loadBooks() }
+            .addTo(compositeDisposable)
 
         // Reload books whenever the random pick interaction setting changes
         // but only if we are in the correct tab
         settings.observeRandomPickInteraction()
-                .subscribe {
-                    if (state == BookState.READ_LATER) {
-                        loadBooks()
-                    }
+            .subscribe {
+                if (state == BookState.READ_LATER) {
+                    loadBooks()
                 }
-                .addTo(compositeDisposable)
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun loadBooks() {
@@ -187,21 +188,21 @@ class BookListViewModel @Inject constructor(
     fun pickRandomBookToRead() {
 
         val event = books.value
-                ?.let { state ->
-                    (state as? BookLoadingState.Success)?.books
-                }
-                ?.also { adapterEntities ->
-                    val books = adapterEntities.filterIsInstance<BookAdapterEntity.Book>().count()
-                    tracker.track(DanteTrackingEvent.PickRandomBook(books))
-                }
-                ?.let { books ->
-                    val randomPick = books
-                            .filterIsInstance<BookAdapterEntity.Book>()
-                            .random()
-                            .bookEntity
-                    RandomPickEvent.RandomPick(randomPick)
-                }
-                ?: RandomPickEvent.NoBookAvailable
+            ?.let { state ->
+                (state as? BookLoadingState.Success)?.books
+            }
+            ?.also { adapterEntities ->
+                val books = adapterEntities.filterIsInstance<BookAdapterEntity.Book>().count()
+                tracker.track(DanteTrackingEvent.PickRandomBook(books))
+            }
+            ?.let { books ->
+                val randomPick = books
+                    .filterIsInstance<BookAdapterEntity.Book>()
+                    .random()
+                    .bookEntity
+                RandomPickEvent.RandomPick(randomPick)
+            }
+            ?: RandomPickEvent.NoBookAvailable
 
         pickRandomBookSubject.onNext(event)
     }

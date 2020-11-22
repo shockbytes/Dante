@@ -1,13 +1,16 @@
 package at.shockbytes.dante.camera
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.camera.injection.DaggerCameraComponent
 import at.shockbytes.dante.camera.viewmodel.BarcodeResultViewModel
+import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
+import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLoadingState
 import at.shockbytes.dante.core.book.BookState
@@ -84,7 +87,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getBookLoadingState().observe(this, Observer { state ->
+        viewModel.getBookLoadingState().observe(this, { state ->
             when (state) {
                 is BookLoadingState.Loading -> showLoadingLayout()
                 is BookLoadingState.Error -> showErrorLayout(getString(state.cause))
@@ -102,9 +105,10 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         when (event) {
             is BarcodeResultViewModel.BookStoredEvent.Success -> {
                 if (askForAnotherScan) {
-                    showBookStoredDialog(event.title)
+                    showBookStoredDialog(event.title, event.state)
                 } else {
                     dismiss()
+                    sendCreationBroadcast(event.state)
                 }
             }
             is BarcodeResultViewModel.BookStoredEvent.Error -> {
@@ -113,7 +117,15 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun showBookStoredDialog(storedBook: String) {
+    private fun sendCreationBroadcast(state: BookState) {
+        LocalBroadcastManager.getInstance(requireContext())
+            .sendBroadcast(
+                Intent(ACTION_BOOK_CREATED)
+                    .putExtra(EXTRA_BOOK_CREATED_STATE, state)
+            )
+    }
+
+    private fun showBookStoredDialog(storedBook: String, bookState: BookState) {
         MaterialDialog(requireContext()).show {
             title(text = getString(R.string.book_added_to_library, storedBook))
             message(R.string.scan_another_book)
@@ -123,6 +135,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
             negativeButton(R.string.no) {
                 resetCloseListener()
                 activity?.supportFinishAfterTransition()
+                sendCreationBroadcast(bookState)
             }
             cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
         }

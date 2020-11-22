@@ -42,7 +42,7 @@ class ManualAddViewModel @Inject constructor(
     }
 
     sealed class AddEvent {
-        object Success : AddEvent()
+        data class Success(val createdBookState: BookState) : AddEvent()
         data class Updated(val updateBookState: BookState) : AddEvent()
         object Error : AddEvent()
     }
@@ -119,7 +119,7 @@ class ManualAddViewModel @Inject constructor(
     private fun storeBookInRepository(entity: BookEntity) {
         bookRepository.create(entity)
             .subscribe({
-                addEvent.onNext(AddEvent.Success)
+                addEvent.onNext(AddEvent.Success(entity.state))
             }, { throwable ->
                 addEvent.onNext(AddEvent.Error)
                 Timber.e(throwable)

@@ -22,6 +22,8 @@ import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
+import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
+import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
@@ -192,6 +194,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                 when (event) {
                     is ManualAddViewModel.AddEvent.Success -> {
                         activity?.onBackPressed()
+                        sendBookCreatedBroadcast(event.createdBookState)
                     }
                     is ManualAddViewModel.AddEvent.Error -> {
                         showSnackbar(getString(R.string.manual_add_error),
@@ -206,12 +209,22 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             .addTo(compositeDisposable)
     }
 
+    private fun sendBookCreatedBroadcast(createdBookState: BookState) {
+        sendBroadcast(
+            Intent(ACTION_BOOK_CREATED).putExtra(EXTRA_BOOK_CREATED_STATE, createdBookState)
+        )
+    }
+
     private fun sendBookUpdatedBroadcast(bookState: BookState) {
+        sendBroadcast(
+            Intent(BookDetailFragment.ACTION_BOOK_CHANGED)
+                .putExtra(ManualAddActivity.EXTRA_UPDATED_BOOK_STATE, bookState)
+        )
+    }
+
+    private fun sendBroadcast(intent: Intent) {
         LocalBroadcastManager.getInstance(requireContext())
-            .sendBroadcast(
-                Intent(BookDetailFragment.ACTION_BOOK_CHANGED)
-                    .putExtra(ManualAddActivity.EXTRA_UPDATED_BOOK_STATE, bookState)
-            )
+            .sendBroadcast(intent)
     }
 
     private fun populateBookDataViews(bookEntity: BookEntity) {

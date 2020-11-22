@@ -8,8 +8,12 @@ import at.shockbytes.dante.core.book.realm.RealmBookLabel
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.RestoreStrategy
+import at.shockbytes.dante.util.completableOf
+import at.shockbytes.dante.util.merge
+import at.shockbytes.dante.util.singleOf
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.realm.Case
 import io.realm.Sort
 import timber.log.Timber
@@ -33,17 +37,17 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     private val lastId: Long
         get() {
             val config = realm.instance.where(configClass).findFirst()
-                    ?: realm.instance.createObject(configClass)
+                ?: realm.instance.createObject(configClass)
             return config.getLastPrimaryKey()
         }
 
     override val bookObservable: Observable<List<BookEntity>>
         get() = realm.instance.where(bookClass)
-                .sort("id", Sort.DESCENDING)
-                .findAllAsync()
-                .asFlowable()
-                .map { mapper.mapTo(it) }
-                .toObservable()
+            .sort("id", Sort.DESCENDING)
+            .findAllAsync()
+            .asFlowable()
+            .map { mapper.mapTo(it) }
+            .toObservable()
 
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.instance.where(labelClass)
@@ -62,115 +66,123 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .findAll()
             .map { mapper.mapTo(it) }
 
-    override fun get(id: Long): BookEntity? {
-        val book = realm.instance.where(bookClass).equalTo("id", id).findFirst()
-        return if (book != null) {
-            mapper.mapTo(book)
-        } else null
+    override operator fun get(id: Long): Single<BookEntity> {
+        return singleOf {
+            realm.instance.where(bookClass).equalTo("id", id).findFirst()
+        }.map(mapper::mapTo)
     }
 
-    override fun create(entity: BookEntity) {
-        realm.instance.executeTransaction { realm ->
-            val id = lastId
-            entity.id = id
-            realm.copyToRealm(mapper.mapFrom(entity))
+    override fun create(entity: BookEntity): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                val id = lastId
+                entity.id = id
+                realm.copyToRealm(mapper.mapFrom(entity))
+            }
         }
     }
 
-    override fun update(entity: BookEntity) {
-        realm.instance.executeTransaction { realm ->
-            realm.copyToRealmOrUpdate(mapper.mapFrom(entity))
+    override fun update(entity: BookEntity): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.copyToRealmOrUpdate(mapper.mapFrom(entity))
+            }
         }
     }
 
-    override fun updateCurrentPage(bookId: Long, currentPage: Int) {
-        realm.instance.executeTransaction { realm ->
-            realm.where(bookClass)
+    override fun updateCurrentPage(bookId: Long, currentPage: Int): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.where(bookClass)
                     .equalTo("id", bookId)
                     .findFirst()
                     ?.let { realmBook ->
                         realmBook.currentPage = currentPage
                         realm.copyToRealmOrUpdate(realmBook)
                     }
+            }
         }
     }
 
-    override fun delete(id: Long) {
-        realm.instance.executeTransaction { realm ->
-            realm.where(bookClass)
-                .equalTo("id", id)
-                .findFirst()
-                ?.deleteFromRealm()
+    override fun delete(id: Long): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.where(bookClass)
+                    .equalTo("id", id)
+                    .findFirst()
+                    ?.deleteFromRealm()
+            }
         }
     }
 
     override fun search(query: String): Observable<List<BookEntity>> {
         return realm.instance.where(bookClass)
-                .contains("title", query, Case.INSENSITIVE)
-                .or()
-                .contains("author", query, Case.INSENSITIVE)
-                .or()
-                .contains("subTitle", query, Case.INSENSITIVE)
-                .findAll()
-                .asFlowable()
-                .map { mapper.mapTo(it) }
-                .toObservable()
+            .contains("title", query, Case.INSENSITIVE)
+            .or()
+            .contains("author", query, Case.INSENSITIVE)
+            .or()
+            .contains("subTitle", query, Case.INSENSITIVE)
+            .findAll()
+            .asFlowable()
+            .map { mapper.mapTo(it) }
+            .toObservable()
     }
 
     override fun restoreBackup(
         backupBooks: List<BookEntity>,
         strategy: RestoreStrategy
     ): Completable {
-        return Completable.fromAction {
-            when (strategy) {
-                RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
-                RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
+        return when (strategy) {
+            RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
+            RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
+        }
+    }
+
+    override fun createBookLabel(bookLabel: BookLabel): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.copyToRealm(labelMapper.mapFrom(bookLabel))
             }
         }
     }
 
-    override fun createBookLabel(bookLabel: BookLabel) {
-        realm.instance.executeTransaction { realm ->
-            realm.copyToRealm(labelMapper.mapFrom(bookLabel))
-        }
-    }
-
-    override fun deleteBookLabel(bookLabel: BookLabel) {
-        realm.instance.executeTransaction { realm ->
-            realm.where(labelClass)
-                .equalTo("title", bookLabel.title)
-                .and()
-                .equalTo("bookId", bookLabel.bookId)
-                .findFirst()
-                ?.deleteFromRealm()
-                ?: Timber.e(RealmBookLabelDeletionException(bookLabel.title))
-        }
-    }
-
-    private fun getBooks(): List<RealmBook> {
-        return realm.instance.where(bookClass).findAll().toList()
-    }
-
-    private fun mergeBackupRestore(backupBooks: List<BookEntity>) {
-
-        val books = getBooks()
-        for (bBook in backupBooks) {
-            val insert = books.none { it.title == bBook.title }
-            if (insert) {
-                create(bBook)
+    override fun deleteBookLabel(bookLabel: BookLabel): Completable {
+        return completableOf {
+            realm.instance.executeTransaction { realm ->
+                realm.where(labelClass)
+                    .equalTo("title", bookLabel.title)
+                    .and()
+                    .equalTo("bookId", bookLabel.bookId)
+                    .findFirst()
+                    ?.deleteFromRealm()
+                    ?: Timber.e(RealmBookLabelDeletionException(bookLabel.title))
             }
         }
     }
 
-    private fun overwriteBackupRestore(backupBooks: List<BookEntity>) {
+    private fun mergeBackupRestore(backupBooks: List<BookEntity>): Completable {
+        return bookObservable.first(listOf()) // <-- Important! Convert into single first
+            .map { books ->
+                backupBooks.filter { book ->
+                    books.none { it.title == book.title }
+                }
+            }
+            .flatMapCompletable { books ->
+                books.map(::create).merge()
+            }
+    }
 
-        val stored = realm.instance.where(bookClass).findAll()
-        realm.instance.executeTransaction {
-            stored.deleteAllFromRealm()
-        }
+    private fun overwriteBackupRestore(backupBooks: List<BookEntity>): Completable {
+        val createBackupBooks = backupBooks.map(::create).merge()
+        return deleteAllBooks().andThen(createBackupBooks)
+    }
 
-        backupBooks.forEach { book ->
-            create(book)
+    private fun deleteAllBooks(): Completable {
+        return completableOf {
+            val stored = realm.instance.where(bookClass).findAll()
+            realm.instance.executeTransaction {
+                stored.deleteAllFromRealm()
+            }
         }
     }
 }

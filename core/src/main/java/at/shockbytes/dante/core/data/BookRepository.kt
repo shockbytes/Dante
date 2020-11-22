@@ -15,17 +15,15 @@ interface BookRepository {
 
     val booksCurrentlyReading: List<BookEntity>
 
-    val localBooksCount: Single<Int>
+    operator fun get(id: Long): Single<BookEntity>
 
-    fun get(id: Long): BookEntity?
+    fun create(entity: BookEntity): Completable
 
-    fun create(entity: BookEntity)
+    fun update(entity: BookEntity): Completable
 
-    fun update(entity: BookEntity)
+    fun updateCurrentPage(bookId: Long, currentPage: Int): Completable
 
-    fun updateCurrentPage(bookId: Long, currentPage: Int)
-
-    fun delete(id: Long)
+    fun delete(id: Long): Completable
 
     fun search(query: String): Observable<List<BookEntity>>
 
@@ -34,9 +32,7 @@ interface BookRepository {
         strategy: RestoreStrategy
     ): Completable
 
-    fun createBookLabel(bookLabel: BookLabel)
+    fun createBookLabel(bookLabel: BookLabel): Completable
 
-    fun deleteBookLabel(bookLabel: BookLabel)
-
-    fun migrateToRemoteStorage(): Completable
+    fun deleteBookLabel(bookLabel: BookLabel): Completable
 }

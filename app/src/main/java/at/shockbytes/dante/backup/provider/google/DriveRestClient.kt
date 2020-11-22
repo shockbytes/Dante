@@ -24,12 +24,8 @@ import java.lang.Exception
 import java.util.Collections
 import java.util.concurrent.Executors
 
-/**
- * TODO Explain [selectedStorageProvider] necessity!
- */
 class DriveRestClient(
-    private val signInManager: GoogleFirebaseSignInManager,
-    private val selectedStorageProvider: BackupStorageProvider = BackupStorageProvider.GOOGLE_DRIVE
+    private val signInManager: GoogleFirebaseSignInManager
 ) : DriveClient {
 
     private lateinit var drive: Drive
@@ -137,8 +133,7 @@ class DriveRestClient(
                             val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
                             val storageProvider = BackupStorageProvider.byAcronym(data[0])
 
-                            if (storageProvider == selectedStorageProvider) {
-                                log(file.toPrettyString())
+                            if (isCorrectStorageProvider(storageProvider)) {
 
                                 val device = fileName.substring(
                                     fileName.indexOf(data[4]),
@@ -164,6 +159,15 @@ class DriveRestClient(
                 }
             }
         }
+    }
+
+    /**
+     * This call is necessary because there is a Google Drive legacy implementation, which may
+     * reside next to the new GOOGLE_DRIVE format. For simplicity, the old format got fully
+     * discarded since it stored the data obfuscated.
+     */
+    private fun isCorrectStorageProvider(storageProvider: BackupStorageProvider): Boolean {
+        return storageProvider == BackupStorageProvider.GOOGLE_DRIVE
     }
 
     private fun log(msg: String) {

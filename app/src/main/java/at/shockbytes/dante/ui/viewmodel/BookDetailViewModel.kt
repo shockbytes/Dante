@@ -94,12 +94,15 @@ class BookDetailViewModel @Inject constructor(
     }
 
     private fun fetchBook(bookId: Long) {
-        bookRepository.get(bookId)
-            ?.also { entity ->
-                pagesAtInit = entity.currentPage
-            }
-            ?.let(::craftViewState)
-            ?.let(viewState::postValue)
+        bookRepository[bookId]
+            .doOnSuccess(::initializePagesAtInitFromFetch)
+            .map(::craftViewState)
+            .subscribe(viewState::postValue, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
+    }
+
+    private fun initializePagesAtInitFromFetch(entity: BookEntity) {
+        pagesAtInit = entity.currentPage
     }
 
     private fun fetchPageRecords(bookId: Long) {
@@ -120,7 +123,7 @@ class BookDetailViewModel @Inject constructor(
                     DateTime(record.timestamp).withTimeAtStartOfDay()
                 }
                 .mapNotNull { (dtTimestamp, pageRecords) ->
-                    pageRecords.maxBy { it.timestamp }?.let { record ->
+                    pageRecords.maxByOrNull { it.timestamp }?.let { record ->
                         BooksAndPageRecordDataPoint(
                             value = record.toPage,
                             formattedDate = format.print(dtTimestamp)
@@ -261,7 +264,12 @@ class BookDetailViewModel @Inject constructor(
 
     private fun updateDaoAndObserver(b: BookEntity) {
         bookRepository.update(b)
-        viewState.postValue(craftViewState(b))
+            .subscribe({
+                viewState.postValue(craftViewState(b))
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun requestEditBook() {
@@ -291,9 +299,13 @@ class BookDetailViewModel @Inject constructor(
 
     fun removeLabel(label: BookLabel) {
         bookRepository.deleteBookLabel(label)
-
-        // Reload the book once a label got deleted
-        fetchBook(bookId)
+            .subscribe({
+                // Reload the book once a label got deleted
+                fetchBook(bookId)
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun onPageCountMayChanged() {
@@ -329,9 +341,7 @@ class BookDetailViewModel @Inject constructor(
     }
 
     private fun resetCurrentPageToZero(): Completable {
-        return Completable.fromAction {
-            bookRepository.updateCurrentPage(bookId, currentPage = 0)
-        }
+        return bookRepository.updateCurrentPage(bookId, currentPage = 0)
     }
 
     data class PageInfo(

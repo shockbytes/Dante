@@ -28,8 +28,18 @@ class BarcodeResultViewModel(
     private val bookLoadingState = MutableLiveData<BookLoadingState>()
     fun getBookLoadingState(): LiveData<BookLoadingState> = bookLoadingState
 
-    private val bookStoredSubject = PublishSubject.create<String>()
-    fun onBookStoredEvent(): Observable<String> = bookStoredSubject
+    sealed class BookStoredEvent {
+
+        data class Success(
+            val title: String,
+            val state: BookState
+        ) : BookStoredEvent()
+
+        data class Error(val reason: String?) : BookStoredEvent()
+    }
+
+    private val bookStoredSubject = PublishSubject.create<BookStoredEvent>()
+    fun onBookStoredEvent(): Observable<BookStoredEvent> = bookStoredSubject
 
     init {
         bookLoadingState.value = BookLoadingState.Loading
@@ -60,12 +70,17 @@ class BarcodeResultViewModel(
     }
 
     fun storeBook(bookEntity: BookEntity, state: BookState) {
-        bookRepository.create(
-            bookEntity.apply {
-                updateState(state)
-            }
-        )
-        bookStoredSubject.onNext(bookEntity.title)
+
+        val updated = bookEntity.apply { updateState(state) }
+
+        bookRepository.create(updated)
+            .subscribe({
+                bookStoredSubject.onNext(BookStoredEvent.Success(bookEntity.title, bookEntity.state))
+            }, { throwable ->
+                Timber.e(throwable)
+                bookStoredSubject.onNext(BookStoredEvent.Error(throwable.localizedMessage))
+            })
+            .addTo(compositeDisposable)
     }
 
     fun setSelectedBook(bookSuggestion: BookSuggestion, selectedBook: BookEntity) {

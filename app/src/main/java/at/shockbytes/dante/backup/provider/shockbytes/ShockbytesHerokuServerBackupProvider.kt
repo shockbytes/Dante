@@ -17,6 +17,8 @@ import timber.log.Timber
 /**
  * Author:  Martin Macheiner
  * Date:    09.05.2019
+ *
+ * IMPORTANT: Work in progress... Do not put in production!
  */
 class ShockbytesHerokuServerBackupProvider(
     private val signInManager: SignInManager,
@@ -30,7 +32,6 @@ class ShockbytesHerokuServerBackupProvider(
     override val backupStorageProvider = BackupStorageProvider.SHOCKBYTES_SERVER
 
     override fun initialize(activity: FragmentActivity?): Completable {
-        // TODO: Initialize provider
         return Completable.complete()
     }
 
@@ -40,7 +41,6 @@ class ShockbytesHerokuServerBackupProvider(
                 shockbytesHerokuApi.makeBackup(token, backupContent)
                     .flatMapCompletable { entry ->
                         Timber.d(entry.toString())
-                        // TODO What to do with entry? Store in UI?
                         Completable.complete()
                     }
         }

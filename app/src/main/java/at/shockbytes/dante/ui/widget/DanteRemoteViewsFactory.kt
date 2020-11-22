@@ -8,7 +8,6 @@ import at.shockbytes.dante.core.book.BookEntity
 import io.reactivex.disposables.CompositeDisposable
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps
-import timber.log.Timber
 import at.shockbytes.dante.util.DanteUtils
 import android.content.Intent
 import android.graphics.Bitmap
@@ -29,23 +28,19 @@ class DanteRemoteViewsFactory(
 
     private var currentBooks = listOf<BookEntity>()
 
-    override fun onCreate() {
-        Timber.d("appwidget - remoteviews factory onCreate()")
-    }
+    override fun onCreate() = Unit
 
     override fun getLoadingView(): RemoteViews? {
-        // TODO Implement later, return null for now
-        return null
+        return RemoteViews(context.packageName, R.layout.item_app_widget_loading).apply {
+            setProgressBar(R.id.pb_item_app_widget_loading, 0, 100, true)
+        }
     }
 
     override fun getItemId(position: Int): Long = currentBooks[position].id
 
     override fun onDataSetChanged() {
-
         val sorter = SortComparators.of(danteSettings.sortStrategy)
         currentBooks = ArrayList(bookRepository.booksCurrentlyReading.sortedWith(sorter))
-
-        Timber.d("appwidget - remoteviews factory - onDataSetChanged() - books: ${currentBooks.size}")
     }
 
     override fun hasStableIds(): Boolean = true
@@ -77,7 +72,6 @@ class DanteRemoteViewsFactory(
     }
 
     private fun getThumbnailBitmap(thumbnailAddress: String?): Bitmap? {
-        Timber.d("Thumbnail: $thumbnailAddress")
         return if (!thumbnailAddress.isNullOrEmpty()) {
             try {
                 thumbnailAddress.checkUrlForHttps().toUri().loadBitmap(context).blockingGet()

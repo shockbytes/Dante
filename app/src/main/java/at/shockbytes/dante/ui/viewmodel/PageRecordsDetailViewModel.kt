@@ -62,7 +62,7 @@ class PageRecordsDetailViewModel @Inject constructor(
 
         val index = cachedRecords.indexOfOrNull(pageRecord) ?: return
 
-        val preAction = when {
+        val preAction: Completable = when {
             // Single entry, reset current page to 0
             index == 0 && cachedRecords.size == 1 -> {
                 updateCurrentPage(0)
@@ -96,8 +96,6 @@ class PageRecordsDetailViewModel @Inject constructor(
     }
 
     private fun updateCurrentPage(currentPage: Int): Completable {
-        return Completable.fromAction {
-            bookRepository.updateCurrentPage(bookId, currentPage)
-        }
+        return bookRepository.updateCurrentPage(bookId, currentPage)
     }
 }

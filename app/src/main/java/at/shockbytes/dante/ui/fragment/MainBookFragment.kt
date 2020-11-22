@@ -33,14 +33,18 @@ import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 import at.shockbytes.dante.ui.adapter.main.RandomPickCallback
 import at.shockbytes.dante.ui.fragment.BookDetailFragment.Companion.ACTION_BOOK_CHANGED
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
+import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
+import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.fragment_book_main.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainBookFragment : BaseFragment(),
@@ -87,11 +91,29 @@ class MainBookFragment : BaseFragment(),
 
     private val bookUpdatedReceiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, data: Intent?) {
-
-            (data?.getSerializableExtra(EXTRA_UPDATED_BOOK_STATE) as? BookState)?.let { updatedBookState ->
-                viewModel.onBookUpdatedEvent(updatedBookState)
+            when (data?.action) {
+                ACTION_BOOK_CHANGED -> handleBookUpdatedBroadcast(data)
+                ACTION_BOOK_CREATED -> handleBookCreatedBroadcast(data)
             }
         }
+    }
+
+    private fun handleBookUpdatedBroadcast(data: Intent) {
+        (data.getSerializableExtra(EXTRA_UPDATED_BOOK_STATE) as? BookState)
+            ?.let { updatedBookState ->
+                viewModel.onBookUpdatedEvent(updatedBookState)
+            }
+    }
+
+    private fun handleBookCreatedBroadcast(data: Intent) {
+        (data.getSerializableExtra(EXTRA_BOOK_CREATED_STATE) as? BookState)
+            ?.let { createdBookState ->
+                if (viewModel.state == createdBookState) {
+                    runDelayed(500) {
+                        fragment_book_main_rv.smoothScrollToPosition(0)
+                    }
+                }
+            }
     }
 
     private val rvLayoutManager: RecyclerView.LayoutManager
@@ -118,8 +140,14 @@ class MainBookFragment : BaseFragment(),
     }
 
     private fun registerBookUpdatedBroadcastReceiver() {
+
+        val intentFilter = IntentFilter().apply {
+            addAction(ACTION_BOOK_CREATED)
+            addAction(ACTION_BOOK_CHANGED)
+        }
+
         LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(bookUpdatedReceiver, IntentFilter(ACTION_BOOK_CHANGED))
+            .registerReceiver(bookUpdatedReceiver, intentFilter)
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -145,8 +173,8 @@ class MainBookFragment : BaseFragment(),
         viewModel.getBooks().observe(this, Observer(::handleBookLoadingState))
 
         viewModel.onPickRandomBookEvent
-                .subscribe(::handleRandomPickEvent)
-                .addTo(compositeDisposable)
+            .subscribe(::handleRandomPickEvent)
+            .addTo(compositeDisposable)
     }
 
     private fun handleBookLoadingState(state: BookListViewModel.BookLoadingState) {
@@ -155,7 +183,6 @@ class MainBookFragment : BaseFragment(),
             is BookListViewModel.BookLoadingState.Success -> {
                 updateEmptyView(hide = true, animate = false)
                 bookAdapter.updateData(state.books)
-                fragment_book_main_rv.smoothScrollToPosition(0)
             }
 
             is BookListViewModel.BookLoadingState.Empty -> {
@@ -174,21 +201,21 @@ class MainBookFragment : BaseFragment(),
             is BookListViewModel.RandomPickEvent.RandomPick -> {
 
                 PickRandomBookFragment
-                        .newInstance(event.book.title, event.book.normalizedThumbnailUrl)
-                        .setOnPickClickListener {
-                            viewModel.moveBookToCurrentList(event.book)
-                        }
-                        .let { fragment ->
-                            DanteUtils.addFragmentToActivity(
-                                    parentFragmentManager,
-                                    fragment,
-                                    android.R.id.content,
-                                    true
-                            )
-                        }
+                    .newInstance(event.book.title, event.book.normalizedThumbnailUrl)
+                    .setOnPickClickListener {
+                        viewModel.moveBookToCurrentList(event.book)
+                    }
+                    .let { fragment ->
+                        DanteUtils.addFragmentToActivity(
+                            parentFragmentManager,
+                            fragment,
+                            android.R.id.content,
+                            true
+                        )
+                    }
             }
             BookListViewModel.RandomPickEvent.NoBookAvailable -> {
-                // TODO
+                Timber.e(IllegalStateException("No book available in random pick event! Should never happen!"))
             }
         }
     }
@@ -200,13 +227,13 @@ class MainBookFragment : BaseFragment(),
         fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         bookAdapter = BookAdapter(
-                requireContext(),
-                imageLoader,
-                onOverflowActionClickedListener = onBookOverflowClickedListener,
-                onItemClickListener = this,
-                onItemMoveListener = this,
-                onLabelClickedListener = onLabelClickedListener,
-                randomPickCallback = randomPickCallback
+            requireContext(),
+            imageLoader,
+            onOverflowActionClickedListener = onBookOverflowClickedListener,
+            onItemClickListener = this,
+            onItemMoveListener = this,
+            onLabelClickedListener = onLabelClickedListener,
+            randomPickCallback = randomPickCallback
         )
 
         fragment_book_main_rv.apply {
@@ -227,9 +254,9 @@ class MainBookFragment : BaseFragment(),
         when (content) {
             is BookAdapterEntity.Book -> {
                 ActivityNavigator.navigateTo(
-                        context,
-                        Destination.BookDetail(BookDetailInfo(content.id, content.title)),
-                        getTransitionBundle(v)
+                    context,
+                    Destination.BookDetail(BookDetailInfo(content.id, content.title)),
+                    getTransitionBundle(v)
                 )
             }
             BookAdapterEntity.RandomPick -> Unit // Do nothing

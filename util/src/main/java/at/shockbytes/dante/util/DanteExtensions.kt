@@ -29,6 +29,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
@@ -153,20 +154,39 @@ inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewMod
 }
 
 fun <T> singleOf(
-    subscribeOn: Scheduler = Schedulers.computation(),
+    subscribeOn: Scheduler = Schedulers.io(),
     block: () -> T
 ): Single<T> {
-    return Single.just(block()).subscribeOn(subscribeOn)
+    return Single.fromCallable { block() }.subscribeOn(subscribeOn)
 }
 
 fun Iterable<Completable>.merge() = Completable.merge(this)
 
 fun completableOf(
-    subscribeOn: Scheduler = Schedulers.computation(),
+    subscribeOn: Scheduler = Schedulers.io(),
     block: () -> Unit
 ): Completable {
     return Completable.fromAction(Action(block)).subscribeOn(subscribeOn)
 }
+
+fun <T> maybeOf(
+    subscribeOn: Scheduler = Schedulers.io(),
+    block: () -> T?
+): Maybe<T> {
+    return Maybe
+        .create<T> { emitter ->
+            val value = block()
+            if (value != null) {
+                emitter.onSuccess(value)
+            } else {
+                emitter.onError(NullPointerException("No value found..."))
+            }
+            emitter.onComplete()
+        }
+        .subscribeOn(subscribeOn)
+}
+
+fun List<Completable>.merge(): Completable = Completable.merge(this)
 
 fun SharedPreferences.getIntOrNullIfDefault(key: String, default: Int): Int? {
     val value = getInt(key, default)

@@ -128,7 +128,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         }, ContextCompat.getMainExecutor(this))
     }
 
-    // TODO Incorporate this
+    // TODO Incorporate torch
     private fun toggleTorch() {
 
         if (::camera.isInitialized) {

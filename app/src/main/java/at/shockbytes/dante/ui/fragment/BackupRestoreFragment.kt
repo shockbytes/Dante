@@ -174,8 +174,8 @@ class BackupRestoreFragment : BaseFragment(), BaseAdapter.OnItemClickListener<Ba
     }
 
     /**
-     * TODO This implementation does not work on all devices...
-     * Use FileProvider instead
+     * IMPORTANT: This implementation does not work on all devices...
+     * TODO: Use FileProvider implementation instead
      */
     private fun openFile(content: BackupMetadata.WithLocalFile) {
         with(requireContext()) {

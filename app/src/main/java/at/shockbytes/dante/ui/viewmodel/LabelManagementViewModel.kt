@@ -8,6 +8,7 @@ import at.shockbytes.dante.util.ExceptionHandlers
 import io.reactivex.Observable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import javax.inject.Inject
 
 class LabelManagementViewModel @Inject constructor(
@@ -46,10 +47,22 @@ class LabelManagementViewModel @Inject constructor(
 
     fun createNewBookLabel(newLabel: BookLabel) {
         bookRepository.createBookLabel(newLabel)
+            .subscribe({
+                Timber.d("Successfully created book label ${newLabel.title}.")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun deleteBookLabel(bookLabel: BookLabel) {
         bookRepository.deleteBookLabel(bookLabel)
+            .subscribe({
+                Timber.d("Successfully deleted book label ${bookLabel.title}.")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun requestCreateNewLabel() {

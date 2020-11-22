@@ -13,7 +13,6 @@ import at.shockbytes.dante.core.data.local.DanteRealmMigration
 import at.shockbytes.dante.core.data.local.RealmBookEntityDao
 import at.shockbytes.dante.core.data.local.RealmPageRecordDao
 import at.shockbytes.dante.core.data.local.SharedPrefsBackedReadingGoalRepository
-import at.shockbytes.dante.core.data.remote.FirebaseBookDao
 import at.shockbytes.dante.core.image.GlideImageLoader
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImagePicker
@@ -34,13 +33,6 @@ class CoreModule(
     private val app: Application,
     private val config: CoreModuleConfig
 ) {
-
-    @Provides
-    @Singleton
-    @Named(REMOTE_BOOK_DAO)
-    fun provideRemoteBookDao(): BookEntityDao {
-        return FirebaseBookDao()
-    }
 
     @Provides
     @Singleton
@@ -73,13 +65,9 @@ class CoreModule(
     @Provides
     @Singleton
     fun provideBookRepository(
-        @Named(LOCAL_BOOK_DAO) localBookDao: BookEntityDao,
-        @Named(REMOTE_BOOK_DAO) remoteBookDao: BookEntityDao
+        @Named(LOCAL_BOOK_DAO) localBookDao: BookEntityDao
     ): BookRepository {
-        return DefaultBookRepository(
-            localBookDao = localBookDao,
-            remoteBookDao = remoteBookDao
-        )
+        return DefaultBookRepository(localBookDao = localBookDao)
     }
 
     @Provides
@@ -123,7 +111,6 @@ class CoreModule(
     companion object {
 
         private const val LOCAL_BOOK_DAO = "local_book_dao"
-        private const val REMOTE_BOOK_DAO = "remote_book_dao"
         private const val READING_GOAL_SHARED_PREFERENCES = "reading_goal_shared_preferences"
     }
 

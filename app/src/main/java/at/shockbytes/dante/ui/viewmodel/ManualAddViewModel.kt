@@ -42,7 +42,7 @@ class ManualAddViewModel @Inject constructor(
     }
 
     sealed class AddEvent {
-        object Success : AddEvent()
+        data class Success(val createdBookState: BookState) : AddEvent()
         data class Updated(val updateBookState: BookState) : AddEvent()
         object Error : AddEvent()
     }
@@ -110,11 +110,21 @@ class ManualAddViewModel @Inject constructor(
         )
 
         if (entity != null) {
-            bookRepository.create(entity)
-            addEvent.onNext(AddEvent.Success)
+            storeBookInRepository(entity)
         } else {
             addEvent.onNext(AddEvent.Error)
         }
+    }
+
+    private fun storeBookInRepository(entity: BookEntity) {
+        bookRepository.create(entity)
+            .subscribe({
+                addEvent.onNext(AddEvent.Success(entity.state))
+            }, { throwable ->
+                addEvent.onNext(AddEvent.Error)
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun getImageUri(): String? {
@@ -130,18 +140,25 @@ class ManualAddViewModel @Inject constructor(
 
         if (bookUpdateData.isValid) {
 
-            viewState.value?.let { v ->
-                if (v is ViewState.UpdateBook) {
-                    val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
-                    bookRepository.update(updatedEntity)
-                    addEvent.onNext(AddEvent.Updated(updatedEntity.state))
-                } else {
-                    addEvent.onNext(AddEvent.Error)
+            (viewState.value as? ViewState.UpdateBook)
+                ?.let { v ->
+                    updateBookInRepository(v, bookUpdateData)
                 }
-            } ?: addEvent.onNext(AddEvent.Error)
+                ?: addEvent.onNext(AddEvent.Error)
         } else {
             addEvent.onNext(AddEvent.Error)
         }
+    }
+
+    private fun updateBookInRepository(v: ViewState.UpdateBook, bookUpdateData: BookUpdateData) {
+        val updatedEntity = v.bookEntity.updateFromBookUpdateData(bookUpdateData)
+        bookRepository.update(updatedEntity)
+            .subscribe({
+                addEvent.onNext(AddEvent.Updated(updatedEntity.state))
+            }, {
+                addEvent.onNext(AddEvent.Error)
+            })
+            .addTo(compositeDisposable)
     }
 
     private fun BookEntity.updateFromBookUpdateData(bookUpdateData: BookUpdateData): BookEntity {

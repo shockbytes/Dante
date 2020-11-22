@@ -6,6 +6,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -61,7 +62,7 @@ class BookListViewModel @Inject constructor(
 
     private val pickRandomBookSubject = PublishSubject.create<RandomPickEvent>()
     val onPickRandomBookEvent: Observable<RandomPickEvent> = pickRandomBookSubject
-            .delay(300L, TimeUnit.MILLISECONDS) // Delay it a bit, otherwise the UI appears too fast
+        .delay(300L, TimeUnit.MILLISECONDS) // Delay it a bit, otherwise the UI appears too fast
 
     init {
         listenToSettings()
@@ -70,19 +71,20 @@ class BookListViewModel @Inject constructor(
     private fun listenToSettings() {
         // Reload books whenever the sort strategy changes
         settings.observeSortStrategy()
-                .observeOn(schedulers.ui)
-                .subscribe { loadBooks() }
-                .addTo(compositeDisposable)
+            .observeOn(schedulers.ui)
+            .distinctUntilChanged()
+            .subscribe { loadBooks() }
+            .addTo(compositeDisposable)
 
         // Reload books whenever the random pick interaction setting changes
         // but only if we are in the correct tab
         settings.observeRandomPickInteraction()
-                .subscribe {
-                    if (state == BookState.READ_LATER) {
-                        loadBooks()
-                    }
+            .subscribe {
+                if (state == BookState.READ_LATER) {
+                    loadBooks()
                 }
-                .addTo(compositeDisposable)
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun loadBooks() {
@@ -135,13 +137,16 @@ class BookListViewModel @Inject constructor(
 
     fun deleteBook(book: BookEntity) {
         bookRepository.delete(book.id)
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe()
+            .addTo(compositeDisposable)
     }
 
     fun updateBookPositions(data: MutableList<BookAdapterEntity>) {
         data.forEachIndexed { index, entity ->
             if (entity is BookAdapterEntity.Book) {
                 entity.bookEntity.position = index
-                bookRepository.update(entity.bookEntity)
+                updateBook(entity.bookEntity)
             }
         }
 
@@ -151,17 +156,27 @@ class BookListViewModel @Inject constructor(
 
     fun moveBookToUpcomingList(book: BookEntity) {
         book.updateState(BookState.READ_LATER)
-        bookRepository.update(book)
+        updateBook(book)
     }
 
     fun moveBookToCurrentList(book: BookEntity) {
         book.updateState(BookState.READING)
-        bookRepository.update(book)
+        updateBook(book)
     }
 
     fun moveBookToDoneList(book: BookEntity) {
         book.updateState(BookState.READ)
+        updateBook(book)
+    }
+
+    private fun updateBook(book: BookEntity) {
         bookRepository.update(book)
+            .subscribe({
+                Timber.d("Successfully updated ${book.title}")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
     }
 
     fun onBookUpdatedEvent(updatedBookState: BookState) {
@@ -173,21 +188,21 @@ class BookListViewModel @Inject constructor(
     fun pickRandomBookToRead() {
 
         val event = books.value
-                ?.let { state ->
-                    (state as? BookLoadingState.Success)?.books
-                }
-                ?.also { adapterEntities ->
-                    val books = adapterEntities.filterIsInstance<BookAdapterEntity.Book>().count()
-                    tracker.track(DanteTrackingEvent.PickRandomBook(books))
-                }
-                ?.let { books ->
-                    val randomPick = books
-                            .filterIsInstance<BookAdapterEntity.Book>()
-                            .random()
-                            .bookEntity
-                    RandomPickEvent.RandomPick(randomPick)
-                }
-                ?: RandomPickEvent.NoBookAvailable
+            ?.let { state ->
+                (state as? BookLoadingState.Success)?.books
+            }
+            ?.also { adapterEntities ->
+                val books = adapterEntities.filterIsInstance<BookAdapterEntity.Book>().count()
+                tracker.track(DanteTrackingEvent.PickRandomBook(books))
+            }
+            ?.let { books ->
+                val randomPick = books
+                    .filterIsInstance<BookAdapterEntity.Book>()
+                    .random()
+                    .bookEntity
+                RandomPickEvent.RandomPick(randomPick)
+            }
+            ?: RandomPickEvent.NoBookAvailable
 
         pickRandomBookSubject.onNext(event)
     }

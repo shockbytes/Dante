@@ -156,7 +156,6 @@ class MainBookFragment : BaseFragment(),
             is BookListViewModel.BookLoadingState.Success -> {
                 updateEmptyView(hide = true, animate = false)
                 bookAdapter.updateData(state.books)
-                fragment_book_main_rv.smoothScrollToPosition(0)
             }
 
             is BookListViewModel.BookLoadingState.Empty -> {

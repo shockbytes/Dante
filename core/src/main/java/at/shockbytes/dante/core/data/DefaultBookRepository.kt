@@ -9,8 +9,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 class DefaultBookRepository(
-    private val localBookDao: BookEntityDao,
-    private val remoteBookDao: BookEntityDao
+    private val localBookDao: BookEntityDao
 ) : BookRepository {
 
     private var selectedBookDao: BookEntityDao
@@ -19,7 +18,10 @@ class DefaultBookRepository(
         selectedBookDao = retrieveSelectedBookDao()
     }
 
-    // TODO Figure out how to switch those
+    /**
+     * Decide which book dao to choose...
+     * Maybe it's not needed at all and a Warehouse is used instead.
+     */
     private fun retrieveSelectedBookDao(): BookEntityDao {
         return localBookDao
     }
@@ -72,9 +74,5 @@ class DefaultBookRepository(
 
     override fun deleteBookLabel(bookLabel: BookLabel): Completable {
         return selectedBookDao.deleteBookLabel(bookLabel)
-    }
-
-    override fun migrateToRemoteStorage(): Completable {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

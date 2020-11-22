@@ -28,9 +28,6 @@ class GoogleDriveBackupProvider(
 
     override fun mapBackupToBackupContent(entry: BackupMetadata): Single<BackupContent> {
         return driveClient.readFileAsString(entry.id)
-            .map { content ->
-                content // TODO Remove later
-            }
             .flatMap(contentTransform::createBackupContentFromBackupData)
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.ui)

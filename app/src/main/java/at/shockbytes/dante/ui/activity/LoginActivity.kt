@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity() {
         viewModel.getLoginState().observe(this, Observer { state ->
             when (state) {
                 is LoginViewModel.LoginState.FirstAppOpen -> {
-                    // TODO Maybe offer instant sign-on solution later
+                    // NOTE: Offer instant sign-on solution later
                     ActivityNavigator.navigateTo(this, Destination.Main())
                 }
                 is LoginViewModel.LoginState.LoggedIn -> {

@@ -41,6 +41,7 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import com.afollestad.materialdialogs.MaterialDialog
 import kotlinx.android.synthetic.main.fragment_book_main.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainBookFragment : BaseFragment(),
@@ -188,7 +189,7 @@ class MainBookFragment : BaseFragment(),
                         }
             }
             BookListViewModel.RandomPickEvent.NoBookAvailable -> {
-                // TODO
+                Timber.e(IllegalStateException("No book available in random pick event! Should never happen!"))
             }
         }
     }

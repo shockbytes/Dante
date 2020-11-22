@@ -18,7 +18,7 @@ class LoginViewModel @Inject constructor(
 
     fun login() {
         danteSettings.lastLogin = System.currentTimeMillis()
-        // TODO log the user in
+        // Login user here...
     }
 
     sealed class LoginState {

@@ -47,6 +47,7 @@ class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
                 .setView(welcomeView)
                 .setPositiveButton(getString(R.string.welcome_acknowledge)) { _, _ ->
                     listener?.invoke()
+                    dismiss()
                 }
                 .create()
                 .also { it.requestWindowFeature(Window.FEATURE_NO_TITLE) }
@@ -62,8 +63,9 @@ class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
     }
 
     fun setOnAcknowledgedListener(listener: () -> Unit): GoogleWelcomeScreenDialogFragment {
-        this.listener = listener
-        return this
+        return apply {
+            this.listener = listener
+        }
     }
 
     private fun setupViews() {
@@ -72,9 +74,7 @@ class GoogleWelcomeScreenDialogFragment : BaseDialogFragment() {
         txtName.text = str
 
         photoUrlString?.let { url ->
-            context?.let { ctx ->
-                imageLoader.loadImageUri(ctx, Uri.parse(url), imgView, circular = true)
-            }
+            imageLoader.loadImageUri(requireContext(), Uri.parse(url), imgView, circular = true)
         }
     }
 

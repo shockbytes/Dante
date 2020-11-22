@@ -179,7 +179,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     // ---------------------------------------------------
 
     private fun bindViewModel() {
-
+        viewModel.queryAnnouncements()
         viewModel.hasActiveAnnouncement()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ hasAnnouncement ->
@@ -196,8 +196,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             when (event) {
 
                 is MainViewModel.UserEvent.SuccessEvent -> {
-                    // Only show announcements once the user is logged in
-                    viewModel.queryAnnouncements()
                     // Only show onboarding hints after the user login state is resolved
                     checkForOnboardingHints()
 

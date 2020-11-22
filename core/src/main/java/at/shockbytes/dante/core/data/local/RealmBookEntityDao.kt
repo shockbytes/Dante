@@ -10,6 +10,7 @@ import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.maybeOf
+import at.shockbytes.dante.util.merge
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -131,11 +132,9 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         backupBooks: List<BookEntity>,
         strategy: RestoreStrategy
     ): Completable {
-        return Completable.fromAction {
-            when (strategy) {
-                RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
-                RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
-            }
+        return when (strategy) {
+            RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
+            RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
         }
     }
 
@@ -161,30 +160,29 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }
     }
 
-    private fun getBooks(): List<RealmBook> {
-        return realm.instance.where(bookClass).findAll().toList()
-    }
-
-    private fun mergeBackupRestore(backupBooks: List<BookEntity>) {
-
-        val books = getBooks()
-        for (bBook in backupBooks) {
-            val insert = books.none { it.title == bBook.title }
-            if (insert) {
-                create(bBook)
+    private fun mergeBackupRestore(backupBooks: List<BookEntity>): Completable {
+        return bookObservable.first(listOf()) // <-- Important! Convert into single first
+            .map { books ->
+                backupBooks.filter { book ->
+                    books.none { it.title == book.title }
+                }
             }
-        }
+            .flatMapCompletable { books ->
+                books.map(::create).merge()
+            }
     }
 
-    private fun overwriteBackupRestore(backupBooks: List<BookEntity>) {
+    private fun overwriteBackupRestore(backupBooks: List<BookEntity>): Completable {
+        val createBackupBooks = backupBooks.map(::create).merge()
+        return deleteAllBooks().andThen(createBackupBooks)
+    }
 
-        val stored = realm.instance.where(bookClass).findAll()
-        realm.instance.executeTransaction {
-            stored.deleteAllFromRealm()
-        }
-
-        backupBooks.forEach { book ->
-            create(book)
+    private fun deleteAllBooks(): Completable {
+        return completableOf {
+            val stored = realm.instance.where(bookClass).findAll()
+            realm.instance.executeTransaction {
+                stored.deleteAllFromRealm()
+            }
         }
     }
 }

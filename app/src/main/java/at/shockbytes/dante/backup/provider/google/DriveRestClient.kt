@@ -134,7 +134,6 @@ class DriveRestClient(
                             val storageProvider = BackupStorageProvider.byAcronym(data[0])
 
                             if (isCorrectStorageProvider(storageProvider)) {
-                                log(file.toPrettyString())
 
                                 val device = fileName.substring(
                                     fileName.indexOf(data[4]),

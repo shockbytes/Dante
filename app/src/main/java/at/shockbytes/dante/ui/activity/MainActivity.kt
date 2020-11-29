@@ -23,7 +23,6 @@ import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
-import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
@@ -50,9 +49,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var featureFlagging: FeatureFlagging
 
     @Inject
     lateinit var danteSettings: DanteSettings

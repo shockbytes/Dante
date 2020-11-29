@@ -320,8 +320,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun initializeNavigation() {
 
         // Setup the ViewPager
-        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BOOK_SUGGESTIONS],
-            supportFragmentManager)
+        pagerAdapter = BookPagerAdapter(applicationContext, supportFragmentManager)
         viewPager.adapter = pagerAdapter
         viewPager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
         viewPager.addOnPageChangeListener(this)

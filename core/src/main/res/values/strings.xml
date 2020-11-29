@@ -351,6 +351,10 @@
     <string name="tab_done">Done</string>
     <string name="inspirations">Inspirations</string>
 
+    <string name="wishlist_empty">Your wishlist is empty! Good! Seems like you have all your books already.</string>
+    <string name="wishlist_title">Your Wishlist</string>
+    <string name="suggestions_title">Suggestions</string>
+
     <string name="download_suggestions_other">One of those books?</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>
     <string name="download_suggestion_other">Not my book</string>

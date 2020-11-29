@@ -17,7 +17,6 @@ import at.shockbytes.dante.ui.fragment.BackupRestoreFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
 import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
-import at.shockbytes.dante.ui.fragment.InspirationsFragment
 import at.shockbytes.dante.ui.fragment.LabelCategoryBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LabelPickerBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LauncherIconPickerFragment
@@ -34,6 +33,7 @@ import at.shockbytes.dante.ui.fragment.SettingsFragment
 import at.shockbytes.dante.ui.fragment.StatisticsFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
+import at.shockbytes.dante.ui.fragment.WishlistFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
@@ -99,7 +99,7 @@ interface AppComponent {
 
     fun inject(fragment: LoginFragment)
 
-    fun inject(fragment: InspirationsFragment)
+    fun inject(fragment: WishlistFragment)
 
     fun inject(fragment: FeatureFlagConfigFragment)
 

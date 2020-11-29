@@ -20,7 +20,7 @@
 
         <com.google.android.material.tabs.TabLayout
             style="@style/Widget.MaterialComponents.TabLayout"
-            android:id="@+id/tabs_fragment_backup"
+            android:id="@+id/tabs_fragment_inspirations"
             android:background="@color/mainBackground"
             app:tabSelectedTextColor="@color/danteAccent"
             app:tabIndicatorColor="@color/danteAccent"
@@ -34,9 +34,9 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vp_fragment_backup"
+        android:id="@+id/vp_fragment_inspirations"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@color/mainBackground"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import at.shockbytes.dante.ui.activity.core.ContainerActivity
 import at.shockbytes.dante.ui.fragment.InspirationsFragment
 
-class InspirationsActivity: ContainerActivity() {
+class InspirationsActivity : ContainerActivity() {
 
     override val displayFragment: Fragment = InspirationsFragment.newInstance()
 

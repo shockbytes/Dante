@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.ui.fragment.MainBookFragment
-import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 
 /**
  * Author:  Martin Macheiner

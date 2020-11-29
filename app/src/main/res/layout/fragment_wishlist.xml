@@ -1,0 +1,30 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/main_padding"
+    android:background="@color/mainBackground">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_wishlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_wishlist_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha="0"
+        android:drawableTop="@drawable/ic_empty_indicator"
+        android:drawablePadding="16dp"
+        android:gravity="center"
+        android:text="@string/wishlist_empty"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        tools:alpha="1"/>
+
+</FrameLayout>
+

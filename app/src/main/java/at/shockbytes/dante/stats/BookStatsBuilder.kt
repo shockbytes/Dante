@@ -171,7 +171,7 @@ object BookStatsBuilder {
             .groupBy { book ->
                 book.author
             }
-            .maxBy { it.value.size }
+            .maxByOrNull { it.value.size }
             ?.let { (author, books) ->
                 FavoriteAuthor(author, books.map { it.bareBone() })
             }
@@ -183,7 +183,7 @@ object BookStatsBuilder {
             .filter { book ->
                 book.rating == 5 && book.startDate > 0
             }
-            .minBy { book ->
+            .minByOrNull { book ->
                 book.startDate
             }
             ?.bareBone()
@@ -243,7 +243,7 @@ object BookStatsBuilder {
             .filter { it.state == BookState.READ }
             .map { Pair(it.bareBone(), DateTime(it.endDate)) }
             .groupBy { it.second.monthOfYear * it.second.year }
-            .maxBy { it.value.size }
+            .maxByOrNull { it.value.size }
             ?.let { max ->
 
                 val activeBooks = max.value.map { it.first }
@@ -272,7 +272,7 @@ object BookStatsBuilder {
         val now = System.currentTimeMillis()
         val start = booksDone
             .map { it.startDate }
-            .min() ?: now
+            .minOrNull() ?: now
         val monthsReading = Months.monthsBetween(DateTime(start), DateTime(now)).months
 
         return if (monthsReading == 0) {

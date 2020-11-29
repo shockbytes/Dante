@@ -8,6 +8,7 @@ import androidx.core.app.ActivityOptionsCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.navigation.ActivityNavigator
@@ -31,14 +32,18 @@ class MenuFragment : BottomSheetDialogFragment() {
 
     override fun getTheme() = R.style.BottomSheetDialogTheme
 
-    private val viewModel: MainViewModel by lazy { viewModelOf<MainViewModel>(vmFactory) }
+    private val viewModel: MainViewModel by lazy { viewModelOf(vmFactory) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as DanteApp).appComponent.inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.bottom_sheet_menu, container, false)
     }
 
@@ -53,75 +58,63 @@ class MenuFragment : BottomSheetDialogFragment() {
     }
 
     private fun bindViewModel() {
+        viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+    }
 
-        viewModel.getUserEvent().observe(this, { event ->
+    private fun handleUserEvent(event: MainViewModel.UserEvent) {
 
-            when (event) {
+        when (event) {
 
-                is MainViewModel.UserEvent.SuccessEvent -> {
+            is MainViewModel.UserEvent.SuccessEvent -> {
 
-                    if (event.user != null) {
-                        txtMenuUserName.text = event.user.displayName
-                        txtMenuUserMail.text = event.user.email
-                        btnMenuLogin.text = getString(R.string.logout)
+                if (event.user != null) {
+                    txtMenuUserName.text = event.user.displayName
+                    txtMenuUserMail.text = event.user.email
+                    btnMenuLogin.text = getString(R.string.logout)
 
-                        event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
-                            imageViewMenuUser.setImageBitmap(image)
-                        }, { throwable ->
-                            throwable.printStackTrace()
-                        })
-                    } else {
-                        txtMenuUserName.text = getString(R.string.anonymous_user)
-                        txtMenuUserMail.text = ""
-                        btnMenuLogin.text = getString(R.string.login)
-                        imageViewMenuUser.setImageResource(R.drawable.ic_user_template_dark)
-                    }
-                }
-
-                is MainViewModel.UserEvent.LoginEvent -> {
-                    GoogleSignInDialogFragment.newInstance()
-                        .setSignInListener {
-                            requireActivity().startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
-                        }
-                        .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
-                        .show(childFragmentManager, "sign-in-fragment")
-                }
-                is MainViewModel.UserEvent.ErrorEvent -> {
-                    Toast.makeText(context, event.errorMsg, Toast.LENGTH_LONG).show()
+                    event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
+                        imageViewMenuUser.setImageBitmap(image)
+                    }, { throwable ->
+                        throwable.printStackTrace()
+                    })
+                } else {
+                    txtMenuUserName.text = getString(R.string.anonymous_user)
+                    txtMenuUserMail.text = ""
+                    btnMenuLogin.text = getString(R.string.login)
+                    imageViewMenuUser.setImageResource(R.drawable.ic_user_template_dark)
                 }
             }
-        })
+
+            is MainViewModel.UserEvent.LoginEvent -> {
+                GoogleSignInDialogFragment.newInstance()
+                    .setSignInListener {
+                        requireActivity().startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                    }
+                    .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
+                    .show(childFragmentManager, "sign-in-fragment")
+            }
+            is MainViewModel.UserEvent.ErrorEvent -> {
+                Toast.makeText(context, event.errorMsg, Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun setupViews() {
 
-        val sceneTransition = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle()
-
         btnMenuStatistics.setOnClickListener {
-            ActivityNavigator.navigateTo(
-                activity,
-                Destination.Statistics,
-                sceneTransition
-            )
-            dismiss()
+            navigateToAndDismiss(Destination.Statistics)
         }
 
         btnMenuTimeline.setOnClickListener {
-            ActivityNavigator.navigateTo(
-                activity,
-                Destination.Timeline,
-                sceneTransition
-            )
-            dismiss()
+            navigateToAndDismiss(Destination.Timeline)
+        }
+
+        btnMenuInspirations.setOnClickListener {
+            navigateToAndDismiss(Destination.Inspirations)
         }
 
         btnMenuBookStorage.setOnClickListener {
-            ActivityNavigator.navigateTo(
-                activity,
-                Destination.BookStorage,
-                sceneTransition
-            )
-            dismiss()
+            navigateToAndDismiss(Destination.BookStorage)
         }
 
         btnMenuLogin.setOnClickListener {
@@ -129,13 +122,19 @@ class MenuFragment : BottomSheetDialogFragment() {
         }
 
         btnMenuSettings.setOnClickListener {
-            ActivityNavigator.navigateTo(
-                activity,
-                Destination.Settings,
-                sceneTransition
-            )
-            dismiss()
+            navigateToAndDismiss(Destination.Settings)
         }
+    }
+
+    private fun navigateToAndDismiss(destination: Destination) {
+
+        val sceneTransition = ActivityOptionsCompat
+            .makeSceneTransitionAnimation(requireActivity())
+            .toBundle()
+
+        ActivityNavigator.navigateTo(activity, destination, sceneTransition)
+
+        dismiss()
     }
 
     companion object {

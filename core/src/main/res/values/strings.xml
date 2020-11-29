@@ -349,7 +349,7 @@
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
     <string name="tab_done">Done</string>
-    <string name="tab_suggestions">Suggestions</string>
+    <string name="inspirations">Inspirations</string>
 
     <string name="download_suggestions_other">One of those books?</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>

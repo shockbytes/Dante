@@ -5,6 +5,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Window
@@ -62,7 +63,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     fun startActivityDelayed(intent: Intent, bundle: Bundle?, delay: Long) {
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             startActivity(intent, bundle)
         }, delay)
     }

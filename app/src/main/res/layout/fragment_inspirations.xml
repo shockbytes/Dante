@@ -1,0 +1,45 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/mainBackground"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout_inspirations"
+        app:elevation="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:title="Manage backups"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/dante_toolbar" />
+
+        <com.google.android.material.tabs.TabLayout
+            style="@style/Widget.MaterialComponents.TabLayout"
+            android:id="@+id/tabs_fragment_backup"
+            android:background="@color/mainBackground"
+            app:tabSelectedTextColor="@color/danteAccent"
+            app:tabIndicatorColor="@color/danteAccent"
+            android:layout_width="match_parent"
+            app:tabUnboundedRipple="true"
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_height="wrap_content"
+            app:tabIndicatorFullWidth="false"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_fragment_backup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:background="@color/mainBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout_inspirations" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -16,9 +16,4 @@
         android:icon="@drawable/ic_tab_done"
         android:title="@string/tab_done" />
 
-    <item
-        android:id="@+id/menu_navigation_suggestions"
-        android:icon="@drawable/ic_tab_suggestions"
-        android:title="@string/tab_suggestions" />
-
 </menu>

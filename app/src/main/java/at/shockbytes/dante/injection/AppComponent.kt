@@ -17,6 +17,7 @@ import at.shockbytes.dante.ui.fragment.BackupRestoreFragment
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
 import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
+import at.shockbytes.dante.ui.fragment.InspirationsFragment
 import at.shockbytes.dante.ui.fragment.LabelCategoryBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LabelPickerBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LauncherIconPickerFragment
@@ -97,6 +98,8 @@ interface AppComponent {
     fun inject(fragment: RateFragment)
 
     fun inject(fragment: LoginFragment)
+
+    fun inject(fragment: InspirationsFragment)
 
     fun inject(fragment: FeatureFlagConfigFragment)
 

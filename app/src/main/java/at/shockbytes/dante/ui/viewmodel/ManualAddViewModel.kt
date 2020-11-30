@@ -210,6 +210,7 @@ class ManualAddViewModel @Inject constructor(
                 BookState.READ_LATER -> entity.wishlistDate = System.currentTimeMillis()
                 BookState.READING -> entity.startDate = System.currentTimeMillis()
                 BookState.READ -> entity.endDate = System.currentTimeMillis()
+                BookState.WISHLIST -> throw IllegalStateException("WISHLIST not supported for manual adding")
             }
             entity
         }

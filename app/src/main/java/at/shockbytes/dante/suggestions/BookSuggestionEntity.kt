@@ -6,7 +6,7 @@ data class BookSuggestionEntity(
     val title: String = "",
     val subTitle: String = "",
     val author: String = "",
-    val state: BookState = BookState.READING, // TODO Change to WISHLIST
+    val state: BookState = BookState.WISHLIST,
     val pageCount: Int = 0,
     val publishedDate: String = "",
     val isbn: String = "",

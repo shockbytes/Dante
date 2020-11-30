@@ -1,7 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.content.Intent
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -148,7 +147,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     private fun setupObserver() {
 
-        viewModel.getImageState().observe(this, Observer { imageState ->
+        viewModel.getImageState().observe(this, { imageState ->
 
             when (imageState) {
                 is ManualAddViewModel.ImageState.ThumbnailUri -> {
@@ -172,7 +171,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             }
         })
 
-        viewModel.getViewState().observe(this, Observer { viewState ->
+        viewModel.getViewState().observe(this, { viewState ->
 
             when (viewState) {
                 ManualAddViewModel.ViewState.ManualAdd -> {

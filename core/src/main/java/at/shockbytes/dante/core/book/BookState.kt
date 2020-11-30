@@ -3,7 +3,8 @@ package at.shockbytes.dante.core.book
 enum class BookState {
     READ_LATER,
     READING,
-    READ;
+    READ,
+    WISHLIST;
 
     companion object {
         fun fromString(name: String?, defaultValue: BookState = READ_LATER): BookState {

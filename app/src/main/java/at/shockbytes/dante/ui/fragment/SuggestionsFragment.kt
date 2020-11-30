@@ -3,10 +3,15 @@ package at.shockbytes.dante.ui.fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.suggestions.BookSuggestionEntity
 import at.shockbytes.dante.suggestions.Suggestion
+import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
+import at.shockbytes.dante.ui.adapter.SuggestionsAdapter
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
 import at.shockbytes.dante.util.viewModelOf
+import kotlinx.android.synthetic.main.fragment_suggestions.*
 import javax.inject.Inject
 
 /**
@@ -20,9 +25,30 @@ class SuggestionsFragment : BaseFragment() {
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
+    @Inject
+    lateinit var imageLoader: ImageLoader
+
     private val viewModel: SuggestionsViewModel by lazy { viewModelOf(vmFactory) }
 
+    private lateinit var adapter: SuggestionsAdapter
+
     override fun setupViews() {
+
+        adapter = SuggestionsAdapter(
+            requireContext(),
+            imageLoader,
+            onSuggestionActionClickedListener = object : OnSuggestionActionClickedListener {
+                override fun onAddSuggestionToWishlist(data: BookSuggestionEntity) {
+                    // TODO Add to wishlist & track event
+                    showToast("Add to wishlist")
+                }
+
+                override fun onReportBookSuggestion(suggestionId: String) {
+                    showToast("Report suggestion!")
+                }
+            }
+        )
+        rv_suggestions.adapter = adapter
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -30,13 +56,11 @@ class SuggestionsFragment : BaseFragment() {
     }
 
     override fun bindViewModel() {
-
         viewModel.requestSuggestions()
         viewModel.getSuggestionState().observe(this, Observer(::handleSuggestionState))
     }
 
     private fun handleSuggestionState(suggestionsState: SuggestionsViewModel.SuggestionsState) {
-
         when (suggestionsState) {
             is SuggestionsViewModel.SuggestionsState.Present -> handleSuggestions(suggestionsState.suggestions)
             SuggestionsViewModel.SuggestionsState.Empty -> handleEmptyState()
@@ -44,11 +68,11 @@ class SuggestionsFragment : BaseFragment() {
     }
 
     private fun handleEmptyState() {
-        // TODO
+        // TODO Handle empty state! Important for online feature later
     }
 
     private fun handleSuggestions(suggestions: List<Suggestion>) {
-        // TODO
+        adapter.data = suggestions.toMutableList()
     }
 
     override fun unbindViewModel() = Unit

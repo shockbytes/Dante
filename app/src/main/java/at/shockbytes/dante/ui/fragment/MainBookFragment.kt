@@ -26,7 +26,6 @@ import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.navigation.Destination.BookDetail.BookDetailInfo
 import at.shockbytes.dante.ui.adapter.main.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
@@ -59,9 +58,6 @@ class MainBookFragment : BaseFragment(),
 
     @Inject
     lateinit var imageLoader: ImageLoader
-
-    @Inject
-    lateinit var featureFlagging: FeatureFlagging
 
     private lateinit var bookState: BookState
     private lateinit var bookAdapter: BookAdapter

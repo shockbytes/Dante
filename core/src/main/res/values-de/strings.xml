@@ -324,5 +324,9 @@
     <string name="import_external_storage_description">Importiere deine Bibliothek von einem vorherigen exportierten Dante externen Backup. Du kannst hier nur solche externen Backups importieren.</string>
     <string name="open">Öffnen</string>
     <string name="go_to_screen">Screen öffnen</string>
+    <string name="suggestions_title">Vorschläge</string>
+    <string name="wishlist_title">Deine Wunschliste</string>
+    <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
+    <string name="wishlist_empty">Deine Wunschliste ist leer. Gut! Sieht so aus als hättest du all deine Bücher bereits!</string>
 
 </resources>

@@ -29,7 +29,7 @@ class SuggestionsViewModel @Inject constructor(
                 if (suggestions.suggestions.isEmpty()) {
                     SuggestionsState.Empty
                 } else {
-                    SuggestionsState.Present(suggestions.suggestions)
+                    SuggestionsState.Present(suggestions.suggestions.sortedBy { it.suggestionId })
                 }
             }
             .subscribe(suggestionState::postValue, ExceptionHandlers::defaultExceptionHandler)

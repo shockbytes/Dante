@@ -28,7 +28,6 @@ class SuggestionsViewModel @Inject constructor(
     fun requestSuggestions() {
         suggestionsRepository.loadSuggestions()
             .map { suggestions ->
-
                 if (suggestions.suggestions.isEmpty()) {
                     SuggestionsState.Empty
                 } else {

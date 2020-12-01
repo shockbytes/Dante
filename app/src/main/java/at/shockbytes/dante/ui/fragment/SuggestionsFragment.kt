@@ -10,6 +10,7 @@ import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
 import at.shockbytes.dante.ui.adapter.SuggestionsAdapter
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
 import at.shockbytes.dante.util.SharedViewComponents
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import kotlinx.android.synthetic.main.fragment_suggestions.*
 import javax.inject.Inject
@@ -76,10 +77,14 @@ class SuggestionsFragment : BaseFragment() {
     }
 
     private fun handleEmptyState() {
-        // TODO Handle empty state! Important for online feature later
+        rv_suggestions.setVisible(false)
+        tv_suggestions_empty.setVisible(true)
     }
 
     private fun handleSuggestions(suggestions: List<Suggestion>) {
+        rv_suggestions.setVisible(true)
+        tv_suggestions_empty.setVisible(false)
+
         suggestionAdapter.data = suggestions.toMutableList()
     }
 

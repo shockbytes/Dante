@@ -358,6 +358,7 @@
     <string name="suggestion_suggester" translatable="false">- %s</string>
     <string name="suggestions_title">Suggestions</string>
 
+    <string name="suggestion_error">We have to apologize. We were unable to load you some suggestions.</string>
     <string name="download_suggestions_other">One of those books?</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>
     <string name="download_suggestion_other">Not my book</string>

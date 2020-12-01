@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginVertical="8dp"
@@ -16,13 +17,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:alpha="0"
         android:drawableTop="@drawable/ic_empty_indicator"
         android:drawablePadding="16dp"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="16dp"
+        android:text="@string/suggestion_error"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>

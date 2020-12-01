@@ -329,5 +329,6 @@
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
     <string name="wishlist_empty">Deine Wunschliste ist leer. Gut! Sieht so aus als hättest du all deine Bücher bereits!</string>
     <string name="wishlist">Wunschliste</string>
+    <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen.</string>
 
 </resources>

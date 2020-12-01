@@ -105,6 +105,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$firebaseVersionAuth"
     implementation "com.google.firebase:firebase-ml-vision:$firebaseMLVision"
 
+    implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
 
     implementation ('com.google.http-client:google-http-client-gson:1.36.0') {
         exclude group: 'org.apache.httpcomponents'

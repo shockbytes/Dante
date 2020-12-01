@@ -3,6 +3,8 @@ package at.shockbytes.dante.injection
 import android.content.Context
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.R
+import at.shockbytes.dante.storage.FirebaseImageUploadStorage
+import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.tracking.DebugTracker
 import at.shockbytes.tracking.FirebaseTracker
 import at.shockbytes.tracking.Tracker
@@ -41,5 +43,10 @@ class FirebaseModule(private val context: Context) {
         } else {
             FirebaseTracker(context)
         }
+    }
+
+    @Provides
+    fun provideImageUploadStorage(): ImageUploadStorage {
+        return FirebaseImageUploadStorage()
     }
 }

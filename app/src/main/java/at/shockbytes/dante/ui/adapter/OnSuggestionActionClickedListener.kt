@@ -1,10 +1,10 @@
 package at.shockbytes.dante.ui.adapter
 
-import at.shockbytes.dante.suggestions.BookSuggestionEntity
+import at.shockbytes.dante.suggestions.Suggestion
 
 interface OnSuggestionActionClickedListener {
 
-    fun onAddSuggestionToWishlist(data: BookSuggestionEntity)
+    fun onAddSuggestionToWishlist(suggestion: Suggestion)
 
     fun onReportBookSuggestion(suggestionId: String)
 }

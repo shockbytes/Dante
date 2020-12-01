@@ -40,7 +40,7 @@ class SuggestionsAdapter(
                 setupBook(suggestion)
                 setupSuggester(suggester)
                 setupRecommendation(recommendation)
-                setupBookActionListener(suggestion)
+                setupBookActionListener(this)
             }
         }
 
@@ -73,7 +73,7 @@ class SuggestionsAdapter(
             tv_item_suggestion_recommendation.text = recommendation
         }
 
-        private fun setupBookActionListener(suggestion: BookSuggestionEntity) {
+        private fun setupBookActionListener(suggestion: Suggestion) {
             btn_item_suggestion_add.setOnClickListener {
                 onSuggestionActionClickedListener.onAddSuggestionToWishlist(suggestion)
             }

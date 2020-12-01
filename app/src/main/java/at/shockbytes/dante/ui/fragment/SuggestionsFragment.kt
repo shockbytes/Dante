@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.injection.AppComponent
-import at.shockbytes.dante.suggestions.BookSuggestionEntity
 import at.shockbytes.dante.suggestions.Suggestion
 import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
 import at.shockbytes.dante.ui.adapter.SuggestionsAdapter
@@ -39,9 +38,14 @@ class SuggestionsFragment : BaseFragment() {
             requireContext(),
             imageLoader,
             onSuggestionActionClickedListener = object : OnSuggestionActionClickedListener {
-                override fun onAddSuggestionToWishlist(data: BookSuggestionEntity) {
-                    // TODO Add to wishlist & track event
+                override fun onAddSuggestionToWishlist(suggestion: Suggestion) {
+                    // TODO Add to wishlist
                     showToast("Add to wishlist")
+                    viewModel.trackAddSuggestionToWishlist(
+                        suggestion.suggestionId,
+                        suggestion.suggestion.title,
+                        suggestion.suggester.name
+                    )
                 }
 
                 override fun onReportBookSuggestion(suggestionId: String) {

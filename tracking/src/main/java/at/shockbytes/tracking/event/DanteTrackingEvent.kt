@@ -17,8 +17,6 @@ sealed class DanteTrackingEvent(
         listOf(TrackingProperty("importer_name", importer))
     )
 
-    object BurnDownLibrary : DanteTrackingEvent("burn_down_library")
-
     data class TrackingStateChanged(val state: Boolean) : DanteTrackingEvent(
         "tracking_state_changed",
         listOf(TrackingProperty("state", state))
@@ -32,6 +30,19 @@ sealed class DanteTrackingEvent(
     data class OpenBackupFile(val providerAcronym: String) : DanteTrackingEvent(
         "open_backup_file",
         listOf(TrackingProperty("backup_provider", providerAcronym))
+    )
+
+    data class AddSuggestionToWishlist(
+        val suggestionId: String,
+        val bookTitle: String,
+        val suggester: String
+    ) : DanteTrackingEvent(
+        "add_suggestion_to_wishlist",
+        listOf(
+            TrackingProperty("suggestion_id", suggestionId),
+            TrackingProperty("suggestion_book", bookTitle),
+            TrackingProperty("suggestion_suggester", suggester)
+        )
     )
 
     object DisableRandomBookInteraction : DanteTrackingEvent("disable_random_book_interaction")

@@ -24,5 +24,4 @@ object SharedViewComponents {
                 StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
     }
-
 }

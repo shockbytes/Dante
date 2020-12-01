@@ -33,7 +33,9 @@ import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.SharedViewComponents
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.runDelayed
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
@@ -56,9 +58,11 @@ class MainBookFragment : BaseFragment(),
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    private lateinit var bookState: BookState
     private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
+
+    private var bookState: BookState by argument()
+    private var allowItemClick: Boolean by argument()
 
     private val onLabelClickedListener: ((BookLabel) -> Unit) = { label ->
         LabelCategoryBottomSheetFragment.newInstance(label)
@@ -113,7 +117,6 @@ class MainBookFragment : BaseFragment(),
         super.onCreate(savedInstanceState)
         viewModel = viewModelOf(vmFactory)
 
-        bookState = arguments?.getSerializable(ARG_STATE) as BookState
         viewModel.state = bookState
 
         registerBookUpdatedBroadcastReceiver()
@@ -162,15 +165,18 @@ class MainBookFragment : BaseFragment(),
         when (state) {
             is BookListViewModel.BookLoadingState.Success -> {
                 updateEmptyView(hide = true, animate = false)
+                fragment_book_main_rv.setVisible(true)
                 bookAdapter.updateData(state.books)
             }
 
             is BookListViewModel.BookLoadingState.Empty -> {
                 updateEmptyView(hide = false, animate = true)
+                fragment_book_main_rv.setVisible(false)
             }
 
             is BookListViewModel.BookLoadingState.Error -> {
                 showSnackbar(getString(R.string.load_error), showLong = true)
+                fragment_book_main_rv.setVisible(false)
             }
         }
     }
@@ -232,16 +238,19 @@ class MainBookFragment : BaseFragment(),
     }
 
     override fun onItemClick(content: BookAdapterEntity, position: Int, v: View) {
-
         when (content) {
-            is BookAdapterEntity.Book -> {
-                ActivityNavigator.navigateTo(
-                    context,
-                    Destination.BookDetail(BookDetailInfo(content.id, content.title)),
-                    getTransitionBundle(v)
-                )
-            }
+            is BookAdapterEntity.Book -> handleBookClick(content, v)
             BookAdapterEntity.RandomPick -> Unit // Do nothing
+        }
+    }
+
+    private fun handleBookClick(content: BookAdapterEntity.Book, v: View) {
+        if (allowItemClick) {
+            ActivityNavigator.navigateTo(
+                context,
+                Destination.BookDetail(BookDetailInfo(content.id, content.title)),
+                getTransitionBundle(v)
+            )
         }
     }
 
@@ -332,13 +341,10 @@ class MainBookFragment : BaseFragment(),
 
     companion object {
 
-        private const val ARG_STATE = "arg_state"
-
-        fun newInstance(state: BookState): MainBookFragment {
+        fun newInstance(state: BookState, allowItemClick: Boolean = true): MainBookFragment {
             return MainBookFragment().apply {
-                this.arguments = Bundle().apply {
-                    putSerializable(ARG_STATE, state)
-                }
+                this.allowItemClick = allowItemClick
+                this.bookState = state
             }
         }
     }

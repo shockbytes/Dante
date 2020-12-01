@@ -10,6 +10,7 @@ import at.shockbytes.dante.suggestions.Suggestion
 import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
 import at.shockbytes.dante.ui.adapter.SuggestionsAdapter
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
+import at.shockbytes.dante.util.SharedViewComponents
 import at.shockbytes.dante.util.viewModelOf
 import kotlinx.android.synthetic.main.fragment_suggestions.*
 import javax.inject.Inject
@@ -30,11 +31,11 @@ class SuggestionsFragment : BaseFragment() {
 
     private val viewModel: SuggestionsViewModel by lazy { viewModelOf(vmFactory) }
 
-    private lateinit var adapter: SuggestionsAdapter
+    private lateinit var suggestionAdapter: SuggestionsAdapter
 
     override fun setupViews() {
 
-        adapter = SuggestionsAdapter(
+        suggestionAdapter = SuggestionsAdapter(
             requireContext(),
             imageLoader,
             onSuggestionActionClickedListener = object : OnSuggestionActionClickedListener {
@@ -48,7 +49,10 @@ class SuggestionsFragment : BaseFragment() {
                 }
             }
         )
-        rv_suggestions.adapter = adapter
+        rv_suggestions.apply {
+            layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
+            this.adapter = suggestionAdapter
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -72,7 +76,7 @@ class SuggestionsFragment : BaseFragment() {
     }
 
     private fun handleSuggestions(suggestions: List<Suggestion>) {
-        adapter.data = suggestions.toMutableList()
+        suggestionAdapter.data = suggestions.toMutableList()
     }
 
     override fun unbindViewModel() = Unit

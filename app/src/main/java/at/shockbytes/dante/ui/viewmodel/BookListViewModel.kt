@@ -12,6 +12,7 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
+import at.shockbytes.dante.util.toAdapterEntities
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
@@ -127,12 +128,6 @@ class BookListViewModel @Inject constructor(
      */
     private fun shouldShowRandomPickInteraction(size: Int): Boolean {
         return state == BookState.READ_LATER && size > 1 && danteSettings.showRandomPickInteraction
-    }
-
-    private fun List<BookEntity>.toAdapterEntities(): List<BookAdapterEntity> {
-        return this.map { entity ->
-            BookAdapterEntity.Book(entity)
-        }
     }
 
     fun deleteBook(book: BookEntity) {

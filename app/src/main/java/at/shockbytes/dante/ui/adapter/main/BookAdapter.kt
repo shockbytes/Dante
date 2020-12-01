@@ -19,8 +19,8 @@ class BookAdapter(
     context: Context,
     private val imageLoader: ImageLoader,
     private val onOverflowActionClickedListener: (BookEntity) -> Unit,
-    private val onLabelClickedListener: (BookLabel) -> Unit,
-    private val randomPickCallback: RandomPickCallback,
+    private val onLabelClickedListener: ((BookLabel) -> Unit)? = null,
+    private val randomPickCallback: RandomPickCallback? = null,
     onItemClickListener: OnItemClickListener<BookAdapterEntity>,
     onItemMoveListener: OnItemMoveListener<BookAdapterEntity>
 ) : BaseAdapter<BookAdapterEntity>(

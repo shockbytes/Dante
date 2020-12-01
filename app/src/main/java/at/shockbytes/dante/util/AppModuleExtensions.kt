@@ -6,7 +6,9 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import at.shockbytes.dante.core.R
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.signin.DanteUser
+import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -62,4 +64,10 @@ fun Context.openFile(fileToPath: File, mimeType: String): Intent {
         .setAction(Intent.ACTION_VIEW)
         .setDataAndType(uri, mimeType)
         .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+}
+
+fun List<BookEntity>.toAdapterEntities(): List<BookAdapterEntity> {
+    return this.map { entity ->
+        BookAdapterEntity.Book(entity)
+    }
 }

@@ -6,13 +6,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -35,6 +31,7 @@ import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.SharedViewComponents
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.viewModelOf
@@ -111,19 +108,6 @@ class MainBookFragment : BaseFragment(),
                 }
             }
     }
-
-    private val rvLayoutManager: RecyclerView.LayoutManager
-        get() = if (resources.getBoolean(R.bool.isTablet)) {
-            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            else
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        } else {
-            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            else
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -233,14 +217,16 @@ class MainBookFragment : BaseFragment(),
         )
 
         fragment_book_main_rv.apply {
-            layoutManager = rvLayoutManager
+            layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
             adapter = bookAdapter
         }
 
         val itemTouchHelper = ItemTouchHelper(
-            BaseItemTouchHelper(bookAdapter,
-                false,
-                BaseItemTouchHelper.DragAccess.VERTICAL)
+            BaseItemTouchHelper(
+                bookAdapter,
+                allowSwipeToDismiss = false,
+                BaseItemTouchHelper.DragAccess.VERTICAL
+            )
         )
         itemTouchHelper.attachToRecyclerView(fragment_book_main_rv)
     }

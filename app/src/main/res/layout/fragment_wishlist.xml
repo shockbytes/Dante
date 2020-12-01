@@ -16,15 +16,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:alpha="0"
+        android:visibility="gone"
         android:drawableTop="@drawable/ic_empty_indicator"
         android:drawablePadding="16dp"
         android:gravity="center"
+        android:padding="16dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:text="@string/wishlist_empty"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        tools:alpha="1"/>
+        tools:visibility="visible"/>
 
 </FrameLayout>
 

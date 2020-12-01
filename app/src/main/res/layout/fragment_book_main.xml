@@ -21,10 +21,9 @@
         android:drawableTop="@drawable/ic_empty_indicator"
         android:drawablePadding="16dp"
         android:gravity="center"
-        android:padding="8dp"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:padding="16dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:textColor="@color/colorSecondaryText" />
 
 </FrameLayout>
 

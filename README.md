@@ -57,14 +57,17 @@ The backlog is currently empty.
 
 ## Current development
 
+### Version 3.19
+- [ ] Experimental remote storage Firestore implementation (for test account)
+- [ ] Add Onboarding + optional Login
+
 ### Version 3.18
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
-- [ ] Add Onboarding + optional Login
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
-- [ ] Experimental remote storage Firestore implementation (for test account)
 - [ ] Smooth loading animator when uploading local images
+- [ ] Upgrade to Kotlin 1.4.20 -> Use ViewBinding
 
 ## Changelog
 

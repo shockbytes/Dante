@@ -37,10 +37,11 @@ The backlog is currently empty.
 ## Outlook & planned features
 
 ### Versions 5.x
-- [ ] Use Firebase Data for book suggestions
-- [ ] Let users suggest favorite books to others
+- [ ] Suggesions
+    - [ ] Use Firebase Data for book suggestions
+    - [ ] Let users suggest favorite books to others
 - [ ] Improved search database (Google Books API) lookup query
-- [ ] Shockbytes Backup
+- [ ] Shockbytes Firestore Backup
 - [ ] Simplify book management
     - [ ] Remove local backup
     - [ ] Add online Shockbytes backup as only way to backup data
@@ -49,9 +50,6 @@ The backlog is currently empty.
 - [ ] Add web client support
 - [ ] Paged request when user clicks on "not my book" in book download view
 
-### Version 4.1
-- [ ] Wishlist for books that are not purchased yet
-
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add online sync capability
   - [ ] Migrate from local to remote storage
@@ -59,18 +57,24 @@ The backlog is currently empty.
 
 ## Current development
 
-### Version 3.17
+### Version 3.18
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 - [ ] Add Onboarding + optional Login
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
 - [ ] Experimental remote storage Firestore implementation (for test account)
-- [ ] Fix bug with local book covers
-    - [ ] In MultiBareBoneBookView (not showing up)
-    - [ ] In the label overview (too big)
+- [ ] Smooth loading animator when uploading local images
 
 ## Changelog
+
+### Version 3.17 - INNOVATIVE INSPIRATIONS
+* Inspirations Feature
+    * Wishlist for books that are not purchased yetst
+    * Suggestions
+* Fix bug with local book covers
+    * In MultiBareBoneBookView (not showing up)
+    * In the label overview (too big)
 
 ### Version 3.16 - BRING BACK BACKUP
 * Google Drive REST Backup

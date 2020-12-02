@@ -370,6 +370,7 @@
 
     <string name="scan_another_book">Do you want to scan another book?</string>
     <string name="book_added_to_library">%s added to library</string>
+    <string name="book_added_to_wishlist">%s added to wishlist</string>
     <string name="nope">Nope</string>
 
     <string name="restarting_app">The app may restart shortly&#8230;</string>

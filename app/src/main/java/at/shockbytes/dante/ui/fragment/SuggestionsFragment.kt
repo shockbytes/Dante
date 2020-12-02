@@ -10,8 +10,10 @@ import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
 import at.shockbytes.dante.ui.adapter.SuggestionsAdapter
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
 import at.shockbytes.dante.util.SharedViewComponents
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_suggestions.*
 import javax.inject.Inject
 
@@ -40,13 +42,7 @@ class SuggestionsFragment : BaseFragment() {
             imageLoader,
             onSuggestionActionClickedListener = object : OnSuggestionActionClickedListener {
                 override fun onAddSuggestionToWishlist(suggestion: Suggestion) {
-                    // TODO Add to wishlist
-                    showToast("Add to wishlist")
-                    viewModel.trackAddSuggestionToWishlist(
-                        suggestion.suggestionId,
-                        suggestion.suggestion.title,
-                        suggestion.suggester.name
-                    )
+                    viewModel.addSuggestionToWishlist(suggestion)
                 }
 
                 override fun onReportBookSuggestion(suggestionId: String) {
@@ -67,6 +63,14 @@ class SuggestionsFragment : BaseFragment() {
     override fun bindViewModel() {
         viewModel.requestSuggestions()
         viewModel.getSuggestionState().observe(this, Observer(::handleSuggestionState))
+
+        viewModel.onMoveToWishlistEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { bookTitle ->
+                (parentFragment as? InspirationsFragment)?.moveToWishlistTab()
+                showSnackbar(getString(R.string.book_added_to_wishlist, bookTitle))
+            }
+            .addTo(compositeDisposable)
     }
 
     private fun handleSuggestionState(suggestionsState: SuggestionsViewModel.SuggestionsState) {

@@ -13,11 +13,17 @@ class InspirationsFragment : BaseFragment() {
 
     override val layoutId: Int = R.layout.fragment_inspirations
 
+    private lateinit var pagerAdapter: InspirationsPagerAdapter
+
     override fun setupViews() {
         setupToolbar()
         setupViewPager()
         connectTabsAndViewPager()
         setupTabIcons()
+    }
+
+    fun moveToWishlistTab() {
+        getTabAt(0)?.select()
     }
 
     private fun setupToolbar() {
@@ -31,7 +37,7 @@ class InspirationsFragment : BaseFragment() {
     }
 
     private fun setupViewPager() {
-        val pagerAdapter = InspirationsPagerAdapter(requireContext(), childFragmentManager)
+        pagerAdapter = InspirationsPagerAdapter(requireContext(), childFragmentManager)
 
         vp_fragment_inspirations.apply {
             adapter = pagerAdapter

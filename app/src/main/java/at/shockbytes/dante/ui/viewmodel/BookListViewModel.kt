@@ -9,7 +9,6 @@ import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.explanations.Explanation
 import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators
@@ -22,7 +21,6 @@ import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.reflect.KClass
 
 /**
  * Author:  Martin Macheiner

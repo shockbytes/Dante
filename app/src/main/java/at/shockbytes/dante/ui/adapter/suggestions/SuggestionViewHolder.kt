@@ -10,7 +10,6 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.suggestions.BookSuggestionEntity
 import at.shockbytes.dante.suggestions.Suggester
 import at.shockbytes.dante.suggestions.Suggestion
-import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer

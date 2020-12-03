@@ -108,4 +108,19 @@ class SuggestionsViewModel @Inject constructor(
     ) {
         tracker.track(DanteTrackingEvent.AddSuggestionToWishlist(suggestionId, bookTitle, suggester))
     }
+
+    fun dismissExplanation() {
+        explanations.markSeen(explanations.suggestion())
+        // Reload after mark explanation as seen
+        requestSuggestions()
+    }
+
+    fun wantToSuggestBooks() {
+
+        tracker.track(DanteTrackingEvent.InterestedInSuggestingBooks)
+
+        explanations.update(explanations.suggestion().copy(userWantsToSuggest = true))
+        // Reload after changing the explanation state
+        requestSuggestions()
+    }
 }

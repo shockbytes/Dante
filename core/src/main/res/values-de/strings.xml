@@ -325,6 +325,9 @@
     <string name="open">Öffnen</string>
     <string name="go_to_screen">Screen öffnen</string>
     <string name="suggestions_title">Vorschläge</string>
+    <string name="suggestions_explanation_want_to_suggest">Ich will Bücher vorschlagen</string>
+    <string name="suggestions_explanation_want_to_suggest_clicked">Vorschläge sind bald verfügbar…</string>
+    <string name="suggestions_explanation">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.</string>
     <string name="wishlist_title">Meine Wunschliste</string>
     <string name="wishlist_explanation">Lege alle Bücher hier ab, die du noch nicht hast, aber in Zukunft lesen willst.\n\nKleiner Tipp: Teile diese Liste gelegentlich mit deinem Partner.</string>
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>

@@ -9,7 +9,7 @@ class SharedPrefsExplanations(
     override fun suggestion(): Explanation.Suggestion {
         return Explanation.Suggestion(
             show = getShowFor<Explanation.Suggestion>(),
-            userWantsToSuggest = getBooleanForKey("user_wants_to_suggest", false)
+            userWantsToSuggest = getBooleanForKey(SUGGESTION_USER_WANTS_TO_SUGGEST, false)
         )
     }
 
@@ -26,6 +26,23 @@ class SharedPrefsExplanations(
     }
 
     override fun markSeen(explanation: Explanation) {
-        sharedPreferences.edit().putBoolean(explanation::class.java.simpleName, false).apply()
+        putBoolean(explanation::class.java.simpleName, false)
+    }
+
+    override fun update(explanation: Explanation) {
+        when (explanation) {
+            is Explanation.Suggestion -> {
+                putBoolean(SUGGESTION_USER_WANTS_TO_SUGGEST, explanation.userWantsToSuggest)
+            }
+            else -> Unit
+        }
+    }
+
+    private fun putBoolean(key: String, value: Boolean) {
+        sharedPreferences.edit().putBoolean(key, value).apply()
+    }
+
+    companion object {
+        private const val SUGGESTION_USER_WANTS_TO_SUGGEST = "user_wants_to_suggest"
     }
 }

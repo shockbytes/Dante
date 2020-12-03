@@ -1,4 +1,4 @@
-package at.shockbytes.dante.ui.adapter
+package at.shockbytes.dante.ui.adapter.suggestions
 
 import at.shockbytes.dante.suggestions.Suggestion
 

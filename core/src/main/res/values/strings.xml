@@ -358,6 +358,9 @@
     <string name="add_book_to_wishlist">Add to wishlist</string>
     <string name="suggestion_suggester" translatable="false">- %s</string>
     <string name="suggestions_title">Suggestions</string>
+    <string name="suggestions_explanation_want_to_suggest">I\'d like to suggest books</string>
+    <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
+    <string name="suggestions_explanation">Receive some suggestions from book lovers all over the world.</string>
 
     <string name="suggestion_error">We have to apologize. We were unable to load you some suggestions.</string>
     <string name="download_suggestions_other">One of those books?</string>

@@ -6,7 +6,8 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.suggestions.Suggestion
-import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
+import at.shockbytes.dante.ui.adapter.suggestions.OnSuggestionActionClickedListener
+import at.shockbytes.dante.ui.adapter.suggestions.OnSuggestionExplanationClickedListener
 import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapter
 import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapterItem
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
@@ -49,6 +50,10 @@ class SuggestionsFragment : BaseFragment() {
                 override fun onReportBookSuggestion(suggestionId: String) {
                     showToast("Report suggestion!")
                 }
+            },
+            onSuggestionExplanationClickedListener = object : OnSuggestionExplanationClickedListener {
+                override fun onDismissClicked() = viewModel.dismissExplanation()
+                override fun onWantToSuggestClicked() = viewModel.wantToSuggestBooks()
             }
         )
         rv_suggestions.apply {

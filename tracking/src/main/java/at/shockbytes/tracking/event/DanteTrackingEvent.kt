@@ -12,6 +12,8 @@ sealed class DanteTrackingEvent(
 
     object InterestedInOnlineStorageEvent : DanteTrackingEvent("interested_in_online_storage")
 
+    object InterestedInSuggestingBooks : DanteTrackingEvent("suggestions_interested")
+
     data class StartImport(val importer: String) : DanteTrackingEvent(
         "start_import",
         listOf(TrackingProperty("importer_name", importer))

@@ -7,4 +7,6 @@ interface Explanations {
     fun wishlist(): Explanation.Wishlist
 
     fun markSeen(explanation: Explanation)
+
+    fun update(explanation: Explanation)
 }

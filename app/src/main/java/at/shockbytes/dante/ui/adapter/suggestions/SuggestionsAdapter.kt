@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
 import at.shockbytes.util.adapter.BaseAdapter
 
 class SuggestionsAdapter(
     ctx: Context,
     private val imageLoader: ImageLoader,
-    private val onSuggestionActionClickedListener: OnSuggestionActionClickedListener
+    private val onSuggestionActionClickedListener: OnSuggestionActionClickedListener,
+    private val onSuggestionExplanationClickedListener: OnSuggestionExplanationClickedListener
 ) : BaseAdapter<SuggestionsAdapterItem>(ctx) {
 
     fun updateData(suggestions: List<SuggestionsAdapterItem>) {
@@ -35,7 +35,10 @@ class SuggestionsAdapter(
                 onSuggestionActionClickedListener
             )
 
-            R.layout.item_generic_explanation -> SuggestionExplanationViewHolder.forParent(parent)
+            R.layout.item_generic_explanation -> SuggestionExplanationViewHolder.forParent(
+                parent,
+                onSuggestionExplanationClickedListener
+            )
 
             else -> throw IllegalStateException("Unknown ViewType $viewType in ${this.javaClass.simpleName}")
         }

@@ -90,7 +90,7 @@ class SuggestionsFragment : BaseFragment() {
         rv_suggestions.setVisible(true)
         tv_suggestions_empty.setVisible(false)
 
-        suggestionAdapter.data = suggestions.toMutableList()
+        suggestionAdapter.updateData(suggestions)
     }
 
     override fun unbindViewModel() = Unit

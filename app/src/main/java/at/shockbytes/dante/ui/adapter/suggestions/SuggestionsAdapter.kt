@@ -43,6 +43,8 @@ class SuggestionsAdapter(
                 onSuggestionActionClickedListener
             )
 
+            R.layout.item_suggestion_explanation -> SuggestionExplanationViewHolder.forParent(parent)
+
             else -> throw IllegalStateException("Unknown ViewType $viewType in ${this.javaClass.simpleName}")
         }
     }

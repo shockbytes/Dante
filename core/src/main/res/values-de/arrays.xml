@@ -20,6 +20,7 @@
         <item>Scanne Bücher um sie später zu lesen</item>
         <item>Warum liest du kein Buch?</item>
         <item>Du hast noch kein Buch gelesen</item>
+        <item>Deine Wunschliste ist leer. Gut! Sieht so aus als hättest du all deine Bücher bereits!</item>
     </string-array>
 
     <string-array name="ratings">

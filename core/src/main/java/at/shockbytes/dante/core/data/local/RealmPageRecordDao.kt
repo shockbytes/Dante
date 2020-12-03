@@ -22,15 +22,17 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
         fromPage: Int,
         toPage: Int,
         nowInMillis: Long
-    ) {
-        insert(
-            PageRecord(
-                bookId = bookId,
-                fromPage = fromPage,
-                toPage = toPage,
-                timestamp = nowInMillis
+    ): Completable {
+        return completableOf {
+            insert(
+                PageRecord(
+                    bookId = bookId,
+                    fromPage = fromPage,
+                    toPage = toPage,
+                    timestamp = nowInMillis
+                )
             )
-        )
+        }
     }
 
     override fun updatePageRecord(

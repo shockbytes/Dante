@@ -23,11 +23,9 @@ import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
-import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
-import at.shockbytes.dante.flagging.FeatureFlag
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.DanteUtils
@@ -51,9 +49,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
-
-    @Inject
-    lateinit var featureFlagging: FeatureFlagging
 
     @Inject
     lateinit var danteSettings: DanteSettings
@@ -320,20 +315,22 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private fun initializeNavigation() {
 
         // Setup the ViewPager
-        pagerAdapter = BookPagerAdapter(applicationContext, featureFlagging[FeatureFlag.BOOK_SUGGESTIONS],
-            supportFragmentManager)
-        viewPager.adapter = pagerAdapter
-        viewPager.removeOnPageChangeListener(this) // Remove first to avoid multiple listeners
-        viewPager.addOnPageChangeListener(this)
-        viewPager.offscreenPageLimit = 2
-
-        mainBottomNavigation.setOnNavigationItemSelectedListener { item ->
-            colorNavigationItems(item)
-            indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
-            true
+        pagerAdapter = BookPagerAdapter(applicationContext, supportFragmentManager)
+        viewPager.apply {
+            adapter = pagerAdapter
+            removeOnPageChangeListener(this@MainActivity) // Remove first to avoid multiple listeners
+            addOnPageChangeListener(this@MainActivity)
+            offscreenPageLimit = 2
         }
-        mainBottomNavigation.menu.getItem(3).isVisible = featureFlagging[FeatureFlag.BOOK_SUGGESTIONS]
-        mainBottomNavigation.selectedItemId = tabId
+
+        mainBottomNavigation.apply {
+            setOnNavigationItemSelectedListener { item ->
+                colorNavigationItems(item)
+                indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
+                true
+            }
+            selectedItemId = tabId
+        }
     }
 
     private fun colorNavigationItems(item: MenuItem) {
@@ -342,7 +339,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             R.id.menu_navigation_upcoming -> R.drawable.navigation_item_upcoming
             R.id.menu_navigation_current -> R.drawable.navigation_item_current
             R.id.menu_navigation_done -> R.drawable.navigation_item_done
-            R.id.menu_navigation_suggestions -> R.drawable.navigation_item_suggestions
             else -> 0
         }
 
@@ -367,7 +363,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             R.id.menu_navigation_upcoming -> 0
             R.id.menu_navigation_current -> 1
             R.id.menu_navigation_done -> 2
-            R.id.menu_navigation_suggestions -> 3
             else -> null
         }
     }

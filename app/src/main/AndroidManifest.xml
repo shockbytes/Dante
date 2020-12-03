@@ -97,12 +97,18 @@
             android:name=".ui.activity.ManualAddActivity"
             android:label=""
             android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".ui.activity.StatisticsActivity"
             android:label="@string/label_stats" />
+
         <activity
             android:name=".ui.activity.LoginActivity"
             android:exported="true" />
+
+        <activity
+            android:name=".ui.activity.InspirationsActivity"
+            android:label="@string/inspirations" />
 
         <activity android:name=".camera.BarcodeCaptureActivity"
             android:screenOrientation="portrait" />

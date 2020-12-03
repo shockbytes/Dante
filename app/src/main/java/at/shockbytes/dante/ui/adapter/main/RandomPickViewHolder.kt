@@ -10,17 +10,17 @@ import kotlinx.android.synthetic.main.item_random_pick.*
 
 class RandomPickViewHolder(
     override val containerView: View,
-    private val callback: RandomPickCallback
-) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
+    private val callback: RandomPickCallback?
+) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookAdapterEntity, position: Int) {
+    override fun bindToView(content: BookAdapterItem, position: Int) {
 
         btn_item_random_pick.setOnClickListener {
-            callback.onRandomPickClicked()
+            callback?.onRandomPickClicked()
         }
 
         iv_item_random_pick_dismiss.setOnClickListener {
-            callback.onDismiss()
+            callback?.onDismiss()
         }
     }
 
@@ -28,7 +28,7 @@ class RandomPickViewHolder(
 
         fun forParent(
             parent: ViewGroup,
-            callback: RandomPickCallback
+            callback: RandomPickCallback?
         ): RandomPickViewHolder {
             return RandomPickViewHolder(
                 containerView = LayoutInflater.from(parent.context).inflate(R.layout.item_random_pick, parent, false),

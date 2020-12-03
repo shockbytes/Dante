@@ -9,12 +9,12 @@
 
     <at.shockbytes.dante.core.ui.HandleView
         android:id="@+id/handle_view_barcode_scan_result"
-        android:layout_marginTop="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="2dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/group_barcode_result" />
+        app:layout_constraintStart_toStartOf="@+id/group_barcode_result"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/iv_barcode_scan_result_cover"
@@ -31,20 +31,22 @@
         android:id="@+id/layout_barcode_result_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="12dp"
+        android:layout_marginEnd="4dp"
         android:orientation="horizontal"
+        android:weightSum="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_barcode_result_author">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_for_later"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
+            style="@style/AppTheme.Appearance.StateButton"
+            android:textAllCaps="false"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:layout_weight="1"
             android:text="@string/tab_upcoming"
             android:textColor="@color/tabcolor_upcoming"
@@ -52,10 +54,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_reading"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
+            style="@style/AppTheme.Appearance.StateButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_marginVertical="2dp"
+            android:layout_marginHorizontal="4dp"
             android:layout_weight="1"
             android:text="@string/tab_current"
             android:textColor="@color/tabcolor_current"
@@ -63,10 +66,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_read"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
+            style="@style/AppTheme.Appearance.StateButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="2dp"
             android:layout_weight="1"
             android:text="@string/tab_done"
             android:textColor="@color/tabcolor_done"
@@ -86,8 +89,8 @@
 
         <ImageView
             android:id="@+id/iv_barcode_result_error"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             app:srcCompat="@drawable/ic_download_error" />
@@ -105,12 +108,14 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_error_close"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="48dp"
+            android:paddingHorizontal="16dp"
+            android:layout_centerInParent="true"
             android:text="@string/download_btn_error"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/color_error"
@@ -139,9 +144,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:gravity="center"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:gravity="center"
         android:maxLines="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +157,7 @@
         android:id="@+id/group_barcode_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="layout_barcode_result_buttons,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover" />
+        app:constraint_referenced_ids="layout_barcode_result_buttons,tv_barcode_result_author,tv_barcode_result_title,iv_barcode_scan_result_cover,btn_barcode_result_wishlist" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/pb_barcode_result"
@@ -173,11 +178,23 @@
         tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_barcode_result_not_my_book"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:id="@+id/btn_barcode_result_wishlist"
+        style="@style/AppTheme.Appearance.StateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:text="@string/wishlist"
+        android:textColor="@color/inspirations"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_barcode_result_buttons"
+        app:rippleColor="@color/inspirations" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_barcode_result_not_my_book"
+        style="@style/AppTheme.Appearance.StateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:layout_marginBottom="16dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -187,7 +204,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_barcode_result_buttons"
+        app:layout_constraintTop_toBottomOf="@+id/btn_barcode_result_wishlist"
         app:rippleColor="@color/colorPrimaryText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

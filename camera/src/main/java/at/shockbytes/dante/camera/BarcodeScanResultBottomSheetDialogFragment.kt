@@ -178,6 +178,11 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 onBookAddedListener?.invoke(title)
             }
 
+            btn_barcode_result_wishlist.setOnClickListener {
+                viewModel.storeBook(this, state = BookState.WISHLIST)
+                onBookAddedListener?.invoke(title)
+            }
+
             btn_barcode_result_read.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.READ)
                 onBookAddedListener?.invoke(title)

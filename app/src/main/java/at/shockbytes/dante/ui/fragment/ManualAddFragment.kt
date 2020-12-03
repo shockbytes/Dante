@@ -1,7 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.content.Intent
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -9,7 +8,9 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
+import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.palette.graphics.Palette
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
@@ -61,9 +62,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
         imgViewManualAdd.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            activity?.let { a ->
-                viewModel.pickImage(a)
-            }
+            viewModel.pickImage(requireActivity())
         }
 
         editTextManualAddTitle.addTextChangedListener(object : TextWatcher {
@@ -123,56 +122,33 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         setupObserver()
     }
 
-    override fun unbindViewModel() {
-        // Not needed...
-    }
+    override fun unbindViewModel() = Unit
 
-    override fun onImageLoadingFailed(e: Exception?) {
-        Timber.e(e)
-    }
+    override fun onImageLoadingFailed(e: Exception?) = Timber.e(e)
 
     override fun onImageResourceReady(resource: Drawable?) {
 
-        (resource as? BitmapDrawable)?.bitmap?.let { bm ->
-            androidx.palette.graphics.Palette.from(bm).generate { palette ->
+        (resource as? BitmapDrawable)?.bitmap?.let(Palette::from)?.generate { palette ->
 
-                val actionBarColor = palette?.lightMutedSwatch?.rgb
-                val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
-                val statusBarColor = palette?.darkMutedSwatch?.rgb
+            val actionBarColor = palette?.lightMutedSwatch?.rgb
+            val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
+            val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-                (activity as? TintableBackNavigableActivity)?.tintSystemBarsWithText(actionBarColor,
-                    actionBarTextColor, statusBarColor)
-            }
+            (activity as? TintableBackNavigableActivity)
+                ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
         }
     }
 
     private fun setupObserver() {
 
-        viewModel.getImageState().observe(this, Observer { imageState ->
+        viewModel.getImageState().observe(this, Observer(::handleImageState))
 
-            when (imageState) {
-                is ManualAddViewModel.ImageState.ThumbnailUri -> {
-                    imageLoader.loadImageUri(
-                        requireContext(),
-                        imageState.uri,
-                        imgViewManualAdd,
-                        R.drawable.ic_placeholder,
-                        circular = false,
-                        callback = this,
-                        callbackHandleValues = Pair(first = false, second = true)
-                    )
-                }
-                ManualAddViewModel.ImageState.NoImage -> {
-                    imageLoader.loadImageResource(
-                        requireContext(),
-                        R.drawable.ic_placeholder,
-                        imgViewManualAdd
-                    )
-                }
-            }
-        })
+        viewModel.getImageLoadingState()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::handleImageLoadingState)
+            .addTo(compositeDisposable)
 
-        viewModel.getViewState().observe(this, Observer { viewState ->
+        viewModel.getViewState().observe(this, { viewState ->
 
             when (viewState) {
                 ManualAddViewModel.ViewState.ManualAdd -> {
@@ -207,6 +183,33 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                 }
             }
             .addTo(compositeDisposable)
+    }
+
+    private fun handleImageState(imageState: ManualAddViewModel.ImageState) {
+        when (imageState) {
+            is ManualAddViewModel.ImageState.ThumbnailUri -> {
+                imageLoader.loadImageUri(
+                    requireContext(),
+                    imageState.uri,
+                    imgViewManualAdd,
+                    R.drawable.ic_placeholder,
+                    circular = false,
+                    callback = this,
+                    callbackHandleValues = Pair(first = false, second = true)
+                )
+            }
+            ManualAddViewModel.ImageState.NoImage -> {
+                imageLoader.loadImageResource(
+                    requireContext(),
+                    R.drawable.ic_placeholder,
+                    imgViewManualAdd
+                )
+            }
+        }
+    }
+
+    private fun handleImageLoadingState(imageLoadingState: ManualAddViewModel.ImageLoadingState) {
+        // TODO Handle loading indicator
     }
 
     private fun sendBookCreatedBroadcast(createdBookState: BookState) {

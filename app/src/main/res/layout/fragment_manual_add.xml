@@ -411,7 +411,6 @@
                     android:textColor="@color/tabcolor_done" />
             </LinearLayout>
 
-
         </FrameLayout>
 
     </com.google.android.material.card.MaterialCardView>

@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.16</string>
+    <string name="app_version" translatable="false">3.17</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -9,8 +9,8 @@
     <string name="cancel">Cancel</string>
     <string name="open">Open</string>
     <string name="label_settings">Settings</string>
-    <string name="label_stats">Your statistics</string>
-    <string name="label_timeline">Your timeline</string>
+    <string name="label_stats">My statistics</string>
+    <string name="label_timeline">My timeline</string>
     <string name="label_my_notes">My notes</string>
     <string name="not_available">N/A</string>
     <string name="importing">import</string>
@@ -27,7 +27,7 @@
     <string name="open_backup_file">Open backup file</string>
 
     <string name="currently_reading">Currently reading</string>
-    <string name="add_book_to_library_hint">Add a book to your library</string>
+    <string name="add_book_to_library_hint">Add a book to my library</string>
 
     <string name="reading_behavior">Reading behavior</string>
     <string name="pages_formatted">%d pages &#8226; %s</string>
@@ -58,7 +58,7 @@
     <string name="na">Not available</string>
     <string name="got_it">Got it</string>
 
-    <string name="permission_camera_rationale">The app needs access to your camera, in order to detect the barcodes of the books.</string>
+    <string name="permission_camera_rationale">We need access to your camera, in order to detect the ISBN codes of the books.</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission. The scan window will terminate.</string>
 
     <string name="transition_name_thumb" translatable="false">transition_name_thumb</string>
@@ -86,8 +86,8 @@
 
     <string name="contentdesc_listitem_img_thumb" translatable="false">Thumbnail for book cover</string>
     <string name="contentdesc_listitem_img_overflow" translatable="false">Overflow icon for list item</string>
-    <string name="send_to">Share your book</string>
-    <string name="label_book_storage">Manage your books</string>
+    <string name="send_to">Share my book</string>
+    <string name="label_book_storage">Manage books</string>
     <string name="restore">Restore (%d)</string>
     <string name="backup">Backup</string>
 
@@ -135,7 +135,7 @@
     <string name="dialogfragment_notes_header">Write down your thoughts, feelings or some general remarks about %s.</string>
     <string name="save">Save</string>
     <string name="discard">Discard</string>
-    <string name="dialogfragment_notes_hint">Your thoughts belong in here&#8230;</string>
+    <string name="dialogfragment_notes_hint">My thoughts belong in here&#8230;</string>
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>
 
@@ -179,7 +179,7 @@
 
 
     <string name="dialogfragment_sort_by">Sort by</string>
-    <string name="invalid_time_range_wishlist">Wishlist date must smaller than the others…</string>
+    <string name="invalid_time_range_wishlist">For later date must smaller than the others…</string>
     <string name="invalid_time_range_start">Start date must lie within the range of the other dates…</string>
     <string name="invalid_time_range_end">End date must be later than the other dates…</string>
 
@@ -349,8 +349,20 @@
     <string name="tab_upcoming">For later</string>
     <string name="tab_current">Reading</string>
     <string name="tab_done">Done</string>
-    <string name="tab_suggestions">Suggestions</string>
+    <string name="inspirations">Inspirations</string>
 
+    <string name="wishlist_empty">Your wishlist is empty! Good! Seems like you have all your books already.</string>
+    <string name="wishlist_title">My Wishlist</string>
+    <string name="wishlist_explanation">Put all the books here that you want to read in the future but haven\'t purchased yet.\n\nPro tip: Share this list occasionally with your partner.</string>
+    <string name="wishlist">Wishlist</string>
+    <string name="add_book_to_wishlist">Add to wishlist</string>
+    <string name="suggestion_suggester" translatable="false">- %s</string>
+    <string name="suggestions_title">Suggestions</string>
+    <string name="suggestions_explanation_want_to_suggest">I\'d like to suggest books</string>
+    <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
+    <string name="suggestions_explanation">Receive some suggestions from book lovers all over the world.</string>
+
+    <string name="suggestion_error">We have to apologize. We were unable to load you some suggestions.</string>
     <string name="download_suggestions_other">One of those books?</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>
     <string name="download_suggestion_other">Not my book</string>
@@ -362,13 +374,14 @@
 
     <string name="scan_another_book">Do you want to scan another book?</string>
     <string name="book_added_to_library">%s added to library</string>
+    <string name="book_added_to_wishlist">%s added to wishlist</string>
     <string name="nope">Nope</string>
 
     <string name="restarting_app">The app may restart shortly&#8230;</string>
     <string name="launcher_icon_change_description">Changing the icon may \n automatically restart the app</string>
 
     <string name="date_month_and_year" translatable="false">%s %s</string>
-    <string name="dante_install">You installed Dante</string>
+    <string name="dante_install">The journey starts</string>
     <string name="timeline_sort_explanation">The timeline shows you exactly when you read each and every book in your library. You can choose how it should be sorted.</string>
     <string name="statistics_first_five_star">First 5 star book</string>
     <string name="language_other">Other</string>

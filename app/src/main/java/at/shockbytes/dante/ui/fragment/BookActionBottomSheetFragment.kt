@@ -38,6 +38,7 @@ class BookActionBottomSheetFragment : BaseBottomSheetFragment() {
             BookState.READ_LATER -> btn_book_action_move_to_upcoming
             BookState.READING -> btn_book_action_move_to_current
             BookState.READ -> btn_book_action_move_to_done
+            BookState.WISHLIST -> btn_book_action_edit // Do not allow editing wishlist books
         }.setVisible(false)
     }
 

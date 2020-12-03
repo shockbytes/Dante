@@ -88,9 +88,31 @@ class BookDetailViewModel @Inject constructor(
     }
 
     fun onFragmentDestroyed() {
+
         viewCompositeDisposable.clear()
 
-        onPageCountMayChanged()
+        val currentPage = getBookFromLiveData()?.currentPage ?: 0
+        val startPage = pagesAtInit ?: 0
+
+        if (hasPageCountChanged(currentPage, startPage)) {
+            savePageChanges(currentPage, startPage)
+        }
+    }
+
+    private fun hasPageCountChanged(currentPage: Int, startPage: Int): Boolean {
+        return currentPage != startPage
+    }
+
+    private fun savePageChanges(currentPage: Int, startPage: Int) {
+        pageRecordDao
+            .insertPageRecordForBookId(
+                bookId = bookId,
+                fromPage = startPage,
+                toPage = currentPage,
+                nowInMillis = System.currentTimeMillis()
+            )
+            .subscribe()
+            .addTo(compositeDisposable)
     }
 
     private fun fetchBook(bookId: Long) {
@@ -306,20 +328,6 @@ class BookDetailViewModel @Inject constructor(
                 Timber.e(throwable)
             })
             .addTo(compositeDisposable)
-    }
-
-    private fun onPageCountMayChanged() {
-
-        val currentPage = getBookFromLiveData()?.currentPage ?: 0
-        val startPage = pagesAtInit ?: 0
-        if (currentPage != startPage) {
-            pageRecordDao.insertPageRecordForBookId(
-                bookId = bookId,
-                fromPage = startPage,
-                toPage = currentPage,
-                nowInMillis = System.currentTimeMillis()
-            )
-        }
     }
 
     /**

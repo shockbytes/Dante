@@ -7,29 +7,36 @@ import kotlinx.android.parcel.Parcelize
 /**
  * Author:  Martin Macheiner
  * Date:    12.06.2018
+ *
+ * NOTE:    Would be great if we can get rid off all the vars and make them vals.
  */
 @Parcelize
 data class BookEntity(
     var id: Long = -1,
-    var title: String = "",
-    var subTitle: String = "",
-    var author: String = "",
+    val title: String = "",
+    val subTitle: String = "",
+    val author: String = "",
     var state: BookState = BookState.READING,
-    var pageCount: Int = 0,
-    var publishedDate: String = "",
+    val pageCount: Int = 0,
+    val publishedDate: String = "",
     var position: Int = 0,
-    var isbn: String = "",
-    var thumbnailAddress: String? = null,
-    var googleBooksLink: String? = null,
+    val isbn: String = "",
+    val thumbnailAddress: String? = null,
+    val googleBooksLink: String? = null,
     var startDate: Long = 0,
     var endDate: Long = 0,
+    /**
+     * Actually `forLaterDate` and should not be confused with BookState.WISHLIST. This mishap
+     * is due to the initial naming and cannot be changed without breaking prior backups. So, just
+     * treat this as `forLaterDate` and everything is fine
+     */
     var wishlistDate: Long = 0,
-    var language: String? = "NA",
-    var rating: Int = 0,
-    var currentPage: Int = 0,
-    var notes: String? = null,
-    var summary: String? = null,
-    var labels: List<BookLabel> = listOf()
+    val language: String? = "NA",
+    val rating: Int = 0,
+    val currentPage: Int = 0,
+    val notes: String? = null,
+    val summary: String? = null,
+    val labels: List<BookLabel> = listOf()
 ) : Parcelable {
 
     val reading: Boolean
@@ -56,6 +63,11 @@ data class BookEntity(
             }
             BookState.READ -> {
                 endDate = System.currentTimeMillis()
+            }
+            BookState.WISHLIST -> {
+                startDate = 0
+                endDate = 0
+                wishlistDate = 0
             }
         }
     }

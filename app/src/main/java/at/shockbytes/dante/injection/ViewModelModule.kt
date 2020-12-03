@@ -18,6 +18,7 @@ import at.shockbytes.dante.ui.viewmodel.OnlineStorageViewModel
 import at.shockbytes.dante.ui.viewmodel.PageRecordsDetailViewModel
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
+import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
 import at.shockbytes.dante.ui.viewmodel.TimelineViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -133,4 +134,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PageRecordsDetailViewModel::class)
     internal abstract fun pageRecordsDetailViewModel(viewModel: PageRecordsDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SuggestionsViewModel::class)
+    internal abstract fun suggestionsViewModel(viewModel: SuggestionsViewModel): ViewModel
 }

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppTheme.CardLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/item_book_horizontal_spacing"
+    android:layout_marginLeft="@dimen/item_book_horizontal_spacing"
+    android:layout_marginTop="6dp"
+    android:layout_marginEnd="@dimen/item_book_horizontal_spacing"
+    android:layout_marginRight="@dimen/item_book_horizontal_spacing"
+    android:layout_marginBottom="6dp"
+    android:elevation="0dp"
+    android:minHeight="80dp"
+    android:padding="2dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/border"
+    app:strokeWidth="0.8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="2dp"
+        android:paddingEnd="2dp"
+        android:paddingBottom="2dp">
+
+        <ImageView
+            android:id="@+id/iv_item_suggestion_report"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_rounded_ripple"
+            android:scaleType="center"
+            android:visibility="invisible"
+            tools:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_report_suggestion" />
+
+        <ImageView
+            android:id="@+id/iv_item_suggestion_cover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/contentdesc_listitem_img_thumb"
+            android:minWidth="48dp"
+            android:transitionName="@string/transition_name_thumb"
+            app:layout_constraintHeight_max="64dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_placeholder"
+            tools:layout_width="40dp"
+            tools:srcCompat="@drawable/darkest_hour" />
+
+        <TextView
+            android:id="@+id/tv_item_suggestion_author"
+            style="@style/TextAuthor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_item_suggestion_title"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_item_suggestion_cover"
+            app:layout_constraintEnd_toStartOf="@id/iv_item_suggestion_report"
+            app:layout_constraintStart_toEndOf="@id/iv_item_suggestion_cover"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_suggestion_title"
+            tools:text="Laurence Rees" />
+
+        <TextView
+            android:id="@+id/tv_item_suggestion_title"
+            style="@style/TextTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="0dp"
+            android:fontFamily="@font/montserrat_bold"
+            app:layout_constraintEnd_toStartOf="@id/iv_item_suggestion_report"
+            app:layout_constraintStart_toEndOf="@id/iv_item_suggestion_cover"
+            app:layout_constraintTop_toTopOf="@+id/iv_item_suggestion_cover"
+            tools:text="Their darkest hour" />
+
+        <TextView
+            android:id="@+id/tv_item_suggestion_recommendation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="48dp"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_suggestion_cover"
+            tools:text="This book is  a must-read for everyone. Period. It is unbelievable that this just happened 80 years ago." />
+
+        <TextView
+            android:id="@+id/tv_item_suggestion_suggester"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:rotationX="0"
+            android:rotationY="0"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_item_suggestion_suggester"
+            app:layout_constraintEnd_toStartOf="@id/iv_item_suggestion_suggester"
+            app:layout_constraintTop_toTopOf="@id/iv_item_suggestion_suggester"
+            tools:text="- Martin" />
+
+        <ImageView
+            android:id="@+id/iv_item_suggestion_suggester"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="@id/tv_item_suggestion_recommendation"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_suggestion_recommendation"
+            tools:srcCompat="@drawable/ic_language_norwegian" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_item_suggestion_add"
+            style="@style/AppTheme.RoundedButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:paddingHorizontal="32dp"
+            android:text="@string/add_book_to_wishlist"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_suggestion_suggester" />
+
+        <ImageView
+            android:id="@+id/ic_quote"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_item_suggestion_recommendation"
+            app:layout_constraintTop_toTopOf="@+id/tv_item_suggestion_recommendation"
+            app:srcCompat="@drawable/ic_quote" />
+
+        <ImageView
+            android:id="@+id/ic_quote2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_item_suggestion_recommendation"
+            app:layout_constraintStart_toEndOf="@+id/tv_item_suggestion_recommendation"
+            app:srcCompat="@drawable/ic_quote" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

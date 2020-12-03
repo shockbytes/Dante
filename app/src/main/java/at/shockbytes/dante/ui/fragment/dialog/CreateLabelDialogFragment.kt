@@ -27,7 +27,7 @@ class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel>() {
         R.color.color_error,
         R.color.nice_color,
         R.color.indigo,
-        R.color.tabcolor_suggestions,
+        R.color.inspirations,
         R.color.teal_500,
         R.color.pink_500
     )

@@ -13,10 +13,15 @@ import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
+import at.shockbytes.dante.suggestions.AssetsSuggestionsRepository
+import at.shockbytes.dante.suggestions.SuggestionsRepository
+import at.shockbytes.dante.util.explanations.Explanations
+import at.shockbytes.dante.util.explanations.SharedPrefsExplanations
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 
@@ -67,5 +72,16 @@ class AppModule(private val app: Application) {
     fun provideAnnouncementProvider(): AnnouncementProvider {
         val prefs = app.getSharedPreferences("announcements", Context.MODE_PRIVATE)
         return SharedPrefsAnnouncementProvider(prefs)
+    }
+
+    @Provides
+    fun provideSuggestionsRepository(): SuggestionsRepository {
+        return AssetsSuggestionsRepository(app.applicationContext, Gson())
+    }
+
+    @Provides
+    fun provideExplanations(): Explanations {
+        val sharedPreferences = app.getSharedPreferences("preferences_explanations", Context.MODE_PRIVATE)
+        return SharedPrefsExplanations(sharedPreferences)
     }
 }

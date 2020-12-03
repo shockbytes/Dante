@@ -9,6 +9,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.image.ImagePicker
+import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailUri
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
@@ -23,7 +24,8 @@ import javax.inject.Inject
  */
 class ManualAddViewModel @Inject constructor(
     private val bookRepository: BookRepository,
-    private val imagePicker: ImagePicker
+    private val imagePicker: ImagePicker,
+    private val imageUploadStorage: ImageUploadStorage
 ) : BaseViewModel() {
 
     data class BookUpdateData(
@@ -53,10 +55,18 @@ class ManualAddViewModel @Inject constructor(
     }
 
     sealed class ImageState {
-
         data class ThumbnailUri(val uri: Uri) : ImageState()
         object NoImage : ImageState()
     }
+
+    sealed class ImageLoadingState {
+        object Success : ImageLoadingState()
+        data class Loading(val progress: Int) : ImageLoadingState()
+        data class Error(val throwable: Throwable) : ImageLoadingState()
+    }
+
+    private val imageLoadingState = PublishSubject.create<ImageLoadingState>()
+    fun getImageLoadingState(): Observable<ImageLoadingState> = imageLoadingState
 
     private val imageState = MutableLiveData<ImageState>()
     fun getImageState(): LiveData<ImageState> = imageState
@@ -84,12 +94,23 @@ class ManualAddViewModel @Inject constructor(
     fun pickImage(activity: FragmentActivity) {
         imagePicker
             .openGallery(activity)
+            .flatMapSingle { imageUri ->
+                imageUploadStorage.upload(imageUri, ::progressUpdate)
+            }
             .map(::ThumbnailUri)
             .doOnNext { thumbnailUri ->
-                Timber.d("Image thumbnail picked: ${thumbnailUri.uri}")
+                Timber.d("Image thumbnail uploaded and picked picked: ${thumbnailUri.uri}")
+                imageLoadingState.onNext(ImageLoadingState.Success)
+            }
+            .doOnError { throwable ->
+                imageLoadingState.onNext(ImageLoadingState.Error(throwable))
             }
             .subscribe(imageState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    private fun progressUpdate(progress: Int) {
+        imageLoadingState.onNext(ImageLoadingState.Loading(progress))
     }
 
     fun storeBook(
@@ -210,6 +231,7 @@ class ManualAddViewModel @Inject constructor(
                 BookState.READ_LATER -> entity.wishlistDate = System.currentTimeMillis()
                 BookState.READING -> entity.startDate = System.currentTimeMillis()
                 BookState.READ -> entity.endDate = System.currentTimeMillis()
+                BookState.WISHLIST -> throw IllegalStateException("WISHLIST not supported for manual adding")
             }
             entity
         }

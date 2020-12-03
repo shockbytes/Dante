@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.ui.fragment.MainBookFragment
-import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 
 /**
  * Author:  Martin Macheiner
@@ -15,20 +14,15 @@ import at.shockbytes.dante.ui.fragment.SuggestionsFragment
  */
 class BookPagerAdapter(
     private val context: Context,
-    private val enableSuggestions: Boolean = false,
     fm: FragmentManager
 ) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
-        return if (position < COUNT_STANDARD) {
-            MainBookFragment.newInstance(BookState.values()[position])
-        } else {
-            SuggestionsFragment.newInstance()
-        }
+        return MainBookFragment.newInstance(BookState.values()[position])
     }
 
     override fun getCount(): Int {
-        return if (enableSuggestions) COUNT_SUGGESTIONS else COUNT_STANDARD
+        return COUNT_STANDARD
     }
 
     override fun getPageTitle(position: Int): CharSequence {
@@ -36,13 +30,11 @@ class BookPagerAdapter(
             0 -> context.getString(R.string.tab_upcoming)
             1 -> context.getString(R.string.tab_current)
             2 -> context.getString(R.string.tab_done)
-            3 -> context.getString(R.string.tab_suggestions)
-            else -> "" // Never the case
+            else -> throw IllegalStateException("Invalid page position $position in BookPagerAdapter!")
         }
     }
 
     companion object {
         private const val COUNT_STANDARD = 3
-        private const val COUNT_SUGGESTIONS = 4
     }
 }

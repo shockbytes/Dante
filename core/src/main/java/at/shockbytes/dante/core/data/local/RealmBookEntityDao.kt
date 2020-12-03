@@ -122,7 +122,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .contains("author", query, Case.INSENSITIVE)
             .or()
             .contains("subTitle", query, Case.INSENSITIVE)
-            .findAll()
+            .findAllAsync()
             .asFlowable()
             .map { mapper.mapTo(it) }
             .toObservable()

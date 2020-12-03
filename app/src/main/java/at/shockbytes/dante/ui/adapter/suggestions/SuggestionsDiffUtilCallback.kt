@@ -1,16 +1,14 @@
-package at.shockbytes.dante.util.view
+package at.shockbytes.dante.ui.adapter.suggestions
 
 import androidx.recyclerview.widget.DiffUtil
-import at.shockbytes.dante.core.isContentSame
-import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 
 /**
  * Author:  Martin Macheiner
- * Date:    12.06.2018
+ * Date:    03.12.202
  */
-class BookDiffUtilCallback(
-    private val oldList: List<BookAdapterEntity>,
-    private val newList: List<BookAdapterEntity>
+class SuggestionsDiffUtilCallback(
+    private val oldList: List<SuggestionsAdapterItem>,
+    private val newList: List<SuggestionsAdapterItem>
 ) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -28,12 +26,11 @@ class BookDiffUtilCallback(
 
         return when {
 
-            oldItem is BookAdapterEntity.Book && newItem is BookAdapterEntity.Book -> {
-                oldItem.bookEntity.isContentSame(newItem.bookEntity)
+            oldItem is SuggestionsAdapterItem.SuggestedBook && newItem is SuggestionsAdapterItem.SuggestedBook -> {
+                oldItem.suggestion == newItem.suggestion
             }
-            oldItem is BookAdapterEntity.RandomPick && newItem is BookAdapterEntity.RandomPick -> {
-                // Both are objects, it's always true
-                true
+            oldItem is SuggestionsAdapterItem.Explanation && newItem is SuggestionsAdapterItem.Explanation -> {
+                oldItem == newItem
             }
             else -> {
                 // If adapter entities don't match, content can't be the same

@@ -22,14 +22,14 @@ import kotlinx.android.synthetic.main.item_book.*
 class BookViewHolder(
     override val containerView: View,
     private val imageLoader: ImageLoader,
-    private val onOverflowActionClickedListener: (BookEntity) -> Unit,
-    private val onLabelClickedListener: (BookLabel) -> Unit
-) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
+    private val onOverflowActionClickedListener: ((BookEntity) -> Unit)?,
+    private val onLabelClickedListener: ((BookLabel) -> Unit)?
+) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
 
     private fun context(): Context = containerView.context
 
-    override fun bindToView(content: BookAdapterEntity, position: Int) {
-        with(content as BookAdapterEntity.Book) {
+    override fun bindToView(content: BookAdapterItem, position: Int) {
+        with(content as BookAdapterItem.Book) {
             updateTexts(bookEntity)
             updateImageThumbnail(bookEntity.thumbnailAddress)
             updateProgress(bookEntity)
@@ -63,14 +63,14 @@ class BookViewHolder(
             text = label.title
             setTextColor(Color.WHITE)
             setOnClickListener {
-                onLabelClickedListener(label)
+                onLabelClickedListener?.invoke(label)
             }
         }
     }
 
     private fun setOverflowClickListener(content: BookEntity) {
         item_book_img_overflow.setOnClickListener {
-            onOverflowActionClickedListener(content)
+            onOverflowActionClickedListener?.invoke(content)
         }
     }
 
@@ -122,8 +122,8 @@ class BookViewHolder(
         fun forParent(
             parent: ViewGroup,
             imageLoader: ImageLoader,
-            onOverflowActionClickedListener: (BookEntity) -> Unit,
-            onLabelClickedListener: (BookLabel) -> Unit
+            onOverflowActionClickedListener: ((BookEntity) -> Unit)?,
+            onLabelClickedListener: ((BookLabel) -> Unit)?
         ): BookViewHolder {
             return BookViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false),

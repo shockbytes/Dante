@@ -45,7 +45,7 @@ class DanteSettings(
 
     var showSummary: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_show_summary_key))
 
-    var trackingEnabled: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_tracking_key), defaultValue = false)
+    var trackingEnabled: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_tracking_key), defaultValue = true)
 
     var sortStrategy: SortStrategy
         get() {

@@ -6,13 +6,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -26,18 +22,20 @@ import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.navigation.Destination.BookDetail.BookDetailInfo
 import at.shockbytes.dante.ui.adapter.main.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
-import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
+import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import at.shockbytes.dante.ui.adapter.main.RandomPickCallback
 import at.shockbytes.dante.ui.fragment.BookDetailFragment.Companion.ACTION_BOOK_CHANGED
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.SharedViewComponents
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.runDelayed
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
@@ -48,8 +46,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainBookFragment : BaseFragment(),
-    BaseAdapter.OnItemClickListener<BookAdapterEntity>,
-    BaseAdapter.OnItemMoveListener<BookAdapterEntity>,
+    BaseAdapter.OnItemClickListener<BookAdapterItem>,
+    BaseAdapter.OnItemMoveListener<BookAdapterItem>,
     OnBookActionClickedListener {
 
     override val layoutId = R.layout.fragment_book_main
@@ -60,12 +58,11 @@ class MainBookFragment : BaseFragment(),
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    @Inject
-    lateinit var featureFlagging: FeatureFlagging
-
-    private lateinit var bookState: BookState
     private lateinit var bookAdapter: BookAdapter
     private lateinit var viewModel: BookListViewModel
+
+    private var bookState: BookState by argument()
+    private var allowItemClick: Boolean by argument()
 
     private val onLabelClickedListener: ((BookLabel) -> Unit) = { label ->
         LabelCategoryBottomSheetFragment.newInstance(label)
@@ -77,11 +74,16 @@ class MainBookFragment : BaseFragment(),
             .show(childFragmentManager, "book-action-bottom-sheet")
     }
 
+    private val dismissWishlistExplanation: () -> Unit = {
+        viewModel.dismissWishlistExplanation()
+        bookAdapter.deleteEntity(BookAdapterItem.WishlistExplanation)
+    }
+
     private val randomPickCallback = object : RandomPickCallback {
         override fun onDismiss() {
             showToast(R.string.random_pick_restore_instruction)
             viewModel.onDismissRandomBookPicker()
-            bookAdapter.deleteEntity(BookAdapterEntity.RandomPick)
+            bookAdapter.deleteEntity(BookAdapterItem.RandomPick)
         }
 
         override fun onRandomPickClicked() {
@@ -110,30 +112,16 @@ class MainBookFragment : BaseFragment(),
             ?.let { createdBookState ->
                 if (viewModel.state == createdBookState) {
                     runDelayed(500) {
-                        fragment_book_main_rv.smoothScrollToPosition(0)
+                        rv_main_book_fragment.smoothScrollToPosition(0)
                     }
                 }
             }
     }
 
-    private val rvLayoutManager: RecyclerView.LayoutManager
-        get() = if (resources.getBoolean(R.bool.isTablet)) {
-            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            else
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        } else {
-            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            else
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = viewModelOf(vmFactory)
 
-        bookState = arguments?.getSerializable(ARG_STATE) as BookState
         viewModel.state = bookState
 
         registerBookUpdatedBroadcastReceiver()
@@ -156,12 +144,12 @@ class MainBookFragment : BaseFragment(),
 
     override fun onResume() {
         super.onResume()
-        fragment_book_main_rv.suppressLayout(false)
+        rv_main_book_fragment.suppressLayout(false)
     }
 
     override fun onPause() {
         super.onPause()
-        fragment_book_main_rv.suppressLayout(true)
+        rv_main_book_fragment.suppressLayout(true)
     }
 
     override fun onDestroy() {
@@ -181,16 +169,20 @@ class MainBookFragment : BaseFragment(),
 
         when (state) {
             is BookListViewModel.BookLoadingState.Success -> {
-                updateEmptyView(hide = true, animate = false)
+                tv_main_book_fragment_empty.setVisible(false)
+                rv_main_book_fragment.setVisible(true)
+
                 bookAdapter.updateData(state.books)
             }
 
             is BookListViewModel.BookLoadingState.Empty -> {
-                updateEmptyView(hide = false, animate = true)
+                tv_main_book_fragment_empty.setVisible(true)
+                rv_main_book_fragment.setVisible(false)
             }
 
             is BookListViewModel.BookLoadingState.Error -> {
                 showSnackbar(getString(R.string.load_error), showLong = true)
+                rv_main_book_fragment.setVisible(false)
             }
         }
     }
@@ -224,7 +216,7 @@ class MainBookFragment : BaseFragment(),
 
     override fun setupViews() {
 
-        fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
+        tv_main_book_fragment_empty.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         bookAdapter = BookAdapter(
             requireContext(),
@@ -232,41 +224,47 @@ class MainBookFragment : BaseFragment(),
             onOverflowActionClickedListener = onBookOverflowClickedListener,
             onItemClickListener = this,
             onItemMoveListener = this,
+            wishlistExplanationDismissListener = dismissWishlistExplanation,
             onLabelClickedListener = onLabelClickedListener,
             randomPickCallback = randomPickCallback
         )
 
-        fragment_book_main_rv.apply {
-            layoutManager = rvLayoutManager
+        rv_main_book_fragment.apply {
+            layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
             adapter = bookAdapter
         }
 
         val itemTouchHelper = ItemTouchHelper(
-            BaseItemTouchHelper(bookAdapter,
-                false,
-                BaseItemTouchHelper.DragAccess.VERTICAL)
+            BaseItemTouchHelper(
+                bookAdapter,
+                allowSwipeToDismiss = false,
+                BaseItemTouchHelper.DragAccess.VERTICAL
+            )
         )
-        itemTouchHelper.attachToRecyclerView(fragment_book_main_rv)
+        itemTouchHelper.attachToRecyclerView(rv_main_book_fragment)
     }
 
-    override fun onItemClick(content: BookAdapterEntity, position: Int, v: View) {
-
+    override fun onItemClick(content: BookAdapterItem, position: Int, v: View) {
         when (content) {
-            is BookAdapterEntity.Book -> {
-                ActivityNavigator.navigateTo(
-                    context,
-                    Destination.BookDetail(BookDetailInfo(content.id, content.title)),
-                    getTransitionBundle(v)
-                )
-            }
-            BookAdapterEntity.RandomPick -> Unit // Do nothing
+            is BookAdapterItem.Book -> handleBookClick(content, v)
+            BookAdapterItem.RandomPick -> Unit // Do nothing
         }
     }
 
-    override fun onItemDismissed(t: BookAdapterEntity, position: Int) = Unit
+    private fun handleBookClick(content: BookAdapterItem.Book, v: View) {
+        if (allowItemClick) {
+            ActivityNavigator.navigateTo(
+                context,
+                Destination.BookDetail(BookDetailInfo(content.id, content.title)),
+                getTransitionBundle(v)
+            )
+        }
+    }
+
+    override fun onItemDismissed(t: BookAdapterItem, position: Int) = Unit
 
     // Do nothing, only react to move actions in the on item move finished method
-    override fun onItemMove(t: BookAdapterEntity, from: Int, to: Int) = Unit
+    override fun onItemMove(t: BookAdapterItem, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() = viewModel.updateBookPositions(bookAdapter.data)
 
@@ -333,30 +331,14 @@ class MainBookFragment : BaseFragment(),
             .toBundle()
     }
 
-    private fun updateEmptyView(hide: Boolean, animate: Boolean) {
-
-        val alpha = if (hide) 0f else 1f
-        if (animate) {
-            fragment_book_main_empty_view.animate()
-                .alpha(alpha)
-                .setDuration(450)
-                .start()
-        } else {
-            fragment_book_main_empty_view.alpha = (alpha)
-        }
-    }
-
-    private fun BookEntity.toAdapterEntity(): BookAdapterEntity = BookAdapterEntity.Book(this)
+    private fun BookEntity.toAdapterEntity(): BookAdapterItem = BookAdapterItem.Book(this)
 
     companion object {
 
-        private const val ARG_STATE = "arg_state"
-
-        fun newInstance(state: BookState): MainBookFragment {
+        fun newInstance(state: BookState, allowItemClick: Boolean = true): MainBookFragment {
             return MainBookFragment().apply {
-                this.arguments = Bundle().apply {
-                    putSerializable(ARG_STATE, state)
-                }
+                this.allowItemClick = allowItemClick
+                this.bookState = state
             }
         }
     }

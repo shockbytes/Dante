@@ -46,6 +46,14 @@
     <methods>;
 }
 
+# Suggestions feature
+-keep class at.shockbytes.dante.suggestions.** {*;}
+-keepclassmembers class at.shockbytes.dante.suggestion.* {
+    <fields>;
+    <init>();
+    <methods>;
+}
+
 -keepclassmembers class * extends java.lang.Enum {
     <fields>;
     public static **[] values();

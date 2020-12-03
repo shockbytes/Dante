@@ -33,7 +33,7 @@ open class RealmBook @JvmOverloads constructor(
 ) : RealmObject(), Gsonify {
 
     enum class State {
-        READ_LATER, READING, READ
+        READ_LATER, READING, READ, WISHLIST
     }
 
     private var ordinalState: Int = 0

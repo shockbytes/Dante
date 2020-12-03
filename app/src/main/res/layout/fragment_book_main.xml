@@ -6,25 +6,25 @@
     tools:context=".ui.fragment.MainBookFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_book_main_rv"
+        android:id="@+id/rv_main_book_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="@dimen/main_padding"
         android:scrollbars="vertical" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/fragment_book_main_empty_view"
+        android:id="@+id/tv_main_book_fragment_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:alpha="0"
         android:drawableTop="@drawable/ic_empty_indicator"
         android:drawablePadding="16dp"
         android:gravity="center"
-        android:padding="8dp"
+        android:padding="16dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </FrameLayout>
 

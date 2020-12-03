@@ -145,6 +145,10 @@ inline fun <reified T : ViewModel> Fragment.viewModelOf(factory: ViewModelProvid
     return ViewModelProvider(this.viewModelStore, factory)[T::class.java]
 }
 
+inline fun <reified T : ViewModel> Fragment.lazyViewModelOf(factory: ViewModelProvider.Factory): Lazy<T> {
+    return lazyOf(ViewModelProvider(this.viewModelStore, factory)[T::class.java])
+}
+
 inline fun <reified T : ViewModel> Fragment.viewModelOfActivity(activity: FragmentActivity, factory: ViewModelProvider.Factory): T {
     return ViewModelProvider(activity.viewModelStore, factory)[T::class.java]
 }

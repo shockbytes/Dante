@@ -11,6 +11,7 @@ import at.shockbytes.dante.suggestions.Suggestions
 import at.shockbytes.dante.suggestions.SuggestionsRepository
 import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class SuggestionsViewModel @Inject constructor(
     private val suggestionsRepository: SuggestionsRepository,
     private val bookRepository: BookRepository,
-    private val tracker: Tracker
+    private val tracker: Tracker,
+    private val explanations: Explanations
 ) : BaseViewModel() {
 
     sealed class SuggestionsState {
@@ -52,9 +54,18 @@ class SuggestionsViewModel @Inject constructor(
     }
 
     private fun buildSuggestionsAdapterItems(suggestions: Suggestions): List<SuggestionsAdapterItem> {
-        return suggestions.suggestions
+
+        val explanation = explanations.suggestion()
+
+        val suggestedItems = suggestions.suggestions
             .sortedBy { it.suggestionId }
             .map(SuggestionsAdapterItem::SuggestedBook)
+
+        return if (explanation.show) {
+            listOf(SuggestionsAdapterItem.Explanation(explanation.userWantsToSuggest)) + suggestedItems
+        } else {
+            suggestedItems
+        }
     }
 
     fun addSuggestionToWishlist(suggestion: Suggestion) {

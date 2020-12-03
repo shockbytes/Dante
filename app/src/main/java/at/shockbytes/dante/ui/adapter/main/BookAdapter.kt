@@ -20,6 +20,7 @@ class BookAdapter(
     private val onOverflowActionClickedListener: (BookEntity) -> Unit,
     private val onLabelClickedListener: ((BookLabel) -> Unit)? = null,
     private val randomPickCallback: RandomPickCallback? = null,
+    private val wishlistExplanationDismissListener: (() -> Unit)? = null,
     onItemClickListener: OnItemClickListener<BookAdapterItem>,
     onItemMoveListener: OnItemMoveListener<BookAdapterItem>
 ) : BaseAdapter<BookAdapterItem>(
@@ -59,7 +60,7 @@ class BookAdapter(
                 )
             }
             BookAdapterItem.VIEW_TYPE_EXPLANATION_WISHLIST -> {
-                WishlistExplanationViewHolder.forParent(parent)
+                WishlistExplanationViewHolder.forParent(parent, wishlistExplanationDismissListener)
             }
             else -> throw IllegalStateException("Unknown view type $viewType")
         }

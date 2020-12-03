@@ -20,11 +20,11 @@ sealed class SuggestionsAdapterItem {
     data class Explanation(
         val wantsToSuggest: Boolean,
         override val id: String = EXPLANATION_ID,
-        override val viewType: Int = R.layout.item_suggestion_explanation
+        override val viewType: Int = R.layout.item_generic_explanation
     ) : SuggestionsAdapterItem()
 
     companion object {
 
-        const val EXPLANATION_ID = "-1"
+        private const val EXPLANATION_ID = "-1"
     }
 }

@@ -1,6 +1,5 @@
 package at.shockbytes.dante.util.explanations
 
-
 interface Explanations {
 
     fun suggestion(): Explanation.Suggestion

@@ -5,14 +5,15 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
-import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
+import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.sort.SortStrategy
-import at.shockbytes.dante.util.toAdapterEntities
+import at.shockbytes.dante.util.toAdapterItems
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
@@ -30,7 +31,8 @@ class BookListViewModel @Inject constructor(
     private val settings: DanteSettings,
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings,
-    private val tracker: Tracker
+    private val tracker: Tracker,
+    private val explanations: Explanations
 ) : BaseViewModel() {
 
     var state: BookState = BookState.READING
@@ -41,7 +43,7 @@ class BookListViewModel @Inject constructor(
 
     sealed class BookLoadingState {
 
-        data class Success(val books: List<BookAdapterEntity>) : BookLoadingState()
+        data class Success(val books: List<BookAdapterItem>) : BookLoadingState()
 
         data class Error(val throwable: Throwable) : BookLoadingState()
 
@@ -105,18 +107,22 @@ class BookListViewModel @Inject constructor(
 
     private fun mapBooksToBookLoadingState(books: List<BookEntity>): BookLoadingState {
         return if (books.isNotEmpty()) {
-
-            val bookAdapterEntities = if (shouldShowRandomPickInteraction(books.size)) {
-                books.toAdapterEntities().toMutableList().apply {
-                    add(0, BookAdapterEntity.RandomPick)
-                }
-            } else {
-                books.toAdapterEntities()
-            }
-
-            BookLoadingState.Success(bookAdapterEntities)
+            val bookAdapterItems = lookupForHeaderItem(books) + books.toAdapterItems()
+            BookLoadingState.Success(bookAdapterItems)
         } else {
             BookLoadingState.Empty
+        }
+    }
+
+    private fun lookupForHeaderItem(books: List<BookEntity>): List<BookAdapterItem> {
+        return when {
+            (state == BookState.READ_LATER && shouldShowRandomPickInteraction(books.size)) -> {
+                listOf(BookAdapterItem.RandomPick)
+            }
+            (state == BookState.WISHLIST && explanations.wishlist().show) -> {
+                listOf(BookAdapterItem.WishlistExplanation)
+            }
+            else -> listOf()
         }
     }
 
@@ -137,9 +143,9 @@ class BookListViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun updateBookPositions(data: MutableList<BookAdapterEntity>) {
+    fun updateBookPositions(data: MutableList<BookAdapterItem>) {
         data.forEachIndexed { index, entity ->
-            if (entity is BookAdapterEntity.Book) {
+            if (entity is BookAdapterItem.Book) {
                 entity.bookEntity.position = index
                 updateBook(entity.bookEntity)
             }
@@ -187,12 +193,12 @@ class BookListViewModel @Inject constructor(
                 (state as? BookLoadingState.Success)?.books
             }
             ?.also { adapterEntities ->
-                val books = adapterEntities.filterIsInstance<BookAdapterEntity.Book>().count()
+                val books = adapterEntities.filterIsInstance<BookAdapterItem.Book>().count()
                 tracker.track(DanteTrackingEvent.PickRandomBook(books))
             }
             ?.let { books ->
                 val randomPick = books
-                    .filterIsInstance<BookAdapterEntity.Book>()
+                    .filterIsInstance<BookAdapterItem.Book>()
                     .random()
                     .bookEntity
                 RandomPickEvent.RandomPick(randomPick)

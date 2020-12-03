@@ -24,7 +24,7 @@ import at.shockbytes.dante.ui.adapter.main.BookAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.ui.activity.ManualAddActivity.Companion.EXTRA_UPDATED_BOOK_STATE
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
-import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
+import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import at.shockbytes.dante.ui.adapter.main.RandomPickCallback
 import at.shockbytes.dante.ui.fragment.BookDetailFragment.Companion.ACTION_BOOK_CHANGED
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
@@ -46,8 +46,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainBookFragment : BaseFragment(),
-    BaseAdapter.OnItemClickListener<BookAdapterEntity>,
-    BaseAdapter.OnItemMoveListener<BookAdapterEntity>,
+    BaseAdapter.OnItemClickListener<BookAdapterItem>,
+    BaseAdapter.OnItemMoveListener<BookAdapterItem>,
     OnBookActionClickedListener {
 
     override val layoutId = R.layout.fragment_book_main
@@ -78,7 +78,7 @@ class MainBookFragment : BaseFragment(),
         override fun onDismiss() {
             showToast(R.string.random_pick_restore_instruction)
             viewModel.onDismissRandomBookPicker()
-            bookAdapter.deleteEntity(BookAdapterEntity.RandomPick)
+            bookAdapter.deleteEntity(BookAdapterItem.RandomPick)
         }
 
         override fun onRandomPickClicked() {
@@ -238,14 +238,14 @@ class MainBookFragment : BaseFragment(),
         itemTouchHelper.attachToRecyclerView(rv_main_book_fragment)
     }
 
-    override fun onItemClick(content: BookAdapterEntity, position: Int, v: View) {
+    override fun onItemClick(content: BookAdapterItem, position: Int, v: View) {
         when (content) {
-            is BookAdapterEntity.Book -> handleBookClick(content, v)
-            BookAdapterEntity.RandomPick -> Unit // Do nothing
+            is BookAdapterItem.Book -> handleBookClick(content, v)
+            BookAdapterItem.RandomPick -> Unit // Do nothing
         }
     }
 
-    private fun handleBookClick(content: BookAdapterEntity.Book, v: View) {
+    private fun handleBookClick(content: BookAdapterItem.Book, v: View) {
         if (allowItemClick) {
             ActivityNavigator.navigateTo(
                 context,
@@ -255,10 +255,10 @@ class MainBookFragment : BaseFragment(),
         }
     }
 
-    override fun onItemDismissed(t: BookAdapterEntity, position: Int) = Unit
+    override fun onItemDismissed(t: BookAdapterItem, position: Int) = Unit
 
     // Do nothing, only react to move actions in the on item move finished method
-    override fun onItemMove(t: BookAdapterEntity, from: Int, to: Int) = Unit
+    override fun onItemMove(t: BookAdapterItem, from: Int, to: Int) = Unit
 
     override fun onItemMoveFinished() = viewModel.updateBookPositions(bookAdapter.data)
 
@@ -325,7 +325,7 @@ class MainBookFragment : BaseFragment(),
             .toBundle()
     }
 
-    private fun BookEntity.toAdapterEntity(): BookAdapterEntity = BookAdapterEntity.Book(this)
+    private fun BookEntity.toAdapterEntity(): BookAdapterItem = BookAdapterItem.Book(this)
 
     companion object {
 

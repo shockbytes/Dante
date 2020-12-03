@@ -2,15 +2,14 @@ package at.shockbytes.dante.ui.adapter.main
 
 import androidx.recyclerview.widget.DiffUtil
 import at.shockbytes.dante.core.isContentSame
-import at.shockbytes.dante.ui.adapter.main.BookAdapterEntity
 
 /**
  * Author:  Martin Macheiner
  * Date:    12.06.2018
  */
 class BookDiffUtilCallback(
-    private val oldList: List<BookAdapterEntity>,
-    private val newList: List<BookAdapterEntity>
+    private val oldList: List<BookAdapterItem>,
+    private val newList: List<BookAdapterItem>
 ) : DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -28,10 +27,14 @@ class BookDiffUtilCallback(
 
         return when {
 
-            oldItem is BookAdapterEntity.Book && newItem is BookAdapterEntity.Book -> {
+            oldItem is BookAdapterItem.Book && newItem is BookAdapterItem.Book -> {
                 oldItem.bookEntity.isContentSame(newItem.bookEntity)
             }
-            oldItem is BookAdapterEntity.RandomPick && newItem is BookAdapterEntity.RandomPick -> {
+            oldItem is BookAdapterItem.RandomPick && newItem is BookAdapterItem.RandomPick -> {
+                // Both are objects, it's always true
+                true
+            }
+            oldItem is BookAdapterItem.WishlistExplanation && newItem is BookAdapterItem.WishlistExplanation -> {
                 // Both are objects, it's always true
                 true
             }

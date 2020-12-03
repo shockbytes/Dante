@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.item_random_pick.*
 class RandomPickViewHolder(
     override val containerView: View,
     private val callback: RandomPickCallback?
-) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
 
-    override fun bindToView(content: BookAdapterEntity, position: Int) {
+    override fun bindToView(content: BookAdapterItem, position: Int) {
 
         btn_item_random_pick.setOnClickListener {
             callback?.onRandomPickClicked()

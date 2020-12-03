@@ -20,9 +20,9 @@ class BookAdapter(
     private val onOverflowActionClickedListener: (BookEntity) -> Unit,
     private val onLabelClickedListener: ((BookLabel) -> Unit)? = null,
     private val randomPickCallback: RandomPickCallback? = null,
-    onItemClickListener: OnItemClickListener<BookAdapterEntity>,
-    onItemMoveListener: OnItemMoveListener<BookAdapterEntity>
-) : BaseAdapter<BookAdapterEntity>(
+    onItemClickListener: OnItemClickListener<BookAdapterItem>,
+    onItemMoveListener: OnItemMoveListener<BookAdapterItem>
+) : BaseAdapter<BookAdapterItem>(
     context,
     onItemClickListener = onItemClickListener,
     onItemMoveListener = onItemMoveListener
@@ -40,11 +40,11 @@ class BookAdapter(
         return data[position].viewType
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BookAdapterEntity> {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BookAdapterItem> {
 
         return when (viewType) {
 
-            BookAdapterEntity.VIEW_TYPE_BOOK -> {
+            BookAdapterItem.VIEW_TYPE_BOOK -> {
                 BookViewHolder.forParent(
                     parent,
                     imageLoader,
@@ -52,11 +52,14 @@ class BookAdapter(
                     onLabelClickedListener
                 )
             }
-            BookAdapterEntity.VIEW_TYPE_RANDOM_PICK -> {
+            BookAdapterItem.VIEW_TYPE_RANDOM_PICK -> {
                 RandomPickViewHolder.forParent(
                     parent,
                     randomPickCallback
                 )
+            }
+            BookAdapterItem.VIEW_TYPE_EXPLANATION_WISHLIST -> {
+                WishlistExplanationViewHolder.forParent(parent)
             }
             else -> throw IllegalStateException("Unknown view type $viewType")
         }
@@ -89,7 +92,7 @@ class BookAdapter(
         onItemMoveListener?.onItemMoveFinished()
     }
 
-    fun updateData(books: List<BookAdapterEntity>) {
+    fun updateData(books: List<BookAdapterItem>) {
         val diffResult = DiffUtil.calculateDiff(BookDiffUtilCallback(data, books))
 
         data.clear()

@@ -24,12 +24,12 @@ class BookViewHolder(
     private val imageLoader: ImageLoader,
     private val onOverflowActionClickedListener: ((BookEntity) -> Unit)?,
     private val onLabelClickedListener: ((BookLabel) -> Unit)?
-) : BaseAdapter.ViewHolder<BookAdapterEntity>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
 
     private fun context(): Context = containerView.context
 
-    override fun bindToView(content: BookAdapterEntity, position: Int) {
-        with(content as BookAdapterEntity.Book) {
+    override fun bindToView(content: BookAdapterItem, position: Int) {
+        with(content as BookAdapterItem.Book) {
             updateTexts(bookEntity)
             updateImageThumbnail(bookEntity.thumbnailAddress)
             updateProgress(bookEntity)

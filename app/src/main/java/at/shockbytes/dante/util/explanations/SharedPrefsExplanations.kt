@@ -26,6 +26,6 @@ class SharedPrefsExplanations(
     }
 
     override fun markSeen(explanation: Explanation) {
-        sharedPreferences.edit().putBoolean(explanation::class.java.simpleName, true).apply()
+        sharedPreferences.edit().putBoolean(explanation::class.java.simpleName, false).apply()
     }
 }

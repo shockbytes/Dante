@@ -74,6 +74,11 @@ class MainBookFragment : BaseFragment(),
             .show(childFragmentManager, "book-action-bottom-sheet")
     }
 
+    private val dismissWishlistExplanation: () -> Unit = {
+        viewModel.dismissWishlistExplanation()
+        bookAdapter.deleteEntity(BookAdapterItem.WishlistExplanation)
+    }
+
     private val randomPickCallback = object : RandomPickCallback {
         override fun onDismiss() {
             showToast(R.string.random_pick_restore_instruction)
@@ -219,6 +224,7 @@ class MainBookFragment : BaseFragment(),
             onOverflowActionClickedListener = onBookOverflowClickedListener,
             onItemClickListener = this,
             onItemMoveListener = this,
+            wishlistExplanationDismissListener = dismissWishlistExplanation,
             onLabelClickedListener = onLabelClickedListener,
             randomPickCallback = randomPickCallback
         )

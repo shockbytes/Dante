@@ -326,6 +326,7 @@
     <string name="go_to_screen">Screen öffnen</string>
     <string name="suggestions_title">Vorschläge</string>
     <string name="wishlist_title">Meine Wunschliste</string>
+    <string name="wishlist_explanation">Lege alle Bücher hier ab, die du noch nicht hast, aber in Zukunft lesen willst.\n\nKleiner Tipp: Teile diese Liste gelegentlich mit deinem Partner.</string>
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
     <string name="wishlist_empty">Deine Wunschliste ist leer. Gut! Sieht so aus als hättest du all deine Bücher bereits!</string>
     <string name="wishlist">Wunschliste</string>

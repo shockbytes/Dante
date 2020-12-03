@@ -21,9 +21,9 @@ class WishlistExplanationViewHolder(
             dismissListener?.invoke()
         }
 
-        tv_item_generic_explanation.text = "Describe Wishlist"
+        tv_item_generic_explanation.setText(R.string.wishlist_explanation)
 
-        btn_item_generic_explanation.setVisible(false, invisibilityState = View.INVISIBLE)
+        btn_item_generic_explanation.setVisible(false)
 
         iv_item_generic_explanation_decoration_start.setImageResource(R.drawable.ic_wishlist)
         iv_item_generic_explanation_decoration_end.setImageResource(R.drawable.ic_wishlist)

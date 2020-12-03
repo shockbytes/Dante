@@ -7,7 +7,9 @@ import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.suggestions.BookSuggestionEntity
 import at.shockbytes.dante.suggestions.Suggestion
+import at.shockbytes.dante.suggestions.Suggestions
 import at.shockbytes.dante.suggestions.SuggestionsRepository
+import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.tracking.Tracker
@@ -25,7 +27,7 @@ class SuggestionsViewModel @Inject constructor(
 
     sealed class SuggestionsState {
 
-        data class Present(val suggestions: List<Suggestion>) : SuggestionsState()
+        data class Present(val suggestions: List<SuggestionsAdapterItem>) : SuggestionsState()
 
         object Empty : SuggestionsState()
     }
@@ -42,11 +44,17 @@ class SuggestionsViewModel @Inject constructor(
                 if (suggestions.suggestions.isEmpty()) {
                     SuggestionsState.Empty
                 } else {
-                    SuggestionsState.Present(suggestions.suggestions.sortedBy { it.suggestionId })
+                    SuggestionsState.Present(buildSuggestionsAdapterItems(suggestions))
                 }
             }
             .subscribe(suggestionState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    private fun buildSuggestionsAdapterItems(suggestions: Suggestions): List<SuggestionsAdapterItem> {
+        return suggestions.suggestions
+            .sortedBy { it.suggestionId }
+            .map(SuggestionsAdapterItem::SuggestedBook)
     }
 
     fun addSuggestionToWishlist(suggestion: Suggestion) {

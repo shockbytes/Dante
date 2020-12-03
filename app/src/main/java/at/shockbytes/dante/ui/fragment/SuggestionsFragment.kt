@@ -7,7 +7,8 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.suggestions.Suggestion
 import at.shockbytes.dante.ui.adapter.OnSuggestionActionClickedListener
-import at.shockbytes.dante.ui.adapter.SuggestionsAdapter
+import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapter
+import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapterItem
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
 import at.shockbytes.dante.util.SharedViewComponents
 import at.shockbytes.dante.util.addTo
@@ -85,7 +86,7 @@ class SuggestionsFragment : BaseFragment() {
         tv_suggestions_empty.setVisible(true)
     }
 
-    private fun handleSuggestions(suggestions: List<Suggestion>) {
+    private fun handleSuggestions(suggestions: List<SuggestionsAdapterItem>) {
         rv_suggestions.setVisible(true)
         tv_suggestions_empty.setVisible(false)
 

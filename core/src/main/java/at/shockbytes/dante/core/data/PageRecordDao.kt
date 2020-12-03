@@ -12,7 +12,7 @@ interface PageRecordDao {
         fromPage: Int,
         toPage: Int,
         nowInMillis: Long
-    )
+    ): Completable
 
     fun updatePageRecord(pageRecord: PageRecord, fromPage: Int?, toPage: Int?): Completable
 

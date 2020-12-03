@@ -304,11 +304,13 @@ class BookDetailFragment : BaseFragment(),
     }
 
     override fun onDestroy() {
-        viewModel.onFragmentDestroyed()
         LocalBroadcastManager.getInstance(requireContext()).apply {
             unregisterReceiver(notesReceiver)
             unregisterReceiver(bookUpdatedReceiver)
         }
+
+        viewModel.onFragmentDestroyed()
+
         super.onDestroy()
     }
 

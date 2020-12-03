@@ -42,7 +42,8 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_for_later"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/AppTheme.Appearance.StateButton"
+            android:textAllCaps="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
@@ -53,7 +54,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_reading"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/AppTheme.Appearance.StateButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="2dp"
@@ -65,7 +66,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_barcode_result_read"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/AppTheme.Appearance.StateButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
@@ -178,7 +179,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_barcode_result_wishlist"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/AppTheme.Appearance.StateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/wishlist"
@@ -190,7 +191,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_barcode_result_not_my_book"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        style="@style/AppTheme.Appearance.StateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

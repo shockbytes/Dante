@@ -333,7 +333,7 @@ class MainBookFragment : BaseFragment(),
                 .setDuration(450)
                 .start()
         } else {
-            fragment_book_main_empty_view.alpha = (alpha)
+            fragment_book_main_empty_view.alpha = alpha
         }
     }
 

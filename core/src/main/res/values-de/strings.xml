@@ -8,13 +8,13 @@
     <string name="help">Hilfe</string>
     <string name="menu_main_stats">Statistiken</string>
     <string name="label_settings">Einstellungen</string>
-    <string name="label_stats">Deine Statistiken</string>
-    <string name="label_timeline">Deine Timeline</string>
+    <string name="label_stats">Meine Statistiken</string>
+    <string name="label_timeline">Meine Timeline</string>
     <string name="prefs_app_version_title">App Version</string>
     <string name="prefs_category_about">Über</string>
     <string name="prefs_developer_title">Entwickler</string>
 
-    <string name="permission_camera_rationale">Die App benötigt den Zugang zu deiner Kamera, um die Barcodes deiner Bücher zu scannen.</string>
+    <string name="permission_camera_rationale">Wir benötigen den Zugriff zu deiner Kamera, um die ISBN codes deiner Bücher zu scannen.</string>
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>
     <string name="label_capture">Buch scannen</string>
@@ -63,7 +63,7 @@
     <string name="dialogfragment_paging_current_page">Aktuelle Seite</string>
     <string name="dialogfragment_paging_pages">Buchseiten</string>
     <string name="save">Speichern</string>
-    <string name="dialogfragment_notes_hint">Deine Gedanken gehören hier her&#8230;</string>
+    <string name="dialogfragment_notes_hint">Meine Gedanken gehören hier her&#8230;</string>
     <string name="dialogfragment_notes_header">Schreibe deine Gedanken, Gefühle oder einfach nur Bemerkungen über %s nieder.</string>
     <string name="dialogfragment_paging_error">Ungültige Eingabe! Die Seitenanzahl kann nicht kleiner als die aktuelle Seite sein, oder die Eingabe ist leer!</string>
     <string name="my_notes">Meine Notizen</string>
@@ -199,7 +199,7 @@
     <string name="nope">Nope</string>
     <string name="book_added_to_library">%s wurde hinzugefügt</string>
     <string name="scan_another_book">Willst du noch ein weiteres Buch scannen?</string>
-    <string name="dante_install">Installation von Dante</string>
+    <string name="dante_install">Die gemeinsame Reise beginnt</string>
     <string name="timeline_sort_explanation">Die Timeline ordnet deine gelesenen Bücher chronologisch an. Du kannst entscheiden, wie die Timeline sortiert werden soll.</string>
     <string name="label_my_notes">Meine Notizen</string>
     <string name="statistics_first_five_star_book">Erstes 5-Sterne Buch</string>
@@ -325,7 +325,7 @@
     <string name="open">Öffnen</string>
     <string name="go_to_screen">Screen öffnen</string>
     <string name="suggestions_title">Vorschläge</string>
-    <string name="wishlist_title">Deine Wunschliste</string>
+    <string name="wishlist_title">Meine Wunschliste</string>
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
     <string name="wishlist_empty">Deine Wunschliste ist leer. Gut! Sieht so aus als hättest du all deine Bücher bereits!</string>
     <string name="wishlist">Wunschliste</string>

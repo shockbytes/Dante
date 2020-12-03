@@ -107,7 +107,7 @@ class MainBookFragment : BaseFragment(),
             ?.let { createdBookState ->
                 if (viewModel.state == createdBookState) {
                     runDelayed(500) {
-                        fragment_book_main_rv.smoothScrollToPosition(0)
+                        rv_main_book_fragment.smoothScrollToPosition(0)
                     }
                 }
             }
@@ -139,12 +139,12 @@ class MainBookFragment : BaseFragment(),
 
     override fun onResume() {
         super.onResume()
-        fragment_book_main_rv.suppressLayout(false)
+        rv_main_book_fragment.suppressLayout(false)
     }
 
     override fun onPause() {
         super.onPause()
-        fragment_book_main_rv.suppressLayout(true)
+        rv_main_book_fragment.suppressLayout(true)
     }
 
     override fun onDestroy() {
@@ -164,19 +164,20 @@ class MainBookFragment : BaseFragment(),
 
         when (state) {
             is BookListViewModel.BookLoadingState.Success -> {
-                updateEmptyView(hide = true, animate = false)
-                fragment_book_main_rv.setVisible(true)
+                tv_main_book_fragment_empty.setVisible(false)
+                rv_main_book_fragment.setVisible(true)
+
                 bookAdapter.updateData(state.books)
             }
 
             is BookListViewModel.BookLoadingState.Empty -> {
-                updateEmptyView(hide = false, animate = true)
-                fragment_book_main_rv.setVisible(false)
+                tv_main_book_fragment_empty.setVisible(true)
+                rv_main_book_fragment.setVisible(false)
             }
 
             is BookListViewModel.BookLoadingState.Error -> {
                 showSnackbar(getString(R.string.load_error), showLong = true)
-                fragment_book_main_rv.setVisible(false)
+                rv_main_book_fragment.setVisible(false)
             }
         }
     }
@@ -210,7 +211,7 @@ class MainBookFragment : BaseFragment(),
 
     override fun setupViews() {
 
-        fragment_book_main_empty_view.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
+        tv_main_book_fragment_empty.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         bookAdapter = BookAdapter(
             requireContext(),
@@ -222,7 +223,7 @@ class MainBookFragment : BaseFragment(),
             randomPickCallback = randomPickCallback
         )
 
-        fragment_book_main_rv.apply {
+        rv_main_book_fragment.apply {
             layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
             adapter = bookAdapter
         }
@@ -234,7 +235,7 @@ class MainBookFragment : BaseFragment(),
                 BaseItemTouchHelper.DragAccess.VERTICAL
             )
         )
-        itemTouchHelper.attachToRecyclerView(fragment_book_main_rv)
+        itemTouchHelper.attachToRecyclerView(rv_main_book_fragment)
     }
 
     override fun onItemClick(content: BookAdapterEntity, position: Int, v: View) {
@@ -322,19 +323,6 @@ class MainBookFragment : BaseFragment(),
                 )
             )
             .toBundle()
-    }
-
-    private fun updateEmptyView(hide: Boolean, animate: Boolean) {
-
-        val alpha = if (hide) 0f else 1f
-        if (animate) {
-            fragment_book_main_empty_view.animate()
-                .alpha(alpha)
-                .setDuration(450)
-                .start()
-        } else {
-            fragment_book_main_empty_view.alpha = alpha
-        }
     }
 
     private fun BookEntity.toAdapterEntity(): BookAdapterEntity = BookAdapterEntity.Book(this)

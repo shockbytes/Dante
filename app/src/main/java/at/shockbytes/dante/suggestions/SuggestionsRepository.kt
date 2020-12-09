@@ -10,5 +10,5 @@ interface SuggestionsRepository {
 
     fun reportSuggestion(suggestionId: String): Completable
 
-    fun suggestBook(bookEntity: BookEntity): Completable
+    fun suggestBook(bookEntity: BookEntity, recommendation: String): Completable
 }

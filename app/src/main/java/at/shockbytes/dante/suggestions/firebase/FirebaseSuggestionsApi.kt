@@ -1,6 +1,6 @@
 package at.shockbytes.dante.suggestions.firebase
 
-import at.shockbytes.dante.suggestions.Suggestion
+import at.shockbytes.dante.suggestions.SuggestionRequest
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Body
@@ -12,21 +12,23 @@ import retrofit2.http.Query
 interface FirebaseSuggestionsApi {
 
     @GET("suggestions")
-    fun getSuggestions(): Single<FirebaseSuggestions>
+    fun getSuggestions(
+        @Header("Authorization") bearerToken: String
+    ): Single<FirebaseSuggestions>
 
     @POST("suggestions/{suggestionId}/report")
     fun reportSuggestion(
+        @Header("Authorization") bearerToken: String,
         @Query("suggestionId") suggestionId: String
     ): Completable
 
     @POST("suggestions")
     fun suggestBook(
         @Header("Authorization") bearerToken: String,
-        @Body suggestion: Suggestion
+        @Body suggestionRequest: SuggestionRequest
     ): Completable
 
     companion object {
-
-        const val BASE_URL = "https://us-central1-dante-166506.cloudfunctions.net/app"
+        const val BASE_URL = "https://us-central1-dante-166506.cloudfunctions.net/app/"
     }
 }

@@ -74,9 +74,10 @@ class AppModule(private val app: Application) {
 
     @Provides
     fun provideSuggestionsRepository(
-        firebaseSuggestionsApi: FirebaseSuggestionsApi
+        firebaseSuggestionsApi: FirebaseSuggestionsApi,
+        schedulerFacade: SchedulerFacade
     ): SuggestionsRepository {
-        return FirebaseSuggestionsRepository(firebaseSuggestionsApi)
+        return FirebaseSuggestionsRepository(firebaseSuggestionsApi, schedulerFacade)
     }
 
     @Provides

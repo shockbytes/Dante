@@ -1,6 +1,7 @@
 package at.shockbytes.dante.injection
 
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
+import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -20,5 +21,16 @@ class AppNetworkModule {
             .baseUrl(ShockbytesHerokuApi.SERVICE_ENDPOINT)
             .build()
             .create(ShockbytesHerokuApi::class.java)
+    }
+
+    @Provides
+    fun provideFirebaseSuggestionApi(): FirebaseSuggestionsApi {
+        return Retrofit.Builder()
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(OkHttpClient())
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(FirebaseSuggestionsApi.BASE_URL)
+            .build()
+            .create(FirebaseSuggestionsApi::class.java)
     }
 }

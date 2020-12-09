@@ -75,6 +75,7 @@ The backlog is currently empty.
     - [ ] Load suggestions from Firebase API
     - [ ] Flag books as inappropriate
     - [ ] Flag books as not interesting
+- [ ] Non-critical Bugfixes
 
 ## Changelog
 

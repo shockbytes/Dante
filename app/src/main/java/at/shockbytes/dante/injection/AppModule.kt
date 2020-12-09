@@ -6,8 +6,8 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
-import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
-import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.GoogleFirebaseSignInRepository
+import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
@@ -53,8 +53,8 @@ class AppModule(private val app: Application) {
     fun provideGoogleSignInManager(
         prefs: SharedPreferences,
         schedulers: SchedulerFacade
-    ): SignInManager {
-        return GoogleFirebaseSignInManager(prefs, app.applicationContext, schedulers)
+    ): SignInRepository {
+        return GoogleFirebaseSignInRepository(prefs, app.applicationContext, schedulers)
     }
 
     @Provides
@@ -75,9 +75,14 @@ class AppModule(private val app: Application) {
     @Provides
     fun provideSuggestionsRepository(
         firebaseSuggestionsApi: FirebaseSuggestionsApi,
-        schedulerFacade: SchedulerFacade
+        schedulerFacade: SchedulerFacade,
+        signInRepository: SignInRepository
     ): SuggestionsRepository {
-        return FirebaseSuggestionsRepository(firebaseSuggestionsApi, schedulerFacade)
+        return FirebaseSuggestionsRepository(
+            firebaseSuggestionsApi,
+            schedulerFacade,
+            signInRepository
+        )
     }
 
     @Provides

@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
-import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.signin.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
@@ -24,7 +24,7 @@ import javax.inject.Inject
  * Date:    10.06.2018
  */
 class MainViewModel @Inject constructor(
-    private val signInManager: SignInManager,
+    private val signInRepository: SignInRepository,
     private val announcementProvider: AnnouncementProvider,
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings
@@ -50,17 +50,17 @@ class MainViewModel @Inject constructor(
     }
 
     private fun initialize() {
-        signInManager.setup()
-        signInManager.observeSignInState()
+        signInRepository.setup()
+        signInRepository.observeSignInState()
             .map { userState ->
                 when {
                     userState is UserState.SignedInUser -> {
-                        UserEvent.SuccessEvent(userState.user, signInManager.showWelcomeScreen)
+                        UserEvent.SuccessEvent(userState.user, signInRepository.showWelcomeScreen)
                     }
-                    userState is UserState.AnonymousUser && !signInManager.maybeLater -> {
-                        UserEvent.LoginEvent(signInManager.signInIntent)
+                    userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
+                        UserEvent.LoginEvent(signInRepository.signInIntent)
                     }
-                    else -> UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen)
+                    else -> UserEvent.SuccessEvent(null, signInRepository.showWelcomeScreen)
                 }
             }
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
@@ -68,9 +68,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun signIn(data: Intent) {
-        signInManager.signIn(data)
+        signInRepository.signIn(data)
             .subscribe({ account ->
-                userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
+                userEvent.postValue(UserEvent.SuccessEvent(account, signInRepository.showWelcomeScreen))
             }, { throwable: Throwable ->
                 Timber.e(throwable)
                 userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
@@ -79,14 +79,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun loginLogout() {
-        signInManager.getAccount()
+        signInRepository.getAccount()
             .subscribeOn(schedulers.io)
             .doOnError {
-                userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+                userEvent.postValue(UserEvent.LoginEvent(signInRepository.signInIntent))
             }
             .flatMapCompletable { userState ->
                 when (userState) {
-                    is UserState.SignedInUser -> signInManager.signOut()
+                    is UserState.SignedInUser -> signInRepository.signOut()
                     UserState.AnonymousUser -> postSignInEvent()
                 }
             }
@@ -96,16 +96,16 @@ class MainViewModel @Inject constructor(
 
     private fun postSignInEvent(): Completable {
         return Completable.fromAction {
-            userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+            userEvent.postValue(UserEvent.LoginEvent(signInRepository.signInIntent))
         }
     }
 
     fun signInMaybeLater(maybeLater: Boolean) {
-        signInManager.maybeLater = maybeLater
+        signInRepository.maybeLater = maybeLater
     }
 
     fun disableShowWelcomeScreen() {
-        signInManager.showWelcomeScreen = false
+        signInRepository.showWelcomeScreen = false
         hideWelcomeScreenFlagFromPostedLiveData()
     }
 

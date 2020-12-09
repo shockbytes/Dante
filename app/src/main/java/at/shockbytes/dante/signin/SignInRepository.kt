@@ -9,7 +9,7 @@ import io.reactivex.Single
  * Author:  Martin Macheiner
  * Date:    08.06.2018
  */
-interface SignInManager {
+interface SignInRepository {
 
     companion object {
 

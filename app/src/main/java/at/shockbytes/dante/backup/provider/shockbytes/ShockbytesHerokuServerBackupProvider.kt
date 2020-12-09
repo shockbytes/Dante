@@ -8,7 +8,7 @@ import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
-import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.SignInRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
@@ -21,7 +21,7 @@ import timber.log.Timber
  * IMPORTANT: Work in progress... Do not put in production!
  */
 class ShockbytesHerokuServerBackupProvider(
-    private val signInManager: SignInManager,
+    private val signInRepository: SignInRepository,
     private val shockbytesHerokuApi: ShockbytesHerokuApi,
     private val inactiveBackupStorage: InactiveShockbytesBackupStorage
 ) : BackupProvider {
@@ -36,7 +36,7 @@ class ShockbytesHerokuServerBackupProvider(
     }
 
     override fun backup(backupContent: BackupContent): Completable {
-        return signInManager.getAuthorizationHeader()
+        return signInRepository.getAuthorizationHeader()
             .flatMapCompletable { token ->
                 shockbytesHerokuApi.makeBackup(token, backupContent)
                     .flatMapCompletable { entry ->
@@ -47,7 +47,7 @@ class ShockbytesHerokuServerBackupProvider(
     }
 
     override fun getBackupEntries(): Single<List<BackupMetadataState>> {
-        return signInManager.getAuthorizationHeader()
+        return signInRepository.getAuthorizationHeader()
             .flatMap { token ->
                 shockbytesHerokuApi.listBackups(token)
                     .map { entries ->
@@ -68,19 +68,19 @@ class ShockbytesHerokuServerBackupProvider(
     }
 
     override fun removeBackupEntry(entry: BackupMetadata): Completable {
-        return signInManager.getAuthorizationHeader()
+        return signInRepository.getAuthorizationHeader()
             .flatMapCompletable { token ->
                 shockbytesHerokuApi.removeBackupById(token, entry.id)
             }
     }
 
     override fun removeAllBackupEntries(): Completable {
-        return signInManager.getAuthorizationHeader()
+        return signInRepository.getAuthorizationHeader()
             .flatMapCompletable(shockbytesHerokuApi::removeAllBackups)
     }
 
     override fun mapBackupToBackupContent(entry: BackupMetadata): Single<BackupContent> {
-        return signInManager.getAuthorizationHeader()
+        return signInRepository.getAuthorizationHeader()
             .flatMap { token ->
                 shockbytesHerokuApi
                     .getBooksBackupById(token, entry.id)

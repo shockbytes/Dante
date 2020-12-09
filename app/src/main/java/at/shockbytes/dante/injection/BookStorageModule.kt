@@ -21,8 +21,8 @@ import at.shockbytes.dante.importer.DefaultImportRepository
 import at.shockbytes.dante.importer.GoodreadsCsvImportProvider
 import at.shockbytes.dante.importer.ImportProvider
 import at.shockbytes.dante.importer.ImportRepository
-import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
-import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.GoogleFirebaseSignInRepository
+import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.storage.DefaultExternalStorageInteractor
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.storage.reader.CsvReader
@@ -58,14 +58,14 @@ class BookStorageModule(private val app: Application) {
     }
 
     @Provides
-    fun provideDriveClient(signInManager: SignInManager): DriveClient {
-        return DriveRestClient(signInManager as GoogleFirebaseSignInManager)
+    fun provideDriveClient(signInRepository: SignInRepository): DriveClient {
+        return DriveRestClient(signInRepository as GoogleFirebaseSignInRepository)
     }
 
     @Provides
     fun provideBackupProvider(
         schedulerFacade: SchedulerFacade,
-        signInManager: SignInManager,
+        signInRepository: SignInRepository,
         shockbytesHerokuApi: ShockbytesHerokuApi,
         inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage,
         externalStorageInteractor: ExternalStorageInteractor,
@@ -79,7 +79,7 @@ class BookStorageModule(private val app: Application) {
                 driveClient
             ),
             ShockbytesHerokuServerBackupProvider(
-                signInManager,
+                signInRepository,
                 shockbytesHerokuApi,
                 inactiveShockbytesBackupStorage
             ),

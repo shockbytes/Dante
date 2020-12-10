@@ -300,6 +300,13 @@ class MainBookFragment : BaseFragment(),
         )
     }
 
+    override fun onSuggest(book: BookEntity) {
+        // TODO Show up cool UI for this
+        // TODO And check for language
+
+        viewModel.suggestBook(book, "That's a cool book!")
+    }
+
     override fun onMoveToUpcoming(book: BookEntity) {
         viewModel.moveBookToUpcomingList(book)
         bookAdapter.deleteEntity(book.toAdapterEntity())

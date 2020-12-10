@@ -1,6 +1,6 @@
 package at.shockbytes.dante.suggestions
 
 data class SuggestionRequest(
-    val bookSuggestionEntity: BookSuggestionEntity,
+    val suggestion: BookSuggestionEntity,
     val recommendation: String
 )

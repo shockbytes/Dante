@@ -35,11 +35,11 @@ class BookActionBottomSheetFragment : BaseBottomSheetFragment() {
 
     private fun hideSelectedStateItem(state: BookState) {
         when (state) {
-            BookState.READ_LATER -> btn_book_action_move_to_upcoming
-            BookState.READING -> btn_book_action_move_to_current
-            BookState.READ -> btn_book_action_move_to_done
-            BookState.WISHLIST -> btn_book_action_edit // Do not allow editing wishlist books
-        }.setVisible(false)
+            BookState.READ_LATER -> listOf(btn_book_action_move_to_upcoming)
+            BookState.READING -> listOf(btn_book_action_move_to_current)
+            BookState.READ -> listOf(btn_book_action_move_to_done)
+            BookState.WISHLIST -> listOf(btn_book_action_edit, btn_book_action_suggest)
+        }.forEach { it.setVisible(false) }
     }
 
     private fun setupClickListeners() {
@@ -61,6 +61,10 @@ class BookActionBottomSheetFragment : BaseBottomSheetFragment() {
         }
         btn_book_action_edit.setOnClickListener {
             listener.onEdit(book)
+            dismiss()
+        }
+        btn_book_action_suggest.setOnClickListener {
+            listener.onSuggest(book)
             dismiss()
         }
         btn_book_action_delete.setOnClickListener {

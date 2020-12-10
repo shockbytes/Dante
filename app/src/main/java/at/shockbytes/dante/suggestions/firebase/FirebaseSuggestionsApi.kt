@@ -1,6 +1,7 @@
 package at.shockbytes.dante.suggestions.firebase
 
 import at.shockbytes.dante.suggestions.SuggestionRequest
+import at.shockbytes.dante.suggestions.Suggestions
 import io.reactivex.Completable
 import io.reactivex.Single
 import retrofit2.http.Body
@@ -14,7 +15,7 @@ interface FirebaseSuggestionsApi {
     @GET("suggestions")
     fun getSuggestions(
         @Header("Authorization") bearerToken: String
-    ): Single<FirebaseSuggestions>
+    ): Single<Suggestions>
 
     @POST("suggestions/{suggestionId}/report")
     fun reportSuggestion(

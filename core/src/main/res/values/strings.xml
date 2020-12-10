@@ -48,6 +48,7 @@
     <string name="reading_goal_level_3">Book wizard</string>
 
     <string name="edit">Edit</string>
+    <string name="suggest">Suggest</string>
     <string name="menu_main_stats">Statistics</string>
     <string name="menu_main_timeline">Timeline</string>
     <string name="settings">Settings</string>

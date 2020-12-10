@@ -19,10 +19,6 @@ class FirebaseSuggestionsRepository(
     override fun loadSuggestions(): Single<Suggestions> {
         return signInRepository.getAuthorizationHeader()
             .flatMap(firebaseSuggestionsApi::getSuggestions)
-            .map { firebaseSuggestions ->
-                // TODO Map suggestions
-                Suggestions(listOf())
-            }
             .subscribeOn(schedulers.io)
     }
 

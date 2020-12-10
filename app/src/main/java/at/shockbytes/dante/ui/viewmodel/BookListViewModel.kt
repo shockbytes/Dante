@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.suggestions.SuggestionsRepository
 import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.settings.DanteSettings
@@ -32,7 +33,8 @@ class BookListViewModel @Inject constructor(
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings,
     private val tracker: Tracker,
-    private val explanations: Explanations
+    private val explanations: Explanations,
+    private val suggestionsRepository: SuggestionsRepository
 ) : BaseViewModel() {
 
     var state: BookState = BookState.READING
@@ -140,6 +142,16 @@ class BookListViewModel @Inject constructor(
         bookRepository.delete(book.id)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe()
+            .addTo(compositeDisposable)
+    }
+
+    fun suggestBook(book: BookEntity, recommendation: String) {
+        suggestionsRepository.suggestBook(book, recommendation)
+            .subscribe({
+                Timber.i("Successfully reported book")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
             .addTo(compositeDisposable)
     }
 

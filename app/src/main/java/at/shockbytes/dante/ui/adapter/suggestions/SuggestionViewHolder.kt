@@ -52,7 +52,7 @@ class SuggestionViewHolder(
     private fun setupSuggester(suggester: Suggester) {
         tv_item_suggestion_suggester.text = context().getString(R.string.suggestion_suggester, suggester.name)
         setThumbnailToView(
-            suggester.photoUrl,
+            suggester.picture,
             iv_item_suggestion_suggester,
             AppUtils.convertDpInPixel(24, context())
         )

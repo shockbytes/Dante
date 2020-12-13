@@ -75,6 +75,7 @@ The backlog is currently empty.
     - [ ] Cache books locally to minimize Firebase function calls
     - [ ] Explain caching
     - [ ] Let users log in from error dialog
+- [x] Allow clicks on wishlist books
 - [ ] Non-critical Bugfixes
 
 ## Changelog

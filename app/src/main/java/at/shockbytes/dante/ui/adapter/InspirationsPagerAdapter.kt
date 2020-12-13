@@ -26,7 +26,7 @@ class InspirationsPagerAdapter(
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> MainBookFragment.newInstance(BookState.WISHLIST, allowItemClick = false)
+            0 -> MainBookFragment.newInstance(BookState.WISHLIST)
             1 -> SuggestionsFragment.newInstance()
             else -> throw IllegalStateException("Position $position out of bounds of InspirationsPagerAdapter!")
         }

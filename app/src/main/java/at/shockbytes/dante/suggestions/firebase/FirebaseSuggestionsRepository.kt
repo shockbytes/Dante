@@ -24,7 +24,7 @@ class FirebaseSuggestionsRepository(
         return if (shouldUseRemoteData(accessTimestamp)) {
             loadRemoteSuggestions(scope)
         } else {
-            loadCachedSuggestions(scope)
+            loadCachedSuggestions()
         }
     }
 
@@ -49,8 +49,9 @@ class FirebaseSuggestionsRepository(
         }
     }
 
-    private fun loadCachedSuggestions(scope: CoroutineScope): Single<Suggestions> {
+    private fun loadCachedSuggestions(): Single<Suggestions> {
         return suggestionsCache.loadSuggestions()
+            .subscribeOn(schedulers.io)
     }
 
     override fun reportSuggestion(suggestionId: String): Completable {

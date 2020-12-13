@@ -363,6 +363,11 @@
     <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
     <string name="suggestions_explanation">Receive some suggestions from book lovers all over the world.</string>
 
+    <string name="book_report_confirmation_title">Report book</string>
+    <string name="book_report_confirmation_msg">Do you really want to report the suggestion %s?</string>
+    <string name="book_reported_success">You reported %s. Thanks for making Dante a better place.</string>
+    <string name="book_reported_error">There was a problem while reporting %s. Please try again later.</string>
+
     <string name="suggestion_error">We have to apologize. We were unable to load you some suggestions.</string>
     <string name="download_suggestions_other">One of those books?</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>

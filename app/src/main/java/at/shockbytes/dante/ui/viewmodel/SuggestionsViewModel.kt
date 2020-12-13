@@ -35,8 +35,20 @@ class SuggestionsViewModel @Inject constructor(
         object Empty : SuggestionsState()
     }
 
-    private val onMoveToWishlistEvent = PublishSubject.create<String>()
-    fun onMoveToWishlistEvent(): Observable<String> = onMoveToWishlistEvent
+    sealed class SuggestionEvent {
+
+        data class MoveToWishlistEvent(val title: String) : SuggestionEvent()
+
+        sealed class ReportSuggestionEvent : SuggestionEvent() {
+
+            data class Success(val title: String) : ReportSuggestionEvent()
+
+            data class Error(val title: String) : ReportSuggestionEvent()
+        }
+    }
+
+    private val onSuggestionEvent = PublishSubject.create<SuggestionEvent>()
+    fun onSuggestionEvent(): Observable<SuggestionEvent> = onSuggestionEvent
 
     private val suggestionState = MutableLiveData<SuggestionsState>()
     fun getSuggestionState(): LiveData<SuggestionsState> = suggestionState
@@ -80,7 +92,9 @@ class SuggestionsViewModel @Inject constructor(
                 )
             }
             .subscribe({
-                onMoveToWishlistEvent.onNext(suggestion.suggestion.title)
+                onSuggestionEvent.onNext(
+                    SuggestionEvent.MoveToWishlistEvent(suggestion.suggestion.title)
+                )
             }, { throwable ->
                 Timber.e(throwable)
             })
@@ -124,5 +138,20 @@ class SuggestionsViewModel @Inject constructor(
         explanations.update(explanations.suggestion().copy(userWantsToSuggest = true))
         // Reload after changing the explanation state
         requestSuggestions()
+    }
+
+    fun reportBookSuggestion(suggestionId: String, suggestionTitle: String) {
+        suggestionsRepository.reportSuggestion(suggestionId)
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe({
+                onSuggestionEvent.onNext(
+                    SuggestionEvent.ReportSuggestionEvent.Success(suggestionTitle)
+                )
+            }, {
+                onSuggestionEvent.onNext(
+                    SuggestionEvent.ReportSuggestionEvent.Error(suggestionTitle)
+                )
+            })
+            .addTo(compositeDisposable)
     }
 }

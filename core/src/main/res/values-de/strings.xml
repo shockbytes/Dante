@@ -336,4 +336,9 @@
     <string name="suggest">Vorschlagen</string>
     <string name="prefs_ad_free_medium_article_title">Lies hier warum Dante keine Werbung schaltet.</string>
 
+    <string name="book_report_confirmation_title">Buch melden</string>
+    <string name="book_report_confirmation_msg">Willst du wirklich den Vorschlag %s melden?</string>
+    <string name="book_reported_success">Du hast %s gemeldet. Vielen Dank, dass du Dante besser machst.</string>
+    <string name="book_reported_error">Es gab ein Problem beim Melden von %s. Bitte versuche es später nochmals.</string>
+
 </resources>

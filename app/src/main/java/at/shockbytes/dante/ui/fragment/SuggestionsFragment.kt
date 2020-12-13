@@ -15,6 +15,8 @@ import at.shockbytes.dante.util.SharedViewComponents
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_suggestions.*
 import javax.inject.Inject
@@ -47,8 +49,8 @@ class SuggestionsFragment : BaseFragment() {
                     viewModel.addSuggestionToWishlist(suggestion)
                 }
 
-                override fun onReportBookSuggestion(suggestionId: String) {
-                    showToast("Report suggestion!")
+                override fun onReportBookSuggestion(suggestionId: String, suggestionTitle: String) {
+                    showReportBookConfirmation(suggestionId, suggestionTitle)
                 }
             },
             onSuggestionExplanationClickedListener = object : OnSuggestionExplanationClickedListener {
@@ -62,6 +64,22 @@ class SuggestionsFragment : BaseFragment() {
         }
     }
 
+    private fun showReportBookConfirmation(suggestionId: String, suggestionTitle: String) {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_report_suggestion)
+            title(text = getString(R.string.book_report_confirmation_title))
+            message(text = getString(R.string.book_report_confirmation_msg, suggestionTitle))
+            positiveButton(R.string.action_delete) {
+                viewModel.reportBookSuggestion(suggestionId, suggestionTitle)
+            }
+            negativeButton(android.R.string.cancel) {
+                dismiss()
+            }
+            cancelOnTouchOutside(false)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
+    }
+
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
     }
@@ -70,12 +88,9 @@ class SuggestionsFragment : BaseFragment() {
         viewModel.requestSuggestions()
         viewModel.getSuggestionState().observe(this, Observer(::handleSuggestionState))
 
-        viewModel.onMoveToWishlistEvent()
+        viewModel.onSuggestionEvent()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { bookTitle ->
-                (parentFragment as? InspirationsFragment)?.moveToWishlistTab()
-                showSnackbar(getString(R.string.book_added_to_wishlist, bookTitle))
-            }
+            .subscribe(::handleSuggestionEvents)
             .addTo(compositeDisposable)
     }
 
@@ -83,6 +98,22 @@ class SuggestionsFragment : BaseFragment() {
         when (suggestionsState) {
             is SuggestionsViewModel.SuggestionsState.Present -> handleSuggestions(suggestionsState.suggestions)
             SuggestionsViewModel.SuggestionsState.Empty -> handleEmptyState()
+        }
+    }
+
+    private fun handleSuggestionEvents(event: SuggestionsViewModel.SuggestionEvent) {
+
+        when (event) {
+            is SuggestionsViewModel.SuggestionEvent.MoveToWishlistEvent -> {
+                (parentFragment as? InspirationsFragment)?.moveToWishlistTab()
+                showSnackbar(getString(R.string.book_added_to_wishlist, event.title))
+            }
+            is SuggestionsViewModel.SuggestionEvent.ReportSuggestionEvent.Success -> {
+                showSnackbar(getString(R.string.book_reported_success, event.title))
+            }
+            is SuggestionsViewModel.SuggestionEvent.ReportSuggestionEvent.Error -> {
+                showSnackbar(getString(R.string.book_reported_error, event.title))
+            }
         }
     }
 

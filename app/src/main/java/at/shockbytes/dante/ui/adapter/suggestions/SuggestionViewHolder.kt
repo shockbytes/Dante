@@ -25,7 +25,7 @@ class SuggestionViewHolder(
 
     override fun bindToView(content: SuggestionsAdapterItem, position: Int) {
         with((content as SuggestionsAdapterItem.SuggestedBook).suggestion) {
-            setupOverflowMenu(suggestionId)
+            setupOverflowMenu(suggestionId, suggestion.title)
             setupBook(suggestion)
             setupSuggester(suggester)
             setupRecommendation(recommendation)
@@ -33,9 +33,9 @@ class SuggestionViewHolder(
         }
     }
 
-    private fun setupOverflowMenu(suggestionId: String) {
+    private fun setupOverflowMenu(suggestionId: String, suggestionTitle: String) {
         iv_item_suggestion_report.setOnClickListener {
-            onSuggestionActionClickedListener.onReportBookSuggestion(suggestionId)
+            onSuggestionActionClickedListener.onReportBookSuggestion(suggestionId, suggestionTitle)
         }
     }
 

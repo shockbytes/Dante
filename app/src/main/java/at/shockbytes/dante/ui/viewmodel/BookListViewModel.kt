@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.signin.SignInRepository
+import at.shockbytes.dante.signin.UserState
 import at.shockbytes.dante.suggestions.SuggestionsRepository
 import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -34,7 +37,8 @@ class BookListViewModel @Inject constructor(
     private val danteSettings: DanteSettings,
     private val tracker: Tracker,
     private val explanations: Explanations,
-    private val suggestionsRepository: SuggestionsRepository
+    private val suggestionsRepository: SuggestionsRepository,
+    private val signInRepository: SignInRepository
 ) : BaseViewModel() {
 
     var state: BookState = BookState.READING
@@ -51,6 +55,18 @@ class BookListViewModel @Inject constructor(
 
         object Empty : BookLoadingState()
     }
+
+    sealed class SuggestionState {
+
+        data class Suggest(val book: BookEntity): SuggestionState()
+
+        data class WrongLanguage(val currentLanguage: String?): SuggestionState()
+
+        object UserNotLoggedIn : SuggestionState()
+    }
+
+    private val suggestionSubject = PublishSubject.create<SuggestionState>()
+    fun onSuggestionEvent(): Observable<SuggestionState> = suggestionSubject
 
     private val books = MutableLiveData<BookLoadingState>()
     fun getBooks(): LiveData<BookLoadingState> = books
@@ -228,5 +244,19 @@ class BookListViewModel @Inject constructor(
 
     fun dismissWishlistExplanation() {
         explanations.markSeen(explanations.wishlist())
+    }
+
+    fun verifyBookSuggestion(book: BookEntity) {
+        signInRepository.getAccount()
+            .map { state ->
+                when {
+                    state is UserState.AnonymousUser -> SuggestionState.UserNotLoggedIn
+                    Languages.ENGLISH.code != book.language -> SuggestionState.WrongLanguage(book.language)
+                    else -> SuggestionState.Suggest(book)
+                }
+            }
+            .observeOn(schedulers.ui)
+            .subscribe(suggestionSubject::onNext, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 }

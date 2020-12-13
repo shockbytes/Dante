@@ -164,6 +164,68 @@ class MainBookFragment : BaseFragment(),
         viewModel.onPickRandomBookEvent
             .subscribe(::handleRandomPickEvent)
             .addTo(compositeDisposable)
+
+        viewModel.onSuggestionEvent()
+            .subscribe(::handleSuggestionEvent)
+            .addTo(compositeDisposable)
+    }
+
+    private fun handleSuggestionEvent(state: BookListViewModel.SuggestionState) {
+        when (state) {
+            is BookListViewModel.SuggestionState.Suggest -> {
+                showSuggestionBottomSheet(state.book)
+            }
+            is BookListViewModel.SuggestionState.UserNotLoggedIn -> {
+                showSuggestionErrorDialog(
+                    icon = R.drawable.ic_user_template_dark,
+                    title = R.string.login_required,
+                    message = R.string.suggestion_login_required_message,
+                    secondaryAction = SecondaryAction(R.string.login) {
+                        // TODO Login + tracking
+                        showToast("Let user log in")
+                    }
+                )
+            }
+            is BookListViewModel.SuggestionState.WrongLanguage -> {
+                showSuggestionErrorDialog(
+                    icon = R.drawable.ic_language_english,
+                    title = R.string.suggestion_wrong_language_title,
+                    message = R.string.suggestion_wrong_language_message
+                )
+            }
+        }
+    }
+
+    private fun showSuggestionBottomSheet(book: BookEntity) {
+        showToast("Implement this...")
+        // TODO
+    }
+
+    private data class SecondaryAction(
+        val titleRes: Int,
+        val action: () -> Unit
+    )
+
+    private fun showSuggestionErrorDialog(
+        icon: Int,
+        title: Int,
+        message: Int,
+        secondaryAction: SecondaryAction? = null
+    ) {
+
+        MaterialDialog(requireContext()).show {
+            icon(icon)
+            title(text = getString(title))
+            message(text = getString(message))
+            positiveButton(android.R.string.ok) {
+                dismiss()
+            }
+            secondaryAction?.let {
+                negativeButton(secondaryAction.titleRes) { secondaryAction.action() }
+            }
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
     }
 
     private fun handleBookLoadingState(state: BookListViewModel.BookLoadingState) {
@@ -301,10 +363,7 @@ class MainBookFragment : BaseFragment(),
     }
 
     override fun onSuggest(book: BookEntity) {
-        // TODO Show up cool UI for this
-        // TODO And check for language
-
-        viewModel.suggestBook(book, "That's a cool book!")
+        viewModel.verifyBookSuggestion(book)
     }
 
     override fun onMoveToUpcoming(book: BookEntity) {
@@ -321,8 +380,6 @@ class MainBookFragment : BaseFragment(),
         viewModel.moveBookToDoneList(book)
         bookAdapter.deleteEntity(book.toAdapterEntity())
     }
-
-    // --------------------------------------------------------------
 
     private fun getTransitionBundle(v: View): Bundle? {
         return ActivityOptionsCompat

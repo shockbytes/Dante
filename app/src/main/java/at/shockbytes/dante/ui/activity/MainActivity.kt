@@ -137,7 +137,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            DanteUtils.rcSignIn -> data?.let(viewModel::signIn)
+            DanteUtils.RC_SIGN_IN -> data?.let(viewModel::signIn)
         }
     }
 
@@ -210,7 +210,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
                     GoogleSignInDialogFragment.newInstance()
                         .setSignInListener {
-                            startActivityForResult(event.signInIntent, DanteUtils.rcSignIn)
+                            startActivityForResult(event.signInIntent, DanteUtils.RC_SIGN_IN)
                         }
                         .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
                         .show(supportFragmentManager, "sign-in-fragment")

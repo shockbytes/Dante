@@ -342,5 +342,9 @@
     <string name="book_report_confirmation_msg">Willst du wirklich den Vorschlag %s melden?</string>
     <string name="book_reported_success">Du hast %s gemeldet. Vielen Dank, dass du Dante besser machst.</string>
     <string name="book_reported_error">Es gab ein Problem beim Melden von %s. Bitte versuche es später nochmals.</string>
+    <string name="login_required">Login erforderlich</string>
+    <string name="suggestion_wrong_language_title">Sprache nicht unterstützt</string>
+    <string name="suggestion_login_required_message">Du musst eingeloggt sein, um Bücher vorzuschlagen.</string>
+    <string name="suggestion_wrong_language_message">Zurzeit ist es leider nur möglich englischsprachige Bücher vorzuschlagen. Wir arbeiten daran, dass diese Einschränkung in Zukunft wegfällt.</string>
 
 </resources>

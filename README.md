@@ -44,7 +44,7 @@ The backlog is currently empty.
 - [ ] Shockbytes Firestore Backup
 - [ ] Simplify book management
     - [ ] Remove local backup
-    - [ ] Add online Shockbytes backup as only way to backup data
+    - [ ] Add online Shockbytes backup (based on Firebase) as only way to backup data
     - [ ] Move Goodreads CSV import from BETA to RELEASE state
     - [ ] Switch between online and offline storage (user has full control over the data)
 - [ ] Add web client support
@@ -67,14 +67,11 @@ The backlog is currently empty.
 ## Current development
 
 ### Version 3.18
-- [ ] Custom cover images
-    - [ ] Smooth loading animator when uploading local images
-    - [ ] Scale down image if too big
+- [ ] Smooth loading animator when uploading local images + scale down
 - [ ] Connect to Firebase suggestions API
     - [ ] Allow books suggestions from the overflow menu
     - [ ] Load suggestions from Firebase API
-    - [ ] Flag books as inappropriate
-    - [ ] Flag books as not interesting
+    - [ ] Report bookds
 - [ ] Non-critical Bugfixes
 
 ## Changelog

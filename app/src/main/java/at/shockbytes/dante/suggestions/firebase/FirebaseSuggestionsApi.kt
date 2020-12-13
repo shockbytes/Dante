@@ -8,7 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.Path
 
 interface FirebaseSuggestionsApi {
 
@@ -20,7 +20,7 @@ interface FirebaseSuggestionsApi {
     @POST("suggestions/{suggestionId}/report")
     fun reportSuggestion(
         @Header("Authorization") bearerToken: String,
-        @Query("suggestionId") suggestionId: String
+        @Path("suggestionId") suggestionId: String
     ): Completable
 
     @POST("suggestions")

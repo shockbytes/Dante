@@ -13,6 +13,8 @@ import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.suggestions.SuggestionsRepository
+import at.shockbytes.dante.suggestions.cache.DataStoreSuggestionsCache
+import at.shockbytes.dante.suggestions.cache.SuggestionsCache
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsApi
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsRepository
 import at.shockbytes.dante.util.explanations.Explanations
@@ -21,6 +23,7 @@ import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 
@@ -73,15 +76,22 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
+    fun provideSuggestionCache(): SuggestionsCache {
+        return DataStoreSuggestionsCache(app.applicationContext, Gson())
+    }
+
+    @Provides
     fun provideSuggestionsRepository(
         firebaseSuggestionsApi: FirebaseSuggestionsApi,
         schedulerFacade: SchedulerFacade,
-        signInRepository: SignInRepository
+        signInRepository: SignInRepository,
+        suggestionsCache: SuggestionsCache
     ): SuggestionsRepository {
         return FirebaseSuggestionsRepository(
             firebaseSuggestionsApi,
             schedulerFacade,
-            signInRepository
+            signInRepository,
+            suggestionsCache
         )
     }
 

@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
@@ -41,7 +42,8 @@ class SuggestionsViewModel @Inject constructor(
     fun getSuggestionState(): LiveData<SuggestionsState> = suggestionState
 
     fun requestSuggestions() {
-        suggestionsRepository.loadSuggestions()
+        suggestionsRepository
+            .loadSuggestions(scope = viewModelScope)
             .map { suggestions ->
                 if (suggestions.suggestions.isEmpty()) {
                     SuggestionsState.Empty

@@ -13,7 +13,7 @@
         android:scrollbars="vertical" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_suggestions_empty"
+        android:id="@+id/tv_suggestions_explanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -21,7 +21,7 @@
         android:drawablePadding="16dp"
         android:gravity="center"
         android:padding="16dp"
-        android:text="@string/suggestion_error"
+        tools:text="@string/no_suggestions_for_user"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:textColor="@color/colorSecondaryText"
         android:visibility="gone"

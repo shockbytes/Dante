@@ -32,6 +32,8 @@ class SuggestionsViewModel @Inject constructor(
 
         data class Present(val suggestions: List<SuggestionsAdapterItem>) : SuggestionsState()
 
+        object Error : SuggestionsState()
+
         object Empty : SuggestionsState()
     }
 
@@ -62,6 +64,9 @@ class SuggestionsViewModel @Inject constructor(
                 } else {
                     SuggestionsState.Present(buildSuggestionsAdapterItems(suggestions))
                 }
+            }
+            .doOnError {
+                suggestionState.postValue(SuggestionsState.Error)
             }
             .subscribe(suggestionState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)

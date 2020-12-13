@@ -98,8 +98,10 @@ class SuggestionsFragment : BaseFragment() {
         when (suggestionsState) {
             is SuggestionsViewModel.SuggestionsState.Present -> handleSuggestions(suggestionsState.suggestions)
             SuggestionsViewModel.SuggestionsState.Empty -> handleEmptyState()
+            SuggestionsViewModel.SuggestionsState.Error -> handleErrorState()
         }
     }
+
 
     private fun handleSuggestionEvents(event: SuggestionsViewModel.SuggestionEvent) {
 
@@ -119,12 +121,23 @@ class SuggestionsFragment : BaseFragment() {
 
     private fun handleEmptyState() {
         rv_suggestions.setVisible(false)
-        tv_suggestions_empty.setVisible(true)
+        tv_suggestions_explanation.apply {
+            setVisible(true)
+            setText(R.string.no_suggestions_for_user)
+        }
+    }
+
+    private fun handleErrorState() {
+        rv_suggestions.setVisible(false)
+        tv_suggestions_explanation.apply {
+            setVisible(true)
+            setText(R.string.suggestion_error)
+        }
     }
 
     private fun handleSuggestions(suggestions: List<SuggestionsAdapterItem>) {
         rv_suggestions.setVisible(true)
-        tv_suggestions_empty.setVisible(false)
+        tv_suggestions_explanation.setVisible(false)
 
         suggestionAdapter.updateData(suggestions)
     }

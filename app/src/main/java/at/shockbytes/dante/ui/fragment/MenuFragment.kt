@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.app.Dialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,8 @@ import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
 import at.shockbytes.dante.util.viewModelOf
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_menu.*
 import javax.inject.Inject
 
@@ -124,6 +127,15 @@ class MenuFragment : BottomSheetDialogFragment() {
         btnMenuSettings.setOnClickListener {
             navigateToAndDismiss(Destination.Settings)
         }
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
+        dialog.setOnShowListener {
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)!!
+            BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        return dialog
     }
 
     private fun navigateToAndDismiss(destination: Destination) {

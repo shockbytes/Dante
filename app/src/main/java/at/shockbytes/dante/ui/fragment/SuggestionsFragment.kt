@@ -102,7 +102,6 @@ class SuggestionsFragment : BaseFragment() {
         }
     }
 
-
     private fun handleSuggestionEvents(event: SuggestionsViewModel.SuggestionEvent) {
 
         when (event) {

@@ -41,6 +41,7 @@ import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import com.afollestad.materialdialogs.MaterialDialog
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_book_main.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -168,6 +169,11 @@ class MainBookFragment : BaseFragment(),
         viewModel.onSuggestionEvent()
             .subscribe(::handleSuggestionEvent)
             .addTo(compositeDisposable)
+
+        viewModel.onEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::handleEvents)
+            .addTo(compositeDisposable)
     }
 
     private fun handleSuggestionEvent(state: BookListViewModel.SuggestionState) {
@@ -197,8 +203,11 @@ class MainBookFragment : BaseFragment(),
     }
 
     private fun showSuggestionBottomSheet(book: BookEntity) {
-        showToast("Implement this...")
-        // TODO
+        SuggestBookBottomSheetDialogFragment.newInstance(book)
+            .setOnRecommendationEnteredListener { recommendation ->
+                viewModel.suggestBook(book, recommendation)
+            }
+            .show(parentFragmentManager, "suggest-book-fragment")
     }
 
     private data class SecondaryAction(
@@ -225,6 +234,12 @@ class MainBookFragment : BaseFragment(),
             }
             cancelOnTouchOutside(true)
             cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
+    }
+
+    private fun handleEvents(event: BookListViewModel.Event) {
+        when (event) {
+            is BookListViewModel.Event.SuggestionPlaced -> showToast(event.textRes)
         }
     }
 

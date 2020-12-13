@@ -345,6 +345,9 @@
     <string name="login_required">Login erforderlich</string>
     <string name="suggestion_wrong_language_title">Sprache nicht unterstützt</string>
     <string name="suggestion_login_required_message">Du musst eingeloggt sein, um Bücher vorzuschlagen.</string>
-    <string name="suggestion_wrong_language_message">Zurzeit ist es leider nur möglich englischsprachige Bücher vorzuschlagen. Wir arbeiten daran, dass diese Einschränkung in Zukunft wegfällt.</string>
+    <string name="suggestion_wrong_language_message">Zurzeit ist es leider nur möglich englischsprachige Bücher vorzuschlagen. Bitte gib auch deine Empfehlung auf englisch ein. Wir arbeiten daran, dass diese Einschränkung in Zukunft wegfällt.</string>
+    <string name="suggestion_hint">Schreib eine Empfehlung</string>
+    <string name="suggestion_placed_success">Vielen Dank! Dein Buch wird bald anderen Lesern vorgeschlagen!</string>
+    <string name="suggestion_placed_error">Oh nein! Sieht so aus als gäbe es ein Problem. Bitte versuche es später wieder.</string>
 
 </resources>

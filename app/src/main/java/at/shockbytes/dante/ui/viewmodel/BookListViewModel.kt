@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.Languages
@@ -58,12 +59,20 @@ class BookListViewModel @Inject constructor(
 
     sealed class SuggestionState {
 
-        data class Suggest(val book: BookEntity): SuggestionState()
+        data class Suggest(val book: BookEntity) : SuggestionState()
 
-        data class WrongLanguage(val currentLanguage: String?): SuggestionState()
+        data class WrongLanguage(val currentLanguage: String?) : SuggestionState()
 
         object UserNotLoggedIn : SuggestionState()
     }
+
+    sealed class Event {
+
+        data class SuggestionPlaced(val textRes: Int) : Event()
+    }
+
+    private val eventSubject = PublishSubject.create<Event>()
+    fun onEvent(): Observable<Event> = eventSubject
 
     private val suggestionSubject = PublishSubject.create<SuggestionState>()
     fun onSuggestionEvent(): Observable<SuggestionState> = suggestionSubject
@@ -164,9 +173,10 @@ class BookListViewModel @Inject constructor(
     fun suggestBook(book: BookEntity, recommendation: String) {
         suggestionsRepository.suggestBook(book, recommendation)
             .subscribe({
-                Timber.i("Successfully reported book")
+                eventSubject.onNext(Event.SuggestionPlaced(R.string.suggestion_placed_success))
             }, { throwable ->
                 Timber.e(throwable)
+                eventSubject.onNext(Event.SuggestionPlaced(R.string.suggestion_placed_error))
             })
             .addTo(compositeDisposable)
     }

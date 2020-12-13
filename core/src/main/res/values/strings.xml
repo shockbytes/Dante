@@ -363,10 +363,13 @@
     <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
     <string name="suggestions_explanation">Receive some suggestions from book lovers all over the world.</string>
 
+    <string name="suggestion_hint">Enter your recommendation</string>
     <string name="login_required">Login required</string>
     <string name="suggestion_login_required_message">You need to be logged in, in order to suggest books.</string>
     <string name="suggestion_wrong_language_title">Language not supported</string>
-    <string name="suggestion_wrong_language_message">Unfortunately it\'s only possible to suggest english books. We are working to remove this restriction in the near future.</string>
+    <string name="suggestion_wrong_language_message">Unfortunately it\'s only possible to suggest english books. Please write your recommendation in english too. We are working to remove this restriction in the near future.</string>
+    <string name="suggestion_placed_success">Thanks! Your book will be suggested to other readers!</string>
+    <string name="suggestion_placed_error">Oh-no! Seems like there was a problem. Please try again later.</string>
 
     <string name="no_suggestions_for_user">We are sorry. There are no suggestions for you at the moment. Wait some days until your fellows will suggest some books.</string>
     <string name="book_report_confirmation_title">Report book</string>

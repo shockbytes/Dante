@@ -69,9 +69,12 @@ The backlog is currently empty.
 ### Version 3.18
 - [ ] Smooth loading animator when uploading local images + scale down
 - [ ] Connect to Firebase suggestions API
-    - [ ] Allow books suggestions from the overflow menu
-    - [ ] Load suggestions from Firebase API
-    - [ ] Report bookds
+    - [x] Allow books suggestions from the overflow menu
+    - [x] Load suggestions from Firebase API
+    - [x] Report books
+    - [ ] Cache books locally to minimize Firebase function calls
+    - [ ] Explain caching
+    - [ ] Let users log in from error dialog
 - [ ] Non-critical Bugfixes
 
 ## Changelog

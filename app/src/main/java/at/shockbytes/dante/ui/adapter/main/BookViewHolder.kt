@@ -39,7 +39,10 @@ class BookViewHolder(
     }
 
     private fun updateLabels(labels: List<BookLabel>) {
-        chips_item_book_label.removeAllViews()
+        chips_item_book_label.apply {
+            setVisible(labels.isNotEmpty())
+            removeAllViews()
+        }
 
         val isNightModeEnabled = context().isNightModeEnabled()
 

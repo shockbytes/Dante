@@ -11,8 +11,12 @@ import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.signin.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
+import at.shockbytes.tracking.properties.LoginSource
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -27,7 +31,8 @@ class MainViewModel @Inject constructor(
     private val signInRepository: SignInRepository,
     private val announcementProvider: AnnouncementProvider,
     private val schedulers: SchedulerFacade,
-    private val danteSettings: DanteSettings
+    private val danteSettings: DanteSettings,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     sealed class UserEvent {
@@ -67,6 +72,10 @@ class MainViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
+    fun forceLogin(source: LoginSource) {
+        postSignInEventAndTrackValue(source)
+    }
+
     fun signIn(data: Intent) {
         signInRepository.signIn(data)
             .subscribe({ account ->
@@ -95,9 +104,14 @@ class MainViewModel @Inject constructor(
     }
 
     private fun postSignInEvent(): Completable {
-        return Completable.fromAction {
-            userEvent.postValue(UserEvent.LoginEvent(signInRepository.signInIntent))
+        return completableOf {
+            postSignInEventAndTrackValue(LoginSource.FromMenu)
         }
+    }
+
+    private fun postSignInEventAndTrackValue(source: LoginSource) {
+        tracker.track(DanteTrackingEvent.Login(source))
+        userEvent.postValue(UserEvent.LoginEvent(signInRepository.signInIntent))
     }
 
     fun signInMaybeLater(maybeLater: Boolean) {

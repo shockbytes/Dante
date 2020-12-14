@@ -1,8 +1,11 @@
 package at.shockbytes.tracking.event
 
+import at.shockbytes.tracking.properties.BaseProperty
+import at.shockbytes.tracking.properties.LoginSource
+
 sealed class DanteTrackingEvent(
     val name: String,
-    val props: List<TrackingProperty> = listOf()
+    val props: List<BaseProperty<Any>> = listOf()
 ) {
 
     data class BackupMadeEvent(val backupProvider: String) : DanteTrackingEvent(
@@ -12,13 +15,16 @@ sealed class DanteTrackingEvent(
 
     object InterestedInOnlineStorageEvent : DanteTrackingEvent("interested_in_online_storage")
 
-    object InterestedInSuggestingBooks : DanteTrackingEvent("suggestions_interested")
-
     object OpenAdFreeMediumArticle : DanteTrackingEvent("open_ad_free_medium_article")
 
     data class StartImport(val importer: String) : DanteTrackingEvent(
         "start_import",
         listOf(TrackingProperty("importer_name", importer))
+    )
+
+    data class Login(val source: LoginSource) : DanteTrackingEvent(
+        "login",
+        listOf(source)
     )
 
     data class TrackingStateChanged(val state: Boolean) : DanteTrackingEvent(

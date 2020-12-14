@@ -30,6 +30,7 @@ import at.shockbytes.dante.ui.fragment.BookDetailFragment.Companion.ACTION_BOOK_
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
+import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.SharedViewComponents
 import at.shockbytes.dante.util.addTo
@@ -37,6 +38,7 @@ import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.tracking.properties.LoginSource
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
@@ -187,8 +189,7 @@ class MainBookFragment : BaseFragment(),
                     title = R.string.login_required,
                     message = R.string.suggestion_login_required_message,
                     secondaryAction = SecondaryAction(R.string.login) {
-                        // TODO Login + tracking
-                        showToast("Let user log in")
+                        (activity as? MainActivity)?.forceLogin(LoginSource.FromSuggestion)
                     }
                 )
             }

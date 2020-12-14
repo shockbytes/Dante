@@ -36,6 +36,7 @@ import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.tracking.properties.LoginSource
 import at.shockbytes.util.AppUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
@@ -234,6 +235,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             }
             .subscribe(imgButtonMainToolbarMore::setImageDrawable, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    fun forceLogin(source: LoginSource) {
+        viewModel.forceLogin(source)
     }
 
     private fun showAnnouncementFragment() {

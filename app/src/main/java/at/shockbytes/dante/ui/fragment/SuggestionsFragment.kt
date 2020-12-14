@@ -7,7 +7,6 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.suggestions.Suggestion
 import at.shockbytes.dante.ui.adapter.suggestions.OnSuggestionActionClickedListener
-import at.shockbytes.dante.ui.adapter.suggestions.OnSuggestionExplanationClickedListener
 import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapter
 import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapterItem
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
@@ -53,10 +52,7 @@ class SuggestionsFragment : BaseFragment() {
                     showReportBookConfirmation(suggestionId, suggestionTitle)
                 }
             },
-            onSuggestionExplanationClickedListener = object : OnSuggestionExplanationClickedListener {
-                override fun onDismissClicked() = viewModel.dismissExplanation()
-                override fun onWantToSuggestClicked() = viewModel.wantToSuggestBooks()
-            }
+            onSuggestionExplanationClickedListener = { viewModel.dismissExplanation() }
         )
         rv_suggestions.apply {
             layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
@@ -69,7 +65,7 @@ class SuggestionsFragment : BaseFragment() {
             icon(R.drawable.ic_report_suggestion)
             title(text = getString(R.string.book_report_confirmation_title))
             message(text = getString(R.string.book_report_confirmation_msg, suggestionTitle))
-            positiveButton(R.string.action_delete) {
+            positiveButton(R.string.report) {
                 viewModel.reportBookSuggestion(suggestionId, suggestionTitle)
             }
             negativeButton(android.R.string.cancel) {

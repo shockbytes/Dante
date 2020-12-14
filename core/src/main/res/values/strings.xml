@@ -361,7 +361,7 @@
     <string name="suggestions_title">Suggestions</string>
     <string name="suggestions_explanation_want_to_suggest">I\'d like to suggest books</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
-    <string name="suggestions_explanation">Receive some suggestions from book lovers all over the world.</string>
+    <string name="suggestions_hint">Receive some suggestions from book lovers all over the world.\n\nThe list will update every Friday morning at 8AM, so you have fresh inspirations by the start of the weekend.</string>
 
     <string name="suggestion_hint">Enter your recommendation</string>
     <string name="login_required">Login required</string>
@@ -372,6 +372,7 @@
     <string name="suggestion_placed_error">Oh-no! Seems like there was a problem. Please try again later.</string>
 
     <string name="no_suggestions_for_user">We are sorry. There are no suggestions for you at the moment. Wait some days until your fellows will suggest some books.</string>
+    <string name="report">Report</string>
     <string name="book_report_confirmation_title">Report book</string>
     <string name="book_report_confirmation_msg">Do you really want to report the suggestion %s?</string>
     <string name="book_reported_success">You reported %s. Thanks for making Dante a better place.</string>

@@ -325,7 +325,7 @@
     <string name="suggestions_title">Vorschläge</string>
     <string name="suggestions_explanation_want_to_suggest">Ich will Bücher vorschlagen</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Vorschläge sind bald verfügbar</string>
-    <string name="suggestions_explanation">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.</string>
+    <string name="suggestions_hint">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.\n\nDie Liste wird jeden Freitag vormittag um 8 Uhr aktualisiert. Somit hast du immer frische Inspirationen für das Wochenende!</string>
     <string name="wishlist_title">Meine Wunschliste</string>
     <string name="wishlist_explanation">Lege alle Bücher hier ab, die du noch nicht hast, aber in Zukunft lesen willst.\n\nKleiner Tipp: Teile diese Liste gelegentlich mit deinem Partner.</string>
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
@@ -349,5 +349,6 @@
     <string name="suggestion_hint">Schreib eine Empfehlung</string>
     <string name="suggestion_placed_success">Vielen Dank! Dein Buch wird bald anderen Lesern vorgeschlagen!</string>
     <string name="suggestion_placed_error">Oh nein! Sieht so aus als gäbe es ein Problem. Bitte versuche es später wieder.</string>
+    <string name="report">Melden</string>
 
 </resources>

@@ -86,7 +86,7 @@ class SuggestionsViewModel @Inject constructor(
             .map(SuggestionsAdapterItem::SuggestedBook)
 
         return if (explanation.show) {
-            listOf(SuggestionsAdapterItem.Explanation(explanation.userWantsToSuggest)) + suggestedItems
+            listOf(SuggestionsAdapterItem.SuggestionHint()) + suggestedItems
         } else {
             suggestedItems
         }
@@ -138,15 +138,6 @@ class SuggestionsViewModel @Inject constructor(
     fun dismissExplanation() {
         explanations.markSeen(explanations.suggestion())
         // Reload after mark explanation as seen
-        requestSuggestions()
-    }
-
-    fun wantToSuggestBooks() {
-
-        tracker.track(DanteTrackingEvent.InterestedInSuggestingBooks)
-
-        explanations.update(explanations.suggestion().copy(userWantsToSuggest = true))
-        // Reload after changing the explanation state
         requestSuggestions()
     }
 

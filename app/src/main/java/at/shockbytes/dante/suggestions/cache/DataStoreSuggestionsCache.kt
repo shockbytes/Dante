@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.preferencesKey
+import androidx.datastore.preferences.core.preferencesSetKey
 import androidx.datastore.preferences.createDataStore
 import at.shockbytes.dante.suggestions.Suggestions
 import at.shockbytes.dante.util.fromJson
@@ -24,6 +25,7 @@ class DataStoreSuggestionsCache(
     )
 
     private val suggestionsKey = preferencesKey<String>(KEY_SUGGESTION_CACHE)
+    private val reportedSuggestionsKey = preferencesSetKey<String>(KEY_REPORTED_SUGGESTION_CACHE)
 
     override suspend fun cache(suggestions: Suggestions) {
         dataStore.edit { preferences ->
@@ -41,7 +43,24 @@ class DataStoreSuggestionsCache(
         }
     }
 
+    override suspend fun cacheSuggestionReport(suggestionId: String) {
+        dataStore.edit { preferences ->
+            val reports = preferences[reportedSuggestionsKey].orEmpty().toMutableSet()
+            reports.add(suggestionId)
+            preferences[reportedSuggestionsKey] = reports
+        }
+    }
+
+    override fun loadReportedSuggestions(): Single<List<String>> {
+        return singleOf {
+            runBlocking {
+                dataStore.data.first()[reportedSuggestionsKey].orEmpty().toList()
+            }
+        }
+    }
+
     companion object {
         private const val KEY_SUGGESTION_CACHE = "key_suggestion_cache"
+        private const val KEY_REPORTED_SUGGESTION_CACHE = "key_reported_suggestion_cache"
     }
 }

@@ -8,13 +8,8 @@ class SharedPrefsExplanations(
 
     override fun suggestion(): Explanation.Suggestion {
         return Explanation.Suggestion(
-            show = getShowFor<Explanation.Suggestion>(),
-            userWantsToSuggest = getBooleanForKey(SUGGESTION_HINT_KEY, false)
+            show = getShowFor<Explanation.Suggestion>()
         )
-    }
-
-    private fun getBooleanForKey(key: String, defaultValue: Boolean): Boolean {
-        return sharedPreferences.getBoolean(key, defaultValue)
     }
 
     override fun wishlist(): Explanation.Wishlist {
@@ -30,19 +25,10 @@ class SharedPrefsExplanations(
     }
 
     override fun update(explanation: Explanation) {
-        when (explanation) {
-            is Explanation.Suggestion -> {
-                putBoolean(SUGGESTION_HINT_KEY, explanation.userWantsToSuggest)
-            }
-            else -> Unit
-        }
+        // Not used now...
     }
 
     private fun putBoolean(key: String, value: Boolean) {
         sharedPreferences.edit().putBoolean(key, value).apply()
-    }
-
-    companion object {
-        private const val SUGGESTION_HINT_KEY = "suggestion_hint_key"
     }
 }

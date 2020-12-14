@@ -17,6 +17,7 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -58,17 +59,18 @@ class SuggestionsViewModel @Inject constructor(
     fun getSuggestionState(): LiveData<SuggestionsState> = suggestionState
 
     fun requestSuggestions() {
-        suggestionsRepository
-            .loadSuggestions(scope = viewModelScope)
+
+        Single
+            .zip(
+                bookRepository.bookObservable.firstOrError(),
+                suggestionsRepository.loadSuggestions(scope = viewModelScope),
+                { books, suggestions -> Pair(books, suggestions) }
+            )
             .doOnSubscribe {
                 suggestionState.postValue(SuggestionsState.Loading)
             }
-            .map { suggestions ->
-                if (suggestions.suggestions.isEmpty()) {
-                    SuggestionsState.Empty
-                } else {
-                    SuggestionsState.Present(buildSuggestionsAdapterItems(suggestions))
-                }
+            .flatMap { (books, reports) ->
+                buildSuggestionsState(books, reports)
             }
             .doOnError {
                 suggestionState.postValue(SuggestionsState.Error)
@@ -77,19 +79,36 @@ class SuggestionsViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    private fun buildSuggestionsAdapterItems(suggestions: Suggestions): List<SuggestionsAdapterItem> {
+    private fun buildSuggestionsState(
+        books: List<BookEntity>,
+        suggestions: Suggestions
+    ): Single<SuggestionsState> {
 
-        val explanation = explanations.suggestion()
+        return suggestionsRepository.getUserReportedSuggestions()
+            .map { reports ->
 
-        val suggestedItems = suggestions.suggestions
-            .sortedBy { it.suggestionId }
-            .map(SuggestionsAdapterItem::SuggestedBook)
+                val suggestedItems = suggestions.suggestions
+                    .sortedBy { it.suggestionId }
+                    .filter { suggestion ->
+                        // Check if book isn't already added in the library
+                        // and if hasn't been reported by this user
+                        val bookAlreadyAdded = books.find {
+                            it.title == suggestion.suggestion.title
+                        } != null
+                        val isReported = reports.contains(suggestion.suggestionId)
+                        !bookAlreadyAdded && !isReported
+                    }
+                    .map(SuggestionsAdapterItem::SuggestedBook)
 
-        return if (explanation.show) {
-            listOf(SuggestionsAdapterItem.SuggestionHint()) + suggestedItems
-        } else {
-            suggestedItems
-        }
+                when {
+                    suggestedItems.isEmpty() -> SuggestionsState.Empty
+                    explanations.suggestion().show -> {
+                        val items = listOf(SuggestionsAdapterItem.SuggestionHint()) + suggestedItems
+                        SuggestionsState.Present(items)
+                    }
+                    else -> SuggestionsState.Present(suggestedItems)
+                }
+            }
     }
 
     fun addSuggestionToWishlist(suggestion: Suggestion) {
@@ -142,12 +161,14 @@ class SuggestionsViewModel @Inject constructor(
     }
 
     fun reportBookSuggestion(suggestionId: String, suggestionTitle: String) {
-        suggestionsRepository.reportSuggestion(suggestionId)
+        suggestionsRepository.reportSuggestion(suggestionId, scope = viewModelScope)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
                 onSuggestionEvent.onNext(
                     SuggestionEvent.ReportSuggestionEvent.Success(suggestionTitle)
                 )
+                // Reload after a book has been reported
+                requestSuggestions()
             }, {
                 onSuggestionEvent.onNext(
                     SuggestionEvent.ReportSuggestionEvent.Error(suggestionTitle)

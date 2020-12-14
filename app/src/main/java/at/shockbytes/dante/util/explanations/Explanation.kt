@@ -5,8 +5,7 @@ sealed class Explanation {
     abstract val show: Boolean
 
     data class Suggestion(
-        override val show: Boolean,
-        val userWantsToSuggest: Boolean
+        override val show: Boolean
     ) : Explanation()
 
     data class Wishlist(

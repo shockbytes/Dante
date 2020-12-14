@@ -12,7 +12,9 @@ interface SuggestionsRepository {
         scope: CoroutineScope
     ): Single<Suggestions>
 
-    fun reportSuggestion(suggestionId: String): Completable
+    fun reportSuggestion(suggestionId: String, scope: CoroutineScope): Completable
+
+    fun getUserReportedSuggestions(): Single<List<String>>
 
     fun suggestBook(bookEntity: BookEntity, recommendation: String): Completable
 }

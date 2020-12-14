@@ -8,4 +8,8 @@ interface SuggestionsCache {
     suspend fun cache(suggestions: Suggestions)
 
     fun loadSuggestions(): Single<Suggestions>
+
+    suspend fun cacheSuggestionReport(suggestionId: String)
+
+    fun loadReportedSuggestions(): Single<List<String>>
 }

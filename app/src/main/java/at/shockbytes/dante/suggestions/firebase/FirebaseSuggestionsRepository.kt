@@ -54,12 +54,25 @@ class FirebaseSuggestionsRepository(
             .subscribeOn(schedulers.io)
     }
 
-    override fun reportSuggestion(suggestionId: String): Completable {
+    override fun reportSuggestion(suggestionId: String, scope: CoroutineScope): Completable {
         return signInRepository.getAuthorizationHeader()
             .flatMapCompletable { bearerToken ->
                 firebaseSuggestionsApi.reportSuggestion(bearerToken, suggestionId)
             }
+            .doOnComplete {
+                cacheReportedSuggestion(suggestionId, scope)
+            }
             .subscribeOn(schedulers.io)
+    }
+
+    override fun getUserReportedSuggestions(): Single<List<String>> {
+        return suggestionsCache.loadReportedSuggestions()
+    }
+
+    private fun cacheReportedSuggestion(suggestionId: String, scope: CoroutineScope) {
+        scope.launch {
+            suggestionsCache.cacheSuggestionReport(suggestionId)
+        }
     }
 
     override fun suggestBook(bookEntity: BookEntity, recommendation: String): Completable {

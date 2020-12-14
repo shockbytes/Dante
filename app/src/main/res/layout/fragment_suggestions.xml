@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginVertical="8dp"
     android:background="@color/mainBackground">
 
@@ -26,5 +27,18 @@
         android:textColor="@color/colorSecondaryText"
         android:visibility="gone"
         tools:visibility="visible" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/pb_suggestions"
+        android:layout_width="150dp"
+        android:layout_gravity="center"
+        android:layout_height="150dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/lottie_loading" />
+
 
 </FrameLayout>

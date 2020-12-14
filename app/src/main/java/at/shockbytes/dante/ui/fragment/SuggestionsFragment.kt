@@ -96,9 +96,10 @@ class SuggestionsFragment : BaseFragment() {
 
     private fun handleSuggestionState(suggestionsState: SuggestionsViewModel.SuggestionsState) {
         when (suggestionsState) {
+            is SuggestionsViewModel.SuggestionsState.Loading -> handleLoadingState()
             is SuggestionsViewModel.SuggestionsState.Present -> handleSuggestions(suggestionsState.suggestions)
-            SuggestionsViewModel.SuggestionsState.Empty -> handleEmptyState()
-            SuggestionsViewModel.SuggestionsState.Error -> handleErrorState()
+            is SuggestionsViewModel.SuggestionsState.Empty -> handleEmptyState()
+            is SuggestionsViewModel.SuggestionsState.Error -> handleErrorState()
         }
     }
 
@@ -118,7 +119,14 @@ class SuggestionsFragment : BaseFragment() {
         }
     }
 
+    private fun handleLoadingState() {
+        pb_suggestions.setVisible(true)
+        rv_suggestions.setVisible(false)
+        tv_suggestions_explanation.setVisible(false)
+    }
+
     private fun handleEmptyState() {
+        pb_suggestions.setVisible(false)
         rv_suggestions.setVisible(false)
         tv_suggestions_explanation.apply {
             setVisible(true)
@@ -127,6 +135,7 @@ class SuggestionsFragment : BaseFragment() {
     }
 
     private fun handleErrorState() {
+        pb_suggestions.setVisible(false)
         rv_suggestions.setVisible(false)
         tv_suggestions_explanation.apply {
             setVisible(true)
@@ -137,6 +146,7 @@ class SuggestionsFragment : BaseFragment() {
     private fun handleSuggestions(suggestions: List<SuggestionsAdapterItem>) {
         rv_suggestions.setVisible(true)
         tv_suggestions_explanation.setVisible(false)
+        pb_suggestions.setVisible(false)
 
         suggestionAdapter.updateData(suggestions)
     }

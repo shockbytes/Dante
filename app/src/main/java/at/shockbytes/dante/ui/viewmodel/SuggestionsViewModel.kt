@@ -30,6 +30,8 @@ class SuggestionsViewModel @Inject constructor(
 
     sealed class SuggestionsState {
 
+        object Loading : SuggestionsState()
+
         data class Present(val suggestions: List<SuggestionsAdapterItem>) : SuggestionsState()
 
         object Error : SuggestionsState()
@@ -58,6 +60,9 @@ class SuggestionsViewModel @Inject constructor(
     fun requestSuggestions() {
         suggestionsRepository
             .loadSuggestions(scope = viewModelScope)
+            .doOnSubscribe {
+                suggestionState.postValue(SuggestionsState.Loading)
+            }
             .map { suggestions ->
                 if (suggestions.suggestions.isEmpty()) {
                     SuggestionsState.Empty

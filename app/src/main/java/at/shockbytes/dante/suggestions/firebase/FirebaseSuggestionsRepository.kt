@@ -12,6 +12,9 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
+import org.joda.time.Days
+import kotlin.math.absoluteValue
 
 class FirebaseSuggestionsRepository(
     private val firebaseSuggestionsApi: FirebaseSuggestionsApi,
@@ -21,17 +24,39 @@ class FirebaseSuggestionsRepository(
 ) : SuggestionsRepository {
 
     override fun loadSuggestions(accessTimestamp: Long, scope: CoroutineScope): Single<Suggestions> {
-        return if (shouldUseRemoteData(accessTimestamp)) {
-            loadRemoteSuggestions(scope)
-        } else {
-            loadCachedSuggestions()
-        }
+        return shouldUseRemoteData(accessTimestamp)
+            .flatMap { useRemoteSuggestions ->
+                if (useRemoteSuggestions) {
+                    loadRemoteSuggestions(scope)
+                } else {
+                    loadCachedSuggestions()
+                }
+            }
     }
 
-    private fun shouldUseRemoteData(accessTimestamp: Long): Boolean {
-        // TODO Locally store timestamp, return cached value for one week
-        // TODO Or use a fixed timestamp, e.g.: next friday at 8:00 AM
-        return true
+    private fun shouldUseRemoteData(accessTimestamp: Long): Single<Boolean> {
+        return suggestionsCache.lastCacheTimestamp()
+            .map { lastCacheTimestamp ->
+
+                if (lastCacheTimestamp == -1L) {
+                    true // True if not set yet
+                } else {
+                    isLastCacheTimestampExpired(lastCacheTimestamp, accessTimestamp)
+                }
+            }
+    }
+
+    private fun isLastCacheTimestampExpired(
+        lastCacheTimestamp: Long,
+        accessTimestamp: Long
+    ): Boolean {
+
+        val cacheTime = DateTime(lastCacheTimestamp)
+        val currentTime = DateTime(accessTimestamp)
+
+        val daysBetween = Days.daysBetween(cacheTime, currentTime).days.absoluteValue
+
+        return daysBetween >= 7
     }
 
     private fun loadRemoteSuggestions(scope: CoroutineScope): Single<Suggestions> {

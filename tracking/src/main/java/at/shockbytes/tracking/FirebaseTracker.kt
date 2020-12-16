@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import at.shockbytes.tracking.event.TrackingProperty
+import at.shockbytes.tracking.properties.BaseProperty
 import com.google.firebase.analytics.FirebaseAnalytics
 
 /**
@@ -18,10 +19,10 @@ class FirebaseTracker(context: Context) : Tracker() {
         fbAnalytics.logEvent(event.name, createTrackEventData(event.props))
     }
 
-    private fun createTrackEventData(props: List<TrackingProperty>): Bundle {
+    private fun createTrackEventData(props: List<BaseProperty<Any>>): Bundle {
         val data = Bundle()
-        props.forEach { (key, value) ->
-            data.putString(key, value.toString())
+        props.forEach { p ->
+            data.putString(p.getKey(), p.value.toString())
         }
         return data
     }

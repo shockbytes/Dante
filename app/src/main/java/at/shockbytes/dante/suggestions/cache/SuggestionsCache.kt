@@ -5,6 +5,8 @@ import io.reactivex.Single
 
 interface SuggestionsCache {
 
+    fun lastCacheTimestamp(): Single<Long>
+
     suspend fun cache(suggestions: Suggestions)
 
     fun loadSuggestions(): Single<Suggestions>

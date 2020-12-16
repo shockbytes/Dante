@@ -325,7 +325,7 @@
     <string name="suggestions_title">Vorschläge</string>
     <string name="suggestions_explanation_want_to_suggest">Ich will Bücher vorschlagen</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Vorschläge sind bald verfügbar</string>
-    <string name="suggestions_hint">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.\n\nDie Liste wird jeden Freitag vormittag um 8 Uhr aktualisiert. Somit hast du immer frische Inspirationen für das Wochenende!</string>
+    <string name="suggestions_hint">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.\n\nErhalte jede Woche neue Updates. Schau regelmäßig vorbei für neue Inspirationen.</string>
     <string name="wishlist_title">Meine Wunschliste</string>
     <string name="wishlist_explanation">Lege alle Bücher hier ab, die du noch nicht hast, aber in Zukunft lesen willst.\n\nKleiner Tipp: Teile diese Liste gelegentlich mit deinem Partner.</string>
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
@@ -344,7 +344,8 @@
     <string name="book_reported_error">Es gab ein Problem beim Melden von %s. Bitte versuche es später nochmals.</string>
     <string name="login_required">Login erforderlich</string>
     <string name="suggestion_wrong_language_title">Sprache nicht unterstützt</string>
-    <string name="suggestion_login_required_message">Du musst eingeloggt sein, um Bücher vorzuschlagen.</string>
+    <string name="suggestion_login_required_message">Du musst in deinem Account eingeloggt sein, um Bücher vorzuschlagen.</string>
+    <string name="suggestion_view_login_required_message">Du musst in deinem Account eingeloggt sein, um Vorschläge von anderen zu sehen.</string>
     <string name="suggestion_wrong_language_message">Zurzeit ist es leider nur möglich englischsprachige Bücher vorzuschlagen. Bitte gib auch deine Empfehlung auf englisch ein. Wir arbeiten daran, dass diese Einschränkung in Zukunft wegfällt.</string>
     <string name="suggestion_hint">Schreib eine Empfehlung</string>
     <string name="suggestion_placed_success">Vielen Dank! Dein Buch wird bald anderen Lesern vorgeschlagen!</string>

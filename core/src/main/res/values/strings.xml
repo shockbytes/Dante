@@ -361,11 +361,12 @@
     <string name="suggestions_title">Suggestions</string>
     <string name="suggestions_explanation_want_to_suggest">I\'d like to suggest books</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
-    <string name="suggestions_hint">Receive some suggestions from book lovers all over the world.\n\nThe list will update every Friday morning at 8AM, so you have fresh inspirations by the start of the weekend.</string>
+    <string name="suggestions_hint">Receive some suggestions from book lovers all over the world.\n\nYou will receive weekly updates. So stay tuned for new inspirations.</string>
 
     <string name="suggestion_hint">Enter your recommendation</string>
     <string name="login_required">Login required</string>
-    <string name="suggestion_login_required_message">You need to be logged in, in order to suggest books.</string>
+    <string name="suggestion_login_required_message">You need to be logged into your account in order to suggest books.</string>
+    <string name="suggestion_view_login_required_message">You need to be logged into your account in order view book suggestions.</string>
     <string name="suggestion_wrong_language_title">Language not supported</string>
     <string name="suggestion_wrong_language_message">Unfortunately it\'s only possible to suggest english books. Please write your recommendation in english too. We are working to remove this restriction in the near future.</string>
     <string name="suggestion_placed_success">Thanks! Your book will be suggested to other readers!</string>

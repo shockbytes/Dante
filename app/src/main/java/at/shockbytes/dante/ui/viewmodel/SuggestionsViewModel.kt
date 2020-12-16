@@ -19,6 +19,7 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -36,6 +37,8 @@ class SuggestionsViewModel @Inject constructor(
         data class Present(val suggestions: List<SuggestionsAdapterItem>) : SuggestionsState()
 
         object Error : SuggestionsState()
+
+        object UnauthenticatedUser : SuggestionsState()
 
         object Empty : SuggestionsState()
     }
@@ -72,11 +75,20 @@ class SuggestionsViewModel @Inject constructor(
             .flatMap { (books, reports) ->
                 buildSuggestionsState(books, reports)
             }
-            .doOnError {
-                suggestionState.postValue(SuggestionsState.Error)
+            .doOnError { throwable ->
+                val errorState = if (throwable.isUnauthenticatedException()) {
+                    SuggestionsState.UnauthenticatedUser
+                } else {
+                    SuggestionsState.Error
+                }
+                suggestionState.postValue(errorState)
             }
             .subscribe(suggestionState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    private fun Throwable.isUnauthenticatedException(): Boolean {
+        return (this is HttpException) && (this.code() == 403)
     }
 
     private fun buildSuggestionsState(

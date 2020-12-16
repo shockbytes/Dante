@@ -96,6 +96,7 @@ class SuggestionsFragment : BaseFragment() {
             is SuggestionsViewModel.SuggestionsState.Present -> handleSuggestions(suggestionsState.suggestions)
             is SuggestionsViewModel.SuggestionsState.Empty -> handleEmptyState()
             is SuggestionsViewModel.SuggestionsState.Error -> handleErrorState()
+            is SuggestionsViewModel.SuggestionsState.UnauthenticatedUser -> handleUnauthenticatedState()
         }
     }
 
@@ -121,21 +122,24 @@ class SuggestionsFragment : BaseFragment() {
         tv_suggestions_explanation.setVisible(false)
     }
 
+    private fun handleUnauthenticatedState() {
+        handleNonHappyState(R.string.suggestion_view_login_required_message)
+    }
+
     private fun handleEmptyState() {
-        pb_suggestions.setVisible(false)
-        rv_suggestions.setVisible(false)
-        tv_suggestions_explanation.apply {
-            setVisible(true)
-            setText(R.string.no_suggestions_for_user)
-        }
+        handleNonHappyState(R.string.no_suggestions_for_user)
     }
 
     private fun handleErrorState() {
+        handleNonHappyState(R.string.suggestion_error)
+    }
+
+    private fun handleNonHappyState(textRes: Int) {
         pb_suggestions.setVisible(false)
         rv_suggestions.setVisible(false)
         tv_suggestions_explanation.apply {
             setVisible(true)
-            setText(R.string.suggestion_error)
+            setText(textRes)
         }
     }
 
@@ -151,8 +155,6 @@ class SuggestionsFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): SuggestionsFragment {
-            return SuggestionsFragment()
-        }
+        fun newInstance() = SuggestionsFragment()
     }
 }

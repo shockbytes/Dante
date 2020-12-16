@@ -65,7 +65,6 @@ ext {
     crashlyticsVersion = "2.10.1"
     glideVersion = "4.11.0"
     lottieVersion = "3.0.1"
-    rxImagePickerVersion = "2.2.0"
     rxKotlinVersion = "2.3.0"
     cameraXVersion = "1.0.0-beta11"
     cameraXExtensionVersion = "1.0.0-alpha18"

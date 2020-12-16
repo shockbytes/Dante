@@ -5,9 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.HapticFeedbackConstants
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.palette.graphics.Palette
@@ -53,28 +52,20 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
         super.onCreate(savedInstanceState)
         viewModel = viewModelOf(vmFactory)
 
-        arguments?.getParcelable<BookEntity>(ARG_BOOK_ENTITY_UPDATE).let { bookEntity ->
-            viewModel.initialize(bookEntity)
-        }
+        arguments?.getParcelable<BookEntity>(ARG_BOOK_ENTITY_UPDATE)
+            .let(viewModel::initialize)
     }
 
     override fun setupViews() {
 
-        imgViewManualAdd.setOnClickListener { v ->
+        cardImageManualAdd.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             viewModel.pickImage(requireActivity())
         }
 
-        editTextManualAddTitle.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) = Unit
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                s?.let { title ->
-                    (activity as? TintableBackNavigableActivity)?.tintTitle(title.toString())
-                }
-            }
-        })
+        editTextManualAddTitle.doOnTextChanged { text, _, _, _ ->
+            (activity as? TintableBackNavigableActivity)?.tintTitle(text.toString())
+        }
 
         btnManualAddUpcoming.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -127,7 +118,16 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     override fun onImageLoadingFailed(e: Exception?) = Timber.e(e)
 
     override fun onImageResourceReady(resource: Drawable?) {
+        hideLoadingIndicator()
+        colorToolbarFromResource(resource)
+    }
 
+    private fun hideLoadingIndicator() {
+        imgViewManualAdd.setVisible(true)
+        pbManualAddImageUpload.setVisible(false)
+    }
+
+    private fun colorToolbarFromResource(resource: Drawable?) {
         (resource as? BitmapDrawable)?.bitmap?.let(Palette::from)?.generate { palette ->
 
             val actionBarColor = palette?.lightMutedSwatch?.rgb
@@ -148,40 +148,11 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             .subscribe(::handleImageLoadingState)
             .addTo(compositeDisposable)
 
-        viewModel.getViewState().observe(this, { viewState ->
-
-            when (viewState) {
-                ManualAddViewModel.ViewState.ManualAdd -> {
-                    container_manual_add_buttons.setVisible(true)
-                    container_update_book_buttons.setVisible(false)
-                }
-                is ManualAddViewModel.ViewState.UpdateBook -> {
-                    container_manual_add_buttons.setVisible(false)
-                    container_update_book_buttons.setVisible(true)
-                    populateBookDataViews(viewState.bookEntity)
-                }
-            }
-        })
+        viewModel.getViewState().observe(this, Observer(::handleViewState))
 
         viewModel.onAddEvent
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { event ->
-
-                when (event) {
-                    is ManualAddViewModel.AddEvent.Success -> {
-                        activity?.onBackPressed()
-                        sendBookCreatedBroadcast(event.createdBookState)
-                    }
-                    is ManualAddViewModel.AddEvent.Error -> {
-                        showSnackbar(getString(R.string.manual_add_error),
-                            getString(android.R.string.ok), true) { this.dismiss() }
-                    }
-                    is ManualAddViewModel.AddEvent.Updated -> {
-                        sendBookUpdatedBroadcast(event.updateBookState)
-                        activity?.onBackPressed()
-                    }
-                }
-            }
+            .subscribe(::handleAddEvent)
             .addTo(compositeDisposable)
     }
 
@@ -192,7 +163,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                     requireContext(),
                     imageState.uri,
                     imgViewManualAdd,
-                    R.drawable.ic_placeholder,
+                    R.drawable.ic_placeholder_cover,
                     circular = false,
                     callback = this,
                     callbackHandleValues = Pair(first = false, second = true)
@@ -201,7 +172,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             ManualAddViewModel.ImageState.NoImage -> {
                 imageLoader.loadImageResource(
                     requireContext(),
-                    R.drawable.ic_placeholder,
+                    R.drawable.ic_placeholder_cover,
                     imgViewManualAdd
                 )
             }
@@ -209,7 +180,48 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     }
 
     private fun handleImageLoadingState(imageLoadingState: ManualAddViewModel.ImageLoadingState) {
-        // TODO Handle loading indicator
+        when (imageLoadingState) {
+            is ManualAddViewModel.ImageLoadingState.Loading -> {
+                pbManualAddImageUpload.setVisible(true)
+                imgViewManualAdd.setVisible(false)
+            }
+            is ManualAddViewModel.ImageLoadingState.Error -> {
+                pbManualAddImageUpload.setVisible(false)
+                imgViewManualAdd.setVisible(true)
+            }
+            ManualAddViewModel.ImageLoadingState.Success -> Unit // Not needed...
+        }
+    }
+
+    private fun handleViewState(viewState: ManualAddViewModel.ViewState) {
+        when (viewState) {
+            ManualAddViewModel.ViewState.ManualAdd -> {
+                container_manual_add_buttons.setVisible(true)
+                container_update_book_buttons.setVisible(false)
+            }
+            is ManualAddViewModel.ViewState.UpdateBook -> {
+                container_manual_add_buttons.setVisible(false)
+                container_update_book_buttons.setVisible(true)
+                populateBookDataViews(viewState.bookEntity)
+            }
+        }
+    }
+
+    private fun handleAddEvent(event: ManualAddViewModel.AddEvent) {
+        when (event) {
+            is ManualAddViewModel.AddEvent.Success -> {
+                activity?.onBackPressed()
+                sendBookCreatedBroadcast(event.createdBookState)
+            }
+            is ManualAddViewModel.AddEvent.Error -> {
+                showSnackbar(getString(R.string.manual_add_error),
+                    getString(android.R.string.ok), true) { this.dismiss() }
+            }
+            is ManualAddViewModel.AddEvent.Updated -> {
+                sendBookUpdatedBroadcast(event.updateBookState)
+                activity?.onBackPressed()
+            }
+        }
     }
 
     private fun sendBookCreatedBroadcast(createdBookState: BookState) {

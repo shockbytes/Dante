@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.9" />
 
     <ScrollView
         android:id="@+id/scrollViewManualAdd"
@@ -45,15 +45,39 @@
                     android:layout_height="match_parent"
                     android:padding="8dp">
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/imgViewManualAdd"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardImageManualAdd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:cardElevation="0dp"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        app:strokeColor="@color/border"
+                        app:strokeWidth="1dp"
+                        android:minHeight="60dp"
                         android:layout_marginStart="16dp"
+                        style="@style/AppTheme.CardLayout"
                         android:layout_marginTop="16dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_placeholder" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgViewManualAdd"
+                            android:layout_gravity="center"
+                            android:paddingHorizontal="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_placeholder_cover" />
+
+                        <ProgressBar
+                            android:id="@+id/pbManualAddImageUpload"
+                            android:visibility="gone"
+                            android:layout_gravity="center"
+                            android:indeterminate="true"
+                            android:paddingHorizontal="8dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilManualAddTitle"
@@ -63,11 +87,11 @@
                         android:layout_marginStart="24dp"
                         android:layout_marginEnd="16dp"
                         android:hint="@string/manual_add_title"
-                        app:layout_constraintBottom_toBottomOf="@+id/imgViewManualAdd"
+                        app:layout_constraintBottom_toBottomOf="@id/cardImageManualAdd"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toEndOf="@+id/imgViewManualAdd"
-                        app:layout_constraintTop_toTopOf="@+id/imgViewManualAdd">
+                        app:layout_constraintStart_toEndOf="@id/cardImageManualAdd"
+                        app:layout_constraintTop_toTopOf="@id/cardImageManualAdd">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextManualAddTitle"
@@ -94,7 +118,7 @@
                         android:hint="@string/manual_add_authors"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/imgViewManualAdd">
+                        app:layout_constraintTop_toBottomOf="@id/cardImageManualAdd">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextManualAddAuthors"

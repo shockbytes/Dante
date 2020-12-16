@@ -15,8 +15,8 @@ import at.shockbytes.dante.core.data.local.RealmPageRecordDao
 import at.shockbytes.dante.core.data.local.SharedPrefsBackedReadingGoalRepository
 import at.shockbytes.dante.core.image.GlideImageLoader
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.core.image.ImagePicker
-import at.shockbytes.dante.core.image.RxLegacyImagePicker
+import at.shockbytes.dante.core.image.picker.ImagePicker
+import at.shockbytes.dante.core.image.picker.RxLegacyImagePicker
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.core.network.google.GoogleBooksDownloader

@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
-import at.shockbytes.dante.core.image.ImagePicker
+import at.shockbytes.dante.core.image.picker.ImagePicker
 import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailUri
 import at.shockbytes.dante.util.ExceptionHandlers

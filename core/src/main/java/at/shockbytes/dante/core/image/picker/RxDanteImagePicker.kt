@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core.image
+package at.shockbytes.dante.core.image.picker
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity

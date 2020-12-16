@@ -5,7 +5,7 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.data.ReadingGoalRepository
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.core.image.ImagePicker
+import at.shockbytes.dante.core.image.picker.ImagePicker
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.util.scheduler.SchedulerFacade

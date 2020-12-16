@@ -1,4 +1,4 @@
-package at.shockbytes.dante.core.image
+package at.shockbytes.dante.core.image.picker
 
 import android.content.Context
 import com.qingmei2.rximagepicker.entity.sources.Camera

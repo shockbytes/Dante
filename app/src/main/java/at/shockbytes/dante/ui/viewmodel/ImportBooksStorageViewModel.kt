@@ -5,10 +5,10 @@ import androidx.annotation.StringRes
 import at.shockbytes.dante.importer.ImportRepository
 import at.shockbytes.dante.importer.ImportStats
 import at.shockbytes.dante.importer.Importer
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject

@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
-import at.shockbytes.dante.core.image.picker.ImagePicker
+import at.shockbytes.dante.core.image.picker.ImagePicking
 import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailUri
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -24,7 +24,7 @@ import javax.inject.Inject
  */
 class ManualAddViewModel @Inject constructor(
     private val bookRepository: BookRepository,
-    private val imagePicker: ImagePicker,
+    private val imagePicker: ImagePicking,
     private val imageUploadStorage: ImageUploadStorage
 ) : BaseViewModel() {
 
@@ -94,11 +94,11 @@ class ManualAddViewModel @Inject constructor(
     fun pickImage(activity: FragmentActivity) {
         imagePicker
             .openGallery(activity)
-            .flatMapSingle { imageUri ->
+            .flatMap { imageUri ->
                 imageUploadStorage.upload(imageUri, ::progressUpdate)
             }
             .map(::ThumbnailUri)
-            .doOnNext { thumbnailUri ->
+            .doOnSuccess { thumbnailUri ->
                 Timber.d("Image thumbnail uploaded and picked picked: ${thumbnailUri.uri}")
                 imageLoadingState.onNext(ImageLoadingState.Success)
             }

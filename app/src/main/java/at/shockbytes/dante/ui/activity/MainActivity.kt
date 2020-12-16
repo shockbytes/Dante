@@ -10,17 +10,15 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatDelegate
 import android.view.MenuItem
 import android.view.animation.DecelerateInterpolator
+import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
 import at.shockbytes.dante.injection.AppComponent
-import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.adapter.BookPagerAdapter
 import at.shockbytes.dante.ui.fragment.MenuFragment
-import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
@@ -184,44 +182,29 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             })
             .addTo(compositeDisposable)
 
-        viewModel.getUserEvent().observe(this, { event ->
+        viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+    }
 
-            when (event) {
+    private fun handleUserEvent(event: MainViewModel.UserEvent) {
+        when (event) {
 
-                is MainViewModel.UserEvent.SuccessEvent -> {
-                    // Only show onboarding hints after the user login state is resolved
-                    checkForOnboardingHints()
+            is MainViewModel.UserEvent.LoggedIn -> {
+                // Only show onboarding hints after the user login state is resolved
+                checkForOnboardingHints()
 
-                    if (event.user != null) {
-                        val photoUrl = event.user.photoUrl
-                        if (photoUrl != null) {
-                            loadImageUrl(photoUrl)
-                        } else {
-                            animateActionBarItems()
-                        }
-                        showGoogleWelcomeScreen(event.user, event.showWelcomeScreen)
-                    } else {
-                        imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
-                        animateActionBarItems()
-                    }
-                }
-
-                is MainViewModel.UserEvent.LoginEvent -> {
-                    imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
-
-                    GoogleSignInDialogFragment.newInstance()
-                        .setSignInListener {
-                            startActivityForResult(event.signInIntent, DanteUtils.RC_SIGN_IN)
-                        }
-                        .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
-                        .show(supportFragmentManager, "sign-in-fragment")
-                }
-
-                is MainViewModel.UserEvent.ErrorEvent -> {
-                    showToast(getString(event.errorMsg))
+                val photoUrl = event.user.photoUrl
+                if (photoUrl != null) {
+                    loadImageUrl(photoUrl)
+                } else {
+                    animateActionBarItems()
                 }
             }
-        })
+
+            is MainViewModel.UserEvent.AnonymousUser -> {
+                imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
+                animateActionBarItems()
+            }
+        }
     }
 
     private fun loadImageUrl(photoUrl: Uri) {
@@ -343,17 +326,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         mainBottomNavigation.itemTextColor = stateList
     }
 
-    private fun showGoogleWelcomeScreen(account: DanteUser, showWelcomeScreen: Boolean) {
-        if (showWelcomeScreen && supportFragmentManager.findFragmentByTag(GOOGLE_SIGNIN_FRAGMENT) == null) {
-            GoogleWelcomeScreenDialogFragment
-                .newInstance(account.givenName, account.photoUrl)
-                .setOnAcknowledgedListener {
-                    viewModel.disableShowWelcomeScreen()
-                }
-                .show(supportFragmentManager, GOOGLE_SIGNIN_FRAGMENT)
-        }
-    }
-
     private fun indexForNavigationItemId(itemId: Int): Int? {
         return when (itemId) {
             R.id.menu_navigation_upcoming -> 0
@@ -424,8 +396,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     companion object {
 
         private const val TAG_ANNOUNCEMENT = "announcement-tag"
-
-        private const val GOOGLE_SIGNIN_FRAGMENT = "google_welcome_dialog_fragment"
 
         private const val ARG_OPEN_CAMERA_AFTER_LAUNCH = "arg_open_camera_after_lunch"
         private const val ARG_OPEN_BOOK_DETAIL_FOR_ID = "arg_open_book_detail_for_id"

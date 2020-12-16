@@ -37,11 +37,13 @@ class MainViewModel @Inject constructor(
 
     sealed class UserEvent {
 
-        data class SuccessEvent(val user: DanteUser?, val showWelcomeScreen: Boolean) : UserEvent()
+        data class LoggedIn(val user: DanteUser, val showWelcomeScreen: Boolean) : UserEvent()
 
-        data class LoginEvent(val signInIntent: Intent?) : UserEvent()
+        object AnonymousUser : UserEvent()
 
-        data class ErrorEvent(@StringRes val errorMsg: Int) : UserEvent()
+        data class RequireLogin(val signInIntent: Intent?) : UserEvent()
+
+        data class Error(@StringRes val errorMsg: Int) : UserEvent()
     }
 
     private val userEvent = MutableLiveData<UserEvent>()
@@ -60,12 +62,12 @@ class MainViewModel @Inject constructor(
             .map { userState ->
                 when {
                     userState is UserState.SignedInUser -> {
-                        UserEvent.SuccessEvent(userState.user, signInRepository.showWelcomeScreen)
+                        UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
                     }
                     userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
-                        UserEvent.LoginEvent(signInRepository.signInIntent)
+                        UserEvent.RequireLogin(signInRepository.signInIntent)
                     }
-                    else -> UserEvent.SuccessEvent(null, signInRepository.showWelcomeScreen)
+                    else -> UserEvent.AnonymousUser
                 }
             }
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
@@ -79,10 +81,10 @@ class MainViewModel @Inject constructor(
     fun signIn(data: Intent) {
         signInRepository.signIn(data)
             .subscribe({ account ->
-                userEvent.postValue(UserEvent.SuccessEvent(account, signInRepository.showWelcomeScreen))
+                userEvent.postValue(UserEvent.LoggedIn(account, signInRepository.showWelcomeScreen))
             }, { throwable: Throwable ->
                 Timber.e(throwable)
-                userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
+                userEvent.postValue(UserEvent.Error(R.string.error_google_login))
             })
             .addTo(compositeDisposable)
     }
@@ -91,7 +93,7 @@ class MainViewModel @Inject constructor(
         signInRepository.getAccount()
             .subscribeOn(schedulers.io)
             .doOnError {
-                userEvent.postValue(UserEvent.LoginEvent(signInRepository.signInIntent))
+                userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
             }
             .flatMapCompletable { userState ->
                 when (userState) {
@@ -111,7 +113,7 @@ class MainViewModel @Inject constructor(
 
     private fun postSignInEventAndTrackValue(source: LoginSource) {
         tracker.track(DanteTrackingEvent.Login(source))
-        userEvent.postValue(UserEvent.LoginEvent(signInRepository.signInIntent))
+        userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
     }
 
     fun signInMaybeLater(maybeLater: Boolean) {
@@ -124,7 +126,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun hideWelcomeScreenFlagFromPostedLiveData() {
-        (userEvent.value as? UserEvent.SuccessEvent)?.let { event ->
+        (userEvent.value as? UserEvent.LoggedIn)?.let { event ->
             userEvent.postValue(event.copy(showWelcomeScreen = false))
         }
     }

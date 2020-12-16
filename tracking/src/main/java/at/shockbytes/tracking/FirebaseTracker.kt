@@ -3,7 +3,6 @@ package at.shockbytes.tracking
 import android.content.Context
 import android.os.Bundle
 import at.shockbytes.tracking.event.DanteTrackingEvent
-import at.shockbytes.tracking.event.TrackingProperty
 import at.shockbytes.tracking.properties.BaseProperty
 import com.google.firebase.analytics.FirebaseAnalytics
 

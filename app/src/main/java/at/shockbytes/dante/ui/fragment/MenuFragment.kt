@@ -12,13 +12,13 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
-import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.dante.util.viewModelOfActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.bottom_sheet_menu.*
@@ -35,7 +35,9 @@ class MenuFragment : BottomSheetDialogFragment() {
 
     override fun getTheme() = R.style.BottomSheetDialogTheme
 
-    private val viewModel: MainViewModel by lazy { viewModelOf(vmFactory) }
+    private val viewModel: MainViewModel by lazy {
+        viewModelOfActivity(requireActivity(), vmFactory)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,14 +52,14 @@ class MenuFragment : BottomSheetDialogFragment() {
         return inflater.inflate(R.layout.bottom_sheet_menu, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupViews()
+    }
+
     override fun onStart() {
         super.onStart()
         bindViewModel()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setupViews()
     }
 
     private fun bindViewModel() {
@@ -68,27 +70,27 @@ class MenuFragment : BottomSheetDialogFragment() {
 
         when (event) {
 
-            is MainViewModel.UserEvent.SuccessEvent -> {
+            is MainViewModel.UserEvent.LoggedIn -> {
 
-                if (event.user != null) {
-                    txtMenuUserName.text = event.user.displayName
-                    txtMenuUserMail.text = event.user.email
-                    btnMenuLogin.text = getString(R.string.logout)
+                txtMenuUserName.text = event.user.displayName
+                txtMenuUserMail.text = event.user.email
+                btnMenuLogin.text = getString(R.string.logout)
 
-                    event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
-                        imageViewMenuUser.setImageBitmap(image)
-                    }, { throwable ->
-                        throwable.printStackTrace()
-                    })
-                } else {
-                    txtMenuUserName.text = getString(R.string.anonymous_user)
-                    txtMenuUserMail.text = ""
-                    btnMenuLogin.text = getString(R.string.login)
-                    imageViewMenuUser.setImageResource(R.drawable.ic_user_template_dark)
-                }
+                event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
+                    imageViewMenuUser.setImageBitmap(image)
+                }, { throwable ->
+                    throwable.printStackTrace()
+                })
             }
 
-            is MainViewModel.UserEvent.LoginEvent -> {
+            is MainViewModel.UserEvent.AnonymousUser -> {
+                txtMenuUserName.text = getString(R.string.anonymous_user)
+                txtMenuUserMail.text = ""
+                btnMenuLogin.text = getString(R.string.login)
+                imageViewMenuUser.setImageResource(R.drawable.ic_user_template_dark)
+            }
+
+            is MainViewModel.UserEvent.RequireLogin -> {
                 GoogleSignInDialogFragment.newInstance()
                     .setSignInListener {
                         requireActivity().startActivityForResult(event.signInIntent, DanteUtils.RC_SIGN_IN)
@@ -96,7 +98,8 @@ class MenuFragment : BottomSheetDialogFragment() {
                     .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
                     .show(childFragmentManager, "sign-in-fragment")
             }
-            is MainViewModel.UserEvent.ErrorEvent -> {
+
+            is MainViewModel.UserEvent.Error -> {
                 Toast.makeText(context, event.errorMsg, Toast.LENGTH_LONG).show()
             }
         }

@@ -16,7 +16,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.realm.Case
 import io.realm.Sort
-import timber.log.Timber
 
 /**
  * Author:  Martin Macheiner
@@ -147,15 +146,20 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     }
 
     override fun deleteBookLabel(bookLabel: BookLabel): Completable {
-        return completableOf {
+        return Completable.create { emitter ->
             realm.instance.executeTransaction { realm ->
-                realm.where(labelClass)
+                val label = realm.where(labelClass)
                     .equalTo("title", bookLabel.title)
                     .and()
                     .equalTo("bookId", bookLabel.bookId)
                     .findFirst()
-                    ?.deleteFromRealm()
-                    ?: Timber.e(RealmBookLabelDeletionException(bookLabel.title))
+
+                if (label != null) {
+                    label.deleteFromRealm()
+                    emitter.onComplete()
+                } else {
+                    emitter.tryOnError(RealmBookLabelDeletionException(bookLabel.title))
+                }
             }
         }
     }

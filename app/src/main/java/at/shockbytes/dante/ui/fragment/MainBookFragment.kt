@@ -112,7 +112,8 @@ class MainBookFragment : BaseFragment(),
             ?.let { createdBookState ->
                 if (viewModel.state == createdBookState) {
                     runDelayed(500) {
-                        rv_main_book_fragment.smoothScrollToPosition(0)
+                        // Might be null, there have been reported crashes
+                        rv_main_book_fragment?.smoothScrollToPosition(0)
                     }
                 }
             }

@@ -23,8 +23,7 @@ class FirebaseModule(private val context: Context) {
 
     @Provides
     fun provideRemoteConfig(): FirebaseRemoteConfig {
-        val configSettings = FirebaseRemoteConfigSettings
-            .Builder()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
             .build()
         return FirebaseRemoteConfig.getInstance().apply {
             setConfigSettingsAsync(configSettings).addOnCompleteListener {

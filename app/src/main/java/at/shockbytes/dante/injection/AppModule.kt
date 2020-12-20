@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
 import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
@@ -60,12 +59,11 @@ class AppModule(private val app: Application) {
 
     @Provides
     fun provideFeatureFlagging(remoteConfig: FirebaseRemoteConfig): FeatureFlagging {
-        return if (BuildConfig.DEBUG) {
-            val prefs = app.getSharedPreferences("feature_flagging", Context.MODE_PRIVATE)
-            SharedPreferencesFeatureFlagging(prefs)
-        } else {
-            FirebaseFeatureFlagging(remoteConfig)
-        }
+        /**
+         * Do not use [FirebaseFeatureFlagging] since there are no remotely controlled feature flags.
+         */
+        val prefs = app.getSharedPreferences("feature_flagging", Context.MODE_PRIVATE)
+        return SharedPreferencesFeatureFlagging(prefs)
     }
 
     @Provides

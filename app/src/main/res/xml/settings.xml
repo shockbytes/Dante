@@ -44,8 +44,7 @@
 
     </androidx.preference.PreferenceCategory>
 
-    <androidx.preference.PreferenceCategory
-        android:title="@string/prefs_category_books_privacy">
+    <androidx.preference.PreferenceCategory android:title="@string/prefs_category_books_privacy">
 
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="true"
@@ -79,6 +78,11 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_about">
+
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_ad_free"
+            android:key="@string/prefs_ad_free_medium_article_key"
+            android:title="@string/prefs_ad_free_medium_article_title" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_feature_flag"

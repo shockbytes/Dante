@@ -15,6 +15,7 @@ import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
 import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
@@ -81,6 +82,14 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
         findPreference<Preference>(getString(R.string.prefs_contribute_code_key))?.apply {
             this.setOnPreferenceClickListener {
                 UrlLauncher.openDanteGithubPage(requireContext())
+                true
+            }
+        }
+
+        findPreference<Preference>(getString(R.string.prefs_ad_free_medium_article_key))?.apply {
+            this.setOnPreferenceClickListener {
+                tracker.track(DanteTrackingEvent.OpenAdFreeMediumArticle)
+                UrlLauncher.openAdFreeMediumArticle(requireContext())
                 true
             }
         }

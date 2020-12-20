@@ -335,5 +335,6 @@
     <string name="wishlist">Wunschliste</string>
     <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen.</string>
     <string name="book_added_to_wishlist">%s wurde zur Wunschliste hinzugefügt</string>
+    <string name="prefs_ad_free_medium_article_title">Lies hier warum Dante keine Werbung schaltet.</string>
 
 </resources>

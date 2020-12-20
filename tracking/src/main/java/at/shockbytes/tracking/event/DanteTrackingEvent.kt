@@ -14,6 +14,8 @@ sealed class DanteTrackingEvent(
 
     object InterestedInSuggestingBooks : DanteTrackingEvent("suggestions_interested")
 
+    object OpenAdFreeMediumArticle : DanteTrackingEvent("open_ad_free_medium_article")
+
     data class StartImport(val importer: String) : DanteTrackingEvent(
         "start_import",
         listOf(TrackingProperty("importer_name", importer))

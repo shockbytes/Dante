@@ -39,26 +39,26 @@ class DriveRestClient(
             val account = signInManager.getGoogleAccount()?.account
 
             if (account != null) {
+                // Use the authenticated account to sign in to the Drive service.
+                val credential: GoogleAccountCredential = GoogleAccountCredential
+                    .usingOAuth2(activity, Collections.singleton(DriveScopes.DRIVE_FILE))
+                    .apply {
+                        selectedAccount = account
+                    }
+
+                drive = Drive
+                    .Builder(
+                        NetHttpTransport(),
+                        GsonFactory(),
+                        credential
+                    )
+                    .setApplicationName(APP_NAME)
+                    .build()
+
+                emitter.onComplete()
+            } else {
                 emitter.tryOnError(UnauthenticatedUserException())
             }
-
-            // Use the authenticated account to sign in to the Drive service.
-            val credential: GoogleAccountCredential = GoogleAccountCredential
-                .usingOAuth2(activity, Collections.singleton(DriveScopes.DRIVE_FILE))
-                .apply {
-                    selectedAccount = account
-                }
-
-            drive = Drive
-                .Builder(
-                    NetHttpTransport(),
-                    GsonFactory(),
-                    credential
-                )
-                .setApplicationName(APP_NAME)
-                .build()
-
-            emitter.onComplete()
         }
     }
 

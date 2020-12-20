@@ -11,12 +11,6 @@
             android:key="@string/prefs_dark_mode_key"
             android:title="@string/prefs_dark_mode_title" />
 
-        <androidx.preference.Preference
-            android:icon="@drawable/ic_settings_change_icon"
-            android:key="@string/prefs_change_icon_key"
-            android:summary="Standard"
-            android:title="@string/prefs_change_icon_title" />
-
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_books">

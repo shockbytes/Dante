@@ -10,7 +10,6 @@ import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
 import at.shockbytes.dante.ui.viewmodel.ImportBooksStorageViewModel
 import at.shockbytes.dante.ui.viewmodel.LabelCategoryViewModel
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
-import at.shockbytes.dante.ui.viewmodel.LauncherIconPickerViewModel
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
@@ -124,11 +123,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(OnlineStorageViewModel::class)
     internal abstract fun onlineStorageViewModel(viewModel: OnlineStorageViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(LauncherIconPickerViewModel::class)
-    internal abstract fun launcherIconPickerViewModel(viewModel: LauncherIconPickerViewModel): ViewModel
 
     @Binds
     @IntoMap

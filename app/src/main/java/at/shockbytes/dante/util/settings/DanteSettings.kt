@@ -29,17 +29,6 @@ class DanteSettings(
 
     var showRandomPickInteraction: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_pick_random_key))
 
-    var selectedLauncherIconState: LauncherIconState
-        get() {
-            val idString = prefs.getString(context.getString(R.string.prefs_launcher_icon_state_key), "standard") ?: "standard"
-            return LauncherIconState.ofStringOrDefault(idString)
-        }
-        set(value) {
-            prefs.edit()
-                .putString(context.getString(R.string.prefs_launcher_icon_state_key), value.manifestAliasId)
-                .apply()
-        }
-
     val themeState: ThemeState
         get() = ThemeState.ofString(darkModeString) ?: ThemeState.SYSTEM
 

@@ -248,12 +248,10 @@
     <string name="new_label_title_exists">Dieser Titel existiert bereits</string>
     <string name="empty_label_picker">Keine Labels verfügbar.\\n Erstelle ein neues zuerst.#</string>
     <string name="statistics_header_labels">Labels</string>
-    <string name="prefs_change_icon_title">Icon ändern</string>
     <string name="prefs_category_books_privacy">Datenschutz</string>
     <string name="prefs_tracking_title">Tracking</string>
     <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
     <string name="not_available">N/A</string>
-    <string name="launcher_icon_change_description">Eine Änderung des Icons \n führt voraussichtlich zu einem Neustart</string>
     <string name="restarting_app">Die App startet sich voraussichtlich neu&#8230;</string>
     <string name="menu_main_book_storage">Bücherverwaltung</string>
     <string name="storage_local">Am Gerät</string>

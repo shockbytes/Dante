@@ -32,9 +32,7 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isFragmentShown
-import at.shockbytes.dante.util.retrieveActiveActivityAlias
 import at.shockbytes.dante.util.runDelayed
-import at.shockbytes.dante.util.settings.LauncherIconState
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
@@ -71,7 +69,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setupUI()
         initializeNavigation()
         setupDarkMode()
-        saveLauncherIconState()
         // goingEdgeToEdge()
         setupFabMorph()
     }
@@ -292,12 +289,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 showOnboardingHintViews()
             }
         }
-    }
-
-    private fun saveLauncherIconState() {
-        val aliasName = retrieveActiveActivityAlias()
-        val state = LauncherIconState.ofStringOrDefault(aliasName)
-        danteSettings.selectedLauncherIconState = state
     }
 
     private fun showOnboardingHintViews() {

@@ -19,7 +19,6 @@ import at.shockbytes.dante.ui.fragment.FeatureFlagConfigFragment
 import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
 import at.shockbytes.dante.ui.fragment.LabelCategoryBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LabelPickerBottomSheetFragment
-import at.shockbytes.dante.ui.fragment.LauncherIconPickerFragment
 import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
@@ -117,8 +116,6 @@ interface AppComponent {
     fun inject(fragment: LabelPickerBottomSheetFragment)
 
     fun inject(labelCategoryBottomSheetFragment: LabelCategoryBottomSheetFragment)
-
-    fun inject(fragment: LauncherIconPickerFragment)
 
     fun inject(fragment: OnlineStorageFragment)
 

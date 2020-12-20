@@ -12,8 +12,8 @@ android {
         applicationId "at.shockbytes.dante"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 39
-        versionName "3.17"
+        versionCode 40
+        versionName "3.18"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -88,6 +88,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$androidXAppCompatVersion"
     implementation "androidx.core:core-ktx:$androidXCoreVersion"
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha05"
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

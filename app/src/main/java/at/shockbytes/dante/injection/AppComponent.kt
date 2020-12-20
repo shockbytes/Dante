@@ -30,6 +30,7 @@ import at.shockbytes.dante.ui.fragment.RateFragment
 import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.fragment.SettingsFragment
 import at.shockbytes.dante.ui.fragment.StatisticsFragment
+import at.shockbytes.dante.ui.fragment.SuggestBookBottomSheetDialogFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
 import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
@@ -114,6 +115,8 @@ interface AppComponent {
     fun inject(remoteViewsService: DanteRemoteViewsService)
 
     fun inject(fragment: LabelPickerBottomSheetFragment)
+
+    fun inject(fragment: SuggestBookBottomSheetDialogFragment)
 
     fun inject(labelCategoryBottomSheetFragment: LabelCategoryBottomSheetFragment)
 

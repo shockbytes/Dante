@@ -29,7 +29,7 @@ class SuggestionsDiffUtilCallback(
             oldItem is SuggestionsAdapterItem.SuggestedBook && newItem is SuggestionsAdapterItem.SuggestedBook -> {
                 oldItem.suggestion == newItem.suggestion
             }
-            oldItem is SuggestionsAdapterItem.Explanation && newItem is SuggestionsAdapterItem.Explanation -> {
+            oldItem is SuggestionsAdapterItem.SuggestionHint && newItem is SuggestionsAdapterItem.SuggestionHint -> {
                 oldItem == newItem
             }
             else -> {

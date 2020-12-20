@@ -6,14 +6,17 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
-import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
-import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.GoogleFirebaseSignInRepository
+import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
 import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
-import at.shockbytes.dante.suggestions.AssetsSuggestionsRepository
 import at.shockbytes.dante.suggestions.SuggestionsRepository
+import at.shockbytes.dante.suggestions.cache.DataStoreSuggestionsCache
+import at.shockbytes.dante.suggestions.cache.SuggestionsCache
+import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsApi
+import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsRepository
 import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.explanations.SharedPrefsExplanations
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
@@ -53,8 +56,8 @@ class AppModule(private val app: Application) {
     fun provideGoogleSignInManager(
         prefs: SharedPreferences,
         schedulers: SchedulerFacade
-    ): SignInManager {
-        return GoogleFirebaseSignInManager(prefs, app.applicationContext, schedulers)
+    ): SignInRepository {
+        return GoogleFirebaseSignInRepository(prefs, app.applicationContext, schedulers)
     }
 
     @Provides
@@ -73,8 +76,23 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideSuggestionsRepository(): SuggestionsRepository {
-        return AssetsSuggestionsRepository(app.applicationContext, Gson())
+    fun provideSuggestionCache(): SuggestionsCache {
+        return DataStoreSuggestionsCache(app.applicationContext, Gson())
+    }
+
+    @Provides
+    fun provideSuggestionsRepository(
+        firebaseSuggestionsApi: FirebaseSuggestionsApi,
+        schedulerFacade: SchedulerFacade,
+        signInRepository: SignInRepository,
+        suggestionsCache: SuggestionsCache
+    ): SuggestionsRepository {
+        return FirebaseSuggestionsRepository(
+            firebaseSuggestionsApi,
+            schedulerFacade,
+            signInRepository,
+            suggestionsCache
+        )
     }
 
     @Provides

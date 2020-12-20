@@ -10,6 +10,8 @@ interface OnBookActionClickedListener {
 
     fun onEdit(book: BookEntity)
 
+    fun onSuggest(book: BookEntity)
+
     fun onMoveToUpcoming(book: BookEntity)
 
     fun onMoveToCurrent(book: BookEntity)

@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.17</string>
+    <string name="app_version" translatable="false">3.18</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -48,6 +48,7 @@
     <string name="reading_goal_level_3">Book wizard</string>
 
     <string name="edit">Edit</string>
+    <string name="suggest">Suggest</string>
     <string name="menu_main_stats">Statistics</string>
     <string name="menu_main_timeline">Timeline</string>
     <string name="settings">Settings</string>
@@ -360,9 +361,25 @@
     <string name="suggestions_title">Suggestions</string>
     <string name="suggestions_explanation_want_to_suggest">I\'d like to suggest books</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
-    <string name="suggestions_explanation">Receive some suggestions from book lovers all over the world.</string>
+    <string name="suggestions_hint">Receive some suggestions from book lovers all over the world.\n\nYou will receive weekly updates. Make sure you suggest your favourite books to others too.</string>
 
-    <string name="suggestion_error">We have to apologize. We were unable to load you some suggestions.</string>
+    <string name="suggestion_hint">Enter your recommendation</string>
+    <string name="login_required">Login required</string>
+    <string name="suggestion_login_required_message">You need to be logged into your account in order to suggest books.</string>
+    <string name="suggestion_view_login_required_message">You need to be logged into your account in order view book suggestions.</string>
+    <string name="suggestion_wrong_language_title">Language not supported</string>
+    <string name="suggestion_wrong_language_message">Unfortunately it\'s only possible to suggest english books. Please write your recommendation in english too. We are working to remove this restriction in the near future.</string>
+    <string name="suggestion_placed_success">Thanks! Your book will be suggested to other readers!</string>
+    <string name="suggestion_placed_error">Oh-no! Seems like there was a problem. Please try again later.</string>
+
+    <string name="no_suggestions_for_user">We are sorry. There are no suggestions for you at the moment. Wait some days until your fellows will suggest some books.</string>
+    <string name="report">Report</string>
+    <string name="book_report_confirmation_title">Report book</string>
+    <string name="book_report_confirmation_msg">Do you really want to report the suggestion %s?</string>
+    <string name="book_reported_success">You reported %s. Thanks for making Dante a better place.</string>
+    <string name="book_reported_error">There was a problem while reporting %s. Please try again later.</string>
+
+    <string name="suggestion_error">We have to apologize. We were unable to load you some suggestions. Make sure you suggest books to others too.</string>
     <string name="download_suggestions_other">One of those books?</string>
     <string name="download_suggestion_header_other">Maybe one of them?</string>
     <string name="download_suggestion_other">Not my book</string>

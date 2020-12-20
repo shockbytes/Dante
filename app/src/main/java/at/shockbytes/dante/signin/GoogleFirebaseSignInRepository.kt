@@ -31,11 +31,11 @@ import timber.log.Timber
  * If migrating to firebase, use this docs
  * https://firebase.google.com/docs/auth/android/google-signin
  */
-class GoogleFirebaseSignInManager(
+class GoogleFirebaseSignInRepository(
     prefs: SharedPreferences,
     private val context: Context,
     private val schedulers: SchedulerFacade
-) : SignInManager {
+) : SignInRepository {
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -127,7 +127,7 @@ class GoogleFirebaseSignInManager(
     override fun getAuthorizationHeader(): Single<String> {
         return getAccount().map { acc ->
             val authToken = if (acc is UserState.SignedInUser) acc.user.authToken ?: "" else ""
-            SignInManager.getAuthorizationHeader(authToken)
+            SignInRepository.getAuthorizationHeader(authToken)
         }
     }
 

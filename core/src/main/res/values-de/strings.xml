@@ -168,7 +168,7 @@
     <string name="announcement_header">&#127881; Ankündigung &#127881;</string>
     <string name="ask_for_book_deletion">Buch entfernen?</string>
     <string name="ask_for_book_deletion_msg">Willst du wirklich das Buch %s von deiner Bibliothek entfernen?</string>
-    <string name="action_send_mail">Sende Mail</string>
+    <string name="action_send_mail">Mail senden</string>
 
     <string name="announcement_fixed_backup_title">Backups sind zurück!</string>
     <string name="announcement_fixed_backup_description">Die Backup Funktionalität war schon viel zu lange nicht ordentlich verfügbar und dafür mochten wir uns entschuldigen! Jetzt ist sie wieder verfügbar und funktioniert besser als zuvor.\n\n.Außerdem wollten wir auch noch sagen, dass wir bereits an besseren Datensynchronisationsmöglichkeiten arbeiten.</string>
@@ -282,7 +282,7 @@
     <string name="add_book_to_library_hint">Ein Buch hinzufügen</string>
     <string name="prefs_category_books">Bücher</string>
     <string name="sorted_by">Sortiert nach %s</string>
-    <string name="prefs_feedback_summary">Sende uns via Mail dein Feedback!</string>
+    <string name="prefs_feedback_summary">Sende uns dein Feedback als Mail!</string>
     <string name="mail_feedback">Wie ich Dante verbessern würde</string>
 
     <string name="random_pick_action">Zufälliges Buch wählen</string>
@@ -325,14 +325,31 @@
     <string name="suggestions_title">Vorschläge</string>
     <string name="suggestions_explanation_want_to_suggest">Ich will Bücher vorschlagen</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Vorschläge sind bald verfügbar</string>
-    <string name="suggestions_explanation">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.</string>
+    <string name="suggestions_hint">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.\n\nErhalte jede Woche neue Updates. Teile auch du deine liebsten Bücher mit anderen.</string>
     <string name="wishlist_title">Meine Wunschliste</string>
     <string name="wishlist_explanation">Lege alle Bücher hier ab, die du noch nicht hast, aber in Zukunft lesen willst.\n\nKleiner Tipp: Teile diese Liste gelegentlich mit deinem Partner.</string>
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
     <string name="wishlist_empty">Deine Wunschliste ist leer. Gut! Sieht so aus als hättest du all deine Bücher bereits!</string>
     <string name="wishlist">Wunschliste</string>
-    <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen.</string>
+    <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen. Bitte schlage auch du Bücher für andere vor.</string>
     <string name="book_added_to_wishlist">%s wurde zur Wunschliste hinzugefügt</string>
+    <string name="suggest">Vorschlagen</string>
     <string name="prefs_ad_free_medium_article_title">Lies hier warum Dante keine Werbung schaltet.</string>
+
+    <string name="no_suggestions_for_user">Es tut uns Leid. Es sind gerade keine Vorschläge für dich vorhanden. Warte ein bisschen bis deine Kollegen ein paar Bücher vorschlagen.</string>
+
+    <string name="book_report_confirmation_title">Buch melden</string>
+    <string name="book_report_confirmation_msg">Willst du wirklich den Vorschlag %s melden?</string>
+    <string name="book_reported_success">Du hast %s gemeldet. Vielen Dank, dass du Dante besser machst.</string>
+    <string name="book_reported_error">Es gab ein Problem beim Melden von %s. Bitte versuche es später nochmals.</string>
+    <string name="login_required">Login erforderlich</string>
+    <string name="suggestion_wrong_language_title">Sprache nicht unterstützt</string>
+    <string name="suggestion_login_required_message">Du musst in deinem Account eingeloggt sein, um Bücher vorzuschlagen.</string>
+    <string name="suggestion_view_login_required_message">Du musst in deinem Account eingeloggt sein, um Vorschläge von anderen zu sehen.</string>
+    <string name="suggestion_wrong_language_message">Zurzeit ist es leider nur möglich englischsprachige Bücher vorzuschlagen. Bitte gib auch deine Empfehlung auf englisch ein. Wir arbeiten daran, dass diese Einschränkung in Zukunft wegfällt.</string>
+    <string name="suggestion_hint">Schreib eine Empfehlung</string>
+    <string name="suggestion_placed_success">Vielen Dank! Dein Buch wird bald anderen Lesern vorgeschlagen!</string>
+    <string name="suggestion_placed_error">Oh nein! Sieht so aus als gäbe es ein Problem. Bitte versuche es später wieder.</string>
+    <string name="report">Melden</string>
 
 </resources>

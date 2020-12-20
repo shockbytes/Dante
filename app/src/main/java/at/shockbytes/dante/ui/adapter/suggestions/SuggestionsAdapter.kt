@@ -35,7 +35,7 @@ class SuggestionsAdapter(
                 onSuggestionActionClickedListener
             )
 
-            R.layout.item_generic_explanation -> SuggestionExplanationViewHolder.forParent(
+            R.layout.item_generic_explanation -> SuggestionHintViewHolder.forParent(
                 parent,
                 onSuggestionExplanationClickedListener
             )

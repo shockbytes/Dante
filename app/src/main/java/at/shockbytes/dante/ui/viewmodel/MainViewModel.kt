@@ -7,12 +7,16 @@ import androidx.lifecycle.LiveData
 import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
-import at.shockbytes.dante.signin.SignInManager
+import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.signin.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
+import at.shockbytes.tracking.properties.LoginSource
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -24,19 +28,22 @@ import javax.inject.Inject
  * Date:    10.06.2018
  */
 class MainViewModel @Inject constructor(
-    private val signInManager: SignInManager,
+    private val signInRepository: SignInRepository,
     private val announcementProvider: AnnouncementProvider,
     private val schedulers: SchedulerFacade,
-    private val danteSettings: DanteSettings
+    private val danteSettings: DanteSettings,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     sealed class UserEvent {
 
-        data class SuccessEvent(val user: DanteUser?, val showWelcomeScreen: Boolean) : UserEvent()
+        data class LoggedIn(val user: DanteUser, val showWelcomeScreen: Boolean) : UserEvent()
 
-        data class LoginEvent(val signInIntent: Intent?) : UserEvent()
+        object AnonymousUser : UserEvent()
 
-        data class ErrorEvent(@StringRes val errorMsg: Int) : UserEvent()
+        data class RequireLogin(val signInIntent: Intent?) : UserEvent()
+
+        data class Error(@StringRes val errorMsg: Int) : UserEvent()
     }
 
     private val userEvent = MutableLiveData<UserEvent>()
@@ -50,43 +57,47 @@ class MainViewModel @Inject constructor(
     }
 
     private fun initialize() {
-        signInManager.setup()
-        signInManager.observeSignInState()
+        signInRepository.setup()
+        signInRepository.observeSignInState()
             .map { userState ->
                 when {
                     userState is UserState.SignedInUser -> {
-                        UserEvent.SuccessEvent(userState.user, signInManager.showWelcomeScreen)
+                        UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
                     }
-                    userState is UserState.AnonymousUser && !signInManager.maybeLater -> {
-                        UserEvent.LoginEvent(signInManager.signInIntent)
+                    userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
+                        UserEvent.RequireLogin(signInRepository.signInIntent)
                     }
-                    else -> UserEvent.SuccessEvent(null, signInManager.showWelcomeScreen)
+                    else -> UserEvent.AnonymousUser
                 }
             }
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
+    fun forceLogin(source: LoginSource) {
+        postSignInEventAndTrackValue(source)
+    }
+
     fun signIn(data: Intent) {
-        signInManager.signIn(data)
+        signInRepository.signIn(data)
             .subscribe({ account ->
-                userEvent.postValue(UserEvent.SuccessEvent(account, signInManager.showWelcomeScreen))
+                userEvent.postValue(UserEvent.LoggedIn(account, signInRepository.showWelcomeScreen))
             }, { throwable: Throwable ->
                 Timber.e(throwable)
-                userEvent.postValue(UserEvent.ErrorEvent(R.string.error_google_login))
+                userEvent.postValue(UserEvent.Error(R.string.error_google_login))
             })
             .addTo(compositeDisposable)
     }
 
     fun loginLogout() {
-        signInManager.getAccount()
+        signInRepository.getAccount()
             .subscribeOn(schedulers.io)
             .doOnError {
-                userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+                userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
             }
             .flatMapCompletable { userState ->
                 when (userState) {
-                    is UserState.SignedInUser -> signInManager.signOut()
+                    is UserState.SignedInUser -> signInRepository.signOut()
                     UserState.AnonymousUser -> postSignInEvent()
                 }
             }
@@ -95,22 +106,27 @@ class MainViewModel @Inject constructor(
     }
 
     private fun postSignInEvent(): Completable {
-        return Completable.fromAction {
-            userEvent.postValue(UserEvent.LoginEvent(signInManager.signInIntent))
+        return completableOf {
+            postSignInEventAndTrackValue(LoginSource.FromMenu)
         }
     }
 
+    private fun postSignInEventAndTrackValue(source: LoginSource) {
+        tracker.track(DanteTrackingEvent.Login(source))
+        userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
+    }
+
     fun signInMaybeLater(maybeLater: Boolean) {
-        signInManager.maybeLater = maybeLater
+        signInRepository.maybeLater = maybeLater
     }
 
     fun disableShowWelcomeScreen() {
-        signInManager.showWelcomeScreen = false
+        signInRepository.showWelcomeScreen = false
         hideWelcomeScreenFlagFromPostedLiveData()
     }
 
     private fun hideWelcomeScreenFlagFromPostedLiveData() {
-        (userEvent.value as? UserEvent.SuccessEvent)?.let { event ->
+        (userEvent.value as? UserEvent.LoggedIn)?.let { event ->
             userEvent.postValue(event.copy(showWelcomeScreen = false))
         }
     }

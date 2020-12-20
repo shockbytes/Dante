@@ -13,6 +13,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseUser
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import java.io.File
 
 fun FloatingActionButton.toggle(millis: Long = 300) {
@@ -70,4 +72,12 @@ fun List<BookEntity>.toAdapterItems(): List<BookAdapterItem> {
     return this.map { entity ->
         BookAdapterItem.Book(entity)
     }
+}
+
+inline fun <reified T> Gson.listFromJson(data: String): List<T> {
+    return this.fromJson(data, object : TypeToken<T>() {}.type)
+}
+
+inline fun <reified T> Gson.fromJson(data: String): T {
+    return this.fromJson(data, object : TypeToken<T>() {}.type)
 }

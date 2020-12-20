@@ -44,7 +44,7 @@ The backlog is currently empty.
 - [ ] Shockbytes Firestore Backup
 - [ ] Simplify book management
     - [ ] Remove local backup
-    - [ ] Add online Shockbytes backup as only way to backup data
+    - [ ] Add online Shockbytes backup (based on Firebase) as only way to backup data
     - [ ] Move Goodreads CSV import from BETA to RELEASE state
     - [ ] Switch between online and offline storage (user has full control over the data)
 - [ ] Add web client support
@@ -55,19 +55,28 @@ The backlog is currently empty.
   - [ ] Migrate from local to remote storage
 - [ ] Login with Firebase
 
-## Current development
-
 ### Version 3.19
 - [ ] Experimental remote storage Firestore implementation (for test account)
 - [ ] Add Onboarding + optional Login
-
-### Version 3.18
 - [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
-- [ ] Smooth loading animator when uploading local images
 - [ ] Upgrade to Kotlin 1.4.20 -> Use ViewBinding
+
+## Current development
+
+### Version 3.18
+- [ ] Smooth loading animator when uploading local images + scale down
+- [ ] Non-critical Bugfixes
+- [x] Connect to Firebase suggestions API
+    - [x] Allow books suggestions from the overflow menu
+    - [x] Load suggestions from Firebase API
+    - [x] Report books
+    - [x] Cache books locally to minimize Firebase function calls
+    - [x] Explain caching
+    - [x] Let users log in from error dialog
+- [x] Allow clicks on wishlist books
 
 ## Changelog
 

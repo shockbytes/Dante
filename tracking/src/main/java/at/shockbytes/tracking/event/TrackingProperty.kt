@@ -1,3 +1,10 @@
 package at.shockbytes.tracking.event
 
-data class TrackingProperty(val key: String, val value: Any)
+import at.shockbytes.tracking.properties.BaseProperty
+
+data class TrackingProperty(
+    private val key: String,
+    private val tVal: Any
+) : BaseProperty<Any>(tVal) {
+    override fun getKey(): String = key
+}

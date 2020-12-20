@@ -5,9 +5,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -16,6 +17,7 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import android.transition.Slide
 import android.view.Gravity
+import android.view.View
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
@@ -24,6 +26,7 @@ import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
 import at.shockbytes.dante.camera.overlay.BarcodeBoundsOverlay
+import at.shockbytes.dante.core.sdkVersionOrAbove
 import at.shockbytes.dante.util.addTo
 import com.google.common.util.concurrent.ListenableFuture
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -57,14 +60,25 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         window.enterTransition = Slide(Gravity.BOTTOM)
         setContentView(R.layout.activity_camera)
         supportActionBar?.hide()
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
+
+        setFullscreen()
+
+        window.statusBarColor = Color.TRANSPARENT
+        window.navigationBarColor = Color.TRANSPARENT
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         checkPermissions()
+    }
+
+    private fun setFullscreen() {
+        if (sdkVersionOrAbove(Build.VERSION_CODES.R)) {
+            window.setDecorFitsSystemWindows(false)
+        } else {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
     }
 
     private fun checkPermissions() {

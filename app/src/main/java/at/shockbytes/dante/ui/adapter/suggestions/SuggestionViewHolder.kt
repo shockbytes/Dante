@@ -25,7 +25,7 @@ class SuggestionViewHolder(
 
     override fun bindToView(content: SuggestionsAdapterItem, position: Int) {
         with((content as SuggestionsAdapterItem.SuggestedBook).suggestion) {
-            setupOverflowMenu(suggestionId)
+            setupOverflowMenu(suggestionId, suggestion.title)
             setupBook(suggestion)
             setupSuggester(suggester)
             setupRecommendation(recommendation)
@@ -33,9 +33,9 @@ class SuggestionViewHolder(
         }
     }
 
-    private fun setupOverflowMenu(suggestionId: String) {
+    private fun setupOverflowMenu(suggestionId: String, suggestionTitle: String) {
         iv_item_suggestion_report.setOnClickListener {
-            onSuggestionActionClickedListener.onReportBookSuggestion(suggestionId)
+            onSuggestionActionClickedListener.onReportBookSuggestion(suggestionId, suggestionTitle)
         }
     }
 
@@ -52,7 +52,7 @@ class SuggestionViewHolder(
     private fun setupSuggester(suggester: Suggester) {
         tv_item_suggestion_suggester.text = context().getString(R.string.suggestion_suggester, suggester.name)
         setThumbnailToView(
-            suggester.photoUrl,
+            suggester.picture,
             iv_item_suggestion_suggester,
             AppUtils.convertDpInPixel(24, context())
         )

@@ -17,14 +17,13 @@ sealed class SuggestionsAdapterItem {
             get() = suggestion.suggestionId
     }
 
-    data class Explanation(
-        val wantsToSuggest: Boolean,
-        override val id: String = EXPLANATION_ID,
+    data class SuggestionHint(
+        override val id: String = SUGGESTION_HINT_ID,
         override val viewType: Int = R.layout.item_generic_explanation
     ) : SuggestionsAdapterItem()
 
     companion object {
 
-        private const val EXPLANATION_ID = "-1"
+        private const val SUGGESTION_HINT_ID = "-1"
     }
 }

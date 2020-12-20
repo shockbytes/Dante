@@ -38,7 +38,7 @@ import kotlin.math.roundToInt
  */
 object DanteUtils {
 
-    const val rcSignIn = 0x8944
+    const val RC_SIGN_IN = 0x8944
 
     fun formatTimestamp(timeMillis: Long): String {
         return SimpleDateFormat("dd. MMM yyy - kk:mm", Locale.getDefault())

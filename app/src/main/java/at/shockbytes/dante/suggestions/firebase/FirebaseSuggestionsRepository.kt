@@ -56,14 +56,16 @@ class FirebaseSuggestionsRepository(
 
         val daysBetween = Days.daysBetween(cacheTime, currentTime).days.absoluteValue
 
-        return daysBetween >= 7
+        return daysBetween >= DAYS_UPDATE_INTERVAL
     }
 
     private fun loadRemoteSuggestions(scope: CoroutineScope): Single<Suggestions> {
         return signInRepository.getAuthorizationHeader()
             .flatMap(firebaseSuggestionsApi::getSuggestions)
             .doOnSuccess { suggestions ->
-                cacheRemoteSuggestions(suggestions, scope)
+                if (suggestions.isNotEmpty()) {
+                    cacheRemoteSuggestions(suggestions, scope)
+                }
             }
             .subscribeOn(schedulers.io)
     }
@@ -112,5 +114,10 @@ class FirebaseSuggestionsRepository(
                 )
             }
             .subscribeOn(schedulers.io)
+    }
+
+    companion object {
+
+        private const val DAYS_UPDATE_INTERVAL = 3
     }
 }

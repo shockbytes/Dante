@@ -325,13 +325,13 @@
     <string name="suggestions_title">Vorschläge</string>
     <string name="suggestions_explanation_want_to_suggest">Ich will Bücher vorschlagen</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Vorschläge sind bald verfügbar</string>
-    <string name="suggestions_hint">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.\n\nErhalte jede Woche neue Updates. Schau regelmäßig vorbei für neue Inspirationen.</string>
+    <string name="suggestions_hint">Erhalte einige Vorschläge von Buchliebhabern von der ganzen Welt.\n\nErhalte jede Woche neue Updates. Teile auch du deine liebsten Bücher mit anderen.</string>
     <string name="wishlist_title">Meine Wunschliste</string>
     <string name="wishlist_explanation">Lege alle Bücher hier ab, die du noch nicht hast, aber in Zukunft lesen willst.\n\nKleiner Tipp: Teile diese Liste gelegentlich mit deinem Partner.</string>
     <string name="add_book_to_wishlist">Zur Wunschliste hinzufügen</string>
     <string name="wishlist_empty">Deine Wunschliste ist leer. Gut! Sieht so aus als hättest du all deine Bücher bereits!</string>
     <string name="wishlist">Wunschliste</string>
-    <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen.</string>
+    <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen. Bitte schlage auch du Bücher für andere vor.</string>
     <string name="book_added_to_wishlist">%s wurde zur Wunschliste hinzugefügt</string>
     <string name="suggest">Vorschlagen</string>
     <string name="prefs_ad_free_medium_article_title">Lies hier warum Dante keine Werbung schaltet.</string>

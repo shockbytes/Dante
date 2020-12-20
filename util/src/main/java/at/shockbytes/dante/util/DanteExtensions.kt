@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -109,12 +108,6 @@ fun Activity.getStringList(@ArrayRes arrayRes: Int): List<String> {
 
 fun Fragment.getStringList(@ArrayRes arrayRes: Int): List<String> {
     return resources.getStringArray(arrayRes).toList()
-}
-
-fun Activity.retrieveActiveActivityAlias(): String? {
-    return this.intent.component?.let { component ->
-        packageManager.getActivityInfo(component, PackageManager.GET_META_DATA).name
-    }
 }
 
 fun Drawable.toBitmap(): Bitmap {

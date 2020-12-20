@@ -126,7 +126,6 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
-    implementation 'com.github.myinnos:AppIconNameChanger:1.0.7'
 
     implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"
     implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingsVersion"

@@ -62,23 +62,6 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             }
         }
 
-        findPreference<Preference>(getString(R.string.prefs_change_icon_key))?.apply {
-            onPreferenceClickListener = Preference.OnPreferenceClickListener {
-
-                val fragment = LauncherIconPickerFragment
-                    .newInstance()
-                    .setOnDismissListener(::updateLauncherIconSummary)
-
-                DanteUtils.addFragmentToActivity(
-                    parentFragmentManager,
-                    fragment,
-                    android.R.id.content,
-                    addToBackStack = true
-                )
-                true
-            }
-        }
-
         findPreference<Preference>(getString(R.string.prefs_contribute_code_key))?.apply {
             this.setOnPreferenceClickListener {
                 UrlLauncher.openDanteGithubPage(requireContext())
@@ -145,17 +128,6 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
     private fun showToast(content: String) {
         Toast.makeText(activity, content, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        updateLauncherIconSummary()
-    }
-
-    private fun updateLauncherIconSummary() {
-        findPreference<Preference>(getString(R.string.prefs_change_icon_key))?.apply {
-            summary = danteSettings.selectedLauncherIconState.title
-        }
     }
 
     companion object {

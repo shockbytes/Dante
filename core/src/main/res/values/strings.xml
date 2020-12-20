@@ -264,9 +264,6 @@
     <string name="prefs_pick_random_summary_off">Hide the interaction allowing you to pick a random book</string>
     <string name="prefs_pick_random_title">Random book picking</string>
 
-    <string name="prefs_change_icon_key" translatable="false">prefs_change_icon_key</string>
-    <string name="prefs_change_icon_title">Change launcher icon</string>
-
     <string name="prefs_feature_flag_key" translatable="false">prefs_feature_flag_key</string>
     <string name="prefs_feature_flag_title" translatable="false">Feature Flags</string>
 
@@ -381,7 +378,6 @@
     <string name="nope">Nope</string>
 
     <string name="restarting_app">The app may restart shortly&#8230;</string>
-    <string name="launcher_icon_change_description">Changing the icon may \n automatically restart the app</string>
 
     <string name="date_month_and_year" translatable="false">%s %s</string>
     <string name="dante_install">The journey starts</string>

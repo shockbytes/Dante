@@ -55,5 +55,12 @@ sealed class DanteTrackingEvent(
         )
     )
 
+    data class SuggestBook(val title: String) : DanteTrackingEvent(
+        "suggest_book",
+        listOf(
+            TrackingProperty("book_title", title)
+        )
+    )
+
     object DisableRandomBookInteraction : DanteTrackingEvent("disable_random_book_interaction")
 }

@@ -73,7 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/handle_view_suggest_book"
-        app:srcCompat="@drawable/darkest_hour" />
+        tools:srcCompat="@drawable/darkest_hour" />
 
     <TextView
         android:id="@+id/tv_suggest_book_title"

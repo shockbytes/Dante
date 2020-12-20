@@ -8,6 +8,8 @@ import at.shockbytes.dante.suggestions.Suggestions
 import at.shockbytes.dante.suggestions.SuggestionsRepository
 import at.shockbytes.dante.suggestions.cache.SuggestionsCache
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Completable
 import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +22,8 @@ class FirebaseSuggestionsRepository(
     private val firebaseSuggestionsApi: FirebaseSuggestionsApi,
     private val schedulers: SchedulerFacade,
     private val signInRepository: SignInRepository,
-    private val suggestionsCache: SuggestionsCache
+    private val suggestionsCache: SuggestionsCache,
+    private val tracker: Tracker
 ) : SuggestionsRepository {
 
     override fun loadSuggestions(accessTimestamp: Long, scope: CoroutineScope): Single<Suggestions> {
@@ -112,6 +115,9 @@ class FirebaseSuggestionsRepository(
                         recommendation
                     )
                 )
+            }
+            .doOnComplete {
+                tracker.track(DanteTrackingEvent.SuggestBook(bookEntity.title))
             }
             .subscribeOn(schedulers.io)
     }

@@ -22,6 +22,7 @@ import at.shockbytes.dante.util.explanations.SharedPrefsExplanations
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.tracking.Tracker
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
@@ -85,13 +86,15 @@ class AppModule(private val app: Application) {
         firebaseSuggestionsApi: FirebaseSuggestionsApi,
         schedulerFacade: SchedulerFacade,
         signInRepository: SignInRepository,
-        suggestionsCache: SuggestionsCache
+        suggestionsCache: SuggestionsCache,
+        tracker: Tracker
     ): SuggestionsRepository {
         return FirebaseSuggestionsRepository(
             firebaseSuggestionsApi,
             schedulerFacade,
             signInRepository,
-            suggestionsCache
+            suggestionsCache,
+            tracker
         )
     }
 

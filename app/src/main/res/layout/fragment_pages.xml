@@ -150,7 +150,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_pages_slash"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/til_pages_current_page"
-                app:srcCompat="@drawable/ic_add_blue" />
+                app:srcCompat="@drawable/ic_add_blue_outlined" />
 
             <ImageButton
                 android:id="@+id/img_btn_fragment_pages_dec"

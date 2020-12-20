@@ -14,9 +14,9 @@ import at.shockbytes.dante.ui.adapter.ImporterAdapter
 import at.shockbytes.dante.ui.fragment.dialog.ImportApprovalDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ImportBooksStorageViewModel
 import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOf
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_import_books_storage.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -93,7 +93,7 @@ class ImportBooksStorageFragment : BaseFragment() {
                     .show(childFragmentManager, "ask-for-import-confirmation-dialog")
             }
             ImportStats.NoBooks -> {
-                showSnackbar(getString(R.string.import_no_books), getString(R.string.button_ok), showIndefinite = true) {
+                showSnackbar(getString(R.string.import_no_books), getString(R.string.got_it), showIndefinite = true) {
                     viewModel.reset()
                 }
             }

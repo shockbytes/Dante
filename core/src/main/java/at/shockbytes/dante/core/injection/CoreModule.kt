@@ -15,8 +15,9 @@ import at.shockbytes.dante.core.data.local.RealmPageRecordDao
 import at.shockbytes.dante.core.data.local.SharedPrefsBackedReadingGoalRepository
 import at.shockbytes.dante.core.image.GlideImageLoader
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.core.image.ImagePicker
-import at.shockbytes.dante.core.image.RxLegacyImagePicker
+import at.shockbytes.dante.core.image.picker.DefaultImagePicking
+import at.shockbytes.dante.core.image.picker.ImagePickerConfig
+import at.shockbytes.dante.core.image.picker.ImagePicking
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.core.network.google.GoogleBooksDownloader
@@ -104,8 +105,14 @@ class CoreModule(
 
     @Provides
     @Singleton
-    fun provideImagePicker(): ImagePicker {
-        return RxLegacyImagePicker()
+    fun provideImagePicker(): ImagePicking {
+        return DefaultImagePicking(
+            ImagePickerConfig(
+                maxSize = 1024,
+                maxHeight = 1280,
+                maxWidth = 720
+            )
+        )
     }
 
     companion object {

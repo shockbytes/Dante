@@ -60,9 +60,9 @@ dependencies {
 
     api "com.jakewharton.timber:timber:$timberVersion"
 
-    api 'com.mlsdev.rximagepicker:library:2.1.5'
-    api "com.github.qingmei2:rximagepicker:$rxImagePickerVersion"
-    api "com.github.qingmei2:rximagepicker_support:$rxImagePickerVersion"
+    // Image picker
+    api 'com.github.dhaval2404:imagepicker:1.7.5'
+    api 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
 
     api "com.github.bumptech.glide:glide:$glideVersion"
     kapt "com.github.bumptech.glide:compiler:$glideVersion"

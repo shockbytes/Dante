@@ -6,9 +6,9 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.timeline.TimeLineBuilder
 import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.sort.TimeLineSortStrategy
-import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
 
 class TimelineViewModel @Inject constructor(

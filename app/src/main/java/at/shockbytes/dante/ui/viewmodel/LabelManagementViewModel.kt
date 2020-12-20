@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject

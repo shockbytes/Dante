@@ -12,11 +12,11 @@ import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.util.ExceptionHandlers
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
 import org.joda.time.DateTime

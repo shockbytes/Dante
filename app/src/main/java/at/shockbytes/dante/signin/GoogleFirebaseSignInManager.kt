@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
 import at.shockbytes.dante.util.toDanteUser
@@ -20,7 +21,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 

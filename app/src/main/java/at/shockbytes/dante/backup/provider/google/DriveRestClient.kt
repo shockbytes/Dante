@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.signin.GoogleFirebaseSignInManager
+import at.shockbytes.dante.signin.UnauthenticatedUserException
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.merge
 import com.google.android.gms.tasks.Tasks
@@ -33,22 +34,31 @@ class DriveRestClient(
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun initialize(activity: FragmentActivity): Completable {
-        return completableOf {
-            // Use the authenticated account to sign in to the Drive service.
-            val credential: GoogleAccountCredential = GoogleAccountCredential
-                .usingOAuth2(activity, Collections.singleton(DriveScopes.DRIVE_FILE))
-                .apply {
-                    selectedAccount = signInManager.getGoogleAccount()!!.account // Fail here if null
-                }
+        return Completable.create { emitter ->
 
-            drive = Drive
-                .Builder(
-                    NetHttpTransport(),
-                    GsonFactory(),
-                    credential
-                )
-                .setApplicationName(APP_NAME)
-                .build()
+            val account = signInManager.getGoogleAccount()?.account
+
+            if (account != null) {
+                // Use the authenticated account to sign in to the Drive service.
+                val credential: GoogleAccountCredential = GoogleAccountCredential
+                    .usingOAuth2(activity, Collections.singleton(DriveScopes.DRIVE_FILE))
+                    .apply {
+                        selectedAccount = account
+                    }
+
+                drive = Drive
+                    .Builder(
+                        NetHttpTransport(),
+                        GsonFactory(),
+                        credential
+                    )
+                    .setApplicationName(APP_NAME)
+                    .build()
+
+                emitter.onComplete()
+            } else {
+                emitter.tryOnError(UnauthenticatedUserException())
+            }
         }
     }
 

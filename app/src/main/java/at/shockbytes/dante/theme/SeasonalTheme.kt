@@ -2,7 +2,10 @@ package at.shockbytes.dante.theme
 
 sealed class SeasonalTheme {
 
-    data class LottieAssetsTheme(val lottieAsset: String) : SeasonalTheme()
+    data class LottieAssetsTheme(
+        val lottieAsset: String,
+        val lottieSpeed: Float
+    ) : SeasonalTheme()
 
     object NoTheme : SeasonalTheme()
 

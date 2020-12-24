@@ -69,9 +69,9 @@ The backlog is currently empty.
 ## Changelog
 
 ### Version 3.18.1
-- [ ] Theme Support
-- [ ] Empty suggestion text bug
-- [ ] Suggestions Announcement
+* Theme Support
+* Empty suggestion text bug
+* Suggestions Announcement
 
 ### Version 3.18 - REMOTE SUGGESTIONS
 * Smooth loading animator when uploading local images + scale down

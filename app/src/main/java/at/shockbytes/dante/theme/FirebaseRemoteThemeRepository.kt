@@ -21,7 +21,9 @@ class FirebaseRemoteThemeRepository(
 
     private fun RemoteSeasonalTheme.toSeasonalTheme(): SeasonalTheme {
         return when (type) {
-            SeasonalTheme.RESOURCE_TYPE_LOTTIE_ASSETS -> SeasonalTheme.LottieAssetsTheme(lottieAsset = resource)
+            SeasonalTheme.RESOURCE_TYPE_LOTTIE_ASSETS -> {
+                SeasonalTheme.LottieAssetsTheme(lottieAsset = resource, lottieSpeed = resourceSpeed)
+            }
             else -> SeasonalTheme.NoTheme
         }
     }

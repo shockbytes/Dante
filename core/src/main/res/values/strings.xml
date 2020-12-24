@@ -362,6 +362,7 @@
     <string name="suggestions_explanation_want_to_suggest">I\'d like to suggest books</string>
     <string name="suggestions_explanation_want_to_suggest_clicked">Suggestions are available soon</string>
     <string name="suggestions_hint">Receive some suggestions from book lovers all over the world.\n\nYou will receive weekly updates. Make sure you suggest your favourite books to others too.</string>
+    <string name="open_camera">Open camera right now</string>
 
     <string name="suggestion_hint">Enter your recommendation</string>
     <string name="login_required">Login required</string>

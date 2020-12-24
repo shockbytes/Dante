@@ -29,13 +29,13 @@ import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.createRoundedBitmap
 import at.shockbytes.dante.util.isFragmentShown
 import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.tracking.properties.LoginSource
-import at.shockbytes.util.AppUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -58,10 +58,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarMain)
 
         viewModel = viewModelOf(vmFactory)
-        tabId = savedInstanceState?.getInt("tabId") ?: R.id.menu_navigation_current
+        tabId = savedInstanceState?.getInt(ID_SELECTED_TAB) ?: R.id.menu_navigation_current
 
         handleIntentExtras()
         setupUI()
@@ -109,22 +109,22 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun animateTitle() {
         txtMainToolbarTitle.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .translationY(0f)
-                .setDuration(500L)
-                .setInterpolator(DecelerateInterpolator())
-                .start()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .translationY(0f)
+            .setDuration(500L)
+            .setInterpolator(DecelerateInterpolator())
+            .start()
     }
 
     private fun animateSearchIcon() {
         imgButtonMainToolbarSearch.animate()
-                .alpha(1f)
-                .translationX(0f)
-                .setDuration(500L)
-                .setInterpolator(DecelerateInterpolator())
-                .start()
+            .alpha(1f)
+            .translationX(0f)
+            .setDuration(500L)
+            .setInterpolator(DecelerateInterpolator())
+            .start()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -141,7 +141,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("tabId", tabId)
+        outState.putInt(ID_SELECTED_TAB, tabId)
     }
 
     override fun onStop() {
@@ -175,6 +175,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             .addTo(compositeDisposable)
 
         viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+
+        viewModel.requestSeasonalTheme()
+        viewModel.getSeasonalTheme()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(seasonalThemeView::setSeasonalTheme)
+            .addTo(compositeDisposable)
     }
 
     private fun handleUserEvent(event: MainViewModel.UserEvent) {
@@ -186,7 +192,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
                 val photoUrl = event.user.photoUrl
                 if (photoUrl != null) {
-                    loadImageUrl(photoUrl)
+                    loadUserImage(photoUrl, onLoaded = ::onUserLoaded)
                 } else {
                     onUserLoaded()
                 }
@@ -196,17 +202,20 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                 onUserLoaded()
             }
+            // These cases are handled by another Fragment
+            is MainViewModel.UserEvent.RequireLogin -> Unit
+            is MainViewModel.UserEvent.Error -> Unit
         }
     }
 
-    private fun loadImageUrl(photoUrl: Uri) {
+    private fun loadUserImage(photoUrl: Uri, onLoaded: () -> Unit) {
 
         photoUrl.loadBitmap(this)
             .doFinally {
-                onUserLoaded()
+                onLoaded()
             }
             .map { bitmap ->
-                AppUtils.createRoundedBitmap(this, bitmap)
+                createRoundedBitmap(bitmap)
             }
             .subscribe(imgButtonMainToolbarMore::setImageDrawable, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
@@ -235,13 +244,13 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun handleIntentExtras() {
 
-        val bookDetailInfo: Destination.BookDetail.BookDetailInfo? = intent.getParcelableExtra(ARG_OPEN_BOOK_DETAIL_FOR_ID)
+        val bookDetailInfo = intent.getParcelableExtra<Destination.BookDetail.BookDetailInfo>(ARG_OPEN_BOOK_DETAIL_FOR_ID)
         val openCameraAfterLaunch = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
         val hasAppShortcutExtra = intent.hasExtra("app_shortcut")
 
         when {
             bookDetailInfo != null -> navigateToBookDetailScreen(bookDetailInfo)
-            openCameraAfterLaunch -> showToast("Open camera right now...")
+            openCameraAfterLaunch -> showToast(R.string.open_camera)
             hasAppShortcutExtra -> checkForAppShortcut()
         }
     }
@@ -391,6 +400,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     companion object {
 
+        private const val ID_SELECTED_TAB = "selected_tab_id"
         private const val TAG_ANNOUNCEMENT = "announcement-tag"
 
         private const val ARG_OPEN_CAMERA_AFTER_LAUNCH = "arg_open_camera_after_lunch"

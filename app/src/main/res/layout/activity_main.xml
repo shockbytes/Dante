@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarMain"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             android:background="@color/colorActionBar"
@@ -75,8 +75,14 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_search"
                     tools:alpha="1"
-                    tools:translationX="2dp"
-                    />
+                    tools:translationX="2dp" />
+
+                <at.shockbytes.dante.ui.custom.SeasonalThemeView
+                    android:id="@+id/seasonalThemeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>

@@ -24,15 +24,27 @@ class FirebaseModule(private val context: Context) {
     @Provides
     fun provideRemoteConfig(): FirebaseRemoteConfig {
         val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(getFetchInterval())
             .build()
-        return FirebaseRemoteConfig.getInstance().apply {
-            setConfigSettingsAsync(configSettings).addOnCompleteListener {
-                Timber.d("Firebase Config settings set")
+        return FirebaseRemoteConfig.getInstance()
+            .apply {
+                setConfigSettingsAsync(configSettings).addOnCompleteListener {
+                    Timber.d("Firebase Config settings set")
+                }
+                setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
+                    Timber.d("Firebase defaults set")
+                }
+                fetchAndActivate().addOnCompleteListener {
+                    Timber.d("FirebaseRemoteConfig fetched and activated: ${it.result}")
+                }
             }
-            setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
-                Timber.d("Firebase defaults set")
-            }
-        }
+    }
+
+    /**
+     * If in debug mode, always fetch latest remote config values
+     */
+    private fun getFetchInterval(): Long {
+        return if (BuildConfig.DEBUG) 0 else DEFAULT_MINIMUM_FETCH_INTERVAL_IN_SECONDS
     }
 
     @Provides
@@ -47,5 +59,9 @@ class FirebaseModule(private val context: Context) {
     @Provides
     fun provideImageUploadStorage(): ImageUploadStorage {
         return FirebaseImageUploadStorage()
+    }
+
+    companion object {
+        private const val DEFAULT_MINIMUM_FETCH_INTERVAL_IN_SECONDS = 259200L // = 3 days
     }
 }

@@ -22,11 +22,13 @@ import androidx.annotation.MenuRes
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import at.shockbytes.util.AppUtils
 import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Scheduler
@@ -46,6 +48,10 @@ fun CharSequence.colored(@ColorInt color: Int): CharSequence {
     return SpannableString(this).apply {
         setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     }
+}
+
+fun Context.createRoundedBitmap(bitmap: Bitmap): RoundedBitmapDrawable {
+    return AppUtils.createRoundedBitmap(this, bitmap)
 }
 
 fun String.removeBrackets(): String {

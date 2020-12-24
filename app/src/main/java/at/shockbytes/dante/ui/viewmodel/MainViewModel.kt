@@ -9,6 +9,8 @@ import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.theme.SeasonalTheme
+import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.completableOf
@@ -19,8 +21,10 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import at.shockbytes.tracking.properties.LoginSource
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -32,7 +36,8 @@ class MainViewModel @Inject constructor(
     private val announcementProvider: AnnouncementProvider,
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings,
-    private val tracker: Tracker
+    private val tracker: Tracker,
+    private val themeRepository: ThemeRepository
 ) : BaseViewModel() {
 
     sealed class UserEvent {
@@ -52,6 +57,11 @@ class MainViewModel @Inject constructor(
     private val showAnnouncementSubject = PublishSubject.create<Unit>()
     fun showAnnouncement(): Observable<Unit> = showAnnouncementSubject
 
+    private val seasonalThemeSubject = BehaviorSubject.create<SeasonalTheme>()
+    fun getSeasonalTheme(): Observable<SeasonalTheme> = seasonalThemeSubject
+        .delay(2, TimeUnit.SECONDS)
+        .distinctUntilChanged()
+
     init {
         initialize()
     }
@@ -59,19 +69,19 @@ class MainViewModel @Inject constructor(
     private fun initialize() {
         signInRepository.setup()
         signInRepository.observeSignInState()
-            .map { userState ->
-                when {
-                    userState is UserState.SignedInUser -> {
-                        UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
-                    }
-                    userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
-                        UserEvent.RequireLogin(signInRepository.signInIntent)
-                    }
-                    else -> UserEvent.AnonymousUser
-                }
-            }
+            .map(::mapUserStateToUserEvent)
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    private fun mapUserStateToUserEvent(userState: UserState) = when {
+        userState is UserState.SignedInUser -> {
+            UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
+        }
+        userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
+            UserEvent.RequireLogin(signInRepository.signInIntent)
+        }
+        else -> UserEvent.AnonymousUser
     }
 
     fun forceLogin(source: LoginSource) {
@@ -118,6 +128,13 @@ class MainViewModel @Inject constructor(
 
     fun signInMaybeLater(maybeLater: Boolean) {
         signInRepository.maybeLater = maybeLater
+    }
+
+    fun requestSeasonalTheme() {
+        themeRepository.getSeasonalTheme()
+            .doOnError { seasonalThemeSubject.onNext(SeasonalTheme.NoTheme) }
+            .subscribe(seasonalThemeSubject::onNext, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     fun disableShowWelcomeScreen() {

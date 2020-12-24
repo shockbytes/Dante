@@ -52,7 +52,7 @@ class SuggestBookBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private fun setupConfirmButtonListener() {
         btn_suggest_book_confirm.setOnClickListener {
             editTextEnterSuggestion.text?.toString()?.let { text ->
-                onRecommendationEnteredListener?.invoke(text)
+                onRecommendationEnteredListener?.invoke(text.trim())
                 dismiss()
             }
         }
@@ -91,11 +91,10 @@ class SuggestBookBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun checkRecommendationInput() {
-
         RxTextView.textChanges(editTextEnterSuggestion)
             .map { text ->
                 // Do not allow more than 10 line breaks
-                text.count() < MAX_CHARS && text.count { it == '\n' } < 10
+                text.count() in 1 until MAX_CHARS && text.count { it == '\n' } < 10
             }
             .subscribe(btn_suggest_book_confirm::setEnabled)
             .addTo(compositeDisposable)

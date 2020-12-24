@@ -17,6 +17,8 @@ import at.shockbytes.dante.suggestions.cache.DataStoreSuggestionsCache
 import at.shockbytes.dante.suggestions.cache.SuggestionsCache
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsApi
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsRepository
+import at.shockbytes.dante.theme.FirebaseRemoteThemeRepository
+import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.explanations.SharedPrefsExplanations
 import at.shockbytes.dante.util.permission.AndroidPermissionManager
@@ -96,6 +98,13 @@ class AppModule(private val app: Application) {
             suggestionsCache,
             tracker
         )
+    }
+
+    @Provides
+    fun provideThemeRepository(
+        firebaseRemoteConfig: FirebaseRemoteConfig
+    ): ThemeRepository {
+        return FirebaseRemoteThemeRepository(firebaseRemoteConfig, Gson())
     }
 
     @Provides

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
-        <key>detail_page_v2</key>
-        <value>true</value>
-    </entry>
-    <entry>
-        <key>book_suggestions</key>
-        <value>false</value>
+        <key>seasonal_theme</key>
+        <value>{ name: "no_theme", "type": "no_theme", "resource": "" }</value>
     </entry>
 </defaultsMap>

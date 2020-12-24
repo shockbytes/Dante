@@ -9,6 +9,7 @@ import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.completableOf
@@ -32,7 +33,8 @@ class MainViewModel @Inject constructor(
     private val announcementProvider: AnnouncementProvider,
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings,
-    private val tracker: Tracker
+    private val tracker: Tracker,
+    private val themeRepository: ThemeRepository
 ) : BaseViewModel() {
 
     sealed class UserEvent {

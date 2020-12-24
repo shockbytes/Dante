@@ -327,8 +327,8 @@
     <string name="ask_for_book_deletion">Delete book?</string>
     <string name="ask_for_book_deletion_msg">Do you want to remove %s from your library?</string>
 
-    <string name="announcement_fixed_backup_title">Backups are back!</string>
-    <string name="announcement_fixed_backup_description">The backup functionality was broken way too long and we sincerely apologize for any inconvenience caused by this situation! However, they are now back and are working better than ever!\n\nWe want you to know that we are currently working on even better data synchronization methods at the moment!</string>
+    <string name="announcement_suggestion_title">Suggest books</string>
+    <string name="announcement_suggestion_description">With the latest update it is now possible to suggest books. If you have a book that you want to share with other readers then simply do that by clicking on the book menu in the overview screen.</string>
 
     <string name="mail_subject_translation">I want to help you translate</string>
     <string name="action_send_mail">Drop mail</string>

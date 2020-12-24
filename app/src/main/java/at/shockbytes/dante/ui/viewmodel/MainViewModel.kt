@@ -49,8 +49,8 @@ class MainViewModel @Inject constructor(
     private val userEvent = MutableLiveData<UserEvent>()
     fun getUserEvent(): LiveData<UserEvent> = userEvent
 
-    private val activeAnnouncement = PublishSubject.create<Boolean>()
-    fun hasActiveAnnouncement(): Observable<Boolean> = activeAnnouncement
+    private val showAnnouncementSubject = PublishSubject.create<Unit>()
+    fun showAnnouncement(): Observable<Unit> = showAnnouncementSubject
 
     init {
         initialize()
@@ -133,9 +133,11 @@ class MainViewModel @Inject constructor(
 
     fun queryAnnouncements() {
         val hasActiveAnnouncement = announcementProvider.getActiveAnnouncement() != null
-        // Do not show announcements if the user first logs into the app, even though there would
-        // be a new announcement
+        // Do not show announcements if the user first logs into the app,
+        // even though there would be a new announcement
         val showAnnouncement = hasActiveAnnouncement && !danteSettings.isFirstAppOpen
-        activeAnnouncement.onNext(showAnnouncement)
+        if (showAnnouncement) {
+            showAnnouncementSubject.onNext(Unit)
+        }
     }
 }

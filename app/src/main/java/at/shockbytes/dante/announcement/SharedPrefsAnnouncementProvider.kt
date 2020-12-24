@@ -2,18 +2,17 @@ package at.shockbytes.dante.announcement
 
 import android.content.SharedPreferences
 import at.shockbytes.dante.R
-import at.shockbytes.dante.navigation.Destination
 
 class SharedPrefsAnnouncementProvider(
     private val sharedPreferences: SharedPreferences
 ) : AnnouncementProvider {
 
-    private val activeAnnouncement: Announcement? = Announcement(
-        key = "fixed_backup_announcement",
-        titleRes = R.string.announcement_fixed_backup_title,
-        descriptionRes = R.string.announcement_fixed_backup_description,
-        illustration = Announcement.Illustration.ImageIllustration(R.drawable.ic_google_drive),
-        action = Announcement.Action.OpenScreen(destination = Destination.BookStorage)
+    private val activeAnnouncement: Announcement = Announcement(
+        key = "suggestions_announcement",
+        titleRes = R.string.announcement_suggestion_title,
+        descriptionRes = R.string.announcement_suggestion_description,
+        illustration = Announcement.Illustration.ImageIllustration(R.drawable.ic_suggestions),
+        action = null
     )
 
     override fun getActiveAnnouncement(): Announcement? {
@@ -27,7 +26,7 @@ class SharedPrefsAnnouncementProvider(
     }
 
     private fun isActiveAnnouncementSeen(): Boolean {
-        return sharedPreferences.getBoolean(activeAnnouncement?.key, false)
+        return sharedPreferences.getBoolean(activeAnnouncement.key, false)
     }
 
     override fun markAnnouncementAsSeen(announcement: Announcement) {

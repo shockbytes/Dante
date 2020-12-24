@@ -32,6 +32,7 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:text="@string/suggest"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

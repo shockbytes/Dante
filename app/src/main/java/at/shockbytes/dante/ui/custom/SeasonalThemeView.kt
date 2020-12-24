@@ -25,7 +25,10 @@ class SeasonalThemeView @JvmOverloads constructor(
                 setVisible(true)
                 // Setting the same animation somehow causes issues, check if it is already animating
                 if (!lottie_seasonal_theme.isAnimating) {
-                    lottie_seasonal_theme.setAnimation(theme.lottieAsset)
+                    lottie_seasonal_theme.apply {
+                        speed = theme.lottieSpeed
+                        setAnimation(theme.lottieAsset)
+                    }
                 }
             }
             SeasonalTheme.NoTheme -> setVisible(false)

@@ -58,7 +58,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(toolbarMain)
 
         viewModel = viewModelOf(vmFactory)
         tabId = savedInstanceState?.getInt(ID_SELECTED_TAB) ?: R.id.menu_navigation_current

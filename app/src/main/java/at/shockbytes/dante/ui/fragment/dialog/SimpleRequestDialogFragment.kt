@@ -77,7 +77,7 @@ class SimpleRequestDialogFragment : DialogFragment() {
             title: String,
             message: String,
             icon: Int,
-            positiveText: Int = android.R.string.yes
+            positiveText: Int = android.R.string.ok
         ): SimpleRequestDialogFragment {
             return SimpleRequestDialogFragment().apply {
                 arguments = Bundle(4).apply {

@@ -59,19 +59,21 @@ class MainViewModel @Inject constructor(
     private fun initialize() {
         signInRepository.setup()
         signInRepository.observeSignInState()
-            .map { userState ->
-                when {
-                    userState is UserState.SignedInUser -> {
-                        UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
-                    }
-                    userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
-                        UserEvent.RequireLogin(signInRepository.signInIntent)
-                    }
-                    else -> UserEvent.AnonymousUser
-                }
-            }
+            .map(::mapUserStateToUserEvent)
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+
+        queryAnnouncements()
+    }
+
+    private fun mapUserStateToUserEvent(userState: UserState) = when {
+        userState is UserState.SignedInUser -> {
+            UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
+        }
+        userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
+            UserEvent.RequireLogin(signInRepository.signInIntent)
+        }
+        else -> UserEvent.AnonymousUser
     }
 
     fun forceLogin(source: LoginSource) {

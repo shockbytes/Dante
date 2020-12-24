@@ -351,5 +351,6 @@
     <string name="suggestion_placed_success">Vielen Dank! Dein Buch wird bald anderen Lesern vorgeschlagen!</string>
     <string name="suggestion_placed_error">Oh nein! Sieht so aus als gäbe es ein Problem. Bitte versuche es später wieder.</string>
     <string name="report">Melden</string>
+    <string name="open_camera">Kamera wird geöffnet</string>
 
 </resources>

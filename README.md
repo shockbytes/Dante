@@ -55,6 +55,8 @@ The backlog is currently empty.
   - [ ] Migrate from local to remote storage
 - [ ] Login with Firebase
 
+## Current development
+
 ### Version 3.19
 - [ ] Experimental remote storage Firestore implementation (for test account)
 - [ ] Add Onboarding + optional Login
@@ -64,21 +66,24 @@ The backlog is currently empty.
     - [ ] Open file with FileProvider
 - [ ] Upgrade to Kotlin 1.4.20 -> Use ViewBinding
 
-## Current development
-
-### Version 3.18
-- [ ] Smooth loading animator when uploading local images + scale down
-- [ ] Non-critical Bugfixes
-- [x] Connect to Firebase suggestions API
-    - [x] Allow books suggestions from the overflow menu
-    - [x] Load suggestions from Firebase API
-    - [x] Report books
-    - [x] Cache books locally to minimize Firebase function calls
-    - [x] Explain caching
-    - [x] Let users log in from error dialog
-- [x] Allow clicks on wishlist books
-
 ## Changelog
+
+### Version 3.18.1
+- [ ] Theme Support
+- [ ] Empty suggestion text bug
+- [ ] Suggestions Announcement
+
+### Version 3.18 - REMOTE SUGGESTIONS
+* Smooth loading animator when uploading local images + scale down
+* Non-critical Bugfixes
+* Connect to Firebase suggestions API
+    * Allow books suggestions from the overflow menu
+    * Load suggestions from Firebase API
+    * Report books
+    * Cache books locally to minimize Firebase function calls
+    * Explain caching
+    * Let users log in from error dialog
+* Allow clicks on wishlist books
 
 ### Version 3.17 - INNOVATIVE INSPIRATIONS
 * Inspirations Feature

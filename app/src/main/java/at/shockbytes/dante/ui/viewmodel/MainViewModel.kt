@@ -72,8 +72,6 @@ class MainViewModel @Inject constructor(
             .map(::mapUserStateToUserEvent)
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
-
-        queryAnnouncements()
     }
 
     private fun mapUserStateToUserEvent(userState: UserState) = when {

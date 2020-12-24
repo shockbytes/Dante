@@ -269,7 +269,7 @@
     <string name="prefs_feature_flag_title" translatable="false">Feature Flags</string>
 
     <string name="prefs_ad_free_medium_article_key" translatable="false">prefs_ad_free_medium_article_key</string>
-    <string name="prefs_ad_free_medium_article_title">Read here why Dante will remain ad-free.</string>
+    <string name="prefs_ad_free_medium_article_title">Read here why Dante will remain ad-free</string>
 
     <string name="prefs_show_summary_key" translatable="false">prefs_show_summary_key</string>
     <string name="prefs_show_summary_title">Show book summary</string>

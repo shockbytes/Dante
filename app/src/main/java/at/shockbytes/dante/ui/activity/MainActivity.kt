@@ -38,7 +38,6 @@ import at.shockbytes.tracking.properties.LoginSource
 import at.shockbytes.util.AppUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 import javax.inject.Inject
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
@@ -170,16 +169,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     // ---------------------------------------------------
 
     private fun bindViewModel() {
-        viewModel.queryAnnouncements()
-        viewModel.hasActiveAnnouncement()
+        viewModel.showAnnouncement()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ hasAnnouncement ->
-                if (hasAnnouncement) {
-                    showAnnouncementFragment()
-                }
-            }, { throwable ->
-                Timber.e(throwable)
-            })
+            .subscribe(::showAnnouncementFragment, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
 
         viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
@@ -196,13 +188,13 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 if (photoUrl != null) {
                     loadImageUrl(photoUrl)
                 } else {
-                    animateActionBarItems()
+                    onUserLoaded()
                 }
             }
 
             is MainViewModel.UserEvent.AnonymousUser -> {
                 imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
-                animateActionBarItems()
+                onUserLoaded()
             }
         }
     }
@@ -211,7 +203,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         photoUrl.loadBitmap(this)
             .doFinally {
-                animateActionBarItems()
+                onUserLoaded()
             }
             .map { bitmap ->
                 AppUtils.createRoundedBitmap(this, bitmap)
@@ -220,12 +212,16 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             .addTo(compositeDisposable)
     }
 
+    private fun onUserLoaded() {
+        animateActionBarItems()
+        viewModel.queryAnnouncements()
+    }
+
     fun forceLogin(source: LoginSource) {
         viewModel.forceLogin(source)
     }
 
-    private fun showAnnouncementFragment() {
-
+    private fun showAnnouncementFragment(unused: Unit) {
         with(supportFragmentManager) {
             if (!isFragmentShown(TAG_ANNOUNCEMENT)) {
                 beginTransaction()

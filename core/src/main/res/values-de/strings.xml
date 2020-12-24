@@ -170,8 +170,8 @@
     <string name="ask_for_book_deletion_msg">Willst du wirklich das Buch %s von deiner Bibliothek entfernen?</string>
     <string name="action_send_mail">Mail senden</string>
 
-    <string name="announcement_fixed_backup_title">Backups sind zurück!</string>
-    <string name="announcement_fixed_backup_description">Die Backup Funktionalität war schon viel zu lange nicht ordentlich verfügbar und dafür mochten wir uns entschuldigen! Jetzt ist sie wieder verfügbar und funktioniert besser als zuvor.\n\n.Außerdem wollten wir auch noch sagen, dass wir bereits an besseren Datensynchronisationsmöglichkeiten arbeiten.</string>
+    <string name="announcement_suggestion_title">Büchervorschläge</string>
+    <string name="announcement_suggestion_description">Mit dem letzten Update ist es nun möglich anderen Benutzern Bücher vorzuschlagen. Wenn du ein Buch hast, dass du unbedingt mit Lesern auf der ganzen Welt teilen willst, dann kannst du das ganz einfach über das Buchmenü in der Übersicht machen.</string>
 
     <string name="mail_subject_translation">Ich will übersetzen helfen</string>
     <string name="prefs_category_contribute">Mitwirken</string>

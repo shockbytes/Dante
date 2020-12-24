@@ -9,6 +9,7 @@ import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.signin.DanteUser
 import at.shockbytes.dante.signin.SignInRepository
 import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.theme.SeasonalTheme
 import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
@@ -20,8 +21,10 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import at.shockbytes.tracking.properties.LoginSource
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -53,6 +56,11 @@ class MainViewModel @Inject constructor(
 
     private val showAnnouncementSubject = PublishSubject.create<Unit>()
     fun showAnnouncement(): Observable<Unit> = showAnnouncementSubject
+
+    private val seasonalThemeSubject = BehaviorSubject.create<SeasonalTheme>()
+    fun getSeasonalTheme(): Observable<SeasonalTheme> = seasonalThemeSubject
+        .delay(2, TimeUnit.SECONDS)
+        .distinctUntilChanged()
 
     init {
         initialize()
@@ -122,6 +130,13 @@ class MainViewModel @Inject constructor(
 
     fun signInMaybeLater(maybeLater: Boolean) {
         signInRepository.maybeLater = maybeLater
+    }
+
+    fun requestSeasonalTheme() {
+        themeRepository.getSeasonalTheme()
+            .doOnError { seasonalThemeSubject.onNext(SeasonalTheme.NoTheme) }
+            .subscribe(seasonalThemeSubject::onNext, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
     }
 
     fun disableShowWelcomeScreen() {

@@ -8,6 +8,8 @@
         android:id="@+id/lottie_seasonal_theme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        app:lottie_loop="true"
         app:lottie_autoPlay="true" />
 
 </FrameLayout>

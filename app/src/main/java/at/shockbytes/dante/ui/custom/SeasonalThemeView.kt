@@ -8,7 +8,10 @@ import at.shockbytes.dante.theme.SeasonalTheme
 import at.shockbytes.dante.util.setVisible
 import kotlinx.android.synthetic.main.seasonal_theme_view.view.*
 
-class SeasonalThemeView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
+class SeasonalThemeView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) : FrameLayout(context, attrs) {
 
     init {
         inflate(context, R.layout.seasonal_theme_view, this)
@@ -16,11 +19,16 @@ class SeasonalThemeView(context: Context, attrs: AttributeSet?) : FrameLayout(co
         isFocusable = false
     }
 
-    fun setSeasonalTheme(theme: SeasonalTheme): Unit = when (theme) {
-        is SeasonalTheme.LottieTheme -> {
-            setVisible(true)
-            lottie_seasonal_theme.setAnimation(theme.lottieAsset)
+    fun setSeasonalTheme(theme: SeasonalTheme) {
+        when (theme) {
+            is SeasonalTheme.LottieAssetsTheme -> {
+                setVisible(true)
+                // Setting the same animation somehow causes issues, check if it is already animating
+                if (!lottie_seasonal_theme.isAnimating) {
+                    lottie_seasonal_theme.setAnimation(theme.lottieAsset)
+                }
+            }
+            SeasonalTheme.NoTheme -> setVisible(false)
         }
-        SeasonalTheme.NoTheme -> setVisible(false)
     }
 }

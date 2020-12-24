@@ -109,22 +109,22 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun animateTitle() {
         txtMainToolbarTitle.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f)
-                .translationY(0f)
-                .setDuration(500L)
-                .setInterpolator(DecelerateInterpolator())
-                .start()
+            .alpha(1f)
+            .scaleX(1f)
+            .scaleY(1f)
+            .translationY(0f)
+            .setDuration(500L)
+            .setInterpolator(DecelerateInterpolator())
+            .start()
     }
 
     private fun animateSearchIcon() {
         imgButtonMainToolbarSearch.animate()
-                .alpha(1f)
-                .translationX(0f)
-                .setDuration(500L)
-                .setInterpolator(DecelerateInterpolator())
-                .start()
+            .alpha(1f)
+            .translationX(0f)
+            .setDuration(500L)
+            .setInterpolator(DecelerateInterpolator())
+            .start()
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
@@ -175,6 +175,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             .addTo(compositeDisposable)
 
         viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+
+        viewModel.requestSeasonalTheme()
+        viewModel.getSeasonalTheme()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(seasonalThemeView::setSeasonalTheme)
+            .addTo(compositeDisposable)
     }
 
     private fun handleUserEvent(event: MainViewModel.UserEvent) {

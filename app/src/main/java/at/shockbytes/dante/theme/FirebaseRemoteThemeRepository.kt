@@ -1,5 +1,6 @@
 package at.shockbytes.dante.theme
 
+import at.shockbytes.dante.theme.data.RemoteSeasonalTheme
 import at.shockbytes.dante.util.fromJson
 import at.shockbytes.dante.util.singleOf
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -12,11 +13,10 @@ class FirebaseRemoteThemeRepository(
 ) : ThemeRepository {
 
     override fun getSeasonalTheme(): Single<SeasonalTheme> {
-        return singleOf {
-            remoteConfig.getString(RESOURCE_KEY_THEME)
-        }.map { json ->
-            gson.fromJson<RemoteSeasonalTheme>(json).toSeasonalTheme()
-        }
+        return singleOf { remoteConfig.getString(RESOURCE_KEY_THEME) }
+            .map { json ->
+                gson.fromJson<RemoteSeasonalTheme>(json).toSeasonalTheme()
+            }
     }
 
     private fun RemoteSeasonalTheme.toSeasonalTheme(): SeasonalTheme {

@@ -54,6 +54,14 @@
     <methods>;
 }
 
+# Seasonal theme data
+-keep class at.shockbytes.dante.theme.data.** {*;}
+-keepclassmembers class at.shockbytes.dante.theme.data.* {
+    <fields>;
+    <init>();
+    <methods>;
+}
+
 -keepclassmembers class * extends java.lang.Enum {
     <fields>;
     public static **[] values();

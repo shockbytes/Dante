@@ -1,4 +1,4 @@
-package at.shockbytes.dante.theme
+package at.shockbytes.dante.theme.data
 
 data class RemoteSeasonalTheme(
     val name: String,

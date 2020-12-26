@@ -36,7 +36,7 @@
                     android:textAppearance="@style/Theme.TextAppearance.Title"
                     android:translationY="5dp"
                     android:gravity="center_vertical"
-                    android:fontFamily="@font/montserrat_bold"
+                    android:fontFamily="@font/nunito_extrabold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarSearch"
                     app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +136,7 @@
                     android:gravity="center"
                     android:drawablePadding="8dp"
                     android:textColor="@color/white"
-                    android:drawableTop="@drawable/ic_edit"
+                    app:drawableTopCompat="@drawable/ic_edit"
                     app:drawableTint="@color/white"
                     android:layout_width="match_parent"
                     android:textSize="13sp"
@@ -164,7 +164,7 @@
                     android:textSize="16sp"
                     app:drawableTint="@color/white"
                     android:layout_marginBottom="8dp"
-                    android:drawableTop="@drawable/ic_camera"
+                    app:drawableTopCompat="@drawable/ic_camera"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/menu_fab_scan" />
@@ -192,7 +192,7 @@
                     android:textColor="@color/white"
                     app:drawableTint="@color/white"
                     android:textSize="13sp"
-                    android:drawableTop="@drawable/ic_search"
+                    app:drawableTopCompat="@drawable/ic_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/menu_fab_title" />
@@ -203,7 +203,7 @@
 
 
         <RelativeLayout
-            android:background="@color/tabcolor_current_dark"
+            android:background="@color/colorAccentDark"
             android:layout_width="match_parent"
             android:layout_height="50dp" >
 

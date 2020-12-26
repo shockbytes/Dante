@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:minHeight="72dp"
+    android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
-    android:layout_height="wrap_content">
+    android:minHeight="72dp">
 
     <ImageView
         android:id="@+id/iv_item_simple_book_cover"
@@ -26,10 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/nunito_extrabold"
         app:layout_constraintBottom_toBottomOf="@+id/iv_item_simple_book_cover"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_item_simple_book_cover"
         app:layout_constraintTop_toTopOf="@+id/iv_item_simple_book_cover"
-        tools:text="Moby dick" />
+        tools:text="Moby Dick" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,14 +5,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:fontFamily">@font/montserrat</item>
+        <item name="android:fontFamily">@font/nunito</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
         <item name="android:windowSharedElementEnterTransition">@transition/hero_transition</item>
         <item name="android:windowSharedElementExitTransition">@transition/hero_transition</item>
 
-        <item name="md_font_title">@font/montserrat</item>
-        <item name="md_font_body">@font/montserrat</item>
-        <item name="md_font_button">@font/montserrat</item>
+        <item name="md_font_title">@font/nunito</item>
+        <item name="md_font_body">@font/nunito</item>
+        <item name="md_font_button">@font/nunito</item>
         <item name="md_color_button_text">@color/colorAccent</item>
     </style>
 

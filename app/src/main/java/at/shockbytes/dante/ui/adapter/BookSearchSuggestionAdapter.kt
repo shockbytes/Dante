@@ -46,10 +46,18 @@ class BookSearchSuggestionAdapter(
                 addClickedListener.invoke(content)
             }
 
-            content.thumbnailAddress?.let { address ->
-                if (address.isNotEmpty()) {
-                    imageLoader.loadImage(context, address, imgViewCover, R.drawable.ic_placeholder)
-                }
+            loadImage(content.thumbnailAddress)
+        }
+
+        private fun loadImage(thumbnailAddress: String?) {
+            if (!thumbnailAddress.isNullOrEmpty()) {
+                imageLoader.loadImageWithCornerRadius(
+                    context,
+                    thumbnailAddress,
+                    imgViewCover,
+                    R.drawable.ic_placeholder,
+                    cornerDimension = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                )
             }
         }
     }

@@ -2,12 +2,12 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
+import at.shockbytes.dante.util.getThemeFont
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import com.github.mikephil.charting.components.Legend
@@ -77,7 +77,7 @@ class BookStatsLanguageViewHolder(
                 textColor = ContextCompat.getColor(context, R.color.colorSecondaryText)
                 form = Legend.LegendForm.CIRCLE
                 textSize = 13f
-                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                typeface = context.getThemeFont()
                 orientation = Legend.LegendOrientation.HORIZONTAL
                 isWordWrapEnabled = true
                 setDrawInside(false)

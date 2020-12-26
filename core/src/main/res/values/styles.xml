@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TextAuthor" parent="TextAppearance.MaterialComponents.Body2">
+    <style name="TextAuthor">
         <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.0178571429</item>
     </style>
 
     <style name="TextSubtitle" parent="TextAuthor">
         <item name="android:textColor">@color/colorSecondaryText</item>
     </style>
 
-    <style name="TextTitle" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextTitle">
         <item name="android:textColor">@color/colorPrimaryText</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="textAllCaps">true</item>
+        <item name="android:letterSpacing">0.0333333333</item>
     </style>
 
     <style name="BottomSheetDialogTheme" parent="@style/Theme.Design.Light.BottomSheetDialog">

@@ -74,11 +74,11 @@ class BookStatsBookAndPagesViewHolder(
         val entries = listOf(
             RelativeBarChartEntry(
                 pages.waiting.toFloat(),
-                R.color.tabcolor_upcoming_dark
+                R.color.tabcolor_upcoming
             ),
             RelativeBarChartEntry(
                 pages.read.toFloat(),
-                R.color.tabcolor_done_dark
+                R.color.tabcolor_done
             )
         )
 

@@ -17,6 +17,7 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.sort.SortComparators
 import at.shockbytes.dante.util.toBitmap
+import timber.log.Timber
 
 class DanteRemoteViewsFactory(
     private val context: Context,
@@ -30,7 +31,7 @@ class DanteRemoteViewsFactory(
 
     override fun onCreate() = Unit
 
-    override fun getLoadingView(): RemoteViews? {
+    override fun getLoadingView(): RemoteViews {
         return RemoteViews(context.packageName, R.layout.item_app_widget_loading).apply {
             setProgressBar(R.id.pb_item_app_widget_loading, 0, 100, true)
         }
@@ -76,7 +77,7 @@ class DanteRemoteViewsFactory(
             try {
                 thumbnailAddress.checkUrlForHttps().toUri().loadBitmap(context).blockingGet()
             } catch (e: Exception) {
-                e.printStackTrace()
+                Timber.e(e)
                 ContextCompat.getDrawable(context, R.drawable.ic_placeholder)?.toBitmap()
             }
         } else {

@@ -8,6 +8,7 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.flagging.FeatureFlagging
+import java.util.Locale
 import javax.inject.Inject
 
 class DetailActivity : TintableBackNavigableActivity() {
@@ -24,7 +25,7 @@ class DetailActivity : TintableBackNavigableActivity() {
         val title = intent.getStringExtra(ARG_TITLE)
 
         if (id != -1L) {
-            supportActionBar?.title = title
+            supportActionBar?.title = title?.toUpperCase(Locale.getDefault())
             detailFragment = pickDetailFragment(id)
         } else {
             supportFinishAfterTransition()

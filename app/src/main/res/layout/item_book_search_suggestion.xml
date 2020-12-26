@@ -1,51 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:paddingBottom="2dp"
-    android:paddingTop="2dp">
+    android:paddingTop="2dp"
+    android:paddingBottom="2dp">
 
     <TextView
         android:id="@+id/item_book_search_suggestion_txt_title"
+        style="@style/TextTitle"
+        android:fontFamily="@font/nunito_extrabold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:lines="2"
-        android:textStyle="bold"
-        android:maxLines="2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:layout_marginEnd="8dp"
+        android:lines="1"
+        android:maxLines="1"
         app:layout_constraintEnd_toStartOf="@+id/item_book_search_suggestion_btn_add"
         app:layout_constraintStart_toEndOf="@+id/item_book_search_suggestion_imgview_cover"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/item_book_search_suggestion_imgview_cover"
+        tools:text="Their darkest hour" />
 
     <ImageView
         android:id="@+id/item_book_search_suggestion_imgview_cover"
-        android:layout_width="wrap_content"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_max="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_placeholder" />
+        app:srcCompat="@drawable/darkest_hour" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/item_book_search_suggestion_btn_add"
         style="@style/AppTheme.RoundedButton.Outlined"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        android:paddingEnd="8dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingStart="8dp"
+        app:icon="@drawable/ic_add_round"
+        app:iconTint="@color/colorAccent"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:text="@string/add"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -54,16 +56,16 @@
 
     <TextView
         android:id="@+id/item_book_search_suggestion_txt_author"
+        style="@style/TextAuthor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_book_search_suggestion_btn_add"
         app:layout_constraintStart_toEndOf="@+id/item_book_search_suggestion_imgview_cover"
-        app:layout_constraintTop_toBottomOf="@+id/item_book_search_suggestion_txt_title" />
+        app:layout_constraintTop_toBottomOf="@+id/item_book_search_suggestion_txt_title"
+        tools:text="Laurence Rees" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

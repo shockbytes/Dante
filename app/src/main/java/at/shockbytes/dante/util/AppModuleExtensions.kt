@@ -2,9 +2,11 @@ package at.shockbytes.dante.util
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.core.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.signin.DanteUser
@@ -66,6 +68,10 @@ fun Context.openFile(fileToPath: File, mimeType: String): Intent {
         .setAction(Intent.ACTION_VIEW)
         .setDataAndType(uri, mimeType)
         .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+}
+
+fun Context.getThemeFont(): Typeface? {
+    return ResourcesCompat.getFont(this, at.shockbytes.dante.R.font.nunito)
 }
 
 fun List<BookEntity>.toAdapterItems(): List<BookAdapterItem> {

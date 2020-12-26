@@ -15,9 +15,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
-import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.viewModelOfActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -91,17 +89,8 @@ class MenuFragment : BottomSheetDialogFragment() {
             }
 
             is MainViewModel.UserEvent.RequireLogin -> {
-
                 ActivityNavigator.navigateTo(context, Destination.Login)
-
-                /**
-                 * TODO Remove this later
-                 */
-                GoogleSignInDialogFragment.newInstance()
-                    .setSignInListener {
-                        requireActivity().startActivityForResult(event.signInIntent, DanteUtils.RC_SIGN_IN)
-                    }
-                    .show(childFragmentManager, "sign-in-fragment")
+                // requireActivity().startActivityForResult(event.signInIntent, DanteUtils.RC_SIGN_IN)
             }
 
             is MainViewModel.UserEvent.Error -> {

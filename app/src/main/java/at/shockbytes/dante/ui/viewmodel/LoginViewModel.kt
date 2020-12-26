@@ -10,6 +10,7 @@ import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.singleOf
+import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
 
@@ -37,22 +38,26 @@ class LoginViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun loginWithMail(address: String, password: String) {
-        // TODO
-    }
-
-    fun anonymousLogin() {
-        // TODO
-    }
-
     fun requestGoogleLogin(): Single<Intent> {
         return singleOf {
             loginRepository.googleLoginIntent
         }
     }
 
+    fun loginWithMail(address: String, password: String) {
+        login(loginRepository.loginWithMail(address, password))
+    }
+
+    fun loginAnonymously() {
+        login(loginRepository.loginAnonymously())
+    }
+
     fun loginWithGoogle(data: Intent) {
-        loginRepository.loginWithGoogle(data)
+        login(loginRepository.loginWithGoogle(data))
+    }
+
+    private fun login(source: Completable) {
+        source
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
                 loginState.postValue(LoginState.LoggedIn)

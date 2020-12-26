@@ -60,6 +60,7 @@
         <activity
             android:name=".ui.activity.LoginActivity"
             android:theme="@style/AppTheme.Login"
+            android:screenOrientation="portrait"
             android:exported="true" />
 
         <activity

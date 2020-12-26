@@ -7,12 +7,10 @@ import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.sdkVersionOrAbove
 import at.shockbytes.dante.injection.AppComponent
-import at.shockbytes.dante.navigation.ActivityNavigator
-import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.activity.core.ActivityTransition
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.LoginFragment
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
@@ -23,6 +21,8 @@ class LoginActivity : BaseActivity() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
+
+    override val activityTransition = ActivityTransition.slideFromBottom()
 
     private lateinit var viewModel: LoginViewModel
 
@@ -66,7 +66,6 @@ class LoginActivity : BaseActivity() {
         window.statusBarColor = Color.TRANSPARENT
         window.navigationBarColor = Color.TRANSPARENT
     }
-
 
     private fun showLoginFragment() {
         supportFragmentManager

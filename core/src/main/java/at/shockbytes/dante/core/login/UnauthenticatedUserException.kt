@@ -1,3 +1,3 @@
-package at.shockbytes.dante.signin
+package at.shockbytes.dante.core.login
 
 class UnauthenticatedUserException : Exception()

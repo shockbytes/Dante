@@ -9,12 +9,10 @@ import android.os.Looper
 import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.core.R
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.signin.DanteUser
+import at.shockbytes.dante.core.login.DanteUser
 import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.tasks.Tasks
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.File
@@ -37,18 +35,6 @@ fun GoogleSignInAccount.toDanteUser(): DanteUser {
         "google",
         this.idToken,
         userId = ""
-    )
-}
-
-fun FirebaseUser.toDanteUser(givenName: String? = this.displayName): DanteUser {
-    return DanteUser(
-        givenName,
-        this.displayName,
-        this.email,
-        this.photoUrl,
-        this.providerId,
-        Tasks.await(this.getIdToken(false))?.token,
-        this.uid
     )
 }
 

@@ -26,7 +26,6 @@ import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.createRoundedBitmap
@@ -130,14 +129,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         appComponent.inject(this)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            DanteUtils.RC_SIGN_IN -> data?.let(viewModel::signIn)
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(ID_SELECTED_TAB, tabId)
@@ -197,12 +188,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 }
             }
 
-            is MainViewModel.UserEvent.AnonymousUser -> {
+            is MainViewModel.UserEvent.UnauthenticatedUser -> {
                 imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                 onUserLoaded()
             }
             // These cases are handled by another Fragment
-            is MainViewModel.UserEvent.RequireLogin -> Unit
             is MainViewModel.UserEvent.Error -> Unit
         }
     }

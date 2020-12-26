@@ -55,6 +55,10 @@ dependencies {
 
     api "com.airbnb.android:lottie:$lottieVersion"
 
+    // Login
+    api "com.google.android.gms:play-services-auth:$playServicesVersionAuth"
+    api "com.google.firebase:firebase-auth:$firebaseVersionAuth"
+
     api "net.danlew:android.joda:$jodaTimeVersion"
     api "com.afollestad.material-dialogs:core:${rootProject.materialDialogsVersion}"
 

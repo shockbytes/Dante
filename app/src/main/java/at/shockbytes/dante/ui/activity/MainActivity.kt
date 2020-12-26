@@ -63,10 +63,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         viewModel = viewModelOf(vmFactory)
         tabId = savedInstanceState?.getInt(ID_SELECTED_TAB) ?: R.id.menu_navigation_current
 
-
-        // TODO Remove later
-        ActivityNavigator.navigateTo(this, Destination.Login)
-
         handleIntentExtras()
         setupUI()
         initializeNavigation()

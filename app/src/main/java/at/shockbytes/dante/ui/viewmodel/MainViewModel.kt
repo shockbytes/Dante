@@ -42,7 +42,7 @@ class MainViewModel @Inject constructor(
 
     sealed class UserEvent {
 
-        data class LoggedIn(val user: DanteUser, val showWelcomeScreen: Boolean) : UserEvent()
+        data class LoggedIn(val user: DanteUser) : UserEvent()
 
         object AnonymousUser : UserEvent()
 
@@ -74,14 +74,13 @@ class MainViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    private fun mapUserStateToUserEvent(userState: UserState) = when {
-        userState is UserState.SignedInUser -> {
-            UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
+    private fun mapUserStateToUserEvent(userState: UserState) = when (userState) {
+        is UserState.SignedInUser -> {
+            UserEvent.LoggedIn(userState.user)
         }
-        userState is UserState.Unauthenticated && !signInRepository.maybeLater -> {
+        is UserState.Unauthenticated -> {
             UserEvent.RequireLogin(signInRepository.signInIntent)
         }
-        else -> UserEvent.AnonymousUser
     }
 
     fun forceLogin(source: LoginSource) {
@@ -91,7 +90,7 @@ class MainViewModel @Inject constructor(
     fun signIn(data: Intent) {
         signInRepository.signIn(data)
             .subscribe({ account ->
-                userEvent.postValue(UserEvent.LoggedIn(account, signInRepository.showWelcomeScreen))
+                userEvent.postValue(UserEvent.LoggedIn(account))
             }, { throwable: Throwable ->
                 Timber.e(throwable)
                 userEvent.postValue(UserEvent.Error(R.string.error_google_login))
@@ -126,26 +125,11 @@ class MainViewModel @Inject constructor(
         userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
     }
 
-    fun signInMaybeLater(maybeLater: Boolean) {
-        signInRepository.maybeLater = maybeLater
-    }
-
     fun requestSeasonalTheme() {
         themeRepository.getSeasonalTheme()
             .doOnError { seasonalThemeSubject.onNext(SeasonalTheme.NoTheme) }
             .subscribe(seasonalThemeSubject::onNext, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
-    }
-
-    fun disableShowWelcomeScreen() {
-        signInRepository.showWelcomeScreen = false
-        hideWelcomeScreenFlagFromPostedLiveData()
-    }
-
-    private fun hideWelcomeScreenFlagFromPostedLiveData() {
-        (userEvent.value as? UserEvent.LoggedIn)?.let { event ->
-            userEvent.postValue(event.copy(showWelcomeScreen = false))
-        }
     }
 
     fun queryAnnouncements() {

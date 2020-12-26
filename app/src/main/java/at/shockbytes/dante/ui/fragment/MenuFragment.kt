@@ -91,11 +91,16 @@ class MenuFragment : BottomSheetDialogFragment() {
             }
 
             is MainViewModel.UserEvent.RequireLogin -> {
+
+                ActivityNavigator.navigateTo(context, Destination.Login)
+
+                /**
+                 * TODO Remove this later
+                 */
                 GoogleSignInDialogFragment.newInstance()
                     .setSignInListener {
                         requireActivity().startActivityForResult(event.signInIntent, DanteUtils.RC_SIGN_IN)
                     }
-                    .setMaybeLaterListener { viewModel.signInMaybeLater(true) }
                     .show(childFragmentManager, "sign-in-fragment")
             }
 

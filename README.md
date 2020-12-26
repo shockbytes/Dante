@@ -62,7 +62,7 @@ The backlog is currently empty.
         - [ ] Tracking
     - [ ] Storage
         - [ ] Online storage switch
-        - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
+        - [ ] How to handle local data when switching accounts? Realm.name in config would work
     - [ ] Anonymous
         - [ ] Allow users to upgrade to full account
         - [ ] Show notice when user selects anonymous account in login screen

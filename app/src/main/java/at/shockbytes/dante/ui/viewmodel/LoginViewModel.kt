@@ -62,7 +62,7 @@ class LoginViewModel @Inject constructor(
             .subscribe({
                 loginState.postValue(LoginState.LoggedIn)
             }, {
-                loginState.postValue(LoginState.Error(R.string.error_google_login))
+                loginState.postValue(LoginState.Error(R.string.login_error_google))
             })
             .addTo(compositeDisposable)
     }

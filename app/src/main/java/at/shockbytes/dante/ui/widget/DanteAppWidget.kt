@@ -8,7 +8,6 @@ import android.widget.RemoteViews
 import at.shockbytes.dante.R
 import android.content.ComponentName
 import at.shockbytes.dante.DanteApp
-import timber.log.Timber
 import android.app.PendingIntent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import at.shockbytes.dante.navigation.ActivityNavigator
@@ -20,7 +19,6 @@ class DanteAppWidget : AppWidgetProvider() {
         super.onReceive(context, intent)
 
         when (intent?.action) {
-
             ACTION_BOOK_CLICKED -> handleOnBookClickedEvent(context, intent)
             AppWidgetManager.ACTION_APPWIDGET_UPDATE -> handleAppWidgetUpdate(context, intent)
         }
@@ -69,9 +67,6 @@ class DanteAppWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
-
-        Timber.d("Updating app widgets")
-
         // Construct the RemoteViews object
         val views = RemoteViews(context.packageName, R.layout.dante_app_widget)
 

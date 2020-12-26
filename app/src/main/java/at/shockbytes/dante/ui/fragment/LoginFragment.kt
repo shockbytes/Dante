@@ -25,10 +25,7 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun setupViews() {
-
-        fragment_login_btn_login.setOnClickListener {
-            viewModel.login()
-        }
+        // TODO
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

@@ -260,7 +260,7 @@ class BookListViewModel @Inject constructor(
         signInRepository.getAccount()
             .map { state ->
                 when {
-                    state is UserState.AnonymousUser -> SuggestionState.UserNotLoggedIn
+                    state is UserState.Unauthenticated -> SuggestionState.UserNotLoggedIn
                     Languages.ENGLISH.code != book.language -> SuggestionState.WrongLanguage(book.language)
                     else -> SuggestionState.Suggest(book)
                 }

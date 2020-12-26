@@ -78,7 +78,7 @@ class MainViewModel @Inject constructor(
         userState is UserState.SignedInUser -> {
             UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
         }
-        userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
+        userState is UserState.Unauthenticated && !signInRepository.maybeLater -> {
             UserEvent.RequireLogin(signInRepository.signInIntent)
         }
         else -> UserEvent.AnonymousUser
@@ -108,7 +108,7 @@ class MainViewModel @Inject constructor(
             .flatMapCompletable { userState ->
                 when (userState) {
                     is UserState.SignedInUser -> signInRepository.signOut()
-                    UserState.AnonymousUser -> postSignInEvent()
+                    UserState.Unauthenticated -> postSignInEvent()
                 }
             }
             .subscribe({ }, ExceptionHandlers::defaultExceptionHandler)

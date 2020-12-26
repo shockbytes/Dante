@@ -10,6 +10,7 @@ import at.shockbytes.dante.core.createSharingIntent
 import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.InspirationsActivity
+import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
@@ -115,6 +116,12 @@ sealed class Destination {
     object Inspirations : Destination() {
         override fun provideIntent(context: Context): Intent {
             return InspirationsActivity.newIntent(context)
+        }
+    }
+
+    object Login : Destination() {
+        override fun provideIntent(context: Context): Intent {
+            return LoginActivity.newIntent(context)
         }
     }
 }

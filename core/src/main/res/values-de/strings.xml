@@ -135,12 +135,6 @@
     <string name="error_msg_execution_exception">Downloadfehler</string>
     <string name="error_msg_unknown">Unbekannt</string>
     <string name="welcome_to_dante">Willkommen bei Dante</string>
-    <string name="ic_onboarding_welcome">TODO</string>
-    <string name="ic_onboarding_tracking">TODO</string>
-    <string name="ic_onboarding_night_mode">TODO</string>
-    <string name="ic_onboarding_login">TODO</string>
-    <string name="ic_onboarding_suggestions">TODO</string>
-    <string name="ic_onboarding_cta">TODO</string>
     <string name="currently_reading">Du liest gerade</string>
     <string name="widget_empty_placeholder">Du liest im Moment kein Buch. Verschiebe Bücher von deiner Liste <b><i>Für später</i></b> nach <b><i>Lesen</i></b>.</string>
     <string name="menu_fab_manual_disabled">Manuelle Eingabe ist ausgeschaltet.</string>

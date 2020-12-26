@@ -47,6 +47,16 @@
         <item name="android:fontFamily">@font/nunito</item>
     </style>
 
+    <style name="AppTheme.Login">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="statusBarBackground">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

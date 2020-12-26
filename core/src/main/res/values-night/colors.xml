@@ -38,4 +38,6 @@
     <color name="border">#EEE</color>
     <color name="bottom_menu_background">#090909</color>
 
+    <color name="loginBackground">#212121</color>
+
 </resources>

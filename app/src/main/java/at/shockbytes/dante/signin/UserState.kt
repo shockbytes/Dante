@@ -4,5 +4,5 @@ sealed class UserState {
 
     data class SignedInUser(val user: DanteUser) : UserState()
 
-    object AnonymousUser : UserState()
+    object Unauthenticated : UserState()
 }

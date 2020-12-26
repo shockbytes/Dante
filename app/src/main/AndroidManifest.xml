@@ -59,6 +59,7 @@
 
         <activity
             android:name=".ui.activity.LoginActivity"
+            android:theme="@style/AppTheme.Login"
             android:exported="true" />
 
         <activity

@@ -67,7 +67,7 @@ class GoogleFirebaseSignInRepository(
                     signInSubject.onNext(userState)
                 }, { throwable ->
                     Timber.e(throwable)
-                    signInSubject.onNext(UserState.AnonymousUser)
+                    signInSubject.onNext(UserState.Unauthenticated)
                 })
                 .addTo(compositeDisposable)
         }
@@ -102,7 +102,7 @@ class GoogleFirebaseSignInRepository(
         return Completable
             .fromAction(fbAuth::signOut)
             .doOnComplete {
-                signInSubject.onNext(UserState.AnonymousUser)
+                signInSubject.onNext(UserState.Unauthenticated)
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
@@ -119,7 +119,7 @@ class GoogleFirebaseSignInRepository(
             .fromCallable {
                 fbAuth.currentUser?.toDanteUser()
                     ?.let(UserState::SignedInUser)
-                    ?: UserState.AnonymousUser
+                    ?: UserState.Unauthenticated
             }
             .subscribeOn(schedulers.io)
     }

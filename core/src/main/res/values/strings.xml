@@ -298,12 +298,6 @@
     <string name="error_msg_execution_exception">Download Error</string>
     <string name="error_msg_unknown">Unknown</string>
     <string name="welcome_to_dante">Welcome to Dante</string>
-    <string name="ic_onboarding_welcome">TODO</string>
-    <string name="ic_onboarding_tracking">TODO</string>
-    <string name="ic_onboarding_night_mode">TODO</string>
-    <string name="ic_onboarding_login">TODO</string>
-    <string name="ic_onboarding_suggestions">TODO</string>
-    <string name="ic_onboarding_cta">TODO</string>
 
     <string name="prefs_last_login" translatable="false">prefs_last_login</string>
     <string name="prefs_first_app_open_key" translatable="false">prefs_first_app_open_key</string>

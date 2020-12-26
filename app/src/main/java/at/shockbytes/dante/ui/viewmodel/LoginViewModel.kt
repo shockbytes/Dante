@@ -39,6 +39,18 @@ class LoginViewModel @Inject constructor(
         // Login user here...
     }
 
+    fun loginWithMail(address: String, password: String) {
+        // TODO
+    }
+
+    fun anonymousLogin() {
+        // TODO
+    }
+
+    fun googleLogin() {
+        // TODO
+    }
+
     sealed class LoginState {
 
         object LoggedIn : LoginState()

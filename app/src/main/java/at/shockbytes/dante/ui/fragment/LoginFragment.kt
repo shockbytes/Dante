@@ -25,21 +25,34 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun setupViews() {
-        // TODO
+
+        btn_login_google.setOnClickListener {
+            viewModel.googleLogin()
+        }
+
+        btn_login_mail.setOnClickListener {
+            MailLoginBottomSheetDialogFragment.newInstance()
+                .setOnCredentialsEnteredListener(viewModel::loginWithMail)
+                .show(parentFragmentManager, "mail-login-fragment")
+        }
+
+        btn_login_skip.setOnClickListener {
+            viewModel.anonymousLogin()
+        }
     }
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
-    override fun bindViewModel() = Unit
+    override fun bindViewModel() {
+        // TODO
+    }
 
     override fun unbindViewModel() = Unit
 
     companion object {
 
-        fun newInstance(): LoginFragment {
-            return LoginFragment()
-        }
+        fun newInstance() = LoginFragment()
     }
 }

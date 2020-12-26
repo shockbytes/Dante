@@ -34,6 +34,7 @@
 
         <ImageView
             android:id="@+id/item_book_img_overflow"
+            android:rotation="90"
             android:layout_width="48dp"
             android:background="@drawable/bg_rounded_ripple"
             android:layout_height="48dp"
@@ -65,7 +66,7 @@
             android:id="@+id/item_book_pb"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="0dp"
-            android:layout_height="2dp"
+            android:layout_height="8dp"
             android:progress="0"
             android:progressBackgroundTint="@color/mainBackground"
             android:background="@color/mainBackground"
@@ -80,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:maxLines="3"
             android:transitionName="@string/transition_name_subtitle"
@@ -133,7 +134,7 @@
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:textColor="@color/colorSecondaryText"
-            android:textSize="13sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="50%" />

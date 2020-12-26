@@ -50,21 +50,19 @@ The backlog is currently empty.
 - [ ] Add web client support
 - [ ] Paged request when user clicks on "not my book" in book download view
 
-### Version 4.0 - CAMPING WITH FIREBASE
+### Version 4.1 - FIREFLASH
 - [ ] Add online sync capability
   - [ ] Migrate from local to remote storage
-- [ ] Login with Firebase
 
 ## Current development
 
-### Version 3.19
-- [ ] Experimental remote storage Firestore implementation (for test account)
-- [ ] Add Onboarding + optional Login
-- [ ] Move actions into Book item (https://github.com/florent37/ExpansionPanel)
+### Version 4.0 - CAMPING WITH FIREBASE
+- [ ] Add required Firebase Login (Google, Email, Anonymous)
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
 - [ ] Upgrade to Kotlin 1.4.20 -> Use ViewBinding
+- [ ] Reworked UI
 
 ## Changelog
 

@@ -4,62 +4,153 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainBackground" >
+    android:background="@color/loginBackground" >
 
-    <TextView
-        android:id="@+id/fragment_login_tv_welcome"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
-        android:text="@string/welcome_to_dante"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_login_btn_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_login_iv_logo" />
-
-    <ImageView
-        android:id="@+id/fragment_login_iv_logo"
-        android:layout_width="128dp"
-        android:layout_height="128dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_brand_app_logo" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/fragment_login_btn_login"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_login_main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
-        android:paddingStart="48dp"
-        android:paddingLeft="48dp"
-        android:paddingTop="16dp"
-        app:cornerRadius="22dp"
-        android:textColor="@color/colorPrimaryTextLight"
-        android:backgroundTint="@color/colorAccent"
-        android:paddingEnd="48dp"
-        android:paddingRight="48dp"
-        android:paddingBottom="16dp"
-        android:text="@string/login"
-        android:textSize="18sp"
+        android:layout_marginHorizontal="48dp"
+        android:layout_marginVertical="92dp"
+        app:cardCornerRadius="24dp"
+        app:cardBackgroundColor="@color/mainBackground"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="48dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_login_hello"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:fontFamily="@font/nunito_extrabold"
+                android:text="@string/welcome_to_dante"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_login_google"
+                style="@style/AppTheme.RoundedButton.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/login_with_google"
+                android:textColor="@color/danteAccent"
+                app:icon="@drawable/ic_google"
+                app:iconTint="@android:color/transparent"
+                app:iconTintMode="add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_login_description" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_login_mail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                style="@style/AppTheme.RoundedButton.Outlined"
+                android:layout_marginEnd="16dp"
+                android:text="@string/login_with_mail"
+                android:textColor="@color/danteAccent"
+                app:iconTint="@color/hot"
+                app:icon="@drawable/ic_settings_feedback"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_login_google" />
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_login_skip"
+                style="@style/AppTheme.RoundedButton.Outlined"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/login_anonymously"
+                android:textAllCaps="false"
+                android:textColor="@color/danteAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_login_separator" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_login_online_storage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:checked="true"
+                android:text="Use online storage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_login_mail" />
+
+            <View
+                android:id="@+id/view_login_separator"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="16dp"
+                android:background="@color/recycler_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/switch_login_online_storage" />
+
+            <TextView
+                android:id="@+id/tv_login_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="@string/login_rationale"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_login_hello" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_login_icon"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        app:cardCornerRadius="64dp"
+        app:cardBackgroundColor="@color/mainBackground"
+        app:layout_constraintBottom_toTopOf="@+id/card_login_main"
+        app:layout_constraintEnd_toEndOf="@+id/card_login_main"
+        app:layout_constraintStart_toStartOf="@+id/card_login_main"
+        app:layout_constraintTop_toTopOf="@+id/card_login_main">
+
+        <ImageView
+            android:id="@+id/fragment_login_iv_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:padding="20dp"
+            android:background="@color/mainBackground"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_brand_app_logo" />
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

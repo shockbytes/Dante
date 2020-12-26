@@ -33,8 +33,6 @@ import at.shockbytes.dante.ui.fragment.StatisticsFragment
 import at.shockbytes.dante.ui.fragment.SuggestBookBottomSheetDialogFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
-import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.widget.DanteAppWidget
 import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
@@ -104,11 +102,7 @@ interface AppComponent {
 
     fun inject(fragment: TimeLineFragment)
 
-    fun inject(dialogFragment: GoogleSignInDialogFragment)
-
     fun inject(dialogFragment: SortStrategyDialogFragment)
-
-    fun inject(dialogFragment: GoogleWelcomeScreenDialogFragment)
 
     fun inject(danteAppWidget: DanteAppWidget)
 

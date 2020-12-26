@@ -58,14 +58,6 @@ class DanteSettings(
                 .apply()
         }
 
-    var lastLogin: Long
-        get() = prefs.getLong(context.getString(R.string.prefs_last_login), 0L)
-        set(value) {
-            prefs.edit()
-                    .putLong(context.getString(R.string.prefs_last_login), value)
-                    .apply()
-        }
-
     fun observeSortStrategy(): Observable<SortStrategy> {
         return rxPrefs.getInteger(context.getString(R.string.prefs_sort_strategy_key))
                 .asObservable()

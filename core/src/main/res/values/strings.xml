@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.18.1</string>
+    <string name="app_version" translatable="false">4.0</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -108,21 +108,23 @@
     <string name="backup_restored">Backup from %s restored</string>
     <string name="backup_restore_error">Error while restoring backup. Reason: %s</string>
     <string name="book_finished_move_to_done_question">You have finished your book. Would you like to add it to the done list?</string>
-    <string name="login_title">Hello!</string>
-    <string name="login_rationale">Thank you for using Dante. In order to provide a better experience we will need access to your Google Account. Furthermore you can also create Google Drive backups. You can also login anytime later if you do not need these features now.</string>
-    <string name="login_later">Maybe later</string>
-    <string name="dialog_login_title">Login to Dante</string>
     <string name="login" translatable="false">Login</string>
     <string name="logout" translatable="false">Logout</string>
     <string name="backup_info">Choose <b>merge</b> if you want to preserve the books on your device and complement the collection with the missing books in the backup. Or choose <b>overwrite</b> to completely delete all books on your device and replace them by the books in the backup file.</string>
-    <string name="welcome">Welcome</string>
     <string name="welcome_acknowledge">OKAY, GOT IT</string>
-    <string name="welcome_with_name">Hello %s!</string>
-    <string name="google_welcome_rationale">You can manage all your Google related activities when your are clicking the symbol above in the app bar. Click on this icon if you want to create a <b>backup</b>.</string>
     <string name="camera_permission_title">Camera</string>
     <string name="scanner_not_operational">The app is currently being configured</string>
     <string name="rate_book">Rate</string>
     <string name="rate">Rate</string>
+
+    <!-- Login -->
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_mail">Login with Mail</string>
+    <string name="login_anonymously">Skip this for now</string>
+    <string name="login_rationale">Login with an account to store books online, suggest books to other readers and more.</string>
+    <string name="login_mail">Mail Address</string>
+    <string name="login_password">Password</string>
+    <string name="login_error_google">We cannot log you into your Google Account!</string>
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
@@ -286,7 +288,6 @@
     <string name="backup_no_backups">You haven\'t made any backups.</string>
     <string name="backup_connection_establish_error">Cannot connect to your backups. Reason: %s</string>
     <string name="dark_mode_applied">The theme will change next restart.</string>
-    <string name="error_google_login">We cannot log you into your Google Account!</string>
     <string name="load_error">Cannot load books from storage</string>
 
     <string name="language_not_available" translatable="false">na</string>
@@ -298,12 +299,6 @@
     <string name="error_msg_execution_exception">Download Error</string>
     <string name="error_msg_unknown">Unknown</string>
     <string name="welcome_to_dante">Welcome to Dante</string>
-    <string name="ic_onboarding_welcome">TODO</string>
-    <string name="ic_onboarding_tracking">TODO</string>
-    <string name="ic_onboarding_night_mode">TODO</string>
-    <string name="ic_onboarding_login">TODO</string>
-    <string name="ic_onboarding_suggestions">TODO</string>
-    <string name="ic_onboarding_cta">TODO</string>
 
     <string name="prefs_last_login" translatable="false">prefs_last_login</string>
     <string name="prefs_first_app_open_key" translatable="false">prefs_first_app_open_key</string>

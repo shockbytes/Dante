@@ -1,14 +1,12 @@
 package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
-import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
-import at.shockbytes.dante.signin.DanteUser
-import at.shockbytes.dante.signin.SignInRepository
-import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.core.login.DanteUser
+import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.theme.SeasonalTheme
 import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -23,7 +21,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -32,7 +29,7 @@ import javax.inject.Inject
  * Date:    10.06.2018
  */
 class MainViewModel @Inject constructor(
-    private val signInRepository: SignInRepository,
+    private val loginRepository: LoginRepository,
     private val announcementProvider: AnnouncementProvider,
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings,
@@ -42,11 +39,9 @@ class MainViewModel @Inject constructor(
 
     sealed class UserEvent {
 
-        data class LoggedIn(val user: DanteUser, val showWelcomeScreen: Boolean) : UserEvent()
+        data class LoggedIn(val user: DanteUser) : UserEvent()
 
-        object AnonymousUser : UserEvent()
-
-        data class RequireLogin(val signInIntent: Intent?) : UserEvent()
+        object UnauthenticatedUser : UserEvent()
 
         data class Error(@StringRes val errorMsg: Int) : UserEvent()
     }
@@ -56,6 +51,9 @@ class MainViewModel @Inject constructor(
 
     private val showAnnouncementSubject = PublishSubject.create<Unit>()
     fun showAnnouncement(): Observable<Unit> = showAnnouncementSubject
+
+    private val loginEvent = PublishSubject.create<Unit>()
+    fun onLoginEvent(): Observable<Unit> = loginEvent
 
     private val seasonalThemeSubject = BehaviorSubject.create<SeasonalTheme>()
     fun getSeasonalTheme(): Observable<SeasonalTheme> = seasonalThemeSubject
@@ -67,48 +65,35 @@ class MainViewModel @Inject constructor(
     }
 
     private fun initialize() {
-        signInRepository.setup()
-        signInRepository.observeSignInState()
+        loginRepository.observeAccount()
             .map(::mapUserStateToUserEvent)
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
-    private fun mapUserStateToUserEvent(userState: UserState) = when {
-        userState is UserState.SignedInUser -> {
-            UserEvent.LoggedIn(userState.user, signInRepository.showWelcomeScreen)
+    private fun mapUserStateToUserEvent(userState: UserState) = when (userState) {
+        is UserState.SignedInUser -> {
+            UserEvent.LoggedIn(userState.user)
         }
-        userState is UserState.AnonymousUser && !signInRepository.maybeLater -> {
-            UserEvent.RequireLogin(signInRepository.signInIntent)
+        is UserState.Unauthenticated -> {
+            UserEvent.UnauthenticatedUser
         }
-        else -> UserEvent.AnonymousUser
     }
 
     fun forceLogin(source: LoginSource) {
-        postSignInEventAndTrackValue(source)
-    }
-
-    fun signIn(data: Intent) {
-        signInRepository.signIn(data)
-            .subscribe({ account ->
-                userEvent.postValue(UserEvent.LoggedIn(account, signInRepository.showWelcomeScreen))
-            }, { throwable: Throwable ->
-                Timber.e(throwable)
-                userEvent.postValue(UserEvent.Error(R.string.error_google_login))
-            })
-            .addTo(compositeDisposable)
+        postLoginEventAndTrackValue(source)
     }
 
     fun loginLogout() {
-        signInRepository.getAccount()
+        loginRepository.getAccount()
             .subscribeOn(schedulers.io)
             .doOnError {
-                userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
+                userEvent.postValue(UserEvent.UnauthenticatedUser)
             }
             .flatMapCompletable { userState ->
                 when (userState) {
-                    is UserState.SignedInUser -> signInRepository.signOut()
-                    UserState.AnonymousUser -> postSignInEvent()
+                    is UserState.SignedInUser -> loginRepository.logout()
+                    UserState.Unauthenticated -> postSignInEvent()
                 }
             }
             .subscribe({ }, ExceptionHandlers::defaultExceptionHandler)
@@ -117,17 +102,13 @@ class MainViewModel @Inject constructor(
 
     private fun postSignInEvent(): Completable {
         return completableOf {
-            postSignInEventAndTrackValue(LoginSource.FromMenu)
+            postLoginEventAndTrackValue(LoginSource.FromMenu)
         }
     }
 
-    private fun postSignInEventAndTrackValue(source: LoginSource) {
+    private fun postLoginEventAndTrackValue(source: LoginSource) {
         tracker.track(DanteTrackingEvent.Login(source))
-        userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
-    }
-
-    fun signInMaybeLater(maybeLater: Boolean) {
-        signInRepository.maybeLater = maybeLater
+        loginEvent.onNext(Unit)
     }
 
     fun requestSeasonalTheme() {
@@ -135,17 +116,6 @@ class MainViewModel @Inject constructor(
             .doOnError { seasonalThemeSubject.onNext(SeasonalTheme.NoTheme) }
             .subscribe(seasonalThemeSubject::onNext, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
-    }
-
-    fun disableShowWelcomeScreen() {
-        signInRepository.showWelcomeScreen = false
-        hideWelcomeScreenFlagFromPostedLiveData()
-    }
-
-    private fun hideWelcomeScreenFlagFromPostedLiveData() {
-        (userEvent.value as? UserEvent.LoggedIn)?.let { event ->
-            userEvent.postValue(event.copy(showWelcomeScreen = false))
-        }
     }
 
     fun queryAnnouncements() {

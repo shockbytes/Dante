@@ -1,4 +1,4 @@
-package at.shockbytes.dante.signin
+package at.shockbytes.dante.core.login
 
 import android.net.Uri
 import android.os.Parcelable

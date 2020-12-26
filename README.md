@@ -37,9 +37,6 @@ The backlog is currently empty.
 ## Outlook & planned features
 
 ### Versions 5.x
-- [ ] Suggesions
-    - [ ] Use Firebase Data for book suggestions
-    - [ ] Let users suggest favorite books to others
 - [ ] Improved search database (Google Books API) lookup query
 - [ ] Shockbytes Firestore Backup
 - [ ] Simplify book management
@@ -58,11 +55,30 @@ The backlog is currently empty.
 
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
+    - [ ] General
+        - [ ] Show login screen when unauthenticated user opens the app
+        - [ ] Handle empty mail addresses and usernames in MenuFragment
+        - [ ] Logout moves user to login screen
+        - [ ] Tracking
+    - [ ] Storage
+        - [ ] Online storage switch
+        - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
+    - [ ] Anonymous
+        - [ ] Allow users to upgrade to full account
+        - [ ] Show notice when user selects anonymous account in login screen
+        - [ ] Show notice that data will be wiped once logged out
+    - [ ] Mail
+        - [ ] Create Account with Mail vs Login with Mail
+        - [ ] Verify email in bottom sheet
+        - [ ] Verify minimum password length
+    - [x] Google
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
-- [ ] Upgrade to Kotlin 1.4.20 -> Use ViewBinding
-- [ ] Reworked UI
+- [ ] Upgrade to Kotlin 1.4.20
+    - [ ] Use ViewBinding
+    - [ ] Remove Kotterknife
+- [x] Reworked UI
 
 ## Changelog
 

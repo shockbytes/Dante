@@ -92,7 +92,7 @@ class MainViewModel @Inject constructor(
             }
             .flatMapCompletable { userState ->
                 when (userState) {
-                    is UserState.SignedInUser -> loginRepository.signOut()
+                    is UserState.SignedInUser -> loginRepository.logout()
                     UserState.Unauthenticated -> postSignInEvent()
                 }
             }

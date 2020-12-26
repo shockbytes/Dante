@@ -11,15 +11,15 @@ import io.reactivex.Single
  */
 interface LoginRepository {
 
-    val signInIntent: Intent
+    val googleLoginIntent: Intent
 
-    fun signInWithGoogle(data: Intent): Single<DanteUser>
+    fun loginWithGoogle(data: Intent): Completable
 
-    fun signInWithMail(mailAddress: String, password: String): Completable
+    fun loginWithMail(mailAddress: String, password: String): Completable
 
-    fun signInAnonymously(): Completable
+    fun loginAnonymously(): Completable
 
-    fun signOut(): Completable
+    fun logout(): Completable
 
     fun observeAccount(): Observable<UserState>
 

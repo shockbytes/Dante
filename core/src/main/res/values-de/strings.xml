@@ -41,21 +41,22 @@
     <string name="backup_restore_error">Fehler beim Wiederherstellen. Grund: %s</string>
     <string name="manual_query">Titel oder ISBN</string>
     <string name="book_finished_move_to_done_question">Soll das Buch auf die Liste der gelesenen Büchern?</string>
-    <string name="login_title">Hallo!</string>
-    <string name="login_later">Später</string>
-    <string name="login_rationale">Danke, dass du Dante benützt. Um ein besseres Erlebnis zu bieten benötigen wir Zugang zu deinem Google Account. Damit kannst du unter anderem Google Drive Backups erstellen. Du kannst dich auch jederzeit später mit deinem Google Account verbinden.</string>
-    <string name="dialog_login_title">Login bei Dante</string>
     <string name="backup_info">Wähle <b>zusammenfügen</b> um die gespeicherten Bücher beizubehalten und die Sammlung durch fehlende Bücher im Backup zu vervollständigen. Oder wähle <b>überschreiben</b> um alle Bücher am Gerät zu löschen und durch die komplette Sammlung des Backups zu ersetzen.</string>
-    <string name="welcome">Willkommen</string>
     <string name="welcome_acknowledge">ALLES KLAR</string>
-    <string name="welcome_with_name">Hallo %s!</string>
-    <string name="google_welcome_rationale">Klicke auf das angezeigte Icon in der Appbar, um alle deine Google-verbundenen Dienste zu vewalten. Klicke auch auf das Icon, wenn du ein <b>Backup</b> erstellen willst.</string>
     <string name="camera_permission_title">Kamera</string>
     <string name="scanner_not_operational">Die App wird gerade noch konfiguriert</string>
     <string name="rate_book">Bewerten</string>
     <string name="rate">Bewerten</string>
     <string name="ratings_default">Es ist okay!</string>
     <string name="dialogfragment_rating_title">Wie gefällt dir %s?</string>
+
+    <!-- Login -->
+    <string name="login_with_google">Login mit Google</string>
+    <string name="login_with_mail">Login mit Mail</string>
+    <string name="login_anonymously">Überspringen</string>
+    <string name="login_rationale">Logge dich mit einem Account ein um Bücher online zu speichern und noch vieles mehr.</string>
+    <string name="login_mail">Email-Adresse</string>
+    <string name="login_password">Passwort</string>
 
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>
@@ -124,7 +125,7 @@
     <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
     <string name="backup_connection_establish_error">Keine Verbindung zu deinen Backups möglich. Grund: %s</string>
     <string name="dark_mode_applied">Das Thema wird beim nächsten Start aktiviert.</string>
-    <string name="error_google_login">Wir können dich leider nicht einloggen!</string>
+    <string name="login_error_google">Wir können dich leider nicht einloggen!</string>
     <string name="load_error">Bücher können nicht geladen werden</string>
 
     <string name="prefs_show_summary_title">Bücherzusammenfassung</string>

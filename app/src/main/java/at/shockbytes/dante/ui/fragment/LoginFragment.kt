@@ -52,8 +52,7 @@ class LoginFragment : BaseFragment() {
             if (result.resultCode == RESULT_OK && result.data != null) {
                 viewModel.loginWithGoogle(result.data!!)
             } else {
-                // TODO Handle this case
-                showToast("Something went wrong...")
+                showSnackbar(getString(R.string.login_error_google))
             }
         }
     }
@@ -62,9 +61,7 @@ class LoginFragment : BaseFragment() {
         appComponent.inject(this)
     }
 
-    override fun bindViewModel() {
-        // TODO
-    }
+    override fun bindViewModel() = Unit
 
     override fun unbindViewModel() = Unit
 

@@ -1,14 +1,12 @@
 package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
-import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.AnnouncementProvider
-import at.shockbytes.dante.signin.DanteUser
-import at.shockbytes.dante.signin.SignInRepository
-import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.core.login.DanteUser
+import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.theme.SeasonalTheme
 import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -23,7 +21,6 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -32,7 +29,7 @@ import javax.inject.Inject
  * Date:    10.06.2018
  */
 class MainViewModel @Inject constructor(
-    private val signInRepository: SignInRepository,
+    private val loginRepository: LoginRepository,
     private val announcementProvider: AnnouncementProvider,
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings,
@@ -44,9 +41,7 @@ class MainViewModel @Inject constructor(
 
         data class LoggedIn(val user: DanteUser) : UserEvent()
 
-        object AnonymousUser : UserEvent()
-
-        data class RequireLogin(val signInIntent: Intent?) : UserEvent()
+        object UnauthenticatedUser : UserEvent()
 
         data class Error(@StringRes val errorMsg: Int) : UserEvent()
     }
@@ -56,6 +51,9 @@ class MainViewModel @Inject constructor(
 
     private val showAnnouncementSubject = PublishSubject.create<Unit>()
     fun showAnnouncement(): Observable<Unit> = showAnnouncementSubject
+
+    private val loginEvent = PublishSubject.create<Unit>()
+    fun onLoginEvent(): Observable<Unit> = loginEvent
 
     private val seasonalThemeSubject = BehaviorSubject.create<SeasonalTheme>()
     fun getSeasonalTheme(): Observable<SeasonalTheme> = seasonalThemeSubject
@@ -67,8 +65,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun initialize() {
-        signInRepository.setup()
-        signInRepository.observeSignInState()
+        loginRepository.observeAccount()
             .map(::mapUserStateToUserEvent)
             .subscribe(userEvent::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
@@ -79,34 +76,23 @@ class MainViewModel @Inject constructor(
             UserEvent.LoggedIn(userState.user)
         }
         is UserState.Unauthenticated -> {
-            UserEvent.RequireLogin(signInRepository.signInIntent)
+            UserEvent.UnauthenticatedUser
         }
     }
 
     fun forceLogin(source: LoginSource) {
-        postSignInEventAndTrackValue(source)
-    }
-
-    fun signIn(data: Intent) {
-        signInRepository.signIn(data)
-            .subscribe({ account ->
-                userEvent.postValue(UserEvent.LoggedIn(account))
-            }, { throwable: Throwable ->
-                Timber.e(throwable)
-                userEvent.postValue(UserEvent.Error(R.string.error_google_login))
-            })
-            .addTo(compositeDisposable)
+        postLoginEventAndTrackValue(source)
     }
 
     fun loginLogout() {
-        signInRepository.getAccount()
+        loginRepository.getAccount()
             .subscribeOn(schedulers.io)
             .doOnError {
-                userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
+                userEvent.postValue(UserEvent.UnauthenticatedUser)
             }
             .flatMapCompletable { userState ->
                 when (userState) {
-                    is UserState.SignedInUser -> signInRepository.signOut()
+                    is UserState.SignedInUser -> loginRepository.signOut()
                     UserState.Unauthenticated -> postSignInEvent()
                 }
             }
@@ -116,13 +102,13 @@ class MainViewModel @Inject constructor(
 
     private fun postSignInEvent(): Completable {
         return completableOf {
-            postSignInEventAndTrackValue(LoginSource.FromMenu)
+            postLoginEventAndTrackValue(LoginSource.FromMenu)
         }
     }
 
-    private fun postSignInEventAndTrackValue(source: LoginSource) {
+    private fun postLoginEventAndTrackValue(source: LoginSource) {
         tracker.track(DanteTrackingEvent.Login(source))
-        userEvent.postValue(UserEvent.RequireLogin(signInRepository.signInIntent))
+        loginEvent.onNext(Unit)
     }
 
     fun requestSeasonalTheme() {

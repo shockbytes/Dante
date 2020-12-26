@@ -1,4 +1,4 @@
-package at.shockbytes.dante.signin
+package at.shockbytes.dante.core.login
 
 import android.content.Intent
 import io.reactivex.Completable
@@ -9,17 +9,19 @@ import io.reactivex.Single
  * Author:  Martin Macheiner
  * Date:    08.06.2018
  */
-interface SignInRepository {
+interface LoginRepository {
 
-    val signInIntent: Intent?
+    val signInIntent: Intent
 
-    fun setup()
+    fun signInWithGoogle(data: Intent): Single<DanteUser>
 
-    fun signIn(data: Intent): Single<DanteUser>
+    fun signInWithMail(mailAddress: String, password: String): Completable
+
+    fun signInAnonymously(): Completable
 
     fun signOut(): Completable
 
-    fun observeSignInState(): Observable<UserState>
+    fun observeAccount(): Observable<UserState>
 
     fun getAccount(): Single<UserState>
 

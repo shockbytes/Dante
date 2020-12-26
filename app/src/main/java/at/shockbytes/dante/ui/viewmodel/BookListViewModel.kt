@@ -7,8 +7,8 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.core.data.BookRepository
-import at.shockbytes.dante.signin.SignInRepository
-import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.suggestions.SuggestionsRepository
 import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -39,7 +39,7 @@ class BookListViewModel @Inject constructor(
     private val tracker: Tracker,
     private val explanations: Explanations,
     private val suggestionsRepository: SuggestionsRepository,
-    private val signInRepository: SignInRepository
+    private val loginRepository: LoginRepository
 ) : BaseViewModel() {
 
     var state: BookState = BookState.READING
@@ -257,7 +257,7 @@ class BookListViewModel @Inject constructor(
     }
 
     fun verifyBookSuggestion(book: BookEntity) {
-        signInRepository.getAccount()
+        loginRepository.getAccount()
             .map { state ->
                 when {
                     state is UserState.Unauthenticated -> SuggestionState.UserNotLoggedIn

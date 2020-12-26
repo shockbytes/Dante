@@ -3,8 +3,8 @@ package at.shockbytes.dante.backup.provider.google
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupStorageProvider
-import at.shockbytes.dante.signin.UnauthenticatedUserException
-import at.shockbytes.dante.signin.GoogleFirebaseSignInRepository
+import at.shockbytes.dante.core.login.UnauthenticatedUserException
+import at.shockbytes.dante.core.login.GoogleFirebaseLoginRepository
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.merge
 import com.google.android.gms.tasks.Tasks
@@ -26,7 +26,7 @@ import java.util.Collections
 import java.util.concurrent.Executors
 
 class DriveRestClient(
-    private val signInManager: GoogleFirebaseSignInRepository
+    private val signInManager: GoogleFirebaseLoginRepository
 ) : DriveClient {
 
     private lateinit var drive: Drive

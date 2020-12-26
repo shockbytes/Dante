@@ -1,18 +1,14 @@
-package at.shockbytes.dante.signin
+package at.shockbytes.dante.core.login
 
 import android.content.Context
 import android.content.Intent
-import at.shockbytes.dante.R
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import at.shockbytes.dante.util.toDanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.Scopes
-import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -28,30 +24,20 @@ import java.lang.Exception
  * If migrating to firebase, use this docs
  * https://firebase.google.com/docs/auth/android/google-signin
  */
-class GoogleFirebaseSignInRepository(
+class GoogleFirebaseLoginRepository(
+    private val client: GoogleSignInClient,
     private val context: Context,
     private val schedulers: SchedulerFacade
-) : SignInRepository {
-
-    private var client: GoogleSignInClient? = null
+) : LoginRepository {
 
     private val fbAuth = FirebaseAuth.getInstance()
 
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
-    override val signInIntent: Intent?
-        get() = client?.signInIntent
+    override val signInIntent: Intent
+        get() = client.signInIntent
 
-    override fun setup() {
-        if (client == null) {
-            val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .requestIdToken(context.getString(R.string.oauth_client_id))
-                .requestScopes(Scope(Scopes.DRIVE_APPFOLDER), Scope(Scopes.DRIVE_FILE))
-                .build()
-            client = GoogleSignIn.getClient(context, signInOptions)
-        }
-
+    init {
         postInitialSignInState()
     }
 
@@ -65,19 +51,27 @@ class GoogleFirebaseSignInRepository(
         signInSubject.onNext(state)
     }
 
-    override fun signIn(data: Intent): Single<DanteUser> {
+    override fun signInWithGoogle(data: Intent): Single<DanteUser> {
         return Single
             .fromCallable {
                 Tasks
                     .await(GoogleSignIn.getSignedInAccountFromIntent(data))
                     .authenticateToFirebase()
-                    ?: throw SignInException("Cannot sign into Google Account! DanteUser = null")
+                    ?: throw LoginException("Cannot sign into Google Account! DanteUser = null")
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
             .doOnSuccess { user ->
                 signInSubject.onNext(UserState.SignedInUser(user))
             }
+    }
+
+    override fun signInWithMail(mailAddress: String, password: String): Completable {
+        TODO("Not yet implemented")
+    }
+
+    override fun signInAnonymously(): Completable {
+        TODO("Not yet implemented")
     }
 
     private fun GoogleSignInAccount.authenticateToFirebase(): DanteUser? {
@@ -100,7 +94,7 @@ class GoogleFirebaseSignInRepository(
             .subscribeOn(schedulers.io)
     }
 
-    override fun observeSignInState(): Observable<UserState> {
+    override fun observeAccount(): Observable<UserState> {
         return signInSubject
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
@@ -129,5 +123,17 @@ class GoogleFirebaseSignInRepository(
         } else {
             null
         }
+    }
+
+    private fun FirebaseUser.toDanteUser(givenName: String? = this.displayName): DanteUser {
+        return DanteUser(
+            givenName,
+            this.displayName,
+            this.email,
+            this.photoUrl,
+            this.providerId,
+            Tasks.await(this.getIdToken(false))?.token,
+            this.uid
+        )
     }
 }

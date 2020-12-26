@@ -1,12 +1,16 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
+import com.github.florent37.inlineactivityresult.kotlin.startForResult
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
@@ -27,7 +31,9 @@ class LoginFragment : BaseFragment() {
     override fun setupViews() {
 
         btn_login_google.setOnClickListener {
-            viewModel.googleLogin()
+            viewModel.requestGoogleLogin()
+                .subscribe(::handleGoogleLoginRequest)
+                .addTo(compositeDisposable)
         }
 
         btn_login_mail.setOnClickListener {
@@ -38,6 +44,17 @@ class LoginFragment : BaseFragment() {
 
         btn_login_skip.setOnClickListener {
             viewModel.anonymousLogin()
+        }
+    }
+
+    private fun handleGoogleLoginRequest(loginIntent: Intent) {
+        startForResult(loginIntent) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                viewModel.loginWithGoogle(result.data!!)
+            } else {
+                // TODO Handle this case
+                showToast("Something went wrong...")
+            }
         }
     }
 

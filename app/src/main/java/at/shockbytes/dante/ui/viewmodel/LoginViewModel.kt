@@ -1,17 +1,21 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import at.shockbytes.dante.signin.SignInRepository
-import at.shockbytes.dante.signin.UserState
+import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.dante.util.singleOf
+import io.reactivex.Single
+import timber.log.Timber
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val danteSettings: DanteSettings,
-    private val signInRepository: SignInRepository
+    private val loginRepository: LoginRepository
 ) : BaseViewModel() {
 
     private val loginState = MutableLiveData<LoginState>()
@@ -22,7 +26,7 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun resolveLoginState() {
-        signInRepository.getAccount()
+        loginRepository.getAccount()
             .map { userState ->
                 when (userState) {
                     is UserState.SignedInUser -> LoginState.LoggedIn
@@ -47,8 +51,22 @@ class LoginViewModel @Inject constructor(
         // TODO
     }
 
-    fun googleLogin() {
-        // TODO
+    fun requestGoogleLogin(): Single<Intent> {
+        return singleOf {
+            loginRepository.signInIntent
+        }
+    }
+
+    fun loginWithGoogle(data: Intent) {
+        loginRepository.signInWithGoogle(data)
+            .subscribe({ account ->
+                Timber.d(account.displayName)
+                // userEvent.postValue(MainViewModel.UserEvent.LoggedIn(account))
+            }, { throwable: Throwable ->
+                Timber.e(throwable)
+                // userEvent.postValue(MainViewModel.UserEvent.Error(R.string.error_google_login))
+            })
+            .addTo(compositeDisposable)
     }
 
     sealed class LoginState {

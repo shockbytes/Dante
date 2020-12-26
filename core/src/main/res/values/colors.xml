@@ -4,7 +4,9 @@
 
     <color name="colorPrimary">#FFF</color>
     <color name="colorPrimaryDark">#FFF</color>
-    <color name="colorAccent">#2196F3</color>
+    <color name="colorAccent">#2196f3</color>
+    <color name="colorAccentLight">#6ec6ff</color>
+    <color name="colorAccentDark">#0069c0</color>
     <color name="colorActionBar">@color/colorPrimary</color>
 
     <color name="colorPrimaryText">#212121</color>
@@ -24,12 +26,9 @@
 
     <color name="page_record_data">@color/colorAccent</color>
 
-    <color name="tabcolor_upcoming">#8BC34A</color>
-    <color name="tabcolor_upcoming_dark">#689F38</color>
-    <color name="tabcolor_current">#2196F3</color>
-    <color name="tabcolor_current_dark">#1976D2</color>
-    <color name="tabcolor_done">#FF6D00</color>
-    <color name="tabcolor_done_dark">#E65100</color>
+    <color name="tabcolor_upcoming">#4caf50</color>
+    <color name="tabcolor_current">#03a9f4</color>
+    <color name="tabcolor_done">#ff9800</color>
 
     <color name="danteAccent">#222222</color>
 
@@ -55,8 +54,6 @@
     <color name="colorBrand">#A8A8A8</color>
     <color name="inspirations">#9C27B0</color>
     <color name="menuItemColor">#757575</color>
-    <color name="support_badge_premium">#FFC107</color>
-    <color name="support_badge_standard">#8BC34A</color>
 
     <color name="snackbarBackground">#323232</color>
     <color name="snackbarForeground">@color/white</color>

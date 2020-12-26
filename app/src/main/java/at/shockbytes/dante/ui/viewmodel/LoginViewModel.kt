@@ -53,14 +53,14 @@ class LoginViewModel @Inject constructor(
 
     fun requestGoogleLogin(): Single<Intent> {
         return singleOf {
-            loginRepository.signInIntent
+            loginRepository.googleLoginIntent
         }
     }
 
     fun loginWithGoogle(data: Intent) {
-        loginRepository.signInWithGoogle(data)
-            .subscribe({ account ->
-                Timber.d(account.displayName)
+        loginRepository.loginWithGoogle(data)
+            .subscribe({
+               Timber.d("Logged in")
                 // userEvent.postValue(MainViewModel.UserEvent.LoggedIn(account))
             }, { throwable: Throwable ->
                 Timber.e(throwable)

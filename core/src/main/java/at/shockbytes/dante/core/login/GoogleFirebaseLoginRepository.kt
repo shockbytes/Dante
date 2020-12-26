@@ -2,6 +2,7 @@ package at.shockbytes.dante.core.login
 
 import android.content.Context
 import android.content.Intent
+import at.shockbytes.dante.core.fromSingleToCompletable
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -34,7 +35,7 @@ class GoogleFirebaseLoginRepository(
 
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
-    override val signInIntent: Intent
+    override val googleLoginIntent: Intent
         get() = client.signInIntent
 
     init {
@@ -51,7 +52,7 @@ class GoogleFirebaseLoginRepository(
         signInSubject.onNext(state)
     }
 
-    override fun signInWithGoogle(data: Intent): Single<DanteUser> {
+    override fun loginWithGoogle(data: Intent): Completable {
         return Single
             .fromCallable {
                 Tasks
@@ -59,18 +60,19 @@ class GoogleFirebaseLoginRepository(
                     .authenticateToFirebase()
                     ?: throw LoginException("Cannot sign into Google Account! DanteUser = null")
             }
-            .observeOn(schedulers.ui)
-            .subscribeOn(schedulers.io)
             .doOnSuccess { user ->
                 signInSubject.onNext(UserState.SignedInUser(user))
             }
+            .fromSingleToCompletable()
+            .observeOn(schedulers.ui)
+            .subscribeOn(schedulers.io)
     }
 
-    override fun signInWithMail(mailAddress: String, password: String): Completable {
+    override fun loginWithMail(mailAddress: String, password: String): Completable {
         TODO("Not yet implemented")
     }
 
-    override fun signInAnonymously(): Completable {
+    override fun loginAnonymously(): Completable {
         TODO("Not yet implemented")
     }
 
@@ -84,7 +86,7 @@ class GoogleFirebaseLoginRepository(
         }
     }
 
-    override fun signOut(): Completable {
+    override fun logout(): Completable {
         return Completable
             .fromAction(fbAuth::signOut)
             .doOnComplete {

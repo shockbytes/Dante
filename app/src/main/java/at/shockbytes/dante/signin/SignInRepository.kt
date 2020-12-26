@@ -11,17 +11,6 @@ import io.reactivex.Single
  */
 interface SignInRepository {
 
-    companion object {
-
-        fun getAuthorizationHeader(authToken: String): String {
-            return "Bearer $authToken"
-        }
-    }
-
-    var maybeLater: Boolean
-
-    var showWelcomeScreen: Boolean
-
     val signInIntent: Intent?
 
     fun setup()
@@ -36,5 +25,10 @@ interface SignInRepository {
 
     fun getAuthorizationHeader(): Single<String>
 
-    fun close()
+    /**
+     * Default implementation for creating the bearer header
+     */
+    fun getAuthorizationHeader(authToken: String): String {
+        return "Bearer $authToken"
+    }
 }

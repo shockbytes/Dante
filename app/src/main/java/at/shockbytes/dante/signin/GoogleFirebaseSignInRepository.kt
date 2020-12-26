@@ -2,11 +2,8 @@ package at.shockbytes.dante.signin
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import at.shockbytes.dante.R
-import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import at.shockbytes.dante.util.settings.delegate.SharedPreferencesBoolPropertyDelegate
 import at.shockbytes.dante.util.toDanteUser
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -20,9 +17,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
+import java.lang.Exception
 
 /**
  * Author:  Martin Macheiner
@@ -32,22 +29,15 @@ import timber.log.Timber
  * https://firebase.google.com/docs/auth/android/google-signin
  */
 class GoogleFirebaseSignInRepository(
-    prefs: SharedPreferences,
     private val context: Context,
     private val schedulers: SchedulerFacade
 ) : SignInRepository {
-
-    private val compositeDisposable = CompositeDisposable()
 
     private var client: GoogleSignInClient? = null
 
     private val fbAuth = FirebaseAuth.getInstance()
 
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
-
-    override var maybeLater: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, "prefs_google_login_maybe_later", defaultValue = true)
-
-    override var showWelcomeScreen: Boolean by SharedPreferencesBoolPropertyDelegate(prefs, "prefs_show_welcome_screen", defaultValue = true)
 
     override val signInIntent: Intent?
         get() = client?.signInIntent
@@ -60,17 +50,19 @@ class GoogleFirebaseSignInRepository(
                 .requestScopes(Scope(Scopes.DRIVE_APPFOLDER), Scope(Scopes.DRIVE_FILE))
                 .build()
             client = GoogleSignIn.getClient(context, signInOptions)
-
-            getAccount()
-                .subscribeOn(schedulers.io)
-                .subscribe({ userState ->
-                    signInSubject.onNext(userState)
-                }, { throwable ->
-                    Timber.e(throwable)
-                    signInSubject.onNext(UserState.Unauthenticated)
-                })
-                .addTo(compositeDisposable)
         }
+
+        postInitialSignInState()
+    }
+
+    private fun postInitialSignInState() {
+        val state = try {
+            getAccount().blockingGet()
+        } catch (throwable: Exception) {
+            Timber.e(throwable)
+            UserState.Unauthenticated
+        }
+        signInSubject.onNext(state)
     }
 
     override fun signIn(data: Intent): Single<DanteUser> {
@@ -127,12 +119,8 @@ class GoogleFirebaseSignInRepository(
     override fun getAuthorizationHeader(): Single<String> {
         return getAccount().map { acc ->
             val authToken = if (acc is UserState.SignedInUser) acc.user.authToken ?: "" else ""
-            SignInRepository.getAuthorizationHeader(authToken)
+            getAuthorizationHeader(authToken)
         }
-    }
-
-    override fun close() {
-        compositeDisposable.clear()
     }
 
     fun getGoogleAccount(): GoogleSignInAccount? {

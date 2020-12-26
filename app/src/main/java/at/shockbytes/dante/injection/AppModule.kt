@@ -57,10 +57,9 @@ class AppModule(private val app: Application) {
 
     @Provides
     fun provideGoogleSignInManager(
-        prefs: SharedPreferences,
         schedulers: SchedulerFacade
     ): SignInRepository {
-        return GoogleFirebaseSignInRepository(prefs, app.applicationContext, schedulers)
+        return GoogleFirebaseSignInRepository(app.applicationContext, schedulers)
     }
 
     @Provides

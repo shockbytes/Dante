@@ -16,7 +16,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
-import java.lang.Exception
+import kotlin.Exception
 
 /**
  * Author:  Martin Macheiner
@@ -26,7 +26,7 @@ import java.lang.Exception
  * https://firebase.google.com/docs/auth/android/google-signin
  */
 class GoogleFirebaseLoginRepository(
-    private val client: GoogleSignInClient,
+    client: GoogleSignInClient,
     private val context: Context,
     private val schedulers: SchedulerFacade
 ) : LoginRepository {
@@ -35,8 +35,7 @@ class GoogleFirebaseLoginRepository(
 
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
-    override val googleLoginIntent: Intent
-        get() = client.signInIntent
+    override val googleLoginIntent: Intent = client.signInIntent
 
     init {
         postInitialSignInState()
@@ -53,27 +52,9 @@ class GoogleFirebaseLoginRepository(
     }
 
     override fun loginWithGoogle(data: Intent): Completable {
-        return Single
-            .fromCallable {
-                Tasks
-                    .await(GoogleSignIn.getSignedInAccountFromIntent(data))
-                    .authenticateToFirebase()
-                    ?: throw LoginException("Cannot sign into Google Account! DanteUser = null")
-            }
-            .doOnSuccess { user ->
-                signInSubject.onNext(UserState.SignedInUser(user))
-            }
-            .fromSingleToCompletable()
-            .observeOn(schedulers.ui)
-            .subscribeOn(schedulers.io)
-    }
-
-    override fun loginWithMail(mailAddress: String, password: String): Completable {
-        TODO("Not yet implemented")
-    }
-
-    override fun loginAnonymously(): Completable {
-        TODO("Not yet implemented")
+        return login(errorMessage = "Cannot sign into Google Account! DanteUser = null") {
+            Tasks.await(GoogleSignIn.getSignedInAccountFromIntent(data)).authenticateToFirebase()
+        }
     }
 
     private fun GoogleSignInAccount.authenticateToFirebase(): DanteUser? {
@@ -84,6 +65,37 @@ class GoogleFirebaseLoginRepository(
             val givenName = authResult.additionalUserInfo?.profile?.get("given_name") as? String
             authResult.user?.toDanteUser(givenName)
         }
+    }
+
+    override fun createAccountWithMail(mailAddress: String, password: String): Completable {
+        return login(errorMessage = "Problem with mail account creation") {
+            Tasks.await(fbAuth.createUserWithEmailAndPassword(mailAddress, password)).user?.toDanteUser()
+        }
+    }
+
+    override fun loginWithMail(mailAddress: String, password: String): Completable {
+        return login(errorMessage = "Problem with mail account login") {
+            Tasks.await(fbAuth.signInWithEmailAndPassword(mailAddress, password)).user?.toDanteUser()
+        }
+    }
+
+    override fun loginAnonymously(): Completable {
+        return login(errorMessage = "Cannot anonymously sign into Firebase! AuthResult = null") {
+            Tasks.await(fbAuth.signInAnonymously()).user?.toDanteUser()
+        }
+    }
+
+    private fun login(errorMessage: String, loginBlock: () -> DanteUser?): Completable {
+        return Single
+            .fromCallable {
+                loginBlock() ?: throw LoginException(errorMessage)
+            }
+            .doOnSuccess { user ->
+                signInSubject.onNext(UserState.SignedInUser(user))
+            }
+            .fromSingleToCompletable()
+            .observeOn(schedulers.ui)
+            .subscribeOn(schedulers.io)
     }
 
     override fun logout(): Completable {

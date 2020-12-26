@@ -43,7 +43,7 @@ class LoginFragment : BaseFragment() {
         }
 
         btn_login_skip.setOnClickListener {
-            viewModel.anonymousLogin()
+            viewModel.loginAnonymously()
         }
     }
 

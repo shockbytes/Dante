@@ -15,6 +15,8 @@ interface LoginRepository {
 
     fun loginWithGoogle(data: Intent): Completable
 
+    fun createAccountWithMail(mailAddress: String, password: String): Completable
+
     fun loginWithMail(mailAddress: String, password: String): Completable
 
     fun loginAnonymously(): Completable

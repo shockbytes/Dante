@@ -64,7 +64,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         tabId = savedInstanceState?.getInt(ID_SELECTED_TAB) ?: R.id.menu_navigation_current
 
 
-        // ActivityNavigator.navigateTo(this, Destination.Login)
+        // TODO Remove later
+        ActivityNavigator.navigateTo(this, Destination.Login)
 
         handleIntentExtras()
         setupUI()

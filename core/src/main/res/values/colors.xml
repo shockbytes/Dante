@@ -75,4 +75,6 @@
     <color name="bottom_menu_background">@android:color/transparent</color>
     <color name="transparent_black">#00000000</color>
 
+    <color name="loginBackground">@color/colorAccent</color>
+
 </resources>

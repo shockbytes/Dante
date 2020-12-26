@@ -34,7 +34,7 @@
         app:layout_constraintHeight_max="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/darkest_hour" />
+        tools:srcCompat="@drawable/darkest_hour" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/item_book_search_suggestion_btn_add"

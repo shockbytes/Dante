@@ -28,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_overflow"
+        android:rotation="90"
         tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton

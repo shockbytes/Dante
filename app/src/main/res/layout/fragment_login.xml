@@ -70,6 +70,7 @@
 
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_login_skip"
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

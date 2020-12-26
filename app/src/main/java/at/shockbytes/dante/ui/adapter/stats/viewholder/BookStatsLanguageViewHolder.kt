@@ -2,7 +2,6 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
 import at.shockbytes.dante.stats.BookStatsViewItem

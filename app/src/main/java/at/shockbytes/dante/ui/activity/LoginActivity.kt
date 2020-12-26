@@ -44,9 +44,13 @@ class LoginActivity : BaseActivity() {
             when (state) {
                 is LoginViewModel.LoginState.LoggedIn -> {
                     // ActivityNavigator.navigateTo(this, Destination.Main())
+                    supportFinishAfterTransition()
                 }
                 is LoginViewModel.LoginState.LoggedOut -> {
                     showLoginFragment()
+                }
+                is LoginViewModel.LoginState.Error -> {
+                    showSnackbar(getString(state.errorRes))
                 }
             }
         })
@@ -69,9 +73,10 @@ class LoginActivity : BaseActivity() {
 
     private fun showLoginFragment() {
         supportFragmentManager
-                .beginTransaction()
-                .replace(android.R.id.content, LoginFragment.newInstance())
-                .commit()
+            .beginTransaction()
+            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+            .replace(android.R.id.content, LoginFragment.newInstance())
+            .commit()
     }
 
     companion object {

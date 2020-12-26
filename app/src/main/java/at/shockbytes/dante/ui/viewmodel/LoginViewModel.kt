@@ -1,20 +1,19 @@
 package at.shockbytes.dante.ui.viewmodel
 
 import android.content.Intent
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.singleOf
 import io.reactivex.Single
-import timber.log.Timber
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val danteSettings: DanteSettings,
     private val loginRepository: LoginRepository
 ) : BaseViewModel() {
 
@@ -38,11 +37,6 @@ class LoginViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun login() {
-        danteSettings.lastLogin = System.currentTimeMillis()
-        // Login user here...
-    }
-
     fun loginWithMail(address: String, password: String) {
         // TODO
     }
@@ -59,12 +53,11 @@ class LoginViewModel @Inject constructor(
 
     fun loginWithGoogle(data: Intent) {
         loginRepository.loginWithGoogle(data)
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
-               Timber.d("Logged in")
-                // userEvent.postValue(MainViewModel.UserEvent.LoggedIn(account))
-            }, { throwable: Throwable ->
-                Timber.e(throwable)
-                // userEvent.postValue(MainViewModel.UserEvent.Error(R.string.error_google_login))
+                loginState.postValue(LoginState.LoggedIn)
+            }, {
+                loginState.postValue(LoginState.Error(R.string.error_google_login))
             })
             .addTo(compositeDisposable)
     }
@@ -74,5 +67,7 @@ class LoginViewModel @Inject constructor(
         object LoggedIn : LoginState()
 
         object LoggedOut : LoginState()
+
+        data class Error(@StringRes val errorRes: Int) : LoginState()
     }
 }

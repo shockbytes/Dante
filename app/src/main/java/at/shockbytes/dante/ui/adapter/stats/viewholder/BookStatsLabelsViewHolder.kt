@@ -6,6 +6,7 @@ import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
+import at.shockbytes.dante.util.getThemeFont
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import com.github.mikephil.charting.components.XAxis
@@ -70,14 +71,14 @@ class BookStatsLabelsViewHolder(
                 setDrawGridLines(false)
                 setDrawAxisLine(false)
                 setDrawGridBackground(false)
-                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                typeface = context.getThemeFont()
                 textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
                 valueFormatter = IndexAxisValueFormatter(labels.map { it.title })
             }
 
             getAxis(YAxis.AxisDependency.LEFT).apply {
                 isEnabled = false
-                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                typeface = context.getThemeFont()
                 setDrawAxisLine(false)
                 setDrawGridLines(false)
                 setDrawZeroLine(false)
@@ -87,7 +88,7 @@ class BookStatsLabelsViewHolder(
             getAxis(YAxis.AxisDependency.RIGHT).apply {
                 isEnabled = true
                 setDrawAxisLine(false)
-                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                typeface = context.getThemeFont()
                 textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
             }
 

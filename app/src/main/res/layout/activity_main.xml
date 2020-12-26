@@ -36,7 +36,7 @@
                     android:textAppearance="@style/Theme.TextAppearance.Title"
                     android:translationY="5dp"
                     android:gravity="center_vertical"
-                    android:fontFamily="@font/montserrat_bold"
+                    android:fontFamily="@font/nunito_extrabold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imgButtonMainToolbarSearch"
                     app:layout_constraintStart_toStartOf="parent"

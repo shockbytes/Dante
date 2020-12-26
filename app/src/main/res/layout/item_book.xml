@@ -117,7 +117,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="0dp"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/nunito_extrabold"
             android:transitionName="@string/transition_name_title"
             app:layout_constraintBottom_toTopOf="@+id/item_book_txt_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"

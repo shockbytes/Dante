@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.ui.custom.DanteMarkerView
+import at.shockbytes.dante.util.getThemeFont
 import at.shockbytes.dante.util.setVisible
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
@@ -121,7 +122,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
                 labelRotationAngle = -30f
                 textSize = 8f
                 setDrawGridLines(false)
-                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                typeface = context.getThemeFont()
                 setDrawAxisLine(false)
                 setDrawGridBackground(false)
                 textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
@@ -134,7 +135,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
                 setDrawGridLines(false)
                 setDrawZeroLine(false)
                 setDrawAxisLine(false)
-                typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+                typeface = context.getThemeFont()
                 textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
             }
             getAxis(YAxis.AxisDependency.RIGHT).apply {
@@ -229,7 +230,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
             lineWidth = 0.8f
             enableDashedLine(20f, 20f, 0f)
             labelPosition = LimitLine.LimitLabelPosition.RIGHT_TOP
-            typeface = ResourcesCompat.getFont(context, R.font.montserrat)
+            typeface = context.getThemeFont()
             textSize = 10f
             textColor = ContextCompat.getColor(context, R.color.colorPrimaryText)
         }

@@ -132,6 +132,8 @@
     <string name="login_error_google">We cannot log you into your Google Account!</string>
     <string name="login_mail_enter_mail_address">Enter your mail address</string>
     <string name="login_mail_enter_password">Enter your password</string>
+    <string name="login_general_error">We could not log you into your account!</string>
+    <string name="login_invalid_credentials">Email and password do not match!</string>
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>

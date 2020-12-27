@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.MailValidator
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
@@ -25,8 +26,12 @@ class MailLoginViewModel @Inject constructor(
 
     sealed class MailLoginStep {
         object MailVerification : MailLoginStep()
-        object PasswordVerification : MailLoginStep()
+        data class PasswordVerification(val isSignUp: Boolean) : MailLoginStep()
     }
+
+    private var mailAddress: CharSequence = ""
+    private var password: CharSequence = ""
+    private var isSignUp: Boolean = false
 
     private val step = MutableLiveData<MailLoginStep>()
     fun getStep(): LiveData<MailLoginStep> = step
@@ -39,17 +44,19 @@ class MailLoginViewModel @Inject constructor(
 
     fun initialize(state: MailLoginState) {
         val currentStep = when (state) {
-            MailLoginState.RESOLVE_EMAIL_ADDRESS -> MailLoginStep.MailVerification
-            MailLoginState.SHOW_EMAIL_AND_PASSWORD -> MailLoginStep.PasswordVerification
+            is MailLoginState.ResolveEmailAddress -> MailLoginStep.MailVerification
+            is MailLoginState.ShowEmailAndPassword -> MailLoginStep.PasswordVerification(state.isSignUp)
         }
         step.postValue(currentStep)
     }
 
     fun verifyMailAddress(mailAddress: CharSequence) {
+        this.mailAddress = mailAddress
         isMailValid.onNext(MailValidator.validateMail(mailAddress))
     }
 
     fun verifyPassword(password: CharSequence) {
+        this.password = password
         isPasswordValid.onNext(validatePassword(password))
     }
 
@@ -57,18 +64,22 @@ class MailLoginViewModel @Inject constructor(
         return password.count() >= MINIMUM_PASSWORD_LENGTH
     }
 
-    fun checkIfAccountExistsForMailAddress(mailAddress: String) {
-        loginRepository.fetchSignInMethodsForEmail(mailAddress)
-            .subscribe({ methods ->
+    fun checkIfAccountExistsForMailAddress() {
+        loginRepository.fetchSignInMethodsForEmail(mailAddress.toString())
+            .map { methods ->
                 Timber.d(methods.toString())
-            }, { throwable ->
-                Timber.e(throwable)
-            })
+                // Save isSignUp as a side effect which will be later passed to parent fragment
+                isSignUp = !methods.contains("mail") // TODO Check this string
+                MailLoginStep.PasswordVerification(isSignUp)
+            }
+            .subscribe(step::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
-    enum class MailLoginState {
-        RESOLVE_EMAIL_ADDRESS, SHOW_EMAIL_AND_PASSWORD
+    sealed class MailLoginState {
+
+        object ResolveEmailAddress : MailLoginState()
+        data class ShowEmailAndPassword(val isSignUp: Boolean) : MailLoginState()
     }
 
     companion object {

@@ -6,10 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.singleOf
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import io.reactivex.Completable
 import io.reactivex.Single
 import javax.inject.Inject
@@ -44,11 +46,11 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun authorizeWithMail(address: String, password: String, isSignUp: Boolean) {
-        if (isSignUp) {
-            login(loginRepository.createAccountWithMail(address, password))
+    fun authorizeWithMail(credentials: MailLoginCredentials) {
+        if (credentials.isSignUp) {
+            login(loginRepository.createAccountWithMail(credentials.address, credentials.password))
         } else {
-            login(loginRepository.loginWithMail(address, password))
+            login(loginRepository.loginWithMail(credentials.address, credentials.password))
         }
     }
 
@@ -57,18 +59,33 @@ class LoginViewModel @Inject constructor(
     }
 
     fun loginWithGoogle(data: Intent) {
-        login(loginRepository.loginWithGoogle(data))
+        login(loginRepository.loginWithGoogle(data), errorMessageRes = R.string.login_error_google)
     }
 
-    private fun login(source: Completable) {
+    private fun login(
+        source: Completable,
+        @StringRes errorMessageRes: Int = R.string.login_general_error
+    ) {
         source
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
                 loginState.postValue(LoginState.LoggedIn)
-            }, {
-                loginState.postValue(LoginState.Error(R.string.login_error_google))
+            }, { throwable ->
+                handleLoginErrorState(throwable, errorMessageRes)
             })
             .addTo(compositeDisposable)
+    }
+
+    private fun handleLoginErrorState(throwable: Throwable, @StringRes errorMessageRes: Int) {
+        val state = when (throwable) {
+            is FirebaseAuthInvalidCredentialsException -> {
+                LoginState.Error(R.string.login_invalid_credentials)
+            }
+            else -> {
+                LoginState.Error(errorMessageRes)
+            }
+        }
+        loginState.postValue(state)
     }
 
     sealed class LoginState {
@@ -77,6 +94,6 @@ class LoginViewModel @Inject constructor(
 
         object LoggedOut : LoginState()
 
-        data class Error(@StringRes val errorRes: Int) : LoginState()
+        data class Error(@StringRes val errorMessageRes: Int) : LoginState()
     }
 }

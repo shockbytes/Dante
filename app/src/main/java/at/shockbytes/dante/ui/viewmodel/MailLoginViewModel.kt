@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.MailValidator
 import at.shockbytes.dante.util.addTo
@@ -69,11 +70,15 @@ class MailLoginViewModel @Inject constructor(
             .map { methods ->
                 Timber.d(methods.toString())
                 // Save isSignUp as a side effect which will be later passed to parent fragment
-                isSignUp = !methods.contains("mail") // TODO Check this string
+                isSignUp = !methods.contains(SIGN_UP_METHOD_PASSWORD)
                 MailLoginStep.PasswordVerification(isSignUp)
             }
             .subscribe(step::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    fun getMailLoginCredentials(): MailLoginCredentials {
+        return MailLoginCredentials(mailAddress.toString(), password.toString(), isSignUp)
     }
 
     sealed class MailLoginState {
@@ -85,5 +90,6 @@ class MailLoginViewModel @Inject constructor(
     companion object {
 
         private const val MINIMUM_PASSWORD_LENGTH = 6
+        private const val SIGN_UP_METHOD_PASSWORD = "password"
     }
 }

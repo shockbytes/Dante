@@ -4,6 +4,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.injection.ViewModelFactory
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
@@ -24,7 +25,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
     private val viewModel: MailLoginViewModel by lazy { viewModelOf(vmFactory) }
 
-    private var onCredentialsEnteredListener: ((mail: String, password: String, isSignUp: Boolean) -> Unit)? = null
+    private var onCredentialsEnteredListener: ((credentials: MailLoginCredentials) -> Unit)? = null
 
     override val layoutRes: Int = R.layout.mail_login_bottom_sheet
 
@@ -52,7 +53,6 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
             )
             .subscribe(btn_login_mail::setEnabled)
             .addTo(compositeDisposable)
-
     }
 
     private fun handleStep(step: MailLoginViewModel.MailLoginStep) {
@@ -117,7 +117,6 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
             }
             .start()
 
-
         val loginText = if (isSignUp) R.string.sign_up_with_mail else R.string.login_with_mail
 
         btn_login_mail.apply {
@@ -168,14 +167,13 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
         }
 
         btn_login_mail.setOnClickListener {
-            onCredentialsEnteredListener?.invoke("", "", false)
-
+            onCredentialsEnteredListener?.invoke(viewModel.getMailLoginCredentials())
             dismiss()
         }
     }
 
     fun setOnCredentialsEnteredListener(
-        listener: ((mail: String, password: String, isSignUp: Boolean) -> Unit)
+        listener: ((credentials: MailLoginCredentials) -> Unit)
     ): MailLoginBottomSheetDialogFragment {
         return apply {
             this.onCredentialsEnteredListener = listener

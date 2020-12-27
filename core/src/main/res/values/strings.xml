@@ -26,6 +26,10 @@
 
     <string name="open_backup_file">Open backup file</string>
 
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="invalid_password_format">Password must have at least 6 digits!</string>
+    <string name="_continue">Continue</string>
+
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to my library</string>
 
@@ -120,11 +124,14 @@
     <!-- Login -->
     <string name="login_with_google">Login with Google</string>
     <string name="login_with_mail">Login with Mail</string>
+    <string name="sign_up_with_mail">Sign up with Mail</string>
     <string name="login_anonymously">Skip this for now</string>
     <string name="login_rationale">Login with an account to store books online, suggest books to other readers and more.</string>
     <string name="login_mail">Mail Address</string>
     <string name="login_password">Password</string>
     <string name="login_error_google">We cannot log you into your Google Account!</string>
+    <string name="login_mail_enter_mail_address">Enter your mail address</string>
+    <string name="login_mail_enter_password">Enter your password</string>
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>

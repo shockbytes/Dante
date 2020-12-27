@@ -38,7 +38,7 @@ class LoginFragment : BaseFragment() {
 
         btn_login_mail.setOnClickListener {
             MailLoginBottomSheetDialogFragment.newInstance()
-                .setOnCredentialsEnteredListener(viewModel::loginWithMail)
+                .setOnCredentialsEnteredListener(viewModel::authorizeWithMail)
                 .show(parentFragmentManager, "mail-login-fragment")
         }
 

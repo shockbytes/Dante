@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import at.shockbytes.dante.core.fromSingleToCompletable
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.dante.util.singleOf
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -64,6 +65,12 @@ class GoogleFirebaseLoginRepository(
 
             val givenName = authResult.additionalUserInfo?.profile?.get("given_name") as? String
             authResult.user?.toDanteUser(givenName)
+        }
+    }
+
+    override fun fetchSignInMethodsForEmail(mailAddress: String): Single<List<String>> {
+        return singleOf {
+            Tasks.await(fbAuth.fetchSignInMethodsForEmail(mailAddress)).signInMethods ?: listOf()
         }
     }
 

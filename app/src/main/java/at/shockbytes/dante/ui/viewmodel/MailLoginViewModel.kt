@@ -9,7 +9,6 @@ import at.shockbytes.dante.util.MailValidator
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -68,7 +67,6 @@ class MailLoginViewModel @Inject constructor(
     fun checkIfAccountExistsForMailAddress() {
         loginRepository.fetchSignInMethodsForEmail(mailAddress.toString())
             .map { methods ->
-                Timber.d(methods.toString())
                 // Save isSignUp as a side effect which will be later passed to parent fragment
                 isSignUp = !methods.contains(SIGN_UP_METHOD_PASSWORD)
                 MailLoginStep.PasswordVerification(isSignUp)

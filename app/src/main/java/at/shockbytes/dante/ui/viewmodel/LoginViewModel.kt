@@ -44,8 +44,12 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun loginWithMail(address: String, password: String) {
-        login(loginRepository.loginWithMail(address, password))
+    fun authorizeWithMail(address: String, password: String, isSignUp: Boolean) {
+        if (isSignUp) {
+            login(loginRepository.createAccountWithMail(address, password))
+        } else {
+            login(loginRepository.loginWithMail(address, password))
+        }
     }
 
     fun loginAnonymously() {

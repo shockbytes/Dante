@@ -62,6 +62,8 @@
     <string name="sign_up_with_mail">Signup mit Mail</string>
     <string name="login_mail_enter_mail_address">Mailadresse eingeben</string>
     <string name="login_mail_enter_password">Passwort eingeben</string>
+    <string name="login_general_error">Wir konnten dich nicht in deinen Account einloggen!</string>
+    <string name="login_invalid_credentials">Email und Passwort stimmen nicht überein!</string>
 
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>

@@ -64,14 +64,14 @@ The backlog is currently empty.
         - [ ] Online storage switch
         - [ ] How to handle local data when switching accounts? Realm.name in config would work
     - [ ] Anonymous
-        - [ ] Allow users to upgrade to full account
+        - [ ] Allow users to upgrade to full account (auth.currentUser!!.linkWithCredential(credential))
         - [ ] Show notice when user selects anonymous account in login screen
         - [ ] Show notice that data will be wiped once logged out
-    - [ ] Mail
+    - [x] Mail
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet
         - [x] Verify minimum password length
-        - [ ] Handle invalid password
+        - [x] Handle invalid password
     - [x] Google
 - [ ] Backup file improvements
     - [ ] Show path to local backup files

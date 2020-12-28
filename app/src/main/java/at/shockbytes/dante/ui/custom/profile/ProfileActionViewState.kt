@@ -11,7 +11,7 @@ sealed class ProfileActionViewState {
         val showUpgrade: Boolean,
         val showChangeName: Boolean,
         val showChangeImage: Boolean
-    ): ProfileActionViewState()
+    ) : ProfileActionViewState()
 
     companion object {
 

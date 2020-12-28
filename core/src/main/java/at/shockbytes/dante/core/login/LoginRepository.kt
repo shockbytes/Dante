@@ -27,6 +27,8 @@ interface LoginRepository {
 
     fun updateUserName(userName: String): Completable
 
+    fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable
+
     fun observeAccount(): Observable<UserState>
 
     fun getAccount(): Single<UserState>

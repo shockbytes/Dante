@@ -100,7 +100,6 @@ class MainViewModel @Inject constructor(
         postLoginEventAndTrackValue(source)
     }
 
-
     fun forceLogout() {
         loginRepository.logout()
             .subscribe({

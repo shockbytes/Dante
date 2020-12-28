@@ -21,4 +21,8 @@ class ProfileHeaderView(context: Context, attrs: AttributeSet?) : ConstraintLayo
         tvProfileMailAddress.text = mailAddress
     }
 
+    fun reset() {
+        setUser("", "")
+        imageView.setImageResource(0)
+    }
 }

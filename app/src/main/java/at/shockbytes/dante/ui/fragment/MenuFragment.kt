@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.core.app.ActivityOptionsCompat
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.custom.profile.ProfileActionViewClick
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.addTo
@@ -69,21 +69,24 @@ class MenuFragment : BaseBottomSheetFragment() {
                 profileHeaderMenu.setUser(event.user.displayName, event.user.email)
                 profileActionViewMenu.setState(event.profileActionViewState)
 
-                event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
-                    profileHeaderMenu.imageView.setImageBitmap(image)
-                }, { throwable ->
-                    throwable.printStackTrace()
-                })
+                val photoUrl = event.user.photoUrl
+                if (photoUrl != null) {
+                    photoUrl.loadRoundedBitmap(requireContext())
+                        .subscribe({ image ->
+                            profileHeaderMenu.imageView.setImageBitmap(image)
+                        }, { throwable ->
+                            throwable.printStackTrace()
+                        })
+                } else {
+                    profileHeaderMenu.imageView.setImageResource(R.drawable.ic_user_template_dark)
+                }
             }
 
             is MainViewModel.UserEvent.UnauthenticatedUser -> {
                 btnMenuLogin.text = getString(R.string.login)
 
                 profileActionViewMenu.setState(ProfileActionViewState.Hidden)
-                profileHeaderMenu.apply {
-                    setUser(getString(R.string.anonymous_user), "")
-                    imageView.setImageResource(R.drawable.ic_user_template_dark)
-                }
+                profileHeaderMenu.reset()
             }
         }
     }
@@ -112,6 +115,22 @@ class MenuFragment : BaseBottomSheetFragment() {
 
         btnMenuSettings.setOnClickListener {
             navigateToAndDismiss(Destination.Settings)
+        }
+
+        profileActionViewMenu.onActionButtonClicked()
+            .subscribe(::handleProfileClick)
+            .addTo(compositeDisposable)
+    }
+
+    private fun handleProfileClick(profileActionViewClick: ProfileActionViewClick) {
+        when (profileActionViewClick) {
+            ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> {
+                // TODO
+            }
+            ProfileActionViewClick.CHANGE_NAME -> {
+                // TODO
+            }
+            ProfileActionViewClick.CHANGE_IMAGE -> Unit // Not implemented yet...
         }
     }
 

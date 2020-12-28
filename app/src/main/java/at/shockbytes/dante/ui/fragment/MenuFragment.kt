@@ -63,23 +63,24 @@ class MenuFragment : BaseBottomSheetFragment() {
         when (event) {
 
             is MainViewModel.UserEvent.LoggedIn -> {
-
-                txtMenuUserName.text = event.user.displayName
-                txtMenuUserMail.text = event.user.email
                 btnMenuLogin.text = getString(R.string.logout)
 
+                profileHeaderMenu.setUser(event.user.displayName, event.user.email)
+
                 event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
-                    imageViewMenuUser.setImageBitmap(image)
+                    profileHeaderMenu.imageView.setImageBitmap(image)
                 }, { throwable ->
                     throwable.printStackTrace()
                 })
             }
 
             is MainViewModel.UserEvent.UnauthenticatedUser -> {
-                txtMenuUserName.text = getString(R.string.anonymous_user)
-                txtMenuUserMail.text = ""
                 btnMenuLogin.text = getString(R.string.login)
-                imageViewMenuUser.setImageResource(R.drawable.ic_user_template_dark)
+
+                profileHeaderMenu.apply {
+                    setUser(getString(R.string.anonymous_user), "")
+                    imageView.setImageResource(R.drawable.ic_user_template_dark)
+                }
             }
 
             is MainViewModel.UserEvent.Error -> {

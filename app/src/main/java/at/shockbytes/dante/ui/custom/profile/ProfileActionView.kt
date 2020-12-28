@@ -22,7 +22,7 @@ class ProfileActionView(context: Context, attrs: AttributeSet?) : FrameLayout(co
 
     private fun initializeClickListeners() {
         btnProfileActionViewUpgrade.setOnClickListener {
-            clickSubject.onNext(ProfileActionViewClick.UPGRADE)
+            clickSubject.onNext(ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT)
         }
         btnProfileActionViewChangeName.setOnClickListener {
             clickSubject.onNext(ProfileActionViewClick.CHANGE_NAME)

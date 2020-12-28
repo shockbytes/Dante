@@ -3,6 +3,7 @@ package at.shockbytes.dante.core.login
 import android.content.Context
 import android.content.Intent
 import at.shockbytes.dante.core.fromSingleToCompletable
+import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -12,6 +13,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.UserProfileChangeRequest
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -113,6 +115,18 @@ class GoogleFirebaseLoginRepository(
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
+    }
+
+    override fun updateUserName(userName: String): Completable {
+        return completableOf {
+            val user = fbAuth.currentUser ?: throw NullPointerException("User is not logged in!")
+
+            val update = UserProfileChangeRequest.Builder()
+                .setDisplayName(userName)
+                .build()
+
+            Tasks.await(user.updateProfile(update))
+        }
     }
 
     override fun observeAccount(): Observable<UserState> {

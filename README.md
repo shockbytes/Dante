@@ -64,13 +64,14 @@ The backlog is currently empty.
         - [ ] Online storage switch
         - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
     - [ ] Anonymous
-        - [ ] Allow users to upgrade to full account
+        - [ ] Allow users to upgrade to full account (auth.currentUser!!.linkWithCredential(credential))
         - [ ] Show notice when user selects anonymous account in login screen
         - [ ] Show notice that data will be wiped once logged out
-    - [ ] Mail
-        - [ ] Create Account with Mail vs Login with Mail
-        - [ ] Verify email in bottom sheet
-        - [ ] Verify minimum password length
+    - [x] Mail
+        - [x] Create Account with Mail vs Login with Mail
+        - [x] Verify email in bottom sheet
+        - [x] Verify minimum password length
+        - [x] Handle invalid password
     - [x] Google
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
@@ -78,6 +79,7 @@ The backlog is currently empty.
 - [ ] Upgrade to Kotlin 1.4.20
     - [ ] Use ViewBinding
     - [ ] Remove Kotterknife
+- [ ] Upgrade to newest ktlint version
 - [x] Reworked UI
 
 ## Changelog

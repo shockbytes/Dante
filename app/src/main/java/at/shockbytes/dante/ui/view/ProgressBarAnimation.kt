@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util.view
+package at.shockbytes.dante.ui.view
 
 import android.view.animation.Animation
 import android.view.animation.Transformation

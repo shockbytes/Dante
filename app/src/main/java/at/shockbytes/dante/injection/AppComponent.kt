@@ -20,6 +20,7 @@ import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
 import at.shockbytes.dante.ui.fragment.LabelCategoryBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LabelPickerBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LoginFragment
+import at.shockbytes.dante.ui.fragment.MailLoginBottomSheetDialogFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
@@ -103,6 +104,8 @@ interface AppComponent {
     fun inject(fragment: TimeLineFragment)
 
     fun inject(dialogFragment: SortStrategyDialogFragment)
+
+    fun inject(dialogFragment: MailLoginBottomSheetDialogFragment)
 
     fun inject(danteAppWidget: DanteAppWidget)
 

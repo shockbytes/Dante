@@ -50,7 +50,7 @@ class LoginActivity : BaseActivity() {
                     showLoginFragment()
                 }
                 is LoginViewModel.LoginState.Error -> {
-                    showSnackbar(getString(state.errorRes))
+                    showSnackbar(getString(state.errorMessageRes))
                 }
             }
         })

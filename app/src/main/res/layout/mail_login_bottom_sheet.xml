@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/bg_bottom_sheet"
     android:orientation="vertical">
 
@@ -12,12 +13,23 @@
         android:layout_gravity="center"
         android:layout_marginBottom="2dp" />
 
+    <TextView
+        android:id="@+id/tvLoginMailHeader"
+        android:layout_marginTop="24dp"
+        android:textColor="@color/danteAccent"
+        tools:text="Enter your mail address"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTextMailAddress"
         style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="48dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:hint="@string/login_mail"
         android:textColorHint="@color/danteAccent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,6 +48,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTextMailPassword"
         style="@style/TextInputLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,22 +73,43 @@
             android:textColor="@color/danteAccent" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_login_mail"
-        style="@style/AppTheme.RoundedButton.Outlined"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginVertical="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/login_with_mail"
-        android:textColor="@color/danteAccent"
-        app:icon="@drawable/ic_settings_feedback"
-        app:iconPadding="16dp"
-        app:iconTint="@color/hot"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_login_google" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_mail"
+            style="@style/AppTheme.RoundedButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/login_with_mail"
+            android:textColor="@color/danteAccent"
+            app:icon="@drawable/ic_settings_feedback"
+            app:iconPadding="16dp"
+            app:iconTint="@color/hot"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_mail_continue"
+            style="@style/AppTheme.RoundedButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/_continue"
+            android:textColor="@color/danteAccent"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </FrameLayout>
 
 </LinearLayout>

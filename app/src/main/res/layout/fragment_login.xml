@@ -8,15 +8,17 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_login_main"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="48dp"
         android:layout_marginVertical="92dp"
-        app:cardCornerRadius="24dp"
         app:cardBackgroundColor="@color/mainBackground"
+        app:cardCornerRadius="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="48dp">
+        app:layout_constraintWidth_max="480dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -39,6 +41,7 @@
                 style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintWidth_max="300dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
@@ -54,16 +57,17 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_login_mail"
+                style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                style="@style/AppTheme.RoundedButton.Outlined"
                 android:layout_marginEnd="16dp"
+                app:layout_constraintWidth_max="300dp"
                 android:text="@string/login_with_mail"
                 android:textColor="@color/danteAccent"
-                app:iconTint="@color/hot"
                 app:icon="@drawable/ic_settings_feedback"
+                app:iconTint="@color/hot"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_login_google" />
@@ -77,6 +81,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
+                app:layout_constraintWidth_max="300dp"
                 android:layout_marginBottom="32dp"
                 android:text="@string/login_anonymously"
                 android:textAllCaps="false"
@@ -113,6 +118,8 @@
                 android:id="@+id/tv_login_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintWidth_max="300dp"
+
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"

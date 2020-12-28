@@ -1,4 +1,4 @@
-package at.shockbytes.dante.util
+package at.shockbytes.dante.ui.custom
 
 import android.annotation.SuppressLint
 import android.content.Context

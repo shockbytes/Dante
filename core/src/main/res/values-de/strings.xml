@@ -55,8 +55,15 @@
     <string name="login_with_mail">Login mit Mail</string>
     <string name="login_anonymously">Überspringen</string>
     <string name="login_rationale">Logge dich mit einem Account ein um Bücher online zu speichern und noch vieles mehr.</string>
-    <string name="login_mail">Email-Adresse</string>
+    <string name="login_mail">Mailadresse</string>
     <string name="login_password">Passwort</string>
+    <string name="invalid_email_format">"Ungültiges Mailformat "</string>
+    <string name="invalid_password_format">Passwort muss min. 6 Zeichen haben</string>
+    <string name="sign_up_with_mail">Signup mit Mail</string>
+    <string name="login_mail_enter_mail_address">Mailadresse eingeben</string>
+    <string name="login_mail_enter_password">Passwort eingeben</string>
+    <string name="login_general_error">Wir konnten dich nicht in deinen Account einloggen!</string>
+    <string name="login_invalid_credentials">Email und Passwort stimmen nicht überein!</string>
 
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>
@@ -347,5 +354,7 @@
     <string name="suggestion_placed_error">Oh nein! Sieht so aus als gäbe es ein Problem. Bitte versuche es später wieder.</string>
     <string name="report">Melden</string>
     <string name="open_camera">Kamera wird geöffnet</string>
+
+    <string name="_continue">Weiter</string>
 
 </resources>

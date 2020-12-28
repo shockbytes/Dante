@@ -14,7 +14,7 @@ data class DanteUser(
     val displayName: String?,
     val email: String?,
     val photoUrl: Uri?,
-    val providerId: String,
     val authToken: String?,
-    val userId: String
+    val userId: String,
+    val authenticationSource: AuthenticationSource
 ) : Parcelable

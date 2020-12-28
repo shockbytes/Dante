@@ -235,7 +235,7 @@
         android:layout_margin="16dp"
         app:backgroundTint="@color/colorAccent"
         app:tint="@color/white"
-        app:layout_behavior="at.shockbytes.dante.util.ScrollAndMorphAwareFloatingActionButtonBehavior"
+        app:layout_behavior="at.shockbytes.dante.ui.custom.ScrollAndMorphAwareFloatingActionButtonBehavior"
         app:srcCompat="@drawable/ic_add_round"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

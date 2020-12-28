@@ -32,7 +32,7 @@ import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.SharedViewComponents
+import at.shockbytes.dante.ui.view.SharedViewComponents
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.runDelayed

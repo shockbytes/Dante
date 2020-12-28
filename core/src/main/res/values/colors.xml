@@ -77,4 +77,6 @@
 
     <color name="loginBackground">@color/colorAccent</color>
 
+    <color name="actionButtonBackground">#FFF</color>
+
 </resources>

@@ -135,6 +135,10 @@
     <string name="login_general_error">We could not log you into your account!</string>
     <string name="login_invalid_credentials">Email and password do not match!</string>
 
+    <string name="account_upgrade">Upgrade</string>
+    <string name="account_change_name">Change name</string>
+    <string name="account_change_image">Change image</string>
+
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
     <string name="add_notes">Notes</string>

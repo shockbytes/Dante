@@ -40,4 +40,6 @@
 
     <color name="loginBackground">#212121</color>
 
+    <color name="actionButtonBackground">#212121</color>
+
 </resources>

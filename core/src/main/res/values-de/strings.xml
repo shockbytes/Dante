@@ -65,6 +65,10 @@
     <string name="login_general_error">Wir konnten dich nicht in deinen Account einloggen!</string>
     <string name="login_invalid_credentials">Email und Passwort stimmen nicht überein!</string>
 
+    <string name="account_upgrade">Upgrade</string>
+    <string name="account_change_name">Name ändern</string>
+    <string name="account_change_image">Bild ändern</string>
+
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>
     <string name="dialogfragment_paging_title">Seiten eingeben</string>

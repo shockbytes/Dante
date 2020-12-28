@@ -141,6 +141,8 @@
 
     <string name="login_incognito">Anonymous login</string>
     <string name="login_incognito_sign_up_hint">Your data will be stored as long as you stay signed in. When you sign out, your data will be erased.\n\nYou can always upgrade to a regular account later on.</string>
+    <string name="logout_incognito">Anonymous logout</string>
+    <string name="logout_incognito_hint">You are going to delete all your data right now. Proceeding now will permanently remove all your books.\n\nDo you want to proceed?</string>
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>

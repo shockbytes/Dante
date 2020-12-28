@@ -25,6 +25,8 @@ interface LoginRepository {
 
     fun logout(): Completable
 
+    fun updateUserName(userName: String): Completable
+
     fun observeAccount(): Observable<UserState>
 
     fun getAccount(): Single<UserState>

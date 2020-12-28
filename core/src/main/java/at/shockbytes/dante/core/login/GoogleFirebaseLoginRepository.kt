@@ -161,14 +161,30 @@ class GoogleFirebaseLoginRepository(
     }
 
     private fun FirebaseUser.toDanteUser(givenName: String? = this.displayName): DanteUser {
+
+        val authenticationSource = when {
+            isAnonymous -> AuthenticationSource.ANONYMOUS
+            isGoogleUser() -> AuthenticationSource.GOOGLE
+            isMailUser() -> AuthenticationSource.MAIL
+            else -> AuthenticationSource.UNKNOWN
+        }
+
         return DanteUser(
             givenName,
             this.displayName,
             this.email,
             this.photoUrl,
-            this.providerId,
             Tasks.await(this.getIdToken(false))?.token,
-            this.uid
+            this.uid,
+            authenticationSource
         )
+    }
+
+    private fun FirebaseUser.isGoogleUser(): Boolean {
+        return providerData.find { it.providerId == "google.com" } != null
+    }
+
+    private fun FirebaseUser.isMailUser(): Boolean {
+        return providerData.find { it.providerId == "password" } != null
     }
 }

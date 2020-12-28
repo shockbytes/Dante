@@ -1,14 +1,15 @@
 package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.announcement.AnnouncementProvider
+import at.shockbytes.dante.core.login.AuthenticationSource
 import at.shockbytes.dante.core.login.DanteUser
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.theme.SeasonalTheme
 import at.shockbytes.dante.theme.ThemeRepository
+import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.completableOf
@@ -39,11 +40,12 @@ class MainViewModel @Inject constructor(
 
     sealed class UserEvent {
 
-        data class LoggedIn(val user: DanteUser) : UserEvent()
+        data class LoggedIn(
+            val user: DanteUser,
+            val profileActionViewState: ProfileActionViewState
+        ) : UserEvent()
 
         object UnauthenticatedUser : UserEvent()
-
-        data class Error(@StringRes val errorMsg: Int) : UserEvent()
     }
 
     private val userEvent = MutableLiveData<UserEvent>()
@@ -73,10 +75,19 @@ class MainViewModel @Inject constructor(
 
     private fun mapUserStateToUserEvent(userState: UserState) = when (userState) {
         is UserState.SignedInUser -> {
-            UserEvent.LoggedIn(userState.user)
+            UserEvent.LoggedIn(userState.user, resolveProfileActionViewState(userState.user))
         }
         is UserState.Unauthenticated -> {
             UserEvent.UnauthenticatedUser
+        }
+    }
+
+    private fun resolveProfileActionViewState(user: DanteUser): ProfileActionViewState {
+        return when (user.authenticationSource) {
+            AuthenticationSource.GOOGLE -> ProfileActionViewState.forGoogleUser()
+            AuthenticationSource.MAIL -> ProfileActionViewState.forMailUser()
+            AuthenticationSource.ANONYMOUS -> ProfileActionViewState.forAnonymousUser()
+            else -> ProfileActionViewState.Hidden
         }
     }
 

@@ -12,6 +12,7 @@ import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
@@ -66,6 +67,7 @@ class MenuFragment : BaseBottomSheetFragment() {
                 btnMenuLogin.text = getString(R.string.logout)
 
                 profileHeaderMenu.setUser(event.user.displayName, event.user.email)
+                profileActionViewMenu.setState(event.profileActionViewState)
 
                 event.user.photoUrl?.loadRoundedBitmap(requireContext())?.subscribe({ image ->
                     profileHeaderMenu.imageView.setImageBitmap(image)
@@ -77,14 +79,11 @@ class MenuFragment : BaseBottomSheetFragment() {
             is MainViewModel.UserEvent.UnauthenticatedUser -> {
                 btnMenuLogin.text = getString(R.string.login)
 
+                profileActionViewMenu.setState(ProfileActionViewState.Hidden)
                 profileHeaderMenu.apply {
                     setUser(getString(R.string.anonymous_user), "")
                     imageView.setImageResource(R.drawable.ic_user_template_dark)
                 }
-            }
-
-            is MainViewModel.UserEvent.Error -> {
-                Toast.makeText(context, event.errorMsg, Toast.LENGTH_LONG).show()
             }
         }
     }

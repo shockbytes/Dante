@@ -192,8 +192,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                 onUserLoaded()
             }
-            // These cases are handled by another Fragment
-            is MainViewModel.UserEvent.Error -> Unit
         }
     }
 

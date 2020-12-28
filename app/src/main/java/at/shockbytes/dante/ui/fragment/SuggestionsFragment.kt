@@ -10,7 +10,7 @@ import at.shockbytes.dante.ui.adapter.suggestions.OnSuggestionActionClickedListe
 import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapter
 import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapterItem
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
-import at.shockbytes.dante.util.SharedViewComponents
+import at.shockbytes.dante.ui.view.SharedViewComponents
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf

@@ -60,6 +60,14 @@ fun Context.getThemeFont(): Typeface? {
     return ResourcesCompat.getFont(this, at.shockbytes.dante.R.font.nunito)
 }
 
+fun Context.getBoldThemeFont(): Typeface? {
+    return ResourcesCompat.getFont(this, at.shockbytes.dante.R.font.nunito_bold)
+}
+
+fun Context.getExtraBoldThemeFont(): Typeface? {
+    return ResourcesCompat.getFont(this, at.shockbytes.dante.R.font.nunito_extrabold)
+}
+
 fun List<BookEntity>.toAdapterItems(): List<BookAdapterItem> {
     return this.map { entity ->
         BookAdapterItem.Book(entity)

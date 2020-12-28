@@ -1,8 +1,6 @@
 package at.shockbytes.dante.ui.adapter.main
 
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +8,10 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.util.ColorUtils.desaturateAndDevalue
+import at.shockbytes.dante.ui.view.ChipFactory
 import at.shockbytes.dante.util.DanteUtils
-import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import com.google.android.material.chip.Chip
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_book.*
 
@@ -44,31 +40,15 @@ class BookViewHolder(
             removeAllViews()
         }
 
-        val isNightModeEnabled = context().isNightModeEnabled()
-
         labels
             .map { label ->
-                buildChipViewFromLabel(label, isNightModeEnabled)
+                ChipFactory.buildChipViewFromLabel(
+                    context(),
+                    label,
+                    onLabelClickedListener
+                )
             }
             .forEach(chips_item_book_label::addView)
-    }
-
-    private fun buildChipViewFromLabel(label: BookLabel, isNightModeEnabled: Boolean): Chip {
-
-        val chipColor = if (isNightModeEnabled) {
-            desaturateAndDevalue(Color.parseColor(label.hexColor), by = 0.25f)
-        } else {
-            Color.parseColor(label.hexColor)
-        }
-
-        return Chip(containerView.context).apply {
-            chipBackgroundColor = ColorStateList.valueOf(chipColor)
-            text = label.title
-            setTextColor(Color.WHITE)
-            setOnClickListener {
-                onLabelClickedListener?.invoke(label)
-            }
-        }
     }
 
     private fun setOverflowClickListener(content: BookEntity) {

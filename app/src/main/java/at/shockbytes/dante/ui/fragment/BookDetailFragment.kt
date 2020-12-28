@@ -5,8 +5,6 @@ import android.app.DatePickerDialog
 import android.content.BroadcastReceiver
 import androidx.lifecycle.ViewModelProvider
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.drawable.BitmapDrawable
@@ -44,18 +42,16 @@ import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramAction
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramOptions
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
-import at.shockbytes.dante.util.AnimationUtils
-import at.shockbytes.dante.util.ColorUtils
+import at.shockbytes.dante.ui.view.AnimationUtils
+import at.shockbytes.dante.ui.view.ChipFactory
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.registerForPopupMenu
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
-import com.google.android.material.chip.Chip
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -658,34 +654,17 @@ class BookDetailFragment : BaseFragment(),
 
         chips_detail_label.removeAllViews()
 
-        val isNightModeEnabled = requireContext().isNightModeEnabled()
-
         labels
             .map { label ->
-                buildChipViewFromLabel(label, isNightModeEnabled)
+                ChipFactory.buildChipViewFromLabel(
+                    requireContext(),
+                    label,
+                    onLabelClickedListener = null,
+                    showCloseIcon = true,
+                    closeIconClickCallback = viewModel::removeLabel
+                )
             }
             .forEach(chips_detail_label::addView)
-    }
-
-    private fun buildChipViewFromLabel(label: BookLabel, isNightModeEnabled: Boolean): Chip {
-
-        val chipColor = if (isNightModeEnabled) {
-            ColorUtils.desaturateAndDevalue(Color.parseColor(label.hexColor), by = 0.25f)
-        } else {
-            Color.parseColor(label.hexColor)
-        }
-
-        return Chip(requireContext()).apply {
-            chipBackgroundColor = ColorStateList.valueOf(chipColor)
-            text = label.title
-            setTextColor(Color.WHITE)
-            closeIconTint = ColorStateList.valueOf(Color.WHITE)
-            isCloseIconVisible = true
-            setOnCloseIconClickListener { v ->
-                v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                viewModel.removeLabel(label)
-            }
-        }
     }
 
     private fun onUpdatePublishedDate(y: String, m: String, d: String) {

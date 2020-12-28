@@ -139,6 +139,9 @@
     <string name="account_change_name">Change name</string>
     <string name="account_change_image">Change image</string>
 
+    <string name="login_incognito">Anonymous login</string>
+    <string name="login_incognito_sign_up_hint">Your data will be stored as long as you stay signed in. When you sign out, your data will be erased.\n\nYou can always upgrade to a regular account later on.</string>
+
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
     <string name="add_notes">Notes</string>

@@ -3,13 +3,13 @@ package at.shockbytes.dante.core.login
 import android.content.Context
 import android.content.Intent
 import at.shockbytes.dante.core.fromSingleToCompletable
-import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -118,14 +118,46 @@ class GoogleFirebaseLoginRepository(
     }
 
     override fun updateUserName(userName: String): Completable {
-        return completableOf {
-            val user = fbAuth.currentUser ?: throw NullPointerException("User is not logged in!")
+        return Completable.create { emitter ->
 
-            val update = UserProfileChangeRequest.Builder()
-                .setDisplayName(userName)
-                .build()
+            val currentUser = fbAuth.currentUser
+            if (currentUser == null) {
+                emitter.tryOnError(NullPointerException("User is not logged in!"))
+            } else {
 
-            Tasks.await(user.updateProfile(update))
+                val update = UserProfileChangeRequest.Builder()
+                    .setDisplayName(userName)
+                    .build()
+
+                currentUser.updateProfile(update).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        val exception = task.exception
+                            ?: IllegalStateException("Unknown update user name error")
+                        emitter.tryOnError(exception)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable {
+        return Completable.create { emitter ->
+
+            val currentUser = fbAuth.currentUser
+            if (currentUser == null) {
+                emitter.tryOnError(NullPointerException("User is not logged in!"))
+            } else {
+                val credentials = EmailAuthProvider.getCredential(mailAddress, password)
+                currentUser.linkWithCredential(credentials).addOnCompleteListener { authResult ->
+                    if (authResult.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        emitter.tryOnError(UpgradeException(authResult.exception))
+                    }
+                }
+            }
         }
     }
 

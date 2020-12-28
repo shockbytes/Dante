@@ -60,15 +60,15 @@ The backlog is currently empty.
         - [ ] Logout moves user to login screen
         - [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
         - [ ] Tracking
-        - [ ] Allow anonymous users and mail users to set a username
         - [x] Handle empty mail addresses and usernames in MenuFragment
     - [ ] Storage
         - [ ] Online storage switch
         - [ ] How to handle local data when switching accounts? Realm.name in config would work
     - [ ] Anonymous
-        - [ ] Allow users to upgrade to full account (auth.currentUser!!.linkWithCredential(credential))
+        - [ ] Allow users to upgrade to full account
+        - [ ] Allow anonymous users and mail users to set a username
         - [x] Show notice when user selects anonymous account in login screen
-        - [ ] Show notice that data will be wiped once logged out
+        - [x] Show notice that data will be wiped once logged out
     - [x] Mail
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet

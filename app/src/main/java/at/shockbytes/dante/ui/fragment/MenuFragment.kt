@@ -16,6 +16,8 @@ import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -55,6 +57,28 @@ class MenuFragment : BaseBottomSheetFragment() {
                 ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
             }
             .addTo(compositeDisposable)
+
+        viewModel.onAnonymousLogoutEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::showAnonymousLogoutEvent)
+            .addTo(compositeDisposable)
+    }
+
+    private fun showAnonymousLogoutEvent(unused: Unit) {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_incognito)
+            title(text = getString(R.string.logout_incognito))
+            message(text = getString(R.string.logout_incognito_hint))
+            positiveButton(R.string.logout) {
+                viewModel.forceLogout()
+                dismiss()
+            }
+            negativeButton(R.string.cancel) {
+                dismiss()
+            }
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
     }
 
     override fun unbindViewModel() = Unit

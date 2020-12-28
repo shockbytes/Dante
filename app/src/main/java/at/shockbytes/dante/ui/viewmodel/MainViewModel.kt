@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.core.login.AuthenticationSource
+import at.shockbytes.dante.core.login.AuthenticationSource.ANONYMOUS
 import at.shockbytes.dante.core.login.DanteUser
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.UserState
@@ -22,6 +23,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -57,6 +59,9 @@ class MainViewModel @Inject constructor(
     private val loginEvent = PublishSubject.create<Unit>()
     fun onLoginEvent(): Observable<Unit> = loginEvent
 
+    private val anonymousLogoutEvent = PublishSubject.create<Unit>()
+    fun onAnonymousLogoutEvent(): Observable<Unit> = anonymousLogoutEvent
+
     private val seasonalThemeSubject = BehaviorSubject.create<SeasonalTheme>()
     fun getSeasonalTheme(): Observable<SeasonalTheme> = seasonalThemeSubject
         .delay(2, TimeUnit.SECONDS)
@@ -86,7 +91,7 @@ class MainViewModel @Inject constructor(
         return when (user.authenticationSource) {
             AuthenticationSource.GOOGLE -> ProfileActionViewState.forGoogleUser()
             AuthenticationSource.MAIL -> ProfileActionViewState.forMailUser()
-            AuthenticationSource.ANONYMOUS -> ProfileActionViewState.forAnonymousUser()
+            ANONYMOUS -> ProfileActionViewState.forAnonymousUser()
             else -> ProfileActionViewState.Hidden
         }
     }
@@ -95,20 +100,48 @@ class MainViewModel @Inject constructor(
         postLoginEventAndTrackValue(source)
     }
 
+
+    fun forceLogout() {
+        loginRepository.logout()
+            .subscribe({
+                Timber.d("Successfully forced to logout user")
+            }, { throwable ->
+                Timber.e(throwable)
+            })
+            .addTo(compositeDisposable)
+    }
+
     fun loginLogout() {
         loginRepository.getAccount()
             .subscribeOn(schedulers.io)
             .doOnError {
                 userEvent.postValue(UserEvent.UnauthenticatedUser)
             }
-            .flatMapCompletable { userState ->
-                when (userState) {
-                    is UserState.SignedInUser -> loginRepository.logout()
-                    UserState.Unauthenticated -> postSignInEvent()
-                }
-            }
+            .flatMapCompletable(::mapUserStateToLoginAction)
             .subscribe({ }, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
+    }
+
+    private fun mapUserStateToLoginAction(userState: UserState): Completable =
+        when (userState) {
+            is UserState.SignedInUser -> {
+                if (userState.isAnonymousLogout()) {
+                    postAnonymousLogoutEvent()
+                } else {
+                    loginRepository.logout()
+                }
+            }
+            is UserState.Unauthenticated -> postSignInEvent()
+        }
+
+    private fun UserState.isAnonymousLogout(): Boolean {
+        return this is UserState.SignedInUser && user.authenticationSource == ANONYMOUS
+    }
+
+    private fun postAnonymousLogoutEvent(): Completable {
+        return completableOf {
+            anonymousLogoutEvent.onNext(Unit)
+        }
     }
 
     private fun postSignInEvent(): Completable {

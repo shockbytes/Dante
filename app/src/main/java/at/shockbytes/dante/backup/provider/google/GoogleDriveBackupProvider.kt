@@ -66,6 +66,7 @@ class GoogleDriveBackupProvider(
         return driveClient.initialize(activity)
             .doOnError { isEnabled = false }
             .doOnComplete { isEnabled = true }
+            .onErrorComplete()
     }
 
     override fun teardown(): Completable {

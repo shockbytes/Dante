@@ -3,8 +3,8 @@ package at.shockbytes.dante.backup.provider.google
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupStorageProvider
+import at.shockbytes.dante.core.login.GoogleAuth
 import at.shockbytes.dante.core.login.UnauthenticatedUserException
-import at.shockbytes.dante.core.login.GoogleFirebaseLoginRepository
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.merge
 import com.google.android.gms.tasks.Tasks
@@ -26,7 +26,7 @@ import java.util.Collections
 import java.util.concurrent.Executors
 
 class DriveRestClient(
-    private val signInManager: GoogleFirebaseLoginRepository
+    private val googleAuth: GoogleAuth
 ) : DriveClient {
 
     private lateinit var drive: Drive
@@ -36,7 +36,7 @@ class DriveRestClient(
     override fun initialize(activity: FragmentActivity): Completable {
         return Completable.create { emitter ->
 
-            val account = signInManager.getGoogleAccount()?.account
+            val account = googleAuth.getGoogleAccount()?.account
 
             if (account != null) {
                 // Use the authenticated account to sign in to the Drive service.

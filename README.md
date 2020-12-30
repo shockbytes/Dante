@@ -59,6 +59,7 @@ The backlog is currently empty.
         - [ ] Show login screen when unauthenticated user opens the app
         - [ ] Handle empty mail addresses and usernames in MenuFragment
         - [ ] Logout moves user to login screen
+        - [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
         - [ ] Tracking
     - [ ] Storage
         - [ ] Online storage switch

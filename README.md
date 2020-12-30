@@ -59,6 +59,7 @@ The backlog is currently empty.
         - [ ] Show login screen when unauthenticated user opens the app
         - [ ] Logout moves user to login screen
         - [ ] Tracking
+        - [ ] Reset password for mail users
         - [x] Handle empty mail addresses and usernames in MenuFragment
     - [ ] Storage
         - [ ] Online storage switch

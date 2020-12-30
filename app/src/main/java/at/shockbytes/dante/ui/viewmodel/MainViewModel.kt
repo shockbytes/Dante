@@ -51,17 +51,22 @@ class MainViewModel @Inject constructor(
         object UnauthenticatedUser : UserEvent()
     }
 
+    sealed class MainEvent {
+
+        object Announcement : MainEvent()
+
+        object Login : MainEvent()
+
+        object AnonymousLogout : MainEvent()
+
+        data class AnonymousUpgradeFailed(val message: String?) : MainEvent()
+    }
+
     private val userEvent = MutableLiveData<UserEvent>()
     fun getUserEvent(): LiveData<UserEvent> = userEvent
 
-    private val showAnnouncementSubject = PublishSubject.create<Unit>()
-    fun showAnnouncement(): Observable<Unit> = showAnnouncementSubject
-
-    private val loginEvent = PublishSubject.create<Unit>()
-    fun onLoginEvent(): Observable<Unit> = loginEvent
-
-    private val anonymousLogoutEvent = PublishSubject.create<Unit>()
-    fun onAnonymousLogoutEvent(): Observable<Unit> = anonymousLogoutEvent
+    private val eventSubject = PublishSubject.create<MainEvent>()
+    fun onMainEvent(): Observable<MainEvent> = eventSubject
 
     private val seasonalThemeSubject = BehaviorSubject.create<SeasonalTheme>()
     fun getSeasonalTheme(): Observable<SeasonalTheme> = seasonalThemeSubject
@@ -140,7 +145,7 @@ class MainViewModel @Inject constructor(
 
     private fun postAnonymousLogoutEvent(): Completable {
         return completableOf {
-            anonymousLogoutEvent.onNext(Unit)
+            eventSubject.onNext(MainEvent.AnonymousLogout)
         }
     }
 
@@ -152,7 +157,7 @@ class MainViewModel @Inject constructor(
 
     private fun postLoginEventAndTrackValue(source: LoginSource) {
         tracker.track(DanteTrackingEvent.Login(source))
-        loginEvent.onNext(Unit)
+        eventSubject.onNext(MainEvent.Login)
     }
 
     fun requestSeasonalTheme() {
@@ -168,7 +173,7 @@ class MainViewModel @Inject constructor(
         // even though there would be a new announcement
         val showAnnouncement = hasActiveAnnouncement && !danteSettings.isFirstAppOpen
         if (showAnnouncement) {
-            showAnnouncementSubject.onNext(Unit)
+            eventSubject.onNext(MainEvent.Announcement)
         }
     }
 
@@ -177,8 +182,9 @@ class MainViewModel @Inject constructor(
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
                 // TODO Handle upgrade success state
-            }, {
-                // TODO Handle upgrade fail state
+                Timber.e("Successfully upgrade anonymous account")
+            }, { throwable ->
+                eventSubject.onNext(MainEvent.AnonymousUpgradeFailed(throwable.localizedMessage))
             })
             .addTo(compositeDisposable)
     }

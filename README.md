@@ -60,6 +60,7 @@ The backlog is currently empty.
         - [ ] Logout moves user to login screen
         - [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
         - [ ] Tracking
+        - [ ] Reset password for mail users
         - [x] Handle empty mail addresses and usernames in MenuFragment
     - [ ] Storage
         - [ ] Online storage switch

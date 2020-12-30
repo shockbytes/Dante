@@ -172,8 +172,14 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun anonymousUpgrade(mailLoginCredentials: MailLoginCredentials) {
-        // TODO
-        Timber.d(mailLoginCredentials.toString())
+    fun anonymousUpgrade(credentials: MailLoginCredentials) {
+        loginRepository.upgradeAnonymousAccount(credentials.address, credentials.password)
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe({
+                // TODO Handle upgrade success state
+            }, {
+                // TODO Handle upgrade fail state
+            })
+            .addTo(compositeDisposable)
     }
 }

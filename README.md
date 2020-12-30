@@ -85,7 +85,7 @@ The backlog is currently empty.
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
 - [ ] Upgrade to newest ktlint version
-- [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
+- [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
 
 ## Changelog

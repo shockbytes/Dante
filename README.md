@@ -65,8 +65,8 @@ The backlog is currently empty.
         - [ ] Online storage switch
         - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
     - [ ] Anonymous
-        - [ ] Allow users to upgrade to full account
-        - [x] Allow anonymous users and mail users to set a username
+        - [x] Allow users to upgrade to full account
+        - [ ] Allow anonymous users and mail users to set a username
         - [x] Show notice when user selects anonymous account in login screen
         - [x] Show notice that data will be wiped once logged out
     - [x] Mail

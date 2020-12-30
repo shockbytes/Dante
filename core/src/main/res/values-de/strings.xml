@@ -73,6 +73,7 @@
     <string name="login_incognito_sign_up_hint">Deine Daten werden gespeichert solange du eingeloggt bleibst. Wenn du dich ausloggst werden alle deine Daten gelöscht.\n\nDu kannst immer ein Upgrade zu einem regulären Account durchführen.</string>
     <string name="logout_incognito">Anonymer Logout</string>
     <string name="logout_incognito_hint">Du bist dabei deine ganzen Daten zu lösche. Beim Fortfahren werden alle deine Bücher unwiederbringlich gelöscht.\n\nWillst du fortfahren?</string>
+    <string name="anonymous_upgrade">Upgrade dein anonymes Konto</string>
 
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>

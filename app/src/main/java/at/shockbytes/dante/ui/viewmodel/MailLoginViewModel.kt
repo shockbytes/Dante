@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.R
@@ -10,6 +11,7 @@ import at.shockbytes.dante.util.MailValidator
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
 
 /**
@@ -30,7 +32,8 @@ class MailLoginViewModel @Inject constructor(
         data class PasswordVerification(
             val isSignUp: Boolean,
             val textHeader: Int,
-            val isEmailEnabled: Boolean
+            val isEmailEnabled: Boolean,
+            val focusOnPasswordField: Boolean
         ) : MailLoginStep()
     }
 
@@ -53,7 +56,14 @@ class MailLoginViewModel @Inject constructor(
                 MailLoginStep.MailVerification
             }
             is MailLoginState.ShowEmailAndPassword -> {
-                MailLoginStep.PasswordVerification(state.isSignUp, state.textHeader, isEmailEnabled = true)
+                // Set this as a side effect
+                this.isSignUp = state.isSignUp
+                MailLoginStep.PasswordVerification(
+                    state.isSignUp,
+                    state.textHeader,
+                    isEmailEnabled = true,
+                    focusOnPasswordField = false
+                )
             }
         }
         step.postValue(currentStep)
@@ -81,7 +91,8 @@ class MailLoginViewModel @Inject constructor(
                 MailLoginStep.PasswordVerification(
                     isSignUp,
                     R.string.login_mail_enter_password,
-                    isEmailEnabled = false
+                    isEmailEnabled = false,
+                    focusOnPasswordField = true
                 )
             }
             .subscribe(step::postValue, ExceptionHandlers::defaultExceptionHandler)
@@ -92,9 +103,12 @@ class MailLoginViewModel @Inject constructor(
         return MailLoginCredentials(mailAddress.toString(), password.toString(), isSignUp)
     }
 
-    sealed class MailLoginState {
+    sealed class MailLoginState : Parcelable {
 
+        @Parcelize
         object ResolveEmailAddress : MailLoginState()
+
+        @Parcelize
         data class ShowEmailAndPassword(
             val isSignUp: Boolean,
             val textHeader: Int

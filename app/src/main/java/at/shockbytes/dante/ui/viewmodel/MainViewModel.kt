@@ -7,6 +7,7 @@ import at.shockbytes.dante.core.login.AuthenticationSource
 import at.shockbytes.dante.core.login.AuthenticationSource.ANONYMOUS
 import at.shockbytes.dante.core.login.DanteUser
 import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.theme.SeasonalTheme
 import at.shockbytes.dante.theme.ThemeRepository
@@ -169,5 +170,10 @@ class MainViewModel @Inject constructor(
         if (showAnnouncement) {
             showAnnouncementSubject.onNext(Unit)
         }
+    }
+
+    fun anonymousUpgrade(mailLoginCredentials: MailLoginCredentials) {
+        // TODO
+        Timber.d(mailLoginCredentials.toString())
     }
 }

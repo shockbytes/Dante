@@ -95,7 +95,9 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
             isEnabled = step.isEmailEnabled
         }
 
-        editTextMailPassword.requestFocus()
+        if (step.focusOnPasswordField) {
+            editTextMailPassword.requestFocus()
+        }
 
         tilTextMailPassword.apply {
             alpha = 0f

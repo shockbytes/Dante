@@ -8,6 +8,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
@@ -39,7 +40,8 @@ class LoginFragment : BaseFragment() {
         }
 
         btn_login_mail.setOnClickListener {
-            MailLoginBottomSheetDialogFragment.newInstance()
+            MailLoginBottomSheetDialogFragment
+                .newInstance(MailLoginViewModel.MailLoginState.ResolveEmailAddress)
                 .setOnCredentialsEnteredListener(viewModel::authorizeWithMail)
                 .show(parentFragmentManager, "mail-login-fragment")
         }

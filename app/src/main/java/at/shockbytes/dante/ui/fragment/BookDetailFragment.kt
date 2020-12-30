@@ -27,6 +27,7 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
@@ -138,9 +139,8 @@ class BookDetailFragment : BaseFragment(),
         setHasOptionsMenu(true)
 
         viewModel = viewModelOf(vmFactory)
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId ->
-            viewModel.initializeWithBookId(bookId)
-        }
+        arguments?.getParcelable<BookId>(ARG_BOOK_ID)
+            ?.let(viewModel::initializeWithBookId)
 
         registerLocalBroadcastReceiver()
         fixSharedElementTransitionBug()
@@ -421,7 +421,7 @@ class BookDetailFragment : BaseFragment(),
 
     private fun handlePageRecords(
         dataPoints: List<BooksAndPageRecordDataPoint>,
-        bookId: Long
+        bookId: BookId
     ) {
         pages_diagram_view.apply {
             setData(
@@ -437,7 +437,7 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun showPageRecordsOverview(bookId: Long) {
+    private fun showPageRecordsOverview(bookId: BookId) {
         registerForPopupMenu(
             pages_diagram_view.actionView,
             R.menu.menu_page_records_details
@@ -690,10 +690,10 @@ class BookDetailFragment : BaseFragment(),
 
         private const val ARG_BOOK_ID = "arg_book_id"
 
-        fun newInstance(id: Long): BookDetailFragment {
+        fun newInstance(id: BookId): BookDetailFragment {
             return BookDetailFragment().apply {
                 this.arguments = Bundle().apply {
-                    putLong(ARG_BOOK_ID, id)
+                    putParcelable(ARG_BOOK_ID, id)
                 }
             }
         }

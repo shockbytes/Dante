@@ -1,9 +1,11 @@
 package at.shockbytes.dante.timeline
 
+import at.shockbytes.dante.core.book.BookId
+
 sealed class TimeLineItem {
 
     data class BookTimeLineItem(
-        val bookId: Long,
+        val bookId: BookId,
         val title: String,
         val image: String?
     ) : TimeLineItem()

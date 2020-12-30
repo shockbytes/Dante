@@ -10,6 +10,7 @@ import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.backup.model.BackupStorageProviderNotAvailableException
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
@@ -142,7 +143,7 @@ class DefaultBackupRepository(
     private fun createIdMappingForRestoredBooks(
         restoredBooks: List<BookEntity>,
         backupBooks: List<BookEntity>
-    ): Map<Long, Long> {
+    ): Map<BookId, BookId> {
         return restoredBooks.associate { book ->
 
             val backupBookId = backupBooks.find {

@@ -137,22 +137,28 @@ class GoogleFirebaseLoginRepository(
     }
 
     override fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable {
-        return Completable.create { emitter ->
+        return Completable
+            .create { emitter ->
 
-            val currentUser = fbAuth.currentUser
-            if (currentUser == null) {
-                emitter.tryOnError(NullPointerException("User is not logged in!"))
-            } else {
-                val credentials = EmailAuthProvider.getCredential(mailAddress, password)
-                currentUser.linkWithCredential(credentials).addOnCompleteListener { authResult ->
-                    if (authResult.isSuccessful) {
-                        emitter.onComplete()
-                    } else {
-                        emitter.tryOnError(UpgradeException(authResult.exception))
+                val currentUser = fbAuth.currentUser
+                if (currentUser == null) {
+                    emitter.tryOnError(NullPointerException("User is not logged in!"))
+                } else {
+                    val credentials = EmailAuthProvider.getCredential(mailAddress, password)
+                    currentUser.linkWithCredential(credentials).addOnCompleteListener { authResult ->
+                        if (authResult.isSuccessful) {
+                            emitter.onComplete()
+                        } else {
+                            emitter.tryOnError(UpgradeException(authResult.exception))
+                        }
                     }
                 }
             }
-        }
+            .doOnComplete(::reloadUserAfterAnonymousUpgrade)
+    }
+
+    private fun reloadUserAfterAnonymousUpgrade() {
+        signInSubject.onNext(getCurrentUserState())
     }
 
     override fun observeAccount(): Observable<UserState> {
@@ -162,13 +168,14 @@ class GoogleFirebaseLoginRepository(
     }
 
     override fun getAccount(): Single<UserState> {
-        return Single
-            .fromCallable {
-                fbAuth.currentUser?.toDanteUser()
-                    ?.let(UserState::SignedInUser)
-                    ?: UserState.Unauthenticated
-            }
+        return Single.fromCallable(::getCurrentUserState)
             .subscribeOn(schedulers.io)
+    }
+
+    private fun getCurrentUserState(): UserState {
+        return fbAuth.currentUser?.toDanteUser()
+            ?.let(UserState::SignedInUser)
+            ?: UserState.Unauthenticated
     }
 
     override fun getAuthorizationHeader(): Single<String> {

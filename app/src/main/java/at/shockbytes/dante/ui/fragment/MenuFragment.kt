@@ -21,6 +21,7 @@ import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.bottom_sheet_menu.*
 import javax.inject.Inject
@@ -49,23 +50,29 @@ class MenuFragment : BaseBottomSheetFragment() {
     override fun bindViewModel() {
         viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
 
-        viewModel.onLoginEvent()
+        viewModel.onMainEvent()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                val sceneTransition = requireActivity()
-                    .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
-                    .toBundle()
-                ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
-            }
-            .addTo(compositeDisposable)
-
-        viewModel.onAnonymousLogoutEvent()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::showAnonymousLogoutEvent)
+            .subscribe(::handleMainEvent)
             .addTo(compositeDisposable)
     }
 
-    private fun showAnonymousLogoutEvent(unused: Unit) {
+    private fun handleMainEvent(event: MainViewModel.MainEvent) {
+        when (event) {
+            is MainViewModel.MainEvent.Announcement -> Unit // Not handled here..
+            is MainViewModel.MainEvent.Login -> navigateToLogin()
+            is MainViewModel.MainEvent.AnonymousLogout -> showAnonymousLogout()
+            is MainViewModel.MainEvent.AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
+        }
+    }
+
+    private fun navigateToLogin() {
+        val sceneTransition = requireActivity()
+            .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
+            .toBundle()
+        ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
+    }
+
+    private fun showAnonymousLogout() {
         MaterialDialog(requireContext()).show {
             icon(R.drawable.ic_incognito)
             title(text = getString(R.string.logout_incognito))
@@ -80,6 +87,11 @@ class MenuFragment : BaseBottomSheetFragment() {
             cancelOnTouchOutside(true)
             cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
         }
+    }
+
+    private fun showAnonymousUpgradeFailed(message: String?) {
+        val snackBarMessage = message ?: getString(R.string.anonymous_upgrade_error)
+        Snackbar.make(requireView(), snackBarMessage, Snackbar.LENGTH_LONG).show()
     }
 
     override fun unbindViewModel() = Unit

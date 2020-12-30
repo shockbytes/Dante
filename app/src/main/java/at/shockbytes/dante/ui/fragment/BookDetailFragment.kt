@@ -19,7 +19,6 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.annotation.ColorInt
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
@@ -28,6 +27,7 @@ import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
@@ -139,9 +139,8 @@ class BookDetailFragment : BaseFragment(),
         setHasOptionsMenu(true)
 
         viewModel = viewModelOf(vmFactory)
-        arguments?.getLong(ARG_BOOK_ID)?.let { bookId ->
-            viewModel.initializeWithBookId(bookId)
-        }
+        arguments?.getParcelable<BookId>(ARG_BOOK_ID)
+            ?.let(viewModel::initializeWithBookId)
 
         registerLocalBroadcastReceiver()
         fixSharedElementTransitionBug()
@@ -209,7 +208,7 @@ class BookDetailFragment : BaseFragment(),
     }
 
     override fun bindViewModel() {
-        viewModel.getViewState().observe(this, Observer { viewState ->
+        viewModel.getViewState().observe(this, { viewState ->
             initializeBookInformation(viewState.book, viewState.showSummary)
             initializeTimeInformation(viewState.book)
         })
@@ -410,7 +409,7 @@ class BookDetailFragment : BaseFragment(),
 
     private fun handlePageRecords(
         dataPoints: List<BooksAndPageRecordDataPoint>,
-        bookId: Long
+        bookId: BookId
     ) {
         pages_diagram_view.apply {
             setData(
@@ -426,39 +425,38 @@ class BookDetailFragment : BaseFragment(),
         }
     }
 
-    private fun showPageRecordsOverview(bookId: Long) {
+    private fun showPageRecordsOverview(bookId: BookId) {
         registerForPopupMenu(
             pages_diagram_view.actionView,
-            R.menu.menu_page_records_details,
-            PopupMenu.OnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.menu_page_records_details -> {
-                        DanteUtils.addFragmentToActivity(
-                            parentFragmentManager,
-                            PageRecordsDetailFragment.newInstance(bookId),
-                            android.R.id.content,
-                            addToBackStack = true
-                        )
-                    }
-                    R.id.menu_page_records_reset -> {
-                        MaterialDialog(requireContext()).show {
-                            icon(R.drawable.ic_delete)
-                            title(text = getString(R.string.ask_for_all_page_record_deletion_title))
-                            message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
-                            positiveButton(R.string.action_delete) {
-                                viewModel.deleteAllPageRecords()
-                            }
-                            negativeButton(android.R.string.cancel) {
-                                dismiss()
-                            }
-                            cancelOnTouchOutside(false)
-                            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+            R.menu.menu_page_records_details
+        ) { item ->
+            when (item.itemId) {
+                R.id.menu_page_records_details -> {
+                    DanteUtils.addFragmentToActivity(
+                        parentFragmentManager,
+                        PageRecordsDetailFragment.newInstance(bookId),
+                        android.R.id.content,
+                        addToBackStack = true
+                    )
+                }
+                R.id.menu_page_records_reset -> {
+                    MaterialDialog(requireContext()).show {
+                        icon(R.drawable.ic_delete)
+                        title(text = getString(R.string.ask_for_all_page_record_deletion_title))
+                        message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
+                        positiveButton(R.string.action_delete) {
+                            viewModel.deleteAllPageRecords()
                         }
+                        negativeButton(android.R.string.cancel) {
+                            dismiss()
+                        }
+                        cancelOnTouchOutside(false)
+                        cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
                     }
                 }
-                true
             }
-        )
+            true
+        }
     }
 
     private fun setupViewListener() {
@@ -680,10 +678,10 @@ class BookDetailFragment : BaseFragment(),
 
         private const val ARG_BOOK_ID = "arg_book_id"
 
-        fun newInstance(id: Long): BookDetailFragment {
+        fun newInstance(id: BookId): BookDetailFragment {
             return BookDetailFragment().apply {
                 this.arguments = Bundle().apply {
-                    putLong(ARG_BOOK_ID, id)
+                    putParcelable(ARG_BOOK_ID, id)
                 }
             }
         }

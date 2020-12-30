@@ -1,6 +1,7 @@
 package at.shockbytes.dante.core.data.local
 
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.realm.RealmBook
 import at.shockbytes.dante.core.book.realm.RealmBookConfig
@@ -50,7 +51,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.instance.where(labelClass)
-            .equalTo("bookId", BookLabel.UNASSIGNED_LABEL_ID)
+            .equalTo("bookId", BookId.default().value)
             .sort("title", Sort.DESCENDING)
             .distinct("title")
             .findAllAsync()
@@ -65,9 +66,9 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .findAll()
             .map { mapper.mapTo(it) }
 
-    override operator fun get(id: Long): Single<BookEntity> {
+    override operator fun get(id: BookId): Single<BookEntity> {
         return singleOf {
-            realm.instance.where(bookClass).equalTo("id", id).findFirst()
+            realm.instance.where(bookClass).equalTo("id", id.value).findFirst()
         }.map(mapper::mapTo)
     }
 
@@ -75,7 +76,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         return completableOf {
             realm.instance.executeTransaction { realm ->
                 val id = lastId
-                entity.id = id
+                entity.id = BookId(id)
                 realm.copyToRealm(mapper.mapFrom(entity))
             }
         }
@@ -89,11 +90,11 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }
     }
 
-    override fun updateCurrentPage(bookId: Long, currentPage: Int): Completable {
+    override fun updateCurrentPage(bookId: BookId, currentPage: Int): Completable {
         return completableOf {
             realm.instance.executeTransaction { realm ->
                 realm.where(bookClass)
-                    .equalTo("id", bookId)
+                    .equalTo("id", bookId.value)
                     .findFirst()
                     ?.let { realmBook ->
                         realmBook.currentPage = currentPage
@@ -103,11 +104,11 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }
     }
 
-    override fun delete(id: Long): Completable {
+    override fun delete(id: BookId): Completable {
         return completableOf {
             realm.instance.executeTransaction { realm ->
                 realm.where(bookClass)
-                    .equalTo("id", id)
+                    .equalTo("id", id.value)
                     .findFirst()
                     ?.deleteFromRealm()
             }
@@ -151,7 +152,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
                 val label = realm.where(labelClass)
                     .equalTo("title", bookLabel.title)
                     .and()
-                    .equalTo("bookId", bookLabel.bookId)
+                    .equalTo("bookId", bookLabel.bookId.value)
                     .findFirst()
 
                 if (label != null) {

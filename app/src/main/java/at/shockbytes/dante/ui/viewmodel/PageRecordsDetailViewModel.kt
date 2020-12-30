@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
@@ -29,11 +30,11 @@ class PageRecordsDetailViewModel @Inject constructor(
     private val onBookChangedSubject = PublishSubject.create<Unit>()
     fun onBookChangedEvent(): Observable<Unit> = onBookChangedSubject
 
-    private var bookId: Long = -1L
+    private var bookId: BookId = BookId.default()
 
     private var cachedRecords = listOf<PageRecord>()
 
-    fun initialize(bookId: Long) {
+    fun initialize(bookId: BookId) {
         this.bookId = bookId
         pageRecordDao.pageRecordsForBook(bookId)
             .doOnNext(::cachePageRecords)

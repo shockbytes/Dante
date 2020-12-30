@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_book_search_suggestion.*
@@ -34,7 +35,7 @@ class BookSearchSuggestionAdapter(
             item_book_search_suggestion_txt_author.text = content.author
 
             item_book_search_suggestion_btn_add.apply {
-                visibility = if (content.bookId < 0) View.VISIBLE else View.GONE
+                setVisible(content.bookId.isValid())
                 setOnClickListener {
                     addClickedListener.invoke(content)
                 }

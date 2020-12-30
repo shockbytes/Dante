@@ -1,6 +1,7 @@
 package at.shockbytes.dante.core.data
 
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
@@ -32,7 +33,7 @@ class DefaultBookRepository(private val localBookDao: BookEntityDao) : BookRepos
     override val booksCurrentlyReading: List<BookEntity>
         get() = selectedBookDao.booksCurrentlyReading
 
-    override operator fun get(id: Long): Single<BookEntity> {
+    override operator fun get(id: BookId): Single<BookEntity> {
         return selectedBookDao[id]
     }
 
@@ -44,11 +45,11 @@ class DefaultBookRepository(private val localBookDao: BookEntityDao) : BookRepos
         return selectedBookDao.update(entity)
     }
 
-    override fun updateCurrentPage(bookId: Long, currentPage: Int): Completable {
+    override fun updateCurrentPage(bookId: BookId, currentPage: Int): Completable {
         return selectedBookDao.updateCurrentPage(bookId, currentPage)
     }
 
-    override fun delete(id: Long): Completable {
+    override fun delete(id: BookId): Completable {
         return selectedBookDao.delete(id)
     }
 

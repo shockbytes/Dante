@@ -6,6 +6,7 @@ import android.os.Parcelable
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeCaptureActivity
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.createSharingIntent
 import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
@@ -28,7 +29,7 @@ sealed class Destination {
 
         @Parcelize
         data class BookDetailInfo(
-            val id: Long,
+            val id: BookId,
             val title: String
         ) : Parcelable
 

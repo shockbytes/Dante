@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.login.GoogleAuth
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.core.login.UserState
@@ -17,7 +18,8 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val googleAuth: GoogleAuth
 ) : BaseViewModel() {
 
     private val loginState = MutableLiveData<LoginState>()
@@ -42,7 +44,7 @@ class LoginViewModel @Inject constructor(
 
     fun requestGoogleLogin(): Single<Intent> {
         return singleOf {
-            loginRepository.googleLoginIntent
+            googleAuth.googleLoginIntent
         }
     }
 

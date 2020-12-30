@@ -1,13 +1,11 @@
 package at.shockbytes.dante.core.login
 
-import android.content.Context
 import android.content.Intent
 import at.shockbytes.dante.core.fromSingleToCompletable
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -29,16 +27,12 @@ import kotlin.Exception
  * https://firebase.google.com/docs/auth/android/google-signin
  */
 class GoogleFirebaseLoginRepository(
-    client: GoogleSignInClient,
-    private val context: Context,
     private val schedulers: SchedulerFacade
 ) : LoginRepository {
 
     private val fbAuth = FirebaseAuth.getInstance()
 
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
-
-    override val googleLoginIntent: Intent = client.signInIntent
 
     init {
         postInitialSignInState()
@@ -181,14 +175,6 @@ class GoogleFirebaseLoginRepository(
         return getAccount().map { acc ->
             val authToken = if (acc is UserState.SignedInUser) acc.user.authToken ?: "" else ""
             getAuthorizationHeader(authToken)
-        }
-    }
-
-    fun getGoogleAccount(): GoogleSignInAccount? {
-        return if (getAccount().blockingGet() is UserState.SignedInUser) {
-            GoogleSignIn.getLastSignedInAccount(context)
-        } else {
-            null
         }
     }
 

@@ -17,7 +17,7 @@ class DefaultExternalStorageInteractor(private val context: Context) : ExternalS
         val baseFile = getBaseFile(directoryName)
 
         if (!baseFile.exists() && !baseFile.mkdirs()) {
-            throw IllegalStateException("Cannot create baseFile in $baseFile")
+            throw IllegalStateException("Cannot create baseFile in ${baseFile.absolutePath}")
         }
     }
 

@@ -11,8 +11,6 @@ import io.reactivex.Single
  */
 interface LoginRepository {
 
-    val googleLoginIntent: Intent
-
     fun loginWithGoogle(data: Intent): Completable
 
     fun fetchSignInMethodsForEmail(mailAddress: String): Single<List<String>>

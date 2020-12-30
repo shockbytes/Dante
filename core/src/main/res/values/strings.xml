@@ -134,6 +134,7 @@
     <string name="login_mail_enter_password">Enter your password</string>
     <string name="login_general_error">We could not log you into your account!</string>
     <string name="login_invalid_credentials">Email and password do not match!</string>
+    <string name="anonymous_upgrade">Upgrade your anonymous account</string>
 
     <string name="account_upgrade">Upgrade</string>
     <string name="account_change_name">Change name</string>

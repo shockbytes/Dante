@@ -13,6 +13,7 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewClick
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
+import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
@@ -22,6 +23,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.bottom_sheet_menu.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -142,20 +144,27 @@ class MenuFragment : BaseBottomSheetFragment() {
         }
 
         profileActionViewMenu.onActionButtonClicked()
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::handleProfileClick)
             .addTo(compositeDisposable)
     }
 
     private fun handleProfileClick(profileActionViewClick: ProfileActionViewClick) {
         when (profileActionViewClick) {
-            ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> {
-                // TODO
-            }
+            ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> showUpgradeBottomSheet()
+
             ProfileActionViewClick.CHANGE_NAME -> {
                 // TODO
             }
             ProfileActionViewClick.CHANGE_IMAGE -> Unit // Not implemented yet...
         }
+    }
+
+    private fun showUpgradeBottomSheet() {
+        MailLoginBottomSheetDialogFragment
+            .newInstance(MailLoginViewModel.MailLoginState.ShowEmailAndPassword(isSignUp = true, R.string.anonymous_upgrade))
+            .setOnCredentialsEnteredListener(viewModel::anonymousUpgrade)
+            .show(parentFragmentManager, "anonymous-upgrade-fragment")
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -169,22 +178,19 @@ class MenuFragment : BaseBottomSheetFragment() {
 
     private fun navigateToAndDismiss(destination: Destination) {
 
-        val sceneTransition = ActivityOptionsCompat
-            .makeSceneTransitionAnimation(requireActivity())
-            .toBundle()
-
-        ActivityNavigator.navigateTo(activity, destination, sceneTransition)
+        ActivityNavigator.navigateTo(
+            activity,
+            destination,
+            ActivityOptionsCompat
+                .makeSceneTransitionAnimation(requireActivity())
+                .toBundle()
+        )
 
         dismiss()
     }
 
     companion object {
 
-        fun newInstance(): MenuFragment {
-            val fragment = MenuFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
-        }
+        fun newInstance() = MenuFragment()
     }
 }

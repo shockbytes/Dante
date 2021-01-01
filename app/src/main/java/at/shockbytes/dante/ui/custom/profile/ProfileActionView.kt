@@ -30,6 +30,9 @@ class ProfileActionView(context: Context, attrs: AttributeSet?) : FrameLayout(co
         btnProfileActionViewChangeImage.setOnClickListener {
             clickSubject.onNext(ProfileActionViewClick.CHANGE_IMAGE)
         }
+        btnProfileActionViewChangePassword.setOnClickListener {
+            clickSubject.onNext(ProfileActionViewClick.CHANGE_PASSWORD)
+        }
     }
 
     fun setState(state: ProfileActionViewState) {
@@ -42,6 +45,7 @@ class ProfileActionView(context: Context, attrs: AttributeSet?) : FrameLayout(co
                 btnProfileActionViewUpgrade.setVisible(state.showUpgrade)
                 btnProfileActionViewChangeName.setVisible(state.showChangeName)
                 btnProfileActionViewChangeImage.setVisible(state.showChangeImage)
+                btnProfileActionViewChangePassword.setVisible(state.showChangePassword)
             }
         }
     }

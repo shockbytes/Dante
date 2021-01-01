@@ -66,8 +66,8 @@ The backlog is currently empty.
         - [ ] Logout moves user to login screen
         - [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
         - [ ] Tracking
-        - [ ] Allow anonymous users and mail users to set a username
-        - [ ] Allow anonymous users and mail users to set a custom image
+        - [x] Allow anonymous users and mail users to set a username
+        - [x] Allow anonymous users and mail users to set a custom image
         - [ ] Reset password for mail users
         - [x] Handle empty mail addresses and usernames in MenuFragment
     - [x] Anonymous

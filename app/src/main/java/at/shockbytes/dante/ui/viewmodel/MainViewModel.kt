@@ -209,4 +209,15 @@ class MainViewModel @Inject constructor(
             })
             .addTo(compositeDisposable)
     }
+
+    fun changeUserName(userName: String) {
+        userRepository.updateUserName(userName)
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe({
+                // TODO Update UI
+            }, {
+                // TODO Handle this state too...
+            })
+            .addTo(compositeDisposable)
+    }
 }

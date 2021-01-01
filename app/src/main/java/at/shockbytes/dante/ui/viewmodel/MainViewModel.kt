@@ -1,14 +1,18 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.announcement.AnnouncementProvider
+import at.shockbytes.dante.core.image.picker.ImagePicking
 import at.shockbytes.dante.core.login.AuthenticationSource
 import at.shockbytes.dante.core.login.AuthenticationSource.ANONYMOUS
 import at.shockbytes.dante.core.login.DanteUser
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.core.login.UserState
+import at.shockbytes.dante.core.user.UserRepository
+import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.dante.theme.SeasonalTheme
 import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
@@ -38,7 +42,10 @@ class MainViewModel @Inject constructor(
     private val schedulers: SchedulerFacade,
     private val danteSettings: DanteSettings,
     private val tracker: Tracker,
-    private val themeRepository: ThemeRepository
+    private val themeRepository: ThemeRepository,
+    private val imagePicker: ImagePicking,
+    private val imageUploadStorage: ImageUploadStorage,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     sealed class UserEvent {
@@ -185,6 +192,20 @@ class MainViewModel @Inject constructor(
                 Timber.e("Successfully upgrade anonymous account")
             }, { throwable ->
                 eventSubject.onNext(MainEvent.AnonymousUpgradeFailed(throwable.localizedMessage))
+            })
+            .addTo(compositeDisposable)
+    }
+
+    fun changeUserImage(activity: FragmentActivity) {
+        imagePicker
+            .openGallery(activity)
+            .flatMap(imageUploadStorage::uploadUserImage)
+            .flatMapCompletable(userRepository::updateUserImage)
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe({
+                // TODO Update UI
+            }, {
+                // TODO Handle this state too...
             })
             .addTo(compositeDisposable)
     }

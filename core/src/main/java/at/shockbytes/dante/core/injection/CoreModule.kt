@@ -21,6 +21,8 @@ import at.shockbytes.dante.core.image.picker.ImagePicking
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.core.network.google.GoogleBooksDownloader
+import at.shockbytes.dante.core.user.FirebaseUserRepository
+import at.shockbytes.dante.core.user.UserRepository
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.firebase.auth.FirebaseAuth
@@ -117,9 +119,8 @@ class CoreModule(
     }
 
     @Provides
-    @Singleton
-    fun provideFirebaseAuth(): FirebaseAuth {
-        return FirebaseAuth.getInstance()
+    fun provideUserRepository(fbAuth: FirebaseAuth): UserRepository {
+        return FirebaseUserRepository(fbAuth)
     }
 
     companion object {

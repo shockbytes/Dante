@@ -13,6 +13,7 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewClick
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
+import at.shockbytes.dante.ui.fragment.dialog.SimpleInputDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.util.addTo
@@ -169,7 +170,16 @@ class MenuFragment : BaseBottomSheetFragment() {
     }
 
     private fun showChangeNameScreen() {
-        // TODO
+        SimpleInputDialogFragment
+            .newInstance(
+                title = R.string.account_change_name_title,
+                icon = R.drawable.ic_user_template_dark,
+                message = R.string.account_change_name_message,
+                hint = R.string.account_change_name_hint,
+                positiveButtonText = android.R.string.ok
+            )
+            .setOnInputEnteredListener(viewModel::changeUserName)
+            .show(parentFragmentManager, "query-dialog-fragment")
     }
 
     private fun showUpgradeBottomSheet() {

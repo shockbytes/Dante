@@ -69,6 +69,10 @@
     <string name="account_change_name">Name ändern</string>
     <string name="account_change_image">Bild ändern</string>
 
+    <string name="account_change_name_title">Nutzernamen ändern</string>
+    <string name="account_change_name_message">Die Änderung ist nur sichtbar für dich. Andere Nutzer können auch deinen Namen sehen, wenn du ihnen Bücher vorschlägst.</string>
+    <string name="account_change_name_hint">Neuer Name</string>
+
     <string name="login_incognito">Anonymer Login</string>
     <string name="login_incognito_sign_up_hint">Deine Daten werden gespeichert solange du eingeloggt bleibst. Wenn du dich ausloggst werden alle deine Daten gelöscht.\n\nDu kannst immer ein Upgrade zu einem regulären Account durchführen.</string>
     <string name="logout_incognito">Anonymer Logout</string>
@@ -97,7 +101,7 @@
     <string name="no_internet_connection">Zurzeit keine Internetverbindung möglich</string>
     <string name="download_attachment_error">Oh, da ist was mächtig schiefgelaufen!</string>
     <string name="menu_main_sort">Bücher sortieren</string>
-    <string name="anonymous_user">Unbekannter Bücherwurm</string>
+    <string name="anonymous_user">Anonyme Leseratte</string>
     <string name="sort_strategy_default">Position (Standard)</string>
     <string name="sort_strategy_author">Autor</string>
     <string name="sort_strategy_title">Buchtitel</string>

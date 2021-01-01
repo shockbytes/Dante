@@ -17,7 +17,8 @@ class ProfileHeaderView(context: Context, attrs: AttributeSet?) : ConstraintLayo
         get() = ivProfileUser
 
     fun setUser(name: String?, mailAddress: String?) {
-        tvProfileUserName.text = name
+        val userName = if (name.isNullOrEmpty()) context.getString(R.string.anonymous_user) else name
+        tvProfileUserName.text = userName
         tvProfileMailAddress.text = mailAddress
     }
 

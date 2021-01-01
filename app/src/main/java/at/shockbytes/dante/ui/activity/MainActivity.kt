@@ -19,7 +19,7 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.adapter.BookPagerAdapter
 import at.shockbytes.dante.ui.fragment.MenuFragment
-import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.SimpleInputDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
@@ -353,10 +353,19 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun showAddByTitleDialog() {
-        QueryDialogFragment.newInstance()
-            .setOnQueryEnteredListener { query ->
+        SimpleInputDialogFragment
+            .newInstance(
+                title = R.string.dialogfragment_query_title,
+                icon = R.drawable.ic_search,
+                message = R.string.dialogfragment_query_message,
+                hint = R.string.manual_query,
+                positiveButtonText = android.R.string.search_go
+            )
+            .setOnInputEnteredListener { query ->
+                // Remove blanks with + so query works also for titles
+                val correctedQuery = query.replace(' ', '+')
                 BarcodeScanResultBottomSheetDialogFragment
-                    .newInstance(query, askForAnotherScan = false)
+                    .newInstance(correctedQuery, askForAnotherScan = false)
                     .show(supportFragmentManager, "show-bottom-sheet-with-book")
             }
             .show(supportFragmentManager, "query-dialog-fragment")

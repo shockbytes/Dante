@@ -33,10 +33,10 @@ class GoogleFirebaseLoginRepository(
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
     init {
-        postInitialSignInState()
+        postCurrentUserState()
     }
 
-    private fun postInitialSignInState() {
+    private fun postCurrentUserState() {
         val state = try {
             getAccount().blockingGet()
         } catch (throwable: Exception) {
@@ -131,7 +131,7 @@ class GoogleFirebaseLoginRepository(
     }
 
     private fun reloadUserAfterAnonymousUpgrade() {
-        signInSubject.onNext(getCurrentUserState())
+        reloadAccount()
     }
 
     override fun observeAccount(): Observable<UserState> {
@@ -140,13 +140,23 @@ class GoogleFirebaseLoginRepository(
             .subscribeOn(schedulers.io)
     }
 
+    override fun reloadAccount() {
+        signInSubject.onNext(getCurrentUserState(forceReload = true))
+    }
+
     override fun getAccount(): Single<UserState> {
         return Single.fromCallable(::getCurrentUserState)
             .subscribeOn(schedulers.io)
     }
 
-    private fun getCurrentUserState(): UserState {
-        return fbAuth.currentUser?.toDanteUser()
+    private fun getCurrentUserState(forceReload: Boolean = false): UserState {
+        return fbAuth.currentUser
+            ?.apply {
+                if (forceReload) {
+                    Tasks.await(reload())
+                }
+            }
+            ?.toDanteUser()
             ?.let(UserState::SignedInUser)
             ?: UserState.Unauthenticated
     }

@@ -28,6 +28,8 @@ interface LoginRepository {
 
     fun observeAccount(): Observable<UserState>
 
+    fun reloadAccount()
+
     fun getAccount(): Single<UserState>
 
     fun getAuthorizationHeader(): Single<String>

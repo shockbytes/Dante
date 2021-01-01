@@ -9,6 +9,7 @@ import android.os.Looper
 import androidx.core.content.res.ResourcesCompat
 import at.shockbytes.dante.core.R
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.login.AuthenticationSource
 import at.shockbytes.dante.core.login.DanteUser
 import at.shockbytes.dante.ui.adapter.main.BookAdapterItem
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -32,9 +33,9 @@ fun GoogleSignInAccount.toDanteUser(): DanteUser {
         this.displayName,
         this.email,
         this.photoUrl,
-        "google",
         this.idToken,
-        userId = ""
+        userId = "",
+        authenticationSource = AuthenticationSource.GOOGLE
     )
 }
 

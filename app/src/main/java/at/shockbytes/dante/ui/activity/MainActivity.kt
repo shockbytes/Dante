@@ -159,7 +159,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     // ---------------------------------------------------
 
     private fun bindViewModel() {
-        viewModel.showAnnouncement()
+        viewModel.onMainEvent()
+            .filter { event -> event is MainViewModel.MainEvent.Announcement }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::showAnnouncementFragment, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
@@ -192,8 +193,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                 onUserLoaded()
             }
-            // These cases are handled by another Fragment
-            is MainViewModel.UserEvent.Error -> Unit
         }
     }
 
@@ -219,7 +218,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         viewModel.forceLogin(source)
     }
 
-    private fun showAnnouncementFragment(unused: Unit) {
+    private fun showAnnouncementFragment(unused: MainViewModel.MainEvent) {
         with(supportFragmentManager) {
             if (!isFragmentShown(TAG_ANNOUNCEMENT)) {
                 beginTransaction()

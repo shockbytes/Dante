@@ -11,8 +11,6 @@ import io.reactivex.Single
  */
 interface LoginRepository {
 
-    val googleLoginIntent: Intent
-
     fun loginWithGoogle(data: Intent): Completable
 
     fun fetchSignInMethodsForEmail(mailAddress: String): Single<List<String>>
@@ -26,6 +24,8 @@ interface LoginRepository {
     fun logout(): Completable
 
     fun updateUserName(userName: String): Completable
+
+    fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable
 
     fun observeAccount(): Observable<UserState>
 

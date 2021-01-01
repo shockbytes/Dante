@@ -8,8 +8,8 @@ import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.injection.ViewModelFactory
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
-import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel.MailLoginState.ResolveEmailAddress
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import com.jakewharton.rxbinding2.widget.RxTextView
@@ -25,6 +25,8 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
     private val viewModel: MailLoginViewModel by lazy { viewModelOf(vmFactory) }
 
+    private var mailLoginState: MailLoginViewModel.MailLoginState by argument()
+
     private var onCredentialsEnteredListener: ((credentials: MailLoginCredentials) -> Unit)? = null
 
     override val layoutRes: Int = R.layout.mail_login_bottom_sheet
@@ -32,7 +34,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
     override fun injectToGraph(appComponent: AppComponent) = appComponent.inject(this)
 
     override fun bindViewModel() {
-        viewModel.initialize(ResolveEmailAddress)
+        viewModel.initialize(mailLoginState)
 
         viewModel.getStep().observe(this, Observer(::handleStep))
 
@@ -61,7 +63,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
                 setMailVerificationStep()
             }
             is MailLoginViewModel.MailLoginStep.PasswordVerification -> {
-                setPasswordVerificationStep(step.isSignUp)
+                setPasswordVerificationStep(step)
             }
         }
     }
@@ -81,17 +83,21 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
         btn_login_mail.setVisible(false, View.INVISIBLE)
     }
 
-    private fun setPasswordVerificationStep(isSignUp: Boolean) {
+    private fun setPasswordVerificationStep(
+        step: MailLoginViewModel.MailLoginStep.PasswordVerification
+    ) {
 
-        tvLoginMailHeader.setText(R.string.login_mail_enter_password)
+        tvLoginMailHeader.setText(step.textHeader)
 
         tilTextMailAddress.animate().translationY(0f).start()
         editTextMailAddress.apply {
             imeOptions = EditorInfo.IME_ACTION_NEXT
-            isEnabled = false
+            isEnabled = step.isEmailEnabled
         }
 
-        editTextMailPassword.requestFocus()
+        if (step.focusOnPasswordField) {
+            editTextMailPassword.requestFocus()
+        }
 
         tilTextMailPassword.apply {
             alpha = 0f
@@ -117,7 +123,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
             }
             .start()
 
-        val loginText = if (isSignUp) R.string.sign_up_with_mail else R.string.login_with_mail
+        val loginText = if (step.isSignUp) R.string.sign_up_with_mail else R.string.login_with_mail
 
         btn_login_mail.apply {
             setText(loginText)
@@ -182,6 +188,12 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
     companion object {
 
-        fun newInstance() = MailLoginBottomSheetDialogFragment()
+        fun newInstance(
+            mailLoginState: MailLoginViewModel.MailLoginState
+        ): MailLoginBottomSheetDialogFragment {
+            return MailLoginBottomSheetDialogFragment().apply {
+                this.mailLoginState = mailLoginState
+            }
+        }
     }
 }

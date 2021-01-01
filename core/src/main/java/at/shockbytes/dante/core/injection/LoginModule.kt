@@ -2,6 +2,7 @@ package at.shockbytes.dante.core.injection
 
 import android.content.Context
 import at.shockbytes.dante.core.R
+import at.shockbytes.dante.core.login.GoogleAuth
 import at.shockbytes.dante.core.login.GoogleFirebaseLoginRepository
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -17,9 +18,7 @@ import javax.inject.Singleton
 @Module
 class LoginModule(private val context: Context) {
 
-    @Provides
-    @Singleton
-    fun provideGoogleSignInClient(): GoogleSignInClient {
+    private fun provideGoogleSignInClient(): GoogleSignInClient {
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
             .requestIdToken(context.getString(R.string.oauth_client_id))
@@ -30,10 +29,13 @@ class LoginModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(
-        signInClient: GoogleSignInClient,
-        schedulers: SchedulerFacade
-    ): LoginRepository {
-        return GoogleFirebaseLoginRepository(signInClient, context, schedulers)
+    fun provideLoginRepository(schedulers: SchedulerFacade): LoginRepository {
+        return GoogleFirebaseLoginRepository(schedulers)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoogleAuth(): GoogleAuth {
+        return GoogleAuth(provideGoogleSignInClient(), context)
     }
 }

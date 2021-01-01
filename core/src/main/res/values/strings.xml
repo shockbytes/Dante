@@ -134,6 +134,17 @@
     <string name="login_mail_enter_password">Enter your password</string>
     <string name="login_general_error">We could not log you into your account!</string>
     <string name="login_invalid_credentials">Email and password do not match!</string>
+    <string name="anonymous_upgrade">Upgrade your anonymous account</string>
+    <string name="anonymous_upgrade_error">We were unable to upgrade your account. Please try again later.</string>
+
+    <string name="account_upgrade">Upgrade</string>
+    <string name="account_change_name">Change name</string>
+    <string name="account_change_image">Change image</string>
+
+    <string name="login_incognito">Anonymous login</string>
+    <string name="login_incognito_sign_up_hint">Your data will be stored as long as you stay signed in. When you sign out, your data will be erased.\n\nYou can always upgrade to a regular account later on.</string>
+    <string name="logout_incognito">Anonymous logout</string>
+    <string name="logout_incognito_hint">You are going to delete all your data right now. Proceeding now will permanently remove all your books.\n\nDo you want to proceed?</string>
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
@@ -306,7 +317,7 @@
     <string name="reload">Reload</string>
 
     <string name="error_msg_execution_exception">Download Error</string>
-    <string name="error_msg_unknown">Unknown</string>
+    <string name="error_msg_unknown">Oops, this error shouldn\'t have happened</string>
     <string name="welcome_to_dante">Welcome to Dante</string>
 
     <string name="prefs_last_login" translatable="false">prefs_last_login</string>

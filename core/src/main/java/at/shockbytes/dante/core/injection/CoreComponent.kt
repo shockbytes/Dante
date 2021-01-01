@@ -6,6 +6,7 @@ import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.data.ReadingGoalRepository
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.picker.ImagePicking
+import at.shockbytes.dante.core.login.GoogleAuth
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.core.network.google.GoogleBooksApi
@@ -30,6 +31,7 @@ interface CoreComponent {
     fun getRealmInstanceProvider(): RealmInstanceProvider
     fun getReadingGoalRepository(): ReadingGoalRepository
 
+    fun getGoogleAuth(): GoogleAuth
     fun getLoginRepository(): LoginRepository
 
     fun getImageLoader(): ImageLoader

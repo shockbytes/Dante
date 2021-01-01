@@ -50,6 +50,11 @@ The backlog is currently empty.
 ### Version 4.1 - FIREFLASH
 - [ ] Add online sync capability
   - [ ] Migrate from local to remote storage
+  - [ ] Online storage switch
+  - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
+- [ ] Upgrade to Kotlin 1.4.20
+    - [ ] Use ViewBinding
+    - [ ] Remove Kotterknife
 
 ## Current development
 
@@ -57,17 +62,18 @@ The backlog is currently empty.
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
     - [ ] General
         - [ ] Show login screen when unauthenticated user opens the app
-        - [ ] Handle empty mail addresses and usernames in MenuFragment
+        - [ ] Show different UI when user opens login screen after logout
         - [ ] Logout moves user to login screen
         - [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
         - [ ] Tracking
-    - [ ] Storage
-        - [ ] Online storage switch
-        - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
-    - [ ] Anonymous
-        - [ ] Allow users to upgrade to full account (auth.currentUser!!.linkWithCredential(credential))
-        - [ ] Show notice when user selects anonymous account in login screen
-        - [ ] Show notice that data will be wiped once logged out
+        - [ ] Allow anonymous users and mail users to set a username
+        - [ ] Allow anonymous users and mail users to set a custom image
+        - [ ] Reset password for mail users
+        - [x] Handle empty mail addresses and usernames in MenuFragment
+    - [x] Anonymous
+        - [x] Allow users to upgrade to full account
+        - [x] Show notice when user selects anonymous account in login screen
+        - [x] Show notice that data will be wiped once logged out
     - [x] Mail
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet
@@ -77,9 +83,6 @@ The backlog is currently empty.
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
-- [ ] Upgrade to Kotlin 1.4.20
-    - [ ] Use ViewBinding
-    - [ ] Remove Kotterknife
 - [ ] Upgrade to newest ktlint version
 - [x] Reworked UI
 

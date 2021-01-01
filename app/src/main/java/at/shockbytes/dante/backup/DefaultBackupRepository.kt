@@ -13,6 +13,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
+import at.shockbytes.dante.util.merge
 import at.shockbytes.dante.util.settings.delegate.edit
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
@@ -68,7 +69,9 @@ class DefaultBackupRepository(
         // otherwise just use the active ones
         val provider = if (forceReload) backupProvider else activeBackupProvider
 
-        return Completable.concat(provider.map { it.initialize(activity) })
+        return provider
+            .map { it.initialize(activity) }
+            .merge()
     }
 
     override fun close(): Completable {

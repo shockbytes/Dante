@@ -65,6 +65,17 @@
     <string name="login_general_error">Wir konnten dich nicht in deinen Account einloggen!</string>
     <string name="login_invalid_credentials">Email und Passwort stimmen nicht überein!</string>
 
+    <string name="account_upgrade">Upgrade</string>
+    <string name="account_change_name">Name ändern</string>
+    <string name="account_change_image">Bild ändern</string>
+
+    <string name="login_incognito">Anonymer Login</string>
+    <string name="login_incognito_sign_up_hint">Deine Daten werden gespeichert solange du eingeloggt bleibst. Wenn du dich ausloggst werden alle deine Daten gelöscht.\n\nDu kannst immer ein Upgrade zu einem regulären Account durchführen.</string>
+    <string name="logout_incognito">Anonymer Logout</string>
+    <string name="logout_incognito_hint">Du bist dabei deine ganzen Daten zu lösche. Beim Fortfahren werden alle deine Bücher unwiederbringlich gelöscht.\n\nWillst du fortfahren?</string>
+    <string name="anonymous_upgrade">Upgrade dein anonymes Konto</string>
+    <string name="anonymous_upgrade_error">Wir konnten dein Konto nicht upgraden. Bitte versuche es später nochmal.</string>
+
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>
     <string name="dialogfragment_paging_title">Seiten eingeben</string>

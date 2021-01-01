@@ -1,7 +1,9 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -9,6 +11,7 @@ import at.shockbytes.dante.util.MailValidator
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
 
 /**
@@ -26,7 +29,12 @@ class MailLoginViewModel @Inject constructor(
 
     sealed class MailLoginStep {
         object MailVerification : MailLoginStep()
-        data class PasswordVerification(val isSignUp: Boolean) : MailLoginStep()
+        data class PasswordVerification(
+            val isSignUp: Boolean,
+            val textHeader: Int,
+            val isEmailEnabled: Boolean,
+            val focusOnPasswordField: Boolean
+        ) : MailLoginStep()
     }
 
     private var mailAddress: CharSequence = ""
@@ -44,8 +52,19 @@ class MailLoginViewModel @Inject constructor(
 
     fun initialize(state: MailLoginState) {
         val currentStep = when (state) {
-            is MailLoginState.ResolveEmailAddress -> MailLoginStep.MailVerification
-            is MailLoginState.ShowEmailAndPassword -> MailLoginStep.PasswordVerification(state.isSignUp)
+            is MailLoginState.ResolveEmailAddress -> {
+                MailLoginStep.MailVerification
+            }
+            is MailLoginState.ShowEmailAndPassword -> {
+                // Set this as a side effect
+                this.isSignUp = state.isSignUp
+                MailLoginStep.PasswordVerification(
+                    state.isSignUp,
+                    state.textHeader,
+                    isEmailEnabled = true,
+                    focusOnPasswordField = false
+                )
+            }
         }
         step.postValue(currentStep)
     }
@@ -69,7 +88,12 @@ class MailLoginViewModel @Inject constructor(
             .map { methods ->
                 // Save isSignUp as a side effect which will be later passed to parent fragment
                 isSignUp = !methods.contains(SIGN_UP_METHOD_PASSWORD)
-                MailLoginStep.PasswordVerification(isSignUp)
+                MailLoginStep.PasswordVerification(
+                    isSignUp,
+                    R.string.login_mail_enter_password,
+                    isEmailEnabled = false,
+                    focusOnPasswordField = true
+                )
             }
             .subscribe(step::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
@@ -79,10 +103,16 @@ class MailLoginViewModel @Inject constructor(
         return MailLoginCredentials(mailAddress.toString(), password.toString(), isSignUp)
     }
 
-    sealed class MailLoginState {
+    sealed class MailLoginState : Parcelable {
 
+        @Parcelize
         object ResolveEmailAddress : MailLoginState()
-        data class ShowEmailAndPassword(val isSignUp: Boolean) : MailLoginState()
+
+        @Parcelize
+        data class ShowEmailAndPassword(
+            val isSignUp: Boolean,
+            val textHeader: Int
+        ) : MailLoginState()
     }
 
     companion object {

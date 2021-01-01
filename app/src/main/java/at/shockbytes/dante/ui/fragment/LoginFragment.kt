@@ -8,8 +8,11 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import com.github.florent37.inlineactivityresult.kotlin.startForResult
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
@@ -37,13 +40,33 @@ class LoginFragment : BaseFragment() {
         }
 
         btn_login_mail.setOnClickListener {
-            MailLoginBottomSheetDialogFragment.newInstance()
+            MailLoginBottomSheetDialogFragment
+                .newInstance(MailLoginViewModel.MailLoginState.ResolveEmailAddress)
                 .setOnCredentialsEnteredListener(viewModel::authorizeWithMail)
                 .show(parentFragmentManager, "mail-login-fragment")
         }
 
         btn_login_skip.setOnClickListener {
-            viewModel.loginAnonymously()
+            showAnonymousSignUpHintDialog {
+                viewModel.loginAnonymously()
+            }
+        }
+    }
+
+    private fun showAnonymousSignUpHintDialog(onAcceptClicked: () -> Unit) {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_incognito)
+            title(text = getString(R.string.login_incognito))
+            message(text = getString(R.string.login_incognito_sign_up_hint))
+            positiveButton(R.string.login) {
+                onAcceptClicked()
+                dismiss()
+            }
+            negativeButton(R.string.dismiss) {
+                dismiss()
+            }
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
         }
     }
 

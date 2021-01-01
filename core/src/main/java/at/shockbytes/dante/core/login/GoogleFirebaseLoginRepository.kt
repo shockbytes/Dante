@@ -80,6 +80,26 @@ class GoogleFirebaseLoginRepository(
         }
     }
 
+    override fun updateMailPassword(password: String): Completable {
+        return Completable.create { emitter ->
+
+            val currentUser = fbAuth.currentUser
+            if (currentUser == null) {
+                emitter.tryOnError(NullPointerException("User is not logged in!"))
+            } else {
+                currentUser.updatePassword(password).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        val exception = task.exception
+                            ?: IllegalStateException("Could not change password due to unknown error")
+                        emitter.tryOnError(exception)
+                    }
+                }
+            }
+        }
+    }
+
     override fun loginAnonymously(): Completable {
         return login(errorMessage = "Cannot anonymously sign into Firebase! AuthResult = null") {
             Tasks.await(fbAuth.signInAnonymously()).user?.toDanteUser()

@@ -166,6 +166,9 @@ class MenuFragment : BaseBottomSheetFragment() {
             ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> showUpgradeBottomSheet()
             ProfileActionViewClick.CHANGE_NAME -> showChangeNameScreen()
             ProfileActionViewClick.CHANGE_IMAGE -> viewModel.changeUserImage(requireActivity())
+            ProfileActionViewClick.CHANGE_PASSWORD -> {
+                // TODO Show update password screen, maybe reuse simple input
+            }
         }
     }
 

@@ -20,6 +20,8 @@ interface LoginRepository {
 
     fun loginWithMail(mailAddress: String, password: String): Completable
 
+    fun updateMailPassword(password: String): Completable
+
     fun loginAnonymously(): Completable
 
     fun logout(): Completable

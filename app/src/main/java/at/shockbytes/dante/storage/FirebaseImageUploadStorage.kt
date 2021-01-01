@@ -3,15 +3,19 @@ package at.shockbytes.dante.storage
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import java.util.UUID
 
-class FirebaseImageUploadStorage : ImageUploadStorage {
+class FirebaseImageUploadStorage(
+    private val fbAuth: FirebaseAuth
+) : ImageUploadStorage {
 
-    private val imageRef = Firebase.storage.getReference("/custom_images")
+    private val customImageRef = Firebase.storage.getReference("/custom_images")
+    private val userImageRef = Firebase.storage.getReference("/user_images")
 
     private var _backupUid: String? = null
     private val randomSessionUid: String
@@ -20,14 +24,26 @@ class FirebaseImageUploadStorage : ImageUploadStorage {
         } else _backupUid!!
 
     private val uid: String
-        get() = FirebaseAuth.getInstance().currentUser?.uid ?: randomSessionUid
+        get() = fbAuth.currentUser?.uid ?: randomSessionUid
 
     private val defaultException = IllegalStateException("Unable to upload image! No reason given!")
 
-    override fun upload(image: Uri, progressListener: ((Int) -> Unit)?): Single<Uri> {
+    override fun uploadCustomImage(image: Uri, progressListener: ((Int) -> Unit)?): Single<Uri> {
+        return uploadImage(image, customImageRef, progressListener)
+    }
+
+    override fun uploadUserImage(image: Uri): Single<Uri> {
+        return uploadImage(image, userImageRef, progressListener = null)
+    }
+
+    private fun uploadImage(
+        image: Uri,
+        storageReference: StorageReference,
+        progressListener: ((Int) -> Unit)?
+    ): Single<Uri> {
         return Single.create { emitter ->
 
-            val ref = imageRef.child("/$uid/${image.lastPathSegment}")
+            val ref = storageReference.child("/$uid/${image.lastPathSegment}")
 
             ref.putFile(image)
                 .addOnProgressListener { task ->

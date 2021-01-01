@@ -7,6 +7,7 @@ import at.shockbytes.dante.util.singleOf
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Tasks
+import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -95,6 +96,18 @@ class GoogleFirebaseLoginRepository(
                             ?: IllegalStateException("Could not change password due to unknown error")
                         emitter.tryOnError(exception)
                     }
+                }
+            }
+        }
+    }
+
+    override fun sendPasswordResetRequest(mailAddress: String): Completable {
+        return Completable.create { emitter ->
+            fbAuth.sendPasswordResetEmail(mailAddress).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    emitter.onComplete()
+                } else {
+                    emitter.tryOnError(task.exception ?: IllegalStateException("Could not send password reset request"))
                 }
             }
         }

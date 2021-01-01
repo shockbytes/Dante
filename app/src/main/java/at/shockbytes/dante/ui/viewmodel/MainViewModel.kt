@@ -188,7 +188,7 @@ class MainViewModel @Inject constructor(
         loginRepository.upgradeAnonymousAccount(credentials.address, credentials.password)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
-                // TODO Handle upgrade success state
+                // TODO Post event
                 Timber.e("Successfully upgrade anonymous account")
             }, { throwable ->
                 eventSubject.onNext(MainEvent.AnonymousUpgradeFailed(throwable.localizedMessage))
@@ -201,23 +201,36 @@ class MainViewModel @Inject constructor(
             .openGallery(activity)
             .flatMap(imageUploadStorage::uploadUserImage)
             .flatMapCompletable(userRepository::updateUserImage)
+            .doOnComplete(loginRepository::reloadAccount)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
-                // TODO Update UI
+                // TODO Post event
             }, {
-                // TODO Handle this state too...
+                // TODO Post event
             })
             .addTo(compositeDisposable)
     }
 
     fun changeUserName(userName: String) {
+
+        if (!verifyUserName(userName)) {
+            // TODO Post event
+            return
+        }
+
         userRepository.updateUserName(userName)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .doOnComplete(loginRepository::reloadAccount)
             .subscribe({
-                // TODO Update UI
+                // TODO Post event
             }, {
-                // TODO Handle this state too...
+                // TODO Post event
             })
             .addTo(compositeDisposable)
+    }
+
+    private fun verifyUserName(string: String): Boolean {
+        // TODO
+        return true
     }
 }

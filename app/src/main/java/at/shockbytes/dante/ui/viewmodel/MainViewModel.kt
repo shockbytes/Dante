@@ -229,8 +229,12 @@ class MainViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    private fun verifyUserName(string: String): Boolean {
+    private fun verifyUserName(userName: String): Boolean {
         // TODO
         return true
+    }
+
+    fun updatePassword(password: String) {
+
     }
 }

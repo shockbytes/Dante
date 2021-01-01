@@ -42,4 +42,10 @@ class LoginModule(private val context: Context) {
     fun provideGoogleAuth(): GoogleAuth {
         return GoogleAuth(provideGoogleSignInClient(), context)
     }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
 }

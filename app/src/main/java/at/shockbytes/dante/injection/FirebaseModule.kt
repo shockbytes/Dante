@@ -58,8 +58,8 @@ class FirebaseModule(private val context: Context) {
     }
 
     @Provides
-    fun provideImageUploadStorage(): ImageUploadStorage {
-        return FirebaseImageUploadStorage()
+    fun provideImageUploadStorage(fbAuth: FirebaseAuth): ImageUploadStorage {
+        return FirebaseImageUploadStorage(fbAuth)
     }
 
     companion object {

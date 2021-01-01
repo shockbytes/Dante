@@ -164,15 +164,11 @@ class MenuFragment : BaseBottomSheetFragment() {
         when (profileActionViewClick) {
             ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> showUpgradeBottomSheet()
             ProfileActionViewClick.CHANGE_NAME -> showChangeNameScreen()
-            ProfileActionViewClick.CHANGE_IMAGE -> showChangeImageScreen()
+            ProfileActionViewClick.CHANGE_IMAGE -> viewModel.changeUserImage(requireActivity())
         }
     }
 
     private fun showChangeNameScreen() {
-        // TODO
-    }
-
-    private fun showChangeImageScreen() {
         // TODO
     }
 

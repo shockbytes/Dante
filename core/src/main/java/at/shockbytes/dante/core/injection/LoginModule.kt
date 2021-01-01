@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -29,8 +30,11 @@ class LoginModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideLoginRepository(schedulers: SchedulerFacade): LoginRepository {
-        return GoogleFirebaseLoginRepository(schedulers)
+    fun provideLoginRepository(
+        schedulers: SchedulerFacade,
+        fbAuth: FirebaseAuth
+    ): LoginRepository {
+        return GoogleFirebaseLoginRepository(schedulers, fbAuth)
     }
 
     @Provides

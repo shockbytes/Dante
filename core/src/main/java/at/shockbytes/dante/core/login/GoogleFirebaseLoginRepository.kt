@@ -1,7 +1,6 @@
 package at.shockbytes.dante.core.login
 
 import android.content.Intent
-import android.net.Uri
 import at.shockbytes.dante.core.fromSingleToCompletable
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
@@ -12,7 +11,6 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.UserProfileChangeRequest
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -28,10 +26,9 @@ import kotlin.Exception
  * https://firebase.google.com/docs/auth/android/google-signin
  */
 class GoogleFirebaseLoginRepository(
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val fbAuth: FirebaseAuth
 ) : LoginRepository {
-
-    private val fbAuth = FirebaseAuth.getInstance()
 
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
@@ -110,45 +107,6 @@ class GoogleFirebaseLoginRepository(
             }
             .observeOn(schedulers.ui)
             .subscribeOn(schedulers.io)
-    }
-
-    override fun updateUserName(userName: String): Completable {
-
-        val changeRequest = UserProfileChangeRequest.Builder()
-            .setDisplayName(userName)
-            .build()
-
-        return updateUserProfile(changeRequest)
-    }
-
-    override fun updateUserImage(imageUri: Uri): Completable {
-
-        val changeRequest = UserProfileChangeRequest.Builder()
-            .setPhotoUri(imageUri)
-            .build()
-
-        return updateUserProfile(changeRequest)
-    }
-
-    private fun updateUserProfile(changeRequest: UserProfileChangeRequest): Completable {
-        return Completable.create { emitter ->
-
-            val currentUser = fbAuth.currentUser
-            if (currentUser == null) {
-                emitter.tryOnError(NullPointerException("User is not logged in!"))
-            } else {
-
-                currentUser.updateProfile(changeRequest).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        emitter.onComplete()
-                    } else {
-                        val exception = task.exception
-                            ?: IllegalStateException("Unknown update user name error")
-                        emitter.tryOnError(exception)
-                    }
-                }
-            }
-        }
     }
 
     override fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable {

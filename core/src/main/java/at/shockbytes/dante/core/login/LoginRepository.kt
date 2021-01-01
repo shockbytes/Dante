@@ -24,10 +24,6 @@ interface LoginRepository {
 
     fun logout(): Completable
 
-    fun updateUserName(userName: String): Completable
-
-    fun updateUserImage(imageUri: Uri): Completable
-
     fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable
 
     fun observeAccount(): Observable<UserState>

@@ -23,6 +23,7 @@ import at.shockbytes.dante.core.network.google.GoogleBooksApi
 import at.shockbytes.dante.core.network.google.GoogleBooksDownloader
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
 import io.realm.RealmConfiguration
@@ -113,6 +114,12 @@ class CoreModule(
                 maxWidth = 720
             )
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
 
     companion object {

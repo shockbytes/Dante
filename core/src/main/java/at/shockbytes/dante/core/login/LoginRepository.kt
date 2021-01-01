@@ -22,6 +22,8 @@ interface LoginRepository {
 
     fun updateMailPassword(password: String): Completable
 
+    fun sendPasswordResetRequest(mailAddress: String): Completable
+
     fun loginAnonymously(): Completable
 
     fun logout(): Completable

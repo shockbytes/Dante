@@ -1,6 +1,7 @@
 package at.shockbytes.dante.core.login
 
 import android.content.Intent
+import android.net.Uri
 import at.shockbytes.dante.core.fromSingleToCompletable
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
@@ -112,6 +113,24 @@ class GoogleFirebaseLoginRepository(
     }
 
     override fun updateUserName(userName: String): Completable {
+
+        val changeRequest = UserProfileChangeRequest.Builder()
+            .setDisplayName(userName)
+            .build()
+
+        return updateUserProfile(changeRequest)
+    }
+
+    override fun updateUserImage(imageUri: Uri): Completable {
+
+        val changeRequest = UserProfileChangeRequest.Builder()
+            .setPhotoUri(imageUri)
+            .build()
+
+        return updateUserProfile(changeRequest)
+    }
+
+    private fun updateUserProfile(changeRequest: UserProfileChangeRequest): Completable {
         return Completable.create { emitter ->
 
             val currentUser = fbAuth.currentUser
@@ -119,11 +138,7 @@ class GoogleFirebaseLoginRepository(
                 emitter.tryOnError(NullPointerException("User is not logged in!"))
             } else {
 
-                val update = UserProfileChangeRequest.Builder()
-                    .setDisplayName(userName)
-                    .build()
-
-                currentUser.updateProfile(update).addOnCompleteListener { task ->
+                currentUser.updateProfile(changeRequest).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         emitter.onComplete()
                     } else {

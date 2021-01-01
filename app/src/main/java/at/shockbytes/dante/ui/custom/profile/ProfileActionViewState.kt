@@ -20,11 +20,11 @@ sealed class ProfileActionViewState {
         }
 
         fun forMailUser(): ProfileActionViewState {
-            return Visible(showUpgrade = false, showChangeName = true, showChangeImage = false)
+            return Visible(showUpgrade = false, showChangeName = true, showChangeImage = true)
         }
 
         fun forAnonymousUser(): ProfileActionViewState {
-            return Visible(showUpgrade = true, showChangeName = true, showChangeImage = false)
+            return Visible(showUpgrade = true, showChangeName = true, showChangeImage = true)
         }
     }
 }

@@ -1,6 +1,7 @@
 package at.shockbytes.dante.core.login
 
 import android.content.Intent
+import android.net.Uri
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -24,6 +25,8 @@ interface LoginRepository {
     fun logout(): Completable
 
     fun updateUserName(userName: String): Completable
+
+    fun updateUserImage(imageUri: Uri): Completable
 
     fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable
 

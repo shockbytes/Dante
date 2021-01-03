@@ -86,6 +86,10 @@
     <string name="user_name_too_long">Dein Name überschreitet die maximale Länge von %d Buchstaben</string>
     <string name="user_image_updated">Dein Bild wurde erfolgreich aktualisiert</string>
 
+    <string name="terms_of_services">Nutzungsbedingungen</string>
+    <string name="terms_of_services_prefix">Durch das Fortfahren stimmst du Dante\'s\n</string>
+    <string name="terms_of_services_suffix"> zu.</string>
+
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>
     <string name="dialogfragment_paging_title">Seiten eingeben</string>

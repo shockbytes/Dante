@@ -103,6 +103,10 @@ class MailLoginViewModel @Inject constructor(
         return MailLoginCredentials(mailAddress.toString(), password.toString(), isSignUp)
     }
 
+    fun userForgotPassword() {
+        TODO("Not yet implemented")
+    }
+
     sealed class MailLoginState : Parcelable {
 
         @Parcelize

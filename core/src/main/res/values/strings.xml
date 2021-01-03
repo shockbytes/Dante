@@ -136,6 +136,7 @@
     <string name="login_invalid_credentials">Email and password do not match!</string>
     <string name="anonymous_upgrade">Upgrade your anonymous account</string>
     <string name="anonymous_upgrade_error">We were unable to upgrade your account. Please try again later.</string>
+    <string name="forgot_password">Forgot password</string>
 
     <string name="account_upgrade">Upgrade</string>
     <string name="account_change_name">Change name</string>

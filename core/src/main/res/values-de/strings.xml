@@ -383,5 +383,6 @@
     <string name="label_deletion_success">Label wurde vom Buch entfernt</string>
 
     <string name="_continue">Weiter</string>
+    <string name="forgot_password">Passwort vergessen</string>
 
 </resources>

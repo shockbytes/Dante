@@ -9,8 +9,11 @@ import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.MailValidator
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
 
@@ -24,7 +27,8 @@ import javax.inject.Inject
  * 3. Check if mail is already in use
  */
 class MailLoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository
+    private val loginRepository: LoginRepository,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     sealed class MailLoginStep {
@@ -36,6 +40,18 @@ class MailLoginViewModel @Inject constructor(
             val focusOnPasswordField: Boolean
         ) : MailLoginStep()
     }
+    
+    sealed class MailResetAction {
+
+        abstract val mailAddress: CharSequence
+
+        data class Success(override val mailAddress: CharSequence): MailResetAction()
+
+        data class Error(override val mailAddress: CharSequence): MailResetAction()
+    }
+
+    private val mailResetAction = PublishSubject.create<MailResetAction>()
+    fun getMailResetAction(): Observable<MailResetAction> = mailResetAction
 
     private var mailAddress: CharSequence = ""
     private var password: CharSequence = ""
@@ -104,7 +120,16 @@ class MailLoginViewModel @Inject constructor(
     }
 
     fun userForgotPassword() {
-        TODO("Not yet implemented")
+        loginRepository.sendPasswordResetRequest(mailAddress.toString())
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe({
+                mailResetAction.onNext(MailResetAction.Success(mailAddress))
+                tracker.track(DanteTrackingEvent.ResetPasswordSuccess)
+            }, {
+                mailResetAction.onNext(MailResetAction.Error(mailAddress))
+                tracker.track(DanteTrackingEvent.ResetPasswordFailed)
+            })
+            .addTo(compositeDisposable)
     }
 
     sealed class MailLoginState : Parcelable {

@@ -137,6 +137,8 @@
     <string name="anonymous_upgrade">Upgrade your anonymous account</string>
     <string name="anonymous_upgrade_error">We were unable to upgrade your account. Please try again later.</string>
     <string name="forgot_password">Forgot password</string>
+    <string name="reset_password_success">A password change request has been sent to %s.</string>
+    <string name="reset_password_error">Sorry, we were unable to send a change request to %s.</string>
 
     <string name="account_upgrade">Upgrade</string>
     <string name="account_change_name">Change name</string>

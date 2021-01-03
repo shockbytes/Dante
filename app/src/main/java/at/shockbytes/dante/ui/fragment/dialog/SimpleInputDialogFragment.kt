@@ -81,7 +81,7 @@ class SimpleInputDialogFragment : DialogFragment() {
             message: Int,
             hint: Int,
             positiveButtonText: Int
-        ): SimpleInputDialogFragment{
+        ): SimpleInputDialogFragment {
             return SimpleInputDialogFragment().apply {
                 this.icon = icon
                 this.title = title

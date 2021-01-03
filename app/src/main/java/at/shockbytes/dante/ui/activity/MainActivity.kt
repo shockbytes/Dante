@@ -52,7 +52,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private var tabId: Int = R.id.menu_navigation_current
 
     private lateinit var pagerAdapter: BookPagerAdapter
-    
+
     private lateinit var viewModel: MainViewModel
     private lateinit var userViewModel: UserViewModel
 

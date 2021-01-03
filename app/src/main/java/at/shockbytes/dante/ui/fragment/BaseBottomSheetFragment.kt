@@ -63,11 +63,11 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     abstract fun setupViews()
-    
+
     fun showSnackBar(@StringRes messageRes: Int) {
         showSnackBar(getString(messageRes))
     }
-    
+
     fun showSnackBar(message: String) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
     }

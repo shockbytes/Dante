@@ -31,9 +31,8 @@ class UserViewModel @Inject constructor(
     private val imageUploadStorage: ImageUploadStorage,
     private val userRepository: UserRepository,
     private val schedulers: SchedulerFacade,
-    private val tracker: Tracker,
-): BaseViewModel() {
-
+    private val tracker: Tracker
+) : BaseViewModel() {
 
     sealed class UserViewState {
 
@@ -44,7 +43,7 @@ class UserViewModel @Inject constructor(
 
         object UnauthenticatedUser : UserViewState()
     }
-    
+
     sealed class UserEvent {
 
         object Login : UserEvent()
@@ -64,7 +63,7 @@ class UserViewModel @Inject constructor(
             data class UserNameTooLong(
                 val currentLength: Int,
                 val maxAllowedLength: Int
-            ): UserNameEvent()
+            ) : UserNameEvent()
         }
 
         sealed class UserImageEvent : UserEvent() {

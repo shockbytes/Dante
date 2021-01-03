@@ -19,15 +19,19 @@ interface LoginRepository {
 
     fun loginWithMail(mailAddress: String, password: String): Completable
 
+    fun updateMailPassword(password: String): Completable
+
+    fun sendPasswordResetRequest(mailAddress: String): Completable
+
     fun loginAnonymously(): Completable
 
     fun logout(): Completable
 
-    fun updateUserName(userName: String): Completable
-
     fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable
 
     fun observeAccount(): Observable<UserState>
+
+    fun reloadAccount()
 
     fun getAccount(): Single<UserState>
 

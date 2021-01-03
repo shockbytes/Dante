@@ -4,13 +4,11 @@ sealed class ProfileActionViewState {
 
     object Hidden : ProfileActionViewState()
 
-    /**
-     * TODO allow usage of [showChangeImage] flag
-     */
     data class Visible(
         val showUpgrade: Boolean,
         val showChangeName: Boolean,
-        val showChangeImage: Boolean
+        val showChangeImage: Boolean,
+        val showChangePassword: Boolean
     ) : ProfileActionViewState()
 
     companion object {
@@ -20,11 +18,21 @@ sealed class ProfileActionViewState {
         }
 
         fun forMailUser(): ProfileActionViewState {
-            return Visible(showUpgrade = false, showChangeName = true, showChangeImage = false)
+            return Visible(
+                showUpgrade = false,
+                showChangeName = true,
+                showChangeImage = true,
+                showChangePassword = true
+            )
         }
 
         fun forAnonymousUser(): ProfileActionViewState {
-            return Visible(showUpgrade = true, showChangeName = true, showChangeImage = false)
+            return Visible(
+                showUpgrade = true,
+                showChangeName = true,
+                showChangeImage = true,
+                showChangePassword = false
+            )
         }
     }
 }

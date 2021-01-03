@@ -5,5 +5,7 @@ import io.reactivex.Single
 
 interface ImageUploadStorage {
 
-    fun upload(image: Uri, progressListener: ((Int) -> Unit)? = null): Single<Uri>
+    fun uploadCustomImage(image: Uri, progressListener: ((Int) -> Unit)? = null): Single<Uri>
+
+    fun uploadUserImage(image: Uri): Single<Uri>
 }

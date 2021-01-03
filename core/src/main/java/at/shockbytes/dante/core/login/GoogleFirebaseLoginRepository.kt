@@ -11,7 +11,6 @@ import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.UserProfileChangeRequest
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -27,18 +26,17 @@ import kotlin.Exception
  * https://firebase.google.com/docs/auth/android/google-signin
  */
 class GoogleFirebaseLoginRepository(
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val fbAuth: FirebaseAuth
 ) : LoginRepository {
-
-    private val fbAuth = FirebaseAuth.getInstance()
 
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
     init {
-        postInitialSignInState()
+        postCurrentUserState()
     }
 
-    private fun postInitialSignInState() {
+    private fun postCurrentUserState() {
         val state = try {
             getAccount().blockingGet()
         } catch (throwable: Exception) {
@@ -82,6 +80,38 @@ class GoogleFirebaseLoginRepository(
         }
     }
 
+    override fun updateMailPassword(password: String): Completable {
+        return Completable.create { emitter ->
+
+            val currentUser = fbAuth.currentUser
+            if (currentUser == null) {
+                emitter.tryOnError(NullPointerException("User is not logged in!"))
+            } else {
+                currentUser.updatePassword(password).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        emitter.onComplete()
+                    } else {
+                        val exception = task.exception
+                            ?: IllegalStateException("Could not change password due to unknown error")
+                        emitter.tryOnError(exception)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun sendPasswordResetRequest(mailAddress: String): Completable {
+        return Completable.create { emitter ->
+            fbAuth.sendPasswordResetEmail(mailAddress).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    emitter.onComplete()
+                } else {
+                    emitter.tryOnError(task.exception ?: IllegalStateException("Could not send password reset request"))
+                }
+            }
+        }
+    }
+
     override fun loginAnonymously(): Completable {
         return login(errorMessage = "Cannot anonymously sign into Firebase! AuthResult = null") {
             Tasks.await(fbAuth.signInAnonymously()).user?.toDanteUser()
@@ -111,31 +141,6 @@ class GoogleFirebaseLoginRepository(
             .subscribeOn(schedulers.io)
     }
 
-    override fun updateUserName(userName: String): Completable {
-        return Completable.create { emitter ->
-
-            val currentUser = fbAuth.currentUser
-            if (currentUser == null) {
-                emitter.tryOnError(NullPointerException("User is not logged in!"))
-            } else {
-
-                val update = UserProfileChangeRequest.Builder()
-                    .setDisplayName(userName)
-                    .build()
-
-                currentUser.updateProfile(update).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        emitter.onComplete()
-                    } else {
-                        val exception = task.exception
-                            ?: IllegalStateException("Unknown update user name error")
-                        emitter.tryOnError(exception)
-                    }
-                }
-            }
-        }
-    }
-
     override fun upgradeAnonymousAccount(mailAddress: String, password: String): Completable {
         return Completable
             .create { emitter ->
@@ -158,7 +163,7 @@ class GoogleFirebaseLoginRepository(
     }
 
     private fun reloadUserAfterAnonymousUpgrade() {
-        signInSubject.onNext(getCurrentUserState())
+        reloadAccount()
     }
 
     override fun observeAccount(): Observable<UserState> {
@@ -167,13 +172,23 @@ class GoogleFirebaseLoginRepository(
             .subscribeOn(schedulers.io)
     }
 
+    override fun reloadAccount() {
+        signInSubject.onNext(getCurrentUserState(forceReload = true))
+    }
+
     override fun getAccount(): Single<UserState> {
         return Single.fromCallable(::getCurrentUserState)
             .subscribeOn(schedulers.io)
     }
 
-    private fun getCurrentUserState(): UserState {
-        return fbAuth.currentUser?.toDanteUser()
+    private fun getCurrentUserState(forceReload: Boolean = false): UserState {
+        return fbAuth.currentUser
+            ?.apply {
+                if (forceReload) {
+                    Tasks.await(reload())
+                }
+            }
+            ?.toDanteUser()
             ?.let(UserState::SignedInUser)
             ?: UserState.Unauthenticated
     }

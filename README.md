@@ -61,20 +61,21 @@ The backlog is currently empty.
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
     - [ ] General
+        - [ ] Tracking
+        - [x] Allow anonymous users and mail users to set a username
+        - [x] Allow anonymous users and mail users to set a custom image
+        - [x] Handle empty mail addresses and usernames in MenuFragment
+    - [ ] Login Flow
         - [ ] Show login screen when unauthenticated user opens the app
         - [ ] Show different UI when user opens login screen after logout
         - [ ] Logout moves user to login screen
-        - [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
-        - [ ] Tracking
-        - [ ] Allow anonymous users and mail users to set a username
-        - [ ] Allow anonymous users and mail users to set a custom image
-        - [ ] Reset password for mail users
-        - [x] Handle empty mail addresses and usernames in MenuFragment
     - [x] Anonymous
         - [x] Allow users to upgrade to full account
         - [x] Show notice when user selects anonymous account in login screen
         - [x] Show notice that data will be wiped once logged out
-    - [x] Mail
+    - [ ] Mail
+        - [ ] Update password in app
+        - [ ] Reset passwort button
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet
         - [x] Verify minimum password length
@@ -84,6 +85,7 @@ The backlog is currently empty.
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
 - [ ] Upgrade to newest ktlint version
+- [ ] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
 
 ## Changelog

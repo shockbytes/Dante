@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
 
 abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
@@ -61,4 +63,12 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     abstract fun setupViews()
+
+    fun showSnackBar(@StringRes messageRes: Int) {
+        showSnackBar(getString(messageRes))
+    }
+
+    fun showSnackBar(message: String) {
+        Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+    }
 }

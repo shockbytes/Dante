@@ -8,6 +8,7 @@ import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.tracking.DebugTracker
 import at.shockbytes.tracking.FirebaseTracker
 import at.shockbytes.tracking.Tracker
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.Module
@@ -57,8 +58,8 @@ class FirebaseModule(private val context: Context) {
     }
 
     @Provides
-    fun provideImageUploadStorage(): ImageUploadStorage {
-        return FirebaseImageUploadStorage()
+    fun provideImageUploadStorage(fbAuth: FirebaseAuth): ImageUploadStorage {
+        return FirebaseImageUploadStorage(fbAuth)
     }
 
     companion object {

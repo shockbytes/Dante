@@ -13,15 +13,24 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewClick
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
+import at.shockbytes.dante.ui.fragment.dialog.SimpleInputDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
-import at.shockbytes.dante.ui.viewmodel.MainViewModel
+import at.shockbytes.dante.ui.viewmodel.UserViewModel
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.Login
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousLogout
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousUpgradeFailed
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameUpdated
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameUpdateError
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameEmpty
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameTooLong
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserImageEvent.UserImageUpdated
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserImageEvent.UserImageUpdateError
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.bottom_sheet_menu.*
 import javax.inject.Inject
@@ -43,64 +52,24 @@ class MenuFragment : BaseBottomSheetFragment() {
         appComponent.inject(this)
     }
 
-    private val viewModel: MainViewModel by lazy {
+    private val userViewModel: UserViewModel by lazy {
         viewModelOfActivity(requireActivity(), vmFactory)
     }
 
     override fun bindViewModel() {
-        viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+        userViewModel.getUserViewState().observe(this, Observer(::handleUserViewState))
 
-        viewModel.onMainEvent()
+        userViewModel.onUserEvent()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::handleMainEvent)
+            .subscribe(::handleUserEvent)
             .addTo(compositeDisposable)
     }
 
-    private fun handleMainEvent(event: MainViewModel.MainEvent) {
-        when (event) {
-            is MainViewModel.MainEvent.Announcement -> Unit // Not handled here..
-            is MainViewModel.MainEvent.Login -> navigateToLogin()
-            is MainViewModel.MainEvent.AnonymousLogout -> showAnonymousLogout()
-            is MainViewModel.MainEvent.AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
-        }
-    }
-
-    private fun navigateToLogin() {
-        val sceneTransition = requireActivity()
-            .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
-            .toBundle()
-        ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
-    }
-
-    private fun showAnonymousLogout() {
-        MaterialDialog(requireContext()).show {
-            icon(R.drawable.ic_incognito)
-            title(text = getString(R.string.logout_incognito))
-            message(text = getString(R.string.logout_incognito_hint))
-            positiveButton(R.string.logout) {
-                viewModel.forceLogout()
-                dismiss()
-            }
-            negativeButton(R.string.cancel) {
-                dismiss()
-            }
-            cancelOnTouchOutside(true)
-            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
-        }
-    }
-
-    private fun showAnonymousUpgradeFailed(message: String?) {
-        val snackBarMessage = message ?: getString(R.string.anonymous_upgrade_error)
-        Snackbar.make(requireView(), snackBarMessage, Snackbar.LENGTH_LONG).show()
-    }
-
-    override fun unbindViewModel() = Unit
-
-    private fun handleUserEvent(event: MainViewModel.UserEvent) {
+    private fun handleUserViewState(event: UserViewModel.UserViewState) {
 
         when (event) {
 
-            is MainViewModel.UserEvent.LoggedIn -> {
+            is UserViewModel.UserViewState.LoggedIn -> {
                 btnMenuLogin.text = getString(R.string.logout)
 
                 profileHeaderMenu.setUser(event.user.displayName, event.user.email)
@@ -119,7 +88,7 @@ class MenuFragment : BaseBottomSheetFragment() {
                 }
             }
 
-            is MainViewModel.UserEvent.UnauthenticatedUser -> {
+            is UserViewModel.UserViewState.UnauthenticatedUser -> {
                 btnMenuLogin.text = getString(R.string.login)
 
                 profileActionViewMenu.setState(ProfileActionViewState.Hidden)
@@ -127,6 +96,72 @@ class MenuFragment : BaseBottomSheetFragment() {
             }
         }
     }
+
+    private fun handleUserEvent(event: UserViewModel.UserEvent) {
+        when (event) {
+            is Login -> navigateToLogin()
+            is AnonymousLogout -> showAnonymousLogout()
+            is AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
+            is UserNameUpdated -> showUserNameUpdatedMessage()
+            is UserNameUpdateError -> showUserNameUpdateError(event.message)
+            is UserNameEmpty -> showUserNameEmptyError()
+            is UserNameTooLong -> showUserNameTooLongError(event.maxAllowedLength)
+            is UserImageUpdated -> showUserImageUpdatedMessage()
+            is UserImageUpdateError -> showImageUpdateError(event.message)
+        }
+    }
+
+    private fun navigateToLogin() {
+        val sceneTransition = requireActivity()
+            .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
+            .toBundle()
+        ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
+    }
+
+    private fun showAnonymousLogout() {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_incognito)
+            title(text = getString(R.string.logout_incognito))
+            message(text = getString(R.string.logout_incognito_hint))
+            positiveButton(R.string.logout) {
+                userViewModel.forceLogout()
+                dismiss()
+            }
+            negativeButton(R.string.cancel) {
+                dismiss()
+            }
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
+    }
+
+    private fun showAnonymousUpgradeFailed(message: String?) {
+        val snackBarMessage = message ?: getString(R.string.anonymous_upgrade_error)
+        showSnackBar(snackBarMessage)
+    }
+
+    private fun showUserNameUpdatedMessage() = showSnackBar(R.string.user_name_updated)
+
+    private fun showUserNameUpdateError(message: String?) {
+        val snackBarMessage = message ?: getString(R.string.user_update_error)
+        showSnackBar(snackBarMessage)
+    }
+
+    private fun showUserNameEmptyError() = showSnackBar(R.string.user_name_empty)
+
+    private fun showUserNameTooLongError(maxAllowedLength: Int) {
+        val message = getString(R.string.user_name_too_long, maxAllowedLength)
+        showSnackBar(message)
+    }
+
+    private fun showUserImageUpdatedMessage() = showSnackBar(R.string.user_image_updated)
+
+    private fun showImageUpdateError(message: String?) {
+        val snackBarMessage = message ?: getString(R.string.user_update_error)
+        showSnackBar(snackBarMessage)
+    }
+
+    override fun unbindViewModel() = Unit
 
     override fun setupViews() {
 
@@ -147,7 +182,7 @@ class MenuFragment : BaseBottomSheetFragment() {
         }
 
         btnMenuLogin.setOnClickListener {
-            viewModel.loginLogout()
+            userViewModel.loginLogout()
         }
 
         btnMenuSettings.setOnClickListener {
@@ -163,18 +198,31 @@ class MenuFragment : BaseBottomSheetFragment() {
     private fun handleProfileClick(profileActionViewClick: ProfileActionViewClick) {
         when (profileActionViewClick) {
             ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> showUpgradeBottomSheet()
-
-            ProfileActionViewClick.CHANGE_NAME -> {
-                // TODO
+            ProfileActionViewClick.CHANGE_NAME -> showChangeNameScreen()
+            ProfileActionViewClick.CHANGE_IMAGE -> userViewModel.changeUserImage(requireActivity())
+            ProfileActionViewClick.CHANGE_PASSWORD -> {
+                // TODO Show update password screen, maybe reuse simple input
             }
-            ProfileActionViewClick.CHANGE_IMAGE -> Unit // Not implemented yet...
         }
+    }
+
+    private fun showChangeNameScreen() {
+        SimpleInputDialogFragment
+            .newInstance(
+                title = R.string.account_change_name_title,
+                icon = R.drawable.ic_user_template_dark,
+                message = R.string.account_change_name_message,
+                hint = R.string.account_change_name_hint,
+                positiveButtonText = android.R.string.ok
+            )
+            .setOnInputEnteredListener(userViewModel::changeUserName)
+            .show(parentFragmentManager, "query-dialog-fragment")
     }
 
     private fun showUpgradeBottomSheet() {
         MailLoginBottomSheetDialogFragment
             .newInstance(MailLoginViewModel.MailLoginState.ShowEmailAndPassword(isSignUp = true, R.string.anonymous_upgrade))
-            .setOnCredentialsEnteredListener(viewModel::anonymousUpgrade)
+            .setOnCredentialsEnteredListener(userViewModel::anonymousUpgrade)
             .show(parentFragmentManager, "anonymous-upgrade-fragment")
     }
 

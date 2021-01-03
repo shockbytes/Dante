@@ -100,6 +100,7 @@ The backlog is currently empty.
     - [ ] BooksAndPagesDiagramView.styleChartAndPagesDiagramView (cannot load font)
     - [ ] Issues with deleting labels (related to checkAllowWritesOnUiThread)
     - [ ] Issues with outdated book data (after closing and reopening a book)
+    - [ ] Finally fix GlideException pollution
 
 ## Changelog
 

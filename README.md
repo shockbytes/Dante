@@ -70,7 +70,7 @@ The backlog is currently empty.
         - [x] Handle empty mail addresses and usernames in MenuFragment
     - [ ] Login Flow
         - [x] LoginActivity is the main entry point (check splash screen)
-        - [ ] Show login screen when unauthenticated user opens the app
+        - [x] Show login screen when unauthenticated user opens the app
         - [ ] Show different UI when user opens login screen after logout
             - [ ] Save new field isFirstAppOpen when user successfully logged in
             - [ ] Improve onboarding hints mechanism
@@ -101,6 +101,7 @@ The backlog is currently empty.
     - [ ] Issues with deleting labels (related to checkAllowWritesOnUiThread)
     - [ ] Issues with outdated book data (after closing and reopening a book)
     - [ ] Finally fix GlideException pollution
+    - [ ] Firebase ANR that requires an uninstall
 
 ## Changelog
 

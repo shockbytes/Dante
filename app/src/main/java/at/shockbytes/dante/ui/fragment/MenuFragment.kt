@@ -111,7 +111,6 @@ class MenuFragment : BaseBottomSheetFragment() {
         }
     }
 
-
     private fun navigateToLogin() {
         val sceneTransition = requireActivity()
             .let(ActivityOptionsCompat::makeSceneTransitionAnimation)

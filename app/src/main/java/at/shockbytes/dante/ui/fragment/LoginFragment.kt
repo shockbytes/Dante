@@ -12,6 +12,7 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
+import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.bold
 import at.shockbytes.dante.util.link
@@ -104,12 +105,14 @@ class LoginFragment : BaseFragment() {
                 .bold()
                 .colored(ContextCompat.getColor(requireContext(), R.color.colorAccent))
                 .link {
-
+                    UrlLauncher.openTermsOfServicePage(requireContext())
+                    viewModel.trackOpenTermsOfServices()
                 }
 
             tv_login_tos.apply {
                 movementMethod = LinkMovementMethod.getInstance()
-                text = getString(R.string.terms_of_services_prefix).concat(link, ".")
+                text = getString(R.string.terms_of_services_prefix)
+                    .concat(link, getString(R.string.terms_of_services_suffix))
             }
         }
 

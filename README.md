@@ -69,15 +69,19 @@ The backlog is currently empty.
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment
     - [ ] Login Flow
+        - [ ] LoginActivity is the main entry point
         - [ ] Show login screen when unauthenticated user opens the app
         - [ ] Show different UI when user opens login screen after logout
+            - [ ] Save new field isFirstAppOpen when user successfully logged in
+            - [ ] Improve onboarding hints mechanism
+            - [ ] "Skip this for now" -> Keep me anonymous
         - [ ] Logout moves user to login screen
     - [x] Anonymous
         - [x] Allow users to upgrade to full account
         - [x] Show notice when user selects anonymous account in login screen
         - [x] Show notice that data will be wiped once logged out
     - [ ] Mail
-        - [ ] Update password in app
+        - [ ] Update password in app (Implement new SimpleInputDialogFragment on Fragment basis)
         - [x] Forgot password functionality
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet
@@ -90,6 +94,12 @@ The backlog is currently empty.
 - [x] Upgrade to newest ktlint version
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
+- [ ] Bugfixes
+    - [ ] FirebasModule.provideRemoteConfig crash
+    - [ ] BarcodeCaptureActivity.startCamera
+    - [ ] BooksAndPagesDiagramView.styleChartAndPagesDiagramView (cannot load font)
+    - [ ] Issues with deleting labels (related to checkAllowWritesOnUiThread)
+    - [ ] Issues with outdated book data (after closing and reopening a book)
 
 ## Changelog
 

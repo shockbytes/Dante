@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.fragment
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import android.view.View
@@ -87,7 +86,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun bindViewModel() {
 
-        viewModel.getSearchState().observe(this, Observer { searchState ->
+        viewModel.getSearchState().observe(this, { searchState ->
             when (searchState) {
                 is SearchViewModel.SearchState.LoadingState -> {
                     fragment_search_searchview.showProgress(true)
@@ -126,10 +125,8 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun onItemClick(content: BookSearchItem, position: Int, v: View) {
         activity?.hideKeyboard()
-        if (content.bookId > -1) {
-            context?.let { ctx ->
-                startActivity(DetailActivity.newIntent(ctx, content.bookId, content.title))
-            }
+        if (content.bookId.isValid()) {
+            startActivity(DetailActivity.newIntent(requireContext(), content.bookId, content.title))
         }
     }
 

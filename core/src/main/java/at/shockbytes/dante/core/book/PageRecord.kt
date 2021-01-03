@@ -6,7 +6,7 @@ import org.joda.time.DateTime
 
 @Parcelize
 data class PageRecord(
-    val bookId: Long,
+    val bookId: BookId,
     val fromPage: Int,
     val toPage: Int,
     val timestamp: Long

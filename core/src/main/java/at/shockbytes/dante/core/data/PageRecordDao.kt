@@ -1,5 +1,6 @@
 package at.shockbytes.dante.core.data
 
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.Completable
@@ -8,7 +9,7 @@ import io.reactivex.Observable
 interface PageRecordDao {
 
     fun insertPageRecordForBookId(
-        bookId: Long,
+        bookId: BookId,
         fromPage: Int,
         toPage: Int,
         nowInMillis: Long
@@ -18,9 +19,9 @@ interface PageRecordDao {
 
     fun deletePageRecordForBook(pageRecord: PageRecord): Completable
 
-    fun deleteAllPageRecordsForBookId(bookId: Long): Completable
+    fun deleteAllPageRecordsForBookId(bookId: BookId): Completable
 
-    fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>>
+    fun pageRecordsForBook(bookId: BookId): Observable<List<PageRecord>>
 
     fun allPageRecords(): Observable<List<PageRecord>>
 

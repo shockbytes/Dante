@@ -17,7 +17,7 @@ object TimeLineBuilder {
     ): List<TimeLineItem> {
         return booksForSortStrategy(books, timeLineSortStrategy)
             .map { (monthYear, books) ->
-                books.mapTo(mutableListOf<TimeLineItem>(MonthHeader(monthYear.month, monthYear.year))) { book ->
+                books.mapTo(mutableListOf(MonthHeader(monthYear.month, monthYear.year))) { book ->
                     BookTimeLineItem(book.id, book.title, book.thumbnailAddress)
                 }
             }

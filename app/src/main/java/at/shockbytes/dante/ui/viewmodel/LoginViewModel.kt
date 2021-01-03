@@ -25,6 +25,9 @@ class LoginViewModel @Inject constructor(
     private val loginState = MutableLiveData<LoginState>()
     fun getLoginState(): LiveData<LoginState> = loginState
 
+    private val showTermsOfService = MutableLiveData<Boolean>()
+    fun showTermsOfServiceServiceState(): LiveData<Boolean> = showTermsOfService
+
     init {
         resolveLoginState()
     }
@@ -36,6 +39,10 @@ class LoginViewModel @Inject constructor(
                     is UserState.SignedInUser -> LoginState.LoggedIn
                     UserState.Unauthenticated -> LoginState.LoggedOut
                 }
+            }
+            .doOnSuccess {
+                // TODO Only show this if the user did not sign in previously
+                showTermsOfService.postValue(true)
             }
             .doOnError { loginState.postValue(LoginState.LoggedOut) }
             .subscribe(loginState::postValue, ExceptionHandlers::defaultExceptionHandler)
@@ -88,6 +95,10 @@ class LoginViewModel @Inject constructor(
             }
         }
         loginState.postValue(state)
+    }
+
+    fun trackOpenTermsOfServices() {
+        TODO("Not yet implemented")
     }
 
     sealed class LoginState {

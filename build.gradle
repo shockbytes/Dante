@@ -1,5 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-def ktlintVersion = "0.31.0"
+def ktlintVersion = "0.40.0"
 
 buildscript {
 
@@ -82,19 +82,19 @@ configurations {
 }
 
 dependencies {
-    ktlint "com.github.shyiko:ktlint:$ktlintVersion"
+    ktlint "com.pinterest:ktlint:$ktlintVersion"
 }
 
 task ktlint(type: JavaExec, group: "verification") {
     description = "Check Kotlin code style."
     classpath = configurations.ktlint
-    main = "com.github.shyiko.ktlint.Main"
-    args "*.kt"
+    main = "com.pinterest.ktlint.Main"
+    args "src/**/*.kt"
 }
 
-task ktlintFormat(type: JavaExec, group: "kotlin Formatting") {
-    description = 'Fix Kotlin code style deviations.'
+task ktlintFormat(type: JavaExec, group: "formatting") {
+    description = "Fix Kotlin code style deviations."
     classpath = configurations.ktlint
-    main = 'com.github.shyiko.ktlint.Main'
-    args '-F', '*.kt'
+    main = "com.pinterest.ktlint.Main"
+    args "-F", "src/**/*.kt"
 }

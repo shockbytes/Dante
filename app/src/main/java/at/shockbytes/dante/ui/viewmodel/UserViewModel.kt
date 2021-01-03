@@ -52,6 +52,27 @@ class UserViewModel @Inject constructor(
         object AnonymousLogout : UserEvent()
 
         data class AnonymousUpgradeFailed(val message: String?) : UserEvent()
+
+        sealed class UserNameEvent : UserEvent() {
+
+            object UserNameUpdated : UserNameEvent()
+
+            data class UserNameUpdateError(val message: String?) : UserNameEvent()
+
+            object UserNameEmpty : UserNameEvent()
+
+            data class UserNameTooLong(
+                val currentLength: Int,
+                val maxAllowedLength: Int
+            ): UserNameEvent()
+        }
+
+        sealed class UserImageEvent : UserEvent() {
+
+            object UserImageUpdated : UserImageEvent()
+
+            data class UserImageUpdateError(val message: String?) : UserImageEvent()
+        }
     }
 
     private val userViewState = MutableLiveData<UserViewState>()
@@ -167,9 +188,11 @@ class UserViewModel @Inject constructor(
             .doOnComplete(loginRepository::reloadAccount)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
-                // TODO Post event
-            }, {
-                // TODO Post event
+                userEventSubject.onNext(UserEvent.UserImageEvent.UserImageUpdated)
+            }, { throwable ->
+                userEventSubject.onNext(
+                    UserEvent.UserImageEvent.UserImageUpdateError(throwable.localizedMessage)
+                )
             })
             .addTo(compositeDisposable)
     }
@@ -177,7 +200,7 @@ class UserViewModel @Inject constructor(
     fun changeUserName(userName: String) {
 
         if (!verifyUserName(userName)) {
-            // TODO Post event
+            postUserNameErrorEvent(userName)
             return
         }
 
@@ -185,20 +208,38 @@ class UserViewModel @Inject constructor(
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .doOnComplete(loginRepository::reloadAccount)
             .subscribe({
-                // TODO Post event
-            }, {
-                // TODO Post event
+                userEventSubject.onNext(UserEvent.UserNameEvent.UserNameUpdated)
+            }, { throwable ->
+                userEventSubject.onNext(
+                    UserEvent.UserNameEvent.UserNameUpdateError(throwable.localizedMessage)
+                )
             })
             .addTo(compositeDisposable)
     }
 
     private fun verifyUserName(userName: String): Boolean {
-        // TODO
-        return true
+        return userName.length in 1 until MAX_ALLOWED_USERNAME_LENGTH
+    }
+
+    private fun postUserNameErrorEvent(userName: String) {
+        val event = if (userName.isEmpty()) {
+            UserEvent.UserNameEvent.UserNameEmpty
+        } else {
+            UserEvent.UserNameEvent.UserNameTooLong(
+                currentLength = userName.length,
+                maxAllowedLength = MAX_ALLOWED_USERNAME_LENGTH
+            )
+        }
+
+        userEventSubject.onNext(event)
     }
 
     fun updatePassword(password: String) {
-
+        // TODO Done in another PR
     }
 
+    companion object {
+
+        private const val MAX_ALLOWED_USERNAME_LENGTH = 32
+    }
 }

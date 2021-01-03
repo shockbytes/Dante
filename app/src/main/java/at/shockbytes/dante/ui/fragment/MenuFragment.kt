@@ -15,7 +15,7 @@ import at.shockbytes.dante.ui.custom.profile.ProfileActionViewClick
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
 import at.shockbytes.dante.ui.fragment.dialog.SimpleInputDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
-import at.shockbytes.dante.ui.viewmodel.MainViewModel
+import at.shockbytes.dante.ui.viewmodel.UserViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
@@ -44,25 +44,24 @@ class MenuFragment : BaseBottomSheetFragment() {
         appComponent.inject(this)
     }
 
-    private val viewModel: MainViewModel by lazy {
+    private val userViewModel: UserViewModel by lazy {
         viewModelOfActivity(requireActivity(), vmFactory)
     }
 
     override fun bindViewModel() {
-        viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+        userViewModel.getUserViewState().observe(this, Observer(::handleUserViewState))
 
-        viewModel.onMainEvent()
+        userViewModel.onUserEvent()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::handleMainEvent)
+            .subscribe(::handleUserEvent)
             .addTo(compositeDisposable)
     }
 
-    private fun handleMainEvent(event: MainViewModel.MainEvent) {
+    private fun handleUserEvent(event: UserViewModel.UserEvent) {
         when (event) {
-            is MainViewModel.MainEvent.Announcement -> Unit // Not handled here..
-            is MainViewModel.MainEvent.Login -> navigateToLogin()
-            is MainViewModel.MainEvent.AnonymousLogout -> showAnonymousLogout()
-            is MainViewModel.MainEvent.AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
+            is UserViewModel.UserEvent.Login -> navigateToLogin()
+            is UserViewModel.UserEvent.AnonymousLogout -> showAnonymousLogout()
+            is UserViewModel.UserEvent.AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
         }
     }
 
@@ -79,7 +78,7 @@ class MenuFragment : BaseBottomSheetFragment() {
             title(text = getString(R.string.logout_incognito))
             message(text = getString(R.string.logout_incognito_hint))
             positiveButton(R.string.logout) {
-                viewModel.forceLogout()
+                userViewModel.forceLogout()
                 dismiss()
             }
             negativeButton(R.string.cancel) {
@@ -97,11 +96,11 @@ class MenuFragment : BaseBottomSheetFragment() {
 
     override fun unbindViewModel() = Unit
 
-    private fun handleUserEvent(event: MainViewModel.UserEvent) {
+    private fun handleUserViewState(event: UserViewModel.UserViewState) {
 
         when (event) {
 
-            is MainViewModel.UserEvent.LoggedIn -> {
+            is UserViewModel.UserViewState.LoggedIn -> {
                 btnMenuLogin.text = getString(R.string.logout)
 
                 profileHeaderMenu.setUser(event.user.displayName, event.user.email)
@@ -120,7 +119,7 @@ class MenuFragment : BaseBottomSheetFragment() {
                 }
             }
 
-            is MainViewModel.UserEvent.UnauthenticatedUser -> {
+            is UserViewModel.UserViewState.UnauthenticatedUser -> {
                 btnMenuLogin.text = getString(R.string.login)
 
                 profileActionViewMenu.setState(ProfileActionViewState.Hidden)
@@ -148,7 +147,7 @@ class MenuFragment : BaseBottomSheetFragment() {
         }
 
         btnMenuLogin.setOnClickListener {
-            viewModel.loginLogout()
+            userViewModel.loginLogout()
         }
 
         btnMenuSettings.setOnClickListener {
@@ -165,7 +164,7 @@ class MenuFragment : BaseBottomSheetFragment() {
         when (profileActionViewClick) {
             ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> showUpgradeBottomSheet()
             ProfileActionViewClick.CHANGE_NAME -> showChangeNameScreen()
-            ProfileActionViewClick.CHANGE_IMAGE -> viewModel.changeUserImage(requireActivity())
+            ProfileActionViewClick.CHANGE_IMAGE -> userViewModel.changeUserImage(requireActivity())
             ProfileActionViewClick.CHANGE_PASSWORD -> {
                 // TODO Show update password screen, maybe reuse simple input
             }
@@ -181,14 +180,14 @@ class MenuFragment : BaseBottomSheetFragment() {
                 hint = R.string.account_change_name_hint,
                 positiveButtonText = android.R.string.ok
             )
-            .setOnInputEnteredListener(viewModel::changeUserName)
+            .setOnInputEnteredListener(userViewModel::changeUserName)
             .show(parentFragmentManager, "query-dialog-fragment")
     }
 
     private fun showUpgradeBottomSheet() {
         MailLoginBottomSheetDialogFragment
             .newInstance(MailLoginViewModel.MailLoginState.ShowEmailAndPassword(isSignUp = true, R.string.anonymous_upgrade))
-            .setOnCredentialsEnteredListener(viewModel::anonymousUpgrade)
+            .setOnCredentialsEnteredListener(userViewModel::anonymousUpgrade)
             .show(parentFragmentManager, "anonymous-upgrade-fragment")
     }
 

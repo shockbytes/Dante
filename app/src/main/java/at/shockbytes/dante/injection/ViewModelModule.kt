@@ -20,6 +20,7 @@ import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.ui.viewmodel.StatisticsViewModel
 import at.shockbytes.dante.ui.viewmodel.SuggestionsViewModel
 import at.shockbytes.dante.ui.viewmodel.TimelineViewModel
+import at.shockbytes.dante.ui.viewmodel.UserViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
@@ -139,4 +140,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MailLoginViewModel::class)
     internal abstract fun mailLoginViewModel(viewModel: MailLoginViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserViewModel::class)
+    internal abstract fun userViewModel(viewModel: UserViewModel): ViewModel
 }

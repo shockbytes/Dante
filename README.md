@@ -69,7 +69,7 @@ The backlog is currently empty.
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment
     - [ ] Login Flow
-        - [ ] LoginActivity is the main entry point
+        - [x] LoginActivity is the main entry point (check splash screen)
         - [ ] Show login screen when unauthenticated user opens the app
         - [ ] Show different UI when user opens login screen after logout
             - [ ] Save new field isFirstAppOpen when user successfully logged in

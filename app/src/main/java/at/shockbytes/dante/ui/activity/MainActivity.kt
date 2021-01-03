@@ -26,6 +26,7 @@ import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
+import at.shockbytes.dante.ui.viewmodel.UserViewModel
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.createRoundedBitmap
@@ -51,7 +52,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private var tabId: Int = R.id.menu_navigation_current
 
     private lateinit var pagerAdapter: BookPagerAdapter
+    
     private lateinit var viewModel: MainViewModel
+    private lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme_NoActionBar)
@@ -60,6 +63,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         setSupportActionBar(toolbarMain)
 
         viewModel = viewModelOf(vmFactory)
+        userViewModel = viewModelOf(vmFactory)
         tabId = savedInstanceState?.getInt(ID_SELECTED_TAB) ?: R.id.menu_navigation_current
 
         handleIntentExtras()
@@ -165,7 +169,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             .subscribe(::showAnnouncementFragment, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
 
-        viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+        userViewModel.getUserViewState().observe(this, Observer(::handleUserViewState))
 
         viewModel.requestSeasonalTheme()
         viewModel.getSeasonalTheme()
@@ -174,14 +178,14 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             .addTo(compositeDisposable)
     }
 
-    private fun handleUserEvent(event: MainViewModel.UserEvent) {
-        when (event) {
+    private fun handleUserViewState(userViewState: UserViewModel.UserViewState) {
+        when (userViewState) {
 
-            is MainViewModel.UserEvent.LoggedIn -> {
+            is UserViewModel.UserViewState.LoggedIn -> {
                 // Only show onboarding hints after the user login state is resolved
                 checkForOnboardingHints()
 
-                val photoUrl = event.user.photoUrl
+                val photoUrl = userViewState.user.photoUrl
                 if (photoUrl != null) {
                     loadUserImage(photoUrl, onLoaded = ::onUserLoaded)
                 } else {
@@ -189,7 +193,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 }
             }
 
-            is MainViewModel.UserEvent.UnauthenticatedUser -> {
+            is UserViewModel.UserViewState.UnauthenticatedUser -> {
                 imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                 onUserLoaded()
             }
@@ -215,7 +219,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     fun forceLogin(source: LoginSource) {
-        viewModel.forceLogin(source)
+        userViewModel.forceLogin(source)
     }
 
     private fun showAnnouncementFragment(unused: MainViewModel.MainEvent) {

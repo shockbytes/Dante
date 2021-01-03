@@ -16,13 +16,21 @@ import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
 import at.shockbytes.dante.ui.fragment.dialog.SimpleInputDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.ui.viewmodel.UserViewModel
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.Login
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousLogout
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousUpgradeFailed
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameUpdated
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameUpdateError
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameEmpty
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameTooLong
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserImageEvent.UserImageUpdated
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserImageEvent.UserImageUpdateError
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.bottom_sheet_menu.*
 import javax.inject.Inject
@@ -57,45 +65,6 @@ class MenuFragment : BaseBottomSheetFragment() {
             .addTo(compositeDisposable)
     }
 
-    private fun handleUserEvent(event: UserViewModel.UserEvent) {
-        when (event) {
-            is UserViewModel.UserEvent.Login -> navigateToLogin()
-            is UserViewModel.UserEvent.AnonymousLogout -> showAnonymousLogout()
-            is UserViewModel.UserEvent.AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
-        }
-    }
-
-    private fun navigateToLogin() {
-        val sceneTransition = requireActivity()
-            .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
-            .toBundle()
-        ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
-    }
-
-    private fun showAnonymousLogout() {
-        MaterialDialog(requireContext()).show {
-            icon(R.drawable.ic_incognito)
-            title(text = getString(R.string.logout_incognito))
-            message(text = getString(R.string.logout_incognito_hint))
-            positiveButton(R.string.logout) {
-                userViewModel.forceLogout()
-                dismiss()
-            }
-            negativeButton(R.string.cancel) {
-                dismiss()
-            }
-            cancelOnTouchOutside(true)
-            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
-        }
-    }
-
-    private fun showAnonymousUpgradeFailed(message: String?) {
-        val snackBarMessage = message ?: getString(R.string.anonymous_upgrade_error)
-        Snackbar.make(requireView(), snackBarMessage, Snackbar.LENGTH_LONG).show()
-    }
-
-    override fun unbindViewModel() = Unit
-
     private fun handleUserViewState(event: UserViewModel.UserViewState) {
 
         when (event) {
@@ -127,6 +96,73 @@ class MenuFragment : BaseBottomSheetFragment() {
             }
         }
     }
+
+    private fun handleUserEvent(event: UserViewModel.UserEvent) {
+        when (event) {
+            is Login -> navigateToLogin()
+            is AnonymousLogout -> showAnonymousLogout()
+            is AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
+            is UserNameUpdated -> showUserNameUpdatedMessage()
+            is UserNameUpdateError -> showUserNameUpdateError(event.message)
+            is UserNameEmpty -> showUserNameEmptyError()
+            is UserNameTooLong -> showUserNameTooLongError(event.maxAllowedLength)
+            is UserImageUpdated -> showUserImageUpdatedMessage()
+            is UserImageUpdateError -> showImageUpdateError(event.message)
+        }
+    }
+
+
+    private fun navigateToLogin() {
+        val sceneTransition = requireActivity()
+            .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
+            .toBundle()
+        ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
+    }
+
+    private fun showAnonymousLogout() {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_incognito)
+            title(text = getString(R.string.logout_incognito))
+            message(text = getString(R.string.logout_incognito_hint))
+            positiveButton(R.string.logout) {
+                userViewModel.forceLogout()
+                dismiss()
+            }
+            negativeButton(R.string.cancel) {
+                dismiss()
+            }
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
+    }
+
+    private fun showAnonymousUpgradeFailed(message: String?) {
+        val snackBarMessage = message ?: getString(R.string.anonymous_upgrade_error)
+        showSnackBar(snackBarMessage)
+    }
+
+    private fun showUserNameUpdatedMessage() = showSnackBar(R.string.user_name_updated)
+
+    private fun showUserNameUpdateError(message: String?) {
+        val snackBarMessage = message ?: getString(R.string.user_update_error)
+        showSnackBar(snackBarMessage)
+    }
+
+    private fun showUserNameEmptyError() = showSnackBar(R.string.user_name_empty)
+
+    private fun showUserNameTooLongError(maxAllowedLength: Int) {
+        val message = getString(R.string.user_name_too_long, maxAllowedLength)
+        showSnackBar(message)
+    }
+
+    private fun showUserImageUpdatedMessage() = showSnackBar(R.string.user_image_updated)
+
+    private fun showImageUpdateError(message: String?) {
+        val snackBarMessage = message ?: getString(R.string.user_update_error)
+        showSnackBar(snackBarMessage)
+    }
+
+    override fun unbindViewModel() = Unit
 
     override fun setupViews() {
 

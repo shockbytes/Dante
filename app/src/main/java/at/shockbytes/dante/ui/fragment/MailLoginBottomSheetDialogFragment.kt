@@ -14,6 +14,7 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_login.btn_login_mail
 import kotlinx.android.synthetic.main.mail_login_bottom_sheet.*
 import javax.inject.Inject
@@ -37,6 +38,11 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
         viewModel.initialize(mailLoginState)
 
         viewModel.getStep().observe(this, Observer(::handleStep))
+
+        viewModel.getMailResetAction()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::handleMailResetAction)
+            .addTo(compositeDisposable)
 
         viewModel.isMailValid()
             .doOnNext(btn_login_mail_continue::setEnabled)
@@ -156,6 +162,18 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
                     .scaleX(1f)
                     .scaleY(1f)
                     .start()
+            }
+        }
+    }
+
+    private fun handleMailResetAction(action: MailLoginViewModel.MailResetAction) {
+        when (action) {
+            is MailLoginViewModel.MailResetAction.Success -> {
+                showToast(getString(R.string.reset_password_success, action.mailAddress))
+            }
+            is MailLoginViewModel.MailResetAction.Error -> {
+                showToast(getString(R.string.reset_password_error, action.mailAddress))
+                dismiss()
             }
         }
     }

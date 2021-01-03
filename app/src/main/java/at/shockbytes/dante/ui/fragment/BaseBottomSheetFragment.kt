@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.StringRes
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
@@ -70,5 +71,16 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
 
     fun showSnackBar(message: String) {
         Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG).show()
+    }
+
+    @JvmOverloads
+    protected fun showToast(text: String, showLong: Boolean = true) {
+        val duration = if (showLong) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+        Toast.makeText(context, text, duration).show()
+    }
+
+    @JvmOverloads
+    protected fun showToast(text: Int, showLong: Boolean = true) {
+        showToast(getString(text), showLong)
     }
 }

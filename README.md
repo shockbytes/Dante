@@ -78,7 +78,7 @@ The backlog is currently empty.
         - [x] Show notice that data will be wiped once logged out
     - [ ] Mail
         - [ ] Update password in app
-        - [ ] Reset password button
+        - [x] Forgot password functionality
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet
         - [x] Verify minimum password length

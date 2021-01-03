@@ -8,6 +8,9 @@ sealed class DanteTrackingEvent(
     val props: List<BaseProperty<Any>> = listOf()
 ) {
 
+    // Login
+    object OpenTermsOfServices : DanteTrackingEvent("open_terms_of_services", listOf())
+
     data class BackupMadeEvent(val backupProvider: String) : DanteTrackingEvent(
         "backup_made",
         listOf(TrackingProperty("backup_provider", backupProvider))

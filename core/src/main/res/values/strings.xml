@@ -156,6 +156,10 @@
     <string name="user_name_too_long">Your username exceeds the maximum length of %d characters</string>
     <string name="user_image_updated">Your user image was successfully updated</string>
 
+    <string name="terms_of_services">Terms of Services</string>
+    <string name="terms_of_services_prefix">By continuing you agree with Dante\'s\n</string>
+    <string name="terms_of_services_suffix">.</string>
+
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
     <string name="add_notes">Notes</string>

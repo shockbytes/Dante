@@ -12,6 +12,8 @@ import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.singleOf
+import at.shockbytes.tracking.Tracker
+import at.shockbytes.tracking.event.DanteTrackingEvent
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -19,11 +21,15 @@ import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val googleAuth: GoogleAuth
+    private val googleAuth: GoogleAuth,
+    private val tracker: Tracker
 ) : BaseViewModel() {
 
     private val loginState = MutableLiveData<LoginState>()
     fun getLoginState(): LiveData<LoginState> = loginState
+
+    private val showTermsOfService = MutableLiveData<Boolean>()
+    fun showTermsOfServiceServiceState(): LiveData<Boolean> = showTermsOfService
 
     init {
         resolveLoginState()
@@ -36,6 +42,10 @@ class LoginViewModel @Inject constructor(
                     is UserState.SignedInUser -> LoginState.LoggedIn
                     UserState.Unauthenticated -> LoginState.LoggedOut
                 }
+            }
+            .doOnSuccess {
+                // TODO Only show this if the user did not sign in previously
+                showTermsOfService.postValue(true)
             }
             .doOnError { loginState.postValue(LoginState.LoggedOut) }
             .subscribe(loginState::postValue, ExceptionHandlers::defaultExceptionHandler)
@@ -88,6 +98,10 @@ class LoginViewModel @Inject constructor(
             }
         }
         loginState.postValue(state)
+    }
+
+    fun trackOpenTermsOfServices() {
+        tracker.track(DanteTrackingEvent.OpenTermsOfServices)
     }
 
     sealed class LoginState {

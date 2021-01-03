@@ -62,6 +62,9 @@ The backlog is currently empty.
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
     - [ ] General
         - [ ] Tracking
+        - [ ] Terms Of Services
+            - [x] Add Terms Of Services button
+            - [ ] Add ToS to dantebooks.app/term (https://www.iubenda.com/en/mobile)
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment
@@ -75,7 +78,7 @@ The backlog is currently empty.
         - [x] Show notice that data will be wiped once logged out
     - [ ] Mail
         - [ ] Update password in app
-        - [ ] Reset passwort button
+        - [ ] Reset password button
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet
         - [x] Verify minimum password length

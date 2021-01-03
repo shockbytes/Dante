@@ -64,6 +64,9 @@
     <string name="login_mail_enter_password">Passwort eingeben</string>
     <string name="login_general_error">Wir konnten dich nicht in deinen Account einloggen!</string>
     <string name="login_invalid_credentials">Email und Passwort stimmen nicht überein!</string>
+    <string name="forgot_password">Passwort vergessen</string>
+    <string name="reset_password_success">Eine Passwortänderungsmail wurde für die Adresse %s versendet.</string>
+    <string name="reset_password_error">Es tut uns Leid, wir konnten keine Passwortänderungsmail für die Adresse %s versenden.</string>
 
     <string name="account_upgrade">Upgrade</string>
     <string name="account_change_name">Name ändern</string>

@@ -84,7 +84,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginVertical="48dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="64dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/login_with_mail"
@@ -101,12 +102,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginVertical="48dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="64dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="@string/_continue"
             android:textColor="@color/danteAccent"
             android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_login_mail_forgot_password"
+            style="@style/AppTheme.RoundedButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:text="@string/forgot_password"
+            android:textColor="@color/danteAccent"
+            android:visibility="invisible"
+            android:layout_marginBottom="8dp"
+            tools:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

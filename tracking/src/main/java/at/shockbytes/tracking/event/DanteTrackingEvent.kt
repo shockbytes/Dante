@@ -11,6 +11,10 @@ sealed class DanteTrackingEvent(
     // Login
     object OpenTermsOfServices : DanteTrackingEvent("open_terms_of_services", listOf())
 
+    object ResetPasswordSuccess : DanteTrackingEvent("reset_password_success", listOf())
+
+    object ResetPasswordFailed : DanteTrackingEvent("reset_password_failed", listOf())
+
     data class BackupMadeEvent(val backupProvider: String) : DanteTrackingEvent(
         "backup_made",
         listOf(TrackingProperty("backup_provider", backupProvider))

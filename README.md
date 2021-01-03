@@ -62,6 +62,7 @@ The backlog is currently empty.
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
     - [ ] General
         - [ ] Tracking
+        - [ ] Add ToS https://www.iubenda.com/en/mobile
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment

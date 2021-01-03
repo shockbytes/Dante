@@ -4,12 +4,20 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.bold
+import at.shockbytes.dante.util.link
+import at.shockbytes.dante.util.colored
+import at.shockbytes.dante.util.concat
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
@@ -84,7 +92,29 @@ class LoginFragment : BaseFragment() {
         appComponent.inject(this)
     }
 
-    override fun bindViewModel() = Unit
+    override fun bindViewModel() {
+        viewModel.showTermsOfServiceServiceState()
+            .observe(this, Observer(::handleTermsOfServiceState))
+    }
+
+    private fun handleTermsOfServiceState(showTermsOfService: Boolean) {
+
+        if (showTermsOfService) {
+            val link = getString(R.string.terms_of_services)
+                .bold()
+                .colored(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+                .link {
+
+                }
+
+            tv_login_tos.apply {
+                movementMethod = LinkMovementMethod.getInstance()
+                text = getString(R.string.terms_of_services_prefix).concat(link, ".")
+            }
+        }
+
+        tv_login_tos.setVisible(showTermsOfService)
+    }
 
     override fun unbindViewModel() = Unit
 

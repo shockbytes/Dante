@@ -10,7 +10,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
-            style="@style/AppTheme.RoundedButton"
+            style="@style/AppTheme.RoundedButton.Small"
             android:layout_width="wrap_content"
             android:id="@+id/btnProfileActionViewUpgrade"
             android:layout_height="40dp"
@@ -19,7 +19,7 @@
             android:textColor="@color/danteAccent" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/AppTheme.RoundedButton"
+            style="@style/AppTheme.RoundedButton.Small"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:id="@+id/btnProfileActionViewChangeName"
@@ -29,7 +29,7 @@
             android:textColor="@color/danteAccent" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/AppTheme.RoundedButton"
+            style="@style/AppTheme.RoundedButton.Small"
             android:layout_width="wrap_content"
             android:id="@+id/btnProfileActionViewChangeImage"
             android:layout_height="40dp"
@@ -37,7 +37,7 @@
             android:textColor="@color/danteAccent" />
 
         <com.google.android.material.button.MaterialButton
-            style="@style/AppTheme.RoundedButton"
+            style="@style/AppTheme.RoundedButton.Small"
             android:layout_width="wrap_content"
             android:id="@+id/btnProfileActionViewChangePassword"
             android:layout_height="40dp"

@@ -139,6 +139,25 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
                 .scaleY(1f)
                 .start()
         }
+
+        if (step.isSignUp) {
+            btn_login_mail_forgot_password.setVisible(false)
+        } else {
+            btn_login_mail_forgot_password.apply {
+                alpha = 0f
+                scaleX = 0.7f
+                scaleY = 0.7f
+                visibility = View.VISIBLE
+                isEnabled = true
+
+                animate()
+                    .setStartDelay(700L)
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .start()
+            }
+        }
     }
 
     private fun handleMailValidation(isMailValid: Boolean) {
@@ -175,6 +194,12 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
         btn_login_mail.setOnClickListener {
             onCredentialsEnteredListener?.invoke(viewModel.getMailLoginCredentials())
             dismiss()
+        }
+
+        btn_login_mail_forgot_password.setOnClickListener {
+            // Disable button to prevent multiple click events
+            btn_login_mail_forgot_password.isEnabled = false
+            viewModel.userForgotPassword()
         }
     }
 

@@ -381,5 +381,6 @@
     <string name="open_camera">Kamera wird geöffnet</string>
 
     <string name="_continue">Weiter</string>
+    <string name="forgot_password">Passwort vergessen</string>
 
 </resources>

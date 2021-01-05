@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import at.shockbytes.dante.camera.injection.DaggerCameraComponent
+import at.shockbytes.dante.camera.injection.CameraComponentProvider
 import at.shockbytes.dante.camera.viewmodel.BarcodeResultViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
@@ -17,7 +17,6 @@ import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.BookSuggestion
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.image.ImageLoader
-import at.shockbytes.dante.core.injection.CoreInjectHelper
 import at.shockbytes.dante.core.network.BookDownloader
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -74,11 +73,7 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun injectIntoCameraComponent() {
-        DaggerCameraComponent
-            .builder()
-            .coreComponent(CoreInjectHelper.provideCoreComponent(requireActivity().applicationContext))
-            .build()
-            .inject(this)
+        CameraComponentProvider.get(requireContext().applicationContext).inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

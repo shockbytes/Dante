@@ -11,6 +11,7 @@ import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.singleOf
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
@@ -22,14 +23,40 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
     private val googleAuth: GoogleAuth,
-    private val tracker: Tracker
+    private val tracker: Tracker,
+    private val danteSettings: DanteSettings
 ) : BaseViewModel() {
+
+    sealed class LoginState {
+
+        object LoggedIn : LoginState()
+
+        object LoggedOut : LoginState()
+
+        data class Error(@StringRes val errorMessageRes: Int) : LoginState()
+    }
 
     private val loginState = MutableLiveData<LoginState>()
     fun getLoginState(): LiveData<LoginState> = loginState
 
-    private val showTermsOfService = MutableLiveData<Boolean>()
-    fun showTermsOfServiceServiceState(): LiveData<Boolean> = showTermsOfService
+    sealed class LoginViewState {
+
+        // User opens the app the first time
+        object NewUser : LoginViewState()
+
+        // User already signed in but signed out again
+        object Standard : LoginViewState()
+
+        companion object {
+
+            fun of(isNewUser: Boolean): LoginViewState {
+                return if (isNewUser) NewUser else Standard
+            }
+        }
+    }
+
+    private val loginViewState = MutableLiveData<LoginViewState>()
+    fun getLoginViewState(): LiveData<LoginViewState> = loginViewState
 
     init {
         resolveLoginState()
@@ -40,12 +67,12 @@ class LoginViewModel @Inject constructor(
             .map { userState ->
                 when (userState) {
                     is UserState.SignedInUser -> LoginState.LoggedIn
-                    UserState.Unauthenticated -> LoginState.LoggedOut
+                    is UserState.Unauthenticated -> LoginState.LoggedOut
                 }
             }
             .doOnSuccess {
-                // TODO Only show this if the user did not sign in previously
-                showTermsOfService.postValue(true)
+                // Only show this if the user did not sign in previously, ergo it's a new user
+                loginViewState.postValue(LoginViewState.of(danteSettings.isNewUser))
             }
             .doOnError { loginState.postValue(LoginState.LoggedOut) }
             .subscribe(loginState::postValue, ExceptionHandlers::defaultExceptionHandler)
@@ -80,12 +107,17 @@ class LoginViewModel @Inject constructor(
     ) {
         source
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .doOnComplete(::markUserOpenedApp)
             .subscribe({
                 loginState.postValue(LoginState.LoggedIn)
             }, { throwable ->
                 handleLoginErrorState(throwable, errorMessageRes)
             })
             .addTo(compositeDisposable)
+    }
+
+    private fun markUserOpenedApp() {
+        danteSettings.isNewUser = false
     }
 
     private fun handleLoginErrorState(throwable: Throwable, @StringRes errorMessageRes: Int) {
@@ -102,14 +134,5 @@ class LoginViewModel @Inject constructor(
 
     fun trackOpenTermsOfServices() {
         tracker.track(DanteTrackingEvent.OpenTermsOfServices)
-    }
-
-    sealed class LoginState {
-
-        object LoggedIn : LoginState()
-
-        object LoggedOut : LoginState()
-
-        data class Error(@StringRes val errorMessageRes: Int) : LoginState()
     }
 }

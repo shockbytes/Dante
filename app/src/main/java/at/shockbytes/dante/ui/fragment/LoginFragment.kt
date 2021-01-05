@@ -14,6 +14,7 @@ import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.bold
 import at.shockbytes.dante.util.link
 import at.shockbytes.dante.util.colored
@@ -94,35 +95,57 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun bindViewModel() {
-        viewModel.showTermsOfServiceServiceState()
-            .observe(this, Observer(::handleTermsOfServiceState))
+        viewModel.getLoginViewState().observe(this, Observer(::handleLoginViewState))
     }
 
-    private fun handleTermsOfServiceState(showTermsOfService: Boolean) {
-
-        if (showTermsOfService) {
-            val link = getString(R.string.terms_of_services)
-                .bold()
-                .colored(ContextCompat.getColor(requireContext(), R.color.colorAccent))
-                .link {
-                    UrlLauncher.openTermsOfServicePage(requireContext())
-                    viewModel.trackOpenTermsOfServices()
-                }
-
-            tv_login_tos.apply {
-                movementMethod = LinkMovementMethod.getInstance()
-                text = getString(R.string.terms_of_services_prefix)
-                    .concat(link, getString(R.string.terms_of_services_suffix))
+    private fun handleLoginViewState(viewState: LoginViewModel.LoginViewState) {
+        when (viewState) {
+            LoginViewModel.LoginViewState.NewUser -> {
+                setNewUserTexts()
+                showTermsOfServicesButton()
+            }
+            LoginViewModel.LoginViewState.Standard -> {
+                setStandardUserTexts()
+                hideTermsOfServicesButton()
             }
         }
+    }
 
-        tv_login_tos.setVisible(showTermsOfService)
+    private fun setNewUserTexts() {
+        // TODO
+    }
+
+    private fun showTermsOfServicesButton() {
+        val link = getString(R.string.terms_of_services)
+            .bold()
+            .colored(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            .link {
+                UrlLauncher.openTermsOfServicePage(requireContext())
+                viewModel.trackOpenTermsOfServices()
+            }
+
+        tv_login_tos.apply {
+            setVisible(true)
+            movementMethod = LinkMovementMethod.getInstance()
+            text = getString(R.string.terms_of_services_prefix)
+                .concat(link, getString(R.string.terms_of_services_suffix))
+        }
+    }
+
+    private fun setStandardUserTexts() {
+        // TODO
+    }
+
+    private fun hideTermsOfServicesButton() {
+        tv_login_tos.setVisible(false)
     }
 
     override fun unbindViewModel() = Unit
 
     companion object {
 
-        fun newInstance() = LoginFragment()
+        fun newInstance(): LoginFragment {
+            return LoginFragment()
+        }
     }
 }

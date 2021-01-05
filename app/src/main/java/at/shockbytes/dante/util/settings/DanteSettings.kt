@@ -23,7 +23,12 @@ class DanteSettings(
 
     private val rxPrefs: RxSharedPreferences = RxSharedPreferences.create(prefs)
 
-    var isFirstAppOpen: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_first_app_open_key))
+    var isNewUser: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_is_new_user))
+
+    // This field will only be updated if the next "user sessions" starts.
+    var isFirstUserSession: Boolean = isNewUser
+
+    var hasUserSeenOnboardingHints: Boolean by prefs.boolDelegate(context.getString(R.string.prefs_onboarding_hints))
 
     private val darkModeString: String by prefs.stringDelegate(context.getString(R.string.prefs_dark_mode_key), defaultValue = "light")
 

@@ -279,9 +279,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         // It has to be delayed, otherwise it will appear on the wrong
         // position on top of the BottomNavigationBar
-        runDelayed(1000) {
-            if (danteSettings.isFirstAppOpen) {
-                danteSettings.isFirstAppOpen = false
+        runDelayed(3_000) {
+            if (danteSettings.hasUserSeenOnboardingHints) {
+                danteSettings.hasUserSeenOnboardingHints = false
                 showOnboardingHintViews()
             }
         }

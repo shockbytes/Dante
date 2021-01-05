@@ -342,8 +342,8 @@
     <string name="error_msg_unknown">Oops, this error shouldn\'t have happened</string>
     <string name="welcome_to_dante">Welcome to Dante</string>
 
-    <string name="prefs_last_login" translatable="false">prefs_last_login</string>
-    <string name="prefs_first_app_open_key" translatable="false">prefs_first_app_open_key</string>
+    <string name="prefs_is_new_user" translatable="false">prefs_is_new_user</string>
+    <string name="prefs_onboarding_hints" translatable="false">prefs_onboarding_hints</string>
 
     <string name="widget_empty_placeholder">You do not read any book at the moment. Move books from your <b><i>Read later</i></b> to <b><i>Read now</i></b> list.</string>
 

@@ -78,7 +78,7 @@ class UserViewModel @Inject constructor(
     fun getUserViewState(): LiveData<UserViewState> = userViewState
 
     private val userEventSubject = PublishSubject.create<UserEvent>()
-    fun onUserEvent(): Observable<UserEvent> = userEventSubject
+    fun onUserEvent(): Observable<UserEvent> = userEventSubject.distinctUntilChanged()
 
     init {
         initialize()
@@ -107,10 +107,6 @@ class UserViewModel @Inject constructor(
             AuthenticationSource.ANONYMOUS -> ProfileActionViewState.forAnonymousUser()
             else -> ProfileActionViewState.Hidden
         }
-    }
-
-    fun isUserLoggedIn(): Boolean {
-        return userViewState.value is UserViewState.LoggedIn
     }
 
     fun forceLogin(source: LoginSource) {
@@ -145,6 +141,10 @@ class UserViewModel @Inject constructor(
                     postAnonymousLogoutEvent()
                 } else {
                     loginRepository.logout()
+                        .doOnComplete {
+                            // After a successful logout, move the user to the LoginScreen
+                            userEventSubject.onNext(UserEvent.Login)
+                        }
                 }
             }
             is UserState.Unauthenticated -> postSignInEvent()

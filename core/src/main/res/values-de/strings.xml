@@ -104,6 +104,7 @@
     <string name="dialogfragment_paging_error">Ungültige Eingabe! Die Seitenanzahl kann nicht kleiner als die aktuelle Seite sein, oder die Eingabe ist leer!</string>
     <string name="my_notes">Meine Notizen</string>
     <string name="clear">Löschen</string>
+    <string name="unauthenticated_shortcut_usage">Du must eingeloggt sein, um die Shortcuts zu nutzen.</string>
     <string name="search">Suche</string>
     <string name="search_hint">Suche…</string>
     <string name="preview_failed">Kamera kann nicht geöffnet werden. Ein Neustart könnte helfen!</string>

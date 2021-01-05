@@ -2,6 +2,7 @@ package at.shockbytes.dante.core.shortcut
 
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import at.shockbytes.dante.core.R
 import at.shockbytes.dante.core.login.LoginRepository
 import javax.inject.Inject
 
@@ -24,8 +25,7 @@ class AppShortcutHandler @Inject constructor(private val loginRepository: LoginR
                     activity.intent.putExtra(INTENT_EXTRA_APP_SHORTCUT, defaultValue)
                 }
             } else {
-                // TODO Replace String
-                Toast.makeText(activity, "YOU MUST BE AUTHENTICATED!", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, R.string.unauthenticated_shortcut_usage, Toast.LENGTH_LONG).show()
                 activity.supportFinishAfterTransition()
             }
         }

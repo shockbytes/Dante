@@ -181,6 +181,10 @@ class GoogleFirebaseLoginRepository(
             .subscribeOn(schedulers.io)
     }
 
+    override fun isLoggedIn(): Boolean {
+        return signInSubject.value is UserState.SignedInUser
+    }
+
     private fun getCurrentUserState(forceReload: Boolean = false): UserState {
         return fbAuth.currentUser
             ?.apply {

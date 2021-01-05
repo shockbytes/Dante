@@ -109,6 +109,10 @@ class UserViewModel @Inject constructor(
         }
     }
 
+    fun isUserLoggedIn(): Boolean {
+        return userViewState.value is UserViewState.LoggedIn
+    }
+
     fun forceLogin(source: LoginSource) {
         postLoginEventAndTrackValue(source)
     }

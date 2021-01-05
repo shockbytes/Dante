@@ -112,10 +112,23 @@ class MenuFragment : BaseBottomSheetFragment() {
     }
 
     private fun navigateToLogin() {
-        val sceneTransition = requireActivity()
-            .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
-            .toBundle()
-        ActivityNavigator.navigateTo(context, Destination.Login, sceneTransition)
+
+        // Navigate to the LoginActivity
+        ActivityNavigator.navigateTo(
+            context,
+            Destination.Login,
+            requireActivity()
+                .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
+                .toBundle()
+        )
+
+        /*
+         * The LoginActivity should not show the history of the previous MainActivity,
+         * therefore dismiss the MenuFragment and the MainActivity,
+         * before navigating to the LoginActivity
+         */
+        dismiss()
+        activity?.finish()
     }
 
     private fun showAnonymousLogout() {

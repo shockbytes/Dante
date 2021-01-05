@@ -75,7 +75,7 @@ The backlog is currently empty.
             - [ ] Save new field isFirstAppOpen when user successfully logged in
             - [ ] Improve onboarding hints mechanism
             - [ ] "Skip this for now" -> Keep me anonymous
-        - [ ] Logout moves user to login screen
+        - [x] Logout moves user to login screen
     - [x] Anonymous
         - [x] Allow users to upgrade to full account
         - [x] Show notice when user selects anonymous account in login screen

@@ -46,7 +46,7 @@ class MainViewModel @Inject constructor(
         val hasActiveAnnouncement = announcementProvider.getActiveAnnouncement() != null
         // Do not show announcements if the user first logs into the app,
         // even though there would be a new announcement
-        val showAnnouncement = hasActiveAnnouncement && !danteSettings.isFirstAppOpen
+        val showAnnouncement = hasActiveAnnouncement && !danteSettings.isFirstUserSession
         if (showAnnouncement) {
             eventSubject.onNext(MainEvent.Announcement)
         }

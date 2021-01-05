@@ -47,14 +47,18 @@ The backlog is currently empty.
 - [ ] Add web client support
 - [ ] Paged request when user clicks on "not my book" in book download view
 
-### Version 4.1 - FIREFLASH
+### Version 4.1 - VIEWS, DATA DRIVE AND FIREFLASH
 - [ ] Add online sync capability
+  - [ ] Use Feature Flag to remotely control this feature if things go south (or better, AB test it)
   - [ ] Migrate from local to remote storage
   - [ ] Online storage switch
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
 - [ ] Upgrade to Kotlin 1.4.20
     - [ ] Use ViewBinding
     - [ ] Remove Kotterknife
+- [ ] Backup file improvements
+    - [ ] Show path to local backup files
+    - [ ] Open file with FileProvider
 
 ## Current development
 
@@ -64,7 +68,7 @@ The backlog is currently empty.
         - [ ] Tracking
         - [ ] Terms Of Services
             - [x] Add Terms Of Services button
-            - [ ] Add ToS to dantebooks.app/term (https://www.iubenda.com/en/mobile)
+            - [ ] Add ToS to dantebooks.app/terms (https://www.iubenda.com/en/mobile)
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment
@@ -88,9 +92,6 @@ The backlog is currently empty.
         - [x] Verify minimum password length
         - [x] Handle invalid password
     - [x] Google
-- [ ] Backup file improvements
-    - [ ] Show path to local backup files
-    - [ ] Open file with FileProvider
 - [x] Upgrade to newest ktlint version
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI

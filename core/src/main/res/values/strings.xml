@@ -179,6 +179,8 @@
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>
 
+    <string name="unauthenticated_shortcut_usage">You must be logged in to use the shortcuts.</string>
+
     <string name="search">Search</string>
     <string name="search_hint">Search…</string>
     <string name="preview_failed">Cannot open the camera. Restarting your phone may help!</string>

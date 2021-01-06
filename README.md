@@ -72,13 +72,13 @@ The backlog is currently empty.
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment
-    - [ ] Login Flow
+    - [x] Login Flow
         - [x] LoginActivity is the main entry point (check splash screen)
         - [x] Show login screen when unauthenticated user opens the app
-        - [ ] Show different UI when user opens login screen after logout
-            - [ ] Save new field isFirstAppOpen when user successfully logged in
-            - [ ] Improve onboarding hints mechanism
-            - [ ] "Skip this for now" -> Keep me anonymous
+        - [x] Show different UI when user opens login screen after logout
+            - [x] Save new field isFirstAppOpen when user successfully logged in
+            - [x] Improve onboarding hints mechanism
+            - [x] "Skip this for now" -> Keep me anonymous
         - [x] Logout moves user to login screen
     - [x] Anonymous
         - [x] Allow users to upgrade to full account

@@ -123,9 +123,12 @@
 
     <!-- Login -->
     <string name="login_with_google">Login with Google</string>
+    <string name="continue_with_google">Continue with Google</string>
     <string name="login_with_mail">Login with Mail</string>
     <string name="sign_up_with_mail">Sign up with Mail</string>
+    <string name="continue_with_mail">Continue with mail</string>
     <string name="login_anonymously">Skip this for now</string>
+    <string name="continue_anonymously">Keep me anonymous</string>
     <string name="login_rationale">Login with an account to store books online, suggest books to other readers and more.</string>
     <string name="login_mail">Mail Address</string>
     <string name="login_password">Password</string>
@@ -148,9 +151,9 @@
     <string name="account_change_name_message">It will be visible for you. Other users may see your name when you suggest books to them.</string>
     <string name="account_change_name_hint">New username</string>
 
-    <string name="login_incognito">Anonymous login</string>
+    <string name="login_incognito">Anonymous Login</string>
     <string name="login_incognito_sign_up_hint">Your data will be stored as long as you stay signed in. When you sign out, your data will be erased.\n\nYou can always upgrade to a regular account later on.</string>
-    <string name="logout_incognito">Anonymous logout</string>
+    <string name="logout_incognito">Anonymous Logout</string>
     <string name="logout_incognito_hint">You are going to delete all your data right now. Proceeding now will permanently remove all your books.\n\nDo you want to proceed?</string>
 
     <string name="user_name_updated">Your username was successfully updated</string>
@@ -338,6 +341,7 @@
     <string name="error_msg_execution_exception">Download Error</string>
     <string name="error_msg_unknown">Oops, this error shouldn\'t have happened</string>
     <string name="welcome_to_dante">Welcome to Dante</string>
+    <string name="welcome_back">Welcome back!</string>
 
     <string name="prefs_is_new_user" translatable="false">prefs_is_new_user</string>
     <string name="prefs_onboarding_hints" translatable="false">prefs_onboarding_hints</string>

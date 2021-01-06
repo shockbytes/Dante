@@ -14,7 +14,6 @@ import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.addTo
-import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.bold
 import at.shockbytes.dante.util.link
 import at.shockbytes.dante.util.colored
@@ -112,7 +111,14 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun setNewUserTexts() {
-        // TODO
+        tv_login_hello.setText(R.string.welcome_to_dante)
+
+        btn_login_google.setText(R.string.login_with_google)
+        btn_login_mail.setText(R.string.login_with_mail)
+        btn_login_skip.apply {
+            setText(R.string.login_anonymously)
+            setIconResource(0)
+        }
     }
 
     private fun showTermsOfServicesButton() {
@@ -133,7 +139,14 @@ class LoginFragment : BaseFragment() {
     }
 
     private fun setStandardUserTexts() {
-        // TODO
+        tv_login_hello.setText(R.string.welcome_back)
+
+        btn_login_google.setText(R.string.continue_with_google)
+        btn_login_mail.setText(R.string.continue_with_mail)
+        btn_login_skip.apply {
+            setText(R.string.continue_anonymously)
+            setIconResource(R.drawable.ic_incognito)
+        }
     }
 
     private fun hideTermsOfServicesButton() {

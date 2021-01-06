@@ -385,5 +385,9 @@
     <string name="open_camera">Kamera wird geöffnet</string>
 
     <string name="_continue">Weiter</string>
+    <string name="continue_with_google">Weiter mit Google</string>
+    <string name="continue_with_mail">Weiter mit Mail</string>
+    <string name="continue_anonymously">Anonym bleiben</string>
+    <string name="welcome_back">Willkommen zurück!</string>
 
 </resources>

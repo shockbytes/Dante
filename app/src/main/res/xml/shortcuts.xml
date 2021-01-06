@@ -14,8 +14,8 @@
             android:targetPackage="at.shockbytes.dante">
 
             <extra
-                android:name="arg_retrieval_ordinal"
-                android:value="0" />
+                android:name="app_shortcut"
+                android:value="extra_app_shortcut_scan" />
 
         </intent>
     </shortcut>
@@ -51,7 +51,13 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="at.shockbytes.dante.ui.activity.ManualAddActivity"
-            android:targetPackage="at.shockbytes.dante" />
+            android:targetPackage="at.shockbytes.dante" >
+
+            <extra
+                android:name="app_shortcut"
+                android:value="extra_app_shortcut_manual_add" />
+
+        </intent>
 
     </shortcut>
 

@@ -94,35 +94,71 @@ class LoginFragment : BaseFragment() {
     }
 
     override fun bindViewModel() {
-        viewModel.showTermsOfServiceServiceState()
-            .observe(this, Observer(::handleTermsOfServiceState))
+        viewModel.getLoginViewState().observe(this, Observer(::handleLoginViewState))
     }
 
-    private fun handleTermsOfServiceState(showTermsOfService: Boolean) {
-
-        if (showTermsOfService) {
-            val link = getString(R.string.terms_of_services)
-                .bold()
-                .colored(ContextCompat.getColor(requireContext(), R.color.colorAccent))
-                .link {
-                    UrlLauncher.openTermsOfServicePage(requireContext())
-                    viewModel.trackOpenTermsOfServices()
-                }
-
-            tv_login_tos.apply {
-                movementMethod = LinkMovementMethod.getInstance()
-                text = getString(R.string.terms_of_services_prefix)
-                    .concat(link, getString(R.string.terms_of_services_suffix))
+    private fun handleLoginViewState(viewState: LoginViewModel.LoginViewState) {
+        when (viewState) {
+            LoginViewModel.LoginViewState.NewUser -> {
+                setNewUserTexts()
+                showTermsOfServicesButton()
+            }
+            LoginViewModel.LoginViewState.Standard -> {
+                setStandardUserTexts()
+                hideTermsOfServicesButton()
             }
         }
+    }
 
-        tv_login_tos.setVisible(showTermsOfService)
+    private fun setNewUserTexts() {
+        tv_login_hello.setText(R.string.welcome_to_dante)
+
+        btn_login_google.setText(R.string.login_with_google)
+        btn_login_mail.setText(R.string.login_with_mail)
+        btn_login_skip.apply {
+            setText(R.string.login_anonymously)
+            setIconResource(0)
+        }
+    }
+
+    private fun showTermsOfServicesButton() {
+        val link = getString(R.string.terms_of_services)
+            .bold()
+            .colored(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            .link {
+                UrlLauncher.openTermsOfServicePage(requireContext())
+                viewModel.trackOpenTermsOfServices()
+            }
+
+        tv_login_tos.apply {
+            setVisible(true)
+            movementMethod = LinkMovementMethod.getInstance()
+            text = getString(R.string.terms_of_services_prefix)
+                .concat(link, getString(R.string.terms_of_services_suffix))
+        }
+    }
+
+    private fun setStandardUserTexts() {
+        tv_login_hello.setText(R.string.welcome_back)
+
+        btn_login_google.setText(R.string.continue_with_google)
+        btn_login_mail.setText(R.string.continue_with_mail)
+        btn_login_skip.apply {
+            setText(R.string.continue_anonymously)
+            setIconResource(R.drawable.ic_incognito)
+        }
+    }
+
+    private fun hideTermsOfServicesButton() {
+        tv_login_tos.setVisible(false)
     }
 
     override fun unbindViewModel() = Unit
 
     companion object {
 
-        fun newInstance() = LoginFragment()
+        fun newInstance(): LoginFragment {
+            return LoginFragment()
+        }
     }
 }

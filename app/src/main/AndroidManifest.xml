@@ -27,11 +27,23 @@
             android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Launcher">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:theme="@style/AppTheme.Login"
+            android:screenOrientation="portrait"
+            android:noHistory="true"
+            android:exported="true" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
 
         </activity>
 
@@ -56,12 +68,6 @@
         <activity
             android:name=".ui.activity.StatisticsActivity"
             android:label="@string/label_stats" />
-
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:theme="@style/AppTheme.Login"
-            android:screenOrientation="portrait"
-            android:exported="true" />
 
         <activity
             android:name=".ui.activity.InspirationsActivity"
@@ -104,10 +110,6 @@
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="barcode" />
-
-        <meta-data
-            android:name="android.app.shortcuts"
-            android:resource="@xml/shortcuts" />
 
     </application>
 

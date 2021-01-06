@@ -8,6 +8,7 @@ import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
+import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
@@ -70,6 +71,8 @@ interface AppComponent {
     fun inject(activity: LoginActivity)
 
     fun inject(activity: NotesActivity)
+
+    fun inject(activity: ManualAddActivity)
 
     fun inject(fragment: MainBookFragment)
 

@@ -47,14 +47,18 @@ The backlog is currently empty.
 - [ ] Add web client support
 - [ ] Paged request when user clicks on "not my book" in book download view
 
-### Version 4.1 - FIREFLASH
+### Version 4.1 - VIEWS, DATA DRIVE AND FIREFLASH
 - [ ] Add online sync capability
+  - [ ] Use Feature Flag to remotely control this feature if things go south (or better, AB test it)
   - [ ] Migrate from local to remote storage
   - [ ] Online storage switch
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
 - [ ] Upgrade to Kotlin 1.4.20
     - [ ] Use ViewBinding
     - [ ] Remove Kotterknife
+- [ ] Backup file improvements
+    - [ ] Show path to local backup files
+    - [ ] Open file with FileProvider
 
 ## Current development
 
@@ -64,18 +68,18 @@ The backlog is currently empty.
         - [ ] Tracking
         - [ ] Terms Of Services
             - [x] Add Terms Of Services button
-            - [ ] Add ToS to dantebooks.app/term (https://www.iubenda.com/en/mobile)
+            - [ ] Add ToS to dantebooks.app/terms (https://www.iubenda.com/en/mobile)
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment
-    - [ ] Login Flow
-        - [ ] LoginActivity is the main entry point
-        - [ ] Show login screen when unauthenticated user opens the app
-        - [ ] Show different UI when user opens login screen after logout
-            - [ ] Save new field isFirstAppOpen when user successfully logged in
-            - [ ] Improve onboarding hints mechanism
-            - [ ] "Skip this for now" -> Keep me anonymous
-        - [ ] Logout moves user to login screen
+    - [x] Login Flow
+        - [x] LoginActivity is the main entry point (check splash screen)
+        - [x] Show login screen when unauthenticated user opens the app
+        - [x] Show different UI when user opens login screen after logout
+            - [x] Save new field isFirstAppOpen when user successfully logged in
+            - [x] Improve onboarding hints mechanism
+            - [x] "Skip this for now" -> Keep me anonymous
+        - [x] Logout moves user to login screen
     - [x] Anonymous
         - [x] Allow users to upgrade to full account
         - [x] Show notice when user selects anonymous account in login screen
@@ -88,9 +92,6 @@ The backlog is currently empty.
         - [x] Verify minimum password length
         - [x] Handle invalid password
     - [x] Google
-- [ ] Backup file improvements
-    - [ ] Show path to local backup files
-    - [ ] Open file with FileProvider
 - [x] Upgrade to newest ktlint version
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
@@ -101,6 +102,7 @@ The backlog is currently empty.
     - [ ] Issues with deleting labels (related to checkAllowWritesOnUiThread)
     - [ ] Issues with outdated book data (after closing and reopening a book)
     - [ ] Finally fix GlideException pollution
+    - [ ] Firebase ANR that requires an uninstall
 
 ## Changelog
 

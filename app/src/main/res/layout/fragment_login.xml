@@ -85,6 +85,8 @@
                 android:text="@string/login_anonymously"
                 android:textAllCaps="false"
                 android:textColor="@color/danteAccent"
+                app:iconTint="@color/danteAccent"
+                app:iconPadding="16dp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_login_tos"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -5,15 +5,21 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.shortcut.AppShortcutHandler
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
+import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
  * Date:    30.08.2018
  */
 class ManualAddActivity : ContainerTintableBackNavigableActivity() {
+
+    @Inject
+    lateinit var appShortcutHandler: AppShortcutHandler
 
     private var bookEntity: BookEntity? = null
 
@@ -27,7 +33,20 @@ class ManualAddActivity : ContainerTintableBackNavigableActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun injectToGraph(appComponent: AppComponent) {}
+    override fun injectToGraph(appComponent: AppComponent) {
+        appComponent.inject(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appShortcutHandler.handleAppShortcutForActivity(
+            activity = this,
+            shortcutTitle = "extra_app_shortcut_manual_add",
+            action = {
+                Timber.d("Coming from app shortcut. Do nothing here.")
+            }
+        )
+    }
 
     companion object {
 

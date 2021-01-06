@@ -7,9 +7,12 @@ import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.sdkVersionOrAbove
 import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.core.ActivityTransition
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.LoginFragment
@@ -40,20 +43,21 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun bindViewModel() {
-        viewModel.getLoginState().observe(this, { state ->
-            when (state) {
-                is LoginViewModel.LoginState.LoggedIn -> {
-                    // ActivityNavigator.navigateTo(this, Destination.Main())
-                    supportFinishAfterTransition()
-                }
-                is LoginViewModel.LoginState.LoggedOut -> {
-                    showLoginFragment()
-                }
-                is LoginViewModel.LoginState.Error -> {
-                    showSnackbar(getString(state.errorMessageRes))
-                }
+        viewModel.getLoginState().observe(this, Observer(::handleLoginState))
+    }
+
+    private fun handleLoginState(state: LoginViewModel.LoginState) {
+        when (state) {
+            is LoginViewModel.LoginState.LoggedIn -> {
+                ActivityNavigator.navigateTo(this, Destination.Main())
             }
-        })
+            is LoginViewModel.LoginState.LoggedOut -> {
+                showLoginFragment()
+            }
+            is LoginViewModel.LoginState.Error -> {
+                showSnackbar(getString(state.errorMessageRes))
+            }
+        }
     }
 
     private fun setFullscreen() {

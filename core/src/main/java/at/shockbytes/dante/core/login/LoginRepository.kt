@@ -35,6 +35,8 @@ interface LoginRepository {
 
     fun getAccount(): Single<UserState>
 
+    fun isLoggedIn(): Boolean
+
     fun getAuthorizationHeader(): Single<String>
 
     /**

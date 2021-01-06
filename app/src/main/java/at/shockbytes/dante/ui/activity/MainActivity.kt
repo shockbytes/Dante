@@ -25,6 +25,7 @@ import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.core.shortcut.AppShortcutHandler
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.viewmodel.UserViewModel
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -48,6 +49,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var danteSettings: DanteSettings
+    
+    @Inject
+    lateinit var appShortcutHandler: AppShortcutHandler
 
     private var tabId: Int = R.id.menu_navigation_current
 
@@ -136,6 +140,15 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(ID_SELECTED_TAB, tabId)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appShortcutHandler.handleAppShortcutForActivity(
+            activity = this,
+            shortcutTitle = "extra_app_shortcut_title",
+            action = ::showAddByTitleDialog
+        )
     }
 
     override fun onStop() {
@@ -238,12 +251,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         val bookDetailInfo = intent.getParcelableExtra<Destination.BookDetail.BookDetailInfo>(ARG_OPEN_BOOK_DETAIL_FOR_ID)
         val openCameraAfterLaunch = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
-        val hasAppShortcutExtra = intent.hasExtra("app_shortcut")
 
         when {
             bookDetailInfo != null -> navigateToBookDetailScreen(bookDetailInfo)
             openCameraAfterLaunch -> showToast(R.string.open_camera)
-            hasAppShortcutExtra -> checkForAppShortcut()
         }
     }
 
@@ -268,9 +279,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         // It has to be delayed, otherwise it will appear on the wrong
         // position on top of the BottomNavigationBar
-        runDelayed(1000) {
-            if (danteSettings.isFirstAppOpen) {
-                danteSettings.isFirstAppOpen = false
+        runDelayed(3_000) {
+            if (danteSettings.hasUserSeenOnboardingHints) {
+                danteSettings.hasUserSeenOnboardingHints = false
                 showOnboardingHintViews()
             }
         }
@@ -386,17 +397,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun setupTheme(theme: ThemeState) {
         AppCompatDelegate.setDefaultNightMode(theme.themeMode)
-    }
-
-    private fun checkForAppShortcut() {
-        handleAppShortcut(intent.getStringExtra("app_shortcut"))
-    }
-
-    private fun handleAppShortcut(stringExtra: String?) {
-
-        when (stringExtra) {
-            "extra_app_shortcut_title" -> showAddByTitleDialog()
-        }
     }
 
     companion object {

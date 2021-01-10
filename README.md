@@ -68,7 +68,7 @@ The backlog is currently empty.
         - [ ] Tracking
         - [ ] Terms Of Services
             - [x] Add Terms Of Services button
-            - [ ] Add ToS to dantebooks.app/terms (https://www.iubenda.com/en/mobile)
+            - [ ] Add ToS to dantebooks.app/#/terms (https://www.iubenda.com/en/mobile)
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment

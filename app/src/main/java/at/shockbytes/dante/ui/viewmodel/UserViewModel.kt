@@ -144,6 +144,7 @@ class UserViewModel @Inject constructor(
                         .doOnComplete {
                             // After a successful logout, move the user to the LoginScreen
                             userEventSubject.onNext(UserEvent.Login)
+                            tracker.track(DanteTrackingEvent.Logout(userState.user.authenticationSource))
                         }
                 }
             }
@@ -167,13 +168,16 @@ class UserViewModel @Inject constructor(
     }
 
     private fun postLoginEventAndTrackValue(source: LoginSource) {
-        tracker.track(DanteTrackingEvent.Login(source))
+        tracker.track(DanteTrackingEvent.OpenLogin(source))
         userEventSubject.onNext(UserEvent.Login)
     }
 
     fun anonymousUpgrade(credentials: MailLoginCredentials) {
         loginRepository.upgradeAnonymousAccount(credentials.address, credentials.password)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .doOnComplete {
+                tracker.track(DanteTrackingEvent.AnonymousUpgrade)
+            }
             .subscribe({
                 // TODO Post event
                 Timber.e("Successfully upgrade anonymous account")
@@ -191,6 +195,7 @@ class UserViewModel @Inject constructor(
             .doOnComplete(loginRepository::reloadAccount)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
+                tracker.track(DanteTrackingEvent.UserImageChanged)
                 userEventSubject.onNext(UserEvent.UserImageEvent.UserImageUpdated)
             }, { throwable ->
                 userEventSubject.onNext(
@@ -211,6 +216,7 @@ class UserViewModel @Inject constructor(
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .doOnComplete(loginRepository::reloadAccount)
             .subscribe({
+                tracker.track(DanteTrackingEvent.UserNameChanged)
                 userEventSubject.onNext(UserEvent.UserNameEvent.UserNameUpdated)
             }, { throwable ->
                 userEventSubject.onNext(

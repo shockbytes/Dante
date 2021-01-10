@@ -65,7 +65,7 @@ The backlog is currently empty.
 ### Version 4.0 - CAMPING WITH FIREBASE
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
     - [ ] General
-        - [ ] Tracking
+        - [x] Tracking
         - [ ] Terms Of Services
             - [x] Add Terms Of Services button
             - [ ] Add ToS to dantebooks.app/#/terms (https://www.iubenda.com/en/mobile)
@@ -85,6 +85,7 @@ The backlog is currently empty.
         - [x] Show notice when user selects anonymous account in login screen
         - [x] Show notice that data will be wiped once logged out
     - [ ] Mail
+        - [ ] Check if a Google User can create an account with the same Gmail Mail credentials
         - [ ] Update password in app (Implement new SimpleInputDialogFragment on Fragment basis)
         - [x] Forgot password functionality
         - [x] Create Account with Mail vs Login with Mail

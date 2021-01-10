@@ -12,6 +12,7 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
+import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.bold
@@ -59,6 +60,15 @@ class LoginFragment : BaseFragment() {
             showAnonymousSignUpHintDialog {
                 viewModel.loginAnonymously()
             }
+        }
+
+        btn_login_help.setOnClickListener {
+            viewModel.trackLoginProblemClicked()
+            MailLauncher.sendMail(
+                requireActivity(),
+                subject = getString(R.string.login_problems_header),
+                attachVersion = true
+            )
         }
     }
 

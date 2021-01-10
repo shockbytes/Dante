@@ -79,8 +79,11 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
         findPreference<Preference>(getString(R.string.prefs_feedback_key))?.apply {
             this.setOnPreferenceClickListener {
-                val body = "\n\n\nVersion ${BuildConfig.VERSION_NAME} - ${BuildConfig.VERSION_CODE}"
-                MailLauncher.sendMail(requireActivity(), getString(R.string.mail_feedback), body)
+                MailLauncher.sendMail(
+                    requireActivity(),
+                    subject = getString(R.string.mail_feedback),
+                    attachVersion = true
+                )
                 true
             }
         }

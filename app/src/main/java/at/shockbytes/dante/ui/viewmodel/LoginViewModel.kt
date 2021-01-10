@@ -135,4 +135,8 @@ class LoginViewModel @Inject constructor(
     fun trackOpenTermsOfServices() {
         tracker.track(DanteTrackingEvent.OpenTermsOfServices)
     }
+
+    fun trackLoginProblemClicked() {
+        TODO("Not yet implemented")
+    }
 }

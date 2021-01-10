@@ -392,5 +392,6 @@
     <string name="continue_anonymously">Anonym bleiben</string>
     <string name="welcome_back">Willkommen zurück!</string>
     <string name="statistics_header_books_per_year">Bücher pro Monat</string>
+    <string name="login_problems">Probleme beim Login?</string>
 
 </resources>

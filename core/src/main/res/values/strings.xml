@@ -142,6 +142,8 @@
     <string name="forgot_password">Forgot password</string>
     <string name="reset_password_success">A password change request has been sent to %s.</string>
     <string name="reset_password_error">Sorry, we were unable to send a change request to %s.</string>
+    <string name="login_problems">Login problems?</string>
+    <string name="login_problems_header">Problems while logging into Dante</string>
 
     <string name="account_upgrade">Upgrade</string>
     <string name="account_change_name">Change name</string>

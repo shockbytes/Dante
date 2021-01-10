@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.login.AuthenticationSource
 import at.shockbytes.dante.core.login.GoogleAuth
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.MailLoginCredentials
@@ -87,26 +88,43 @@ class LoginViewModel @Inject constructor(
 
     fun authorizeWithMail(credentials: MailLoginCredentials) {
         if (credentials.isSignUp) {
-            login(loginRepository.createAccountWithMail(credentials.address, credentials.password))
+            login(
+                loginRepository.createAccountWithMail(credentials.address, credentials.password),
+                trackingEvent = DanteTrackingEvent.SignUp(AuthenticationSource.MAIL)
+            )
         } else {
-            login(loginRepository.loginWithMail(credentials.address, credentials.password))
+            login(
+                loginRepository.loginWithMail(credentials.address, credentials.password),
+                trackingEvent = DanteTrackingEvent.Login(AuthenticationSource.MAIL)
+            )
         }
     }
 
     fun loginAnonymously() {
-        login(loginRepository.loginAnonymously())
+        login(
+            loginRepository.loginAnonymously(),
+            trackingEvent = DanteTrackingEvent.SignUp(AuthenticationSource.ANONYMOUS)
+        )
     }
 
     fun loginWithGoogle(data: Intent) {
-        login(loginRepository.loginWithGoogle(data), errorMessageRes = R.string.login_error_google)
+        login(
+            loginRepository.loginWithGoogle(data),
+            trackingEvent = DanteTrackingEvent.Login(AuthenticationSource.GOOGLE),
+            errorMessageRes = R.string.login_error_google
+        )
     }
 
     private fun login(
         source: Completable,
+        trackingEvent: DanteTrackingEvent,
         @StringRes errorMessageRes: Int = R.string.login_general_error
     ) {
         source
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .doOnComplete {
+                tracker.track(trackingEvent)
+            }
             .doOnComplete(::markUserOpenedApp)
             .subscribe({
                 loginState.postValue(LoginState.LoggedIn)
@@ -137,6 +155,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun trackLoginProblemClicked() {
-        TODO("Not yet implemented")
+        tracker.track(DanteTrackingEvent.ReportLoginProblem)
     }
 }

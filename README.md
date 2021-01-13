@@ -67,7 +67,7 @@ The backlog is currently empty.
 ## Changelog
 
 ### Version 3.18.2 - Bugfixes
-- [ ] Issues with outdated book data (after closing and reopening a book)
+- [x] Issues with outdated book data (after closing and reopening a book)
 - [x] Fix delete labels
 - [x] Fix delete page records
 - [x] FirebasModule.provideRemoteConfig crash

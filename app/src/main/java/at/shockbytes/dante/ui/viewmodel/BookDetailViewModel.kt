@@ -54,7 +54,7 @@ class BookDetailViewModel @Inject constructor(
 
     sealed class BookDetailEvent {
 
-        data class Message(val msgRes: Int): BookDetailEvent()
+        data class Message(val msgRes: Int) : BookDetailEvent()
     }
 
     private val eventSubject = PublishSubject.create<BookDetailEvent>()
@@ -329,11 +329,13 @@ class BookDetailViewModel @Inject constructor(
             val updatedLabels = book.labels + attachableLabel
             val copy = book.copy(labels = updatedLabels)
             updateDaoAndObserver(copy)
+
+            bookLabels.postValue(updatedLabels)
         }
     }
 
     fun requestAddLabels() {
-        getBookFromLiveData()?.labels?.let(addLabelsSubject::onNext)
+        bookLabels.value?.let(addLabelsSubject::onNext)
     }
 
     fun removeLabel(label: BookLabel) {

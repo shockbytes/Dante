@@ -2,6 +2,8 @@ package at.shockbytes.dante.core.book.realm
 
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import io.realm.RealmObject
+import io.realm.RealmQuery
 
 /**
  * Author:  Martin Macheiner
@@ -13,10 +15,23 @@ class RealmInstanceProvider(config: RealmConfiguration) {
         Realm.setDefaultConfiguration(config)
     }
 
-    val instance: Realm
-        get() = Realm.getDefaultInstance()
+    fun instance(): Realm {
+        val realm = Realm.getDefaultInstance()
+        realm.refresh()
+        return realm
+    }
 
-    fun write(block: (Realm) -> Unit) {
-        instance.use(block)
+    inline fun <reified T : RealmObject> createObject(): T {
+        return instance().createObject(T::class.java)
+    }
+
+    inline fun <reified T : RealmObject> read(): RealmQuery<T> {
+        return instance().where(T::class.java)
+    }
+
+    fun executeTransaction(block: (Realm) -> Unit) {
+        instance().use { realm ->
+            realm.executeTransaction(block)
+        }
     }
 }

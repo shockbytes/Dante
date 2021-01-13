@@ -41,7 +41,7 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
             .coreModule(
                 CoreModule(
                     app = this,
-                    config = CoreModule.CoreModuleConfig(allowRealmExecutionOnUiThread = false)
+                    config = CoreModule.CoreModuleConfig(allowRealmExecutionOnUiThread = true)
                 )
             )
             .networkModule(NetworkModule())

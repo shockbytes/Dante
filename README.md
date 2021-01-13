@@ -67,12 +67,11 @@ The backlog is currently empty.
 ## Changelog
 
 ### Version 3.18.2 - Bugfixes
-- [x] Issues with outdated book data (after closing and reopening a book)
-- [x] Fix delete labels
-- [x] Fix delete page records
-- [x] FirebasModule.provideRemoteConfig crash
-- [x] BarcodeCaptureActivity.startCamera
-- [ ] Finally fix GlideException pollution
+* Issues with outdated book data (after closing and reopening a book)
+* Fix delete labels
+* Fix delete page records
+* FirebasModule.provideRemoteConfig crash
+* BarcodeCaptureActivity.startCamera
 
 ### Version 3.18.1
 * Theme Support

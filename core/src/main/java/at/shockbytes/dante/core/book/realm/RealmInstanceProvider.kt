@@ -15,22 +15,24 @@ class RealmInstanceProvider(config: RealmConfiguration) {
         Realm.setDefaultConfiguration(config)
     }
 
-    fun instance(): Realm {
+    fun instance(refreshInstance: Boolean = true): Realm {
         val realm = Realm.getDefaultInstance()
-        realm.refresh()
+        if (refreshInstance) {
+            realm.refresh()
+        }
         return realm
     }
 
-    inline fun <reified T : RealmObject> createObject(): T {
-        return instance().createObject(T::class.java)
+    inline fun <reified T : RealmObject> createObject(refreshInstance: Boolean = true): T {
+        return instance(refreshInstance).createObject(T::class.java)
     }
 
-    inline fun <reified T : RealmObject> read(): RealmQuery<T> {
-        return instance().where(T::class.java)
+    inline fun <reified T : RealmObject> read(refreshInstance: Boolean = true): RealmQuery<T> {
+        return instance(refreshInstance).where(T::class.java)
     }
 
-    fun executeTransaction(block: (Realm) -> Unit) {
-        instance().use { realm ->
+    fun executeTransaction(refreshInstance: Boolean = true, block: (Realm) -> Unit) {
+        instance(refreshInstance).use { realm ->
             realm.executeTransaction(block)
         }
     }

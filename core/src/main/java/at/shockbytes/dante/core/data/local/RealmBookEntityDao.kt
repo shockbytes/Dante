@@ -34,8 +34,8 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
      */
     private val lastId: Long
         get() {
-            val config = realm.read<RealmBookConfig>().findFirst()
-                ?: realm.createObject()
+            val config = realm.read<RealmBookConfig>(refreshInstance = false).findFirst()
+                ?: realm.createObject(refreshInstance = false)
             return config.getLastPrimaryKey()
         }
 
@@ -72,7 +72,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override fun create(entity: BookEntity): Completable {
         return completableOf {
-            realm.executeTransaction { realm ->
+            realm.executeTransaction(refreshInstance = false) { realm ->
                 val id = lastId
                 entity.id = id
                 realm.copyToRealm(mapper.mapFrom(entity))

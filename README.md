@@ -66,6 +66,16 @@ The backlog is currently empty.
 
 ## Changelog
 
+### Version 3.18.2 - Bugfixes
+- [ ] Fix delete labels
+- [ ] Fix delete page records
+- [x] FirebasModule.provideRemoteConfig crash
+- [ ] BarcodeCaptureActivity.startCamera
+- [ ] BooksAndPagesDiagramView.styleChartAndPagesDiagramView (cannot load font)
+- [ ] Issues with deleting labels (related to checkAllowWritesOnUiThread)
+- [ ] Issues with outdated book data (after closing and reopening a book)
+- [ ] Finally fix GlideException pollution
+
 ### Version 3.18.1
 * Theme Support
 * Empty suggestion text bug

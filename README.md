@@ -70,9 +70,7 @@ The backlog is currently empty.
 - [ ] Fix delete labels
 - [ ] Fix delete page records
 - [x] FirebasModule.provideRemoteConfig crash
-- [ ] BarcodeCaptureActivity.startCamera
-- [ ] BooksAndPagesDiagramView.styleChartAndPagesDiagramView (cannot load font)
-- [ ] Issues with deleting labels (related to checkAllowWritesOnUiThread)
+- [x] BarcodeCaptureActivity.startCamera
 - [ ] Issues with outdated book data (after closing and reopening a book)
 - [ ] Finally fix GlideException pollution
 

@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import android.os.Parcelable
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
@@ -13,6 +14,7 @@ import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.settings.DanteSettings
 import io.reactivex.Completable
 import io.reactivex.Observable
@@ -31,7 +33,8 @@ import javax.inject.Inject
 class BookDetailViewModel @Inject constructor(
     private val bookRepository: BookRepository,
     private val settings: DanteSettings,
-    private val pageRecordDao: PageRecordDao
+    private val pageRecordDao: PageRecordDao,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     data class DetailViewState(
@@ -49,8 +52,19 @@ class BookDetailViewModel @Inject constructor(
         object Absent : PageRecordsViewState()
     }
 
+    sealed class BookDetailEvent {
+
+        data class Message(val msgRes: Int): BookDetailEvent()
+    }
+
+    private val eventSubject = PublishSubject.create<BookDetailEvent>()
+    fun onBookDetailEvent(): Observable<BookDetailEvent> = eventSubject
+
     private val viewState = MutableLiveData<DetailViewState>()
     fun getViewState(): LiveData<DetailViewState> = viewState
+
+    private val bookLabels = MutableLiveData<List<BookLabel>>()
+    fun getLabels(): LiveData<List<BookLabel>> = bookLabels
 
     private val pageRecords = MutableLiveData<PageRecordsViewState>()
     fun getPageRecordsViewState(): LiveData<PageRecordsViewState> = pageRecords
@@ -118,6 +132,9 @@ class BookDetailViewModel @Inject constructor(
     private fun fetchBook(bookId: Long) {
         bookRepository[bookId]
             .doOnSuccess(::initializePagesAtInitFromFetch)
+            .doOnSuccess { book ->
+                bookLabels.postValue(book.labels)
+            }
             .map(::craftViewState)
             .subscribe(viewState::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
@@ -321,13 +338,24 @@ class BookDetailViewModel @Inject constructor(
 
     fun removeLabel(label: BookLabel) {
         bookRepository.deleteBookLabel(label)
+            .subscribeOn(schedulers.io)
             .subscribe({
+                eventSubject.onNext(BookDetailEvent.Message(R.string.label_deletion_success))
                 // Reload the book once a label got deleted
-                fetchBook(bookId)
+                bookLabels.postValue(removeDeletedLabelFromLiveData(label))
             }, { throwable ->
                 Timber.e(throwable)
+                eventSubject.onNext(BookDetailEvent.Message(R.string.label_deletion_error))
             })
             .addTo(compositeDisposable)
+    }
+
+    private fun removeDeletedLabelFromLiveData(label: BookLabel): List<BookLabel> {
+        return bookLabels.value?.toMutableList()
+            ?.apply {
+                remove(label)
+            }
+            ?: listOf()
     }
 
     /**
@@ -344,6 +372,7 @@ class BookDetailViewModel @Inject constructor(
                     resetCurrentPageToZero()
                 )
             )
+            .subscribeOn(schedulers.io)
             .subscribe(::reload, Timber::e)
             .addTo(compositeDisposable)
     }

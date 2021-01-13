@@ -213,12 +213,19 @@ class BookDetailFragment : BaseFragment(),
     }
 
     override fun bindViewModel() {
-        viewModel.getViewState().observe(this, Observer { viewState ->
+        viewModel.getViewState().observe(this, { viewState ->
             initializeBookInformation(viewState.book, viewState.showSummary)
             initializeTimeInformation(viewState.book)
         })
 
+        viewModel.getLabels().observe(this, Observer(::setupLabels))
+
         viewModel.getPageRecordsViewState().observe(this, Observer(::handlePageRecordViewState))
+
+        viewModel.onBookDetailEvent()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::handleBookDetailEvent, ExceptionHandlers::defaultExceptionHandler)
+            .addTo(compositeDisposable)
 
         viewModel.showBookFinishedDialogEvent
             .observeOn(AndroidSchedulers.mainThread())
@@ -395,7 +402,6 @@ class BookDetailFragment : BaseFragment(),
 
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)
-        setupLabels(book.labels)
     }
 
     private fun handlePageRecordViewState(
@@ -409,6 +415,12 @@ class BookDetailFragment : BaseFragment(),
             BookDetailViewModel.PageRecordsViewState.Absent -> {
                 group_details_pages.setVisible(false)
             }
+        }
+    }
+
+    private fun handleBookDetailEvent(event: BookDetailViewModel.BookDetailEvent) {
+        when (event) {
+            is BookDetailViewModel.BookDetailEvent.Message -> showToast(event.msgRes)
         }
     }
 
@@ -433,36 +445,35 @@ class BookDetailFragment : BaseFragment(),
     private fun showPageRecordsOverview(bookId: Long) {
         registerForPopupMenu(
             pages_diagram_view.actionView,
-            R.menu.menu_page_records_details,
-            PopupMenu.OnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.menu_page_records_details -> {
-                        DanteUtils.addFragmentToActivity(
-                            parentFragmentManager,
-                            PageRecordsDetailFragment.newInstance(bookId),
-                            android.R.id.content,
-                            addToBackStack = true
-                        )
-                    }
-                    R.id.menu_page_records_reset -> {
-                        MaterialDialog(requireContext()).show {
-                            icon(R.drawable.ic_delete)
-                            title(text = getString(R.string.ask_for_all_page_record_deletion_title))
-                            message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
-                            positiveButton(R.string.action_delete) {
-                                viewModel.deleteAllPageRecords()
-                            }
-                            negativeButton(android.R.string.cancel) {
-                                dismiss()
-                            }
-                            cancelOnTouchOutside(false)
-                            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+            R.menu.menu_page_records_details
+        ) { item ->
+            when (item.itemId) {
+                R.id.menu_page_records_details -> {
+                    DanteUtils.addFragmentToActivity(
+                        parentFragmentManager,
+                        PageRecordsDetailFragment.newInstance(bookId),
+                        android.R.id.content,
+                        addToBackStack = true
+                    )
+                }
+                R.id.menu_page_records_reset -> {
+                    MaterialDialog(requireContext()).show {
+                        icon(R.drawable.ic_delete)
+                        title(text = getString(R.string.ask_for_all_page_record_deletion_title))
+                        message(text = getString(R.string.ask_for_all_page_record_deletion_msg))
+                        positiveButton(R.string.action_delete) {
+                            viewModel.deleteAllPageRecords()
                         }
+                        negativeButton(android.R.string.cancel) {
+                            dismiss()
+                        }
+                        cancelOnTouchOutside(false)
+                        cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
                     }
                 }
-                true
             }
-        )
+            true
+        }
     }
 
     private fun setupViewListener() {

@@ -151,6 +151,9 @@
     <string name="new_label_title_exists">This title already exists</string>
     <string name="empty_label_picker">No labels available.\nCreate a new label first.</string>
     <string name="new_label_name">Name</string>
+    <string name="label_deletion_error">Label could not be removed from the book</string>
+    <string name="label_deletion_success">Label removed from book</string>
+
     <string name="choose_color">Choose a color</string>
     <string name="search_online">Search online</string>
     <string name="search_online_hint">No books found in your library. Do you want to search online?</string>

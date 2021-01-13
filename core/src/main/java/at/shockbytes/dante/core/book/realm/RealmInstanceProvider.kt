@@ -15,4 +15,8 @@ class RealmInstanceProvider(config: RealmConfiguration) {
 
     val instance: Realm
         get() = Realm.getDefaultInstance()
+
+    fun write(block: (Realm) -> Unit) {
+        instance.use(block)
+    }
 }

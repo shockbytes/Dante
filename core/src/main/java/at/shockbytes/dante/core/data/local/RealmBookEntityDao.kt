@@ -148,14 +148,16 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     override fun deleteBookLabel(bookLabel: BookLabel): Completable {
         return Completable.create { emitter ->
             realm.instance.executeTransaction { realm ->
-                val label = realm.where(labelClass)
+                val labels = realm.where(labelClass)
                     .equalTo("title", bookLabel.title)
                     .and()
                     .equalTo("bookId", bookLabel.bookId)
-                    .findFirst()
+                    .findAll()
 
-                if (label != null) {
-                    label.deleteFromRealm()
+                if (labels != null && labels.isNotEmpty()) {
+                    labels.forEach { rbl ->
+                        rbl.deleteFromRealm()
+                    }
                     emitter.onComplete()
                 } else {
                     emitter.tryOnError(RealmBookLabelDeletionException(bookLabel.title))

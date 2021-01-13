@@ -66,9 +66,10 @@ The backlog is currently empty.
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
     - [ ] General
         - [x] Tracking
+        - [ ] New Privacy Policy
         - [ ] Terms Of Services
             - [x] Add Terms Of Services button
-            - [ ] Add ToS to dantebooks.app/#/terms (https://www.iubenda.com/en/mobile)
+            - [ ] Add Terms of Services to dantebooks.app/#/terms (https://www.iubenda.com/en/mobile)
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment
@@ -94,12 +95,13 @@ The backlog is currently empty.
         - [x] Handle invalid password
     - [x] Google
 - [x] Upgrade to newest ktlint version
-- [x] Yearly book statistics
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
+- [ ] Yearly books statistics
 - [ ] Bugfixes
     - [x] Handle BookId backup issues!
-    - [ ] Firebase ANR that requires an uninstall
+    - [ ] Enlarge book cover screen
+    - [ ] Firebase ANR that requires an uninstall (sometimes)
 
 ## Changelog
 

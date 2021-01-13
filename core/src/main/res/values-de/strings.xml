@@ -334,7 +334,7 @@
     <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen. Bitte schlage auch du Bücher für andere vor.</string>
     <string name="book_added_to_wishlist">%s wurde zur Wunschliste hinzugefügt</string>
     <string name="suggest">Vorschlagen</string>
-    <string name="prefs_ad_free_medium_article_title">Lies hier warum Dante keine Werbung schaltet</string>
+    <string name="prefs_ad_free_medium_article_title">Warum Dante werbefrei bleibt</string>
 
     <string name="no_suggestions_for_user">Es tut uns Leid. Es sind gerade keine Vorschläge für dich vorhanden. Warte ein bisschen bis deine Kollegen ein paar Bücher vorschlagen.</string>
 
@@ -352,5 +352,7 @@
     <string name="suggestion_placed_error">Oh nein! Sieht so aus als gäbe es ein Problem. Bitte versuche es später wieder.</string>
     <string name="report">Melden</string>
     <string name="open_camera">Kamera wird geöffnet</string>
+    <string name="label_deletion_error">Label konnte nicht vom Buch entfernt werden</string>
+    <string name="label_deletion_success">Label wurde vom Buch entfernt</string>
 
 </resources>

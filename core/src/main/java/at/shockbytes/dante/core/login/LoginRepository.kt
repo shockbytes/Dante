@@ -13,7 +13,7 @@ interface LoginRepository {
 
     fun loginWithGoogle(data: Intent): Completable
 
-    fun fetchSignInMethodsForEmail(mailAddress: String): Single<List<String>>
+    fun fetchRegisteredAuthenticationSourcesForEmail(mailAddress: String): Single<List<AuthenticationSource>>
 
     fun createAccountWithMail(mailAddress: String, password: String): Completable
 

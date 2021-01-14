@@ -12,6 +12,8 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -53,6 +55,14 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
             .subscribe(::handlePasswordValidation)
             .addTo(compositeDisposable)
 
+        viewModel.onGoogleMailLoginAttempt()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                editTextMailAddress.setText("")
+                showGoogleMailLogin()
+            }
+            .addTo(compositeDisposable)
+
         Observable
             .combineLatest(
                 viewModel.isPasswordValid(),
@@ -61,6 +71,19 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
             )
             .subscribe(btn_login_mail::setEnabled)
             .addTo(compositeDisposable)
+    }
+
+    private fun showGoogleMailLogin() {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_google)
+            title(text = getString(R.string.login_mail_with_google_account))
+            message(text = getString(R.string.login_mail_with_google_account_message))
+            positiveButton(R.string.got_it) {
+                dismiss()
+            }
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
     }
 
     private fun handleStep(step: MailLoginViewModel.MailLoginStep) {

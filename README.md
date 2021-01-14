@@ -86,8 +86,8 @@ The backlog is currently empty.
         - [x] Show notice when user selects anonymous account in login screen
         - [x] Show notice that data will be wiped once logged out
     - [ ] Mail
-        - [ ] Check if a Google User can create an account with the same Gmail Mail credentials
         - [ ] Update password in app (Implement new SimpleInputDialogFragment on Fragment basis)
+        - [x] Check if a Google User can create an account with the same Gmail Mail credentials
         - [x] Forgot password functionality
         - [x] Create Account with Mail vs Login with Mail
         - [x] Verify email in bottom sheet

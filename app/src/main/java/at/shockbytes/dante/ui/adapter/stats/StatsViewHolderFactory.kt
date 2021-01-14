@@ -13,6 +13,7 @@ import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsLanguageViewHold
 import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsOthersViewHolder
 import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsPagesOverTimeViewHolder
 import at.shockbytes.dante.ui.adapter.stats.viewholder.BookStatsReadingDurationViewHolder
+import at.shockbytes.dante.ui.adapter.stats.viewholder.BooksPerYearViewHolder
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.ViewHolderTypeFactory
 
@@ -35,6 +36,7 @@ class StatsViewHolderFactory(
             R.layout.item_stats_others -> BookStatsOthersViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_labels -> BookStatsLabelsViewHolder(inflater.inflate(viewType, parent, false))
             R.layout.item_stats_pages_over_time -> BookStatsPagesOverTimeViewHolder(inflater.inflate(viewType, parent, false), onChangeGoalActionListener)
+            R.layout.item_stats_books_per_year -> BooksPerYearViewHolder(inflater.inflate(viewType, parent, false))
             else -> throw IllegalStateException("Unknown view type $viewType")
         }
     }

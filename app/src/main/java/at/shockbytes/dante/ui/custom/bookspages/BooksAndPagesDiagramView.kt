@@ -53,6 +53,12 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
             }
         }
 
+    fun hideHeader() {
+        tv_page_record_header.setVisible(false)
+        btn_page_record_action.setVisible(false)
+        iv_page_record_overflow.setVisible(false)
+    }
+
     fun setData(
         dataPoints: List<BooksAndPageRecordDataPoint>,
         diagramOptions: BooksAndPagesDiagramOptions = BooksAndPagesDiagramOptions(),

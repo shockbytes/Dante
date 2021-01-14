@@ -257,8 +257,9 @@
     <string name="statistics_header_time">Reading time</string>
     <string name="statistics_header_languages">Languages</string>
     <string name="statistics_header_labels">Labels</string>
-    <string name="statistics_header_pages_over_time">Pages over time</string>
-    <string name="statistics_header_books_over_time">Books over time</string>
+    <string name="statistics_header_pages_over_time">Pages per month</string>
+    <string name="statistics_header_books_over_time">Books per month</string>
+    <string name="statistics_header_books_per_year">Books per year</string>
     <string name="statistics_header_favs">Favorites</string>
     <string name="statistics_header_other">Others</string>
 

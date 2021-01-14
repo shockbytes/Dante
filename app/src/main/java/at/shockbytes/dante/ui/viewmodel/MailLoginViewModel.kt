@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.login.AuthenticationSource
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.core.login.MailLoginCredentials
 import at.shockbytes.dante.util.ExceptionHandlers
@@ -53,6 +54,9 @@ class MailLoginViewModel @Inject constructor(
     private val mailResetAction = PublishSubject.create<MailResetAction>()
     fun getMailResetAction(): Observable<MailResetAction> = mailResetAction
 
+    private val googleMailLoginAttemptSubject = PublishSubject.create<Unit>()
+    fun onGoogleMailLoginAttempt(): Observable<Unit> = googleMailLoginAttemptSubject
+
     private var mailAddress: CharSequence = ""
     private var password: CharSequence = ""
     private var isSignUp: Boolean = false
@@ -100,16 +104,26 @@ class MailLoginViewModel @Inject constructor(
     }
 
     fun checkIfAccountExistsForMailAddress() {
-        loginRepository.fetchSignInMethodsForEmail(mailAddress.toString())
+        loginRepository.fetchRegisteredAuthenticationSourcesForEmail(mailAddress.toString())
             .map { methods ->
-                // Save isSignUp as a side effect which will be later passed to parent fragment
-                isSignUp = !methods.contains(SIGN_UP_METHOD_PASSWORD)
-                MailLoginStep.PasswordVerification(
-                    isSignUp,
-                    R.string.login_mail_enter_password,
-                    isEmailEnabled = false,
-                    focusOnPasswordField = true
-                )
+
+                if (methods.contains(AuthenticationSource.GOOGLE)) {
+                    MailLoginStep.MailVerification
+                } else {
+                    // Save isSignUp as a side effect which will be later passed to parent fragment
+                    isSignUp = !methods.contains(AuthenticationSource.MAIL)
+                    MailLoginStep.PasswordVerification(
+                        isSignUp,
+                        R.string.login_mail_enter_password,
+                        isEmailEnabled = false,
+                        focusOnPasswordField = true
+                    )
+                }
+            }
+            .doOnSuccess {
+                if (it is MailLoginStep.MailVerification) {
+                    googleMailLoginAttemptSubject.onNext(Unit)
+                }
             }
             .subscribe(step::postValue, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
@@ -147,6 +161,5 @@ class MailLoginViewModel @Inject constructor(
     companion object {
 
         private const val MINIMUM_PASSWORD_LENGTH = 6
-        private const val SIGN_UP_METHOD_PASSWORD = "password"
     }
 }

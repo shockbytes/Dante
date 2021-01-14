@@ -171,14 +171,15 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_login_help"
         style="@style/AppTheme.BorderlessButton"
-        android:textAllCaps="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         android:text="@string/login_problems"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_login_main" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

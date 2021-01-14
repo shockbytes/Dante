@@ -62,9 +62,18 @@ class GoogleFirebaseLoginRepository(
         }
     }
 
-    override fun fetchSignInMethodsForEmail(mailAddress: String): Single<List<String>> {
+    override fun fetchRegisteredAuthenticationSourcesForEmail(mailAddress: String): Single<List<AuthenticationSource>> {
         return singleOf {
-            Tasks.await(fbAuth.fetchSignInMethodsForEmail(mailAddress)).signInMethods ?: listOf()
+            Tasks.await(fbAuth.fetchSignInMethodsForEmail(mailAddress))
+                .signInMethods
+                ?.map { method ->
+                    when (method) {
+                        SIGN_UP_METHOD_PASSWORD -> AuthenticationSource.MAIL
+                        SIGN_UP_METHOD_GOOGLE -> AuthenticationSource.GOOGLE
+                        else -> AuthenticationSource.UNKNOWN
+                    }
+                }
+                ?: listOf()
         }
     }
 
@@ -230,5 +239,11 @@ class GoogleFirebaseLoginRepository(
 
     private fun FirebaseUser.isMailUser(): Boolean {
         return providerData.find { it.providerId == "password" } != null
+    }
+
+    companion object {
+
+        private const val SIGN_UP_METHOD_PASSWORD = "password"
+        private const val SIGN_UP_METHOD_GOOGLE = "google.com"
     }
 }

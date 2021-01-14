@@ -17,7 +17,7 @@ data class BookLabel(
     companion object {
 
         fun unassignedLabel(title: String, hexColor: String): BookLabel {
-            return BookLabel(BookId.default(), title, hexColor)
+            return BookLabel(BookIds.default(), title, hexColor)
         }
     }
 }

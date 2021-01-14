@@ -28,6 +28,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
@@ -139,7 +140,7 @@ class BookDetailFragment : BaseFragment(),
         setHasOptionsMenu(true)
 
         viewModel = viewModelOf(vmFactory)
-        arguments?.getParcelable<BookId>(ARG_BOOK_ID)
+        arguments?.getLong(ARG_BOOK_ID, BookIds.default())
             ?.let(viewModel::initializeWithBookId)
 
         registerLocalBroadcastReceiver()
@@ -693,7 +694,7 @@ class BookDetailFragment : BaseFragment(),
         fun newInstance(id: BookId): BookDetailFragment {
             return BookDetailFragment().apply {
                 this.arguments = Bundle().apply {
-                    putParcelable(ARG_BOOK_ID, id)
+                    putLong(ARG_BOOK_ID, id)
                 }
             }
         }

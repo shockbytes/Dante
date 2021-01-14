@@ -2,6 +2,7 @@ package at.shockbytes.dante.core.data.local
 
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.realm.RealmBook
 import at.shockbytes.dante.core.book.realm.RealmBookConfig
@@ -50,7 +51,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.read<RealmBookLabel>()
-            .equalTo("bookId", BookId.default().value)
+            .equalTo("bookId", BookIds.default())
             .sort("title", Sort.DESCENDING)
             .distinct("title")
             .findAllAsync()
@@ -67,7 +68,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override operator fun get(id: BookId): Single<BookEntity> {
         return singleOf {
-            realm.read<RealmBook>().equalTo("id", id.value).findFirst()
+            realm.read<RealmBook>().equalTo("id", id).findFirst()
         }.map(mapper::mapTo)
     }
 
@@ -75,7 +76,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         return completableOf {
             realm.executeTransaction(refreshInstance = false) { realm ->
                 val id = lastId
-                entity.id = BookId(id)
+                entity.id = id
                 realm.copyToRealm(mapper.mapFrom(entity))
             }
         }
@@ -93,7 +94,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         return completableOf {
             realm.executeTransaction { realm ->
                 realm.where(bookClass)
-                    .equalTo("id", bookId.value)
+                    .equalTo("id", bookId)
                     .findFirst()
                     ?.let { realmBook ->
                         realmBook.currentPage = currentPage
@@ -107,7 +108,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         return completableOf {
             realm.executeTransaction { realm ->
                 realm.where(bookClass)
-                    .equalTo("id", id.value)
+                    .equalTo("id", id)
                     .findFirst()
                     ?.deleteFromRealm()
             }
@@ -151,7 +152,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
                 val labels = realm.where(labelClass)
                     .equalTo("title", bookLabel.title)
                     .and()
-                    .equalTo("bookId", bookLabel.bookId.value)
+                    .equalTo("bookId", bookLabel.bookId)
                     .findAll()
 
                 if (labels != null && labels.isNotEmpty()) {

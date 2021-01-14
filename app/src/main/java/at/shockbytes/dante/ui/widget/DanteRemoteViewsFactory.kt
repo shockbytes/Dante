@@ -37,7 +37,7 @@ class DanteRemoteViewsFactory(
         }
     }
 
-    override fun getItemId(position: Int): Long = currentBooks[position].id.value
+    override fun getItemId(position: Int): Long = currentBooks[position].id
 
     override fun onDataSetChanged() {
         val sorter = SortComparators.of(danteSettings.sortStrategy)

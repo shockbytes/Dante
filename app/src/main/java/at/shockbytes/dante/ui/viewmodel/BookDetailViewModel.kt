@@ -6,6 +6,7 @@ import android.os.Parcelable
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.PageRecord
@@ -88,7 +89,7 @@ class BookDetailViewModel @Inject constructor(
     private val addLabelsSubject = PublishSubject.create<List<BookLabel>>()
     val onAddLabelsRequest: Observable<List<BookLabel>> = addLabelsSubject
 
-    private var bookId: BookId = BookId(-1L)
+    private var bookId: BookId = BookIds.default()
     private var pagesAtInit: Int? = null
 
     /**

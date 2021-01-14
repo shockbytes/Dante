@@ -10,7 +10,7 @@ import android.content.ComponentName
 import at.shockbytes.dante.DanteApp
 import android.app.PendingIntent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 
@@ -39,7 +39,7 @@ class DanteAppWidget : AppWidgetProvider() {
 
     private fun handleOnBookClickedEvent(context: Context?, intent: Intent) {
 
-        val bookId = intent.getParcelableExtra(EXTRA_BOOK_ID) ?: BookId.default()
+        val bookId = intent.getLongExtra(EXTRA_BOOK_ID, BookIds.default())
         val bookTitle = intent.getStringExtra(EXTRA_BOOK_TITLE) ?: ""
         ActivityNavigator.navigateTo(
             context,

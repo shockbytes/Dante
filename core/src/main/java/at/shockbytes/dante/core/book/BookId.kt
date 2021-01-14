@@ -1,16 +1,15 @@
 package at.shockbytes.dante.core.book
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+typealias BookId = Long
 
-@Parcelize
-data class BookId(val value: Long) : Parcelable {
+object BookIds {
 
-    fun isValid(): Boolean = value > -1
+    private const val DEFAULT_VALUE: BookId = -1L
 
-    companion object {
-
-        private val defaultValue = BookId(value = -1L)
-        fun default() = defaultValue
+    fun isValid(bookId: BookId): Boolean {
+        return bookId > DEFAULT_VALUE
     }
+
+    fun default() = DEFAULT_VALUE
+
 }

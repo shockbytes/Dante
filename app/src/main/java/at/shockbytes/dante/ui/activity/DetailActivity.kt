@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
@@ -22,10 +23,10 @@ class DetailActivity : TintableBackNavigableActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val id = intent.getParcelableExtra<BookId>(ARG_ID)
+        val id = intent.getLongExtra(ARG_ID, BookIds.default())
         val title = intent.getStringExtra(ARG_TITLE)
 
-        if (id != null) {
+        if (id != BookIds.default()) {
             supportActionBar?.title = title?.toUpperCase(Locale.getDefault())
             detailFragment = pickDetailFragment(id)
         } else {

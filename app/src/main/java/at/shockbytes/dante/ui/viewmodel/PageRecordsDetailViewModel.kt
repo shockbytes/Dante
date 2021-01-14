@@ -9,6 +9,7 @@ import at.shockbytes.dante.ui.adapter.pagerecords.PageRecordDetailItem
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.indexOfOrNull
 import at.shockbytes.dante.util.isLastIndexIn
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 class PageRecordsDetailViewModel @Inject constructor(
     private val pageRecordDao: PageRecordDao,
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     private val dateFormat = DateTimeFormat.forPattern("dd.MM.yyyy")
@@ -86,6 +88,8 @@ class PageRecordsDetailViewModel @Inject constructor(
                     pageRecordDao.deletePageRecordForBook(pageRecord) // Eventually delete page record
                 )
             )
+            .observeOn(schedulers.ui)
+            .subscribeOn(schedulers.io)
             .subscribe({
                 initialize(bookId)
                 onBookChangedSubject.onNext(Unit)

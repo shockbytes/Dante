@@ -66,6 +66,13 @@ The backlog is currently empty.
 
 ## Changelog
 
+### Version 3.18.2 - Bugfixes
+* Issues with outdated book data (after closing and reopening a book)
+* Fix delete labels
+* Fix delete page records
+* FirebasModule.provideRemoteConfig crash
+* BarcodeCaptureActivity.startCamera
+
 ### Version 3.18.1
 * Theme Support
 * Empty suggestion text bug

@@ -34,8 +34,16 @@ class FirebaseModule(private val context: Context) {
                 setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
                     Timber.d("Firebase defaults set")
                 }
-                fetchAndActivate().addOnCompleteListener {
-                    Timber.d("FirebaseRemoteConfig fetched and activated: ${it.result}")
+                try {
+                    fetchAndActivate()
+                        .addOnFailureListener { exception ->
+                            Timber.e(exception)
+                        }
+                        .addOnCompleteListener { task ->
+                            Timber.d("FirebaseRemoteConfig fetched and activated: ${task.result}")
+                        }
+                } catch (exception: Exception) {
+                    Timber.e(exception)
                 }
             }
     }

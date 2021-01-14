@@ -41,7 +41,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
         toPage: Int?
     ): Completable {
         return Completable.fromAction {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.findPageRecord(pageRecord)?.let { realmRecord ->
 
                     fromPage?.let { realmRecord.fromPage = fromPage }
@@ -55,7 +55,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     override fun deletePageRecordForBook(pageRecord: PageRecord): Completable {
         return Completable.fromAction {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.findPageRecord(pageRecord)?.deleteFromRealm()
             }
         }
@@ -71,7 +71,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     override fun deleteAllPageRecordsForBookId(bookId: Long): Completable {
         return Completable.fromAction {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.where(pageRecordClass)
                     .equalTo("bookId", bookId)
                     .findAll()
@@ -81,13 +81,13 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
     }
 
     private fun insert(pageRecord: PageRecord) {
-        realm.instance.executeTransaction { realm ->
+        realm.executeTransaction { realm ->
             realm.copyToRealm(mapper.mapFrom(pageRecord))
         }
     }
 
     override fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>> {
-        return realm.instance.where(pageRecordClass)
+        return realm.read<RealmPageRecord>()
             .equalTo("bookId", bookId)
             .sort("timestamp", Sort.ASCENDING)
             .findAllAsync()
@@ -97,7 +97,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
     }
 
     override fun allPageRecords(): Observable<List<PageRecord>> {
-        return realm.instance.where(pageRecordClass)
+        return realm.read<RealmPageRecord>()
             .sort("timestamp", Sort.ASCENDING)
             .findAllAsync()
             .asFlowable()
@@ -122,7 +122,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     private fun deleteAllPageRecords(): Completable {
         return completableOf {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.where(pageRecordClass)
                     .findAll()
                     ?.deleteAllFromRealm()

@@ -60,10 +60,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_item_suggestion_title"
             android:layout_marginStart="12dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:paddingBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_item_suggestion_cover"
             app:layout_constraintEnd_toStartOf="@id/iv_item_suggestion_report"
             app:layout_constraintStart_toEndOf="@id/iv_item_suggestion_cover"
             app:layout_constraintTop_toBottomOf="@id/tv_item_suggestion_title"
@@ -94,7 +93,7 @@
             android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item_suggestion_cover"
+            app:layout_constraintTop_toBottomOf="@+id/barrier_item_suggestion"
             tools:text="This book is  a must-read for everyone. Period. It is unbelievable that this just happened 80 years ago." />
 
         <TextView
@@ -150,6 +149,13 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_item_suggestion_recommendation"
             app:layout_constraintStart_toEndOf="@+id/tv_item_suggestion_recommendation"
             app:srcCompat="@drawable/ic_quote" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier_item_suggestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="iv_item_suggestion_cover,tv_item_suggestion_author" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -97,7 +97,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         cameraProviderFuture.addListener({
             val cameraProvider = cameraProviderFuture.get()
 
-            val rotation = preview_view.display.rotation
+            val rotation = getPreviewRotation()
 
             imageAnalysis = ImageAnalysis.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)
@@ -140,6 +140,14 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
             enableTapToFocus()
             imagePreview.setSurfaceProvider(preview_view.surfaceProvider)
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun getPreviewRotation(): Int {
+        /*
+         * The nullable calls will not be required when the
+         * app uses ViewBinding instead of the synthetic extensions.
+         */
+        return preview_view?.display?.rotation ?: 0
     }
 
     // TODO Incorporate torch

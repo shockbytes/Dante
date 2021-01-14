@@ -24,7 +24,6 @@ import io.realm.Sort
 class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityDao {
 
     private val bookClass = RealmBook::class.java
-    private val configClass = RealmBookConfig::class.java
     private val labelClass = RealmBookLabel::class.java
 
     private val labelMapper = RealmBookLabelMapper()
@@ -35,13 +34,13 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
      */
     private val lastId: Long
         get() {
-            val config = realm.instance.where(configClass).findFirst()
-                ?: realm.instance.createObject(configClass)
+            val config = realm.read<RealmBookConfig>(refreshInstance = false).findFirst()
+                ?: realm.createObject(refreshInstance = false)
             return config.getLastPrimaryKey()
         }
 
     override val bookObservable: Observable<List<BookEntity>>
-        get() = realm.instance.where(bookClass)
+        get() = realm.read<RealmBook>()
             .sort("id", Sort.DESCENDING)
             .findAllAsync()
             .asFlowable()
@@ -49,7 +48,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .toObservable()
 
     override val bookLabelObservable: Observable<List<BookLabel>>
-        get() = realm.instance.where(labelClass)
+        get() = realm.read<RealmBookLabel>()
             .equalTo("bookId", BookLabel.UNASSIGNED_LABEL_ID)
             .sort("title", Sort.DESCENDING)
             .distinct("title")
@@ -59,7 +58,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .toObservable()
 
     override val booksCurrentlyReading: List<BookEntity>
-        get() = realm.instance.where(bookClass)
+        get() = realm.read<RealmBook>()
             .equalTo("ordinalState", RealmBook.State.READING.ordinal)
             .sort("id", Sort.DESCENDING)
             .findAll()
@@ -67,13 +66,13 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override operator fun get(id: Long): Single<BookEntity> {
         return singleOf {
-            realm.instance.where(bookClass).equalTo("id", id).findFirst()
+            realm.read<RealmBook>().equalTo("id", id).findFirst()
         }.map(mapper::mapTo)
     }
 
     override fun create(entity: BookEntity): Completable {
         return completableOf {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction(refreshInstance = false) { realm ->
                 val id = lastId
                 entity.id = id
                 realm.copyToRealm(mapper.mapFrom(entity))
@@ -83,7 +82,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override fun update(entity: BookEntity): Completable {
         return completableOf {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.copyToRealmOrUpdate(mapper.mapFrom(entity))
             }
         }
@@ -91,7 +90,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override fun updateCurrentPage(bookId: Long, currentPage: Int): Completable {
         return completableOf {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.where(bookClass)
                     .equalTo("id", bookId)
                     .findFirst()
@@ -105,7 +104,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override fun delete(id: Long): Completable {
         return completableOf {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.where(bookClass)
                     .equalTo("id", id)
                     .findFirst()
@@ -115,7 +114,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     }
 
     override fun search(query: String): Observable<List<BookEntity>> {
-        return realm.instance.where(bookClass)
+        return realm.read<RealmBook>()
             .contains("title", query, Case.INSENSITIVE)
             .or()
             .contains("author", query, Case.INSENSITIVE)
@@ -139,7 +138,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override fun createBookLabel(bookLabel: BookLabel): Completable {
         return completableOf {
-            realm.instance.executeTransaction { realm ->
+            realm.executeTransaction { realm ->
                 realm.copyToRealm(labelMapper.mapFrom(bookLabel))
             }
         }
@@ -147,15 +146,17 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override fun deleteBookLabel(bookLabel: BookLabel): Completable {
         return Completable.create { emitter ->
-            realm.instance.executeTransaction { realm ->
-                val label = realm.where(labelClass)
+            realm.executeTransaction { realm ->
+                val labels = realm.where(labelClass)
                     .equalTo("title", bookLabel.title)
                     .and()
                     .equalTo("bookId", bookLabel.bookId)
-                    .findFirst()
+                    .findAll()
 
-                if (label != null) {
-                    label.deleteFromRealm()
+                if (labels != null && labels.isNotEmpty()) {
+                    labels.forEach { rbl ->
+                        rbl.deleteFromRealm()
+                    }
                     emitter.onComplete()
                 } else {
                     emitter.tryOnError(RealmBookLabelDeletionException(bookLabel.title))
@@ -183,8 +184,8 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     private fun deleteAllBooks(): Completable {
         return completableOf {
-            val stored = realm.instance.where(bookClass).findAll()
-            realm.instance.executeTransaction {
+            val stored = realm.read<RealmBook>().findAll()
+            realm.executeTransaction {
                 stored.deleteAllFromRealm()
             }
         }

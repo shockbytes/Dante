@@ -90,7 +90,6 @@ class StatisticsViewModel @Inject constructor(
     }
 
     fun requestPageGoalChangeAction(type: ReadingGoalType) {
-
         goalChangeObservableSourceByType(type)
             .subscribe(pageGoalChangeEvent::onNext)
             .addTo(compositeDisposable)

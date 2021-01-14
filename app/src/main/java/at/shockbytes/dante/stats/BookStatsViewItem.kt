@@ -43,6 +43,17 @@ sealed class BookStatsViewItem {
         }
     }
 
+    sealed class BooksPerYear : BookStatsViewItem() {
+
+        override val layoutId: Int = R.layout.item_stats_books_per_year
+
+        data class Empty(@StringRes val headerRes: Int) : BooksPerYear()
+
+        data class Present(
+            val booksPerYear: List<BooksAndPageRecordDataPoint>
+        ) : BooksPerYear()
+    }
+
     sealed class ReadingDuration : BookStatsViewItem() {
 
         override val layoutId: Int = R.layout.item_stats_reading_duration

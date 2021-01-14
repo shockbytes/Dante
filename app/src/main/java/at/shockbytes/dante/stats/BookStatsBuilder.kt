@@ -29,6 +29,7 @@ object BookStatsBuilder {
             createBooksAndPagesItem(books),
             createPagesOverTimeItem(pageRecords, pagesPerMonthGoal),
             createBooksOverTimeItem(books, booksPerMonthGoal),
+            createBooksPerYearItem(books),
             createReadingDurationItem(books),
             createFavoriteItem(books),
             createLanguageItem(books),
@@ -127,6 +128,29 @@ object BookStatsBuilder {
             .let { pageRecordDataPoints ->
                 BookStatsViewItem.BooksAndPagesOverTime.Present.Books(pageRecordDataPoints, booksPerMonthGoal)
             }
+    }
+
+    private fun createBooksPerYearItem(
+        books: List<BookEntity>
+    ): BookStatsViewItem.BooksPerYear {
+
+        if (books.isEmpty()) {
+            return BookStatsViewItem.BooksPerYear.Empty(R.string.statistics_header_books_per_year)
+        }
+
+        return books
+            .filter { it.state == BookState.READ }
+            .groupBy { book ->
+                DateTime(book.endDate).year
+            }
+            .toSortedMap()
+            .map { (year, booksPerYear) ->
+                BooksAndPageRecordDataPoint(
+                    value = booksPerYear.count(),
+                    formattedDate = year.toString()
+                )
+            }
+            .let(BookStatsViewItem.BooksPerYear::Present)
     }
 
     private fun createReadingDurationItem(books: List<BookEntity>): BookStatsViewItem {

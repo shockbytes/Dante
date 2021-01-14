@@ -93,6 +93,7 @@ The backlog is currently empty.
         - [x] Handle invalid password
     - [x] Google
 - [x] Upgrade to newest ktlint version
+- [x] Yearly statistics
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
 - [ ] Bugfixes

@@ -12,7 +12,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class BookEntity(
-    var id: BookId = BookId.default(),
+    var id: BookId = BookIds.default(),
     val title: String = "",
     val subTitle: String = "",
     val author: String = "",

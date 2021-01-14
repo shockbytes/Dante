@@ -64,7 +64,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     private fun Realm.findPageRecord(pageRecord: PageRecord): RealmPageRecord? {
         return where(pageRecordClass)
-            .equalTo("bookId", pageRecord.bookId.value)
+            .equalTo("bookId", pageRecord.bookId)
             .and()
             .equalTo("timestamp", pageRecord.timestamp)
             .findFirst()
@@ -74,7 +74,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
         return Completable.fromAction {
             realm.instance.executeTransaction { realm ->
                 realm.where(pageRecordClass)
-                    .equalTo("bookId", bookId.value)
+                    .equalTo("bookId", bookId)
                     .findAll()
                     ?.deleteAllFromRealm()
             }
@@ -89,7 +89,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     override fun pageRecordsForBook(bookId: BookId): Observable<List<PageRecord>> {
         return realm.instance.where(pageRecordClass)
-            .equalTo("bookId", bookId.value)
+            .equalTo("bookId", bookId)
             .sort("timestamp", Sort.ASCENDING)
             .findAllAsync()
             .asFlowable()

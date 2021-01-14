@@ -6,6 +6,8 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.injection.ViewModelFactory
@@ -125,7 +127,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun onItemClick(content: BookSearchItem, position: Int, v: View) {
         activity?.hideKeyboard()
-        if (content.bookId.isValid()) {
+        if (BookIds.isValid(content.bookId)) {
             startActivity(DetailActivity.newIntent(requireContext(), content.bookId, content.title))
         }
     }

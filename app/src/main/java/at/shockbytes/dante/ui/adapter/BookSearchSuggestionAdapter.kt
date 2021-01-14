@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.util.setVisible
@@ -35,7 +36,7 @@ class BookSearchSuggestionAdapter(
             item_book_search_suggestion_txt_author.text = content.author
 
             item_book_search_suggestion_btn_add.apply {
-                setVisible(content.bookId.isValid())
+                setVisible(BookIds.isValid(content.bookId))
                 setOnClickListener {
                     addClickedListener.invoke(content)
                 }

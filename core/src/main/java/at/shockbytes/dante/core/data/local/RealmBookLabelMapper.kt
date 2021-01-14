@@ -1,6 +1,5 @@
 package at.shockbytes.dante.core.data.local
 
-import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.realm.RealmBookLabel
 import at.shockbytes.dante.core.data.Mapper
@@ -11,7 +10,7 @@ class RealmBookLabelMapper : Mapper<RealmBookLabel, BookLabel>() {
         return BookLabel(
             title = data.title,
             hexColor = data.hexColor,
-            bookId = BookId(data.bookId)
+            bookId = data.bookId
         )
     }
 
@@ -19,7 +18,7 @@ class RealmBookLabelMapper : Mapper<RealmBookLabel, BookLabel>() {
         return RealmBookLabel(
             title = data.title,
             hexColor = data.hexColor,
-            bookId = data.bookId.value
+            bookId = data.bookId
         )
     }
 }

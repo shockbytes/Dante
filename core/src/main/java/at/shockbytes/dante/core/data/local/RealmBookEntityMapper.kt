@@ -1,7 +1,6 @@
 package at.shockbytes.dante.core.data.local
 
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.realm.RealmBook
 import at.shockbytes.dante.core.data.Mapper
@@ -17,7 +16,7 @@ class RealmBookEntityMapper(
 
     override fun mapFrom(data: BookEntity): RealmBook {
         return RealmBook(
-            data.id.value,
+            data.id,
             data.title,
             data.subTitle,
             data.author,
@@ -43,7 +42,7 @@ class RealmBookEntityMapper(
 
     override fun mapTo(data: RealmBook): BookEntity {
         return BookEntity(
-            BookId(data.id),
+            data.id,
             data.title,
             data.subTitle,
             data.author,

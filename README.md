@@ -96,12 +96,7 @@ The backlog is currently empty.
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
 - [ ] Bugfixes
-    - [ ] FirebasModule.provideRemoteConfig crash
-    - [ ] BarcodeCaptureActivity.startCamera
-    - [ ] BooksAndPagesDiagramView.styleChartAndPagesDiagramView (cannot load font)
-    - [ ] Issues with deleting labels (related to checkAllowWritesOnUiThread)
-    - [ ] Issues with outdated book data (after closing and reopening a book)
-    - [ ] Finally fix GlideException pollution
+    - [x] Handle BookId backup issues!
     - [ ] Firebase ANR that requires an uninstall
 
 ## Changelog

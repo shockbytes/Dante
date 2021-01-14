@@ -34,7 +34,7 @@ class BookAdapter(
     }
 
     override fun getItemId(position: Int): Long {
-        return data[position].id.value
+        return data[position].id
     }
 
     override fun getItemViewType(position: Int): Int {

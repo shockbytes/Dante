@@ -164,11 +164,13 @@
     <string name="logout_incognito">Anonymous Logout</string>
     <string name="logout_incognito_hint">You are going to delete all your data right now. Proceeding now will permanently remove all your books.\n\nDo you want to proceed?</string>
 
-    <string name="user_name_updated">Your username was successfully updated</string>
+    <string name="user_name_updated">Your username has been successfully updated</string>
     <string name="user_update_error">We\'re sorry. We encountered an error while updating your profile</string>
     <string name="user_name_empty">Your username must not be empty</string>
     <string name="user_name_too_long">Your username exceeds the maximum length of %d characters</string>
     <string name="user_image_updated">Your user image was successfully updated</string>
+    <string name="password_update_success">Your password has been successfully updated</string>
+    <string name="password_update_error">We\'re sorry. We could not update your password</string>
 
     <string name="terms_of_services">Terms of Services</string>
     <string name="terms_of_services_prefix">By continuing you agree with Dante\'s\n</string>

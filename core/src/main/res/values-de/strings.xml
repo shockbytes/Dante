@@ -396,6 +396,8 @@
     <string name="login_problems_header">Probleme beim Login von Dante</string>
     <string name="login_mail_with_google_account">Mail in Verwendung</string>
     <string name="login_mail_with_google_account_message">Deine Mail-Adresse ist bereits mit einem Google Konto verknüpft. Bitte logge dich über den Google Login in diesen Account ein.</string>
+    <string name="password_update_success">Dein Passwort wurde erfolgreich ändern</string>
+    <string name="password_update_error">Tut uns leid. Wir konnten dein Passwort nicht ändern</string>
     <string name="change">Ändern</string>
     <string name="account_change_password_title">Passwort ändern</string>
     <string name="account_change_password_hint">Passwort</string>

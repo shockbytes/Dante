@@ -119,8 +119,11 @@ class CoreModule(
     }
 
     @Provides
-    fun provideUserRepository(fbAuth: FirebaseAuth): UserRepository {
-        return FirebaseUserRepository(fbAuth)
+    fun provideUserRepository(
+        fbAuth: FirebaseAuth,
+        schedulers: SchedulerFacade
+    ): UserRepository {
+        return FirebaseUserRepository(fbAuth, schedulers)
     }
 
     companion object {

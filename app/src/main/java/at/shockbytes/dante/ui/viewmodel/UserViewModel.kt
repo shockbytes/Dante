@@ -66,6 +66,13 @@ class UserViewModel @Inject constructor(
             ) : UserNameEvent()
         }
 
+        sealed class UserPasswordEvent : UserEvent() {
+
+            object UserPasswordUpdated : UserPasswordEvent()
+
+            data class UserPasswordUpdateError(val message: String?): UserPasswordEvent()
+        }
+
         sealed class UserImageEvent : UserEvent() {
 
             object UserImageUpdated : UserImageEvent()
@@ -213,6 +220,8 @@ class UserViewModel @Inject constructor(
         }
 
         userRepository.updateUserName(userName)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.io)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .doOnComplete(loginRepository::reloadAccount)
             .subscribe({
@@ -244,8 +253,19 @@ class UserViewModel @Inject constructor(
     }
 
     fun updatePassword(password: String) {
-        // TODO Done in another PR
-        // TODO Track
+        loginRepository.updateMailPassword(password)
+            .doOnComplete {
+                tracker.track(DanteTrackingEvent.UpdateMailPassword)
+            }
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe({
+                userEventSubject.onNext(UserEvent.UserPasswordEvent.UserPasswordUpdated)
+            }, { throwable ->
+                userEventSubject.onNext(
+                    UserEvent.UserPasswordEvent.UserPasswordUpdateError(throwable.localizedMessage)
+                )
+            })
+            .addTo(compositeDisposable)
     }
 
     companion object {

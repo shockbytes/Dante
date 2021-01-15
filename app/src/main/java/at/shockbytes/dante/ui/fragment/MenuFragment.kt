@@ -25,6 +25,8 @@ import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.Us
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameTooLong
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserImageEvent.UserImageUpdated
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserImageEvent.UserImageUpdateError
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserPasswordEvent.UserPasswordUpdated
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserPasswordEvent.UserPasswordUpdateError
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
@@ -109,6 +111,8 @@ class MenuFragment : BaseBottomSheetFragment() {
             is UserNameTooLong -> showUserNameTooLongError(event.maxAllowedLength)
             is UserImageUpdated -> showUserImageUpdatedMessage()
             is UserImageUpdateError -> showImageUpdateError(event.message)
+            is UserPasswordUpdated -> showUserPasswordUpdatedMessage()
+            is UserPasswordUpdateError -> showUserUpdateErrorMessage(event.message)
         }
     }
 
@@ -150,29 +154,36 @@ class MenuFragment : BaseBottomSheetFragment() {
     }
 
     private fun showAnonymousUpgradeFailed(message: String?) {
-        val snackBarMessage = message ?: getString(R.string.anonymous_upgrade_error)
-        showSnackBar(snackBarMessage)
+        val toastMessage = message ?: getString(R.string.anonymous_upgrade_error)
+        showToast(toastMessage)
     }
 
-    private fun showUserNameUpdatedMessage() = showSnackBar(R.string.user_name_updated)
+    private fun showUserNameUpdatedMessage() = showToast(R.string.user_name_updated)
 
     private fun showUserNameUpdateError(message: String?) {
-        val snackBarMessage = message ?: getString(R.string.user_update_error)
-        showSnackBar(snackBarMessage)
+        val toastMessage = message ?: getString(R.string.user_update_error)
+        showToast(toastMessage)
     }
 
-    private fun showUserNameEmptyError() = showSnackBar(R.string.user_name_empty)
+    private fun showUserNameEmptyError() = showToast(R.string.user_name_empty)
 
     private fun showUserNameTooLongError(maxAllowedLength: Int) {
         val message = getString(R.string.user_name_too_long, maxAllowedLength)
-        showSnackBar(message)
+        showToast(message)
     }
 
-    private fun showUserImageUpdatedMessage() = showSnackBar(R.string.user_image_updated)
+    private fun showUserImageUpdatedMessage() = showToast(R.string.user_image_updated)
 
     private fun showImageUpdateError(message: String?) {
-        val snackBarMessage = message ?: getString(R.string.user_update_error)
-        showSnackBar(snackBarMessage)
+        val toastMessage = message ?: getString(R.string.user_update_error)
+        showToast(toastMessage)
+    }
+
+    private fun showUserPasswordUpdatedMessage() = showToast(R.string.password_update_success)
+
+    private fun showUserUpdateErrorMessage(message: String?) {
+        val toastMessage = message ?: getString(R.string.password_update_error)
+        showToast(toastMessage)
     }
 
     override fun unbindViewModel() = Unit
@@ -241,7 +252,7 @@ class MenuFragment : BaseBottomSheetFragment() {
             input(
                 inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD,
                 allowEmpty = false,
-                hintRes = R.string.account_change_password_title
+                hintRes = R.string.account_change_password_hint
             ) { _, password -> userViewModel.updatePassword(password.toString()) }
             positiveButton(R.string.change)
             negativeButton(R.string.cancel)

@@ -87,8 +87,8 @@ The backlog is currently empty.
         - [x] Allow users to upgrade to full account
         - [x] Show notice when user selects anonymous account in login screen
         - [x] Show notice that data will be wiped once logged out
-    - [ ] Mail
-        - [ ] Update password in app (Implement new SimpleInputDialogFragment on Fragment basis)
+    - [x] Mail
+        - [x] Update password in app
         - [x] Check if a Google User can create an account with the same Gmail Mail credentials
         - [x] Forgot password functionality
         - [x] Create Account with Mail vs Login with Mail

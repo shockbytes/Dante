@@ -62,6 +62,20 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             }
         }
 
+        findPreference<Preference>(getString(R.string.prefs_privacy_policy_key))?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                UrlLauncher.openPrivacyPolicy(requireContext())
+                true
+            }
+        }
+
+        findPreference<Preference>(getString(R.string.prefs_terms_of_services_key))?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                UrlLauncher.openTermsOfServicePage(requireContext())
+                true
+            }
+        }
+
         findPreference<Preference>(getString(R.string.prefs_contribute_code_key))?.apply {
             this.setOnPreferenceClickListener {
                 UrlLauncher.openDanteGithubPage(requireContext())

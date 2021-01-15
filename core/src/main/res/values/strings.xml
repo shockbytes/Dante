@@ -309,7 +309,10 @@
     <string name="prefs_launcher_icon_state_key" translatable="false">prefs_launcher_icon_state_key</string>
     <string name="prefs_dark_mode_default_value" translatable="false">system</string>
     <string name="prefs_dark_mode_title">Theme</string>
-
+    <string name="prefs_privacy_policy_key" translatable="false">prefs_privacy_policy_key</string>
+    <string name="prefs_privacy_policy_title">Privacy Policy</string>
+    <string name="prefs_terms_of_services_key" translatable="false">prefs_terms_of_services_key</string>
+    <string name="prefs_terms_of_services_title">Terms Of Services</string>
 
     <string name="prefs_category_books">Books</string>
 

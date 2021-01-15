@@ -67,11 +67,12 @@ The backlog is currently empty.
     - [ ] General
         - [x] Tracking
         - [ ] New Privacy Policy
-            - [ ] Add link in Settings
+            - [x] Add link in Settings
+            - [ ] Add Privacy Policy to dantebooks.com/#/privacy
         - [ ] Terms Of Services
             - [x] Add Terms Of Services button
-            - [ ] Add link in Settings
-            - [ ] Add Terms of Services to dantebooks.app/#/terms (https://www.iubenda.com/en/mobile)
+            - [x] Add link in Settings
+            - [ ] Add Terms of Services to dantebooks.com/#/terms (https://www.iubenda.com/en/mobile)
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment

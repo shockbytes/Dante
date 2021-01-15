@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.fragment
 import android.app.Dialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.text.InputType
 import androidx.core.app.ActivityOptionsCompat
 import android.view.View
 import androidx.lifecycle.Observer
@@ -213,9 +214,7 @@ class MenuFragment : BaseBottomSheetFragment() {
             ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> showUpgradeBottomSheet()
             ProfileActionViewClick.CHANGE_NAME -> showChangeNameScreen()
             ProfileActionViewClick.CHANGE_IMAGE -> userViewModel.changeUserImage(requireActivity())
-            ProfileActionViewClick.CHANGE_PASSWORD -> {
-                // TODO Show update password screen, maybe reuse simple input
-            }
+            ProfileActionViewClick.CHANGE_PASSWORD -> showChangePasswordScreen()
         }
     }
 
@@ -227,7 +226,24 @@ class MenuFragment : BaseBottomSheetFragment() {
             input(allowEmpty = false, hintRes = R.string.account_change_name_hint) { _, userName ->
                 userViewModel.changeUserName(userName.toString())
             }
-            positiveButton(android.R.string.ok)
+            positiveButton(R.string.change)
+            negativeButton(R.string.cancel)
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
+    }
+
+    private fun showChangePasswordScreen() {
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_password)
+            title(R.string.account_change_password_title)
+            message(R.string.account_change_password_message)
+            input(
+                inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD,
+                allowEmpty = false,
+                hintRes = R.string.account_change_password_title
+            ) { _, password -> userViewModel.updatePassword(password.toString()) }
+            positiveButton(R.string.change)
             negativeButton(R.string.cancel)
             cancelOnTouchOutside(true)
             cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())

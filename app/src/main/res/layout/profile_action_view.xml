@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/btnProfileActionViewChangePassword"
             android:layout_height="40dp"
-            android:text="@string/account_change_image"
+            android:text="@string/account_change_password_title"
             android:textColor="@color/danteAccent" />
 
     </LinearLayout>

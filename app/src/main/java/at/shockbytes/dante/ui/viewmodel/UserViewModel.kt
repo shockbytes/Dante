@@ -245,6 +245,7 @@ class UserViewModel @Inject constructor(
 
     fun updatePassword(password: String) {
         // TODO Done in another PR
+        // TODO Track
     }
 
     companion object {

@@ -1,14 +1,12 @@
 package at.shockbytes.dante.camera
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
+import at.shockbytes.dante.camera.databinding.SuggestionPickerItemBinding
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.suggestion_picker_item.*
 
 class BookSuggestionPickerAdapter(
     context: Context,
@@ -22,23 +20,24 @@ class BookSuggestionPickerAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BookEntity> {
-        return SuggestionViewHolder(inflater.inflate(R.layout.suggestion_picker_item, parent, false))
+        val binding = SuggestionPickerItemBinding.inflate(inflater, parent, false)
+        return SuggestionViewHolder(binding)
     }
 
     inner class SuggestionViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<BookEntity>(containerView), LayoutContainer {
+        private val vb: SuggestionPickerItemBinding
+    ) : BaseAdapter.ViewHolder<BookEntity>(vb.root) {
 
         override fun bindToView(content: BookEntity, position: Int) {
             with(content) {
-                tv_suggestion_picker_item_title.text = title
-                tv_suggestion_picker_item_author.text = author
+                vb.tvSuggestionPickerItemTitle.text = title
+                vb.tvSuggestionPickerItemAuthor.text = author
 
                 thumbnailAddress?.let { imageUrl ->
                     imageLoader.loadImageWithCornerRadius(
                         context,
                         imageUrl,
-                        iv_suggestion_picker_item_cover,
+                        vb.ivSuggestionPickerItemCover,
                         cornerDimension = AppUtils.convertDpInPixel(6, context)
                     )
                 }

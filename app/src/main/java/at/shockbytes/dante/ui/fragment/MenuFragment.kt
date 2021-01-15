@@ -13,7 +13,6 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewClick
 import at.shockbytes.dante.ui.custom.profile.ProfileActionViewState
-import at.shockbytes.dante.ui.fragment.dialog.SimpleInputDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.ui.viewmodel.UserViewModel
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.Login
@@ -29,6 +28,7 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -220,16 +220,18 @@ class MenuFragment : BaseBottomSheetFragment() {
     }
 
     private fun showChangeNameScreen() {
-        SimpleInputDialogFragment
-            .newInstance(
-                title = R.string.account_change_name_title,
-                icon = R.drawable.ic_user_template_dark,
-                message = R.string.account_change_name_message,
-                hint = R.string.account_change_name_hint,
-                positiveButtonText = android.R.string.ok
-            )
-            .setOnInputEnteredListener(userViewModel::changeUserName)
-            .show(parentFragmentManager, "query-dialog-fragment")
+        MaterialDialog(requireContext()).show {
+            icon(R.drawable.ic_user_template_dark)
+            title(R.string.account_change_name_title)
+            message(R.string.account_change_name_message)
+            input(allowEmpty = false, hintRes = R.string.account_change_name_hint) { _, userName ->
+                userViewModel.changeUserName(userName.toString())
+            }
+            positiveButton(android.R.string.ok)
+            negativeButton(R.string.cancel)
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, requireContext()).toFloat())
+        }
     }
 
     private fun showUpgradeBottomSheet() {

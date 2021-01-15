@@ -19,7 +19,6 @@ import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.adapter.BookPagerAdapter
 import at.shockbytes.dante.ui.fragment.MenuFragment
-import at.shockbytes.dante.ui.fragment.dialog.SimpleInputDialogFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
@@ -37,6 +36,9 @@ import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.tracking.properties.LoginSource
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -368,22 +370,21 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun showAddByTitleDialog() {
-        SimpleInputDialogFragment
-            .newInstance(
-                title = R.string.dialogfragment_query_title,
-                icon = R.drawable.ic_search,
-                message = R.string.dialogfragment_query_message,
-                hint = R.string.manual_query,
-                positiveButtonText = android.R.string.search_go
-            )
-            .setOnInputEnteredListener { query ->
+        MaterialDialog(this).show {
+            icon(R.drawable.ic_search)
+            title(R.string.dialogfragment_query_title)
+            message(R.string.dialogfragment_query_message)
+            input(allowEmpty = false, hintRes = R.string.manual_query) { _, query ->
                 // Remove blanks with + so query works also for titles
-                val correctedQuery = query.replace(' ', '+')
+                val correctedQuery = query.toString().replace(' ', '+')
                 BarcodeScanResultBottomSheetDialogFragment
                     .newInstance(correctedQuery, askForAnotherScan = false)
                     .show(supportFragmentManager, "show-bottom-sheet-with-book")
             }
-            .show(supportFragmentManager, "query-dialog-fragment")
+            positiveButton(android.R.string.search_go)
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, this@MainActivity).toFloat())
+        }
     }
 
     private fun setupDarkMode() {

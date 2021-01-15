@@ -23,6 +23,7 @@
     <string name="another_try">Another try</string>
     <string name="reset">Reset</string>
     <string name="go_to_screen">Go to screen</string>
+    <string name="change">Change</string>
 
     <string name="open_backup_file">Open backup file</string>
 
@@ -150,6 +151,9 @@
     <string name="account_upgrade">Upgrade</string>
     <string name="account_change_name">Change name</string>
     <string name="account_change_image">Change image</string>
+    <string name="account_change_password_title">Change Password</string>
+    <string name="account_change_password_message">Change the password for your with your mail access.</string>
+    <string name="account_change_password_hint">Password</string>
 
     <string name="account_change_name_title">Change username</string>
     <string name="account_change_name_message">It will be visible for you. Other users may see your name when you suggest books to them.</string>

@@ -20,10 +20,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import java.util.Locale
 import javax.inject.Inject
 
-class DetailActivity : TintableBackNavigableActivity() {
-
-    @Inject
-    lateinit var featureFlagging: FeatureFlagging
+class DetailActivity : TintableBackNavigableActivity<>() {
 
     private var detailFragment: BackAnimatable? = null
 

@@ -1,10 +1,13 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
 import at.shockbytes.dante.announcement.Announcement
+import at.shockbytes.dante.databinding.FragmentAnnouncementBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.ui.viewmodel.AnnouncementViewModel
@@ -13,13 +16,17 @@ import at.shockbytes.dante.util.UrlLauncher
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOfActivity
 import com.airbnb.lottie.LottieDrawable
-import kotlinx.android.synthetic.main.fragment_announcement.*
-import kotlinx.android.synthetic.main.fragment_book_action_sheet.view.*
 import javax.inject.Inject
 
-class AnnouncementFragment : BaseFragment() {
+class AnnouncementFragment : BaseFragment<FragmentAnnouncementBinding>() {
 
-    override val layoutId: Int = R.layout.fragment_announcement
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentAnnouncementBinding {
+        return FragmentAnnouncementBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -54,28 +61,28 @@ class AnnouncementFragment : BaseFragment() {
 
     private fun populateAnnouncementViews(announcement: Announcement) {
         with(announcement) {
-            tv_announcement_title.setText(titleRes)
-            tv_announcement_description.setText(descriptionRes)
+            vb.tvAnnouncementTitle.setText(titleRes)
+            vb.tvAnnouncementDescription.setText(descriptionRes)
 
             when (illustration) {
                 is Announcement.Illustration.LottieIllustration -> {
-                    iv_announcement.setVisible(false)
-                    lottie_announcement.apply {
+                    vb.ivAnnouncement.setVisible(false)
+                    vb.lottieAnnouncement.apply {
                         setVisible(true)
                         repeatCount = LottieDrawable.INFINITE
                         setAnimation(illustration.lottieRes)
                     }
                 }
                 is Announcement.Illustration.ImageIllustration -> {
-                    lottie_announcement.setVisible(false, invisibilityState = View.INVISIBLE)
-                    iv_announcement.apply {
+                    vb.lottieAnnouncement.setVisible(false, invisibilityState = View.INVISIBLE)
+                    vb.ivAnnouncement.apply {
                         setVisible(true)
                         setImageResource(illustration.drawableRes)
                     }
                 }
             }
 
-            btn_announcement_action.apply {
+            vb.btnAnnouncementAction.apply {
                 setVisible(hasAction)
 
                 this@with.action?.let { action ->
@@ -86,10 +93,10 @@ class AnnouncementFragment : BaseFragment() {
                 }
             }
 
-            layout_announcement.setOnClickListener {
+            vb.layoutAnnouncement.setOnClickListener {
                 closeModalAndDismissAnnouncement(this)
             }
-            btn_announcement_close.setOnClickListener {
+            vb.btnAnnouncementClose.setOnClickListener {
                 closeModalAndDismissAnnouncement(this)
             }
         }

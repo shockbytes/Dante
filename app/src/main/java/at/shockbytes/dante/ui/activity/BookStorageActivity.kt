@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import at.shockbytes.dante.injection.AppComponent
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ActivityBookStorageBinding
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
 import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
@@ -15,11 +16,10 @@ import javax.inject.Inject
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
-import kotlinx.android.synthetic.main.activity_book_storage.*
-import kotlinx.android.synthetic.main.dante_toolbar.*
 import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.EasyPermissions.PermissionCallbacks
 
-class BookStorageActivity : BaseActivity(), EasyPermissions.PermissionCallbacks {
+class BookStorageActivity : BaseActivity<ActivityBookStorageBinding>(), PermissionCallbacks {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -28,7 +28,6 @@ class BookStorageActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book_storage)
         viewModel = viewModelOf(vmFactory)
 
         initializeNavigation()
@@ -37,8 +36,8 @@ class BookStorageActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
     }
 
     private fun setupToolbar() {
-        dante_toolbar_title.setText(R.string.label_book_storage)
-        dante_toolbar_back.apply {
+        vb.toolbarBookStorage.danteToolbarTitle.setText(R.string.label_book_storage)
+        vb.toolbarBookStorage.danteToolbarBack.apply {
             setVisible(true)
             setOnClickListener {
                 onBackPressed()
@@ -52,7 +51,7 @@ class BookStorageActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
 
     private fun initializeNavigation() {
 
-        bottom_navigation_book_storage.setOnNavigationItemSelectedListener { item ->
+        vb.bottomNavigationBookStorage.setOnNavigationItemSelectedListener { item ->
 
             when (item.itemId) {
 
@@ -70,7 +69,7 @@ class BookStorageActivity : BaseActivity(), EasyPermissions.PermissionCallbacks 
             true
         }
 
-        bottom_navigation_book_storage.selectedItemId = R.id.menu_book_storage_local
+        vb.bottomNavigationBookStorage.selectedItemId = R.id.menu_book_storage_local
     }
 
     private fun showFragment(fragment: Fragment) {

@@ -22,7 +22,7 @@ import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.viewModelOf
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity() {
+class LoginActivity : BaseActivity<>() {
 
     @Inject
     lateinit var vmFactory: ViewModelFactory

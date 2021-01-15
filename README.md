@@ -57,7 +57,15 @@ the user during the login process.
 ### Version 4.1 - HIGH MAINTENANCE
 - [ ] Like book suggestions
 - [ ] Upgrade to Kotlin > 1.4.20
-    - [ ] Use ViewBinding
+    - [ ] ViewBinding
+      - [x] Camera
+      - [ ] Core
+      - [ ] App
+        - [ ] Fragments
+        - [ ] Activities
+        - [ ] Adapters
+      - [ ] Tracking
+      - [ ] Util
     - [ ] Remove Kotterknife usage
 - [ ] Backup file improvements
     - [ ] Show path to local backup files

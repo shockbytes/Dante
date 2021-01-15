@@ -100,7 +100,7 @@ The backlog is currently empty.
 - [x] Upgrade to newest ktlint version
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
-- [ ] Yearly books statistics
+- [x] Yearly books statistics
 - [ ] Bugfixes
     - [x] Handle BookId backup issues!
     - [ ] Enlarge book cover screen

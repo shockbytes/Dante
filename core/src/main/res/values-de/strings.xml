@@ -402,5 +402,7 @@
     <string name="account_change_password_title">Passwort ändern</string>
     <string name="account_change_password_hint">Passwort</string>
     <string name="account_change_password_message">Ändere dein Passwort für deinen Mail-Zugang.</string>
+    <string name="prefs_privacy_policy_title">Datenschutzerklärung</string>
+    <string name="prefs_terms_of_services_title">Nutzungsbedingungen</string>
 
 </resources>

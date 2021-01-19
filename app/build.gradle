@@ -12,8 +12,8 @@ android {
         applicationId "at.shockbytes.dante"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 42
-        versionName "3.18.2"
+        versionCode 43
+        versionName "4.0"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -101,10 +101,9 @@ dependencies {
     implementation "com.google.android.gms:play-services-vision:$playServicesVersionVision"
 
     implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
-    implementation "com.google.firebase:firebase-core:$firebaseVersionCore"
     implementation "com.google.firebase:firebase-config:$firebaseVersionConfig"
     implementation "com.google.firebase:firebase-ml-vision:$firebaseMLVision"
-    implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
+    implementation "com.google.firebase:firebase-storage-ktx:$firebaseStorageVersion"
 
     implementation ('com.google.http-client:google-http-client-gson:1.36.0') {
         exclude group: 'org.apache.httpcomponents'

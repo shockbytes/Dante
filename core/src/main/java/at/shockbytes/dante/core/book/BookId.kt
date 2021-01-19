@@ -10,6 +10,8 @@ object BookIds {
         return bookId > DEFAULT_VALUE
     }
 
+    fun isInvalid(bookId: BookId): Boolean = !isValid(bookId)
+
     fun default() = DEFAULT_VALUE
 
 }

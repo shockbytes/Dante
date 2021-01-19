@@ -36,7 +36,7 @@ class BookSearchSuggestionAdapter(
             item_book_search_suggestion_txt_author.text = content.author
 
             item_book_search_suggestion_btn_add.apply {
-                setVisible(BookIds.isValid(content.bookId))
+                setVisible(BookIds.isInvalid(content.bookId))
                 setOnClickListener {
                     addClickedListener.invoke(content)
                 }

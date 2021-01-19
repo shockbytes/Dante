@@ -6,7 +6,6 @@ import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
-import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.injection.AppComponent
@@ -71,14 +70,14 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
                 rvAdapter.clear()
                 viewModel.requestInitialState()
             } else {
-                viewModel.showBooks(newQuery, true)
+                viewModel.showBooks(newQuery, keepLocal = true)
             }
         }
         fragment_search_searchview.setSearchFocused(true)
 
         fragment_search_btn_search_online.setOnClickListener {
             activity?.hideKeyboard()
-            viewModel.showBooks(fragment_search_searchview.currentQuery, false)
+            viewModel.showBooks(fragment_search_searchview.currentQuery, keepLocal = false)
         }
     }
 

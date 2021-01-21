@@ -22,7 +22,7 @@ import at.shockbytes.dante.util.DanteUtils
  * Author:  Martin Macheiner
  * Date:    02.01.2018
  */
-abstract class TintableBackNavigableActivity<B: ViewBinding> : BackNavigableActivity<B>() {
+abstract class TintableBackNavigableActivity : BackNavigableActivity() {
 
     private val abDefColor = R.color.actionBarItemColor
     private val abTextDefColor = android.R.color.white

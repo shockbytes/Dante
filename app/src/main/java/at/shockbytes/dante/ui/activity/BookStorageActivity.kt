@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ActivityBookStorageBinding
 import at.shockbytes.dante.ui.activity.core.BaseActivity
+import at.shockbytes.dante.ui.activity.core.BaseBindingActivity
 import at.shockbytes.dante.ui.fragment.BackupFragment
 import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
 import at.shockbytes.dante.ui.fragment.OnlineStorageFragment
@@ -19,7 +20,7 @@ import at.shockbytes.dante.util.viewModelOf
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.EasyPermissions.PermissionCallbacks
 
-class BookStorageActivity : BaseActivity<ActivityBookStorageBinding>(), PermissionCallbacks {
+class BookStorageActivity : BaseBindingActivity<ActivityBookStorageBinding>(), PermissionCallbacks {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory

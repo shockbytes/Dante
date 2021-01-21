@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
  * Author:  Martin Macheiner
  * Date:    23.12.2017
  */
-abstract class ContainerTintableBackNavigableActivity<V: ViewBinding> : TintableBackNavigableActivity<V>() {
+abstract class ContainerTintableBackNavigableActivity : TintableBackNavigableActivity() {
 
     abstract val displayFragment: Fragment
 

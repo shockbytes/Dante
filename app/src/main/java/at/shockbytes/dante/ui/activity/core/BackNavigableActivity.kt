@@ -9,7 +9,7 @@ import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
 
-abstract class BackNavigableActivity<B: ViewBinding> : BaseActivity<B>() {
+abstract class BackNavigableActivity : BaseActivity() {
 
     protected var upIndicator: Int = R.drawable.ic_back
 

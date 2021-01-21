@@ -8,6 +8,9 @@ import android.text.method.LinkMovementMethod
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import at.shockbytes.dante.databinding.FragmentLoginBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
@@ -27,9 +30,15 @@ import com.github.florent37.inlineactivityresult.kotlin.startForResult
 import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
-class LoginFragment : BaseFragment() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
-    override val layoutId = R.layout.fragment_login
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentLoginBinding {
+        return FragmentLoginBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory

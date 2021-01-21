@@ -29,12 +29,14 @@ import at.shockbytes.dante.ui.viewmodel.UserViewModel
 import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.databinding.ActivityMainBinding
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
+import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.dante.ui.activity.core.BaseBindingActivity
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.createRoundedBitmap
 import at.shockbytes.dante.util.isFragmentShown
 import at.shockbytes.dante.util.runDelayed
-import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
@@ -46,7 +48,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class MainActivity : BaseActivity<ActivityMainBinding>(), ViewPager.OnPageChangeListener {
+class MainActivity : BaseBindingActivity<ActivityMainBinding>(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory

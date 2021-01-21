@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -22,7 +23,7 @@ import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.viewModelOf
 import javax.inject.Inject
 
-class LoginActivity : BaseActivity<>() {
+class LoginActivity : BaseActivity() {
 
     @Inject
     lateinit var vmFactory: ViewModelFactory

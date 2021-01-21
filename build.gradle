@@ -50,12 +50,12 @@ ext {
     firebaseVersionCore = "18.0.0"
     firebaseVersionConfig = "20.0.0"
     firebaseVersionAuth = "20.0.0"
-    firebaseMLVision = "24.1.0"
     firebaseAnalyticsVersion = "17.6.0"
     firebaseCrashlyticsVersion = "17.2.2"
 
     playServicesVersionVision = "20.1.2"
     playServicesVersionAuth = "19.0.0"
+    mlBarcodeVersion = "16.0.3"
 
     daggerVersion = "2.27"
     retrofitVersion = "2.9.0"

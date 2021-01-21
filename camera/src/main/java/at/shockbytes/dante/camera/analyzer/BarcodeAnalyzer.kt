@@ -2,18 +2,14 @@ package at.shockbytes.dante.camera.analyzer
 
 import android.annotation.SuppressLint
 import android.util.Size
-import android.view.Surface.ROTATION_180
-import android.view.Surface.ROTATION_270
-import android.view.Surface.ROTATION_90
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import at.shockbytes.dante.camera.IsbnVisionBarcode
-import com.google.firebase.ml.vision.FirebaseVision
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcode
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetector
-import com.google.firebase.ml.vision.barcode.FirebaseVisionBarcodeDetectorOptions
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata
+import com.google.mlkit.vision.barcode.Barcode
+import com.google.mlkit.vision.barcode.BarcodeScanner
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions
+import com.google.mlkit.vision.barcode.BarcodeScanning
+import com.google.mlkit.vision.common.InputImage
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
@@ -21,7 +17,7 @@ import java.util.concurrent.TimeUnit
 
 class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer {
 
-    private val detector: FirebaseVisionBarcodeDetector
+    private val detector: BarcodeScanner
 
     private var lastAnalyzedTimestamp = 0L
 
@@ -33,16 +29,14 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
 
     init {
 
-        val options = FirebaseVisionBarcodeDetectorOptions.Builder()
+        val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(
-                FirebaseVisionBarcode.FORMAT_EAN_13,
-                FirebaseVisionBarcode.FORMAT_EAN_8
+                Barcode.FORMAT_EAN_13,
+                Barcode.FORMAT_EAN_8
             )
             .build()
 
-        detector = FirebaseVision
-            .getInstance()
-            .getVisionBarcodeDetector(options)
+        detector = BarcodeScanning.getClient(options)
     }
 
     @SuppressLint("UnsafeExperimentalUsageError")
@@ -52,16 +46,15 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
 
         val size = Size(imageProxy.width, imageProxy.height)
 
-        val proxImage = imageProxy.image
-        if (proxImage == null) {
+        val proxyImage = imageProxy.image
+        if (proxyImage == null) {
             Timber.e("CAM: Image is null")
             return
         }
 
-        val rotationCompensation = getRotation(rotationDegrees)
-        val image = FirebaseVisionImage.fromMediaImage(proxImage, rotationCompensation)
+        val image = InputImage.fromMediaImage(proxyImage, imageProxy.imageInfo.rotationDegrees)
 
-        detector.detectInImage(image)
+        detector.process(image)
             .addOnSuccessListener { codes ->
                 if (codes.isNotEmpty()) {
 
@@ -93,14 +86,5 @@ class BarcodeAnalyzer(private val rotationDegrees: Int) : ImageAnalysis.Analyzer
 
         // Close proxy at the end
         imageProxy.close()
-    }
-
-    private fun getRotation(rotationCompensation: Int): Int {
-        return when (rotationCompensation) {
-            ROTATION_90 -> FirebaseVisionImageMetadata.ROTATION_90
-            ROTATION_180 -> FirebaseVisionImageMetadata.ROTATION_180
-            ROTATION_270 -> FirebaseVisionImageMetadata.ROTATION_270
-            else -> FirebaseVisionImageMetadata.ROTATION_0
-        }
     }
 }

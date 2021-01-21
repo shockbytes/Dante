@@ -56,5 +56,5 @@ dependencies {
     implementation "androidx.camera:camera-extensions:${rootProject.cameraXExtensionVersion}"
 
     implementation "com.jakewharton.timber:timber:$timberVersion"
-    implementation "com.google.firebase:firebase-ml-vision:$firebaseMLVision"
+    implementation "com.google.mlkit:barcode-scanning:$mlBarcodeVersion"
 }

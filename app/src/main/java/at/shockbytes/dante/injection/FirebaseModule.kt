@@ -8,6 +8,7 @@ import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.tracking.DebugTracker
 import at.shockbytes.tracking.FirebaseTracker
 import at.shockbytes.tracking.Tracker
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -36,13 +37,8 @@ class FirebaseModule(private val context: Context) {
                     Timber.d("Firebase defaults set")
                 }
                 try {
-                    fetchAndActivate()
-                        .addOnFailureListener { exception ->
-                            Timber.e(exception)
-                        }
-                        .addOnCompleteListener { task ->
-                            Timber.d("FirebaseRemoteConfig fetched and activated: ${task.result}")
-                        }
+                    val isActivated = Tasks.await(fetchAndActivate())
+                    Timber.d("FirebaseRemoteConfig fetched and activated: $isActivated")
                 } catch (exception: Exception) {
                     Timber.e(exception)
                 }

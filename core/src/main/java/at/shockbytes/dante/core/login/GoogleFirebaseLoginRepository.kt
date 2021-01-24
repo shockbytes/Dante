@@ -168,7 +168,14 @@ class GoogleFirebaseLoginRepository(
                     }
                 }
             }
+            .doOnIO()
             .doOnComplete(::reloadUserAfterAnonymousUpgrade)
+    }
+
+    private fun Completable.doOnIO(): Completable {
+        return this
+            .observeOn(schedulers.io)
+            .subscribeOn(schedulers.io)
     }
 
     private fun reloadUserAfterAnonymousUpgrade() {

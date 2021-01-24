@@ -140,6 +140,7 @@
     <string name="login_invalid_credentials">Email and password do not match!</string>
     <string name="anonymous_upgrade">Upgrade your anonymous account</string>
     <string name="anonymous_upgrade_error">We were unable to upgrade your account. Please try again later.</string>
+    <string name="anonymous_upgrade_success">You have successfully linked your account with your mail %s.</string>
     <string name="forgot_password">Forgot password</string>
     <string name="reset_password_success">A password change request has been sent to %s.</string>
     <string name="reset_password_error">Sorry, we were unable to send a change request to %s.</string>
@@ -148,7 +149,7 @@
     <string name="login_mail_with_google_account">Mail already in use</string>
     <string name="login_mail_with_google_account_message">Your mail address is already associated with a Google account. Please login via Google to use this account.</string>
 
-    <string name="account_upgrade">Upgrade</string>
+    <string name="account_upgrade">Upgrade account</string>
     <string name="account_change_name">Change name</string>
     <string name="account_change_image">Change image</string>
     <string name="account_change_password_title">Change Password</string>

@@ -50,7 +50,12 @@ class UserViewModel @Inject constructor(
 
         object AnonymousLogout : UserEvent()
 
-        data class AnonymousUpgradeFailed(val message: String?) : UserEvent()
+        sealed class AnonymousUpgradeEvent : UserEvent() {
+
+            data class AnonymousUpgradeSuccess(val mailAddress: String) : AnonymousUpgradeEvent()
+
+            data class AnonymousUpgradeFailed(val message: String?) : AnonymousUpgradeEvent()
+        }
 
         sealed class UserNameEvent : UserEvent() {
 
@@ -186,10 +191,13 @@ class UserViewModel @Inject constructor(
                 tracker.track(DanteTrackingEvent.AnonymousUpgrade)
             }
             .subscribe({
-                // TODO Post event
-                Timber.e("Successfully upgrade anonymous account")
+                userEventSubject.onNext(
+                    UserEvent.AnonymousUpgradeEvent.AnonymousUpgradeSuccess(credentials.address)
+                )
             }, { throwable ->
-                userEventSubject.onNext(UserEvent.AnonymousUpgradeFailed(throwable.localizedMessage))
+                userEventSubject.onNext(
+                    UserEvent.AnonymousUpgradeEvent.AnonymousUpgradeFailed(throwable.localizedMessage)
+                )
             })
             .addTo(compositeDisposable)
     }

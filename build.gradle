@@ -48,7 +48,7 @@ ext {
     rxBindingsVersion = "2.2.0"
 
     firebaseVersionConfig = "20.0.2"
-    firebaseVersionAuth = "19.4.0"
+    firebaseVersionAuth = "20.0.2"
     firebaseMLVision = "24.1.0"
     firebaseAnalyticsVersion = "18.0.0"
     firebaseCrashlyticsVersion = "17.3.0"

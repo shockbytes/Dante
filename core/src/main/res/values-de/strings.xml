@@ -404,5 +404,6 @@
     <string name="account_change_password_message">Ändere dein Passwort für deinen Mail-Zugang.</string>
     <string name="prefs_privacy_policy_title">Datenschutzerklärung</string>
     <string name="prefs_terms_of_services_title">Nutzungsbedingungen</string>
+    <string name="anonymous_upgrade_success">Du hast erfolgreich deinen Account mit der Mail-Adresse %s verbunden.</string>
 
 </resources>

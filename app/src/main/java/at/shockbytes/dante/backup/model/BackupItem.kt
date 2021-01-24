@@ -12,5 +12,5 @@ import at.shockbytes.dante.core.book.PageRecord
 data class BackupItem(
     val backupMetadata: BackupMetadata.Standard,
     val books: List<BookEntity>,
-    val records: List<PageRecord>
+    val records: List<PageRecord> = listOf()
 )

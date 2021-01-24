@@ -19,6 +19,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
 
     <dimen name="backup_provider_margin">4dp</dimen>
     <dimen name="time_line_item_view_width">1dp</dimen>
+    <dimen name="time_line_item_view_dot_radius">8dp</dimen>
     <dimen name="stats_section_margin_top">36dp</dimen>
 
 </resources>

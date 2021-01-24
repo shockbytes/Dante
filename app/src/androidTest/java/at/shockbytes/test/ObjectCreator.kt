@@ -7,9 +7,9 @@ object ObjectCreator {
 
     fun getPopulatedListOfBookEntities(): List<BookEntity> {
         return listOf(
-            BookEntity(id = BookId(0), title = "Their darkest hour"),
-            BookEntity(id = BookId(1), title = "Homo Faber"),
-            BookEntity(id = BookId(3), title = "The ego is the enemy")
+            BookEntity(id = 0L, title = "Their darkest hour"),
+            BookEntity(id = 1L, title = "Homo Faber"),
+            BookEntity(id = 3L, title = "The ego is the enemy")
         )
     }
 }

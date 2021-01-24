@@ -18,7 +18,7 @@
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>
     <string name="label_capture">Buch scannen</string>
-    <string name="dismiss">Ausblenden</string>
+    <string name="dismiss">Verwerfen</string>
     <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
     <string name="dialogfragment_query_title">Titelsuche</string>
     <string name="dialogfragment_query_message">Gib den Titel oder den ISBN deines Buches ein.</string>

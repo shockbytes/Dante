@@ -50,5 +50,6 @@ class FirebaseUserRepository(
                 }
             }
             .subscribeOn(schedulers.io)
+            .observeOn(schedulers.io)
     }
 }

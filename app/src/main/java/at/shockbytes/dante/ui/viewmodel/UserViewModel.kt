@@ -197,6 +197,8 @@ class UserViewModel @Inject constructor(
     fun changeUserImage(activity: FragmentActivity) {
         imagePicker
             .openGallery(activity)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.io)
             .flatMap(imageUploadStorage::uploadUserImage)
             .flatMapCompletable(userRepository::updateUserImage)
             .doOnComplete(loginRepository::reloadAccount)

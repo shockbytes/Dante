@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">4.0 - Alpha 20210124</string>
+    <string name="app_version" translatable="false">4.0 - Alpha 20210129</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -173,7 +173,7 @@
     <string name="password_update_success">Your password has been successfully updated</string>
     <string name="password_update_error">We\'re sorry. We could not update your password</string>
 
-    <string name="terms_of_services">Terms of Services</string>
+    <string name="terms_of_services">Terms &amp; Conditions</string>
     <string name="terms_of_services_prefix">By continuing you agree with Dante\'s\n</string>
     <string name="terms_of_services_suffix">.</string>
 
@@ -313,7 +313,7 @@
     <string name="prefs_privacy_policy_key" translatable="false">prefs_privacy_policy_key</string>
     <string name="prefs_privacy_policy_title">Privacy Policy</string>
     <string name="prefs_terms_of_services_key" translatable="false">prefs_terms_of_services_key</string>
-    <string name="prefs_terms_of_services_title">Terms Of Services</string>
+    <string name="prefs_terms_of_services_title">Terms &amp; Conditions</string>
 
     <string name="prefs_category_books">Books</string>
 

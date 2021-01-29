@@ -52,6 +52,11 @@
             android:key="@string/prefs_privacy_policy_key"
             android:title="@string/prefs_privacy_policy_title" />
 
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_tos"
+            android:key="@string/prefs_terms_of_services_key"
+            android:title="@string/prefs_terms_of_services_title" />
+
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_contribute">
@@ -88,11 +93,6 @@
             android:key="@string/prefs_feature_flag_key"
             android:title="@string/prefs_feature_flag_title"
             android:visible="false" />
-
-        <androidx.preference.Preference
-            android:icon="@drawable/ic_settings_tos"
-            android:key="@string/prefs_terms_of_services_key"
-            android:title="@string/prefs_terms_of_services_title" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_icons"

@@ -169,7 +169,7 @@ class GoogleFirebaseLoginRepository(
                 }
             }
             .doOnIO()
-            .doOnComplete(::reloadUserAfterAnonymousUpgrade)
+            .andThen(reloadUserAfterAnonymousUpgrade())
     }
 
     private fun Completable.doOnIO(): Completable {
@@ -178,8 +178,8 @@ class GoogleFirebaseLoginRepository(
             .subscribeOn(schedulers.io)
     }
 
-    private fun reloadUserAfterAnonymousUpgrade() {
-        reloadAccount()
+    private fun reloadUserAfterAnonymousUpgrade(): Completable {
+        return reloadAccount()
     }
 
     override fun observeAccount(): Observable<UserState> {
@@ -188,29 +188,32 @@ class GoogleFirebaseLoginRepository(
             .subscribeOn(schedulers.io)
     }
 
-    override fun reloadAccount() {
-        signInSubject.onNext(getCurrentUserState(forceReload = true))
+    override fun reloadAccount(): Completable {
+        return getCurrentUserState(forceReload = true)
+            .doOnSuccess(signInSubject::onNext)
+            .fromSingleToCompletable()
     }
 
     override fun getAccount(): Single<UserState> {
-        return Single.fromCallable(::getCurrentUserState)
-            .subscribeOn(schedulers.io)
+        return getCurrentUserState()
     }
 
     override fun isLoggedIn(): Boolean {
         return signInSubject.value is UserState.SignedInUser
     }
 
-    private fun getCurrentUserState(forceReload: Boolean = false): UserState {
-        return fbAuth.currentUser
-            ?.apply {
-                if (forceReload) {
-                    Tasks.await(reload())
+    private fun getCurrentUserState(forceReload: Boolean = false): Single<UserState> {
+        return singleOf(subscribeOn = schedulers.io, observeOn = schedulers.io) {
+            fbAuth.currentUser
+                ?.apply {
+                    if (forceReload) {
+                        Tasks.await(reload())
+                    }
                 }
-            }
-            ?.toDanteUser()
-            ?.let(UserState::SignedInUser)
-            ?: UserState.Unauthenticated
+                ?.toDanteUser()
+                ?.let(UserState::SignedInUser)
+                ?: UserState.Unauthenticated
+        }
     }
 
     override fun getAuthorizationHeader(): Single<String> {

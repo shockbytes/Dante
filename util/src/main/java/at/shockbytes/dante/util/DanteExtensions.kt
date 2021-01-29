@@ -153,9 +153,10 @@ inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewMod
 
 fun <T> singleOf(
     subscribeOn: Scheduler = Schedulers.io(),
+    observeOn: Scheduler = Schedulers.io(),
     block: () -> T
 ): Single<T> {
-    return Single.fromCallable { block() }.subscribeOn(subscribeOn)
+    return Single.fromCallable { block() }.subscribeOn(subscribeOn).observeOn(observeOn)
 }
 
 fun Iterable<Completable>.merge() = Completable.merge(this)

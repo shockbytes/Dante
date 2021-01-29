@@ -209,7 +209,7 @@ class UserViewModel @Inject constructor(
             .observeOn(schedulers.io)
             .flatMap(imageUploadStorage::uploadUserImage)
             .flatMapCompletable(userRepository::updateUserImage)
-            .doOnComplete(loginRepository::reloadAccount)
+            .andThen(loginRepository.reloadAccount())
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
                 tracker.track(DanteTrackingEvent.UserImageChanged)
@@ -233,7 +233,7 @@ class UserViewModel @Inject constructor(
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.io)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
-            .doOnComplete(loginRepository::reloadAccount)
+            .andThen(loginRepository.reloadAccount())
             .subscribe({
                 tracker.track(DanteTrackingEvent.UserNameChanged)
                 userEventSubject.onNext(UserEvent.UserNameEvent.UserNameUpdated)

@@ -47,7 +47,7 @@ class LabelManagementAdapter(
     private class LabelManagementItemView(
         context: Context,
         layoutWidth: Int
-    ): ConstraintLayout(context) {
+    ) : ConstraintLayout(context) {
 
         val titleView: TextView
             get() = tv_item_label_management
@@ -75,8 +75,7 @@ class LabelManagementAdapter(
             super.setActivated(activated)
 
             if (isChanging) {
-                // TODO Switch between VISIBLE and INVISIBLE
-                // binding.sendButton.isInvisible = !activated∆
+                bg_selection_label_management.onChanged(activated)
             }
         }
     }

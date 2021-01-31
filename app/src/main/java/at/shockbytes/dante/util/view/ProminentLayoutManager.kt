@@ -67,7 +67,6 @@ class ProminentLayoutManager(
             if (translationXFromScale > 0 && i >= 1) {
                 // Edit previous child
                 getChildAt(i - 1)!!.translationX += 2 * translationXFromScale
-
             } else if (translationXFromScale < 0) {
                 // Pass on to next child
                 translationXForward = 2 * translationXFromScale

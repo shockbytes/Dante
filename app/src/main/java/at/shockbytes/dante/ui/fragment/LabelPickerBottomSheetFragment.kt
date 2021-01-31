@@ -5,9 +5,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.injection.AppComponent
@@ -99,7 +97,6 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
         rv_pick_labels.apply {
             PagerSnapHelper().attachToRecyclerView(this)
             layoutManager = ProminentLayoutManager(requireContext())
-            //LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             adapter = labelAdapter
         }
 

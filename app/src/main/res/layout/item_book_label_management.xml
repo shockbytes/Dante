@@ -3,9 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:foreground="?attr/selectableItemBackground"
-    android:minWidth="200dp">
+    android:layout_height="wrap_content">
+
+    <at.shockbytes.dante.ui.custom.BackgroundSelectionView
+        android:id="@+id/bg_selection_label_management"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_item_label_management"
@@ -23,10 +30,12 @@
         android:id="@+id/tv_item_label_management"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginVertical="24dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         android:textColor="@color/colorSecondaryText"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_item_label_management"

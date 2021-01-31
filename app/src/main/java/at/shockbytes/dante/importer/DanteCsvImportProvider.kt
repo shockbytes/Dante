@@ -4,6 +4,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.storage.reader.CsvReader
+import at.shockbytes.dante.util.HexColor
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import io.reactivex.Single
 
@@ -96,7 +97,7 @@ class DanteCsvImportProvider(
             .mapNotNull { label ->
                 val parts = label.split(":")
                 if (parts.size == 2) {
-                    BookLabel.unassignedLabel(title = parts[0], hexColor = parts[1])
+                    BookLabel.unassignedLabel(title = parts[0], hexColor = HexColor.ofString(parts[1]))
                 } else {
                     null
                 }

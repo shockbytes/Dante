@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.adapter
 import android.animation.LayoutTransition
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
@@ -16,7 +15,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
-import at.shockbytes.dante.util.ColorUtils
 import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
@@ -90,9 +88,9 @@ class LabelManagementAdapter(
                 view.titleView.text = title
 
                 val color = if (isNightModeEnabled) {
-                    ColorUtils.desaturateAndDevalue(Color.parseColor(hexColor), by = 0.25f)
+                    hexColor.asDesaturatedColorInt(desaturateBy = 0.25f)
                 } else {
-                    Color.parseColor(hexColor)
+                    hexColor.asColorInt()
                 }
 
                 view.imageView.imageTintList = ColorStateList.valueOf(color)

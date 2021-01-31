@@ -1,6 +1,5 @@
 package at.shockbytes.dante.stats
 
-import android.graphics.Color
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.bareBone
 import at.shockbytes.dante.core.book.BareBoneBook
@@ -237,7 +236,7 @@ object BookStatsBuilder {
             .mapValues { it.value.size }
             .map { (labelPair, size) ->
                 val (title, hexColor) = labelPair
-                LabelStatsItem(title, Color.parseColor(hexColor), size)
+                LabelStatsItem(title, hexColor.asColorInt(), size)
             }
             .sortedBy { it.size }
 

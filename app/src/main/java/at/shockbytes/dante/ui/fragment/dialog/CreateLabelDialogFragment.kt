@@ -12,6 +12,7 @@ import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.custom.colorpicker.ColorPickerItems
 import at.shockbytes.dante.ui.custom.colorpicker.ColorPickerView
+import at.shockbytes.dante.util.HexColor
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.hideKeyboard
 import kotlinx.android.parcel.Parcelize
@@ -57,7 +58,7 @@ class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel>() {
                     Toast.makeText(context, R.string.new_label_title_exists, Toast.LENGTH_LONG).show()
                 }
                 (canCreateNewLabel(title, labelColor)) -> {
-                    val label = BookLabel.unassignedLabel(title, labelColor!!)
+                    val label = BookLabel.unassignedLabel(title, HexColor.ofString(labelColor!!))
                     applyListener?.invoke(label)
                     activity?.hideKeyboard()
                     dismiss()

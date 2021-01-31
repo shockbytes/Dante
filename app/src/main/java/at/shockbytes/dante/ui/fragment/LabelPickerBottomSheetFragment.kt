@@ -13,6 +13,7 @@ import at.shockbytes.dante.ui.adapter.LabelManagementAdapter
 import at.shockbytes.dante.ui.adapter.OnLabelActionClickedListener
 import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
+import at.shockbytes.dante.util.HexColor
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.view.ProminentLayoutManager
@@ -49,6 +50,10 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
             object : OnLabelActionClickedListener {
                 override fun onLabelDeleted(label: BookLabel) {
                     viewModel.deleteBookLabel(label)
+                }
+
+                override fun onLabelColorEdit(label: BookLabel) {
+                    // TODO Do something here...
                 }
             }
         )

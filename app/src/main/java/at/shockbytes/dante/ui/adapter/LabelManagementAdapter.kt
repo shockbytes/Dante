@@ -111,6 +111,9 @@ class LabelManagementAdapter(
                     R.id.popup_label_item_delete -> {
                         onLabelActionClickedListener.onLabelDeleted(label)
                     }
+                    R.id.popup_label_item_edit_color -> {
+                        onLabelActionClickedListener.onLabelColorEdit(label)
+                    }
                 }
                 true
             }

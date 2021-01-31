@@ -5,4 +5,6 @@ import at.shockbytes.dante.core.book.BookLabel
 interface OnLabelActionClickedListener {
 
     fun onLabelDeleted(label: BookLabel)
+
+    fun onLabelColorEdit(label: BookLabel)
 }

@@ -59,11 +59,7 @@ class LoginViewModel @Inject constructor(
     private val loginViewState = MutableLiveData<LoginViewState>()
     fun getLoginViewState(): LiveData<LoginViewState> = loginViewState
 
-    init {
-        resolveLoginState()
-    }
-
-    private fun resolveLoginState() {
+    fun resolveLoginState() {
         loginRepository.getAccount()
             .map { userState ->
                 when (userState) {

@@ -17,6 +17,7 @@ import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
+import at.shockbytes.dante.util.view.ProminentLayoutManager
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -97,7 +98,8 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
     override fun setupViews() {
         rv_pick_labels.apply {
             PagerSnapHelper().attachToRecyclerView(this)
-            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+            layoutManager = ProminentLayoutManager(requireContext())
+            //LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             adapter = labelAdapter
         }
 

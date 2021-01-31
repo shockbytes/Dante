@@ -1,6 +1,7 @@
 package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,7 @@ import androidx.appcompat.widget.PopupMenu
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.util.ColorUtils
-import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.isNightModeEnabled
-import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_book_label_management.*
@@ -51,13 +50,7 @@ class LabelManagementAdapter(
                     Color.parseColor(hexColor)
                 }
 
-                DanteUtils.createRoundedBitmapFromColor(
-                    context,
-                    AppUtils.convertDpInPixel(32, context),
-                    color
-                ).let { rbd ->
-                    iv_item_label_management.setImageDrawable(rbd)
-                }
+                iv_item_label_management.imageTintList = ColorStateList.valueOf(color)
 
                 setupOverflowMenu(this)
             }

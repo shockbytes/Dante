@@ -42,7 +42,6 @@ import com.afollestad.materialdialogs.input.input
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
 class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
@@ -197,8 +196,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         when (userViewState) {
 
             is UserViewModel.UserViewState.LoggedIn -> {
-                // Only show onboarding hints after the user login state is resolved
-                checkForOnboardingHints()
 
                 val photoUrl = userViewState.user.photoUrl
                 if (photoUrl != null) {
@@ -277,29 +274,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
     }
 
-    private fun checkForOnboardingHints() {
-
-        // It has to be delayed, otherwise it will appear on the wrong
-        // position on top of the BottomNavigationBar
-        runDelayed(3_000) {
-            if (danteSettings.hasUserSeenOnboardingHints) {
-                danteSettings.hasUserSeenOnboardingHints = false
-                showOnboardingHintViews()
-            }
-        }
-    }
-
-    private fun showOnboardingHintViews() {
-        MaterialTapTargetPrompt.Builder(this)
-            .setTarget(R.id.mainFab)
-            .setFocalColour(ContextCompat.getColor(this, android.R.color.transparent))
-            .setPrimaryTextColour(ContextCompat.getColor(this, R.color.colorPrimaryTextLight))
-            .setSecondaryTextColour(ContextCompat.getColor(this, R.color.colorSecondaryTextLight))
-            .setBackgroundColour(ContextCompat.getColor(this, R.color.iconColorSettings))
-            .setPrimaryText(R.string.fab_hint_prompt)
-            .setSecondaryText(R.string.fab_hint_prompt_message)
-            .show()
-    }
 
     private fun initializeNavigation() {
 

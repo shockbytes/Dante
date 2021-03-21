@@ -62,14 +62,14 @@
             tools:layout_width="40dp"
             tools:srcCompat="@drawable/darkest_hour"/>
 
-        <com.google.android.material.progressindicator.ProgressIndicator
+        <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/item_book_pb"
             android:layout_width="0dp"
             android:layout_height="6dp"
             android:padding="0dp"
             android:progress="0"
             app:indicatorColor="@color/colorAccent"
-            app:indicatorCornerRadius="3dp"
+            app:trackCornerRadius="3dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

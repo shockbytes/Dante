@@ -391,7 +391,7 @@
     <string name="continue_with_mail">Weiter mit Mail</string>
     <string name="continue_anonymously">Anonym bleiben</string>
     <string name="welcome_back">Willkommen zurück!</string>
-    <string name="statistics_header_books_per_year">Bücher pro Monat</string>
+    <string name="statistics_header_books_per_year">Bücher pro Jahr</string>
     <string name="login_problems">Probleme beim Login?</string>
     <string name="login_problems_header">Probleme beim Login von Dante</string>
     <string name="login_mail_with_google_account">Mail in Verwendung</string>

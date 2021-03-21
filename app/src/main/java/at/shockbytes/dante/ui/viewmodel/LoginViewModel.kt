@@ -30,6 +30,8 @@ class LoginViewModel @Inject constructor(
 
     sealed class LoginState {
 
+        object Loading : LoginState()
+
         object LoggedIn : LoginState()
 
         object LoggedOut : LoginState()
@@ -58,6 +60,10 @@ class LoginViewModel @Inject constructor(
 
     private val loginViewState = MutableLiveData<LoginViewState>()
     fun getLoginViewState(): LiveData<LoginViewState> = loginViewState
+
+    init {
+        loginState.postValue(LoginState.Loading)
+    }
 
     fun resolveLoginState() {
         loginRepository.getAccount()

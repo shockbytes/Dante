@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">4.0 - Alpha 20210129</string>
+    <string name="app_version" translatable="false">4.0 - Alpha 20210221</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -17,7 +17,7 @@
     <string name="beta" translatable="false">BETA</string>
     <string name="discontinued" translatable="false">DISCONTINUED</string>
     <string name="download">Download</string>
-    <string name="export_backup">Export backup</string>
+    <string name="export_backup">Export backup</string>^
     <string name="mail_feedback">How I would improve Dante</string>
     <string name="pick">Pick</string>
     <string name="another_try">Another try</string>

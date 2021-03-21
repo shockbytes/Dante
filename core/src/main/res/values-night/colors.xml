@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="mainBackground">#000</color>
+    <color name="mainBackground">#1A1A1A</color>
+    <color name="colorPrimaryDarkPre23">#1A1A1A</color>
     <color name="colorPrimary">#DDD</color>
-    <color name="colorPrimaryDarkPre23">#000</color>
-    <color name="colorAccent">#B8D893</color>
+    <color name="colorAccent">#4a99da</color>
     <color name="iconColor">#BBB</color>
     <color name="actionBarItemColor">#FFF</color>
     <color name="danteAccent">#AAA</color>

@@ -4,9 +4,9 @@
 
     <color name="colorPrimary">#FFF</color>
     <color name="colorPrimaryDark">#FFF</color>
-    <color name="colorAccent">#B8D893</color>
-    <color name="colorAccentLight">#E3EAC0</color>
-    <color name="colorAccentDark">#90BB7A</color>
+    <color name="colorAccent">#2196f3</color>
+    <color name="colorAccentLight">#6ec6ff</color>
+    <color name="colorAccentDark">#0069c0</color>
     <color name="colorActionBar">@color/colorPrimary</color>
 
     <color name="colorPrimaryText">#212121</color>

@@ -68,7 +68,6 @@ class LoginViewModel @Inject constructor(
 
     fun resolveLoginState() {
         loginRepository.getAccount()
-            .delay(10, TimeUnit.SECONDS)
             .map { userState ->
                 when (userState) {
                     is UserState.SignedInUser -> LoginState.LoggedIn

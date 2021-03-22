@@ -23,6 +23,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="0dp"
         android:indeterminate="true"
+        app:trackCornerRadius="3dp"
         app:indicatorColor="@color/mainBackground"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"

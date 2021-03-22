@@ -405,5 +405,6 @@
     <string name="prefs_privacy_policy_title">Datenschutzerklärung</string>
     <string name="prefs_terms_of_services_title">Nutzungsbedingungen</string>
     <string name="anonymous_upgrade_success">Du hast erfolgreich deinen Account mit der Mail-Adresse %s verbunden.</string>
+    <string name="login_loading">Einen Moment. \n Wir loggen dich ein.</string>
 
 </resources>

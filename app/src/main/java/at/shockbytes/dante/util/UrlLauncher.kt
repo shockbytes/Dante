@@ -1,10 +1,14 @@
 package at.shockbytes.dante.util
 
 import android.content.Context
-import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 
 object UrlLauncher {
+
+    private const val toolbarColor = "#2196f3"
 
     private const val DANTE_GITHUB_URL = "https://github.com/shockbytes/Dante"
     private const val AD_FREE_MEDIUM_URL = "https://mescht93.medium.com/why-my-apps-remain-ad-free-26d29217bdec"
@@ -28,7 +32,13 @@ object UrlLauncher {
     }
 
     fun launchUrl(context: Context, url: String) {
-        val intent = Intent(Intent.ACTION_VIEW).setData(Uri.parse(url))
-        context.startActivity(intent)
+        val customTabsIntent = CustomTabsIntent.Builder()
+            .setDefaultColorSchemeParams(CustomTabColorSchemeParams.Builder()
+                .setToolbarColor(Color.parseColor(toolbarColor))
+                .build()
+            )
+            .build()
+
+        customTabsIntent.launchUrl(context, Uri.parse(url))
     }
 }

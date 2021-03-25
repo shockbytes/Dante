@@ -183,7 +183,9 @@
     <string name="fab_hint_prompt">Scanne dein erstes Buch</string>
     <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
     <string name="prefs_contribute_code_title">Code</string>
-    <string name="prefs_contribute_code_summary">Arbeite an Dante mit: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_summary">Arbeite an Dante auf Github mit</string>
+    <string name="prefs_community_title">Community</string>
+    <string name="prefs_community_summary">Tritt der Dante Community auf Discord bei</string>
     <string name="restore_title">Wiederherstellen</string>
     <string name="backup_title">Backup</string>
     <string name="rationale_ask_cancel">Sicher nicht!</string>

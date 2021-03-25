@@ -340,7 +340,11 @@
 
     <string name="prefs_contribute_code_key" translatable="false">prefs_contribute_key</string>
     <string name="prefs_contribute_code_title">Code</string>
-    <string name="prefs_contribute_code_summary">Contribute to Dante on Github: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_summary">Contribute to Dante on Github</string>
+
+    <string name="prefs_community_key" translatable="false">prefs_community_key</string>
+    <string name="prefs_community_title">Community</string>
+    <string name="prefs_community_summary">Join the Dante community on Discord</string>
 
     <string name="prefs_feedback_key" translatable="false">prefs_feedback_key</string>
     <string name="prefs_feedback_title" translatable="false">Feedback</string>

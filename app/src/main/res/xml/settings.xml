@@ -68,6 +68,12 @@
             android:title="@string/prefs_contribute_code_title" />
 
         <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_community"
+            android:key="@string/prefs_community_key"
+            android:summary="@string/prefs_community_summary"
+            android:title="@string/prefs_community_title" />
+
+        <androidx.preference.Preference
             android:icon="@drawable/ic_settings_feedback"
             android:key="@string/prefs_feedback_key"
             android:summary="@string/prefs_feedback_summary"

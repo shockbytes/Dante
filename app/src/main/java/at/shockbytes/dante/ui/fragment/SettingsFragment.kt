@@ -83,6 +83,13 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             }
         }
 
+        findPreference<Preference>(getString(R.string.prefs_community_key))?.apply {
+            this.setOnPreferenceClickListener {
+                UrlLauncher.openDiscordPage(requireContext())
+                true
+            }
+        }
+
         findPreference<Preference>(getString(R.string.prefs_ad_free_medium_article_key))?.apply {
             this.setOnPreferenceClickListener {
                 tracker.track(DanteTrackingEvent.OpenAdFreeMediumArticle)

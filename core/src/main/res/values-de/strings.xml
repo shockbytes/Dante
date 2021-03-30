@@ -18,7 +18,7 @@
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>
     <string name="label_capture">Buch scannen</string>
-    <string name="dismiss">Ausblenden</string>
+    <string name="dismiss">Verwerfen</string>
     <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
     <string name="dialogfragment_query_title">Titelsuche</string>
     <string name="dialogfragment_query_message">Gib den Titel oder den ISBN deines Buches ein.</string>
@@ -183,7 +183,9 @@
     <string name="fab_hint_prompt">Scanne dein erstes Buch</string>
     <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
     <string name="prefs_contribute_code_title">Code</string>
-    <string name="prefs_contribute_code_summary">Arbeite an Dante mit: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_summary">Arbeite an Dante auf Github mit</string>
+    <string name="prefs_community_title">Community</string>
+    <string name="prefs_community_summary">Tritt der Dante Community auf Discord bei</string>
     <string name="restore_title">Wiederherstellen</string>
     <string name="backup_title">Backup</string>
     <string name="rationale_ask_cancel">Sicher nicht!</string>
@@ -391,7 +393,7 @@
     <string name="continue_with_mail">Weiter mit Mail</string>
     <string name="continue_anonymously">Anonym bleiben</string>
     <string name="welcome_back">Willkommen zurück!</string>
-    <string name="statistics_header_books_per_year">Bücher pro Monat</string>
+    <string name="statistics_header_books_per_year">Bücher pro Jahr</string>
     <string name="login_problems">Probleme beim Login?</string>
     <string name="login_problems_header">Probleme beim Login von Dante</string>
     <string name="login_mail_with_google_account">Mail in Verwendung</string>
@@ -404,5 +406,7 @@
     <string name="account_change_password_message">Ändere dein Passwort für deinen Mail-Zugang.</string>
     <string name="prefs_privacy_policy_title">Datenschutzerklärung</string>
     <string name="prefs_terms_of_services_title">Nutzungsbedingungen</string>
+    <string name="anonymous_upgrade_success">Du hast erfolgreich deinen Account mit der Mail-Adresse %s verbunden.</string>
+    <string name="login_loading">Einen Moment. \n Wir loggen dich ein.</string>
 
 </resources>

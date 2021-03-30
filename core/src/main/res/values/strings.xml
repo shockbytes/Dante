@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">4.0 - Alpha 20210120</string>
+    <string name="app_version" translatable="false">4.0 - Alpha 20210322</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -17,7 +17,7 @@
     <string name="beta" translatable="false">BETA</string>
     <string name="discontinued" translatable="false">DISCONTINUED</string>
     <string name="download">Download</string>
-    <string name="export_backup">Export backup</string>
+    <string name="export_backup">Export backup</string>^
     <string name="mail_feedback">How I would improve Dante</string>
     <string name="pick">Pick</string>
     <string name="another_try">Another try</string>
@@ -140,6 +140,7 @@
     <string name="login_invalid_credentials">Email and password do not match!</string>
     <string name="anonymous_upgrade">Upgrade your anonymous account</string>
     <string name="anonymous_upgrade_error">We were unable to upgrade your account. Please try again later.</string>
+    <string name="anonymous_upgrade_success">You have successfully linked your account with your mail %s.</string>
     <string name="forgot_password">Forgot password</string>
     <string name="reset_password_success">A password change request has been sent to %s.</string>
     <string name="reset_password_error">Sorry, we were unable to send a change request to %s.</string>
@@ -148,7 +149,7 @@
     <string name="login_mail_with_google_account">Mail already in use</string>
     <string name="login_mail_with_google_account_message">Your mail address is already associated with a Google account. Please login via Google to use this account.</string>
 
-    <string name="account_upgrade">Upgrade</string>
+    <string name="account_upgrade">Upgrade account</string>
     <string name="account_change_name">Change name</string>
     <string name="account_change_image">Change image</string>
     <string name="account_change_password_title">Change Password</string>
@@ -172,7 +173,7 @@
     <string name="password_update_success">Your password has been successfully updated</string>
     <string name="password_update_error">We\'re sorry. We could not update your password</string>
 
-    <string name="terms_of_services">Terms of Services</string>
+    <string name="terms_of_services">Terms &amp; Conditions</string>
     <string name="terms_of_services_prefix">By continuing you agree with Dante\'s\n</string>
     <string name="terms_of_services_suffix">.</string>
 
@@ -301,6 +302,7 @@
     <string name="pages_read">%d pages read</string>
     <string name="pages_waiting">%d pages waiting</string>
 
+    <string name="login_loading">One moment please. \n We are logging you in.</string>
 
     <string name="sorted_by">Sorted by %s</string>
 
@@ -312,7 +314,7 @@
     <string name="prefs_privacy_policy_key" translatable="false">prefs_privacy_policy_key</string>
     <string name="prefs_privacy_policy_title">Privacy Policy</string>
     <string name="prefs_terms_of_services_key" translatable="false">prefs_terms_of_services_key</string>
-    <string name="prefs_terms_of_services_title">Terms Of Services</string>
+    <string name="prefs_terms_of_services_title">Terms &amp; Conditions</string>
 
     <string name="prefs_category_books">Books</string>
 
@@ -338,7 +340,11 @@
 
     <string name="prefs_contribute_code_key" translatable="false">prefs_contribute_key</string>
     <string name="prefs_contribute_code_title">Code</string>
-    <string name="prefs_contribute_code_summary">Contribute to Dante on Github: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_summary">Contribute to Dante on Github</string>
+
+    <string name="prefs_community_key" translatable="false">prefs_community_key</string>
+    <string name="prefs_community_title">Community</string>
+    <string name="prefs_community_summary">Join the Dante community on Discord</string>
 
     <string name="prefs_feedback_key" translatable="false">prefs_feedback_key</string>
     <string name="prefs_feedback_title" translatable="false">Feedback</string>

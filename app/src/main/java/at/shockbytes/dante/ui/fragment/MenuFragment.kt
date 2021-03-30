@@ -18,7 +18,8 @@ import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
 import at.shockbytes.dante.ui.viewmodel.UserViewModel
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.Login
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousLogout
-import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousUpgradeFailed
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousUpgradeEvent.AnonymousUpgradeFailed
+import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.AnonymousUpgradeEvent.AnonymousUpgradeSuccess
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameUpdated
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameUpdateError
 import at.shockbytes.dante.ui.viewmodel.UserViewModel.UserEvent.UserNameEvent.UserNameEmpty
@@ -105,6 +106,7 @@ class MenuFragment : BaseBottomSheetFragment() {
             is Login -> navigateToLogin()
             is AnonymousLogout -> showAnonymousLogout()
             is AnonymousUpgradeFailed -> showAnonymousUpgradeFailed(event.message)
+            is AnonymousUpgradeSuccess -> showAnonymousUpgradeSuccess(event.mailAddress)
             is UserNameUpdated -> showUserNameUpdatedMessage()
             is UserNameUpdateError -> showUserNameUpdateError(event.message)
             is UserNameEmpty -> showUserNameEmptyError()
@@ -156,6 +158,10 @@ class MenuFragment : BaseBottomSheetFragment() {
     private fun showAnonymousUpgradeFailed(message: String?) {
         val toastMessage = message ?: getString(R.string.anonymous_upgrade_error)
         showToast(toastMessage)
+    }
+
+    private fun showAnonymousUpgradeSuccess(mailAddress: String) {
+        showToast(getString(R.string.anonymous_upgrade_success, mailAddress))
     }
 
     private fun showUserNameUpdatedMessage() = showToast(R.string.user_name_updated)

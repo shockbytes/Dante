@@ -19,6 +19,7 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import io.reactivex.Completable
 import io.reactivex.Single
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
@@ -29,6 +30,8 @@ class LoginViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     sealed class LoginState {
+
+        object Loading : LoginState()
 
         object LoggedIn : LoginState()
 
@@ -60,10 +63,10 @@ class LoginViewModel @Inject constructor(
     fun getLoginViewState(): LiveData<LoginViewState> = loginViewState
 
     init {
-        resolveLoginState()
+        loginState.postValue(LoginState.Loading)
     }
 
-    private fun resolveLoginState() {
+    fun resolveLoginState() {
         loginRepository.getAccount()
             .map { userState ->
                 when (userState) {

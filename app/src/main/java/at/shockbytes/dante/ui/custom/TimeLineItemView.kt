@@ -20,7 +20,7 @@ class TimeLineItemView @JvmOverloads constructor(
 
     private val lineWidth = context.resources.getDimension(R.dimen.time_line_item_view_width)
 
-    private val dotRadius = 20f
+    private val dotRadius = context.resources.getDimension(R.dimen.time_line_item_view_dot_radius)
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)

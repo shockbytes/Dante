@@ -16,7 +16,9 @@ import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.core.ActivityTransition
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.fragment.LoginFragment
+import at.shockbytes.dante.ui.fragment.LoginLoadingFragment
 import at.shockbytes.dante.ui.viewmodel.LoginViewModel
+import at.shockbytes.dante.util.runDelayed
 import at.shockbytes.dante.util.viewModelOf
 import javax.inject.Inject
 
@@ -43,19 +45,25 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun bindViewModel() {
+        viewModel.resolveLoginState()
         viewModel.getLoginState().observe(this, Observer(::handleLoginState))
     }
 
     private fun handleLoginState(state: LoginViewModel.LoginState) {
         when (state) {
             is LoginViewModel.LoginState.LoggedIn -> {
-                ActivityNavigator.navigateTo(this, Destination.Main())
+                runDelayed(300) {
+                    ActivityNavigator.navigateTo(this, Destination.Main())
+                }
             }
             is LoginViewModel.LoginState.LoggedOut -> {
                 showLoginFragment()
             }
             is LoginViewModel.LoginState.Error -> {
                 showSnackbar(getString(state.errorMessageRes))
+            }
+            LoginViewModel.LoginState.Loading -> {
+                showLoadingFragment()
             }
         }
     }
@@ -80,6 +88,14 @@ class LoginActivity : BaseActivity() {
             .beginTransaction()
             .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
             .replace(android.R.id.content, LoginFragment.newInstance())
+            .commit()
+    }
+
+    private fun showLoadingFragment() {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+            .replace(android.R.id.content, LoginLoadingFragment.newInstance())
             .commit()
     }
 

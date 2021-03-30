@@ -101,10 +101,8 @@ The backlog is currently empty.
 - [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
 - [x] Reworked UI
 - [x] Yearly books statistics
-- [ ] Bugfixes
+- [x] Bugfixes
     - [x] Handle BookId backup issues!
-    - [ ] Enlarge book cover screen
-    - [ ] Firebase ANR that requires an uninstall (sometimes)
 
 ## Changelog
 

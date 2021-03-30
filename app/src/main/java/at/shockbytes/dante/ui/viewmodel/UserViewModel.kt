@@ -50,7 +50,12 @@ class UserViewModel @Inject constructor(
 
         object AnonymousLogout : UserEvent()
 
-        data class AnonymousUpgradeFailed(val message: String?) : UserEvent()
+        sealed class AnonymousUpgradeEvent : UserEvent() {
+
+            data class AnonymousUpgradeSuccess(val mailAddress: String) : AnonymousUpgradeEvent()
+
+            data class AnonymousUpgradeFailed(val message: String?) : AnonymousUpgradeEvent()
+        }
 
         sealed class UserNameEvent : UserEvent() {
 
@@ -186,10 +191,13 @@ class UserViewModel @Inject constructor(
                 tracker.track(DanteTrackingEvent.AnonymousUpgrade)
             }
             .subscribe({
-                // TODO Post event
-                Timber.e("Successfully upgrade anonymous account")
+                userEventSubject.onNext(
+                    UserEvent.AnonymousUpgradeEvent.AnonymousUpgradeSuccess(credentials.address)
+                )
             }, { throwable ->
-                userEventSubject.onNext(UserEvent.AnonymousUpgradeFailed(throwable.localizedMessage))
+                userEventSubject.onNext(
+                    UserEvent.AnonymousUpgradeEvent.AnonymousUpgradeFailed(throwable.localizedMessage)
+                )
             })
             .addTo(compositeDisposable)
     }
@@ -197,9 +205,11 @@ class UserViewModel @Inject constructor(
     fun changeUserImage(activity: FragmentActivity) {
         imagePicker
             .openGallery(activity)
+            .subscribeOn(schedulers.io)
+            .observeOn(schedulers.io)
             .flatMap(imageUploadStorage::uploadUserImage)
             .flatMapCompletable(userRepository::updateUserImage)
-            .doOnComplete(loginRepository::reloadAccount)
+            .andThen(loginRepository.reloadAccount())
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
                 tracker.track(DanteTrackingEvent.UserImageChanged)
@@ -223,7 +233,7 @@ class UserViewModel @Inject constructor(
             .subscribeOn(schedulers.io)
             .observeOn(schedulers.io)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
-            .doOnComplete(loginRepository::reloadAccount)
+            .andThen(loginRepository.reloadAccount())
             .subscribe({
                 tracker.track(DanteTrackingEvent.UserNameChanged)
                 userEventSubject.onNext(UserEvent.UserNameEvent.UserNameUpdated)

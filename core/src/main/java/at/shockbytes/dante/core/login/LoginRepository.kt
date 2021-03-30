@@ -31,7 +31,7 @@ interface LoginRepository {
 
     fun observeAccount(): Observable<UserState>
 
-    fun reloadAccount()
+    fun reloadAccount(): Completable
 
     fun getAccount(): Single<UserState>
 

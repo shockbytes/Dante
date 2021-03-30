@@ -19,7 +19,6 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import io.reactivex.Completable
 import io.reactivex.Single
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(

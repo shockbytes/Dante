@@ -1,5 +1,6 @@
 package at.shockbytes.dante.core.login
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import at.shockbytes.dante.core.fromSingleToCompletable
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
@@ -16,7 +17,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
-import kotlin.Exception
 
 /**
  * Author:  Martin Macheiner
@@ -33,17 +33,16 @@ class GoogleFirebaseLoginRepository(
     private val signInSubject: BehaviorSubject<UserState> = BehaviorSubject.create()
 
     init {
-        postCurrentUserState()
+        postInitialState()
     }
 
-    private fun postCurrentUserState() {
-        val state = try {
-            getAccount().blockingGet()
-        } catch (throwable: Exception) {
-            Timber.e(throwable)
-            UserState.Unauthenticated
-        }
-        signInSubject.onNext(state)
+    @SuppressLint("CheckResult")
+    private fun postInitialState() {
+        getAccount()
+            .doOnError(Timber::e)
+            .subscribe(signInSubject::onNext) {
+                signInSubject.onNext(UserState.Unauthenticated)
+            }
     }
 
     override fun loginWithGoogle(data: Intent): Completable {

@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.sdkVersionOrAbove
 import at.shockbytes.dante.injection.AppComponent
+import at.shockbytes.dante.injection.ViewModelFactory
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.core.ActivityTransition
@@ -25,7 +25,7 @@ import javax.inject.Inject
 class LoginActivity : BaseActivity() {
 
     @Inject
-    lateinit var vmFactory: ViewModelProvider.Factory
+    lateinit var vmFactory: ViewModelFactory
 
     override val activityTransition = ActivityTransition.slideFromBottom()
 

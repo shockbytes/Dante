@@ -101,7 +101,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
         tvLoginMailHeader.setText(R.string.login_mail_enter_mail_address)
 
-        tilTextMailAddress.translationY = 175f
+        tilTextMailAddress.translationY = 60f
         editTextMailAddress.apply {
             imeOptions = EditorInfo.IME_ACTION_DONE
             isEnabled = true

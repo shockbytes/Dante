@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">4.0 - Alpha 20210322</string>
+    <string name="app_version" translatable="false">4.0 - RC 20210330</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -136,7 +136,7 @@
     <string name="login_error_google">We cannot log you into your Google Account!</string>
     <string name="login_mail_enter_mail_address">Enter your mail address</string>
     <string name="login_mail_enter_password">Enter your password</string>
-    <string name="login_general_error">We could not log you into your account!</string>
+    <string name="login_general_error">Invalid credentials. We could not log you into your account!</string>
     <string name="login_invalid_credentials">Email and password do not match!</string>
     <string name="anonymous_upgrade">Upgrade your anonymous account</string>
     <string name="anonymous_upgrade_error">We were unable to upgrade your account. Please try again later.</string>

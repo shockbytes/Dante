@@ -5,6 +5,7 @@
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
+    <string name="add_book">Add book</string>
     <string name="help">Help</string>
     <string name="cancel">Cancel</string>
     <string name="open">Open</string>

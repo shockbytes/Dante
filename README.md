@@ -47,18 +47,24 @@ The backlog is currently empty.
 - [ ] Add web client support
 - [ ] Paged request when user clicks on "not my book" in book download view
 
-### Version 4.1 - VIEWS, DATA DRIVE AND FIREFLASH
+### Version 4.2 - FIREFLASH
 - [ ] Add online sync capability
   - [ ] Use Feature Flag to remotely control this feature if things go south (or better, AB test it)
   - [ ] Migrate from local to remote storage
   - [ ] Online storage switch
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
-- [ ] Upgrade to Kotlin 1.4.20
+
+### Version 4.1 - HIGH MAINTENANCE
+- [ ] Upgrade to Kotlin > 1.4.20
     - [ ] Use ViewBinding
     - [ ] Remove Kotterknife
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
+- [ ] Improve main screen
+    - [ ] Use centered ExtendedFloatingActionButton with text 'ADD BOOK'
+    - [ ] Use MaterialContainerTransform instead of FabMorph
+    - [ ] Replace buggy SharedElementTransition for DetailPageNavigation
 
 ## Current development
 
@@ -66,9 +72,9 @@ The backlog is currently empty.
 - [ ] Add required Firebase Login (Google, Email, Anonymous)
     - [ ] General
         - [x] Tracking
-        - [ ] New Privacy Policy
+        - [x] New Privacy Policy
             - [x] Add link in Settings
-            - [ ] Add Privacy Policy to dantebooks.com/#/privacy
+            - [x] Add Privacy Policy to dantebooks.com/#/privacy
         - [ ] Terms Of Services
             - [x] Add Terms Of Services button
             - [x] Add link in Settings

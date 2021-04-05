@@ -1,37 +1,37 @@
 package at.shockbytes.dante.ui.activity
 
-import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatDelegate
 import android.view.MenuItem
 import android.view.animation.DecelerateInterpolator
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
+import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
+import at.shockbytes.dante.core.shortcut.AppShortcutHandler
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.adapter.BookPagerAdapter
+import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
-import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
-import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
-import at.shockbytes.dante.util.settings.DanteSettings
-import at.shockbytes.dante.navigation.Destination
-import at.shockbytes.dante.core.shortcut.AppShortcutHandler
-import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.viewmodel.UserViewModel
+import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.createRoundedBitmap
 import at.shockbytes.dante.util.isFragmentShown
 import at.shockbytes.dante.util.runDelayed
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
@@ -62,7 +62,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbarMain)
@@ -234,6 +233,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         userViewModel.forceLogin(source)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun showAnnouncementFragment(unused: MainViewModel.MainEvent) {
         with(supportFragmentManager) {
             if (!isFragmentShown(TAG_ANNOUNCEMENT)) {

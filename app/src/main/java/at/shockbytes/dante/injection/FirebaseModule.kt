@@ -22,7 +22,11 @@ import timber.log.Timber
 @Module
 class FirebaseModule(private val context: Context) {
 
-    @Provides
+    /**
+     * Do not use remote config at the moment since it is not
+     * used anyways and only leads to sporadic crashes.
+     */
+    // @Provides
     fun provideRemoteConfig(): FirebaseRemoteConfig {
         val configSettings = FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(getFetchInterval())

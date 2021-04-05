@@ -16,7 +16,7 @@ import at.shockbytes.dante.suggestions.cache.DataStoreSuggestionsCache
 import at.shockbytes.dante.suggestions.cache.SuggestionsCache
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsApi
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsRepository
-import at.shockbytes.dante.theme.FirebaseRemoteThemeRepository
+import at.shockbytes.dante.theme.NoOpThemeRepository
 import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.explanations.SharedPrefsExplanations
@@ -24,7 +24,6 @@ import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -55,7 +54,7 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideFeatureFlagging(remoteConfig: FirebaseRemoteConfig): FeatureFlagging {
+    fun provideFeatureFlagging(): FeatureFlagging {
         /**
          * Do not use [FirebaseFeatureFlagging] since there are no remotely controlled feature flags.
          */
@@ -92,10 +91,8 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideThemeRepository(
-        firebaseRemoteConfig: FirebaseRemoteConfig
-    ): ThemeRepository {
-        return FirebaseRemoteThemeRepository(firebaseRemoteConfig, Gson())
+    fun provideThemeRepository(): ThemeRepository {
+        return NoOpThemeRepository
     }
 
     @Provides

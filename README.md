@@ -32,7 +32,7 @@ This file is necessary in order to retrieve the JWT request token of
 the user during the login process.
 
 ## Backlog
-The backlog is currently empty.
+- [ ] E-Book Support
 
 ## Outlook & planned features
 
@@ -69,16 +69,16 @@ The backlog is currently empty.
 ## Current development
 
 ### Version 4.0 - CAMPING WITH FIREBASE
-- [ ] Add required Firebase Login (Google, Email, Anonymous)
-    - [ ] General
+- [x] Add required Firebase Login (Google, Email, Anonymous)
+    - [x] General
         - [x] Tracking
         - [x] New Privacy Policy
             - [x] Add link in Settings
             - [x] Add Privacy Policy to dantebooks.com/#/privacy
-        - [ ] Terms Of Services
+        - [x] Terms Of Services
             - [x] Add Terms Of Services button
             - [x] Add link in Settings
-            - [ ] Add Terms of Services to dantebooks.com/#/terms (https://www.iubenda.com/en/mobile)
+            - [x] Add Terms of Services to dantebooks.com/#/terms
         - [x] Allow anonymous users and mail users to set a username
         - [x] Allow anonymous users and mail users to set a custom image
         - [x] Handle empty mail addresses and usernames in MenuFragment

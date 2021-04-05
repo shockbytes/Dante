@@ -1,6 +1,7 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import android.widget.Toast
@@ -29,6 +30,11 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onCreate(savedInstanceState: Bundle?) {
         (activity?.application as? DanteApp)?.appComponent?.inject(this)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getView()?.setBackgroundResource(R.color.colorActionBar)
     }
 
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {

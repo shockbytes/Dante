@@ -183,9 +183,9 @@
     <string name="fab_hint_prompt">Scanne dein erstes Buch</string>
     <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
     <string name="prefs_contribute_code_title">Code</string>
-    <string name="prefs_contribute_code_summary">Arbeite an Dante auf Github mit</string>
+    <string name="prefs_contribute_code_summary">Arbeite an Dante mit</string>
     <string name="prefs_community_title">Community</string>
-    <string name="prefs_community_summary">Tritt der Dante Community auf Discord bei</string>
+    <string name="prefs_community_summary">Tritt der Dante Community bei</string>
     <string name="restore_title">Wiederherstellen</string>
     <string name="backup_title">Backup</string>
     <string name="rationale_ask_cancel">Sicher nicht!</string>
@@ -315,7 +315,7 @@
     <string name="add_book_to_library_hint">Ein Buch hinzufügen</string>
     <string name="prefs_category_books">Bücher</string>
     <string name="sorted_by">Sortiert nach %s</string>
-    <string name="prefs_feedback_summary">Sende uns dein Feedback als Mail!</string>
+    <string name="prefs_feedback_summary">Sende uns dein Feedback</string>
     <string name="mail_feedback">Wie ich Dante verbessern würde</string>
 
     <string name="random_pick_action">Zufälliges Buch wählen</string>
@@ -367,7 +367,8 @@
     <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen. Bitte schlage auch du Bücher für andere vor.</string>
     <string name="book_added_to_wishlist">%s wurde zur Wunschliste hinzugefügt</string>
     <string name="suggest">Vorschlagen</string>
-    <string name="prefs_ad_free_medium_article_title">Warum Dante werbefrei bleibt</string>
+    <string name="prefs_ad_free_medium_article_title">Warum Dante werbefrei ist</string>
+    <string name="prefs_ad_free_medium_article_summary">und auch bleibt</string>
 
     <string name="no_suggestions_for_user">Es tut uns Leid. Es sind gerade keine Vorschläge für dich vorhanden. Warte ein bisschen bis deine Kollegen ein paar Bücher vorschlagen.</string>
 

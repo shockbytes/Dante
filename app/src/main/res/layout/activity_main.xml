@@ -247,7 +247,6 @@
         app:itemTextColor="@drawable/navigation_item"
         app:layout_anchor="@+id/viewPager"
         app:layout_anchorGravity="bottom"
-        app:layout_behavior="at.shockbytes.util.view.BottomNavigationViewBehavior"
         app:layout_insetEdge="bottom"
         app:menu="@menu/menu_navigation" />
 

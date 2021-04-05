@@ -32,7 +32,6 @@ class LoginActivity : BaseActivity() {
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         viewModel = viewModelOf(vmFactory)
         setFullscreen()

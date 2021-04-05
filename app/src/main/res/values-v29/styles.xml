@@ -24,4 +24,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.Login">
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="statusBarBackground">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/launch_screen</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
 </resources>

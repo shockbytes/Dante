@@ -165,6 +165,7 @@ class MainBookFragment : BaseFragment(),
         viewModel.getBooks().observe(this, Observer(::handleBookLoadingState))
 
         viewModel.onPickRandomBookEvent
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::handleRandomPickEvent)
             .addTo(compositeDisposable)
 

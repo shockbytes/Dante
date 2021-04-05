@@ -62,7 +62,7 @@ class GoogleFirebaseLoginRepository(
     }
 
     override fun fetchRegisteredAuthenticationSourcesForEmail(mailAddress: String): Single<List<AuthenticationSource>> {
-        return singleOf {
+        return singleOf(subscribeOn = schedulers.io) {
             Tasks.await(fbAuth.fetchSignInMethodsForEmail(mailAddress))
                 .signInMethods
                 ?.map { method ->

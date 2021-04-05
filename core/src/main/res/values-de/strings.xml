@@ -91,7 +91,7 @@
 
     <string name="terms_of_services">Nutzungsbedingungen</string>
     <string name="terms_of_services_prefix">Durch das Fortfahren stimmst du Dante\'s\n</string>
-    <string name="terms_of_services_suffix"> zu.</string>
+    <string name="terms_of_services_suffix">&#160;zu.</string>
 
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>

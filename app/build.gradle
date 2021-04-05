@@ -119,7 +119,7 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
+    // debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanaryVersion"
 
     implementation 'com.tbuonomo:creative-viewpager:1.0.1'
     implementation 'pub.devrel:easypermissions:3.0.0'

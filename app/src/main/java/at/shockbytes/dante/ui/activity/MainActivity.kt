@@ -62,10 +62,9 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbarMain)
+        // setSupportActionBar(toolbarMain)
 
         viewModel = viewModelOf(vmFactory)
         userViewModel = viewModelOf(vmFactory)

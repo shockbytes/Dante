@@ -15,7 +15,13 @@
         <item name="md_font_button">@font/nunito</item>
         <item name="md_color_button_text">@color/colorAccent</item>
 
-        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/colorActionBar</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

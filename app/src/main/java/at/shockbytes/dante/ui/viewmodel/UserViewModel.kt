@@ -75,7 +75,7 @@ class UserViewModel @Inject constructor(
 
             object UserPasswordUpdated : UserPasswordEvent()
 
-            data class UserPasswordUpdateError(val message: String?): UserPasswordEvent()
+            data class UserPasswordUpdateError(val message: String?) : UserPasswordEvent()
         }
 
         sealed class UserImageEvent : UserEvent() {
@@ -126,7 +126,7 @@ class UserViewModel @Inject constructor(
     }
 
     fun forceLogout() {
-        loginRepository.logout()
+        doLogout()
             .subscribe({
                 Timber.d("Successfully forced to logout user")
             }, { throwable ->
@@ -152,16 +152,22 @@ class UserViewModel @Inject constructor(
                 if (userState.isAnonymousLogout()) {
                     postAnonymousLogoutEvent()
                 } else {
-                    loginRepository.logout()
-                        .doOnComplete {
-                            // After a successful logout, move the user to the LoginScreen
-                            userEventSubject.onNext(UserEvent.Login)
-                            tracker.track(DanteTrackingEvent.Logout(userState.user.authenticationSource))
-                        }
+                    doLogout(onLogout = {
+                        tracker.track(DanteTrackingEvent.Logout(userState.user.authenticationSource))
+                    })
                 }
             }
             is UserState.Unauthenticated -> postSignInEvent()
         }
+
+    private fun doLogout(onLogout: (() -> Unit)? = null): Completable {
+        return loginRepository.logout()
+            .doOnComplete {
+                // After a successful logout, move the user to the LoginScreen
+                userEventSubject.onNext(UserEvent.Login)
+                onLogout?.invoke()
+            }
+    }
 
     private fun UserState.isAnonymousLogout(): Boolean {
         return this is UserState.SignedInUser && user.authenticationSource == AuthenticationSource.ANONYMOUS

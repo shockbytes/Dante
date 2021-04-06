@@ -58,8 +58,11 @@ class BookStorageModule(private val app: Application) {
     }
 
     @Provides
-    fun provideDriveClient(googleAuth: GoogleAuth): DriveClient {
-        return DriveRestClient(googleAuth)
+    fun provideDriveClient(
+        loginRepository: LoginRepository,
+        googleAuth: GoogleAuth
+    ): DriveClient {
+        return DriveRestClient(loginRepository, googleAuth)
     }
 
     @Provides

@@ -1,8 +1,8 @@
-package at.shockbytes.dante.signin
+package at.shockbytes.dante.core.login
 
 sealed class UserState {
 
     data class SignedInUser(val user: DanteUser) : UserState()
 
-    object AnonymousUser : UserState()
+    object Unauthenticated : UserState()
 }

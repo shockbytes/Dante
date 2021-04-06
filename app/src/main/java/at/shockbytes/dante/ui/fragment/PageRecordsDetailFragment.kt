@@ -10,6 +10,7 @@ import at.shockbytes.dante.ui.viewmodel.PageRecordsDetailViewModel
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.ui.adapter.pagerecords.PageRecordsAdapter
 import at.shockbytes.dante.util.addTo
@@ -23,7 +24,7 @@ class PageRecordsDetailFragment : BaseFragment() {
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
-    private var bookId: Long by argument()
+    private var bookId: BookId by argument()
 
     private lateinit var viewModel: PageRecordsDetailViewModel
 
@@ -88,7 +89,7 @@ class PageRecordsDetailFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(bookId: Long): PageRecordsDetailFragment {
+        fun newInstance(bookId: BookId): PageRecordsDetailFragment {
             return PageRecordsDetailFragment().apply {
                 this.bookId = bookId
             }

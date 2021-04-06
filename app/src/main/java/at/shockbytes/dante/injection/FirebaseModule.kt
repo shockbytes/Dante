@@ -8,6 +8,7 @@ import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.tracking.DebugTracker
 import at.shockbytes.tracking.FirebaseTracker
 import at.shockbytes.tracking.Tracker
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import dagger.Module
@@ -21,7 +22,11 @@ import timber.log.Timber
 @Module
 class FirebaseModule(private val context: Context) {
 
-    @Provides
+    /**
+     * Do not use remote config at the moment since it is not
+     * used anyways and only leads to sporadic crashes.
+     */
+    // @Provides
     fun provideRemoteConfig(): FirebaseRemoteConfig {
         val configSettings = FirebaseRemoteConfigSettings.Builder()
             .setMinimumFetchIntervalInSeconds(getFetchInterval())
@@ -34,13 +39,14 @@ class FirebaseModule(private val context: Context) {
                 setDefaultsAsync(R.xml.remote_config_defaults).addOnCompleteListener {
                     Timber.d("Firebase defaults set")
                 }
+
                 try {
                     fetchAndActivate()
                         .addOnFailureListener { exception ->
                             Timber.e(exception)
                         }
-                        .addOnCompleteListener { task ->
-                            Timber.d("FirebaseRemoteConfig fetched and activated: ${task.result}")
+                        .addOnSuccessListener { isActivated ->
+                            Timber.d("FirebaseRemoteConfig fetched and activated: $isActivated")
                         }
                 } catch (exception: Exception) {
                     Timber.e(exception)
@@ -65,8 +71,8 @@ class FirebaseModule(private val context: Context) {
     }
 
     @Provides
-    fun provideImageUploadStorage(): ImageUploadStorage {
-        return FirebaseImageUploadStorage()
+    fun provideImageUploadStorage(fbAuth: FirebaseAuth): ImageUploadStorage {
+        return FirebaseImageUploadStorage(fbAuth)
     }
 
     companion object {

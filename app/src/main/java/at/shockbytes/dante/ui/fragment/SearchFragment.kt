@@ -1,12 +1,12 @@
 package at.shockbytes.dante.ui.fragment
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.injection.ViewModelFactory
@@ -70,14 +70,14 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
                 rvAdapter.clear()
                 viewModel.requestInitialState()
             } else {
-                viewModel.showBooks(newQuery, true)
+                viewModel.showBooks(newQuery, keepLocal = true)
             }
         }
         fragment_search_searchview.setSearchFocused(true)
 
         fragment_search_btn_search_online.setOnClickListener {
             activity?.hideKeyboard()
-            viewModel.showBooks(fragment_search_searchview.currentQuery, false)
+            viewModel.showBooks(fragment_search_searchview.currentQuery, keepLocal = false)
         }
     }
 
@@ -87,7 +87,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun bindViewModel() {
 
-        viewModel.getSearchState().observe(this, Observer { searchState ->
+        viewModel.getSearchState().observe(this, { searchState ->
             when (searchState) {
                 is SearchViewModel.SearchState.LoadingState -> {
                     fragment_search_searchview.showProgress(true)
@@ -126,10 +126,8 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun onItemClick(content: BookSearchItem, position: Int, v: View) {
         activity?.hideKeyboard()
-        if (content.bookId > -1) {
-            context?.let { ctx ->
-                startActivity(DetailActivity.newIntent(ctx, content.bookId, content.title))
-            }
+        if (BookIds.isValid(content.bookId)) {
+            startActivity(DetailActivity.newIntent(requireContext(), content.bookId, content.title))
         }
     }
 

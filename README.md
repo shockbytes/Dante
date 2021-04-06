@@ -32,14 +32,11 @@ This file is necessary in order to retrieve the JWT request token of
 the user during the login process.
 
 ## Backlog
-The backlog is currently empty.
+- [ ] E-Book Support
 
 ## Outlook & planned features
 
 ### Versions 5.x
-- [ ] Suggesions
-    - [ ] Use Firebase Data for book suggestions
-    - [ ] Let users suggest favorite books to others
 - [ ] Improved search database (Google Books API) lookup query
 - [ ] Shockbytes Firestore Backup
 - [ ] Simplify book management
@@ -50,19 +47,68 @@ The backlog is currently empty.
 - [ ] Add web client support
 - [ ] Paged request when user clicks on "not my book" in book download view
 
-### Version 4.1 - FIREFLASH
+### Version 4.2 - FIREFLASH
 - [ ] Add online sync capability
+  - [ ] Use Feature Flag to remotely control this feature if things go south (or better, AB test it)
   - [ ] Migrate from local to remote storage
+  - [ ] Online storage switch
+  - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
+
+### Version 4.1 - HIGH MAINTENANCE
+- [ ] Upgrade to Kotlin > 1.4.20
+    - [ ] Use ViewBinding
+    - [ ] Remove Kotterknife
+- [ ] Backup file improvements
+    - [ ] Show path to local backup files
+    - [ ] Open file with FileProvider
+- [ ] Improve main screen
+    - [ ] Use centered ExtendedFloatingActionButton with text 'ADD BOOK'
+    - [ ] Use MaterialContainerTransform instead of FabMorph
+    - [ ] Replace buggy SharedElementTransition for DetailPageNavigation
 
 ## Current development
 
 ### Version 4.0 - CAMPING WITH FIREBASE
-- [ ] Add required Firebase Login (Google, Email, Anonymous)
-- [ ] Backup file improvements
-    - [ ] Show path to local backup files
-    - [ ] Open file with FileProvider
-- [ ] Upgrade to Kotlin 1.4.20 -> Use ViewBinding
-- [ ] Reworked UI
+- [x] Add required Firebase Login (Google, Email, Anonymous)
+    - [x] General
+        - [x] Tracking
+        - [x] New Privacy Policy
+            - [x] Add link in Settings
+            - [x] Add Privacy Policy to dantebooks.com/#/privacy
+        - [x] Terms Of Services
+            - [x] Add Terms Of Services button
+            - [x] Add link in Settings
+            - [x] Add Terms of Services to dantebooks.com/#/terms
+        - [x] Allow anonymous users and mail users to set a username
+        - [x] Allow anonymous users and mail users to set a custom image
+        - [x] Handle empty mail addresses and usernames in MenuFragment
+    - [x] Login Flow
+        - [x] LoginActivity is the main entry point (check splash screen)
+        - [x] Show login screen when unauthenticated user opens the app
+        - [x] Show different UI when user opens login screen after logout
+            - [x] Save new field isFirstAppOpen when user successfully logged in
+            - [x] Improve onboarding hints mechanism
+            - [x] "Skip this for now" -> Keep me anonymous
+        - [x] Logout moves user to login screen
+    - [x] Anonymous
+        - [x] Allow users to upgrade to full account
+        - [x] Show notice when user selects anonymous account in login screen
+        - [x] Show notice that data will be wiped once logged out
+    - [x] Mail
+        - [x] Update password in app
+        - [x] Check if a Google User can create an account with the same Gmail Mail credentials
+        - [x] Forgot password functionality
+        - [x] Create Account with Mail vs Login with Mail
+        - [x] Verify email in bottom sheet
+        - [x] Verify minimum password length
+        - [x] Handle invalid password
+    - [x] Google
+- [x] Upgrade to newest ktlint version
+- [x] Abstract BookId in BookEntity in order to easily switch from long to string keys
+- [x] Reworked UI
+- [x] Yearly books statistics
+- [x] Bugfixes
+    - [x] Handle BookId backup issues!
 
 ## Changelog
 

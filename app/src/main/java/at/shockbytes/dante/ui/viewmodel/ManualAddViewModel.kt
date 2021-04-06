@@ -95,7 +95,7 @@ class ManualAddViewModel @Inject constructor(
         imagePicker
             .openGallery(activity)
             .flatMap { imageUri ->
-                imageUploadStorage.upload(imageUri, ::progressUpdate)
+                imageUploadStorage.uploadCustomImage(imageUri, ::progressUpdate)
             }
             .map(::ThumbnailUri)
             .doOnSuccess { thumbnailUri ->

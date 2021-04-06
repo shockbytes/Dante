@@ -73,7 +73,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:padding="16dp"
+                    android:padding="8dp"
+                    app:iconTint="@color/danteAccent"
                     app:icon="@drawable/ic_search"
                     android:textColor="@color/colorPrimaryText"
                     android:text="@string/search_online" />

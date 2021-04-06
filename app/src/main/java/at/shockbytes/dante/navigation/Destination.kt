@@ -6,10 +6,12 @@ import android.os.Parcelable
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeCaptureActivity
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.createSharingIntent
 import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.InspirationsActivity
+import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
@@ -27,7 +29,7 @@ sealed class Destination {
 
         @Parcelize
         data class BookDetailInfo(
-            val id: Long,
+            val id: BookId,
             val title: String
         ) : Parcelable
 
@@ -115,6 +117,12 @@ sealed class Destination {
     object Inspirations : Destination() {
         override fun provideIntent(context: Context): Intent {
             return InspirationsActivity.newIntent(context)
+        }
+    }
+
+    object Login : Destination() {
+        override fun provideIntent(context: Context): Intent {
+            return LoginActivity.newIntent(context)
         }
     }
 }

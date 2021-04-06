@@ -1,10 +1,11 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">3.18.2</string>
+    <string name="app_version" translatable="false">4.0</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
+    <string name="add_book">Add book</string>
     <string name="help">Help</string>
     <string name="cancel">Cancel</string>
     <string name="open">Open</string>
@@ -17,14 +18,19 @@
     <string name="beta" translatable="false">BETA</string>
     <string name="discontinued" translatable="false">DISCONTINUED</string>
     <string name="download">Download</string>
-    <string name="export_backup">Export backup</string>
+    <string name="export_backup">Export backup</string>^
     <string name="mail_feedback">How I would improve Dante</string>
     <string name="pick">Pick</string>
     <string name="another_try">Another try</string>
     <string name="reset">Reset</string>
     <string name="go_to_screen">Go to screen</string>
+    <string name="change">Change</string>
 
     <string name="open_backup_file">Open backup file</string>
+
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="invalid_password_format">Password must have at least 6 digits!</string>
+    <string name="_continue">Continue</string>
 
     <string name="currently_reading">Currently reading</string>
     <string name="add_book_to_library_hint">Add a book to my library</string>
@@ -108,21 +114,69 @@
     <string name="backup_restored">Backup from %s restored</string>
     <string name="backup_restore_error">Error while restoring backup. Reason: %s</string>
     <string name="book_finished_move_to_done_question">You have finished your book. Would you like to add it to the done list?</string>
-    <string name="login_title">Hello!</string>
-    <string name="login_rationale">Thank you for using Dante. In order to provide a better experience we will need access to your Google Account. Furthermore you can also create Google Drive backups. You can also login anytime later if you do not need these features now.</string>
-    <string name="login_later">Maybe later</string>
-    <string name="dialog_login_title">Login to Dante</string>
     <string name="login" translatable="false">Login</string>
     <string name="logout" translatable="false">Logout</string>
     <string name="backup_info">Choose <b>merge</b> if you want to preserve the books on your device and complement the collection with the missing books in the backup. Or choose <b>overwrite</b> to completely delete all books on your device and replace them by the books in the backup file.</string>
-    <string name="welcome">Welcome</string>
     <string name="welcome_acknowledge">OKAY, GOT IT</string>
-    <string name="welcome_with_name">Hello %s!</string>
-    <string name="google_welcome_rationale">You can manage all your Google related activities when your are clicking the symbol above in the app bar. Click on this icon if you want to create a <b>backup</b>.</string>
     <string name="camera_permission_title">Camera</string>
     <string name="scanner_not_operational">The app is currently being configured</string>
     <string name="rate_book">Rate</string>
     <string name="rate">Rate</string>
+
+    <!-- Login -->
+    <string name="login_with_google">Login with Google</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="login_with_mail">Login with Mail</string>
+    <string name="sign_up_with_mail">Sign up with Mail</string>
+    <string name="continue_with_mail">Continue with mail</string>
+    <string name="login_anonymously">Skip this for now</string>
+    <string name="continue_anonymously">Keep me anonymous</string>
+    <string name="login_rationale">Login with an account to store books online, suggest books to other readers and more.</string>
+    <string name="login_mail">Mail Address</string>
+    <string name="login_password">Password</string>
+    <string name="login_error_google">We cannot log you into your Google Account!</string>
+    <string name="login_mail_enter_mail_address">Enter your mail address</string>
+    <string name="login_mail_enter_password">Enter your password</string>
+    <string name="login_general_error">Invalid credentials. We could not log you into your account!</string>
+    <string name="login_invalid_credentials">Email and password do not match!</string>
+    <string name="anonymous_upgrade">Upgrade your anonymous account</string>
+    <string name="anonymous_upgrade_error">We were unable to upgrade your account. Please try again later.</string>
+    <string name="anonymous_upgrade_success">You have successfully linked your account with your mail %s.</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="reset_password_success">A password change request has been sent to %s.</string>
+    <string name="reset_password_error">Sorry, we were unable to send a change request to %s.</string>
+    <string name="login_problems">Login problems?</string>
+    <string name="login_problems_header">Problems while logging into Dante</string>
+    <string name="login_mail_with_google_account">Mail already in use</string>
+    <string name="login_mail_with_google_account_message">Your mail address is already associated with a Google account. Please login via Google to use this account.</string>
+
+    <string name="account_upgrade">Upgrade account</string>
+    <string name="account_change_name">Change name</string>
+    <string name="account_change_image">Change image</string>
+    <string name="account_change_password_title">Change Password</string>
+    <string name="account_change_password_message">Change the password for your with your mail access.</string>
+    <string name="account_change_password_hint">Password</string>
+
+    <string name="account_change_name_title">Change username</string>
+    <string name="account_change_name_message">It will be visible for you. Other users may see your name when you suggest books to them.</string>
+    <string name="account_change_name_hint">New username</string>
+
+    <string name="login_incognito">Anonymous Login</string>
+    <string name="login_incognito_sign_up_hint">Your data will be stored as long as you stay signed in. When you sign out, your data will be erased.\n\nYou can always upgrade to a regular account later on.</string>
+    <string name="logout_incognito">Anonymous Logout</string>
+    <string name="logout_incognito_hint">You are going to delete all your data right now. Proceeding now will permanently remove all your books.\n\nDo you want to proceed?</string>
+
+    <string name="user_name_updated">Your username has been successfully updated</string>
+    <string name="user_update_error">We\'re sorry. We encountered an error while updating your profile</string>
+    <string name="user_name_empty">Your username must not be empty</string>
+    <string name="user_name_too_long">Your username exceeds the maximum length of %d characters</string>
+    <string name="user_image_updated">Your user image was successfully updated</string>
+    <string name="password_update_success">Your password has been successfully updated</string>
+    <string name="password_update_error">We\'re sorry. We could not update your password</string>
+
+    <string name="terms_of_services">Terms &amp; Conditions</string>
+    <string name="terms_of_services_prefix">By continuing you agree with Dante\'s\n</string>
+    <string name="terms_of_services_suffix">.</string>
 
     <string name="ratings_default">It\'s okay!</string>
     <string name="dialogfragment_rating_title">How do you like %s?</string>
@@ -139,6 +193,8 @@
     <string name="dialogfragment_notes_hint">My thoughts belong in here&#8230;</string>
     <string name="my_notes">My notes</string>
     <string name="clear">Clear</string>
+
+    <string name="unauthenticated_shortcut_usage">You must be logged in to use the shortcuts.</string>
 
     <string name="search">Search</string>
     <string name="search_hint">Search…</string>
@@ -216,8 +272,9 @@
     <string name="statistics_header_time">Reading time</string>
     <string name="statistics_header_languages">Languages</string>
     <string name="statistics_header_labels">Labels</string>
-    <string name="statistics_header_pages_over_time">Pages over time</string>
-    <string name="statistics_header_books_over_time">Books over time</string>
+    <string name="statistics_header_pages_over_time">Pages per month</string>
+    <string name="statistics_header_books_over_time">Books per month</string>
+    <string name="statistics_header_books_per_year">Books per year</string>
     <string name="statistics_header_favs">Favorites</string>
     <string name="statistics_header_other">Others</string>
 
@@ -246,6 +303,7 @@
     <string name="pages_read">%d pages read</string>
     <string name="pages_waiting">%d pages waiting</string>
 
+    <string name="login_loading">One moment please. \n We are logging you in.</string>
 
     <string name="sorted_by">Sorted by %s</string>
 
@@ -254,7 +312,10 @@
     <string name="prefs_launcher_icon_state_key" translatable="false">prefs_launcher_icon_state_key</string>
     <string name="prefs_dark_mode_default_value" translatable="false">system</string>
     <string name="prefs_dark_mode_title">Theme</string>
-
+    <string name="prefs_privacy_policy_key" translatable="false">prefs_privacy_policy_key</string>
+    <string name="prefs_privacy_policy_title">Privacy Policy</string>
+    <string name="prefs_terms_of_services_key" translatable="false">prefs_terms_of_services_key</string>
+    <string name="prefs_terms_of_services_title">Terms &amp; Conditions</string>
 
     <string name="prefs_category_books">Books</string>
 
@@ -272,7 +333,8 @@
     <string name="prefs_feature_flag_title" translatable="false">Feature Flags</string>
 
     <string name="prefs_ad_free_medium_article_key" translatable="false">prefs_ad_free_medium_article_key</string>
-    <string name="prefs_ad_free_medium_article_title">Why Dante remains ad-free</string>
+    <string name="prefs_ad_free_medium_article_title">Why Dante is ad-free</string>
+    <string name="prefs_ad_free_medium_article_summary">and stays so</string>
 
     <string name="prefs_show_summary_key" translatable="false">prefs_show_summary_key</string>
     <string name="prefs_show_summary_title">Show book summary</string>
@@ -280,16 +342,19 @@
 
     <string name="prefs_contribute_code_key" translatable="false">prefs_contribute_key</string>
     <string name="prefs_contribute_code_title">Code</string>
-    <string name="prefs_contribute_code_summary">Contribute to Dante on Github: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_summary">Contribute to Dante</string>
+
+    <string name="prefs_community_key" translatable="false">prefs_community_key</string>
+    <string name="prefs_community_title">Community</string>
+    <string name="prefs_community_summary">Join the Dante community</string>
 
     <string name="prefs_feedback_key" translatable="false">prefs_feedback_key</string>
     <string name="prefs_feedback_title" translatable="false">Feedback</string>
-    <string name="prefs_feedback_summary">Send us your feedback via mail!</string>
+    <string name="prefs_feedback_summary">Send us your feedback</string>
 
     <string name="backup_no_backups">You haven\'t made any backups.</string>
     <string name="backup_connection_establish_error">Cannot connect to your backups. Reason: %s</string>
     <string name="dark_mode_applied">The theme will change next restart.</string>
-    <string name="error_google_login">We cannot log you into your Google Account!</string>
     <string name="load_error">Cannot load books from storage</string>
 
     <string name="language_not_available" translatable="false">na</string>
@@ -299,17 +364,12 @@
     <string name="reload">Reload</string>
 
     <string name="error_msg_execution_exception">Download Error</string>
-    <string name="error_msg_unknown">Unknown</string>
+    <string name="error_msg_unknown">Oops, this error shouldn\'t have happened</string>
     <string name="welcome_to_dante">Welcome to Dante</string>
-    <string name="ic_onboarding_welcome">TODO</string>
-    <string name="ic_onboarding_tracking">TODO</string>
-    <string name="ic_onboarding_night_mode">TODO</string>
-    <string name="ic_onboarding_login">TODO</string>
-    <string name="ic_onboarding_suggestions">TODO</string>
-    <string name="ic_onboarding_cta">TODO</string>
+    <string name="welcome_back">Welcome back!</string>
 
-    <string name="prefs_last_login" translatable="false">prefs_last_login</string>
-    <string name="prefs_first_app_open_key" translatable="false">prefs_first_app_open_key</string>
+    <string name="prefs_is_new_user" translatable="false">prefs_is_new_user</string>
+    <string name="prefs_onboarding_hints" translatable="false">prefs_onboarding_hints</string>
 
     <string name="widget_empty_placeholder">You do not read any book at the moment. Move books from your <b><i>Read later</i></b> to <b><i>Read now</i></b> list.</string>
 

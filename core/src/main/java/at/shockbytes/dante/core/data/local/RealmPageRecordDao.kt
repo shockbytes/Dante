@@ -1,5 +1,6 @@
 package at.shockbytes.dante.core.data.local
 
+import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.book.realm.RealmPageRecord
@@ -18,7 +19,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
     private val pageRecordClass = RealmPageRecord::class.java
 
     override fun insertPageRecordForBookId(
-        bookId: Long,
+        bookId: BookId,
         fromPage: Int,
         toPage: Int,
         nowInMillis: Long
@@ -69,7 +70,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
             .findFirst()
     }
 
-    override fun deleteAllPageRecordsForBookId(bookId: Long): Completable {
+    override fun deleteAllPageRecordsForBookId(bookId: BookId): Completable {
         return Completable.fromAction {
             realm.executeTransaction { realm ->
                 realm.where(pageRecordClass)
@@ -86,7 +87,7 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
         }
     }
 
-    override fun pageRecordsForBook(bookId: Long): Observable<List<PageRecord>> {
+    override fun pageRecordsForBook(bookId: BookId): Observable<List<PageRecord>> {
         return realm.read<RealmPageRecord>()
             .equalTo("bookId", bookId)
             .sort("timestamp", Sort.ASCENDING)

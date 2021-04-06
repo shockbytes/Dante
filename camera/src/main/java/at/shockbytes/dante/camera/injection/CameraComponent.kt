@@ -1,5 +1,6 @@
 package at.shockbytes.dante.camera.injection
 
+import at.shockbytes.dante.camera.BarcodeCaptureActivity
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
 import at.shockbytes.dante.core.injection.CoreComponent
 import at.shockbytes.dante.core.injection.ModuleScope
@@ -10,4 +11,6 @@ import dagger.Component
 interface CameraComponent {
 
     fun inject(fragment: BarcodeScanResultBottomSheetDialogFragment)
+
+    fun inject(activity: BarcodeCaptureActivity)
 }

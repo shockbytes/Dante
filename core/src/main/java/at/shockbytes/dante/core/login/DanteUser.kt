@@ -1,4 +1,4 @@
-package at.shockbytes.dante.signin
+package at.shockbytes.dante.core.login
 
 import android.net.Uri
 import android.os.Parcelable
@@ -14,7 +14,7 @@ data class DanteUser(
     val displayName: String?,
     val email: String?,
     val photoUrl: Uri?,
-    val providerId: String,
     val authToken: String?,
-    val userId: String
+    val userId: String,
+    val authenticationSource: AuthenticationSource
 ) : Parcelable

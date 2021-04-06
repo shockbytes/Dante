@@ -1,6 +1,7 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.View
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import android.widget.Toast
@@ -29,6 +30,11 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
     override fun onCreate(savedInstanceState: Bundle?) {
         (activity?.application as? DanteApp)?.appComponent?.inject(this)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getView()?.setBackgroundResource(R.color.colorActionBar)
     }
 
     override fun onCreatePreferences(bundle: Bundle?, s: String?) {
@@ -62,9 +68,30 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             }
         }
 
+        findPreference<Preference>(getString(R.string.prefs_privacy_policy_key))?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                UrlLauncher.openPrivacyPolicy(requireContext())
+                true
+            }
+        }
+
+        findPreference<Preference>(getString(R.string.prefs_terms_of_services_key))?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                UrlLauncher.openTermsOfServicePage(requireContext())
+                true
+            }
+        }
+
         findPreference<Preference>(getString(R.string.prefs_contribute_code_key))?.apply {
             this.setOnPreferenceClickListener {
                 UrlLauncher.openDanteGithubPage(requireContext())
+                true
+            }
+        }
+
+        findPreference<Preference>(getString(R.string.prefs_community_key))?.apply {
+            this.setOnPreferenceClickListener {
+                UrlLauncher.openDiscordPage(requireContext())
                 true
             }
         }
@@ -79,8 +106,11 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
 
         findPreference<Preference>(getString(R.string.prefs_feedback_key))?.apply {
             this.setOnPreferenceClickListener {
-                val body = "\n\n\nVersion ${BuildConfig.VERSION_NAME} - ${BuildConfig.VERSION_CODE}"
-                MailLauncher.sendMail(requireActivity(), getString(R.string.mail_feedback), body)
+                MailLauncher.sendMail(
+                    requireActivity(),
+                    subject = getString(R.string.mail_feedback),
+                    attachVersion = true
+                )
                 true
             }
         }

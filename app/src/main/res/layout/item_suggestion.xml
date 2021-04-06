@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="0dp"
-            android:fontFamily="@font/montserrat_bold"
+            android:fontFamily="@font/nunito_extrabold"
             app:layout_constraintEnd_toStartOf="@id/iv_item_suggestion_report"
             app:layout_constraintStart_toEndOf="@id/iv_item_suggestion_cover"
             app:layout_constraintTop_toTopOf="@+id/iv_item_suggestion_cover"

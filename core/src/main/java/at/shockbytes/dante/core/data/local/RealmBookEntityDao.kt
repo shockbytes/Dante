@@ -1,6 +1,8 @@
 package at.shockbytes.dante.core.data.local
 
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.realm.RealmBook
 import at.shockbytes.dante.core.book.realm.RealmBookConfig
@@ -49,7 +51,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.read<RealmBookLabel>()
-            .equalTo("bookId", BookLabel.UNASSIGNED_LABEL_ID)
+            .equalTo("bookId", BookIds.default())
             .sort("title", Sort.DESCENDING)
             .distinct("title")
             .findAllAsync()
@@ -64,7 +66,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .findAll()
             .map { mapper.mapTo(it) }
 
-    override operator fun get(id: Long): Single<BookEntity> {
+    override operator fun get(id: BookId): Single<BookEntity> {
         return singleOf {
             realm.read<RealmBook>().equalTo("id", id).findFirst()
         }.map(mapper::mapTo)
@@ -88,7 +90,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }
     }
 
-    override fun updateCurrentPage(bookId: Long, currentPage: Int): Completable {
+    override fun updateCurrentPage(bookId: BookId, currentPage: Int): Completable {
         return completableOf {
             realm.executeTransaction { realm ->
                 realm.where(bookClass)
@@ -102,7 +104,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         }
     }
 
-    override fun delete(id: Long): Completable {
+    override fun delete(id: BookId): Completable {
         return completableOf {
             realm.executeTransaction { realm ->
                 realm.where(bookClass)

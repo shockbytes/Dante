@@ -14,6 +14,7 @@ import at.shockbytes.dante.injection.AppNetworkModule
 import at.shockbytes.dante.injection.BookStorageModule
 import at.shockbytes.dante.injection.DaggerAppComponent
 import at.shockbytes.dante.injection.FirebaseModule
+import at.shockbytes.dante.core.injection.LoginModule
 import at.shockbytes.dante.util.CrashlyticsReportingTree
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.tracking.Tracker
@@ -44,6 +45,7 @@ class DanteApp : MultiDexApplication(), CoreComponentProvider {
                     config = CoreModule.CoreModuleConfig(allowRealmExecutionOnUiThread = true)
                 )
             )
+            .loginModule(LoginModule(this))
             .networkModule(NetworkModule())
             .build()
     }

@@ -65,7 +65,7 @@ class SearchViewModel @Inject constructor(
 
     private fun localSearch(query: String): Observable<List<BookSearchItem>> {
         return bookRepository.search(query)
-                .map { it.map { b -> bookTransform(b) } }
+                .map { it.map(bookTransform) }
     }
 
     private fun onlineSearch(query: String): Observable<List<BookSearchItem>> {
@@ -78,7 +78,7 @@ class SearchViewModel @Inject constructor(
                             b.otherSuggestions
                                     .asSequence()
                                     .filter { it.isbn.isNotEmpty() }
-                                    .mapTo(list) { book -> bookTransform(book) }
+                                    .mapTo(list, transform = bookTransform)
                         }
                     }
                     list.toList()

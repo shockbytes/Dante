@@ -5,21 +5,19 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class BookLabel(
-    val bookId: Long,
+    val bookId: BookId,
     val title: String,
     val hexColor: String
 ) : Parcelable {
 
-    fun withBookId(bookId: Long): BookLabel {
+    fun withBookId(bookId: BookId): BookLabel {
         return copy(bookId = bookId)
     }
 
     companion object {
 
-        const val UNASSIGNED_LABEL_ID = -1L
-
         fun unassignedLabel(title: String, hexColor: String): BookLabel {
-            return BookLabel(UNASSIGNED_LABEL_ID, title, hexColor)
+            return BookLabel(BookIds.default(), title, hexColor)
         }
     }
 }

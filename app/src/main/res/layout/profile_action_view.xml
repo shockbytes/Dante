@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:scrollbars="none"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnProfileActionViewUpgrade"
+            style="@style/AppTheme.RoundedButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/account_upgrade"
+            android:textColor="@color/danteAccent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnProfileActionViewChangeName"
+            style="@style/AppTheme.RoundedButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="0dp"
+            android:text="@string/account_change_name"
+            android:textColor="@color/danteAccent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnProfileActionViewChangeImage"
+            style="@style/AppTheme.RoundedButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/account_change_image"
+            android:textColor="@color/danteAccent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnProfileActionViewChangePassword"
+            style="@style/AppTheme.RoundedButton.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/account_change_password_title"
+            android:textColor="@color/danteAccent" />
+
+    </LinearLayout>
+
+</HorizontalScrollView>

@@ -6,8 +6,7 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
-import at.shockbytes.dante.signin.GoogleFirebaseSignInRepository
-import at.shockbytes.dante.signin.SignInRepository
+import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
@@ -17,7 +16,7 @@ import at.shockbytes.dante.suggestions.cache.DataStoreSuggestionsCache
 import at.shockbytes.dante.suggestions.cache.SuggestionsCache
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsApi
 import at.shockbytes.dante.suggestions.firebase.FirebaseSuggestionsRepository
-import at.shockbytes.dante.theme.FirebaseRemoteThemeRepository
+import at.shockbytes.dante.theme.NoOpThemeRepository
 import at.shockbytes.dante.theme.ThemeRepository
 import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.explanations.SharedPrefsExplanations
@@ -25,7 +24,6 @@ import at.shockbytes.dante.util.permission.AndroidPermissionManager
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -56,15 +54,7 @@ class AppModule(private val app: Application) {
     }
 
     @Provides
-    fun provideGoogleSignInManager(
-        prefs: SharedPreferences,
-        schedulers: SchedulerFacade
-    ): SignInRepository {
-        return GoogleFirebaseSignInRepository(prefs, app.applicationContext, schedulers)
-    }
-
-    @Provides
-    fun provideFeatureFlagging(remoteConfig: FirebaseRemoteConfig): FeatureFlagging {
+    fun provideFeatureFlagging(): FeatureFlagging {
         /**
          * Do not use [FirebaseFeatureFlagging] since there are no remotely controlled feature flags.
          */
@@ -87,24 +77,22 @@ class AppModule(private val app: Application) {
     fun provideSuggestionsRepository(
         firebaseSuggestionsApi: FirebaseSuggestionsApi,
         schedulerFacade: SchedulerFacade,
-        signInRepository: SignInRepository,
+        loginRepository: LoginRepository,
         suggestionsCache: SuggestionsCache,
         tracker: Tracker
     ): SuggestionsRepository {
         return FirebaseSuggestionsRepository(
             firebaseSuggestionsApi,
             schedulerFacade,
-            signInRepository,
+            loginRepository,
             suggestionsCache,
             tracker
         )
     }
 
     @Provides
-    fun provideThemeRepository(
-        firebaseRemoteConfig: FirebaseRemoteConfig
-    ): ThemeRepository {
-        return FirebaseRemoteThemeRepository(firebaseRemoteConfig, Gson())
+    fun provideThemeRepository(): ThemeRepository {
+        return NoOpThemeRepository
     }
 
     @Provides

@@ -15,14 +15,14 @@ import at.shockbytes.dante.backup.provider.shockbytes.api.ShockbytesHerokuApi
 import at.shockbytes.dante.backup.provider.shockbytes.storage.InactiveShockbytesBackupStorage
 import at.shockbytes.dante.backup.provider.shockbytes.storage.SharedPreferencesInactiveShockbytesBackupStorage
 import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.login.GoogleAuth
 import at.shockbytes.dante.importer.DanteCsvImportProvider
 import at.shockbytes.dante.importer.DanteExternalStorageImportProvider
 import at.shockbytes.dante.importer.DefaultImportRepository
 import at.shockbytes.dante.importer.GoodreadsCsvImportProvider
 import at.shockbytes.dante.importer.ImportProvider
 import at.shockbytes.dante.importer.ImportRepository
-import at.shockbytes.dante.signin.GoogleFirebaseSignInRepository
-import at.shockbytes.dante.signin.SignInRepository
+import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.storage.DefaultExternalStorageInteractor
 import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.storage.reader.CsvReader
@@ -58,14 +58,17 @@ class BookStorageModule(private val app: Application) {
     }
 
     @Provides
-    fun provideDriveClient(signInRepository: SignInRepository): DriveClient {
-        return DriveRestClient(signInRepository as GoogleFirebaseSignInRepository)
+    fun provideDriveClient(
+        loginRepository: LoginRepository,
+        googleAuth: GoogleAuth
+    ): DriveClient {
+        return DriveRestClient(loginRepository, googleAuth)
     }
 
     @Provides
     fun provideBackupProvider(
         schedulerFacade: SchedulerFacade,
-        signInRepository: SignInRepository,
+        loginRepository: LoginRepository,
         shockbytesHerokuApi: ShockbytesHerokuApi,
         inactiveShockbytesBackupStorage: InactiveShockbytesBackupStorage,
         externalStorageInteractor: ExternalStorageInteractor,
@@ -79,7 +82,7 @@ class BookStorageModule(private val app: Application) {
                 driveClient
             ),
             ShockbytesHerokuServerBackupProvider(
-                signInRepository,
+                loginRepository,
                 shockbytesHerokuApi,
                 inactiveShockbytesBackupStorage
             ),

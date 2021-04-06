@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import android.os.Parcelable
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.PageRecord
@@ -45,7 +47,7 @@ class BookDetailViewModel @Inject constructor(
     sealed class PageRecordsViewState {
 
         data class Present(
-            val bookId: Long,
+            val bookId: BookId,
             val dataPoints: List<BooksAndPageRecordDataPoint>
         ) : PageRecordsViewState()
 
@@ -87,7 +89,7 @@ class BookDetailViewModel @Inject constructor(
     private val addLabelsSubject = PublishSubject.create<List<BookLabel>>()
     val onAddLabelsRequest: Observable<List<BookLabel>> = addLabelsSubject
 
-    private var bookId: Long = -1L
+    private var bookId: BookId = BookIds.default()
     private var pagesAtInit: Int? = null
 
     /**
@@ -95,7 +97,7 @@ class BookDetailViewModel @Inject constructor(
      */
     private val viewCompositeDisposable = CompositeDisposable()
 
-    fun initializeWithBookId(id: Long) {
+    fun initializeWithBookId(id: BookId) {
         this.bookId = id
         fetchBook(bookId)
         fetchPageRecords(bookId)
@@ -129,7 +131,7 @@ class BookDetailViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    private fun fetchBook(bookId: Long) {
+    private fun fetchBook(bookId: BookId) {
         bookRepository[bookId]
             .doOnSuccess(::initializePagesAtInitFromFetch)
             .doOnSuccess { book ->
@@ -144,7 +146,7 @@ class BookDetailViewModel @Inject constructor(
         pagesAtInit = entity.currentPage
     }
 
-    private fun fetchPageRecords(bookId: Long) {
+    private fun fetchPageRecords(bookId: BookId) {
         pageRecordDao.pageRecordsForBook(bookId)
             .map(::mapPageRecordsToDataPoints)
             .subscribe(pageRecords::postValue, ExceptionHandlers::defaultExceptionHandler)

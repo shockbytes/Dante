@@ -44,11 +44,6 @@ import java.math.RoundingMode
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
-fun CharSequence.colored(@ColorInt color: Int): CharSequence {
-    return SpannableString(this).apply {
-        setSpan(ForegroundColorSpan(color), 0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-    }
-}
 
 fun Context.createRoundedBitmap(bitmap: Bitmap): RoundedBitmapDrawable {
     return AppUtils.createRoundedBitmap(this, bitmap)
@@ -157,10 +152,22 @@ inline fun <reified T : ViewModel> FragmentActivity.viewModelOf(factory: ViewMod
 }
 
 fun <T> singleOf(
-    subscribeOn: Scheduler = Schedulers.io(),
+    subscribeOn: Scheduler? = null,
+    observeOn: Scheduler? = null,
     block: () -> T
 ): Single<T> {
-    return Single.fromCallable { block() }.subscribeOn(subscribeOn)
+
+    var source = Single.fromCallable { block() }
+
+    if (subscribeOn != null) {
+        source = source.subscribeOn(subscribeOn)
+    }
+
+    if (observeOn != null) {
+        source = source.observeOn(observeOn)
+    }
+
+    return source
 }
 
 fun Iterable<Completable>.merge() = Completable.merge(this)

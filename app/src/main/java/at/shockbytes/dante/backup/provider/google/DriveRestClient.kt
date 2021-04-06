@@ -3,8 +3,12 @@ package at.shockbytes.dante.backup.provider.google
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupStorageProvider
-import at.shockbytes.dante.signin.UnauthenticatedUserException
-import at.shockbytes.dante.signin.GoogleFirebaseSignInRepository
+import at.shockbytes.dante.core.login.AuthenticationSource
+import at.shockbytes.dante.core.login.DanteUser
+import at.shockbytes.dante.core.login.GoogleAuth
+import at.shockbytes.dante.core.login.LoginRepository
+import at.shockbytes.dante.core.login.UnauthenticatedUserException
+import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.merge
 import com.google.android.gms.tasks.Tasks
@@ -26,7 +30,8 @@ import java.util.Collections
 import java.util.concurrent.Executors
 
 class DriveRestClient(
-    private val signInManager: GoogleFirebaseSignInRepository
+    private val loginRepository: LoginRepository,
+    private val googleAuth: GoogleAuth
 ) : DriveClient {
 
     private lateinit var drive: Drive
@@ -34,9 +39,27 @@ class DriveRestClient(
     private val executor = Executors.newSingleThreadExecutor()
 
     override fun initialize(activity: FragmentActivity): Completable {
+        return checkForGoogleUserAccount()
+            .andThen(setupDrive(activity))
+    }
+
+    private fun checkForGoogleUserAccount() = loginRepository.getAccount()
+        .flatMapCompletable { account ->
+            if (account is UserState.SignedInUser && account.user.isGoogleUser()) {
+                Completable.complete()
+            } else {
+                Completable.error(UnauthenticatedUserException())
+            }
+        }
+
+    private fun DanteUser.isGoogleUser(): Boolean {
+        return this.authenticationSource == AuthenticationSource.GOOGLE
+    }
+
+    private fun setupDrive(activity: FragmentActivity): Completable {
         return Completable.create { emitter ->
 
-            val account = signInManager.getGoogleAccount()?.account
+            val account = googleAuth.getGoogleAccount()?.account
 
             if (account != null) {
                 // Use the authenticated account to sign in to the Drive service.

@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class BookSearchItem(
-    val bookId: Long,
+    val bookId: BookId,
     val title: String,
     val author: String,
     val thumbnailAddress: String?,

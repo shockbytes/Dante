@@ -3,11 +3,14 @@ package at.shockbytes.dante.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import at.shockbytes.dante.core.book.BookId
+import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.flagging.FeatureFlagging
+import java.util.Locale
 import javax.inject.Inject
 
 class DetailActivity : TintableBackNavigableActivity() {
@@ -20,11 +23,11 @@ class DetailActivity : TintableBackNavigableActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val id = intent.getLongExtra(ARG_ID, -1)
+        val id = intent.getLongExtra(ARG_ID, BookIds.default())
         val title = intent.getStringExtra(ARG_TITLE)
 
-        if (id != -1L) {
-            supportActionBar?.title = title
+        if (id != BookIds.default()) {
+            supportActionBar?.title = title?.toUpperCase(Locale.getDefault())
             detailFragment = pickDetailFragment(id)
         } else {
             supportFinishAfterTransition()
@@ -51,7 +54,7 @@ class DetailActivity : TintableBackNavigableActivity() {
         }
     }
 
-    private fun pickDetailFragment(id: Long): BackAnimatable {
+    private fun pickDetailFragment(id: BookId): BackAnimatable {
 
         val fragment = BookDetailFragment.newInstance(id)
 
@@ -68,7 +71,7 @@ class DetailActivity : TintableBackNavigableActivity() {
         private const val ARG_ID = "arg_id"
         private const val ARG_TITLE = "arg_title"
 
-        fun newIntent(context: Context, id: Long, title: String): Intent {
+        fun newIntent(context: Context, id: BookId, title: String): Intent {
             return Intent(context, DetailActivity::class.java)
                     .putExtra(ARG_ID, id)
                     .putExtra(ARG_TITLE, title)

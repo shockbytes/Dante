@@ -8,6 +8,7 @@ import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
+import at.shockbytes.dante.ui.activity.ManualAddActivity
 import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
@@ -20,6 +21,7 @@ import at.shockbytes.dante.ui.fragment.ImportBooksStorageFragment
 import at.shockbytes.dante.ui.fragment.LabelCategoryBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LabelPickerBottomSheetFragment
 import at.shockbytes.dante.ui.fragment.LoginFragment
+import at.shockbytes.dante.ui.fragment.MailLoginBottomSheetDialogFragment
 import at.shockbytes.dante.ui.fragment.MainBookFragment
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
@@ -33,8 +35,6 @@ import at.shockbytes.dante.ui.fragment.StatisticsFragment
 import at.shockbytes.dante.ui.fragment.SuggestBookBottomSheetDialogFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
-import at.shockbytes.dante.ui.fragment.dialog.GoogleSignInDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.GoogleWelcomeScreenDialogFragment
 import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.widget.DanteAppWidget
 import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
@@ -72,6 +72,8 @@ interface AppComponent {
 
     fun inject(activity: NotesActivity)
 
+    fun inject(activity: ManualAddActivity)
+
     fun inject(fragment: MainBookFragment)
 
     fun inject(fragment: BackupFragment)
@@ -104,11 +106,9 @@ interface AppComponent {
 
     fun inject(fragment: TimeLineFragment)
 
-    fun inject(dialogFragment: GoogleSignInDialogFragment)
-
     fun inject(dialogFragment: SortStrategyDialogFragment)
 
-    fun inject(dialogFragment: GoogleWelcomeScreenDialogFragment)
+    fun inject(dialogFragment: MailLoginBottomSheetDialogFragment)
 
     fun inject(danteAppWidget: DanteAppWidget)
 

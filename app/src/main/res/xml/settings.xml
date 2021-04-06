@@ -47,6 +47,16 @@
             android:summary="@string/prefs_tracking_summary"
             android:title="@string/prefs_tracking_title" />
 
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_privacy_policy"
+            android:key="@string/prefs_privacy_policy_key"
+            android:title="@string/prefs_privacy_policy_title" />
+
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_tos"
+            android:key="@string/prefs_terms_of_services_key"
+            android:title="@string/prefs_terms_of_services_title" />
+
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_contribute">
@@ -56,6 +66,12 @@
             android:key="@string/prefs_contribute_code_key"
             android:summary="@string/prefs_contribute_code_summary"
             android:title="@string/prefs_contribute_code_title" />
+
+        <androidx.preference.Preference
+            android:icon="@drawable/ic_settings_community"
+            android:key="@string/prefs_community_key"
+            android:summary="@string/prefs_community_summary"
+            android:title="@string/prefs_community_title" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_feedback"
@@ -76,7 +92,8 @@
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_ad_free"
             android:key="@string/prefs_ad_free_medium_article_key"
-            android:title="@string/prefs_ad_free_medium_article_title" />
+            android:title="@string/prefs_ad_free_medium_article_title"
+            android:summary="@string/prefs_ad_free_medium_article_summary" />
 
         <androidx.preference.Preference
             android:icon="@drawable/ic_settings_feature_flag"

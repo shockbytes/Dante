@@ -18,7 +18,7 @@
     <string name="no_camera_permission">Die App benötigt die Kameraberechtigung um zu funktionieren. Das Scanfenster wird geschlossen.</string>
     <string name="action_share">Teilen</string>
     <string name="label_capture">Buch scannen</string>
-    <string name="dismiss">Ausblenden</string>
+    <string name="dismiss">Verwerfen</string>
     <string name="help_scan">Fokussiere den ISBN bis die App ihn automatisch erkennt</string>
     <string name="dialogfragment_query_title">Titelsuche</string>
     <string name="dialogfragment_query_message">Gib den Titel oder den ISBN deines Buches ein.</string>
@@ -41,21 +41,57 @@
     <string name="backup_restore_error">Fehler beim Wiederherstellen. Grund: %s</string>
     <string name="manual_query">Titel oder ISBN</string>
     <string name="book_finished_move_to_done_question">Soll das Buch auf die Liste der gelesenen Büchern?</string>
-    <string name="login_title">Hallo!</string>
-    <string name="login_later">Später</string>
-    <string name="login_rationale">Danke, dass du Dante benützt. Um ein besseres Erlebnis zu bieten benötigen wir Zugang zu deinem Google Account. Damit kannst du unter anderem Google Drive Backups erstellen. Du kannst dich auch jederzeit später mit deinem Google Account verbinden.</string>
-    <string name="dialog_login_title">Login bei Dante</string>
     <string name="backup_info">Wähle <b>zusammenfügen</b> um die gespeicherten Bücher beizubehalten und die Sammlung durch fehlende Bücher im Backup zu vervollständigen. Oder wähle <b>überschreiben</b> um alle Bücher am Gerät zu löschen und durch die komplette Sammlung des Backups zu ersetzen.</string>
-    <string name="welcome">Willkommen</string>
     <string name="welcome_acknowledge">ALLES KLAR</string>
-    <string name="welcome_with_name">Hallo %s!</string>
-    <string name="google_welcome_rationale">Klicke auf das angezeigte Icon in der Appbar, um alle deine Google-verbundenen Dienste zu vewalten. Klicke auch auf das Icon, wenn du ein <b>Backup</b> erstellen willst.</string>
     <string name="camera_permission_title">Kamera</string>
     <string name="scanner_not_operational">Die App wird gerade noch konfiguriert</string>
     <string name="rate_book">Bewerten</string>
     <string name="rate">Bewerten</string>
     <string name="ratings_default">Es ist okay!</string>
     <string name="dialogfragment_rating_title">Wie gefällt dir %s?</string>
+
+    <!-- Login -->
+    <string name="login_with_google">Login mit Google</string>
+    <string name="login_with_mail">Login mit Mail</string>
+    <string name="login_anonymously">Überspringen</string>
+    <string name="login_rationale">Logge dich mit einem Account ein um Bücher online zu speichern und noch vieles mehr.</string>
+    <string name="login_mail">Mailadresse</string>
+    <string name="login_password">Passwort</string>
+    <string name="invalid_email_format">"Ungültiges Mailformat "</string>
+    <string name="invalid_password_format">Passwort muss min. 6 Zeichen haben</string>
+    <string name="sign_up_with_mail">Signup mit Mail</string>
+    <string name="login_mail_enter_mail_address">Mailadresse eingeben</string>
+    <string name="login_mail_enter_password">Passwort eingeben</string>
+    <string name="login_general_error">Wir konnten dich nicht in deinen Account einloggen!</string>
+    <string name="login_invalid_credentials">Email und Passwort stimmen nicht überein!</string>
+    <string name="forgot_password">Passwort vergessen</string>
+    <string name="reset_password_success">Eine Passwortänderungsmail wurde für die Adresse %s versendet.</string>
+    <string name="reset_password_error">Es tut uns Leid, wir konnten keine Passwortänderungsmail für die Adresse %s versenden.</string>
+
+    <string name="account_upgrade">Upgrade</string>
+    <string name="account_change_name">Name ändern</string>
+    <string name="account_change_image">Bild ändern</string>
+
+    <string name="account_change_name_title">Nutzernamen ändern</string>
+    <string name="account_change_name_message">Die Änderung ist nur sichtbar für dich. Andere Nutzer können auch deinen Namen sehen, wenn du ihnen Bücher vorschlägst.</string>
+    <string name="account_change_name_hint">Neuer Name</string>
+
+    <string name="login_incognito">Anonymer Login</string>
+    <string name="login_incognito_sign_up_hint">Deine Daten werden gespeichert solange du eingeloggt bleibst. Wenn du dich ausloggst werden alle deine Daten gelöscht.\n\nDu kannst immer ein Upgrade zu einem regulären Account durchführen.</string>
+    <string name="logout_incognito">Anonymer Logout</string>
+    <string name="logout_incognito_hint">Du bist dabei deine ganzen Daten zu lösche. Beim Fortfahren werden alle deine Bücher unwiederbringlich gelöscht.\n\nWillst du fortfahren?</string>
+    <string name="anonymous_upgrade">Upgrade dein anonymes Konto</string>
+    <string name="anonymous_upgrade_error">Wir konnten dein Konto nicht upgraden. Bitte versuche es später nochmal.</string>
+
+    <string name="user_name_updated">Deine Name wurde erfolgreich aktualisiert</string>
+    <string name="user_update_error">Aufgrund eines Fehlers können wir leider dein Profil nicht aktualisieren</string>
+    <string name="user_name_empty">Dein Name darf nicht leer sein</string>
+    <string name="user_name_too_long">Dein Name überschreitet die maximale Länge von %d Buchstaben</string>
+    <string name="user_image_updated">Dein Bild wurde erfolgreich aktualisiert</string>
+
+    <string name="terms_of_services">Nutzungsbedingungen</string>
+    <string name="terms_of_services_prefix">Durch das Fortfahren stimmst du Dante\'s\n</string>
+    <string name="terms_of_services_suffix">&#160;zu.</string>
 
     <string name="add_notes">Notizen</string>
     <string name="apply">Übernehmen</string>
@@ -68,6 +104,7 @@
     <string name="dialogfragment_paging_error">Ungültige Eingabe! Die Seitenanzahl kann nicht kleiner als die aktuelle Seite sein, oder die Eingabe ist leer!</string>
     <string name="my_notes">Meine Notizen</string>
     <string name="clear">Löschen</string>
+    <string name="unauthenticated_shortcut_usage">Du must eingeloggt sein, um die Shortcuts zu nutzen.</string>
     <string name="search">Suche</string>
     <string name="search_hint">Suche…</string>
     <string name="preview_failed">Kamera kann nicht geöffnet werden. Ein Neustart könnte helfen!</string>
@@ -78,7 +115,7 @@
     <string name="no_internet_connection">Zurzeit keine Internetverbindung möglich</string>
     <string name="download_attachment_error">Oh, da ist was mächtig schiefgelaufen!</string>
     <string name="menu_main_sort">Bücher sortieren</string>
-    <string name="anonymous_user">Unbekannter Bücherwurm</string>
+    <string name="anonymous_user">Anonyme Leseratte</string>
     <string name="sort_strategy_default">Position (Standard)</string>
     <string name="sort_strategy_author">Autor</string>
     <string name="sort_strategy_title">Buchtitel</string>
@@ -124,7 +161,7 @@
     <string name="backup_no_backups">Du hast noch keine Backups erstellt.</string>
     <string name="backup_connection_establish_error">Keine Verbindung zu deinen Backups möglich. Grund: %s</string>
     <string name="dark_mode_applied">Das Thema wird beim nächsten Start aktiviert.</string>
-    <string name="error_google_login">Wir können dich leider nicht einloggen!</string>
+    <string name="login_error_google">Wir können dich leider nicht einloggen!</string>
     <string name="load_error">Bücher können nicht geladen werden</string>
 
     <string name="prefs_show_summary_title">Bücherzusammenfassung</string>
@@ -135,12 +172,6 @@
     <string name="error_msg_execution_exception">Downloadfehler</string>
     <string name="error_msg_unknown">Unbekannt</string>
     <string name="welcome_to_dante">Willkommen bei Dante</string>
-    <string name="ic_onboarding_welcome">TODO</string>
-    <string name="ic_onboarding_tracking">TODO</string>
-    <string name="ic_onboarding_night_mode">TODO</string>
-    <string name="ic_onboarding_login">TODO</string>
-    <string name="ic_onboarding_suggestions">TODO</string>
-    <string name="ic_onboarding_cta">TODO</string>
     <string name="currently_reading">Du liest gerade</string>
     <string name="widget_empty_placeholder">Du liest im Moment kein Buch. Verschiebe Bücher von deiner Liste <b><i>Für später</i></b> nach <b><i>Lesen</i></b>.</string>
     <string name="menu_fab_manual_disabled">Manuelle Eingabe ist ausgeschaltet.</string>
@@ -152,7 +183,9 @@
     <string name="fab_hint_prompt">Scanne dein erstes Buch</string>
     <string name="fab_hint_prompt_message">Klicke auf das + Symbol und scanne dein erstes Buch!</string>
     <string name="prefs_contribute_code_title">Code</string>
-    <string name="prefs_contribute_code_summary">Arbeite an Dante mit: https://github.com/shockbytes/Dante</string>
+    <string name="prefs_contribute_code_summary">Arbeite an Dante mit</string>
+    <string name="prefs_community_title">Community</string>
+    <string name="prefs_community_summary">Tritt der Dante Community bei</string>
     <string name="restore_title">Wiederherstellen</string>
     <string name="backup_title">Backup</string>
     <string name="rationale_ask_cancel">Sicher nicht!</string>
@@ -282,7 +315,7 @@
     <string name="add_book_to_library_hint">Ein Buch hinzufügen</string>
     <string name="prefs_category_books">Bücher</string>
     <string name="sorted_by">Sortiert nach %s</string>
-    <string name="prefs_feedback_summary">Sende uns dein Feedback als Mail!</string>
+    <string name="prefs_feedback_summary">Sende uns dein Feedback</string>
     <string name="mail_feedback">Wie ich Dante verbessern würde</string>
 
     <string name="random_pick_action">Zufälliges Buch wählen</string>
@@ -334,7 +367,8 @@
     <string name="suggestion_error">Es tut uns leid. Wir können dir gerade keine Vorschläge anzeigen. Bitte schlage auch du Bücher für andere vor.</string>
     <string name="book_added_to_wishlist">%s wurde zur Wunschliste hinzugefügt</string>
     <string name="suggest">Vorschlagen</string>
-    <string name="prefs_ad_free_medium_article_title">Warum Dante werbefrei bleibt</string>
+    <string name="prefs_ad_free_medium_article_title">Warum Dante werbefrei ist</string>
+    <string name="prefs_ad_free_medium_article_summary">und auch bleibt</string>
 
     <string name="no_suggestions_for_user">Es tut uns Leid. Es sind gerade keine Vorschläge für dich vorhanden. Warte ein bisschen bis deine Kollegen ein paar Bücher vorschlagen.</string>
 
@@ -354,5 +388,27 @@
     <string name="open_camera">Kamera wird geöffnet</string>
     <string name="label_deletion_error">Label konnte nicht vom Buch entfernt werden</string>
     <string name="label_deletion_success">Label wurde vom Buch entfernt</string>
+
+    <string name="_continue">Weiter</string>
+    <string name="continue_with_google">Weiter mit Google</string>
+    <string name="continue_with_mail">Weiter mit Mail</string>
+    <string name="continue_anonymously">Anonym bleiben</string>
+    <string name="welcome_back">Willkommen zurück!</string>
+    <string name="statistics_header_books_per_year">Bücher pro Jahr</string>
+    <string name="login_problems">Probleme beim Login?</string>
+    <string name="login_problems_header">Probleme beim Login von Dante</string>
+    <string name="login_mail_with_google_account">Mail in Verwendung</string>
+    <string name="login_mail_with_google_account_message">Deine Mail-Adresse ist bereits mit einem Google Konto verknüpft. Bitte logge dich über den Google Login in diesen Account ein.</string>
+    <string name="password_update_success">Dein Passwort wurde erfolgreich ändern</string>
+    <string name="password_update_error">Tut uns leid. Wir konnten dein Passwort nicht ändern</string>
+    <string name="change">Ändern</string>
+    <string name="account_change_password_title">Passwort ändern</string>
+    <string name="account_change_password_hint">Passwort</string>
+    <string name="account_change_password_message">Ändere dein Passwort für deinen Mail-Zugang.</string>
+    <string name="prefs_privacy_policy_title">Datenschutzerklärung</string>
+    <string name="prefs_terms_of_services_title">Nutzungsbedingungen</string>
+    <string name="anonymous_upgrade_success">Du hast erfolgreich deinen Account mit der Mail-Adresse %s verbunden.</string>
+    <string name="login_loading">Einen Moment. \n Wir loggen dich ein.</string>
+    <string name="add_book">Buch hinzufügen</string>
 
 </resources>

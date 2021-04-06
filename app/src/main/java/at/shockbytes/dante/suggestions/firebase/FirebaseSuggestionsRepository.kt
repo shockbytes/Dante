@@ -1,7 +1,7 @@
 package at.shockbytes.dante.suggestions.firebase
 
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.signin.SignInRepository
+import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.suggestions.BookSuggestionEntity
 import at.shockbytes.dante.suggestions.SuggestionRequest
 import at.shockbytes.dante.suggestions.Suggestions
@@ -21,7 +21,7 @@ import kotlin.math.absoluteValue
 class FirebaseSuggestionsRepository(
     private val firebaseSuggestionsApi: FirebaseSuggestionsApi,
     private val schedulers: SchedulerFacade,
-    private val signInRepository: SignInRepository,
+    private val loginRepository: LoginRepository,
     private val suggestionsCache: SuggestionsCache,
     private val tracker: Tracker
 ) : SuggestionsRepository {
@@ -63,7 +63,7 @@ class FirebaseSuggestionsRepository(
     }
 
     private fun loadRemoteSuggestions(scope: CoroutineScope): Single<Suggestions> {
-        return signInRepository.getAuthorizationHeader()
+        return loginRepository.getAuthorizationHeader()
             .flatMap(firebaseSuggestionsApi::getSuggestions)
             .doOnSuccess { suggestions ->
                 if (suggestions.isNotEmpty()) {
@@ -85,7 +85,7 @@ class FirebaseSuggestionsRepository(
     }
 
     override fun reportSuggestion(suggestionId: String, scope: CoroutineScope): Completable {
-        return signInRepository.getAuthorizationHeader()
+        return loginRepository.getAuthorizationHeader()
             .flatMapCompletable { bearerToken ->
                 firebaseSuggestionsApi.reportSuggestion(bearerToken, suggestionId)
             }
@@ -106,7 +106,7 @@ class FirebaseSuggestionsRepository(
     }
 
     override fun suggestBook(bookEntity: BookEntity, recommendation: String): Completable {
-        return signInRepository.getAuthorizationHeader()
+        return loginRepository.getAuthorizationHeader()
             .flatMapCompletable { bearerToken ->
                 firebaseSuggestionsApi.suggestBook(
                     bearerToken,

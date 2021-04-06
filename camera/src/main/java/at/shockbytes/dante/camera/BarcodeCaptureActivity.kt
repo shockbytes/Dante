@@ -25,8 +25,10 @@ import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
+import at.shockbytes.dante.camera.injection.CameraComponentProvider
 import at.shockbytes.dante.camera.overlay.BarcodeBoundsOverlay
 import at.shockbytes.dante.core.sdkVersionOrAbove
+import at.shockbytes.dante.core.shortcut.AppShortcutHandler
 import at.shockbytes.dante.util.addTo
 import com.google.common.util.concurrent.ListenableFuture
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,6 +37,7 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
 /**
  * Note: Instead of calling `startCamera()` on the main thread, we use `view_finder.post { ... }`
@@ -54,8 +57,13 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
     private val compositeDisposable = CompositeDisposable()
 
+    @Inject
+    lateinit var appShortcutHandler: AppShortcutHandler
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        injectIntoCameraComponent()
+
         window.exitTransition = Slide(Gravity.BOTTOM)
         window.enterTransition = Slide(Gravity.BOTTOM)
         setContentView(R.layout.activity_camera)
@@ -69,6 +77,10 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
         checkPermissions()
+    }
+
+    private fun injectIntoCameraComponent() {
+        CameraComponentProvider.get(applicationContext).inject(this)
     }
 
     private fun setFullscreen() {
@@ -176,6 +188,17 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
             true
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appShortcutHandler.handleAppShortcutForActivity(
+            activity = this,
+            shortcutTitle = "extra_app_shortcut_scan",
+            action = {
+                Timber.d("Coming from app shortcut. Do nothing here.")
+            }
+        )
     }
 
     override fun onDestroy() {

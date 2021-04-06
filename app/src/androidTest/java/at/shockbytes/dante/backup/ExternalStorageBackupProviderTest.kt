@@ -3,6 +3,7 @@ package at.shockbytes.dante.backup
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
+import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupServiceConnectionException
 import at.shockbytes.dante.backup.provider.external.ExternalStorageBackupProvider
 import at.shockbytes.dante.storage.ExternalStorageInteractor
@@ -20,7 +21,6 @@ import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.core.book.BookEntity
-import at.shockbytes.dante.importer.DanteExternalStorageImportProvider
 import at.shockbytes.dante.util.permission.TestPermissionManager
 import at.shockbytes.test.ObjectCreator
 import at.shockbytes.test.TestResourceManager
@@ -40,7 +40,6 @@ class ExternalStorageBackupProviderTest {
     private lateinit var backupProvider: ExternalStorageBackupProvider
 
     private val externalStorageInteractor = mock(ExternalStorageInteractor::class.java)
-    private val externalStorageImporter = DanteExternalStorageImportProvider(Gson())
 
     private val activityScenario: ActivityScenario<MainActivity> = ActivityScenario.launch(MainActivity::class.java)
 
@@ -50,8 +49,7 @@ class ExternalStorageBackupProviderTest {
             schedulerFacade,
             gson,
             externalStorageInteractor,
-            permissionManager,
-            externalStorageImporter
+            permissionManager
         )
     }
 
@@ -100,7 +98,7 @@ class ExternalStorageBackupProviderTest {
 
         val books = listOf<BookEntity>()
 
-        backupProvider.backup()
+        backupProvider.backup(BackupContent(books))
             .test()
             .assertComplete()
     }
@@ -110,7 +108,7 @@ class ExternalStorageBackupProviderTest {
 
         val books = ObjectCreator.getPopulatedListOfBookEntities()
 
-        backupProvider.backup()
+        backupProvider.backup(BackupContent(books))
             .test()
             .assertComplete()
     }
@@ -123,7 +121,7 @@ class ExternalStorageBackupProviderTest {
 
         val books = ObjectCreator.getPopulatedListOfBookEntities()
 
-        backupProvider.backup()
+        backupProvider.backup(BackupContent(books))
             .test()
             .assertNotComplete()
             .assertError(IllegalStateException::class.java)
@@ -219,7 +217,7 @@ class ExternalStorageBackupProviderTest {
 
         backupProvider.mapBackupToBackupContent(metadata)
             .test()
-            .assertValue(expected)
+            .assertValue(BackupContent(expected))
     }
 
     @Test

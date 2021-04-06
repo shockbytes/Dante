@@ -1,45 +1,47 @@
 package at.shockbytes.dante.ui.activity
 
-import androidx.lifecycle.ViewModelProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatDelegate
 import android.view.MenuItem
 import android.view.animation.DecelerateInterpolator
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.camera.BarcodeScanResultBottomSheetDialogFragment
+import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
+import at.shockbytes.dante.core.shortcut.AppShortcutHandler
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
+import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.adapter.BookPagerAdapter
-import at.shockbytes.dante.ui.fragment.MenuFragment
-import at.shockbytes.dante.ui.fragment.dialog.QueryDialogFragment
-import at.shockbytes.dante.ui.viewmodel.MainViewModel
-import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
-import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
-import at.shockbytes.dante.util.settings.DanteSettings
-import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
-import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.ui.fragment.MenuFragment
+import at.shockbytes.dante.ui.viewmodel.MainViewModel
+import at.shockbytes.dante.ui.viewmodel.UserViewModel
+import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.createRoundedBitmap
 import at.shockbytes.dante.util.isFragmentShown
 import at.shockbytes.dante.util.runDelayed
+import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.tracking.properties.LoginSource
+import at.shockbytes.util.AppUtils
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
 
 class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
@@ -48,26 +50,30 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var danteSettings: DanteSettings
+    
+    @Inject
+    lateinit var appShortcutHandler: AppShortcutHandler
 
     private var tabId: Int = R.id.menu_navigation_current
 
     private lateinit var pagerAdapter: BookPagerAdapter
+
     private lateinit var viewModel: MainViewModel
+    private lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme_NoActionBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbarMain)
 
         viewModel = viewModelOf(vmFactory)
+        userViewModel = viewModelOf(vmFactory)
         tabId = savedInstanceState?.getInt(ID_SELECTED_TAB) ?: R.id.menu_navigation_current
 
         handleIntentExtras()
         setupUI()
         initializeNavigation()
         setupDarkMode()
-        // goingEdgeToEdge()
         setupFabMorph()
     }
 
@@ -131,17 +137,18 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         appComponent.inject(this)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            DanteUtils.RC_SIGN_IN -> data?.let(viewModel::signIn)
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt(ID_SELECTED_TAB, tabId)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        appShortcutHandler.handleAppShortcutForActivity(
+            activity = this,
+            shortcutTitle = "extra_app_shortcut_title",
+            action = ::showAddByTitleDialog
+        )
     }
 
     override fun onStop() {
@@ -169,12 +176,13 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     // ---------------------------------------------------
 
     private fun bindViewModel() {
-        viewModel.showAnnouncement()
+        viewModel.onMainEvent()
+            .filter { event -> event is MainViewModel.MainEvent.Announcement }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::showAnnouncementFragment, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
 
-        viewModel.getUserEvent().observe(this, Observer(::handleUserEvent))
+        userViewModel.getUserViewState().observe(this, Observer(::handleUserViewState))
 
         viewModel.requestSeasonalTheme()
         viewModel.getSeasonalTheme()
@@ -183,14 +191,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             .addTo(compositeDisposable)
     }
 
-    private fun handleUserEvent(event: MainViewModel.UserEvent) {
-        when (event) {
+    private fun handleUserViewState(userViewState: UserViewModel.UserViewState) {
+        when (userViewState) {
 
-            is MainViewModel.UserEvent.LoggedIn -> {
-                // Only show onboarding hints after the user login state is resolved
-                checkForOnboardingHints()
+            is UserViewModel.UserViewState.LoggedIn -> {
 
-                val photoUrl = event.user.photoUrl
+                val photoUrl = userViewState.user.photoUrl
                 if (photoUrl != null) {
                     loadUserImage(photoUrl, onLoaded = ::onUserLoaded)
                 } else {
@@ -198,13 +204,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
                 }
             }
 
-            is MainViewModel.UserEvent.AnonymousUser -> {
+            is UserViewModel.UserViewState.UnauthenticatedUser -> {
                 imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                 onUserLoaded()
             }
-            // These cases are handled by another Fragment
-            is MainViewModel.UserEvent.RequireLogin -> Unit
-            is MainViewModel.UserEvent.Error -> Unit
         }
     }
 
@@ -227,10 +230,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     fun forceLogin(source: LoginSource) {
-        viewModel.forceLogin(source)
+        userViewModel.forceLogin(source)
     }
 
-    private fun showAnnouncementFragment(unused: Unit) {
+    @Suppress("UNUSED_PARAMETER")
+    private fun showAnnouncementFragment(unused: MainViewModel.MainEvent) {
         with(supportFragmentManager) {
             if (!isFragmentShown(TAG_ANNOUNCEMENT)) {
                 beginTransaction()
@@ -246,12 +250,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         val bookDetailInfo = intent.getParcelableExtra<Destination.BookDetail.BookDetailInfo>(ARG_OPEN_BOOK_DETAIL_FOR_ID)
         val openCameraAfterLaunch = intent.getBooleanExtra(ARG_OPEN_CAMERA_AFTER_LAUNCH, false)
-        val hasAppShortcutExtra = intent.hasExtra("app_shortcut")
 
         when {
             bookDetailInfo != null -> navigateToBookDetailScreen(bookDetailInfo)
             openCameraAfterLaunch -> showToast(R.string.open_camera)
-            hasAppShortcutExtra -> checkForAppShortcut()
         }
     }
 
@@ -272,29 +274,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
     }
 
-    private fun checkForOnboardingHints() {
-
-        // It has to be delayed, otherwise it will appear on the wrong
-        // position on top of the BottomNavigationBar
-        runDelayed(1000) {
-            if (danteSettings.isFirstAppOpen) {
-                danteSettings.isFirstAppOpen = false
-                showOnboardingHintViews()
-            }
-        }
-    }
-
-    private fun showOnboardingHintViews() {
-        MaterialTapTargetPrompt.Builder(this)
-            .setTarget(R.id.mainFab)
-            .setFocalColour(ContextCompat.getColor(this, android.R.color.transparent))
-            .setPrimaryTextColour(ContextCompat.getColor(this, R.color.colorPrimaryTextLight))
-            .setSecondaryTextColour(ContextCompat.getColor(this, R.color.colorSecondaryTextLight))
-            .setBackgroundColour(ContextCompat.getColor(this, R.color.iconColorSettings))
-            .setPrimaryText(R.string.fab_hint_prompt)
-            .setSecondaryText(R.string.fab_hint_prompt_message)
-            .show()
-    }
 
     private fun initializeNavigation() {
 
@@ -365,13 +344,21 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun showAddByTitleDialog() {
-        QueryDialogFragment.newInstance()
-            .setOnQueryEnteredListener { query ->
+        MaterialDialog(this).show {
+            icon(R.drawable.ic_search)
+            title(R.string.dialogfragment_query_title)
+            message(R.string.dialogfragment_query_message)
+            input(allowEmpty = false, hintRes = R.string.manual_query) { _, query ->
+                // Remove blanks with + so query works also for titles
+                val correctedQuery = query.toString().replace(' ', '+')
                 BarcodeScanResultBottomSheetDialogFragment
-                    .newInstance(query, askForAnotherScan = false)
+                    .newInstance(correctedQuery, askForAnotherScan = false)
                     .show(supportFragmentManager, "show-bottom-sheet-with-book")
             }
-            .show(supportFragmentManager, "query-dialog-fragment")
+            positiveButton(android.R.string.search_go)
+            cancelOnTouchOutside(true)
+            cornerRadius(AppUtils.convertDpInPixel(6, this@MainActivity).toFloat())
+        }
     }
 
     private fun setupDarkMode() {
@@ -385,17 +372,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     private fun setupTheme(theme: ThemeState) {
         AppCompatDelegate.setDefaultNightMode(theme.themeMode)
-    }
-
-    private fun checkForAppShortcut() {
-        handleAppShortcut(intent.getStringExtra("app_shortcut"))
-    }
-
-    private fun handleAppShortcut(stringExtra: String?) {
-
-        when (stringExtra) {
-            "extra_app_shortcut_title" -> showAddByTitleDialog()
-        }
     }
 
     companion object {

@@ -22,9 +22,9 @@ object ChipFactory {
     ): Chip {
 
         val chipColor = if (context.isNightModeEnabled()) {
-            ColorUtils.desaturateAndDevalue(Color.parseColor(label.hexColor), by = 0.25f)
+            ColorUtils.desaturateAndDevalue(label.hexColor.asColorInt(), by = 0.25f)
         } else {
-            Color.parseColor(label.hexColor)
+            label.hexColor.asColorInt()
         }
 
         return Chip(context).apply {

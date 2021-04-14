@@ -46,7 +46,6 @@ import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.view.AnimationUtils
 import at.shockbytes.dante.ui.view.ChipFactory
-import at.shockbytes.dante.util.AnimationUtils
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo

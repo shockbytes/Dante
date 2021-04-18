@@ -9,7 +9,7 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
-import at.shockbytes.dante.flagging.FeatureFlagging
+import at.shockbytes.dante.core.flagging.FeatureFlagging
 import java.util.Locale
 import javax.inject.Inject
 

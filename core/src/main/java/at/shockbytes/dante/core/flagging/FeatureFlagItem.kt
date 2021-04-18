@@ -1,4 +1,4 @@
-package at.shockbytes.dante.flagging
+package at.shockbytes.dante.core.flagging
 
 data class FeatureFlagItem(
     val key: String,

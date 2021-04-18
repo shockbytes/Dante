@@ -8,9 +8,9 @@ import at.shockbytes.dante.announcement.AnnouncementProvider
 import at.shockbytes.dante.announcement.SharedPrefsAnnouncementProvider
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.util.settings.DanteSettings
-import at.shockbytes.dante.flagging.FeatureFlagging
+import at.shockbytes.dante.core.flagging.FeatureFlagging
 import at.shockbytes.dante.flagging.FirebaseFeatureFlagging
-import at.shockbytes.dante.flagging.SharedPreferencesFeatureFlagging
+import at.shockbytes.dante.core.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.suggestions.SuggestionsRepository
 import at.shockbytes.dante.suggestions.cache.DataStoreSuggestionsCache
 import at.shockbytes.dante.suggestions.cache.SuggestionsCache
@@ -51,15 +51,6 @@ class AppModule(private val app: Application) {
     @Provides
     fun providePermissionManager(): PermissionManager {
         return AndroidPermissionManager()
-    }
-
-    @Provides
-    fun provideFeatureFlagging(): FeatureFlagging {
-        /**
-         * Do not use [FirebaseFeatureFlagging] since there are no remotely controlled feature flags.
-         */
-        val prefs = app.getSharedPreferences("feature_flagging", Context.MODE_PRIVATE)
-        return SharedPreferencesFeatureFlagging(prefs)
     }
 
     @Provides

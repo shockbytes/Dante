@@ -55,6 +55,9 @@ the user during the login process.
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
 
 ### Version 4.1 - HIGH MAINTENANCE
+- [ ] Fireflash Preview
+  - [x] Use Feature Flag to remotely control this feature if things go south (or better, AB test it)
+  - [ ] Basic WarehouseBookRepository implementation
 - [ ] Upgrade to Kotlin > 1.4.20
     - [ ] Use ViewBinding
     - [ ] Remove Kotterknife usage
@@ -63,7 +66,7 @@ the user during the login process.
     - [ ] Open file with FileProvider
 - [ ] Improve main screen
     - [ ] Replace buggy SharedElementTransition for DetailPageNavigation
-    - [ ] Use lighter UI for labels (outline instead of filled)
+    - [x] Use lighter UI for labels (outline instead of filled)
     - [ ] New labels screen
 
 ## Current development

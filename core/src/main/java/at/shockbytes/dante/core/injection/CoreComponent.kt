@@ -1,9 +1,11 @@
 package at.shockbytes.dante.core.injection
 
+import android.content.SharedPreferences
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.data.ReadingGoalRepository
+import at.shockbytes.dante.core.flagging.FeatureFlagging
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.picker.ImagePicking
 import at.shockbytes.dante.core.login.GoogleAuth
@@ -37,6 +39,8 @@ interface CoreComponent {
     fun getLoginRepository(): LoginRepository
     fun getUserRepository(): UserRepository
     fun getFirebaseAuth(): FirebaseAuth
+
+    fun provideFeatureFlagging(): FeatureFlagging
 
     fun getImageLoader(): ImageLoader
     fun getImagePicker(): ImagePicking

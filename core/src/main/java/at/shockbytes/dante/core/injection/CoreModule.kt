@@ -3,6 +3,7 @@ package at.shockbytes.dante.core.injection
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.data.BookRepository
@@ -13,6 +14,10 @@ import at.shockbytes.dante.core.data.local.DanteRealmMigration
 import at.shockbytes.dante.core.data.local.RealmBookEntityDao
 import at.shockbytes.dante.core.data.local.RealmPageRecordDao
 import at.shockbytes.dante.core.data.local.SharedPrefsBackedReadingGoalRepository
+import at.shockbytes.dante.core.data.warehouse.WarehouseBookRepository
+import at.shockbytes.dante.core.flagging.FeatureFlag
+import at.shockbytes.dante.core.flagging.FeatureFlagging
+import at.shockbytes.dante.core.flagging.SharedPreferencesFeatureFlagging
 import at.shockbytes.dante.core.image.GlideImageLoader
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.picker.DefaultImagePicking
@@ -37,6 +42,11 @@ class CoreModule(
     private val app: Application,
     private val config: CoreModuleConfig
 ) {
+
+    @Provides
+    fun provideSharedPreferences(): SharedPreferences {
+        return PreferenceManager.getDefaultSharedPreferences(app.applicationContext)
+    }
 
     @Provides
     @Singleton
@@ -67,11 +77,25 @@ class CoreModule(
     }
 
     @Provides
+    fun provideFeatureFlagging(): FeatureFlagging {
+        /**
+         * Do not use [FirebaseFeatureFlagging] since there are no remotely controlled feature flags.
+         */
+        val prefs = app.getSharedPreferences("feature_flagging", Context.MODE_PRIVATE)
+        return SharedPreferencesFeatureFlagging(prefs)
+    }
+
+    @Provides
     @Singleton
     fun provideBookRepository(
-        @Named(LOCAL_BOOK_DAO) localBookDao: BookEntityDao
+        @Named(LOCAL_BOOK_DAO) localBookDao: BookEntityDao,
+        featureFlagging: FeatureFlagging
     ): BookRepository {
-        return DefaultBookRepository(localBookDao = localBookDao)
+        return if (featureFlagging[FeatureFlag.FireFlash]) {
+            WarehouseBookRepository()
+        } else {
+            DefaultBookRepository(localBookDao = localBookDao)
+        }
     }
 
     @Provides

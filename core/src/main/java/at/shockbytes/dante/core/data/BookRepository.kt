@@ -12,8 +12,6 @@ interface BookRepository {
 
     val bookObservable: Observable<List<BookEntity>>
 
-    val bookLabelObservable: Observable<List<BookLabel>>
-
     val booksCurrentlyReading: List<BookEntity>
 
     operator fun get(id: BookId): Single<BookEntity>
@@ -32,8 +30,4 @@ interface BookRepository {
         backupBooks: List<BookEntity>,
         strategy: RestoreStrategy
     ): Completable
-
-    fun createBookLabel(bookLabel: BookLabel): Completable
-
-    fun deleteBookLabel(bookLabel: BookLabel): Completable
 }

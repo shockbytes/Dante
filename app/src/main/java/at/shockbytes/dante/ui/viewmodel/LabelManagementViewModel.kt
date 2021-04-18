@@ -3,7 +3,7 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.shockbytes.dante.core.book.BookLabel
-import at.shockbytes.dante.core.data.BookRepository
+import at.shockbytes.dante.core.data.BookLabelRepository
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import io.reactivex.rxjava3.core.Observable
@@ -12,7 +12,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class LabelManagementViewModel @Inject constructor(
-    private val bookRepository: BookRepository
+    private val bookLabelRepository: BookLabelRepository
 ) : BaseViewModel() {
 
     sealed class LabelState {
@@ -29,7 +29,7 @@ class LabelManagementViewModel @Inject constructor(
     val onCreateNewLabelRequest: Observable<List<BookLabel>> = newLabelRequestSubject
 
     fun requestAvailableLabels(alreadyAttachedLabels: List<BookLabel>) {
-        bookRepository.bookLabelObservable
+        bookLabelRepository.bookLabelObservable
             .map { labels ->
                 val filtered = labels.filter { label ->
                     alreadyAttachedLabels.none { it.hexColor == label.hexColor && it.title == label.title }
@@ -46,7 +46,7 @@ class LabelManagementViewModel @Inject constructor(
     }
 
     fun createNewBookLabel(newLabel: BookLabel) {
-        bookRepository.createBookLabel(newLabel)
+        bookLabelRepository.createBookLabel(newLabel)
             .subscribe({
                 Timber.d("Successfully created book label ${newLabel.title}.")
             }, { throwable ->
@@ -56,7 +56,7 @@ class LabelManagementViewModel @Inject constructor(
     }
 
     fun deleteBookLabel(bookLabel: BookLabel) {
-        bookRepository.deleteBookLabel(bookLabel)
+        bookLabelRepository.deleteBookLabel(bookLabel)
             .subscribe({
                 Timber.d("Successfully deleted book label ${bookLabel.title}.")
             }, { throwable ->

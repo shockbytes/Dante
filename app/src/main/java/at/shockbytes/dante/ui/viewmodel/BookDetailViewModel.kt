@@ -10,6 +10,7 @@ import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.book.PageRecord
+import at.shockbytes.dante.core.data.BookLabelRepository
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.navigation.NotesBundle
@@ -36,7 +37,8 @@ class BookDetailViewModel @Inject constructor(
     private val bookRepository: BookRepository,
     private val settings: DanteSettings,
     private val pageRecordDao: PageRecordDao,
-    private val schedulers: SchedulerFacade
+    private val schedulers: SchedulerFacade,
+    private val bookLabelRepository: BookLabelRepository
 ) : BaseViewModel() {
 
     data class DetailViewState(
@@ -341,7 +343,7 @@ class BookDetailViewModel @Inject constructor(
     }
 
     fun removeLabel(label: BookLabel) {
-        bookRepository.deleteBookLabel(label)
+        bookLabelRepository.deleteBookLabel(label)
             .subscribeOn(schedulers.io)
             .subscribe({
                 eventSubject.onNext(BookDetailEvent.Message(R.string.label_deletion_success))

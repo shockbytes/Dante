@@ -3,6 +3,7 @@ package at.shockbytes.dante.core.data.warehouse
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
+import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.warehouse.Warehouse
@@ -10,21 +11,13 @@ import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 
-class WarehouseBookRepository(
+class WarehouseBookEntityDao(
     private val warehouse: Warehouse<BookEntity>
-) : BookRepository {
+) : BookEntityDao {
 
     override val bookObservable: Observable<List<BookEntity>>
-        get() {
-            // TODO
-            return Observable.just(listOf())
-        }
+        get() = warehouse.getAll()
 
-    override val bookLabelObservable: Observable<List<BookLabel>>
-        get() {
-            // TODO
-            return Observable.just(listOf())
-        }
     override val booksCurrentlyReading: List<BookEntity>
         get() {
             // TODO
@@ -36,13 +29,11 @@ class WarehouseBookRepository(
     }
 
     override fun create(entity: BookEntity): Completable {
-        // TODO
-        return Completable.complete()
+        return warehouse.store(entity)
     }
 
     override fun update(entity: BookEntity): Completable {
-        // TODO
-        return Completable.complete()
+        return warehouse.update(entity)
     }
 
     override fun updateCurrentPage(bookId: BookId, currentPage: Int): Completable {
@@ -51,8 +42,9 @@ class WarehouseBookRepository(
     }
 
     override fun delete(id: BookId): Completable {
-        // TODO
-        return Completable.complete()
+        return get(id).flatMapCompletable { book ->
+            warehouse.delete(book)
+        }
     }
 
     override fun search(query: String): Observable<List<BookEntity>> {
@@ -64,16 +56,6 @@ class WarehouseBookRepository(
         backupBooks: List<BookEntity>,
         strategy: RestoreStrategy
     ): Completable {
-        // TODO
-        return Completable.complete()
-    }
-
-    override fun createBookLabel(bookLabel: BookLabel): Completable {
-        // TODO
-        return Completable.complete()
-    }
-
-    override fun deleteBookLabel(bookLabel: BookLabel): Completable {
         // TODO
         return Completable.complete()
     }

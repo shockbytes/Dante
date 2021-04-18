@@ -28,7 +28,6 @@ import io.realm.Sort
 class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityDao {
 
     private val bookClass = RealmBook::class.java
-    private val labelClass = RealmBookLabel::class.java
 
     private val labelMapper = RealmBookLabelMapper()
     private val mapper: RealmBookEntityMapper = RealmBookEntityMapper(labelMapper)
@@ -49,18 +48,6 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .findAllAsync()
             .asFlowable()
             .map { mapper.mapTo(it) }
-            .toObservable()
-            // Required as long as Realm has no built-in RxJava3 support
-            .let(RxJavaBridge::toV3Observable)
-
-    override val bookLabelObservable: Observable<List<BookLabel>>
-        get() = realm.read<RealmBookLabel>()
-            .equalTo("bookId", BookIds.default())
-            .sort("title", Sort.DESCENDING)
-            .distinct("title")
-            .findAllAsync()
-            .asFlowable()
-            .map { labelMapper.mapTo(it) }
             .toObservable()
             // Required as long as Realm has no built-in RxJava3 support
             .let(RxJavaBridge::toV3Observable)
@@ -143,35 +130,6 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
         return when (strategy) {
             RestoreStrategy.MERGE -> mergeBackupRestore(backupBooks)
             RestoreStrategy.OVERWRITE -> overwriteBackupRestore(backupBooks)
-        }
-    }
-
-    override fun createBookLabel(bookLabel: BookLabel): Completable {
-        return completableOf {
-            realm.executeTransaction { realm ->
-                realm.copyToRealm(labelMapper.mapFrom(bookLabel))
-            }
-        }
-    }
-
-    override fun deleteBookLabel(bookLabel: BookLabel): Completable {
-        return Completable.create { emitter ->
-            realm.executeTransaction { realm ->
-                val labels = realm.where(labelClass)
-                    .equalTo("title", bookLabel.title)
-                    .and()
-                    .equalTo("bookId", bookLabel.bookId)
-                    .findAll()
-
-                if (labels != null && labels.isNotEmpty()) {
-                    labels.forEach { rbl ->
-                        rbl.deleteFromRealm()
-                    }
-                    emitter.onComplete()
-                } else {
-                    emitter.tryOnError(RealmBookLabelDeletionException(bookLabel.title))
-                }
-            }
         }
     }
 

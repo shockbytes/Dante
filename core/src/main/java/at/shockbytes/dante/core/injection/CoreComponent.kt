@@ -2,6 +2,7 @@ package at.shockbytes.dante.core.injection
 
 import android.content.SharedPreferences
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
+import at.shockbytes.dante.core.data.BookLabelRepository
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.data.ReadingGoalRepository
@@ -31,6 +32,7 @@ import javax.inject.Singleton
 interface CoreComponent {
 
     fun getBookRepository(): BookRepository
+    fun getBookLabelRepository(): BookLabelRepository
     fun getPageRecordDao(): PageRecordDao
     fun getBookDownloader(): BookDownloader
     fun getRealmInstanceProvider(): RealmInstanceProvider

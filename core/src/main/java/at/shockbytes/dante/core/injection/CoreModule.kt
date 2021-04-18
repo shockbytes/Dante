@@ -5,17 +5,23 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import at.shockbytes.dante.core.book.BookEntity
+import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookLabelDao
+import at.shockbytes.dante.core.data.BookLabelRepository
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.DefaultBookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.core.data.ReadingGoalRepository
 import at.shockbytes.dante.core.data.local.DanteRealmMigration
+import at.shockbytes.dante.core.data.DefaultBookLabelRepository
 import at.shockbytes.dante.core.data.local.RealmBookEntityDao
+import at.shockbytes.dante.core.data.local.RealmBookLabelDao
 import at.shockbytes.dante.core.data.local.RealmPageRecordDao
 import at.shockbytes.dante.core.data.local.SharedPrefsBackedReadingGoalRepository
-import at.shockbytes.dante.core.data.warehouse.WarehouseBookRepository
+import at.shockbytes.dante.core.data.warehouse.WarehouseBookLabelDao
+import at.shockbytes.dante.core.data.warehouse.WarehouseBookEntityDao
 import at.shockbytes.dante.core.flagging.FeatureFlag
 import at.shockbytes.dante.core.flagging.FeatureFlagging
 import at.shockbytes.dante.core.flagging.SharedPreferencesFeatureFlagging
@@ -59,6 +65,12 @@ class CoreModule(
 
     @Provides
     @Singleton
+    fun provideBookLabelDao(realm: RealmInstanceProvider): BookLabelDao {
+        return RealmBookLabelDao(realm)
+    }
+
+    @Provides
+    @Singleton
     fun providePageRecordDao(realm: RealmInstanceProvider): PageRecordDao {
         return RealmPageRecordDao(realm)
     }
@@ -89,16 +101,32 @@ class CoreModule(
 
     @Provides
     @Singleton
+    fun provideBookLabelRepository(
+        bookLabelDao: BookLabelDao,
+        bookLabelWarehouse: Warehouse<BookLabel>,
+        featureFlagging: FeatureFlagging
+    ): BookLabelRepository {
+        val dao =  if (featureFlagging[FeatureFlag.FireFlash]) {
+            WarehouseBookLabelDao(bookLabelWarehouse)
+        } else {
+            bookLabelDao
+        }
+        return DefaultBookLabelRepository(dao)
+    }
+
+    @Provides
+    @Singleton
     fun provideBookRepository(
         @Named(LOCAL_BOOK_DAO) localBookDao: BookEntityDao,
         bookWarehouse: Warehouse<BookEntity>,
         featureFlagging: FeatureFlagging
     ): BookRepository {
-        return if (featureFlagging[FeatureFlag.FireFlash]) {
-            WarehouseBookRepository(bookWarehouse)
+        val dao = if (featureFlagging[FeatureFlag.FireFlash]) {
+            WarehouseBookEntityDao(bookWarehouse)
         } else {
-            DefaultBookRepository(localBookDao = localBookDao)
+            localBookDao
         }
+        return DefaultBookRepository(dao)
     }
 
     @Provides

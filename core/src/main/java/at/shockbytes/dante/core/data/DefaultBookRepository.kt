@@ -3,6 +3,8 @@ package at.shockbytes.dante.core.data
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
+import at.shockbytes.dante.core.data.BookEntityDao
+import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.RestoreStrategy
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -26,9 +28,6 @@ class DefaultBookRepository(private val localBookDao: BookEntityDao) : BookRepos
 
     override val bookObservable: Observable<List<BookEntity>>
         get() = selectedBookDao.bookObservable
-
-    override val bookLabelObservable: Observable<List<BookLabel>>
-        get() = selectedBookDao.bookLabelObservable
 
     override val booksCurrentlyReading: List<BookEntity>
         get() = selectedBookDao.booksCurrentlyReading
@@ -59,13 +58,5 @@ class DefaultBookRepository(private val localBookDao: BookEntityDao) : BookRepos
 
     override fun restoreBackup(backupBooks: List<BookEntity>, strategy: RestoreStrategy): Completable {
         return selectedBookDao.restoreBackup(backupBooks, strategy)
-    }
-
-    override fun createBookLabel(bookLabel: BookLabel): Completable {
-        return selectedBookDao.createBookLabel(bookLabel)
-    }
-
-    override fun deleteBookLabel(bookLabel: BookLabel): Completable {
-        return selectedBookDao.deleteBookLabel(bookLabel)
     }
 }

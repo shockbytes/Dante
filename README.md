@@ -57,14 +57,14 @@ the user during the login process.
 ### Version 4.1 - HIGH MAINTENANCE
 - [ ] Upgrade to Kotlin > 1.4.20
     - [ ] Use ViewBinding
-    - [ ] Remove Kotterknife
+    - [ ] Remove Kotterknife usage
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
 - [ ] Improve main screen
-    - [ ] Use centered ExtendedFloatingActionButton with text 'ADD BOOK'
-    - [ ] Use MaterialContainerTransform instead of FabMorph
     - [ ] Replace buggy SharedElementTransition for DetailPageNavigation
+    - [ ] Use lighter UI for labels (outline instead of filled)
+    - [ ] New labels screen
 
 ## Current development
 

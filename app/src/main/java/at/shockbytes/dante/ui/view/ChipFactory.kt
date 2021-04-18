@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.view.HapticFeedbackConstants
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.util.ColorUtils
+import at.shockbytes.dante.util.DanteUtils.dpToPixelF
 import at.shockbytes.dante.util.getBoldThemeFont
 import at.shockbytes.dante.util.isNightModeEnabled
 import com.google.android.material.chip.Chip
@@ -27,17 +28,19 @@ object ChipFactory {
         }
 
         return Chip(context).apply {
-            chipBackgroundColor = ColorStateList.valueOf(chipColor)
+            chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
             text = label.title
             typeface = context.getBoldThemeFont()
-            setTextColor(Color.WHITE)
+            setTextColor(chipColor)
+            chipStrokeColor = ColorStateList.valueOf(chipColor)
+            chipStrokeWidth = context.dpToPixelF(1)
             setOnClickListener { v ->
                 v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
                 onLabelClickedListener?.invoke(label)
             }
 
             if (showCloseIcon) {
-                closeIconTint = ColorStateList.valueOf(Color.WHITE)
+                closeIconTint = ColorStateList.valueOf(chipColor)
                 isCloseIconVisible = true
                 setOnCloseIconClickListener { v ->
                     v.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)

@@ -40,6 +40,14 @@ object DanteUtils {
 
     const val RC_SIGN_IN = 0x8944
 
+    fun Context.dpToPixelF(dp: Int): Float {
+        return dpToPixel(dp).toFloat()
+    }
+
+    fun Context.dpToPixel(dp: Int): Int {
+        return AppUtils.convertDpInPixel(dp, this)
+    }
+
     fun formatTimestamp(timeMillis: Long): String {
         return SimpleDateFormat("dd. MMM yyy - kk:mm", Locale.getDefault())
                 .format(Date(timeMillis))

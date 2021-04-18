@@ -13,9 +13,11 @@ import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.merge
 import at.shockbytes.dante.util.singleOf
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import at.shockbytes.warehouse.util.asObservable
+import hu.akarnokd.rxjava3.bridge.RxJavaBridge
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.realm.Case
 import io.realm.Sort
 
@@ -48,6 +50,8 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .asFlowable()
             .map { mapper.mapTo(it) }
             .toObservable()
+            // Required as long as Realm has no built-in RxJava3 support
+            .let(RxJavaBridge::toV3Observable)
 
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.read<RealmBookLabel>()
@@ -58,6 +62,8 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .asFlowable()
             .map { labelMapper.mapTo(it) }
             .toObservable()
+            // Required as long as Realm has no built-in RxJava3 support
+            .let(RxJavaBridge::toV3Observable)
 
     override val booksCurrentlyReading: List<BookEntity>
         get() = realm.read<RealmBook>()
@@ -68,7 +74,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
 
     override operator fun get(id: BookId): Single<BookEntity> {
         return singleOf {
-            realm.read<RealmBook>().equalTo("id", id).findFirst()
+            realm.read<RealmBook>().equalTo("id", id).findFirstAsync()
         }.map(mapper::mapTo)
     }
 
@@ -126,6 +132,8 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .asFlowable()
             .map { mapper.mapTo(it) }
             .toObservable()
+            // Required as long as Realm has no built-in RxJava3 support
+            .let(RxJavaBridge::toV3Observable)
     }
 
     override fun restoreBackup(

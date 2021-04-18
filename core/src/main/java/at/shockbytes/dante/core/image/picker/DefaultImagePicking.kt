@@ -4,7 +4,7 @@ import android.app.Activity
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import com.github.dhaval2404.imagepicker.ImagePicker
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 class DefaultImagePicking(private val imagePickerConfig: ImagePickerConfig) : ImagePicking {
 

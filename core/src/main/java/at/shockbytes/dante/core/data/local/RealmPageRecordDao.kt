@@ -7,8 +7,9 @@ import at.shockbytes.dante.core.book.realm.RealmPageRecord
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.util.completableOf
-import io.reactivex.Completable
-import io.reactivex.Observable
+import hu.akarnokd.rxjava3.bridge.RxJavaBridge
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 import io.realm.Realm
 import io.realm.Sort
 
@@ -95,6 +96,8 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
             .asFlowable()
             .map(mapper::mapTo)
             .toObservable()
+            // Required as long as Realm has no built-in RxJava3 support
+            .let(RxJavaBridge::toV3Observable)
     }
 
     override fun allPageRecords(): Observable<List<PageRecord>> {
@@ -104,6 +107,8 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
             .asFlowable()
             .map(mapper::mapTo)
             .toObservable()
+            // Required as long as Realm has no built-in RxJava3 support
+            .let(RxJavaBridge::toV3Observable)
     }
 
     override fun restoreBackup(pageRecords: List<PageRecord>, strategy: RestoreStrategy): Completable {

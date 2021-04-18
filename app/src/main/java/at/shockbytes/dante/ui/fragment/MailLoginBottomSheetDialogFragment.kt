@@ -14,9 +14,10 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
-import com.jakewharton.rxbinding2.widget.RxTextView
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
+import com.jakewharton.rxbinding4.widget.TextViewTextChangeEvent
+import com.jakewharton.rxbinding4.widget.textChangeEvents
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_login.btn_login_mail
 import kotlinx.android.synthetic.main.mail_login_bottom_sheet.*
 import javax.inject.Inject
@@ -219,12 +220,16 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
     override fun setupViews() {
 
-        RxTextView.textChanges(editTextMailAddress)
+        editTextMailAddress
+            .textChangeEvents()
             .skipInitialValue()
+            .map { it.text }
             .subscribe(viewModel::verifyMailAddress)
             .addTo(compositeDisposable)
 
-        RxTextView.textChanges(editTextMailPassword)
+        editTextMailPassword
+            .textChangeEvents()
+            .map { it.text }
             .subscribe(viewModel::verifyPassword)
             .addTo(compositeDisposable)
 

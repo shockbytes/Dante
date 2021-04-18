@@ -17,8 +17,8 @@ import at.shockbytes.dante.storage.ExternalStorageInteractor
 import at.shockbytes.dante.util.permission.PermissionManager
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import timber.log.Timber
 import java.io.File
 

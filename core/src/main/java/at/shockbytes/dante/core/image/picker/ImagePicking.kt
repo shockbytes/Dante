@@ -2,7 +2,7 @@ package at.shockbytes.dante.core.image.picker
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 interface ImagePicking {
 

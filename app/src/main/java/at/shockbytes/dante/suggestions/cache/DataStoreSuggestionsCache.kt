@@ -11,7 +11,7 @@ import at.shockbytes.dante.suggestions.Suggestions
 import at.shockbytes.dante.util.fromJson
 import at.shockbytes.dante.util.singleOf
 import com.google.gson.Gson
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 

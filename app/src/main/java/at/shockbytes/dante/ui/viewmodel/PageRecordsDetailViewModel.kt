@@ -12,9 +12,9 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.indexOfOrNull
 import at.shockbytes.dante.util.isLastIndexIn
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import org.joda.time.format.DateTimeFormat
 import timber.log.Timber
 import javax.inject.Inject

@@ -9,9 +9,9 @@ import at.shockbytes.dante.util.RestoreStrategy
 import at.shockbytes.dante.backup.provider.BackupProvider
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 /**
  * Author:  Martin Macheiner

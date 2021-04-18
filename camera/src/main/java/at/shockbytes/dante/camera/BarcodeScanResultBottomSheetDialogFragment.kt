@@ -26,8 +26,8 @@ import at.shockbytes.util.adapter.BaseAdapter
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.customListAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_barcode_scan_bottom_sheet.*
 import timber.log.Timber
 import javax.inject.Inject

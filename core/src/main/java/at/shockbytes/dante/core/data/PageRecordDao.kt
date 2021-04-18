@@ -3,8 +3,8 @@ package at.shockbytes.dante.core.data
 import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.util.RestoreStrategy
-import io.reactivex.Completable
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
 
 interface PageRecordDao {
 

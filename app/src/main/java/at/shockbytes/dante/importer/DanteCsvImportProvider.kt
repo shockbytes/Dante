@@ -5,7 +5,7 @@ import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.storage.reader.CsvReader
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 class DanteCsvImportProvider(
     private val csvReader: CsvReader,

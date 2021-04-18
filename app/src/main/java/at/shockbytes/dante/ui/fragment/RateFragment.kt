@@ -6,8 +6,8 @@ import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.addTo
-import com.jakewharton.rxbinding2.view.RxView
-import com.jakewharton.rxbinding2.widget.RxRatingBar
+import com.jakewharton.rxbinding4.view.clicks
+import com.jakewharton.rxbinding4.widget.ratingChanges
 import kotlinx.android.synthetic.main.fragment_rating.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,7 +31,7 @@ class RateFragment : BaseFragment() {
             parentFragmentManager.popBackStack()
         }
 
-        RxRatingBar.ratingChanges(rb_rating)
+        rb_rating.ratingChanges()
                 .distinctUntilChanged()
                 .subscribe({
                     val rating = it.toInt() - 1 // -1 because rating starts with 1
@@ -43,7 +43,7 @@ class RateFragment : BaseFragment() {
                 }, { throwable -> Timber.e(throwable) })
                 .addTo(compositeDisposable)
 
-        RxView.clicks(btn_rating_rate)
+        btn_rating_rate.clicks()
                 .distinctUntilChanged()
                 .subscribe({
                     onRateClickListener?.invoke(rb_rating.rating.toInt())

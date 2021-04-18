@@ -1,8 +1,8 @@
 package at.shockbytes.dante.core.data
 
 import at.shockbytes.dante.core.book.ReadingGoal
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 interface ReadingGoalRepository {
 

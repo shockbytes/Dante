@@ -9,7 +9,8 @@ import at.shockbytes.dante.util.settings.delegate.stringDelegate
 import at.shockbytes.dante.util.sort.SortStrategy
 import at.shockbytes.dante.util.sort.TimeLineSortStrategy
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import io.reactivex.Observable
+import hu.akarnokd.rxjava3.bridge.RxJavaBridge
+import io.reactivex.rxjava3.core.Observable
 
 /**
  * Author:  Martin Macheiner
@@ -48,8 +49,8 @@ class DanteSettings(
         }
         set(value) {
             prefs.edit()
-                    .putInt(context.getString(R.string.prefs_sort_strategy_key), value.ordinal)
-                    .apply()
+                .putInt(context.getString(R.string.prefs_sort_strategy_key), value.ordinal)
+                .apply()
         }
 
     var timeLineSortStrategy: TimeLineSortStrategy
@@ -65,12 +66,13 @@ class DanteSettings(
 
     fun observeSortStrategy(): Observable<SortStrategy> {
         return rxPrefs.getInteger(context.getString(R.string.prefs_sort_strategy_key))
-                .asObservable()
-                .map { ordinal ->
-                    SortStrategy.values()[ordinal]
-                }
-                .subscribeOn(schedulers.computation)
-                .observeOn(schedulers.ui)
+            .asObservable()
+            .map { ordinal ->
+                SortStrategy.values()[ordinal]
+            }
+            .let(RxJavaBridge::toV3Observable)
+            .subscribeOn(schedulers.computation)
+            .observeOn(schedulers.ui)
     }
 
     fun observeThemeChanged(): Observable<ThemeState> {
@@ -79,15 +81,17 @@ class DanteSettings(
             .filter { it.isNotEmpty() }
             .distinctUntilChanged()
             .map(ThemeState.Companion::ofStringWithDefault)
+            .let(RxJavaBridge::toV3Observable)
             .subscribeOn(schedulers.computation)
             .observeOn(schedulers.ui)
     }
 
     fun observeRandomPickInteraction(): Observable<Boolean> {
         return rxPrefs.getBoolean(context.getString(R.string.prefs_pick_random_key))
-                .asObservable()
-                .distinctUntilChanged()
-                .subscribeOn(schedulers.computation)
-                .observeOn(schedulers.ui)
+            .asObservable()
+            .distinctUntilChanged()
+            .let(RxJavaBridge::toV3Observable)
+            .subscribeOn(schedulers.computation)
+            .observeOn(schedulers.ui)
     }
 }

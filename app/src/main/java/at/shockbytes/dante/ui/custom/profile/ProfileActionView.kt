@@ -5,8 +5,8 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.setVisible
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.android.synthetic.main.profile_action_view.view.*
 
 class ProfileActionView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {

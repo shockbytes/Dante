@@ -13,8 +13,8 @@ import at.shockbytes.dante.storage.ImageUploadStorage
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailUri
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -2,8 +2,8 @@ package at.shockbytes.dante.backup.provider.shockbytes.api
 
 import at.shockbytes.dante.backup.model.BackupContent
 import at.shockbytes.dante.backup.model.BackupMetadata
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

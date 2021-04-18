@@ -12,7 +12,7 @@ import android.widget.Toast
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import at.shockbytes.dante.util.colored
 
 /**

@@ -11,10 +11,10 @@ import at.shockbytes.dante.core.book.BookSuggestion
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.core.network.BookDownloader
-import io.reactivex.Observable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.subjects.PublishSubject
 import timber.log.Timber
 
 class BarcodeResultViewModel(

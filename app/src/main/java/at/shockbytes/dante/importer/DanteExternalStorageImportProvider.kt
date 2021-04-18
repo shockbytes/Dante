@@ -4,7 +4,7 @@ import at.shockbytes.dante.backup.model.BackupItem
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.util.singleOf
 import com.google.gson.Gson
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 class DanteExternalStorageImportProvider(private val gson: Gson) : ImportProvider {
 

@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 abstract class BaseActivity : AppCompatActivity() {
 

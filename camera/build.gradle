@@ -43,9 +43,9 @@ dependencies {
     implementation "com.google.dagger:dagger:$daggerVersion"
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
 
-    implementation "io.reactivex.rxjava2:rxandroid:${rootProject.rxAndroidVersion}"
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation("io.reactivex.rxjava2:rxkotlin:$rootProject.rxKotlinVersion")
+    implementation "io.reactivex.rxjava3:rxandroid:${rootProject.rxAndroidVersion}"
+    implementation "io.reactivex.rxjava3:rxjava:$rootProject.rxJavaVersion"
+    implementation("io.reactivex.rxjava3:rxkotlin:$rootProject.rxKotlinVersion")
 
     implementation "com.google.android.material:material:${rootProject.materialVersion}"
 

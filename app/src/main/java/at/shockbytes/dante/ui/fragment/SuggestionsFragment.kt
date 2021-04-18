@@ -16,7 +16,7 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_suggestions.*
 import javax.inject.Inject
 

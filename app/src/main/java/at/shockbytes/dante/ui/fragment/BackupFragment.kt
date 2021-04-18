@@ -9,7 +9,7 @@ import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOfActivity
 import com.google.android.gms.common.api.ApiException
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup.*
 import timber.log.Timber
 import javax.inject.Inject

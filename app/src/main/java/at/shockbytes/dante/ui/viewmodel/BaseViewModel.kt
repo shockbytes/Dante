@@ -1,7 +1,7 @@
 package at.shockbytes.dante.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * Author:  Martin Macheiner

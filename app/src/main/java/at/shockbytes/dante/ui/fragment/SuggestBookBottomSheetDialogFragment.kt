@@ -17,8 +17,8 @@ import at.shockbytes.dante.util.isNightModeEnabled
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.jakewharton.rxbinding2.widget.RxTextView
-import io.reactivex.disposables.CompositeDisposable
+import com.jakewharton.rxbinding4.widget.textChanges
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_suggest_book.*
 import javax.inject.Inject
 
@@ -91,7 +91,7 @@ class SuggestBookBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun checkRecommendationInput() {
-        RxTextView.textChanges(editTextEnterSuggestion)
+        editTextEnterSuggestion.textChanges()
             .map { text ->
                 // Do not allow more than 10 line breaks
                 text.count() in 1 until MAX_CHARS && text.count { it == '\n' } < 10

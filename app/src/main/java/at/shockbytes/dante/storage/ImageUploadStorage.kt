@@ -1,7 +1,7 @@
 package at.shockbytes.dante.storage
 
 import android.net.Uri
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 interface ImageUploadStorage {
 

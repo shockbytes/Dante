@@ -1,7 +1,7 @@
 package at.shockbytes.dante.core.user
 
 import android.net.Uri
-import io.reactivex.Completable
+import io.reactivex.rxjava3.core.Completable
 
 interface UserRepository {
 

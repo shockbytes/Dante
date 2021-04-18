@@ -2,8 +2,8 @@ package at.shockbytes.dante.backup.provider.google
 
 import androidx.fragment.app.FragmentActivity
 import at.shockbytes.dante.backup.model.BackupMetadata
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 interface DriveClient {
 

@@ -9,7 +9,7 @@ import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.util.singleOf
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 class BackupContentTransform(
     private val backupStorageProvider: BackupStorageProvider,

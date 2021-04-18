@@ -16,9 +16,9 @@ import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.subjects.PublishSubject
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject

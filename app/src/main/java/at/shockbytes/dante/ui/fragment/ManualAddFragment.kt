@@ -27,7 +27,7 @@ import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_manual_add.*
 import timber.log.Timber
 import javax.inject.Inject

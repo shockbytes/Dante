@@ -3,8 +3,8 @@ package at.shockbytes.dante.camera.focus
 import android.graphics.Rect
 import android.view.MotionEvent
 import android.view.View
-import io.reactivex.Observable
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import kotlin.math.max

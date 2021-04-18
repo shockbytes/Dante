@@ -7,7 +7,7 @@ import androidx.annotation.Dimension
 import androidx.annotation.DrawableRes
 import android.widget.ImageView
 import at.shockbytes.dante.core.R
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 interface ImageLoader {
 

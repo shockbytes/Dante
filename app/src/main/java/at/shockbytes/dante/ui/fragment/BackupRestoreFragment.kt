@@ -24,7 +24,7 @@ import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import com.google.android.gms.common.api.ApiException
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_backup_restore.*
 import javax.inject.Inject
 

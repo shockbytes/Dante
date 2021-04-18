@@ -17,8 +17,8 @@ import at.shockbytes.dante.util.singleOf
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(

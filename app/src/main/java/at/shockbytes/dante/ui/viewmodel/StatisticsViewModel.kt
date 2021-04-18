@@ -14,11 +14,11 @@ import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
-import io.reactivex.functions.Function4
-import io.reactivex.subjects.PublishSubject
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.functions.Function4
+import io.reactivex.rxjava3.subjects.PublishSubject
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(

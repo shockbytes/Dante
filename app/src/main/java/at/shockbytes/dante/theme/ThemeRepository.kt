@@ -1,6 +1,6 @@
 package at.shockbytes.dante.theme
 
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 /**
  * Example for remote data:

@@ -1,7 +1,7 @@
 package at.shockbytes.dante.util.scheduler
 
-import io.reactivex.Scheduler
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * Tests should all run in sequence, therefore use trampoline scheduler

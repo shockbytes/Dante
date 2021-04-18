@@ -10,8 +10,8 @@ import at.shockbytes.dante.suggestions.cache.SuggestionsCache
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime

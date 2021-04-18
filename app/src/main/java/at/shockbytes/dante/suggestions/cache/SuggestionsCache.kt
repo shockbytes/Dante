@@ -1,7 +1,7 @@
 package at.shockbytes.dante.suggestions.cache
 
 import at.shockbytes.dante.suggestions.Suggestions
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 interface SuggestionsCache {
 

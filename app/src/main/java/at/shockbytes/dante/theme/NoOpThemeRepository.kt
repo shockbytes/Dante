@@ -1,6 +1,6 @@
 package at.shockbytes.dante.theme
 
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 
 /**
  * Dummy implementation when no theme is used anyways.

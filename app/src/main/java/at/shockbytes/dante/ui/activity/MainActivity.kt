@@ -39,7 +39,7 @@ import at.shockbytes.tracking.properties.LoginSource
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 

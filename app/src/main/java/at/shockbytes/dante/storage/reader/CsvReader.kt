@@ -1,6 +1,6 @@
 package at.shockbytes.dante.storage.reader
 
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import java.io.File
 
 class CsvReader : FileReader {

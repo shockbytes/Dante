@@ -13,7 +13,7 @@ import at.shockbytes.dante.injection.AppComponent
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
 

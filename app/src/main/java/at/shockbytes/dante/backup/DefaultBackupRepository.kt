@@ -19,9 +19,10 @@ import at.shockbytes.dante.util.settings.delegate.edit
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import com.f2prateek.rx.preferences2.RxSharedPreferences
-import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.Single
+import hu.akarnokd.rxjava3.bridge.RxJavaBridge
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 class DefaultBackupRepository(
     override val backupProvider: List<BackupProvider>,
@@ -42,6 +43,7 @@ class DefaultBackupRepository(
         return RxSharedPreferences.create(preferences)
             .getLong(KEY_LAST_BACKUP, 0)
             .asObservable()
+            .let(RxJavaBridge::toV3Observable)
     }
 
     override fun getBackups(): Single<List<BackupMetadataState>> {

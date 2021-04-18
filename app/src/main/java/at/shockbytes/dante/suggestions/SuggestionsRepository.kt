@@ -1,8 +1,8 @@
 package at.shockbytes.dante.suggestions
 
 import at.shockbytes.dante.core.book.BookEntity
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 import kotlinx.coroutines.CoroutineScope
 
 interface SuggestionsRepository {

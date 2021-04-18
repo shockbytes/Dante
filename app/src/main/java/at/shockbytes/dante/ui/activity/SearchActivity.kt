@@ -13,7 +13,7 @@ import at.shockbytes.dante.ui.fragment.SearchFragment
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOf
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 /**

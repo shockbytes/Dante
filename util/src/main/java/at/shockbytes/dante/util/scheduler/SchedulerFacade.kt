@@ -1,6 +1,6 @@
 package at.shockbytes.dante.util.scheduler
 
-import io.reactivex.Scheduler
+import io.reactivex.rxjava3.core.Scheduler
 
 interface SchedulerFacade {
 

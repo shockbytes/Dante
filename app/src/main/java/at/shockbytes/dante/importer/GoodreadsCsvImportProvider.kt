@@ -4,7 +4,7 @@ import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.storage.reader.CsvReader
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Single
 import org.joda.time.format.DateTimeFormat
 
 class GoodreadsCsvImportProvider(

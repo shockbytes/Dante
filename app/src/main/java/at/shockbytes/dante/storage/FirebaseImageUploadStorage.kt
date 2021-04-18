@@ -6,8 +6,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
-import io.reactivex.Single
-import io.reactivex.SingleEmitter
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.SingleEmitter
 import java.util.UUID
 
 class FirebaseImageUploadStorage(

@@ -7,8 +7,8 @@ import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.getIntOrNullIfDefault
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.dante.util.singleOf
-import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 class SharedPrefsBackedReadingGoalRepository(
     private val sharedPreferences: SharedPreferences,

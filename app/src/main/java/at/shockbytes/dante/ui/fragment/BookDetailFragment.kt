@@ -54,9 +54,9 @@ import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_book_detail.*
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar

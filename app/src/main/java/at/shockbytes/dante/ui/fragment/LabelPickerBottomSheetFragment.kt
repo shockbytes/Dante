@@ -16,7 +16,7 @@ import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_label_picker_bottom_sheet.*
 import timber.log.Timber

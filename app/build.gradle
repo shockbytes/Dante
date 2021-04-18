@@ -126,8 +126,7 @@ dependencies {
     implementation 'ru.bullyboo.view:circleseekbar:1.0.3'
     implementation 'com.f2prateek.rx.preferences2:rx-preferences:2.0.0'
 
-    implementation "com.jakewharton.rxbinding2:rxbinding-kotlin:$rxBindingsVersion"
-    implementation "com.jakewharton.rxbinding2:rxbinding-appcompat-v7-kotlin:$rxBindingsVersion"
+    implementation "com.jakewharton.rxbinding4:rxbinding-appcompat:$rxBindingsVersion"
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 

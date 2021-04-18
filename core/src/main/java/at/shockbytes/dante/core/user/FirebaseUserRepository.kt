@@ -4,7 +4,7 @@ import android.net.Uri
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
-import io.reactivex.Completable
+import io.reactivex.rxjava3.core.Completable
 
 class FirebaseUserRepository(
     private val fbAuth: FirebaseAuth,

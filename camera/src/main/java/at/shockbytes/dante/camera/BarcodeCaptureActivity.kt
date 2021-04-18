@@ -31,9 +31,9 @@ import at.shockbytes.dante.core.sdkVersionOrAbove
 import at.shockbytes.dante.core.shortcut.AppShortcutHandler
 import at.shockbytes.dante.util.addTo
 import com.google.common.util.concurrent.ListenableFuture
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.util.concurrent.Executors

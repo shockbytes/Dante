@@ -43,6 +43,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     api "androidx.preference:preference-ktx:$androidXPreferenceVersion"
 
+    implementation 'com.github.shockbytes:Warehouse:0.1-alpha02'
+
     api "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$retrofitVersion"

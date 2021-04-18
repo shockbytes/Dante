@@ -23,7 +23,8 @@ import javax.inject.Singleton
     modules = [
         CoreModule::class,
         NetworkModule::class,
-        LoginModule::class
+        LoginModule::class,
+        WarehouseModule::class
     ]
 )
 @Singleton

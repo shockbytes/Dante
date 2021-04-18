@@ -5,11 +5,14 @@ import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.util.RestoreStrategy
+import at.shockbytes.warehouse.Warehouse
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
-class WarehouseBookRepository : BookRepository {
+class WarehouseBookRepository(
+    private val warehouse: Warehouse<BookEntity>
+) : BookRepository {
 
     override val bookObservable: Observable<List<BookEntity>>
         get() {

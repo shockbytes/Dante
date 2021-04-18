@@ -55,7 +55,7 @@ android {
         }
     }
     packagingOptions {
-        exclude 'META-INF/util_release.kotlin_module'
+        exclude 'META-INF/*.kotlin_module'
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'

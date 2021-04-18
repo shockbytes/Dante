@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.realm.RealmInstanceProvider
 import at.shockbytes.dante.core.data.BookEntityDao
 import at.shockbytes.dante.core.data.BookRepository
@@ -30,6 +31,7 @@ import at.shockbytes.dante.core.user.FirebaseUserRepository
 import at.shockbytes.dante.core.user.UserRepository
 import at.shockbytes.dante.util.scheduler.AppSchedulerFacade
 import at.shockbytes.dante.util.scheduler.SchedulerFacade
+import at.shockbytes.warehouse.Warehouse
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -89,10 +91,11 @@ class CoreModule(
     @Singleton
     fun provideBookRepository(
         @Named(LOCAL_BOOK_DAO) localBookDao: BookEntityDao,
+        bookWarehouse: Warehouse<BookEntity>,
         featureFlagging: FeatureFlagging
     ): BookRepository {
         return if (featureFlagging[FeatureFlag.FireFlash]) {
-            WarehouseBookRepository()
+            WarehouseBookRepository(bookWarehouse)
         } else {
             DefaultBookRepository(localBookDao = localBookDao)
         }

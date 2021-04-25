@@ -124,13 +124,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:paddingHorizontal="32dp"
-            android:text="@string/add_book_to_wishlist"
+            android:text="@string/wishlist"
+            app:icon="@drawable/ic_add_round"
+            app:iconPadding="8dp"
+            app:iconTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_item_suggestion_suggester" />
 
         <ImageView
@@ -140,6 +143,21 @@
             app:layout_constraintEnd_toStartOf="@+id/tv_item_suggestion_recommendation"
             app:layout_constraintTop_toTopOf="@+id/tv_item_suggestion_recommendation"
             app:srcCompat="@drawable/ic_quote" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_like_item_suggestion"
+            style="@style/AppTheme.RoundedButton.Outlined"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginBottom="16dp"
+            android:text="10"
+            android:textColor="@color/danteAccent"
+            app:icon="@drawable/ic_like_outlined"
+            app:iconPadding="8dp"
+            app:iconTint="@color/danteAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/ic_quote2"

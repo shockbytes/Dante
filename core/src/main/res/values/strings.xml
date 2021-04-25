@@ -69,12 +69,6 @@
     <string name="permission_camera_rationale">We need access to your camera, in order to detect the ISBN codes of the books.</string>
     <string name="no_camera_permission">This application cannot run because it does not have the camera permission. The scan window will terminate.</string>
 
-    <string name="transition_name_thumb" translatable="false">transition_name_thumb</string>
-    <string name="transition_name_title" translatable="false">transition_name_title</string>
-    <string name="transition_name_subtitle" translatable="false">transition_name_subtitle</string>
-    <string name="transition_name_author" translatable="false">transition_name_author</string>
-    <string name="transition_name_card" translatable="false">transition_name_card</string>
-
     <string name="prefs_category_about">About</string>
     <string name="prefs_app_version_title">App version</string>
     <string name="prefs_developer_title">Developer</string>

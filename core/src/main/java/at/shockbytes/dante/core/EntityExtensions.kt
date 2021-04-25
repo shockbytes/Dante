@@ -36,7 +36,7 @@ fun BookEntity.toJson(): JsonObject {
             labels.forEach { label ->
                 val labelObject = JsonObject().apply {
                     addProperty("title", label.title)
-                    addProperty("hexColor", label.hexColor.asString())
+                    addProperty("hexColor", label.labelHexColor.asString())
                 }
                 add(labelObject)
             }

@@ -88,9 +88,9 @@ class LabelManagementAdapter(
                 view.titleView.text = title
 
                 val color = if (isNightModeEnabled) {
-                    hexColor.asDesaturatedColorInt(desaturateBy = 0.25f)
+                    labelHexColor.asDesaturatedColorInt(desaturateBy = 0.25f)
                 } else {
-                    hexColor.asColorInt()
+                    labelHexColor.asColorInt()
                 }
 
                 view.imageView.imageTintList = ColorStateList.valueOf(color)

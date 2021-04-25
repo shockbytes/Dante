@@ -77,7 +77,7 @@ class LabelCategoryBottomSheetFragment : BaseBottomSheetFragment() {
         rv_label_category.adapter = simpleBookAdapter
         tv_label_category_header.apply {
             text = label.title
-            setTextColor(label.hexColor.asColorInt())
+            setTextColor(label.labelHexColor.asColorInt())
         }
     }
 

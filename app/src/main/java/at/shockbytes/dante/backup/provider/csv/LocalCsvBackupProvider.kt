@@ -109,7 +109,7 @@ class LocalCsvBackupProvider(
 
     private fun prepareLabels(labels: List<BookLabel>): String {
         return labels.joinToString(";") { label ->
-            "${label.title}:${label.hexColor}"
+            "${label.title}:${label.labelHexColor}"
         }
     }
 

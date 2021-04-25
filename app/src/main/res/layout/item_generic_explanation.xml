@@ -17,8 +17,7 @@
     android:minHeight="100dp"
     android:padding="2dp"
     app:strokeColor="@color/border"
-    app:strokeWidth="0.8dp"
-    android:transitionName="@string/transition_name_card">
+    app:strokeWidth="0.8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"

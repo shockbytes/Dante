@@ -19,6 +19,7 @@ import at.shockbytes.dante.core.shortcut.AppShortcutHandler
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
+import at.shockbytes.dante.ui.activity.core.ActivityTransition
 import at.shockbytes.dante.ui.activity.core.BaseActivity
 import at.shockbytes.dante.ui.adapter.BookPagerAdapter
 import at.shockbytes.dante.ui.fragment.AnnouncementFragment
@@ -39,6 +40,7 @@ import at.shockbytes.tracking.properties.LoginSource
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -61,7 +63,10 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     private lateinit var viewModel: MainViewModel
     private lateinit var userViewModel: UserViewModel
 
+    override val activityTransition = ActivityTransition.none()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setupSharedElementTransition()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbarMain)
@@ -75,6 +80,12 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         initializeNavigation()
         setupDarkMode()
         setupFabMorph()
+    }
+
+    private fun setupSharedElementTransition() {
+        // Set up shared element transition and disable overlay so views don't show above systemBars
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = false
     }
 
     private fun setupFabMorph() {

@@ -2,7 +2,10 @@ package at.shockbytes.dante.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import androidx.core.view.ViewCompat
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.injection.AppComponent
@@ -10,6 +13,10 @@ import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.BackAnimatable
 import at.shockbytes.dante.ui.fragment.BookDetailFragment
 import at.shockbytes.dante.flagging.FeatureFlagging
+import at.shockbytes.dante.ui.activity.core.ActivityTransition
+import com.google.android.material.transition.platform.MaterialArcMotion
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import java.util.Locale
 import javax.inject.Inject
 
@@ -20,7 +27,10 @@ class DetailActivity : TintableBackNavigableActivity() {
 
     private var detailFragment: BackAnimatable? = null
 
+    override val activityTransition = ActivityTransition.none()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setupSharedElementTransition()
         super.onCreate(savedInstanceState)
 
         val id = intent.getLongExtra(ARG_ID, BookIds.default())
@@ -32,6 +42,25 @@ class DetailActivity : TintableBackNavigableActivity() {
         } else {
             supportFinishAfterTransition()
         }
+    }
+
+    private fun setupSharedElementTransition() {
+        ViewCompat.setTransitionName(
+            findViewById(android.R.id.content),
+            getString(R.string.transition_detail_screen)
+        )
+
+        // Set up shared element transition and disable overlay so views don't show above system bars
+        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+
+        val materialTransform = MaterialContainerTransform().apply {
+            addTarget(android.R.id.content)
+            duration = 450
+            pathMotion = MaterialArcMotion()
+            scrimColor = Color.TRANSPARENT
+        }
+
+        window.sharedElementEnterTransition = materialTransform
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

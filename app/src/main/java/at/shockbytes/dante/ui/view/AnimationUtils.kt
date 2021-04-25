@@ -16,9 +16,9 @@ object AnimationUtils {
         animationList.forEach { v ->
             v.apply {
                 alpha = 0f
-                scaleX = 0.3f
-                scaleY = 0.3f
-                translationY = 200f
+                scaleX = 0.9f
+                scaleY = 0.9f
+                translationY = 50f
             }
         }
 

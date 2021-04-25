@@ -26,5 +26,7 @@ data class ActivityTransition(
                 exitTransition = Slide(Gravity.BOTTOM)
             )
         }
+
+        fun none(): ActivityTransition? = null
     }
 }

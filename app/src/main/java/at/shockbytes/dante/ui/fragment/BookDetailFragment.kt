@@ -16,11 +16,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.DecelerateInterpolator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
@@ -88,6 +87,7 @@ class BookDetailFragment : BaseFragment(),
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
+            iv_detail_image,
             txt_detail_title,
             txt_detail_subtitle,
             txt_detail_author,
@@ -144,7 +144,6 @@ class BookDetailFragment : BaseFragment(),
             ?.let(viewModel::initializeWithBookId)
 
         registerLocalBroadcastReceiver()
-        fixSharedElementTransitionBug()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -158,26 +157,6 @@ class BookDetailFragment : BaseFragment(),
             registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
             registerReceiver(bookUpdatedReceiver, IntentFilter(ACTION_BOOK_CHANGED))
         }
-    }
-
-    /**
-     * Fix the shared element transition bug by requesting the ImageView
-     * layout after the transition ends.
-     */
-    private fun fixSharedElementTransitionBug() {
-        activity?.setEnterSharedElementCallback(object : SharedElementCallback() {
-
-            override fun onSharedElementEnd(
-                sharedElementNames: MutableList<String>?,
-                sharedElements: MutableList<View>?,
-                sharedElementSnapshots: MutableList<View>?
-            ) {
-                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots)
-                iv_detail_image?.post {
-                    iv_detail_image.requestLayout()
-                }
-            }
-        })
     }
 
     override fun setupViews() {
@@ -513,9 +492,10 @@ class BookDetailFragment : BaseFragment(),
     private fun startComponentAnimations() {
         AnimationUtils.detailEnterAnimation(
             animatableViewsList,
-            duration = 250,
+            duration = 300,
             initialDelay = 550,
-            interpolator = DecelerateInterpolator(2.5f)
+            durationBetweenAnimations = 15,
+            interpolator = AccelerateDecelerateInterpolator(),
         )
     }
 

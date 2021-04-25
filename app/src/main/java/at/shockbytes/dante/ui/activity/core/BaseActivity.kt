@@ -25,7 +25,6 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activityTransition?.let { at ->
-                window.requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS)
                 window.exitTransition = at.exitTransition
                 window.enterTransition = at.enterTransition
             }

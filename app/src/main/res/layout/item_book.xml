@@ -18,8 +18,7 @@
     android:minHeight="80dp"
     android:padding="2dp"
     app:strokeColor="@color/border"
-    app:strokeWidth="0.8dp"
-    android:transitionName="@string/transition_name_card">
+    app:strokeWidth="0.8dp">
 
     <!-- Use this only for the new overflow menu
     android:stateListAnimator="@animator/item_book_actions"
@@ -55,7 +54,6 @@
             android:contentDescription="@string/contentdesc_listitem_img_thumb"
             android:minWidth="48dp"
             app:layout_constraintHeight_max="64dp"
-            android:transitionName="@string/transition_name_thumb"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_book_pb"
             app:srcCompat="@drawable/ic_placeholder"
@@ -84,7 +82,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:maxLines="3"
-            android:transitionName="@string/transition_name_subtitle"
             app:layout_constraintBottom_toTopOf="@+id/item_book_txt_author"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
@@ -103,7 +100,6 @@
             android:layout_marginBottom="4dp"
             app:layout_goneMarginBottom="16dp"
             android:paddingBottom="8dp"
-            android:transitionName="@string/transition_name_author"
             app:layout_constraintBottom_toTopOf="@+id/chips_item_book_label"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"
@@ -119,7 +115,6 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="0dp"
             android:fontFamily="@font/nunito_extrabold"
-            android:transitionName="@string/transition_name_title"
             app:layout_constraintBottom_toTopOf="@+id/item_book_txt_subtitle"
             app:layout_constraintEnd_toStartOf="@+id/item_book_img_overflow"
             app:layout_constraintStart_toEndOf="@+id/item_book_img_thumb"

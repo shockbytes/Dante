@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.PagerSnapHelper
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.injection.AppComponent
@@ -14,6 +15,8 @@ import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
+import at.shockbytes.dante.util.setVisible
+import at.shockbytes.dante.util.view.ProminentLayoutManager
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -44,9 +47,13 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
                     dismiss()
                 }
             },
+            isLabelColorEditEnabled = false,
             object : OnLabelActionClickedListener {
                 override fun onLabelDeleted(label: BookLabel) {
                     viewModel.deleteBookLabel(label)
+                }
+                override fun onLabelColorEdit(label: BookLabel) {
+                    // TODO Edit color of label
                 }
             }
         )
@@ -80,10 +87,13 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
     private fun handleLabelState(state: LabelManagementViewModel.LabelState) {
         when (state) {
             LabelManagementViewModel.LabelState.Empty -> {
-                tv_pick_labels_empty.visibility = View.VISIBLE
+                tv_pick_labels_empty.setVisible(true)
+                rv_pick_labels.setVisible(false)
             }
             is LabelManagementViewModel.LabelState.Present -> {
-                tv_pick_labels_empty.visibility = View.INVISIBLE
+                tv_pick_labels_empty.setVisible(false)
+                rv_pick_labels.setVisible(true)
+
                 labelAdapter.updateData(state.labels)
             }
         }
@@ -93,6 +103,8 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
 
     override fun setupViews() {
         rv_pick_labels.apply {
+            PagerSnapHelper().attachToRecyclerView(this)
+            layoutManager = ProminentLayoutManager(requireContext())
             adapter = labelAdapter
         }
 

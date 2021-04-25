@@ -5,6 +5,11 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/popup_label_item_edit_color"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/action_edit_color" />
+
+    <item
         android:id="@+id/popup_label_item_delete"
         android:icon="@drawable/ic_delete"
         android:title="@string/action_delete" />

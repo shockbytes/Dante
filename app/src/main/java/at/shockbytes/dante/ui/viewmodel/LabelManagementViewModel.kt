@@ -32,7 +32,7 @@ class LabelManagementViewModel @Inject constructor(
         bookRepository.bookLabelObservable
             .map { labels ->
                 val filtered = labels.filter { label ->
-                    alreadyAttachedLabels.none { it.hexColor == label.hexColor && it.title == label.title }
+                    alreadyAttachedLabels.none { it.labelHexColor == label.labelHexColor && it.title == label.title }
                 }
 
                 if (filtered.isNotEmpty()) {

@@ -62,6 +62,7 @@
     <string name="action_move_to_reading">Move to reading</string>
     <string name="action_move_to_done">Move to done</string>
     <string name="action_delete">Delete</string>
+    <string name="action_edit_color">Edit color</string>
     <string name="na">Not available</string>
     <string name="got_it">Got it</string>
 

@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.fragment
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.core.app.ActivityOptionsCompat
@@ -78,7 +77,7 @@ class LabelCategoryBottomSheetFragment : BaseBottomSheetFragment() {
         rv_label_category.adapter = simpleBookAdapter
         tv_label_category_header.apply {
             text = label.title
-            setTextColor(Color.parseColor(label.hexColor))
+            setTextColor(label.labelHexColor.asColorInt())
         }
     }
 

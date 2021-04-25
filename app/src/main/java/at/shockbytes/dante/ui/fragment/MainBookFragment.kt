@@ -403,11 +403,7 @@ class MainBookFragment : BaseFragment(),
             .makeSceneTransitionAnimation(requireActivity(),
                 Pair(
                     v.findViewById(R.id.item_book_card),
-                    getString(R.string.transition_name_card)
-                ),
-                Pair(
-                    v.findViewById(R.id.item_book_img_thumb),
-                    getString(R.string.transition_name_thumb)
+                    "test"
                 )
             )
             .toBundle()

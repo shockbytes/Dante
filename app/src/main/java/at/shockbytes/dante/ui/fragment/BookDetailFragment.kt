@@ -88,6 +88,7 @@ class BookDetailFragment : BaseFragment(),
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
+            iv_detail_image,
             txt_detail_title,
             txt_detail_subtitle,
             txt_detail_author,
@@ -144,7 +145,6 @@ class BookDetailFragment : BaseFragment(),
             ?.let(viewModel::initializeWithBookId)
 
         registerLocalBroadcastReceiver()
-        fixSharedElementTransitionBug()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -158,26 +158,6 @@ class BookDetailFragment : BaseFragment(),
             registerReceiver(notesReceiver, IntentFilter(NotesActivity.ACTION_NOTES))
             registerReceiver(bookUpdatedReceiver, IntentFilter(ACTION_BOOK_CHANGED))
         }
-    }
-
-    /**
-     * Fix the shared element transition bug by requesting the ImageView
-     * layout after the transition ends.
-     */
-    private fun fixSharedElementTransitionBug() {
-        activity?.setEnterSharedElementCallback(object : SharedElementCallback() {
-
-            override fun onSharedElementEnd(
-                sharedElementNames: MutableList<String>?,
-                sharedElements: MutableList<View>?,
-                sharedElementSnapshots: MutableList<View>?
-            ) {
-                super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots)
-                iv_detail_image?.post {
-                    iv_detail_image.requestLayout()
-                }
-            }
-        })
     }
 
     override fun setupViews() {

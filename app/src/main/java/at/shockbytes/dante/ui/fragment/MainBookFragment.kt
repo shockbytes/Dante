@@ -403,7 +403,7 @@ class MainBookFragment : BaseFragment(),
             .makeSceneTransitionAnimation(requireActivity(),
                 Pair(
                     v.findViewById(R.id.item_book_card),
-                    "test"
+                    getString(R.string.transition_detail_screen)
                 )
             )
             .toBundle()

@@ -47,7 +47,7 @@ class DetailActivity : TintableBackNavigableActivity() {
     private fun setupSharedElementTransition() {
         ViewCompat.setTransitionName(
             findViewById(android.R.id.content),
-            "test" // TODO
+            getString(R.string.transition_detail_screen)
         )
 
         // Set up shared element transition and disable overlay so views don't show above system bars

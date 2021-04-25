@@ -17,12 +17,22 @@ class HexColor private constructor(
         return ColorUtils.desaturateAndDevalue(asColorInt(), desaturateBy)
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other is HexColor) {
+            other.color == this.color
+        } else false
+    }
+
     override fun toString(): String = color
+
+    override fun hashCode(): Int {
+        return color.hashCode()
+    }
 
     companion object {
 
         /**
-         * Test if the format is correct later
+         * TODO Test if the format #RRGGBB is correct later
          */
         fun ofString(hexColorString: String): HexColor {
             return HexColor(hexColorString)

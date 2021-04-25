@@ -6,6 +6,7 @@ import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.appcompat.view.menu.MenuPopupHelper
@@ -25,6 +26,7 @@ import kotlin.math.roundToInt
 class LabelManagementAdapter(
     context: Context,
     onItemClickListener: OnItemClickListener<BookLabel>,
+    private val isLabelColorEditEnabled: Boolean,
     private val onLabelActionClickedListener: OnLabelActionClickedListener
 ) : BaseAdapter<BookLabel>(context, onItemClickListener) {
 
@@ -53,8 +55,8 @@ class LabelManagementAdapter(
         val imageView: AppCompatImageView
             get() = iv_item_label_management
 
-        val overflowButton: ImageButton
-            get() = btn_item_label_management_overflow
+        val overflowButton: ImageView
+            get() = iv_item_label_management_overflow
 
         init {
             inflate(context, R.layout.item_book_label_management, this)
@@ -101,7 +103,7 @@ class LabelManagementAdapter(
 
         private fun setupOverflowMenu(label: BookLabel) {
 
-            val popupMenu = PopupMenu(context, btn_item_label_management_overflow)
+            val popupMenu = PopupMenu(context, view.overflowButton)
 
             popupMenu.menuInflater.inflate(R.menu.menu_label_overflow, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
@@ -116,7 +118,10 @@ class LabelManagementAdapter(
                 true
             }
 
-            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, btn_item_label_management_overflow)
+            // Temporarily disable visibility of edit color button
+            popupMenu.menu.findItem(R.id.popup_label_item_edit_color)?.isVisible = isLabelColorEditEnabled
+
+            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, view.overflowButton)
             menuHelper.setForceShowIcon(true)
 
             view.overflowButton.setOnClickListener {

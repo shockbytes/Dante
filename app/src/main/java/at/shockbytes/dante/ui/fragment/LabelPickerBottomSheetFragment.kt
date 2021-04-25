@@ -13,9 +13,9 @@ import at.shockbytes.dante.ui.adapter.LabelManagementAdapter
 import at.shockbytes.dante.ui.adapter.OnLabelActionClickedListener
 import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
-import at.shockbytes.dante.util.HexColor
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
+import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.view.ProminentLayoutManager
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
@@ -47,13 +47,13 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
                     dismiss()
                 }
             },
+            isLabelColorEditEnabled = false,
             object : OnLabelActionClickedListener {
                 override fun onLabelDeleted(label: BookLabel) {
                     viewModel.deleteBookLabel(label)
                 }
-
                 override fun onLabelColorEdit(label: BookLabel) {
-                    // TODO Do something here...
+                    // TODO Edit color of label
                 }
             }
         )
@@ -87,10 +87,13 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment() {
     private fun handleLabelState(state: LabelManagementViewModel.LabelState) {
         when (state) {
             LabelManagementViewModel.LabelState.Empty -> {
-                tv_pick_labels_empty.visibility = View.VISIBLE
+                tv_pick_labels_empty.setVisible(true)
+                rv_pick_labels.setVisible(false)
             }
             is LabelManagementViewModel.LabelState.Present -> {
-                tv_pick_labels_empty.visibility = View.INVISIBLE
+                tv_pick_labels_empty.setVisible(false)
+                rv_pick_labels.setVisible(true)
+
                 labelAdapter.updateData(state.labels)
             }
         }

@@ -13,10 +13,8 @@
 
         <at.shockbytes.dante.core.ui.HandleView
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/tv_pick_label_header"
@@ -28,13 +26,34 @@
             android:textColor="@color/colorPrimaryText"
             android:layout_gravity="center" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_pick_labels"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="16dp"
-            tools:itemCount="1"
-            tools:listitem="@layout/item_book_label_management" />
+            android:minHeight="200dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_pick_labels"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp"
+                tools:itemCount="1"
+                tools:listitem="@layout/item_book_label_management" />
+
+            <TextView
+                android:id="@+id/tv_pick_labels_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorSecondaryText"
+                android:text="@string/empty_label_picker"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                app:layout_constraintBottom_toBottomOf="@+id/rv_pick_labels"
+                app:layout_constraintEnd_toEndOf="@+id/rv_pick_labels"
+                app:layout_constraintStart_toStartOf="@+id/rv_pick_labels"
+                app:layout_constraintTop_toTopOf="@+id/rv_pick_labels" />
+
+        </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_create_new_label"
@@ -48,19 +67,5 @@
             app:iconTint="@color/colorAccent" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_pick_labels_empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorSecondaryText"
-        android:text="@string/empty_label_picker"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        app:layout_constraintBottom_toBottomOf="@+id/rv_pick_labels"
-        app:layout_constraintEnd_toEndOf="@+id/rv_pick_labels"
-        app:layout_constraintStart_toStartOf="@+id/rv_pick_labels"
-        app:layout_constraintTop_toTopOf="@+id/rv_pick_labels" />
 
 </FrameLayout>

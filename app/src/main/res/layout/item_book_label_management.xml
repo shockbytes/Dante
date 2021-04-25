@@ -33,7 +33,7 @@
         android:layout_marginVertical="24dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
         android:textColor="@color/colorSecondaryText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,17 +42,15 @@
         tools:text="Must read" />
 
 
-    <ImageButton
-        android:id="@+id/btn_item_label_management_overflow"
-        style="?attr/borderlessButtonStyle"
+    <ImageView
+        android:id="@+id/iv_item_label_management_overflow"
         android:layout_width="48dp"
-        android:layout_height="0dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_rounded_ripple"
         android:rotation="90"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
+        android:scaleType="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_overflow" />

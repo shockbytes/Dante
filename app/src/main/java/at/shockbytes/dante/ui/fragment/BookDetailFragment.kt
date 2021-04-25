@@ -16,11 +16,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.DecelerateInterpolator
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.app.SharedElementCallback
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.Observer
@@ -493,9 +492,10 @@ class BookDetailFragment : BaseFragment(),
     private fun startComponentAnimations() {
         AnimationUtils.detailEnterAnimation(
             animatableViewsList,
-            duration = 250,
+            duration = 300,
             initialDelay = 550,
-            interpolator = DecelerateInterpolator(2.5f)
+            durationBetweenAnimations = 15,
+            interpolator = AccelerateDecelerateInterpolator(),
         )
     }
 

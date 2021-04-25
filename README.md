@@ -55,14 +55,15 @@ the user during the login process.
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
 
 ### Version 4.1 - HIGH MAINTENANCE
+- [ ] Like book suggestions
 - [ ] Upgrade to Kotlin > 1.4.20
     - [ ] Use ViewBinding
     - [ ] Remove Kotterknife usage
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider
-- [ ] Improve main screen
-    - [ ] Replace buggy SharedElementTransition for DetailPageNavigation
+- [x] Improve main screen
+    - [x] Replace buggy SharedElementTransition for DetailPageNavigation
     - [x] Use lighter UI for labels (outline instead of filled)
     - [x] New labels screen
 

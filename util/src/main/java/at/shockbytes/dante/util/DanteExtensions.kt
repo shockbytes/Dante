@@ -15,6 +15,7 @@ import androidx.annotation.ColorInt
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ArrayRes
@@ -237,3 +238,5 @@ fun Fragment.registerForPopupMenu(
 
     anchor.setOnClickListener { menuHelper.show() }
 }
+
+fun Context.layoutInflater(): LayoutInflater = LayoutInflater.from(this)

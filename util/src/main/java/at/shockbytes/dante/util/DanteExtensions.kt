@@ -64,6 +64,10 @@ fun Activity.hideKeyboard() {
     }
 }
 
+fun Fragment.hideKeyboard() {
+    activity?.hideKeyboard()
+}
+
 fun FragmentManager.isFragmentShown(tag: String): Boolean {
     return findFragmentByTag(tag) != null
 }

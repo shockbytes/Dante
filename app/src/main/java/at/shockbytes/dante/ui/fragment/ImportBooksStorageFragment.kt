@@ -14,7 +14,7 @@ import at.shockbytes.dante.importer.ImportStats
 import at.shockbytes.dante.importer.Importer
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.ImporterAdapter
-import at.shockbytes.dante.ui.fragment.dialog.ImportApprovalDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.ImportApprovalDialogFragmentWrapper
 import at.shockbytes.dante.ui.viewmodel.ImportBooksStorageViewModel
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
@@ -92,13 +92,13 @@ class ImportBooksStorageFragment : BaseFragment<FragmentImportBooksStorageBindin
 
         when (state.importStats) {
             is ImportStats.Success -> {
-                ImportApprovalDialogFragment
+                ImportApprovalDialogFragmentWrapper
                     .newInstance(state.providerRes, state.providerIconRes, state.importStats)
                     .setOnApplyListener {
                         viewModel.import()
                     }
                     .setOnDismissListener(viewModel::reset)
-                    .show(childFragmentManager, "ask-for-import-confirmation-dialog")
+                    .show(requireContext())
             }
             ImportStats.NoBooks -> {
                 showSnackbar(getString(R.string.import_no_books), getString(R.string.got_it), showIndefinite = true) {

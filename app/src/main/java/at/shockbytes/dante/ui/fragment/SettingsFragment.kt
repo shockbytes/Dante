@@ -10,13 +10,17 @@ import androidx.preference.SwitchPreferenceCompat
 import at.shockbytes.dante.BuildConfig
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
-import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.DanteUtils.dpToPixelF
 import at.shockbytes.dante.util.MailLauncher
 import at.shockbytes.dante.util.UrlLauncher
+import at.shockbytes.dante.util.getStringList
 import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.dante.util.sort.SortStrategy
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import javax.inject.Inject
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
@@ -49,11 +53,25 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             this.summary = getString(R.string.sorted_by, getString(danteSettings.sortStrategy.displayTitle))
 
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                SortStrategyDialogFragment.newInstance()
-                        .setOnApplyListener {
-                            this.summary = getString(R.string.sorted_by, getString(danteSettings.sortStrategy.displayTitle))
-                        }
-                        .show(childFragmentManager, "sort-dialog-fragment")
+
+                MaterialDialog(requireContext())
+                    .title(R.string.dialogfragment_sort_by)
+                    .listItemsSingleChoice(
+                        items = getStringList(R.array.sort_strategy),
+                        initialSelection = danteSettings.sortStrategy.ordinal
+                    ) { _, index, _ ->
+
+                        val sortStrategy = SortStrategy.values()[index]
+                        danteSettings.sortStrategy = sortStrategy
+                        this.summary = getString(R.string.sorted_by, getString(sortStrategy.displayTitle))
+                    }
+                    .icon(R.drawable.ic_sort)
+                    .cornerRadius(context.dpToPixelF(6))
+                    .cancelOnTouchOutside(true)
+                    .positiveButton(R.string.apply) {
+                        it.dismiss()
+                    }
+                    .show()
 
                 true
             }

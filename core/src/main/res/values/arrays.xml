@@ -48,4 +48,13 @@
         <item>Sort by end date</item>
     </string-array>
 
+    <string-array name="sort_strategy">
+        <item>@string/sort_strategy_default</item>
+        <item>@string/sort_strategy_author</item>
+        <item>@string/sort_strategy_title</item>
+        <item>@string/sort_strategy_progress</item>
+        <item>@string/sort_strategy_pages</item>
+        <item>@string/sort_strategy_labels</item>
+    </string-array>
+
 </resources>

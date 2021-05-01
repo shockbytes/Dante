@@ -1,6 +1,5 @@
 package at.shockbytes.dante.injection
 
-import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.core.injection.CoreComponent
 import at.shockbytes.dante.core.injection.ModuleScope
@@ -36,7 +35,6 @@ import at.shockbytes.dante.ui.fragment.StatisticsFragment
 import at.shockbytes.dante.ui.fragment.SuggestBookBottomSheetDialogFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
-import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.widget.DanteAppWidget
 import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
 import dagger.Component
@@ -106,8 +104,6 @@ interface AppComponent {
     fun inject(fragment: AnnouncementFragment)
 
     fun inject(fragment: TimeLineFragment)
-
-    fun inject(dialogFragment: SortStrategyDialogFragment)
 
     fun inject(dialogFragment: MailLoginBottomSheetDialogFragment)
 

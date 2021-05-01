@@ -16,8 +16,7 @@ import at.shockbytes.dante.databinding.FragmentBackupRestoreBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupEntryAdapter
 import at.shockbytes.dante.ui.adapter.OnBackupOverflowItemListener
-import at.shockbytes.dante.ui.fragment.dialog.InactiveResourceDialogFragment
-import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.RestoreStrategyDialogFragmentWrapper
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.isPortrait
@@ -98,14 +97,8 @@ class BackupRestoreFragment : BaseFragment<FragmentBackupRestoreBinding>(), Base
     override fun onItemClick(content: BackupMetadataState, position: Int, v: View) {
         when (content) {
             is BackupMetadataState.Active -> showBackupRestoreStrategyModal(content)
-            is BackupMetadataState.Inactive -> showInactiveResourceModal(content)
+            is BackupMetadataState.Inactive -> Unit // This state is not supported yet
         }
-    }
-
-    private fun showInactiveResourceModal(t: BackupMetadataState.Inactive) {
-        InactiveResourceDialogFragment
-            .newInstance(t.entry.storageProvider)
-            .show(childFragmentManager, "inactive-resource-dialog-fragment")
     }
 
     override fun bindViewModel() {
@@ -215,12 +208,12 @@ class BackupRestoreFragment : BaseFragment<FragmentBackupRestoreBinding>(), Base
     }
 
     private fun showBackupRestoreStrategyModal(state: BackupMetadataState.Active) {
-        RestoreStrategyDialogFragment
+        RestoreStrategyDialogFragmentWrapper
             .newInstance()
             .setOnRestoreStrategySelectedListener { strategy ->
                 viewModel.applyBackup(state.entry, strategy)
             }
-            .show(childFragmentManager, "restore-strategy-dialog-fragment")
+            .show(requireContext())
     }
 
     companion object {

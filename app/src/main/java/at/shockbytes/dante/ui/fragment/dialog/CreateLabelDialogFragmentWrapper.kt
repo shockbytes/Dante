@@ -1,22 +1,24 @@
 package at.shockbytes.dante.ui.fragment.dialog
 
 import android.annotation.SuppressLint
-import android.os.Parcelable
-import android.view.LayoutInflater
-import android.view.View
+import android.content.Context
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.databinding.DialogfragmentCreateLabelBinding
-import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.custom.colorpicker.ColorPickerItems
+import at.shockbytes.dante.util.DanteUtils.dpToPixelF
 import at.shockbytes.dante.util.HexColor
-import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.dante.util.layoutInflater
-import kotlinx.android.parcel.Parcelize
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
 
-class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel, DialogfragmentCreateLabelBinding>() {
+@SuppressLint("ResourceType")
+class CreateLabelDialogFragmentWrapper(
+    private val alreadyCreatedLabels: List<BookLabel>
+) {
 
     private val colors = listOf(
         R.color.tabcolor_upcoming,
@@ -31,23 +33,31 @@ class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel, Dialo
         R.color.pink_500
     )
 
-    private var alreadyCreatedLabels: CreatedLabels by argument()
+    private var applyListener: ((label: BookLabel) -> Unit)? = null
 
-    override val containerView: View
-        get() = LayoutInflater.from(context).inflate(R.layout.dialogfragment_create_label, null, false)
+    fun setOnApplyListener(listener: (label: BookLabel) -> Unit): CreateLabelDialogFragmentWrapper {
+        return apply {
+            this.applyListener = listener
+        }
+    }
 
-    override val vb: DialogfragmentCreateLabelBinding
-        get() = DialogfragmentCreateLabelBinding.bind(containerView)
+    fun show(fragment: Fragment) {
 
-    @SuppressLint("ResourceType")
-    override fun setupViews() {
+        val context = fragment.requireContext()
+
+        val vb = DialogfragmentCreateLabelBinding.inflate(context.layoutInflater())
+
+        val dialog = MaterialDialog(context)
+            .customView(view = vb.root)
+            .cornerRadius(context.dpToPixelF(6))
+            .cancelOnTouchOutside(true)
+
         vb.colorPickerLabel.initialize(ColorPickerItems.fromColorResources(colors, preSelectedIndex = 0))
-
         vb.btnNewLabel.setOnClickListener {
 
             val title = vb.etNameLabel.text.toString()
             val labelColor = vb.colorPickerLabel.selectedItem?.let { colorPickerItem ->
-                resources.getString(colorPickerItem.colorRes)
+                context.getString(colorPickerItem.colorRes)
             }
 
             when {
@@ -57,37 +67,33 @@ class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel, Dialo
                 (canCreateNewLabel(title, labelColor)) -> {
                     val label = BookLabel.unassignedLabel(title, HexColor.ofString(labelColor!!))
                     applyListener?.invoke(label)
-                    activity?.hideKeyboard()
-                    dismiss()
+                    fragment.hideKeyboard()
+                    dialog.dismiss()
                 }
                 else -> {
                     Toast.makeText(context, R.string.new_label_error, Toast.LENGTH_LONG).show()
                 }
             }
         }
+
+        dialog.show()
     }
 
     private fun doesTitleAlreadyExist(title: String): Boolean {
-        return alreadyCreatedLabels.labels.any { it.title == title }
+        return alreadyCreatedLabels.any { it.title == title }
     }
 
     private fun canCreateNewLabel(title: String, labelColor: String?): Boolean {
         return title.isNotEmpty() && !labelColor.isNullOrEmpty() && title.length <= MAX_TITLE_LENGTH
     }
 
-    override fun injectToGraph(appComponent: AppComponent) = Unit
-
     companion object {
 
         private const val MAX_TITLE_LENGTH = 16
 
-        fun newInstance(createdLabels: List<BookLabel>): CreateLabelDialogFragment {
-            return CreateLabelDialogFragment().apply {
-                alreadyCreatedLabels = CreatedLabels(createdLabels)
-            }
+        fun newInstance(createdLabels: List<BookLabel>): CreateLabelDialogFragmentWrapper {
+            return CreateLabelDialogFragmentWrapper(createdLabels)
         }
-
-        @Parcelize
-        private data class CreatedLabels(val labels: List<BookLabel>) : Parcelable
     }
+
 }

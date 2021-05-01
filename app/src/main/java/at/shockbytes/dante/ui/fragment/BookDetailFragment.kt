@@ -34,7 +34,6 @@ import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
-import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.databinding.FragmentBookDetailBinding
@@ -49,6 +48,7 @@ import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.view.AnimationUtils
 import at.shockbytes.dante.ui.view.ChipFactory
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.DanteUtils.dpToPixelF
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.registerForPopupMenu
@@ -212,9 +212,17 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
 
         viewModel.showBookFinishedDialogEvent
             .observeOn(AndroidSchedulers.mainThread())
-            .map(::createBookFinishedFragment)
-            .subscribe { fragment ->
-                fragment.show(parentFragmentManager, "book-finished-dialog-fragment")
+            .subscribe { title ->
+                MaterialDialog(requireContext())
+                    .title(text = getString(R.string.book_finished, title))
+                    .message(R.string.book_finished_move_to_done_question)
+                    .icon(R.drawable.ic_pick_done)
+                    .cornerRadius(requireContext().dpToPixelF(6))
+                    .positiveButton(android.R.string.ok) {
+                        viewModel.moveBookToDone()
+                        activity?.supportFinishAfterTransition()
+                    }
+                    .show()
             }
             .addTo(compositeDisposable)
 
@@ -259,15 +267,6 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::showLabelPicker, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
-    }
-
-    private fun createBookFinishedFragment(title: String): SimpleRequestDialogFragment {
-        return SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
-            getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
-            .setOnAcceptListener {
-                viewModel.moveBookToDone()
-                activity?.supportFinishAfterTransition()
-            }
     }
 
     private fun createPagesFragment(pageInfo: BookDetailViewModel.PageInfo): PagesFragment {

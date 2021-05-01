@@ -13,7 +13,7 @@ import at.shockbytes.dante.databinding.FragmentLabelPickerBottomSheetBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.LabelManagementAdapter
 import at.shockbytes.dante.ui.adapter.OnLabelActionClickedListener
-import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.CreateLabelDialogFragmentWrapper
 import at.shockbytes.dante.ui.viewmodel.LabelManagementViewModel
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
@@ -83,9 +83,9 @@ class LabelPickerBottomSheetFragment : BaseBottomSheetFragment<FragmentLabelPick
         viewModel.onCreateNewLabelRequest
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ labels ->
-                CreateLabelDialogFragment.newInstance(labels)
+                CreateLabelDialogFragmentWrapper.newInstance(labels)
                     .setOnApplyListener(viewModel::createNewBookLabel)
-                    .show(childFragmentManager, "create-label-dialog-fragment")
+                    .show(this)
             }, { throwable ->
                 Timber.e(throwable)
             })

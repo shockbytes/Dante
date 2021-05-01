@@ -22,14 +22,15 @@ import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.activity.ManualAddActivity
-import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
 import at.shockbytes.dante.databinding.FragmentManualAddBinding
+import at.shockbytes.dante.util.DanteUtils.dpToPixelF
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -92,17 +93,15 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
 
         vb.btnUpdateBookDiscard.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            SimpleRequestDialogFragment
-                .newInstance(
-                    title = getString(R.string.update_book_discard_title),
-                    message = getString(R.string.update_book_discard_message),
-                    icon = R.drawable.ic_delete,
-                    positiveText = R.string.discard
-                )
-                .setOnAcceptListener {
+            MaterialDialog(requireContext())
+                .title(R.string.update_book_discard_title)
+                .message(R.string.update_book_discard_message)
+                .icon(R.drawable.ic_delete)
+                .cornerRadius(requireContext().dpToPixelF(6))
+                .positiveButton(R.string.discard) {
                     activity?.onBackPressed()
                 }
-                .show(childFragmentManager, "tag-discard-book-update-confirmation")
+                .show()
         }
 
         vb.btnUpdateBookSave.setOnClickListener { v ->

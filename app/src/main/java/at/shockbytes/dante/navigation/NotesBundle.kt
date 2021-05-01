@@ -1,7 +1,7 @@
 package at.shockbytes.dante.navigation
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class NotesBundle(

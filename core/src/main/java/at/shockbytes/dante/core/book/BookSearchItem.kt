@@ -1,7 +1,7 @@
 package at.shockbytes.dante.core.book
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Author:  Martin Macheiner

@@ -22,7 +22,7 @@ import at.shockbytes.dante.util.view.ProminentLayoutManager
 import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.adapter.BaseAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 import javax.inject.Inject
 

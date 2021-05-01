@@ -2,13 +2,11 @@ package at.shockbytes.dante.core.book
 
 import android.os.Parcelable
 import at.shockbytes.dante.util.DanteUtils.checkUrlForHttps
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Author:  Martin Macheiner
  * Date:    12.06.2018
- *
- * NOTE:    Would be great if we can get rid off all the vars and make them vals.
  */
 @Parcelize
 data class BookEntity(

@@ -91,6 +91,7 @@ class StatisticsViewModel @Inject constructor(
 
     fun requestPageGoalChangeAction(type: ReadingGoalType) {
         goalChangeObservableSourceByType(type)
+            .observeOn(schedulers.ui)
             .subscribe(pageGoalChangeEvent::onNext)
             .addTo(compositeDisposable)
     }

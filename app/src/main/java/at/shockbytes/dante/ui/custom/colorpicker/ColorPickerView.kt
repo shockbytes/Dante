@@ -5,15 +5,16 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
-import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ColorPickerViewBinding
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.synthetic.main.color_picker_view.view.*
 
-class ColorPickerView @JvmOverloads constructor(
+class ColorPickerView(
     context: Context,
-    attrs: AttributeSet? = null,
-    defStyle: Int = 0
-) : FrameLayout(context, attrs, defStyle) {
+    attrs: AttributeSet? = null
+) : FrameLayout(context, attrs) {
+
+    private val vb = ColorPickerViewBinding.inflate(context.layoutInflater(), this, true)
 
     var colors: List<ColorPickerItem> = listOf()
         set(value) {
@@ -22,10 +23,6 @@ class ColorPickerView @JvmOverloads constructor(
         }
 
     var columns: Int = 5
-        set(value) {
-            field = value
-            initializeRecyclerView()
-        }
 
     private val colorItemAdapter: ColorItemAdapter by lazy {
         ColorItemAdapter(context, object : BaseAdapter.OnItemClickListener<ColorPickerItem> {
@@ -45,16 +42,13 @@ class ColorPickerView @JvmOverloads constructor(
     val selectedItem: ColorPickerItem?
         get() = colors.find { it.isSelected }
 
-    init {
-        View.inflate(context, R.layout.color_picker_view, this)
-        initializeRecyclerView()
-    }
-
-    private fun initializeRecyclerView() {
-        rv_color_picker.apply {
+    fun initialize(colorItems: List<ColorPickerItem>) {
+        vb.rvColorPicker.apply {
             layoutManager = GridLayoutManager(context, columns)
             adapter = colorItemAdapter
         }
+
+        this.colors = colorItems
     }
 
     private fun updateRecyclerViewAdapter(values: List<ColorPickerItem>) {

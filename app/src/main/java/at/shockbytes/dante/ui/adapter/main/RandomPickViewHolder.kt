@@ -4,22 +4,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ItemRandomPickBinding
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_random_pick.*
 
 class RandomPickViewHolder(
     override val containerView: View,
     private val callback: RandomPickCallback?
 ) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
 
+    private val vb = ItemRandomPickBinding.bind(containerView)
+
     override fun bindToView(content: BookAdapterItem, position: Int) {
 
-        btn_item_random_pick.setOnClickListener {
+        vb.btnItemRandomPick.setOnClickListener {
             callback?.onRandomPickClicked()
         }
 
-        iv_item_random_pick_dismiss.setOnClickListener {
+        vb.ivItemRandomPickDismiss.setOnClickListener {
             callback?.onDismiss()
         }
     }

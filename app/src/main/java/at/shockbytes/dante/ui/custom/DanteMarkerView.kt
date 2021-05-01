@@ -3,20 +3,24 @@ package at.shockbytes.dante.ui.custom
 import android.content.Context
 import android.view.View
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.DanteMarkerViewBinding
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
+import at.shockbytes.dante.util.layoutInflater
 import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.highlight.Highlight
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.dante_marker_view.*
 
 class DanteMarkerView(
     context: Context,
     chartView: Chart<*>,
     private val labelFactory: MarkerViewLabelFactory
 ) : MarkerView(context, R.layout.dante_marker_view), LayoutContainer {
+
+    private val vb: DanteMarkerViewBinding
+        get() = DanteMarkerViewBinding.inflate(context.layoutInflater(), this, true)
 
     init {
         setChartView(chartView)
@@ -38,13 +42,13 @@ class DanteMarkerView(
     }
 
     private fun handlePieEntry(entry: PieEntry) {
-        tv_dante_marker_view.text = labelFactory.createLabelForValue(context, entry.value)
+        vb.tvDanteMarkerView.text = labelFactory.createLabelForValue(context, entry.value)
     }
 
     private fun handleGenericEntry(entry: Entry) {
         val idx = entry.x.toInt().dec()
         if (idx >= 0) {
-            tv_dante_marker_view.text = labelFactory.createLabelForIndex(context, idx)
+            vb.tvDanteMarkerView.text = labelFactory.createLabelForIndex(context, idx)
         }
     }
 }

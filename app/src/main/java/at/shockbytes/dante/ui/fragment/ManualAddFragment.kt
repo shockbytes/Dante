@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -20,15 +22,16 @@ import at.shockbytes.dante.ui.adapter.ManualAddLanguageSpinnerAdapter
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
 import at.shockbytes.dante.ui.activity.ManualAddActivity
-import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
+import at.shockbytes.dante.databinding.FragmentManualAddBinding
+import at.shockbytes.dante.util.DanteUtils.dpToPixelF
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
+import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_manual_add.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -36,9 +39,15 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    30.08.2018
  */
-class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
+class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoadingCallback {
 
-    override val layoutId = R.layout.fragment_manual_add
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentManualAddBinding {
+        return FragmentManualAddBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -58,46 +67,44 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
 
     override fun setupViews() {
 
-        cardImageManualAdd.setOnClickListener { v ->
+        vb.cardImageManualAdd.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             viewModel.pickImage(requireActivity())
         }
 
-        editTextManualAddTitle.doOnTextChanged { text, _, _, _ ->
-            (activity as? TintableBackNavigableActivity)?.tintTitle(text.toString())
+        vb.editTextManualAddTitle.doOnTextChanged { text, _, _, _ ->
+            (activity as? TintableBackNavigableActivity<*>)?.tintTitle(text.toString())
         }
 
-        btnManualAddUpcoming.setOnClickListener { v ->
+        vb.btnManualAddUpcoming.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ_LATER)
         }
 
-        btnManualAddCurrent.setOnClickListener { v ->
+        vb.btnManualAddCurrent.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READING)
         }
 
-        btnManualAddDone.setOnClickListener { v ->
+        vb.btnManualAddDone.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             storeBook(BookState.READ)
         }
 
-        btn_update_book_discard.setOnClickListener { v ->
+        vb.btnUpdateBookDiscard.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            SimpleRequestDialogFragment
-                .newInstance(
-                    title = getString(R.string.update_book_discard_title),
-                    message = getString(R.string.update_book_discard_message),
-                    icon = R.drawable.ic_delete,
-                    positiveText = R.string.discard
-                )
-                .setOnAcceptListener {
+            MaterialDialog(requireContext())
+                .title(R.string.update_book_discard_title)
+                .message(R.string.update_book_discard_message)
+                .icon(R.drawable.ic_delete)
+                .cornerRadius(requireContext().dpToPixelF(6))
+                .positiveButton(R.string.discard) {
                     activity?.onBackPressed()
                 }
-                .show(childFragmentManager, "tag-discard-book-update-confirmation")
+                .show()
         }
 
-        btn_update_book_save.setOnClickListener { v ->
+        vb.btnUpdateBookSave.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             updateBook()
         }
@@ -123,8 +130,8 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     }
 
     private fun hideLoadingIndicator() {
-        imgViewManualAdd.setVisible(true)
-        pbManualAddImageUpload.setVisible(false)
+        vb.imgViewManualAdd.setVisible(true)
+        vb.pbManualAddImageUpload.setVisible(false)
     }
 
     private fun colorToolbarFromResource(resource: Drawable?) {
@@ -134,7 +141,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
             val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
             val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-            (activity as? TintableBackNavigableActivity)
+            (activity as? TintableBackNavigableActivity<*>)
                 ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
         }
     }
@@ -162,7 +169,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                 imageLoader.loadImageUri(
                     requireContext(),
                     imageState.uri,
-                    imgViewManualAdd,
+                    vb.imgViewManualAdd,
                     R.drawable.ic_placeholder_cover,
                     circular = false,
                     callback = this,
@@ -173,7 +180,7 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
                 imageLoader.loadImageResource(
                     requireContext(),
                     R.drawable.ic_placeholder_cover,
-                    imgViewManualAdd
+                    vb.imgViewManualAdd
                 )
             }
         }
@@ -182,12 +189,12 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     private fun handleImageLoadingState(imageLoadingState: ManualAddViewModel.ImageLoadingState) {
         when (imageLoadingState) {
             is ManualAddViewModel.ImageLoadingState.Loading -> {
-                pbManualAddImageUpload.setVisible(true)
-                imgViewManualAdd.setVisible(false)
+                vb.pbManualAddImageUpload.setVisible(true)
+                vb.imgViewManualAdd.setVisible(false)
             }
             is ManualAddViewModel.ImageLoadingState.Error -> {
-                pbManualAddImageUpload.setVisible(false)
-                imgViewManualAdd.setVisible(true)
+                vb.pbManualAddImageUpload.setVisible(false)
+                vb.imgViewManualAdd.setVisible(true)
             }
             ManualAddViewModel.ImageLoadingState.Success -> Unit // Not needed...
         }
@@ -196,12 +203,12 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     private fun handleViewState(viewState: ManualAddViewModel.ViewState) {
         when (viewState) {
             ManualAddViewModel.ViewState.ManualAdd -> {
-                container_manual_add_buttons.setVisible(true)
-                container_update_book_buttons.setVisible(false)
+                vb.containerManualAddButtons.setVisible(true)
+                vb.containerUpdateBookButtons.setVisible(false)
             }
             is ManualAddViewModel.ViewState.UpdateBook -> {
-                container_manual_add_buttons.setVisible(false)
-                container_update_book_buttons.setVisible(true)
+                vb.containerManualAddButtons.setVisible(false)
+                vb.containerUpdateBookButtons.setVisible(true)
                 populateBookDataViews(viewState.bookEntity)
             }
         }
@@ -245,25 +252,28 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     private fun populateBookDataViews(bookEntity: BookEntity) {
         with(bookEntity) {
 
-            editTextManualAddTitle.setText(title)
-            editTextManualAddSubtitle.setText(subTitle)
-            editTextManualAddAuthors.setText(author)
-            editTextManualAddPages.setText(pageCount.toString())
-            editTextManualAddPublishedDate.setText(publishedDate)
-            editTextManualAddIsbn.setText(isbn)
-            editTextManualAddSummary.setText(summary)
+            vb.editTextManualAddTitle.setText(title)
+            vb.editTextManualAddSubtitle.setText(subTitle)
+            vb.editTextManualAddAuthors.setText(author)
+            vb.editTextManualAddPages.setText(pageCount.toString())
+            vb.editTextManualAddPublishedDate.setText(publishedDate)
+            vb.editTextManualAddIsbn.setText(isbn)
+            vb.editTextManualAddSummary.setText(summary)
 
             val languages = Languages.values()
             val languageIdx = languages.indexOfFirst { it.code == language }
 
             if (languageIdx > -1) {
-                spinnerManualAddLanguage.setSelection(languageIdx, true)
+                vb.spinnerManualAddLanguage.setSelection(languageIdx, true)
             }
         }
     }
 
     private fun setupLanguageSpinner() {
-        spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(requireContext(), Languages.values())
+        vb.spinnerManualAddLanguage.adapter = ManualAddLanguageSpinnerAdapter(
+            requireContext(),
+            Languages.values()
+        )
     }
 
     private fun updateBook() {
@@ -278,16 +288,16 @@ class ManualAddFragment : BaseFragment(), ImageLoadingCallback {
     }
 
     private fun gatherBookUpdateData(): ManualAddViewModel.BookUpdateData {
-        val title = editTextManualAddTitle.text?.toString()
-        val subTitle: String? = editTextManualAddSubtitle.text?.toString()
-        val authors = editTextManualAddAuthors.text?.toString()
-        val pageCount = editTextManualAddPages.text?.toString()?.toIntOrNull()
-        val publishedDate = editTextManualAddPublishedDate.text?.toString()
-        val isbn = editTextManualAddIsbn.text?.toString()
-        val summary = editTextManualAddSummary.text?.toString()
+        val title = vb.editTextManualAddTitle.text?.toString()
+        val subTitle: String? = vb.editTextManualAddSubtitle.text?.toString()
+        val authors = vb.editTextManualAddAuthors.text?.toString()
+        val pageCount = vb.editTextManualAddPages.text?.toString()?.toIntOrNull()
+        val publishedDate = vb.editTextManualAddPublishedDate.text?.toString()
+        val isbn = vb.editTextManualAddIsbn.text?.toString()
+        val summary = vb.editTextManualAddSummary.text?.toString()
 
         val languages = Languages.values()
-        val lIdx = spinnerManualAddLanguage.selectedItemPosition.coerceIn(0..languages.size)
+        val lIdx = vb.spinnerManualAddLanguage.selectedItemPosition.coerceIn(0..languages.size)
         val language = languages[lIdx].code
 
         return ManualAddViewModel.BookUpdateData(

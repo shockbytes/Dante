@@ -4,12 +4,12 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ItemImporterBinding
 import at.shockbytes.dante.importer.Importer
 import at.shockbytes.dante.util.Stability
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_importer.*
 
 class ImporterAdapter(
     context: Context,
@@ -29,17 +29,19 @@ class ImporterAdapter(
         override val containerView: View
     ) : BaseAdapter.ViewHolder<Importer>(containerView), LayoutContainer {
 
+        private val vb = ItemImporterBinding.bind(containerView)
+
         override fun bindToView(content: Importer, position: Int) {
             with(content) {
-                iv_item_import.setImageResource(icon)
-                tv_item_import_title.setText(title)
-                tv_item_import_description.setText(description)
+                vb.ivItemImport.setImageResource(icon)
+                vb.tvItemImportTitle.setText(title)
+                vb.tvItemImportDescription.setText(description)
 
-                btn_item_import.setOnClickListener {
+                vb.btnItemImport.setOnClickListener {
                     onImportClickedListener(this)
                 }
 
-                tv_item_import_beta.setVisible(stability == Stability.BETA)
+                vb.tvItemImportBeta.setVisible(stability == Stability.BETA)
             }
         }
     }

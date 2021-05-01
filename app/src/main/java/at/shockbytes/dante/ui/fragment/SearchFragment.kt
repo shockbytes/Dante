@@ -1,8 +1,10 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
@@ -14,11 +16,11 @@ import at.shockbytes.dante.ui.activity.DetailActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.adapter.BookSearchSuggestionAdapter
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.FragmentSearchBinding
 import at.shockbytes.dante.ui.viewmodel.SearchViewModel
 import at.shockbytes.dante.util.hideKeyboard
 import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.synthetic.main.fragment_search.*
 import java.net.UnknownHostException
 import javax.inject.Inject
 
@@ -26,9 +28,15 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    03.02.2018
  */
-class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearchItem> {
+class SearchFragment : BaseFragment<FragmentSearchBinding>(), BaseAdapter.OnItemClickListener<BookSearchItem> {
 
-    override val layoutId = R.layout.fragment_search
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentSearchBinding {
+        return FragmentSearchBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var imageLoader: ImageLoader
@@ -40,7 +48,7 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     private val addClickedListener: ((BookSearchItem) -> Unit) = { item ->
         activity?.hideKeyboard()
-        fragment_search_searchview.setSearchFocused(false)
+        vb.fragmentSearchSearchview.setSearchFocused(false)
         viewModel.requestBookDownload(item)
     }
 
@@ -53,31 +61,36 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
 
     override fun setupViews() {
 
-        rvAdapter = BookSearchSuggestionAdapter(fragment_search_rv.context, imageLoader, addClickedListener, onItemClickListener = this)
-        fragment_search_rv.layoutManager = LinearLayoutManager(context)
-        fragment_search_rv.adapter = rvAdapter
-        val dividerItemDecoration = DividerItemDecoration(fragment_search_rv.context, DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(fragment_search_rv.context, R.drawable.recycler_divider)!!)
-        fragment_search_rv.addItemDecoration(dividerItemDecoration)
-
-        fragment_search_empty_view.visibility = View.GONE
-
-        fragment_search_searchview.homeActionClickListener = {
-            activity?.supportFinishAfterTransition()
+        requireContext().let { ctx ->
+            rvAdapter = BookSearchSuggestionAdapter(ctx, imageLoader, addClickedListener, onItemClickListener = this)
+            vb.fragmentSearchRv.layoutManager = LinearLayoutManager(context)
+            vb.fragmentSearchRv.adapter = rvAdapter
+            val dividerItemDecoration = DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL)
+            dividerItemDecoration.setDrawable(ContextCompat.getDrawable(ctx, R.drawable.recycler_divider)!!)
+            vb.fragmentSearchRv.addItemDecoration(dividerItemDecoration)
         }
-        fragment_search_searchview.queryListener = { newQuery ->
-            if (newQuery.toString() == "") {
-                rvAdapter.clear()
-                viewModel.requestInitialState()
-            } else {
-                viewModel.showBooks(newQuery, keepLocal = true)
+
+
+        vb.fragmentSearchEmptyView.visibility = View.GONE
+
+        vb.fragmentSearchSearchview.apply {
+            homeActionClickListener = {
+                activity?.supportFinishAfterTransition()
             }
+            queryListener = { newQuery ->
+                if (newQuery.toString() == "") {
+                    rvAdapter.clear()
+                    viewModel.requestInitialState()
+                } else {
+                    viewModel.showBooks(newQuery, keepLocal = true)
+                }
+            }
+            setSearchFocused(true)
         }
-        fragment_search_searchview.setSearchFocused(true)
 
-        fragment_search_btn_search_online.setOnClickListener {
+        vb.fragmentSearchBtnSearchOnline.setOnClickListener {
             activity?.hideKeyboard()
-            viewModel.showBooks(fragment_search_searchview.currentQuery, keepLocal = false)
+            viewModel.showBooks(vb.fragmentSearchSearchview.currentQuery, keepLocal = false)
         }
     }
 
@@ -90,33 +103,35 @@ class SearchFragment : BaseFragment(), BaseAdapter.OnItemClickListener<BookSearc
         viewModel.getSearchState().observe(this, { searchState ->
             when (searchState) {
                 is SearchViewModel.SearchState.LoadingState -> {
-                    fragment_search_searchview.showProgress(true)
-                    fragment_search_btn_search_online.isEnabled = false
+                    vb.fragmentSearchSearchview.showProgress(true)
+                    vb.fragmentSearchBtnSearchOnline.isEnabled = false
                 }
                 is SearchViewModel.SearchState.EmptyState -> {
-                    fragment_search_searchview.showProgress(false)
+                    vb.fragmentSearchSearchview.showProgress(false)
                     rvAdapter.clear()
-                    fragment_search_empty_view.visibility = View.VISIBLE
-                    fragment_search_btn_search_online.isEnabled = true
+                    vb.fragmentSearchEmptyView.visibility = View.VISIBLE
+                    vb.fragmentSearchBtnSearchOnline.isEnabled = true
                 }
                 is SearchViewModel.SearchState.SuccessState -> {
-                    fragment_search_searchview.showProgress(false)
+                    vb.fragmentSearchSearchview.showProgress(false)
                     rvAdapter.data = searchState.items.toMutableList()
-                    fragment_search_rv.scrollToPosition(0)
-                    fragment_search_empty_view.visibility = View.GONE
-                    fragment_search_btn_search_online.isEnabled = true
+                    vb.fragmentSearchRv.scrollToPosition(0)
+                    vb.fragmentSearchEmptyView.visibility = View.GONE
+                    vb.fragmentSearchBtnSearchOnline.isEnabled = true
                 }
                 is SearchViewModel.SearchState.ErrorState -> {
                     showToast(message4SearchException(searchState.throwable))
-                    fragment_search_searchview.clearQuery()
-                    fragment_search_searchview.showProgress(false)
-                    fragment_search_empty_view.visibility = View.GONE
-                    fragment_search_btn_search_online.isEnabled = true
+                    vb.fragmentSearchSearchview.apply {
+                        clearQuery()
+                        showProgress(false)
+                    }
+                    vb.fragmentSearchEmptyView.visibility = View.GONE
+                    vb.fragmentSearchBtnSearchOnline.isEnabled = true
                 }
                 is SearchViewModel.SearchState.InitialState -> {
-                    fragment_search_searchview.showProgress(false)
-                    fragment_search_empty_view.visibility = View.GONE
-                    fragment_search_btn_search_online.isEnabled = false
+                    vb.fragmentSearchSearchview.showProgress(false)
+                    vb.fragmentSearchEmptyView.visibility = View.GONE
+                    vb.fragmentSearchBtnSearchOnline.isEnabled = false
                 }
             }
         })

@@ -2,37 +2,39 @@ package at.shockbytes.dante.ui.custom
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupStorageProvider
+import at.shockbytes.dante.databinding.BackupStorageProviderViewBinding
 import at.shockbytes.dante.util.Stability
 import at.shockbytes.dante.util.setVisible
-import kotlinx.android.synthetic.main.backup_storage_provider_view.view.*
 
 /**
  * Author:  Martin Macheiner
  * Date:    26.05.2019
  */
-class BackupStorageProviderView : FrameLayout {
+class BackupStorageProviderView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) : FrameLayout(context, attrs) {
 
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    init {
-        View.inflate(context, R.layout.backup_storage_provider_view, this)
-    }
+    private val vb = BackupStorageProviderViewBinding.inflate(
+        LayoutInflater.from(context),
+        this,
+        true
+    )
 
     fun setStorageProvider(backupStorageProvider: BackupStorageProvider, click: ((BackupStorageProvider) -> Unit)? = null) {
         with(backupStorageProvider) {
-            iv_backup_storage_provider_icon.setImageResource(icon)
-            tv_backup_storage_provider_title.text = title
-            tv_backup_storage_provider_rationale.setText(rationale)
+            vb.ivBackupStorageProviderIcon.setImageResource(icon)
+            vb.tvBackupStorageProviderTitle.text = title
+            vb.tvBackupStorageProviderRationale.setText(rationale)
 
-            root_backup_storage_provider.setOnClickListener { click?.invoke(this) }
-            tv_backup_item_beta.setVisible(backupStorageProvider.stability == Stability.BETA)
-            tv_backup_item_discontinued.setVisible(backupStorageProvider.stability == Stability.DISCONTINUED)
+            vb.rootBackupStorageProvider.setOnClickListener { click?.invoke(this) }
+            vb.tvBackupItemBeta.setVisible(backupStorageProvider.stability == Stability.BETA)
+            vb.tvBackupItemDiscontinued.setVisible(backupStorageProvider.stability == Stability.DISCONTINUED)
         }
     }
 }

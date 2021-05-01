@@ -4,11 +4,14 @@ import android.app.Dialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.InputType
+import android.view.LayoutInflater
 import androidx.core.app.ActivityOptionsCompat
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.GlideImageLoader.loadRoundedBitmap
+import at.shockbytes.dante.databinding.BottomSheetMenuBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
@@ -36,21 +39,18 @@ import com.afollestad.materialdialogs.input.input
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.bottom_sheet_menu.*
 import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
-class MenuFragment : BaseBottomSheetFragment() {
+class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
     override fun getTheme() = R.style.BottomSheetDialogTheme
-
-    override val layoutRes: Int = R.layout.bottom_sheet_menu
 
     override fun injectToGraph(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -69,34 +69,43 @@ class MenuFragment : BaseBottomSheetFragment() {
             .addTo(compositeDisposable)
     }
 
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): BottomSheetMenuBinding {
+        return BottomSheetMenuBinding.inflate(inflater, root, attachToRoot)
+    }
+
     private fun handleUserViewState(event: UserViewModel.UserViewState) {
 
         when (event) {
 
             is UserViewModel.UserViewState.LoggedIn -> {
-                btnMenuLogin.text = getString(R.string.logout)
+                vb.btnMenuLogin.text = getString(R.string.logout)
 
-                profileHeaderMenu.setUser(event.user.displayName, event.user.email)
-                profileActionViewMenu.setState(event.profileActionViewState)
+                vb.profileHeaderMenu.setUser(event.user.displayName, event.user.email)
+                vb.profileActionViewMenu.setState(event.profileActionViewState)
 
                 val photoUrl = event.user.photoUrl
                 if (photoUrl != null) {
                     photoUrl.loadRoundedBitmap(requireContext())
                         .subscribe({ image ->
-                            profileHeaderMenu.imageView.setImageBitmap(image)
+                            vb.profileHeaderMenu.imageView.setImageBitmap(image)
                         }, { throwable ->
                             throwable.printStackTrace()
                         })
                 } else {
-                    profileHeaderMenu.imageView.setImageResource(R.drawable.ic_user_template_dark)
+                    vb.profileHeaderMenu.imageView.setImageResource(R.drawable.ic_user_template_dark)
                 }
             }
 
             is UserViewModel.UserViewState.UnauthenticatedUser -> {
-                btnMenuLogin.text = getString(R.string.login)
+                vb.btnMenuLogin.text = getString(R.string.login)
 
-                profileActionViewMenu.setState(ProfileActionViewState.Hidden)
-                profileHeaderMenu.reset()
+                vb.profileActionViewMenu.setState(ProfileActionViewState.Hidden)
+                vb.profileHeaderMenu.reset()
             }
         }
     }
@@ -196,31 +205,31 @@ class MenuFragment : BaseBottomSheetFragment() {
 
     override fun setupViews() {
 
-        btnMenuStatistics.setOnClickListener {
+        vb.btnMenuStatistics.setOnClickListener {
             navigateToAndDismiss(Destination.Statistics)
         }
 
-        btnMenuTimeline.setOnClickListener {
+        vb.btnMenuTimeline.setOnClickListener {
             navigateToAndDismiss(Destination.Timeline)
         }
 
-        btnMenuInspirations.setOnClickListener {
+        vb.btnMenuInspirations.setOnClickListener {
             navigateToAndDismiss(Destination.Inspirations)
         }
 
-        btnMenuBookStorage.setOnClickListener {
+        vb.btnMenuBookStorage.setOnClickListener {
             navigateToAndDismiss(Destination.BookStorage)
         }
 
-        btnMenuLogin.setOnClickListener {
+        vb.btnMenuLogin.setOnClickListener {
             userViewModel.loginLogout()
         }
 
-        btnMenuSettings.setOnClickListener {
+        vb.btnMenuSettings.setOnClickListener {
             navigateToAndDismiss(Destination.Settings)
         }
 
-        profileActionViewMenu.onActionButtonClicked()
+        vb.profileActionViewMenu.onActionButtonClicked()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::handleProfileClick)
             .addTo(compositeDisposable)

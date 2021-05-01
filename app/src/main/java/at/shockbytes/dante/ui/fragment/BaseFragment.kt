@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
@@ -19,11 +20,14 @@ import at.shockbytes.dante.util.colored
  * Author:  Martin Macheiner
  * Date:    29.11.2017
  */
-abstract class BaseFragment : Fragment() {
-
-    abstract val layoutId: Int
+abstract class BaseFragment<V: ViewBinding> : Fragment() {
 
     protected val compositeDisposable = CompositeDisposable()
+
+    private var _binding: V? = null
+    // This property is only valid between onCreateView and onDestroyView
+    protected val vb: V
+        get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +39,19 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(layoutId, container, false)
+        _binding = createViewBinding(inflater, container, false)
+        return vb.root
+    }
+
+    abstract fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): V
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

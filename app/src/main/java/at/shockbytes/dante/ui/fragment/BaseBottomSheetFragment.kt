@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
@@ -15,7 +16,17 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetFragment<V : ViewBinding> : BottomSheetDialogFragment() {
+
+    init {
+        retainInstance = true
+    }
+
+    private var _binding: V? = null
+
+    // This property is only valid between onCreateView and onDestroyView
+    protected val vb: V
+        get() = _binding!!
 
     val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
@@ -23,11 +34,13 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
         return R.style.BottomSheetTheme
     }
 
-    abstract val layoutRes: Int
+    abstract fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): V
 
-    init {
-        retainInstance = true
-    }
+    abstract fun setupViews()
 
     protected abstract fun injectToGraph(appComponent: AppComponent)
 
@@ -54,16 +67,24 @@ abstract class BaseBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
         BottomSheetDialog(requireContext(), theme)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(layoutRes, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = createViewBinding(inflater, container, false)
+        return vb.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
     }
-
-    abstract fun setupViews()
 
     fun showSnackBar(@StringRes messageRes: Int) {
         showSnackBar(getString(messageRes))

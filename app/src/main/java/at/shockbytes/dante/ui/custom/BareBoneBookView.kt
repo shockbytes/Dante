@@ -5,18 +5,17 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
 import at.shockbytes.dante.R
-import kotlinx.android.synthetic.main.bare_bone_book_view.view.*
+import at.shockbytes.dante.databinding.BareBoneBookViewBinding
+import at.shockbytes.dante.util.layoutInflater
 
 class BareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
-    val imageView: ImageView
-        get() = iv_bare_bone_book_view
+    private val vb = BareBoneBookViewBinding.inflate(context.layoutInflater(), this, true)
 
-    init {
-        inflate(context, R.layout.bare_bone_book_view, this)
-    }
+    val imageView: ImageView
+        get() = vb.ivBareBoneBookView
 
     fun setTitle(title: String) {
-        tv_bare_bone_book_view.text = title
+        vb.tvBareBoneBookView.text = title
     }
 }

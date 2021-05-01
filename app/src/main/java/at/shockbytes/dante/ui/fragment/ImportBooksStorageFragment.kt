@@ -5,19 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.FragmentImportBooksStorageBinding
 import at.shockbytes.dante.importer.ImportStats
 import at.shockbytes.dante.importer.Importer
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.ImporterAdapter
-import at.shockbytes.dante.ui.fragment.dialog.ImportApprovalDialogFragment
+import at.shockbytes.dante.ui.fragment.dialog.ImportApprovalDialogFragmentWrapper
 import at.shockbytes.dante.ui.viewmodel.ImportBooksStorageViewModel
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.viewModelOf
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_import_books_storage.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -25,9 +27,15 @@ import java.io.InputStream
 import java.nio.charset.Charset
 import javax.inject.Inject
 
-class ImportBooksStorageFragment : BaseFragment() {
+class ImportBooksStorageFragment : BaseFragment<FragmentImportBooksStorageBinding>() {
 
-    override val layoutId: Int = R.layout.fragment_import_books_storage
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentImportBooksStorageBinding {
+        return FragmentImportBooksStorageBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -44,7 +52,7 @@ class ImportBooksStorageFragment : BaseFragment() {
     }
 
     override fun setupViews() {
-        rv_fragment_import.apply {
+        vb.rvFragmentImport.apply {
             adapter = importAdapter
         }
     }
@@ -84,13 +92,13 @@ class ImportBooksStorageFragment : BaseFragment() {
 
         when (state.importStats) {
             is ImportStats.Success -> {
-                ImportApprovalDialogFragment
+                ImportApprovalDialogFragmentWrapper
                     .newInstance(state.providerRes, state.providerIconRes, state.importStats)
                     .setOnApplyListener {
                         viewModel.import()
                     }
                     .setOnDismissListener(viewModel::reset)
-                    .show(childFragmentManager, "ask-for-import-confirmation-dialog")
+                    .show(requireContext())
             }
             ImportStats.NoBooks -> {
                 showSnackbar(getString(R.string.import_no_books), getString(R.string.got_it), showIndefinite = true) {

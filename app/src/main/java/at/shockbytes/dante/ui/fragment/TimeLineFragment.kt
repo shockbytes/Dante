@@ -3,12 +3,15 @@ package at.shockbytes.dante.ui.fragment
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.FragmentTimelineBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination.BookDetail
@@ -23,13 +26,9 @@ import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
-import kotlinx.android.synthetic.main.dante_toolbar.*
-import kotlinx.android.synthetic.main.fragment_timeline.*
 import javax.inject.Inject
 
-class TimeLineFragment : BaseFragment() {
-
-    override val layoutId: Int = R.layout.fragment_timeline
+class TimeLineFragment : BaseFragment<FragmentTimelineBinding>() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -63,8 +62,16 @@ class TimeLineFragment : BaseFragment() {
         viewModel.requestTimeline()
     }
 
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentTimelineBinding {
+        return FragmentTimelineBinding.inflate(inflater, root, attachToRoot)
+    }
+
     override fun setupViews() {
-        rv_timeline.apply {
+        vb.rvTimeline.apply {
             adapter = timeLineAdapter
 
             addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -87,18 +94,21 @@ class TimeLineFragment : BaseFragment() {
     }
 
     private fun setupToolbar() {
-        dante_toolbar_title.setText(R.string.label_timeline)
-        dante_toolbar_back.apply {
-            setVisible(true)
-            setOnClickListener {
-                activity?.onBackPressed()
+
+        with(vb.toolbarTimeline) {
+            danteToolbarTitle.setText(R.string.label_timeline)
+            danteToolbarBack.apply {
+                setVisible(true)
+                setOnClickListener {
+                    activity?.onBackPressed()
+                }
             }
-        }
-        dante_toolbar_primary_action.apply {
-            setVisible(true)
-            setImageResource(R.drawable.ic_timeline_sort)
-            setOnClickListener {
-                showTimeLineDisplayPicker()
+            danteToolbarPrimaryAction.apply {
+                setVisible(true)
+                setImageResource(R.drawable.ic_timeline_sort)
+                setOnClickListener {
+                    showTimeLineDisplayPicker()
+                }
             }
         }
     }
@@ -140,32 +150,32 @@ class TimeLineFragment : BaseFragment() {
     }
 
     private fun handleLoadingState() {
-        rv_timeline.setVisible(false)
-        layout_timeline_error.setVisible(false)
-        layout_timeline_empty.setVisible(false)
-        pb_timeline_loading.setVisible(true)
+        vb.rvTimeline.setVisible(false)
+        vb.layoutTimelineError.setVisible(false)
+        vb.layoutTimelineEmpty.setVisible(false)
+        vb.pbTimelineLoading.setVisible(true)
     }
 
     private fun handleErrorState() {
-        rv_timeline.setVisible(false)
-        layout_timeline_empty.setVisible(false)
-        pb_timeline_loading.setVisible(false)
-        layout_timeline_error.setVisible(true)
+        vb.rvTimeline.setVisible(false)
+        vb.layoutTimelineEmpty.setVisible(false)
+        vb.pbTimelineLoading.setVisible(false)
+        vb.layoutTimelineError.setVisible(true)
     }
 
     private fun handleEmptyState() {
-        rv_timeline.setVisible(false)
-        layout_timeline_error.setVisible(false)
-        layout_timeline_empty.setVisible(true)
-        pb_timeline_loading.setVisible(false)
+        vb.rvTimeline.setVisible(false)
+        vb.layoutTimelineError.setVisible(false)
+        vb.layoutTimelineEmpty.setVisible(true)
+        vb.pbTimelineLoading.setVisible(false)
     }
 
     private fun handleSuccessState(content: List<TimeLineItem>) {
-        layout_timeline_error.setVisible(false)
-        layout_timeline_empty.setVisible(false)
-        pb_timeline_loading.setVisible(false)
+        vb.layoutTimelineError.setVisible(false)
+        vb.layoutTimelineEmpty.setVisible(false)
+        vb.pbTimelineLoading.setVisible(false)
 
-        rv_timeline.setVisible(true)
+        vb.rvTimeline.setVisible(true)
 
         timeLineAdapter.data.apply {
             clear()

@@ -2,11 +2,12 @@ package at.shockbytes.dante.ui.activity
 
 import android.content.Context
 import android.content.Intent
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.SettingsFragment
 
-class SettingsActivity : ContainerBackNavigableActivity() {
+class SettingsActivity<V: ViewBinding> : ContainerBackNavigableActivity<V>() {
 
     override val displayFragment = SettingsFragment.newInstance()
 

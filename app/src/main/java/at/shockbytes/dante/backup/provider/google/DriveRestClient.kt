@@ -11,7 +11,6 @@ import at.shockbytes.dante.core.login.UnauthenticatedUserException
 import at.shockbytes.dante.core.login.UserState
 import at.shockbytes.dante.util.completableOf
 import at.shockbytes.dante.util.merge
-import com.google.android.gms.tasks.Tasks
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.http.ByteArrayContent
 import com.google.api.client.http.javanet.NetHttpTransport
@@ -27,7 +26,6 @@ import java.io.IOException
 import java.io.InputStreamReader
 import java.lang.Exception
 import java.util.Collections
-import java.util.concurrent.Executors
 
 class DriveRestClient(
     private val loginRepository: LoginRepository,
@@ -35,8 +33,6 @@ class DriveRestClient(
 ) : DriveClient {
 
     private lateinit var drive: Drive
-
-    private val executor = Executors.newSingleThreadExecutor()
 
     override fun initialize(activity: FragmentActivity): Completable {
         return checkForGoogleUserAccount()
@@ -88,49 +84,45 @@ class DriveRestClient(
     override fun readFileAsString(fileId: String): Single<String> {
         return Single.create { emitter ->
 
-            Tasks.call(executor) {
-                val metadata: File = drive.files().get(fileId).execute()
-                val name: String = metadata.name
-                log("Read filename: $name")
+            val metadata: File = drive.files().get(fileId).execute()
+            val name: String = metadata.name
+            log("Read filename: $name")
 
-                try {
-                    drive.files().get(fileId).executeMediaAsInputStream().use { inputStream ->
-                        BufferedReader(InputStreamReader(inputStream))
-                            .use { it.readText() }
-                            .also(::log)
-                            .let(emitter::onSuccess)
-                    }
-                } catch (exception: Exception) {
-                    Timber.e(exception)
-                    emitter.tryOnError(exception)
+            try {
+                drive.files().get(fileId).executeMediaAsInputStream().use { inputStream ->
+                    BufferedReader(InputStreamReader(inputStream))
+                        .use { it.readText() }
+                        .also(::log)
+                        .let(emitter::onSuccess)
                 }
+            } catch (exception: Exception) {
+                Timber.e(exception)
+                emitter.tryOnError(exception)
             }
         }
     }
 
     override fun createFile(filename: String, content: String): Completable {
         return Completable.create { emitter ->
-            Tasks.call(executor) {
 
-                try {
-                    val metadata: File = File()
-                        .setParents(Collections.singletonList(PARENT_FOLDER))
-                        .setMimeType(MIME_TYPE)
-                        .setName(filename)
+            try {
+                val metadata: File = File()
+                    .setParents(Collections.singletonList(PARENT_FOLDER))
+                    .setMimeType(MIME_TYPE)
+                    .setName(filename)
 
-                    val contentStream = ByteArrayContent.fromString(MIME_TYPE, content)
+                val contentStream = ByteArrayContent.fromString(MIME_TYPE, content)
 
-                    log("Create file with content $content")
+                log("Create file with content $content")
 
-                    val file = drive.files().create(metadata, contentStream).execute()
-                        ?: throw IOException("Null result when requesting file creation.")
+                val file = drive.files().create(metadata, contentStream).execute()
+                    ?: throw IOException("Null result when requesting file creation.")
 
-                    log("File created with ID: <${file.id}>")
+                log("File created with ID: <${file.id}>")
 
-                    emitter.onComplete()
-                } catch (e: Exception) {
-                    emitter.tryOnError(e)
-                }
+                emitter.onComplete()
+            } catch (e: Exception) {
+                emitter.tryOnError(e)
             }
         }
     }
@@ -154,42 +146,40 @@ class DriveRestClient(
 
     override fun listBackupFiles(): Single<List<BackupMetadata>> {
         return Single.create { emitter ->
-            Tasks.call(executor) {
 
-                try {
-                    drive.files().list().setSpaces(SPACES)
-                        .execute()
-                        .files
-                        .mapNotNull { file ->
+            try {
+                drive.files().list().setSpaces(SPACES)
+                    .execute()
+                    .files
+                    .mapNotNull { file ->
 
-                            val fileName = file.name
-                            val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                            val storageProvider = BackupStorageProvider.byAcronym(data[0])
+                        val fileName = file.name
+                        val data = fileName.split("_".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+                        val storageProvider = BackupStorageProvider.byAcronym(data[0])
 
-                            if (isCorrectStorageProvider(storageProvider)) {
+                        if (isCorrectStorageProvider(storageProvider)) {
 
-                                val device = fileName.substring(
-                                    fileName.indexOf(data[4]),
-                                    fileName.lastIndexOf(".")
-                                )
+                            val device = fileName.substring(
+                                fileName.indexOf(data[4]),
+                                fileName.lastIndexOf(".")
+                            )
 
-                                val timestamp = data[2].toLong()
-                                val books = data[3].toInt()
+                            val timestamp = data[2].toLong()
+                            val books = data[3].toInt()
 
-                                BackupMetadata.Standard(
-                                    id = file.id,
-                                    fileName = fileName,
-                                    device = device,
-                                    storageProvider = storageProvider,
-                                    books = books,
-                                    timestamp = timestamp
-                                )
-                            } else null
-                        }
-                        .let(emitter::onSuccess)
-                } catch (e: Exception) {
-                    emitter.tryOnError(e)
-                }
+                            BackupMetadata.Standard(
+                                id = file.id,
+                                fileName = fileName,
+                                device = device,
+                                storageProvider = storageProvider,
+                                books = books,
+                                timestamp = timestamp
+                            )
+                        } else null
+                    }
+                    .let(emitter::onSuccess)
+            } catch (e: Exception) {
+                emitter.tryOnError(e)
             }
         }
     }

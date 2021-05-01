@@ -2,7 +2,7 @@ package at.shockbytes.dante.core.book
 
 import android.os.Parcelable
 import at.shockbytes.dante.util.HexColor
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class BookLabel(

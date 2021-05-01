@@ -2,38 +2,46 @@ package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.FragmentPagesBinding
 import at.shockbytes.dante.injection.AppComponent
-import kotlinx.android.synthetic.main.fragment_pages.*
 
-class PagesFragment : BaseFragment() {
-
-    override val layoutId = R.layout.fragment_pages
+class PagesFragment : BaseFragment<FragmentPagesBinding>() {
 
     var onPageEditedListener: ((current: Int, pages: Int) -> Unit)? = null
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentPagesBinding {
+        return FragmentPagesBinding.inflate(inflater, root, attachToRoot)
+    }
 
     override fun setupViews() {
 
         arguments?.getInt(ARG_CURRENT)?.let { current ->
-            et_pages_current_page.setText(current.toString())
+            vb.etPagesCurrentPage.setText(current.toString())
         }
         arguments?.getInt(ARG_PAGES)?.let { pages ->
-            et_pages_pages.setText(pages.toString())
+            vb.etPagesPages.setText(pages.toString())
         }
 
-        img_btn_fragment_pages_inc.setOnClickListener { v ->
+        vb.imgBtnFragmentPagesInc.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             increasePageNumber(v)
         }
 
-        img_btn_fragment_pages_dec.setOnClickListener { v ->
+        vb.imgBtnFragmentPagesDec.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
             decreasePageNumber(v)
         }
 
-        btn_pages_save.setOnClickListener {
+        vb.btnPagesSave.setOnClickListener {
 
             val current = getCurrentPage()
             val pages = getPages()
@@ -49,11 +57,11 @@ class PagesFragment : BaseFragment() {
             }
         }
 
-        layout_pages.setOnClickListener {
+        vb.layoutPages.setOnClickListener {
             closeFragment()
         }
 
-        btn_pages_close.setOnClickListener {
+        vb.btnPagesClose.setOnClickListener {
             closeFragment()
         }
     }
@@ -68,17 +76,17 @@ class PagesFragment : BaseFragment() {
         val pages = getPagesOrElse(default = 0)
 
         if (current < pages) {
-            et_pages_current_page.setText(current.inc().toString())
+            vb.etPagesCurrentPage.setText(current.inc().toString())
         } else {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
         }
     }
 
     private fun decreasePageNumber(v: View) {
-        val current = et_pages_current_page.text.toString().toIntOrNull() ?: 0
+        val current = getCurrentPageOrElse(default = 0)
 
         if (current > 0) {
-            et_pages_current_page.setText(current.dec().toString())
+            vb.etPagesCurrentPage.setText(current.dec().toString())
         } else {
             v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
         }
@@ -103,19 +111,19 @@ class PagesFragment : BaseFragment() {
     }
 
     private fun getCurrentPage(): Int? {
-        return et_pages_current_page?.text.toString().toIntOrNull()
+        return vb.etPagesCurrentPage.text.toString().toIntOrNull()
     }
 
     private fun getPages(): Int? {
-        return et_pages_pages?.text.toString().toIntOrNull()
+        return vb.etPagesPages.text.toString().toIntOrNull()
     }
 
     private fun getCurrentPageOrElse(default: Int): Int {
-        return et_pages_current_page?.text.toString().toIntOrNull() ?: default
+        return vb.etPagesCurrentPage.text.toString().toIntOrNull() ?: default
     }
 
     private fun getPagesOrElse(default: Int): Int {
-        return et_pages_pages?.text.toString().toIntOrNull() ?: default
+        return vb.etPagesPages.text.toString().toIntOrNull() ?: default
     }
 
     companion object {

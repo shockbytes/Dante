@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:background="@color/mainBackground">
 
-    <include layout="@layout/dante_toolbar" />
+    <include
+        android:id="@+id/toolbar_statistics"
+        layout="@layout/dante_toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_statistics_rv"

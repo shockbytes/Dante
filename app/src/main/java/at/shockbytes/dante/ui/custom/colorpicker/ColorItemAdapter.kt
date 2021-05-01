@@ -1,17 +1,14 @@
 package at.shockbytes.dante.ui.custom.colorpicker
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
-import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ColorPickerItemBinding
 import at.shockbytes.dante.util.ColorUtils
 import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.color_picker_item.*
 
 class ColorItemAdapter(
     context: Context,
@@ -48,12 +45,12 @@ class ColorItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<ColorPickerItem> {
-        return ColorItemViewHolder(inflater.inflate(R.layout.color_picker_item, parent, false))
+        return ColorItemViewHolder(ColorPickerItemBinding.inflate(inflater, parent, false))
     }
 
     inner class ColorItemViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<ColorPickerItem>(containerView), LayoutContainer {
+        val vb: ColorPickerItemBinding
+    ) : BaseAdapter.ViewHolder<ColorPickerItem>(vb.root) {
 
         override fun bindToView(content: ColorPickerItem, position: Int) {
             with(content) {
@@ -64,8 +61,8 @@ class ColorItemAdapter(
                     ContextCompat.getColor(context, colorRes)
                 }
 
-                view_color_picker_item.setCardBackgroundColor(chipColor)
-                iv_color_picker_item_selected.setVisible(isSelected)
+                vb.viewColorPickerItem.setCardBackgroundColor(chipColor)
+                vb.ivColorPickerItemSelected.setVisible(isSelected)
             }
         }
     }

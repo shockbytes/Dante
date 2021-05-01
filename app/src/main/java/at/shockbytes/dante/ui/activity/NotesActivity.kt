@@ -6,20 +6,20 @@ import android.os.Bundle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.ActivityNotesBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.navigation.NotesBundle
 import at.shockbytes.dante.ui.activity.core.BackNavigableActivity
-import kotlinx.android.synthetic.main.activity_notes.*
 import javax.inject.Inject
 
-class NotesActivity : BackNavigableActivity() {
+class NotesActivity : BackNavigableActivity<ActivityNotesBinding>() {
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_notes)
+        setContentViewWithBinding(ActivityNotesBinding::inflate)
 
         intent.extras?.getParcelable<NotesBundle>(ARG_NOTES_BUNDLE)?.let { notesBundle ->
             setupViews(notesBundle)
@@ -29,31 +29,31 @@ class NotesActivity : BackNavigableActivity() {
     private fun setupViews(notesBundle: NotesBundle) {
         supportActionBar?.elevation = 0f
 
-        et_notes.setText(notesBundle.notes)
-        txt_notes_header_description.text = getString(R.string.dialogfragment_notes_header, notesBundle.title)
+        vb.etNotes.setText(notesBundle.notes)
+        vb.txtNotesHeaderDescription.text = getString(R.string.dialogfragment_notes_header, notesBundle.title)
 
         notesBundle.thumbnailUrl?.let { bookImageLink ->
             imageLoader.loadImageWithCornerRadius(
                 this,
                 bookImageLink,
-                iv_notes_cover,
+                vb.ivNotesCover,
                 R.drawable.ic_placeholder_white,
                 cornerDimension = resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
             )
         }
 
-        btn_notes_save.setOnClickListener {
+        vb.btnNotesSave.setOnClickListener {
             LocalBroadcastManager.getInstance(this).sendBroadcastSync(buildNotesIntent())
             supportFinishAfterTransition()
         }
-        btn_notes_reset.setOnClickListener {
-            et_notes.setText("")
+        vb.btnNotesReset.setOnClickListener {
+            vb.etNotes.setText("")
         }
     }
 
     private fun buildNotesIntent(): Intent {
         return Intent(ACTION_NOTES)
-            .putExtra(NOTES_EXTRA, et_notes.text.toString())
+            .putExtra(NOTES_EXTRA, vb.etNotes.text.toString())
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

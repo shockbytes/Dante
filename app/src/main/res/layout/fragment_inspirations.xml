@@ -17,7 +17,9 @@
         android:theme="@style/AppTheme.AppBarOverlay"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/dante_toolbar" />
+        <include
+            android:id="@+id/toolbar_fragment_inspirations"
+            layout="@layout/dante_toolbar" />
 
         <com.google.android.material.tabs.TabLayout
             style="@style/Widget.MaterialComponents.TabLayout"

@@ -35,7 +35,6 @@ import at.shockbytes.dante.ui.fragment.StatisticsFragment
 import at.shockbytes.dante.ui.fragment.SuggestBookBottomSheetDialogFragment
 import at.shockbytes.dante.ui.fragment.SuggestionsFragment
 import at.shockbytes.dante.ui.fragment.TimeLineFragment
-import at.shockbytes.dante.ui.fragment.dialog.SortStrategyDialogFragment
 import at.shockbytes.dante.ui.widget.DanteAppWidget
 import at.shockbytes.dante.ui.widget.DanteRemoteViewsService
 import dagger.Component
@@ -105,8 +104,6 @@ interface AppComponent {
     fun inject(fragment: AnnouncementFragment)
 
     fun inject(fragment: TimeLineFragment)
-
-    fun inject(dialogFragment: SortStrategyDialogFragment)
 
     fun inject(dialogFragment: MailLoginBottomSheetDialogFragment)
 

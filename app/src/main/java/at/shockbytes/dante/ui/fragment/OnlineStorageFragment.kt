@@ -1,18 +1,26 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.FragmentOnlineStorageBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.viewmodel.OnlineStorageViewModel
 import at.shockbytes.dante.util.viewModelOf
-import kotlinx.android.synthetic.main.fragment_online_storage.*
 import javax.inject.Inject
 
-class OnlineStorageFragment : BaseFragment() {
+class OnlineStorageFragment : BaseFragment<FragmentOnlineStorageBinding>() {
 
-    override val layoutId: Int = R.layout.fragment_online_storage
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentOnlineStorageBinding {
+        return FragmentOnlineStorageBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -26,7 +34,7 @@ class OnlineStorageFragment : BaseFragment() {
 
     override fun setupViews() {
 
-        btn_online_storage_interested.setOnClickListener {
+        vb.btnOnlineStorageInterested.setOnClickListener {
             viewModel.userIsInterested()
         }
     }
@@ -45,13 +53,13 @@ class OnlineStorageFragment : BaseFragment() {
 
         when (buttonState) {
             OnlineStorageViewModel.InterestedButtonState.DEFAULT -> {
-                btn_online_storage_interested.apply {
+                vb.btnOnlineStorageInterested.apply {
                     isEnabled = true
                     setText(R.string.online_storage_interested)
                 }
             }
             OnlineStorageViewModel.InterestedButtonState.INTERESTED -> {
-                btn_online_storage_interested.apply {
+                vb.btnOnlineStorageInterested.apply {
                     isEnabled = false
                     setText(R.string.online_storage_already_interested)
                 }

@@ -1,10 +1,13 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.login.MailLoginCredentials
+import at.shockbytes.dante.databinding.MailLoginBottomSheetBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.injection.ViewModelFactory
 import at.shockbytes.dante.ui.viewmodel.MailLoginViewModel
@@ -17,11 +20,9 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_login.btn_login_mail
-import kotlinx.android.synthetic.main.mail_login_bottom_sheet.*
 import javax.inject.Inject
 
-class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
+class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment<MailLoginBottomSheetBinding>() {
 
     @Inject
     protected lateinit var vmFactory: ViewModelFactory
@@ -32,7 +33,13 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
     private var onCredentialsEnteredListener: ((credentials: MailLoginCredentials) -> Unit)? = null
 
-    override val layoutRes: Int = R.layout.mail_login_bottom_sheet
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): MailLoginBottomSheetBinding {
+        return MailLoginBottomSheetBinding.inflate(inflater, root, attachToRoot)
+    }
 
     override fun injectToGraph(appComponent: AppComponent) = appComponent.inject(this)
 
@@ -47,7 +54,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
             .addTo(compositeDisposable)
 
         viewModel.isMailValid()
-            .doOnNext(btn_login_mail_continue::setEnabled)
+            .doOnNext(vb.btnLoginMailContinue::setEnabled)
             .subscribe(::handleMailValidation)
             .addTo(compositeDisposable)
 
@@ -58,7 +65,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
         viewModel.onGoogleMailLoginAttempt()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                editTextMailAddress.setText("")
+                vb.editTextMailAddress.setText("")
                 showGoogleMailLogin()
             }
             .addTo(compositeDisposable)
@@ -69,7 +76,7 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
                 viewModel.isMailValid(),
                 { isPasswordValid, isMailValid -> isPasswordValid && isMailValid }
             )
-            .subscribe(btn_login_mail::setEnabled)
+            .subscribe(vb.btnLoginMail::setEnabled)
             .addTo(compositeDisposable)
     }
 
@@ -99,36 +106,36 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
     private fun setMailVerificationStep() {
 
-        tvLoginMailHeader.setText(R.string.login_mail_enter_mail_address)
+        vb.tvLoginMailHeader.setText(R.string.login_mail_enter_mail_address)
 
-        tilTextMailAddress.translationY = 60f
-        editTextMailAddress.apply {
+        vb.tilTextMailAddress.translationY = 60f
+        vb.editTextMailAddress.apply {
             imeOptions = EditorInfo.IME_ACTION_DONE
             isEnabled = true
         }
 
-        tilTextMailPassword.setVisible(false, View.INVISIBLE)
-        btn_login_mail_continue.setVisible(true)
-        btn_login_mail.setVisible(false, View.INVISIBLE)
+        vb.tilTextMailPassword.setVisible(false, View.INVISIBLE)
+        vb.btnLoginMailContinue.setVisible(true)
+        vb.btnLoginMail.setVisible(false, View.INVISIBLE)
     }
 
     private fun setPasswordVerificationStep(
         step: MailLoginViewModel.MailLoginStep.PasswordVerification
     ) {
 
-        tvLoginMailHeader.setText(step.textHeader)
+        vb.tvLoginMailHeader.setText(step.textHeader)
 
-        tilTextMailAddress.animate().translationY(0f).start()
-        editTextMailAddress.apply {
+        vb.tilTextMailAddress.animate().translationY(0f).start()
+        vb.editTextMailAddress.apply {
             imeOptions = EditorInfo.IME_ACTION_NEXT
             isEnabled = step.isEmailEnabled
         }
 
         if (step.focusOnPasswordField) {
-            editTextMailPassword.requestFocus()
+            vb.editTextMailPassword.requestFocus()
         }
 
-        tilTextMailPassword.apply {
+        vb.tilTextMailPassword.apply {
             alpha = 0f
             scaleX = 0.7f
             scaleY = 0.7f
@@ -142,19 +149,19 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
                 .start()
         }
 
-        btn_login_mail_continue.animate()
+        vb.btnLoginMailContinue.animate()
             .setStartDelay(100L)
             .alpha(0f)
             .scaleX(0.7f)
             .scaleY(0.7f)
             .withEndAction {
-                btn_login_mail_continue.setVisible(false, View.INVISIBLE)
+                vb.btnLoginMailContinue.setVisible(false, View.INVISIBLE)
             }
             .start()
 
         val loginText = if (step.isSignUp) R.string.sign_up_with_mail else R.string.login_with_mail
 
-        btn_login_mail.apply {
+        vb.btnLoginMail.apply {
             setText(loginText)
             alpha = 0f
             scaleX = 0.7f
@@ -170,9 +177,9 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
         }
 
         if (step.isSignUp) {
-            btn_login_mail_forgot_password.setVisible(false)
+            vb.btnLoginMailForgotPassword.setVisible(false)
         } else {
-            btn_login_mail_forgot_password.apply {
+            vb.btnLoginMailForgotPassword.apply {
                 alpha = 0f
                 scaleX = 0.7f
                 scaleY = 0.7f
@@ -202,14 +209,14 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
     }
 
     private fun handleMailValidation(isMailValid: Boolean) {
-        tilTextMailAddress.apply {
+        vb.tilTextMailAddress.apply {
             isErrorEnabled = !isMailValid
             error = if (isMailValid) null else getString(R.string.invalid_email_format)
         }
     }
 
     private fun handlePasswordValidation(isPasswordValid: Boolean) {
-        tilTextMailPassword.apply {
+        vb.tilTextMailPassword.apply {
             isErrorEnabled = !isPasswordValid
             error = if (isPasswordValid) null else getString(R.string.invalid_password_format)
         }
@@ -219,27 +226,27 @@ class MailLoginBottomSheetDialogFragment : BaseBottomSheetFragment() {
 
     override fun setupViews() {
 
-        RxTextView.textChanges(editTextMailAddress)
+        RxTextView.textChanges(vb.editTextMailAddress)
             .skipInitialValue()
             .subscribe(viewModel::verifyMailAddress)
             .addTo(compositeDisposable)
 
-        RxTextView.textChanges(editTextMailPassword)
+        RxTextView.textChanges(vb.editTextMailPassword)
             .subscribe(viewModel::verifyPassword)
             .addTo(compositeDisposable)
 
-        btn_login_mail_continue.setOnClickListener {
+        vb.btnLoginMailContinue.setOnClickListener {
             viewModel.checkIfAccountExistsForMailAddress()
         }
 
-        btn_login_mail.setOnClickListener {
+        vb.btnLoginMail.setOnClickListener {
             onCredentialsEnteredListener?.invoke(viewModel.getMailLoginCredentials())
             dismiss()
         }
 
-        btn_login_mail_forgot_password.setOnClickListener {
+        vb.btnLoginMailForgotPassword.setOnClickListener {
             // Disable button to prevent multiple click events
-            btn_login_mail_forgot_password.isEnabled = false
+            it.isEnabled = false
             viewModel.userForgotPassword()
         }
     }

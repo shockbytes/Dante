@@ -2,7 +2,7 @@ package at.shockbytes.dante.util
 
 import android.graphics.Color
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class HexColor private constructor(

@@ -6,8 +6,9 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.StringRes
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.StatsHeaderViewBinding
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.dante.util.setVisible
-import kotlinx.android.synthetic.main.stats_header_view.view.*
 
 class StatsHeaderView @JvmOverloads constructor(
     context: Context,
@@ -15,8 +16,9 @@ class StatsHeaderView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : FrameLayout(context, attrs, defStyle) {
 
+    private val vb = StatsHeaderViewBinding.inflate(context.layoutInflater(), this, true)
+
     init {
-        inflate(context, R.layout.stats_header_view, this)
 
         context.theme.obtainStyledAttributes(attrs, R.styleable.StatsHeaderView, defStyle, 0).run {
             initializeWithAttributes(this)
@@ -37,15 +39,15 @@ class StatsHeaderView @JvmOverloads constructor(
     }
 
     fun setHeaderTitle(title: CharSequence) {
-        tv_stats_header_view.text = title
+        vb.tvStatsHeaderView.text = title
     }
 
     fun setHeaderTitleResource(@StringRes titleRes: Int) {
-        tv_stats_header_view.setText(titleRes)
+        vb.tvStatsHeaderView.setText(titleRes)
     }
 
     fun showDivider(showDivider: Boolean) {
-        view_stats_header_view_1.setVisible(showDivider)
-        view_stats_header_view_2.setVisible(showDivider)
+        vb.viewStatsHeaderView1.setVisible(showDivider)
+        vb.viewStatsHeaderView2.setVisible(showDivider)
     }
 }

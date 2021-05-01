@@ -1,17 +1,27 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.FragmentInspirationsBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.InspirationsPagerAdapter
 import at.shockbytes.dante.util.setVisible
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.dante_toolbar.*
-import kotlinx.android.synthetic.main.fragment_inspirations.*
 
-class InspirationsFragment : BaseFragment() {
+class InspirationsFragment : BaseFragment<FragmentInspirationsBinding>() {
 
-    override val layoutId: Int = R.layout.fragment_inspirations
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentInspirationsBinding {
+        return FragmentInspirationsBinding.inflate(inflater, root, attachToRoot)
+    }
 
     private lateinit var pagerAdapter: InspirationsPagerAdapter
 
@@ -27,11 +37,14 @@ class InspirationsFragment : BaseFragment() {
     }
 
     private fun setupToolbar() {
-        dante_toolbar_title.setText(R.string.inspirations)
-        dante_toolbar_back.apply {
-            setVisible(true)
-            setOnClickListener {
-                activity?.onBackPressed()
+
+        with(vb.toolbarFragmentInspirations) {
+            danteToolbarTitle.setText(R.string.inspirations)
+            danteToolbarBack.apply {
+                setVisible(true)
+                setOnClickListener {
+                    activity?.onBackPressed()
+                }
             }
         }
     }
@@ -39,23 +52,27 @@ class InspirationsFragment : BaseFragment() {
     private fun setupViewPager() {
         pagerAdapter = InspirationsPagerAdapter(requireContext(), childFragmentManager)
 
-        vp_fragment_inspirations.apply {
+        vb.vpFragmentInspirations.apply {
             adapter = pagerAdapter
             offscreenPageLimit = 2
         }
     }
 
     private fun connectTabsAndViewPager() {
-        tabs_fragment_inspirations.setupWithViewPager(vp_fragment_inspirations)
+        vb.tabsFragmentInspirations.setupWithViewPager(vb.vpFragmentInspirations)
     }
 
     private fun setupTabIcons() {
-        getTabAt(0)?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_wishlist)
-        getTabAt(1)?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_suggestions)
+        getTabAt(0)?.icon = requireContext().getImage(R.drawable.ic_wishlist)
+        getTabAt(1)?.icon = requireContext().getImage(R.drawable.ic_suggestions)
+    }
+
+    private fun Context.getImage(@DrawableRes drawable: Int): Drawable? {
+        return ContextCompat.getDrawable(this, drawable)
     }
 
     private fun getTabAt(index: Int): TabLayout.Tab? {
-        return tabs_fragment_inspirations.getTabAt(index)
+        return vb.tabsFragmentInspirations.getTabAt(index)
     }
 
     override fun injectToGraph(appComponent: AppComponent) = Unit

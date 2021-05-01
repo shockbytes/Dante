@@ -22,7 +22,7 @@ import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import timber.log.Timber

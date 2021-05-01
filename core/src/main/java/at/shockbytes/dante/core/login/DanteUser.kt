@@ -2,7 +2,7 @@ package at.shockbytes.dante.core.login
 
 import android.net.Uri
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 /**
  * Author:  Martin Macheiner

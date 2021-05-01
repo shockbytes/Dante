@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.view.menu.MenuBuilder
@@ -16,11 +15,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
+import at.shockbytes.dante.databinding.ItemBookLabelManagementBinding
 import at.shockbytes.dante.util.isNightModeEnabled
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_book_label_management.*
-import kotlinx.android.synthetic.main.item_book_label_management.view.*
 import kotlin.math.roundToInt
 
 class LabelManagementAdapter(
@@ -49,14 +47,17 @@ class LabelManagementAdapter(
         layoutWidth: Int
     ) : ConstraintLayout(context) {
 
+        private val vb: ItemBookLabelManagementBinding
+            get() = ItemBookLabelManagementBinding.bind(this)
+
         val titleView: TextView
-            get() = tv_item_label_management
+            get() = vb.tvItemLabelManagement
 
         val imageView: AppCompatImageView
-            get() = iv_item_label_management
+            get() = vb.ivItemLabelManagement
 
         val overflowButton: ImageView
-            get() = iv_item_label_management_overflow
+            get() = vb.ivItemLabelManagementOverflow
 
         init {
             inflate(context, R.layout.item_book_label_management, this)
@@ -75,7 +76,7 @@ class LabelManagementAdapter(
             super.setActivated(activated)
 
             if (isChanging) {
-                bg_selection_label_management.onChanged(activated)
+                vb.bgSelectionLabelManagement.onChanged(activated)
             }
         }
     }

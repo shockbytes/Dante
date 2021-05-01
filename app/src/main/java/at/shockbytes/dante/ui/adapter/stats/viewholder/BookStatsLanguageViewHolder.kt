@@ -4,6 +4,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
+import at.shockbytes.dante.databinding.ItemStatsLanguagesBinding
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
@@ -17,11 +18,12 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_stats_languages.*
 
 class BookStatsLanguageViewHolder(
     override val containerView: View
 ) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
+
+    private val vb = ItemStatsLanguagesBinding.bind(containerView)
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.LanguageDistribution) {
@@ -37,13 +39,13 @@ class BookStatsLanguageViewHolder(
     }
 
     private fun showEmptyState() {
-        item_stats_languages_empty.setVisible(true)
-        chart_item_stats_language.setVisible(false)
+        vb.itemStatsLanguagesEmpty.root.setVisible(true)
+        vb.chartItemStatsLanguage.setVisible(false)
     }
 
     private fun showLanguageChart(languages: Map<Languages, Int>) {
-        item_stats_languages_empty.setVisible(false)
-        chart_item_stats_language.setVisible(true)
+        vb.itemStatsLanguagesEmpty.root.setVisible(false)
+        vb.chartItemStatsLanguage.setVisible(true)
 
         val entries = languages.map { (language, books) ->
             val title = containerView.context.getString(language.title)
@@ -60,7 +62,7 @@ class BookStatsLanguageViewHolder(
             setDrawIcons(true)
         }
 
-        chart_item_stats_language.apply {
+        vb.chartItemStatsLanguage.apply {
             isDrawHoleEnabled = false
             description.isEnabled = false
             setUsePercentValues(true)
@@ -87,7 +89,7 @@ class BookStatsLanguageViewHolder(
             setDrawMarkers(true)
             marker = DanteMarkerView(
                 context,
-                chart_item_stats_language,
+                vb.chartItemStatsLanguage,
                 MarkerViewLabelFactory.forPlainEntries(R.string.books_amount)
             )
 

@@ -12,10 +12,12 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.palette.graphics.Palette
 import android.view.HapticFeedbackConstants
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
 import androidx.annotation.ColorInt
@@ -32,9 +34,9 @@ import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.TintableBackNavigableActivity
-import at.shockbytes.dante.ui.fragment.dialog.SimpleRequestDialogFragment
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.image.ImageLoadingCallback
+import at.shockbytes.dante.databinding.FragmentBookDetailBinding
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 import at.shockbytes.dante.ui.activity.NotesActivity
@@ -46,6 +48,7 @@ import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.ui.view.AnimationUtils
 import at.shockbytes.dante.ui.view.ChipFactory
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.DanteUtils.dpToPixelF
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.registerForPopupMenu
@@ -56,7 +59,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_book_detail.*
 import org.joda.time.DateTime
 import ru.bullyboo.view.CircleSeekBar
 import timber.log.Timber
@@ -67,13 +69,19 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    02.02.2019
  */
-class BookDetailFragment : BaseFragment(),
+class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
     BackAnimatable,
     ImageLoadingCallback,
     Palette.PaletteAsyncListener,
     CircleSeekBar.Callback {
 
-    override val layoutId = R.layout.fragment_book_detail
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentBookDetailBinding {
+        return FragmentBookDetailBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -87,35 +95,35 @@ class BookDetailFragment : BaseFragment(),
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
-            iv_detail_image,
-            txt_detail_title,
-            txt_detail_subtitle,
-            txt_detail_author,
-            txt_detail_description,
-            sb_detail_pages,
-            btn_detail_pages,
-            btn_detail_rate,
-            btn_detail_notes,
-            btn_detail_published,
-            divider_book_details_extras,
-            pages_diagram_view,
-            hsv_labels,
-            layout_detail_dates,
-            btn_detail_wishhlist_date,
-            btn_detail_start_date,
-            btn_detail_end_date
+            vb.ivDetailImage,
+            vb.txtDetailTitle,
+            vb.txtDetailSubtitle,
+            vb.txtDetailAuthor,
+            vb.txtDetailDescription,
+            vb.sbDetailPages,
+            vb.btnDetailPages,
+            vb.btnDetailRate,
+            vb.btnDetailNotes,
+            vb.btnDetailPublished,
+            vb.dividerBookDetailsExtras,
+            vb.pagesDiagramView,
+            vb.hsvLabels,
+            vb.layoutDetailDates,
+            vb.btnDetailWishhlistDate,
+            vb.btnDetailStartDate,
+            vb.btnDetailEndDate
         )
     }
 
     private val iconLoadingMap: List<Pair<Int, TextView>> by lazy {
         listOf(
-            Pair(R.drawable.ic_published_date, btn_detail_published),
-            Pair(R.drawable.ic_rating, btn_detail_rate),
-            Pair(R.drawable.ic_pages, btn_detail_pages),
-            Pair(R.drawable.ic_notes, btn_detail_notes),
-            Pair(R.drawable.ic_tab_upcoming, btn_detail_wishhlist_date),
-            Pair(R.drawable.ic_tab_current, btn_detail_start_date),
-            Pair(R.drawable.ic_tab_done, btn_detail_end_date)
+            Pair(R.drawable.ic_published_date, vb.btnDetailPublished),
+            Pair(R.drawable.ic_rating, vb.btnDetailRate),
+            Pair(R.drawable.ic_pages, vb.btnDetailPages),
+            Pair(R.drawable.ic_notes, vb.btnDetailNotes),
+            Pair(R.drawable.ic_tab_upcoming, vb.btnDetailWishhlistDate),
+            Pair(R.drawable.ic_tab_current, vb.btnDetailStartDate),
+            Pair(R.drawable.ic_tab_done, vb.btnDetailEndDate)
         )
     }
 
@@ -163,17 +171,17 @@ class BookDetailFragment : BaseFragment(),
         setupViewListener()
 
         // Collapse / unfold summary when clicking on it
-        txt_detail_description.setOnClickListener { v ->
+        vb.txtDetailDescription.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
 
             val defaultLines = resources.getInteger(R.integer.detail_summary_default_lines)
-            val currentLines = txt_detail_description.maxLines
+            val currentLines = vb.txtDetailDescription.maxLines
 
             val lines = if (currentLines == defaultLines) 100 else defaultLines
             val animationDuration = if (currentLines == defaultLines) 250L else 100L
 
             ObjectAnimator.ofInt(
-                txt_detail_description,
+                vb.txtDetailDescription,
                 "maxLines",
                 lines
             ).apply {
@@ -204,9 +212,17 @@ class BookDetailFragment : BaseFragment(),
 
         viewModel.showBookFinishedDialogEvent
             .observeOn(AndroidSchedulers.mainThread())
-            .map(::createBookFinishedFragment)
-            .subscribe { fragment ->
-                fragment.show(parentFragmentManager, "book-finished-dialog-fragment")
+            .subscribe { title ->
+                MaterialDialog(requireContext())
+                    .title(text = getString(R.string.book_finished, title))
+                    .message(R.string.book_finished_move_to_done_question)
+                    .icon(R.drawable.ic_pick_done)
+                    .cornerRadius(requireContext().dpToPixelF(6))
+                    .positiveButton(android.R.string.ok) {
+                        viewModel.moveBookToDone()
+                        activity?.supportFinishAfterTransition()
+                    }
+                    .show()
             }
             .addTo(compositeDisposable)
 
@@ -253,15 +269,6 @@ class BookDetailFragment : BaseFragment(),
             .addTo(compositeDisposable)
     }
 
-    private fun createBookFinishedFragment(title: String): SimpleRequestDialogFragment {
-        return SimpleRequestDialogFragment.newInstance(getString(R.string.book_finished, title),
-            getString(R.string.book_finished_move_to_done_question), R.drawable.ic_pick_done)
-            .setOnAcceptListener {
-                viewModel.moveBookToDone()
-                activity?.supportFinishAfterTransition()
-            }
-    }
-
     private fun createPagesFragment(pageInfo: BookDetailViewModel.PageInfo): PagesFragment {
         val (currentPage, pageCount) = pageInfo
         return PagesFragment.newInstance(currentPage, pageCount).apply {
@@ -276,7 +283,7 @@ class BookDetailFragment : BaseFragment(),
             .apply {
                 onRateClickListener = { rating ->
                     viewModel.updateRating(rating)
-                    btn_detail_rate?.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
+                    vb.btnDetailRate.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                 }
             }
     }
@@ -328,7 +335,7 @@ class BookDetailFragment : BaseFragment(),
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-        (activity as? TintableBackNavigableActivity)
+        (activity as? TintableBackNavigableActivity<*>)
             ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
     }
 
@@ -358,20 +365,24 @@ class BookDetailFragment : BaseFragment(),
 
     private fun initializeBookInformation(book: BookEntity, showSummary: Boolean) {
 
-        txt_detail_title.text = book.title
-        txt_detail_author.text = book.author
+        vb.txtDetailTitle.text = book.title
+        vb.txtDetailAuthor.text = book.author
 
-        btn_detail_published.text = if (book.publishedDate.isNotEmpty()) book.publishedDate else "---"
-        btn_detail_rate.text = if (book.rating in 1..5) {
+        vb.btnDetailPublished.text = if (book.publishedDate.isNotEmpty()) book.publishedDate else "---"
+        vb.btnDetailRate.text = if (book.rating in 1..5) {
             resources.getQuantityString(R.plurals.book_rating, book.rating, book.rating)
         } else getString(R.string.rate_book)
 
         // Hide subtitle if not available
-        txt_detail_subtitle.setVisible(book.subTitle.isNotEmpty())
-        txt_detail_subtitle.text = book.subTitle
+        vb.txtDetailSubtitle.apply {
+            setVisible(book.subTitle.isNotEmpty())
+            text = book.subTitle
+        }
 
-        txt_detail_description.setVisible(book.summary != null && showSummary)
-        txt_detail_description.text = book.summary
+        vb.txtDetailDescription.apply {
+            setVisible(book.summary != null && showSummary)
+            text = book.summary
+        }
 
         loadImage(book.thumbnailAddress)
 
@@ -384,11 +395,11 @@ class BookDetailFragment : BaseFragment(),
     ) {
         when (pageRecordViewState) {
             is BookDetailViewModel.PageRecordsViewState.Present -> {
-                group_details_pages.setVisible(true)
+                vb.groupDetailsPages.setVisible(true)
                 handlePageRecords(pageRecordViewState.dataPoints, pageRecordViewState.bookId)
             }
             BookDetailViewModel.PageRecordsViewState.Absent -> {
-                group_details_pages.setVisible(false)
+                vb.groupDetailsPages.setVisible(false)
             }
         }
     }
@@ -403,7 +414,7 @@ class BookDetailFragment : BaseFragment(),
         dataPoints: List<BooksAndPageRecordDataPoint>,
         bookId: BookId
     ) {
-        pages_diagram_view.apply {
+        vb.pagesDiagramView.apply {
             setData(
                 dataPoints,
                 diagramOptions = BooksAndPagesDiagramOptions(initialZero = true),
@@ -419,7 +430,7 @@ class BookDetailFragment : BaseFragment(),
 
     private fun showPageRecordsOverview(bookId: BookId) {
         registerForPopupMenu(
-            pages_diagram_view.actionView,
+            vb.pagesDiagramView.actionView,
             R.menu.menu_page_records_details
         ) { item ->
             when (item.itemId) {
@@ -453,14 +464,14 @@ class BookDetailFragment : BaseFragment(),
 
     private fun setupViewListener() {
 
-        btn_detail_pages.setHapticClickListener(viewModel::requestPageDialog)
-        btn_detail_published.setHapticClickListener { showDatePicker(DATE_TARGET_PUBLISHED_DATE) }
-        btn_detail_notes.setHapticClickListener(viewModel::requestNotesDialog)
-        btn_detail_rate.setHapticClickListener(viewModel::requestRatingDialog)
-        btn_detail_wishhlist_date.setHapticClickListener { showDatePicker(DATE_TARGET_WISHLIST_DATE) }
-        btn_detail_start_date.setHapticClickListener { showDatePicker(DATE_TARGET_START_DATE) }
-        btn_detail_end_date.setHapticClickListener { showDatePicker(DATE_TARGET_END_DATE) }
-        btn_add_label.setHapticClickListener(viewModel::requestAddLabels)
+        vb.btnDetailPages.setHapticClickListener(viewModel::requestPageDialog)
+        vb.btnDetailPublished.setHapticClickListener { showDatePicker(DATE_TARGET_PUBLISHED_DATE) }
+        vb.btnDetailNotes.setHapticClickListener(viewModel::requestNotesDialog)
+        vb.btnDetailRate.setHapticClickListener(viewModel::requestRatingDialog)
+        vb.btnDetailWishhlistDate.setHapticClickListener { showDatePicker(DATE_TARGET_WISHLIST_DATE) }
+        vb.btnDetailStartDate.setHapticClickListener { showDatePicker(DATE_TARGET_START_DATE) }
+        vb.btnDetailEndDate.setHapticClickListener { showDatePicker(DATE_TARGET_END_DATE) }
+        vb.btnAddLabel.setHapticClickListener(viewModel::requestAddLabels)
     }
 
     private fun View.setHapticClickListener(action: () -> Unit) {
@@ -546,28 +557,28 @@ class BookDetailFragment : BaseFragment(),
 
         // Hide complete card if no time information is available
         if (!book.isAnyTimeInformationAvailable) {
-            layout_detail_dates.visibility = View.GONE
+            vb.layoutDetailDates.visibility = View.GONE
         } else {
 
             val pattern = "dd. MMM yyyy"
             // Wishlist Date
             when {
-                book.wishlistDate > 0 -> btn_detail_wishhlist_date.text = DateTime(book.wishlistDate).toString(pattern)
-                book.state != BookState.READ_LATER -> btn_detail_wishhlist_date.setText(R.string.not_available)
-                else -> btn_detail_wishhlist_date.visibility = View.INVISIBLE
+                book.wishlistDate > 0 -> vb.btnDetailWishhlistDate.text = DateTime(book.wishlistDate).toString(pattern)
+                book.state != BookState.READ_LATER -> vb.btnDetailWishhlistDate.setText(R.string.not_available)
+                else -> vb.btnDetailWishhlistDate.visibility = View.INVISIBLE
             }
 
             // Start Date
             when {
-                book.startDate > 0 -> btn_detail_start_date.text = DateTime(book.startDate).toString(pattern)
-                book.state != BookState.READ_LATER -> btn_detail_start_date.setText(R.string.not_available)
-                else -> btn_detail_start_date.visibility = View.INVISIBLE
+                book.startDate > 0 -> vb.btnDetailStartDate.text = DateTime(book.startDate).toString(pattern)
+                book.state != BookState.READ_LATER -> vb.btnDetailStartDate.setText(R.string.not_available)
+                else -> vb.btnDetailStartDate.visibility = View.INVISIBLE
             }
 
             // End Date
             when {
-                book.endDate > 0 -> btn_detail_end_date.text = DateTime(book.endDate).toString(pattern)
-                else -> btn_detail_end_date.visibility = View.INVISIBLE
+                book.endDate > 0 -> vb.btnDetailEndDate.text = DateTime(book.endDate).toString(pattern)
+                else -> vb.btnDetailEndDate.visibility = View.INVISIBLE
             }
         }
     }
@@ -585,35 +596,35 @@ class BookDetailFragment : BaseFragment(),
 
             setupPageProgress(currentPage, pageCount)
 
-            btn_detail_pages.text = if (state == BookState.READING)
+            vb.btnDetailPages.text = if (state == BookState.READING)
             // Initially set currentPage to 0 for progress animation
                 getString(R.string.detail_pages, currentPage, pageCount)
             else
                 pageCount.toString()
         } else {
-            sb_detail_pages.apply {
+            vb.sbDetailPages.apply {
                 visibility = View.INVISIBLE
                 isEnabled = false
             }
-            btn_detail_pages.text = pageCount.toString()
+            vb.btnDetailPages.text = pageCount.toString()
         }
     }
 
     private fun setupPageProgress(currentPage: Int, pageCount: Int) {
 
-        sb_detail_pages.apply {
+        vb.sbDetailPages.apply {
             value = currentPage
             maxValue = pageCount
             setCallback(this@BookDetailFragment)
             setOnValueChangedListener { page ->
-                btn_detail_pages.text = getString(R.string.detail_pages, page, pageCount)
+                vb.btnDetailPages.text = getString(R.string.detail_pages, page, pageCount)
             }
         }
     }
 
     private fun setupNotes(isNotesEmpty: Boolean) {
         val notesId = if (!isNotesEmpty) R.string.my_notes else R.string.add_notes
-        btn_detail_notes.text = getString(notesId)
+        vb.btnDetailNotes.text = getString(notesId)
     }
 
     private fun loadImage(address: String?) {
@@ -621,19 +632,19 @@ class BookDetailFragment : BaseFragment(),
             imageLoader.loadImageWithCornerRadius(
                 requireContext(),
                 address,
-                iv_detail_image,
+                vb.ivDetailImage,
                 cornerDimension = requireContext().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt(),
                 callback = this,
                 callbackHandleValues = Pair(first = false, second = true))
         } else {
             tintEditMenuItem(ContextCompat.getColor(requireContext(), R.color.danteAccent))
-            iv_detail_image.setImageResource(R.drawable.ic_placeholder)
+            vb.ivDetailImage.setImageResource(R.drawable.ic_placeholder)
         }
     }
 
     private fun setupLabels(labels: List<BookLabel>) {
 
-        chips_detail_label.removeAllViews()
+        vb.chipsDetailLabel.removeAllViews()
 
         labels
             .map { label ->
@@ -645,7 +656,7 @@ class BookDetailFragment : BaseFragment(),
                     closeIconClickCallback = viewModel::removeLabel
                 )
             }
-            .forEach(chips_detail_label::addView)
+            .forEach(vb.chipsDetailLabel::addView)
     }
 
     private fun onUpdatePublishedDate(y: String, m: String, d: String) {
@@ -654,7 +665,7 @@ class BookDetailFragment : BaseFragment(),
         val dStr = d.padStart(2, '0')
         val publishedDate = "$y-$mStr-$dStr"
 
-        btn_detail_published.text = publishedDate
+        vb.btnDetailPublished.text = publishedDate
 
         viewModel.updatePublishedDate(publishedDate)
     }

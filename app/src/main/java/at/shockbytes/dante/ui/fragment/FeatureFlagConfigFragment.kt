@@ -3,19 +3,19 @@ package at.shockbytes.dante.ui.fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.FragmentFeatureFlagConfigBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.FeatureFlagConfigAdapter
 import at.shockbytes.dante.ui.viewmodel.FeatureFlagConfigViewModel
 import at.shockbytes.dante.util.viewModelOf
-import kotlinx.android.synthetic.main.fragment_feature_flag_config.*
 import javax.inject.Inject
 
-class FeatureFlagConfigFragment : BaseFragment() {
-
-    override val layoutId = R.layout.fragment_feature_flag_config
+class FeatureFlagConfigFragment : BaseFragment<FragmentFeatureFlagConfigBinding>() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -34,8 +34,16 @@ class FeatureFlagConfigFragment : BaseFragment() {
         viewModel = viewModelOf(vmFactory)
     }
 
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentFeatureFlagConfigBinding {
+        return FragmentFeatureFlagConfigBinding.inflate(inflater, root, attachToRoot)
+    }
+
     override fun setupViews() {
-        layout_feature_flag_config.setOnClickListener {
+        vb.layoutFeatureFlagConfig.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
         setupRecyclerView()
@@ -56,7 +64,7 @@ class FeatureFlagConfigFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        rv_feature_flags.apply {
+        vb.rvFeatureFlags.apply {
             adapter = flagAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))

@@ -2,6 +2,7 @@ package at.shockbytes.dante.ui.activity.core
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.injection.AppComponent
 
 abstract class ContainerActivity : BaseActivity() {

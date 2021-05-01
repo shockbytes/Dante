@@ -15,6 +15,7 @@ import androidx.annotation.ColorInt
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ArrayRes
@@ -61,6 +62,10 @@ fun Activity.hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
+}
+
+fun Fragment.hideKeyboard() {
+    activity?.hideKeyboard()
 }
 
 fun FragmentManager.isFragmentShown(tag: String): Boolean {
@@ -237,3 +242,5 @@ fun Fragment.registerForPopupMenu(
 
     anchor.setOnClickListener { menuHelper.show() }
 }
+
+fun Context.layoutInflater(): LayoutInflater = LayoutInflater.from(this)

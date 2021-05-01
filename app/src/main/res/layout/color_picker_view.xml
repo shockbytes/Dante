@@ -6,23 +6,23 @@
     android:orientation="vertical">
 
     <TextView
-        style="@style/TextAppearance.AppCompat.Medium"
+        style="@style/TextAppearance.MaterialComponents.Overline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:layout_marginStart="12dp"
         android:text="@string/choose_color" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_color_picker"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
         android:overScrollMode="never"
         android:nestedScrollingEnabled="false"
-        tools:itemCount="8"
-        tools:spanCount="4"
+        tools:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        tools:itemCount="10"
+        tools:spanCount="5"
         tools:listitem="@layout/color_picker_item" />
 
 </LinearLayout>

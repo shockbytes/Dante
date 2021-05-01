@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 import android.view.View
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ItemStatsLabelsBinding
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.LabelStatsItem
 import at.shockbytes.dante.util.getThemeFont
@@ -15,11 +16,12 @@ import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_stats_labels.*
 
 class BookStatsLabelsViewHolder(
     override val containerView: View
 ) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
+
+    private val vb = ItemStatsLabelsBinding.bind(containerView)
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.LabelStats) {
@@ -35,13 +37,13 @@ class BookStatsLabelsViewHolder(
     }
 
     private fun showEmptyState() {
-        item_stats_labels_empty.setVisible(true)
-        chart_item_stats_labels.setVisible(false)
+        vb.itemStatsLabelsEmpty.root.setVisible(true)
+        vb.chartItemStatsLabels.setVisible(false)
     }
 
     private fun showLabelsCharts(labels: List<LabelStatsItem>) {
-        item_stats_labels_empty.setVisible(false)
-        chart_item_stats_labels.setVisible(true)
+        vb.itemStatsLabelsEmpty.root.setVisible(false)
+        vb.chartItemStatsLabels.setVisible(true)
 
         val entries = labels.mapIndexed { index, item ->
             BarEntry(index.toFloat(), item.size.toFloat())
@@ -53,7 +55,7 @@ class BookStatsLabelsViewHolder(
             setDrawIcons(false)
         }
 
-        chart_item_stats_labels.apply {
+        vb.chartItemStatsLabels.apply {
             description.isEnabled = false
             legend.isEnabled = false
 

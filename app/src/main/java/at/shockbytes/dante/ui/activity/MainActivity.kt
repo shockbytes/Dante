@@ -26,13 +26,16 @@ import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.ui.viewmodel.UserViewModel
+import at.shockbytes.dante.databinding.ActivityMainBinding
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
+import at.shockbytes.dante.util.settings.DanteSettings
+import at.shockbytes.dante.ui.activity.core.BaseBindingActivity
+import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.createRoundedBitmap
 import at.shockbytes.dante.util.isFragmentShown
 import at.shockbytes.dante.util.runDelayed
-import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.settings.ThemeState
 import at.shockbytes.dante.util.toggle
 import at.shockbytes.dante.util.viewModelOf
@@ -42,17 +45,16 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
+class MainActivity : BaseBindingActivity<ActivityMainBinding>(), ViewPager.OnPageChangeListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
 
     @Inject
     lateinit var danteSettings: DanteSettings
-    
+
     @Inject
     lateinit var appShortcutHandler: AppShortcutHandler
 
@@ -68,8 +70,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         setupSharedElementTransition()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbarMain)
+        setContentViewWithBinding(ActivityMainBinding::inflate)
+        setSupportActionBar(vb.toolbarMain)
 
         viewModel = viewModelOf(vmFactory)
         userViewModel = viewModelOf(vmFactory)
@@ -89,28 +91,28 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun setupFabMorph() {
-        mainFab.setOnClickListener {
-            mainFab.isExpanded = !mainFab.isExpanded
+        vb.mainFab.setOnClickListener {
+            vb.mainFab.isExpanded = !vb.mainFab.isExpanded
         }
-        dial_back.setOnClickListener {
-            mainFab.isExpanded = !mainFab.isExpanded
+        vb.dialBack.setOnClickListener {
+            vb.mainFab.isExpanded = !vb.mainFab.isExpanded
         }
-        dial_btn_manual.setOnClickListener {
-            dial_back.callOnClick()
+        vb.dialBtnManual.setOnClickListener {
+            vb.dialBack.callOnClick()
             // For whatever reason, this transition needs to take place
             // slightly later to not mess up the FAB morph transformation
             runDelayed(350) {
                 navigateToManualAdd()
             }
         }
-        dial_btn_scan.setOnClickListener {
-            dial_back.callOnClick()
+        vb.dialBtnScan.setOnClickListener {
+            vb.dialBack.callOnClick()
             runDelayed(300) {
                 navigateToCamera()
             }
         }
-        dial_btn_search_by_title.setOnClickListener {
-            dial_back.callOnClick()
+        vb.dialBtnSearchByTitle.setOnClickListener {
+            vb.dialBack.callOnClick()
             runDelayed(300) {
                 showAddByTitleDialog()
             }
@@ -125,7 +127,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun animateTitle() {
-        txtMainToolbarTitle.animate()
+        vb.txtMainToolbarTitle.animate()
             .alpha(1f)
             .scaleX(1f)
             .scaleY(1f)
@@ -136,7 +138,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun animateSearchIcon() {
-        imgButtonMainToolbarSearch.animate()
+        vb.imgButtonMainToolbarSearch.animate()
             .alpha(1f)
             .translationX(0f)
             .setDuration(500L)
@@ -174,11 +176,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onPageSelected(position: Int) {
 
-        tabId = mainBottomNavigation.menu.getItem(position).itemId
-        mainBottomNavigation.selectedItemId = tabId
+        tabId = vb.mainBottomNavigation.menu.getItem(position).itemId
+        vb.mainBottomNavigation.selectedItemId = tabId
 
-        appBar.setExpanded(true, true)
-        mainFab.toggle()
+        vb.appBar.setExpanded(true, true)
+        vb.mainFab.toggle()
     }
 
     override fun onPageScrollStateChanged(state: Int) = Unit
@@ -198,7 +200,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         viewModel.requestSeasonalTheme()
         viewModel.getSeasonalTheme()
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(seasonalThemeView::setSeasonalTheme)
+            .subscribe(vb.seasonalThemeView::setSeasonalTheme)
             .addTo(compositeDisposable)
     }
 
@@ -216,7 +218,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             }
 
             is UserViewModel.UserViewState.UnauthenticatedUser -> {
-                imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
+                vb.imgButtonMainToolbarMore.setImageResource(R.drawable.ic_overflow)
                 onUserLoaded()
             }
         }
@@ -231,7 +233,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             .map { bitmap ->
                 createRoundedBitmap(bitmap)
             }
-            .subscribe(imgButtonMainToolbarMore::setImageDrawable, ExceptionHandlers::defaultExceptionHandler)
+            .subscribe(vb.imgButtonMainToolbarMore::setImageDrawable, ExceptionHandlers::defaultExceptionHandler)
             .addTo(compositeDisposable)
     }
 
@@ -273,14 +275,14 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun setupUI() {
-        imgButtonMainToolbarSearch.setOnClickListener {
+        vb.imgButtonMainToolbarSearch.setOnClickListener {
             ActivityNavigator.navigateTo(
                 this,
                 Destination.Search,
                 ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
             )
         }
-        imgButtonMainToolbarMore.setOnClickListener {
+        vb.imgButtonMainToolbarMore.setOnClickListener {
             MenuFragment.newInstance().show(supportFragmentManager, "menu-fragment")
         }
     }
@@ -290,17 +292,17 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
         // Setup the ViewPager
         pagerAdapter = BookPagerAdapter(applicationContext, supportFragmentManager)
-        viewPager.apply {
+        vb.viewPager.apply {
             adapter = pagerAdapter
             removeOnPageChangeListener(this@MainActivity) // Remove first to avoid multiple listeners
             addOnPageChangeListener(this@MainActivity)
             offscreenPageLimit = 2
         }
 
-        mainBottomNavigation.apply {
+        vb.mainBottomNavigation.apply {
             setOnNavigationItemSelectedListener { item ->
                 colorNavigationItems(item)
-                indexForNavigationItemId(item.itemId)?.let { viewPager.currentItem = it }
+                indexForNavigationItemId(item.itemId)?.let { vb.viewPager.currentItem = it }
                 true
             }
             selectedItemId = tabId
@@ -317,8 +319,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
         }
 
         val stateList = ContextCompat.getColorStateList(this, stateListRes)
-        mainBottomNavigation.itemIconTintList = stateList
-        mainBottomNavigation.itemTextColor = stateList
+        vb.mainBottomNavigation.itemIconTintList = stateList
+        vb.mainBottomNavigation.itemTextColor = stateList
     }
 
     private fun indexForNavigationItemId(itemId: Int): Int? {
@@ -336,11 +338,11 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             Destination.BarcodeScanner,
             ActivityOptionsCompat
                 .makeClipRevealAnimation(
-                    mainFab,
-                    mainFab.x.toInt(),
-                    mainFab.y.toInt(),
-                    mainFab.width,
-                    mainFab.height
+                    vb.mainFab,
+                    vb.mainFab.x.toInt(),
+                    vb.mainFab.y.toInt(),
+                    vb.mainFab.width,
+                    vb.mainFab.height
                 )
                 .toBundle()
         )

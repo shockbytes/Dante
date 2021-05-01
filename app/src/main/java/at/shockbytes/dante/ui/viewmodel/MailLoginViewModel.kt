@@ -15,7 +15,7 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.PublishSubject
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 /**

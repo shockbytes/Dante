@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.PageRecord
+import at.shockbytes.dante.databinding.ItemPageRecordsDetailBinding
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_page_records_detail.*
 
 class PageRecordsAdapter(
     context: Context,
@@ -34,12 +34,14 @@ class PageRecordsAdapter(
         override val containerView: View
     ) : BaseAdapter.ViewHolder<PageRecordDetailItem>(containerView), LayoutContainer {
 
+        private val vb = ItemPageRecordsDetailBinding.bind(containerView)
+
         override fun bindToView(content: PageRecordDetailItem, position: Int) {
             with(content) {
-                tv_item_page_records_detail_date.text = formattedDate
-                tv_item_page_records_detail_pages.text = formattedPagesRead
+                vb.tvItemPageRecordsDetailDate.text = formattedDate
+                vb.tvItemPageRecordsDetailPages.text = formattedPagesRead
 
-                btn_item_page_records_detail_delete.setOnClickListener {
+                vb.btnItemPageRecordsDetailDelete.setOnClickListener {
                     onItemDeletedListener(pageRecord)
                 }
             }

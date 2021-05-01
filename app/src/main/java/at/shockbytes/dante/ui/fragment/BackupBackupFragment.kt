@@ -1,12 +1,15 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupStorageProvider
+import at.shockbytes.dante.databinding.FragmentBackupBackupBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.BackupStorageProviderAdapter
 import at.shockbytes.dante.ui.viewmodel.BackupViewModel
@@ -16,16 +19,21 @@ import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.view.EqualSpaceItemDecoration
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_backup_backup.*
 import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
  * Date:    26.05.2019
  */
-class BackupBackupFragment : BaseFragment() {
+class BackupBackupFragment : BaseFragment<FragmentBackupBackupBinding>() {
 
-    override val layoutId: Int = R.layout.fragment_backup_backup
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentBackupBackupBinding {
+        return FragmentBackupBackupBinding.inflate(inflater, root, attachToRoot)
+    }
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -48,7 +56,7 @@ class BackupBackupFragment : BaseFragment() {
         viewModel.getLastBackupTime()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { lastBackup ->
-                tv_fragment_backup_last_backup.text = getString(R.string.last_backup, lastBackup)
+                vb.tvFragmentBackupLastBackup.text = getString(R.string.last_backup, lastBackup)
             }
             .addTo(compositeDisposable)
 
@@ -83,11 +91,11 @@ class BackupBackupFragment : BaseFragment() {
 
     private fun setupBackupProviderUI(providers: List<BackupStorageProvider>) {
 
-        rv_fragment_backup_providers.apply {
+        vb.rvFragmentBackupProviders.apply {
             layoutManager = GridLayoutManager(requireContext(), 2).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
-                        return (rv_fragment_backup_providers.adapter as BackupStorageProviderAdapter)
+                        return (vb.rvFragmentBackupProviders.adapter as BackupStorageProviderAdapter)
                             .data[position].priority.run {
                             when (this) {
                                 Priority.LOW -> 1

@@ -2,13 +2,14 @@ package at.shockbytes.dante.ui.activity.core
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.injection.AppComponent
 
 /**
  * Author:  Martin Macheiner
  * Date:    23.12.2017
  */
-abstract class ContainerBackNavigableActivity : BackNavigableActivity() {
+abstract class ContainerBackNavigableActivity<V: ViewBinding> : BackNavigableActivity<V>() {
 
     abstract val displayFragment: Fragment
 

@@ -7,10 +7,12 @@ import android.content.IntentFilter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.ItemTouchHelper
 import android.view.View
+import android.view.ViewGroup
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
@@ -30,6 +32,7 @@ import at.shockbytes.dante.ui.fragment.BookDetailFragment.Companion.ACTION_BOOK_
 import at.shockbytes.dante.ui.viewmodel.BookListViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
 import at.shockbytes.dante.core.Constants.EXTRA_BOOK_CREATED_STATE
+import at.shockbytes.dante.databinding.FragmentBookMainBinding
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.ui.view.SharedViewComponents
@@ -44,16 +47,13 @@ import at.shockbytes.util.adapter.BaseAdapter
 import at.shockbytes.util.adapter.BaseItemTouchHelper
 import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_book_main.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainBookFragment : BaseFragment(),
+class MainBookFragment : BaseFragment<FragmentBookMainBinding>(),
     BaseAdapter.OnItemClickListener<BookAdapterItem>,
     BaseAdapter.OnItemMoveListener<BookAdapterItem>,
     OnBookActionClickedListener {
-
-    override val layoutId = R.layout.fragment_book_main
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -116,7 +116,7 @@ class MainBookFragment : BaseFragment(),
                 if (viewModel.state == createdBookState) {
                     runDelayed(500) {
                         // Might be null, there have been reported crashes
-                        rv_main_book_fragment?.smoothScrollToPosition(0)
+                        vb.rvMainBookFragment?.smoothScrollToPosition(0)
                     }
                 }
             }
@@ -129,6 +129,15 @@ class MainBookFragment : BaseFragment(),
         viewModel.state = bookState
 
         registerBookUpdatedBroadcastReceiver()
+    }
+
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentBookMainBinding {
+        return FragmentBookMainBinding.inflate(inflater, root, attachToRoot)
     }
 
     private fun registerBookUpdatedBroadcastReceiver() {
@@ -148,12 +157,12 @@ class MainBookFragment : BaseFragment(),
 
     override fun onResume() {
         super.onResume()
-        rv_main_book_fragment.suppressLayout(false)
+        vb.rvMainBookFragment.suppressLayout(false)
     }
 
     override fun onPause() {
         super.onPause()
-        rv_main_book_fragment.suppressLayout(true)
+        vb.rvMainBookFragment.suppressLayout(true)
     }
 
     override fun onDestroy() {
@@ -249,20 +258,20 @@ class MainBookFragment : BaseFragment(),
 
         when (state) {
             is BookListViewModel.BookLoadingState.Success -> {
-                tv_main_book_fragment_empty.setVisible(false)
-                rv_main_book_fragment.setVisible(true)
+                vb.tvMainBookFragmentEmpty.setVisible(false)
+                vb.rvMainBookFragment.setVisible(true)
 
                 bookAdapter.updateData(state.books)
             }
 
             is BookListViewModel.BookLoadingState.Empty -> {
-                tv_main_book_fragment_empty.setVisible(true)
-                rv_main_book_fragment.setVisible(false)
+                vb.tvMainBookFragmentEmpty.setVisible(true)
+                vb.rvMainBookFragment.setVisible(false)
             }
 
             is BookListViewModel.BookLoadingState.Error -> {
                 showSnackbar(getString(R.string.load_error), showLong = true)
-                rv_main_book_fragment.setVisible(false)
+                vb.rvMainBookFragment.setVisible(false)
             }
         }
     }
@@ -296,7 +305,7 @@ class MainBookFragment : BaseFragment(),
 
     override fun setupViews() {
 
-        tv_main_book_fragment_empty.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
+        vb.tvMainBookFragmentEmpty.text = resources.getStringArray(R.array.empty_indicators)[bookState.ordinal]
 
         bookAdapter = BookAdapter(
             requireContext(),
@@ -309,7 +318,7 @@ class MainBookFragment : BaseFragment(),
             randomPickCallback = randomPickCallback
         )
 
-        rv_main_book_fragment.apply {
+        vb.rvMainBookFragment.apply {
             layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
             adapter = bookAdapter
         }
@@ -321,13 +330,14 @@ class MainBookFragment : BaseFragment(),
                 BaseItemTouchHelper.DragAccess.VERTICAL
             )
         )
-        itemTouchHelper.attachToRecyclerView(rv_main_book_fragment)
+        itemTouchHelper.attachToRecyclerView(vb.rvMainBookFragment)
     }
 
     override fun onItemClick(content: BookAdapterItem, position: Int, v: View) {
         when (content) {
             is BookAdapterItem.Book -> handleBookClick(content, v)
             BookAdapterItem.RandomPick -> Unit // Do nothing
+            BookAdapterItem.WishlistExplanation -> Unit // Do nothing
         }
     }
 

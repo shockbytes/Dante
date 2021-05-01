@@ -26,6 +26,7 @@ import androidx.camera.core.TorchState
 import androidx.camera.lifecycle.ProcessCameraProvider
 import at.shockbytes.dante.camera.analyzer.BarcodeAnalyzer
 import at.shockbytes.dante.camera.injection.CameraComponentProvider
+import at.shockbytes.dante.camera.databinding.ActivityCameraBinding
 import at.shockbytes.dante.camera.overlay.BarcodeBoundsOverlay
 import at.shockbytes.dante.core.sdkVersionOrAbove
 import at.shockbytes.dante.core.shortcut.AppShortcutHandler
@@ -34,7 +35,6 @@ import com.google.common.util.concurrent.ListenableFuture
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_camera.*
 import timber.log.Timber
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -51,6 +51,8 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
     private lateinit var imagePreview: Preview
     private lateinit var imageAnalysis: ImageAnalysis
 
+    private lateinit var vb: ActivityCameraBinding
+
     private val overlay = BarcodeBoundsOverlay()
 
     private val executor = Executors.newSingleThreadExecutor()
@@ -66,7 +68,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
         window.exitTransition = Slide(Gravity.BOTTOM)
         window.enterTransition = Slide(Gravity.BOTTOM)
-        setContentView(R.layout.activity_camera)
+        setupViewBinding()
         supportActionBar?.hide()
 
         setFullscreen()
@@ -83,6 +85,11 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
         CameraComponentProvider.get(applicationContext).inject(this)
     }
 
+    private fun setupViewBinding() {
+        vb = ActivityCameraBinding.inflate(layoutInflater)
+        setContentView(vb.root)
+    }
+
     private fun setFullscreen() {
         if (sdkVersionOrAbove(Build.VERSION_CODES.R)) {
             window.setDecorFitsSystemWindows(false)
@@ -95,7 +102,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
     private fun checkPermissions() {
         if (allPermissionsGranted()) {
-            preview_view.post {
+            vb.previewView.post {
                 startCamera()
             }
         } else {
@@ -142,7 +149,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
             imagePreview = Preview.Builder()
                 .setTargetAspectRatio(AspectRatio.RATIO_16_9)
-                .setTargetRotation(preview_view.display.rotation)
+                .setTargetRotation(vb.previewView.display.rotation)
                 .build()
 
             cameraProvider.unbindAll()
@@ -150,7 +157,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, imagePreview, imageAnalysis)
 
             enableTapToFocus()
-            imagePreview.setSurfaceProvider(preview_view.surfaceProvider)
+            imagePreview.setSurfaceProvider(vb.previewView.surfaceProvider)
         }, ContextCompat.getMainExecutor(this))
     }
 
@@ -159,7 +166,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
          * The nullable calls will not be required when the
          * app uses ViewBinding instead of the synthetic extensions.
          */
-        return preview_view?.display?.rotation ?: 0
+        return vb.previewView.display?.rotation ?: 0
     }
 
     // TODO Incorporate torch
@@ -176,12 +183,12 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun enableTapToFocus() {
-        preview_view.setOnTouchListener { _, motionEvent ->
+        vb.previewView.setOnTouchListener { _, motionEvent ->
 
             val x = motionEvent.x
             val y = motionEvent.y
 
-            val factory = preview_view.meteringPointFactory
+            val factory = vb.previewView.meteringPointFactory
             val point = factory.createPoint(x, y)
             val action = FocusMeteringAction.Builder(point).build()
             camera.cameraControl.startFocusAndMetering(action)
@@ -217,7 +224,7 @@ class BarcodeCaptureActivity : AppCompatActivity(), LifecycleOwner {
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
             if (allPermissionsGranted()) {
-                preview_view.post {
+                vb.previewView.post {
                     startCamera()
                 }
             } else {

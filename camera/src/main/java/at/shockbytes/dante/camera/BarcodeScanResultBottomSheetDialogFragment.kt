@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import at.shockbytes.dante.camera.databinding.FragmentBarcodeScanBottomSheetBinding
 import at.shockbytes.dante.camera.injection.CameraComponentProvider
 import at.shockbytes.dante.camera.viewmodel.BarcodeResultViewModel
 import at.shockbytes.dante.core.Constants.ACTION_BOOK_CREATED
@@ -28,7 +29,6 @@ import com.afollestad.materialdialogs.list.customListAdapter
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_barcode_scan_bottom_sheet.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -44,6 +44,11 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private var onBookAddedListener: ((CharSequence) -> Unit)? = null
 
     private lateinit var viewModel: BarcodeResultViewModel
+
+    private var _binding: FragmentBarcodeScanBottomSheetBinding? = null
+    // This property is only valid between onCreateView and onDestroyView
+    private val vb: FragmentBarcodeScanBottomSheetBinding
+        get() = _binding!!
 
     override fun getTheme() = R.style.BottomSheetDialogTheme
 
@@ -76,8 +81,14 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
         CameraComponentProvider.get(requireContext().applicationContext).inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_barcode_scan_bottom_sheet, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentBarcodeScanBottomSheetBinding.inflate(inflater, container, false)
+        return vb.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onResume() {
@@ -145,46 +156,46 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun showSuccessLayout(bookSuggestion: BookSuggestion) {
-        layout_barcode_result_error.setVisible(false)
-        pb_barcode_result.setVisible(false)
-        group_barcode_result.setVisible(true)
-        btn_barcode_result_not_my_book.setVisible(showNotMyBookButton)
+        vb.layoutBarcodeResultError.setVisible(false)
+        vb.pbBarcodeResult.setVisible(false)
+        vb.groupBarcodeResult.setVisible(true)
+        vb.btnBarcodeResultNotMyBook.setVisible(showNotMyBookButton)
 
         bookSuggestion.mainSuggestion?.run {
-            tv_barcode_result_title.text = title
-            tv_barcode_result_author.text = author
+            vb.tvBarcodeResultTitle.text = title
+            vb.tvBarcodeResultAuthor.text = author
 
             thumbnailAddress?.let { imageUrl ->
                 imageLoader.loadImageWithCornerRadius(
                     requireContext(),
                     imageUrl,
-                    iv_barcode_scan_result_cover,
+                    vb.ivBarcodeScanResultCover,
                     cornerDimension = AppUtils.convertDpInPixel(6, requireContext())
                 )
             }
 
-            btn_barcode_result_for_later.setOnClickListener {
+            vb.btnBarcodeResultForLater.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.READ_LATER)
                 onBookAddedListener?.invoke(title)
             }
 
-            btn_barcode_result_reading.setOnClickListener {
+            vb.btnBarcodeResultReading.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.READING)
                 onBookAddedListener?.invoke(title)
             }
 
-            btn_barcode_result_wishlist.setOnClickListener {
+            vb.btnBarcodeResultWishlist.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.WISHLIST)
                 onBookAddedListener?.invoke(title)
             }
 
-            btn_barcode_result_read.setOnClickListener {
+            vb.btnBarcodeResultRead.setOnClickListener {
                 viewModel.storeBook(this, state = BookState.READ)
                 onBookAddedListener?.invoke(title)
             }
         }
 
-        btn_barcode_result_not_my_book.setOnClickListener {
+        vb.btnBarcodeResultNotMyBook.setOnClickListener {
             showOtherSuggestionsModal(bookSuggestion.otherSuggestions) { selectedBook ->
                 viewModel.setSelectedBook(bookSuggestion, selectedBook)
             }
@@ -216,22 +227,22 @@ class BarcodeScanResultBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun showErrorLayout(cause: String) {
-        pb_barcode_result.setVisible(false)
-        group_barcode_result.setVisible(false)
-        layout_barcode_result_error.setVisible(true)
-        btn_barcode_result_not_my_book.setVisible(false)
+        vb.pbBarcodeResult.setVisible(false)
+        vb.groupBarcodeResult.setVisible(false)
+        vb.layoutBarcodeResultError.setVisible(true)
+        vb.btnBarcodeResultNotMyBook.setVisible(false)
 
-        tv_barcode_result_error_cause.text = cause
-        btn_barcode_result_error_close.setOnClickListener {
+        vb.tvBarcodeResultErrorCause.text = cause
+        vb.btnBarcodeResultErrorClose.setOnClickListener {
             dismiss()
         }
     }
 
     private fun showLoadingLayout() {
-        pb_barcode_result.setVisible(true)
-        group_barcode_result.setVisible(false)
-        layout_barcode_result_error.setVisible(false)
-        btn_barcode_result_not_my_book.setVisible(false)
+        vb.pbBarcodeResult.setVisible(true)
+        vb.groupBarcodeResult.setVisible(false)
+        vb.layoutBarcodeResultError.setVisible(false)
+        vb.btnBarcodeResultNotMyBook.setVisible(false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.R
 import at.shockbytes.dante.util.DanteUtils
 
@@ -21,7 +22,7 @@ import at.shockbytes.dante.util.DanteUtils
  * Author:  Martin Macheiner
  * Date:    02.01.2018
  */
-abstract class TintableBackNavigableActivity : BackNavigableActivity() {
+abstract class TintableBackNavigableActivity<V: ViewBinding> : BackNavigableActivity<V>() {
 
     private val abDefColor = R.color.actionBarItemColor
     private val abTextDefColor = android.R.color.white

@@ -10,11 +10,11 @@ import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.backup.model.BackupMetadata
 import at.shockbytes.dante.backup.model.BackupMetadataState
+import at.shockbytes.dante.databinding.ItemBackupEntryBinding
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_backup_entry.*
 
 /**
  * Author:  Martin Macheiner
@@ -40,24 +40,29 @@ class BackupEntryAdapter(
         override val containerView: View
     ) : BaseAdapter.ViewHolder<BackupMetadataState>(containerView), LayoutContainer {
 
+        private val vb = ItemBackupEntryBinding.bind(containerView)
+
         override fun bindToView(content: BackupMetadataState, position: Int) {
 
             with(content.entry) {
-                item_backup_entry_imgview_provider.setImageResource(storageProvider.icon)
+                vb.itemBackupEntryImgviewProvider.setImageResource(storageProvider.icon)
 
-                item_backup_entry_txt_time.text = DanteUtils.formatTimestamp(timestamp)
-                item_backup_entry_txt_books.text = context.getString(R.string.books_amount, books)
-                item_backup_entry_txt_device.text = device
+                vb.itemBackupEntryTxtTime.text = DanteUtils.formatTimestamp(timestamp)
+                vb.itemBackupEntryTxtBooks.text = context.getString(R.string.books_amount, books)
+                vb.itemBackupEntryTxtDevice.text = device
 
                 if (content is BackupMetadataState.Active) {
 
-                    item_backup_entry_card.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
-                    item_backup_entry_btn_overflow.setVisible(true)
+                    vb.itemBackupEntryCard.setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
+                    vb.itemBackupEntryBtnOverflow.setVisible(true)
                     setupOverflowMenu(content)
                 } else {
-                    item_backup_entry_card.setBackgroundColor(ContextCompat.getColor(context, R.color.disabled_view))
-                    item_backup_entry_btn_overflow.visibility = View.INVISIBLE
-                    item_backup_entry_btn_overflow.setOnClickListener(null)
+                    vb.itemBackupEntryCard.setBackgroundColor(ContextCompat.getColor(context, R.color.disabled_view))
+
+                    vb.itemBackupEntryBtnOverflow.apply {
+                            visibility = View.INVISIBLE
+                            setOnClickListener(null)
+                    }
                 }
             }
         }
@@ -65,7 +70,7 @@ class BackupEntryAdapter(
         private fun setupOverflowMenu(content: BackupMetadataState) {
 
             val entry = content.entry
-            val popupMenu = PopupMenu(context, item_backup_entry_btn_overflow)
+            val popupMenu = PopupMenu(context, vb.itemBackupEntryBtnOverflow)
 
             popupMenu.menuInflater.inflate(R.menu.menu_backup_item_overflow, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { menuItem ->
@@ -91,10 +96,10 @@ class BackupEntryAdapter(
             popupMenu.menu.findItem(R.id.menu_backup_open_request)?.isVisible = showExportOption
             popupMenu.menu.findItem(R.id.menu_backup_export_request)?.isVisible = showExportOption
 
-            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, item_backup_entry_btn_overflow)
+            val menuHelper = MenuPopupHelper(context, popupMenu.menu as MenuBuilder, vb.itemBackupEntryBtnOverflow)
             menuHelper.setForceShowIcon(true)
 
-            item_backup_entry_btn_overflow.setOnClickListener { menuHelper.show() }
+            vb.itemBackupEntryBtnOverflow.setOnClickListener { menuHelper.show() }
         }
     }
 }

@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import android.view.View
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.R
 
 /**
@@ -13,12 +14,13 @@ import at.shockbytes.dante.R
  * DialogFragment without usual frame and DialogFragment specific buttons
  *
  */
-abstract class InteractiveViewDialogFragment<T> : BaseDialogFragment() {
+abstract class InteractiveViewDialogFragment<T, V: ViewBinding> : BaseDialogFragment() {
 
     protected var applyListener: ((T) -> Unit)? = null
     protected var onDismissListener: (() -> Unit)? = null
 
     abstract val containerView: View
+    abstract val vb: V
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +33,12 @@ abstract class InteractiveViewDialogFragment<T> : BaseDialogFragment() {
             .create()
     }
 
-    fun setOnApplyListener(listener: (T) -> Unit): InteractiveViewDialogFragment<T> {
+    fun setOnApplyListener(listener: (T) -> Unit): InteractiveViewDialogFragment<T, V> {
         applyListener = listener
         return this
     }
 
-    fun setOnDismissListener(listener: () -> Unit): InteractiveViewDialogFragment<T> {
+    fun setOnDismissListener(listener: () -> Unit): InteractiveViewDialogFragment<T, V> {
         return this.apply {
             onDismissListener = listener
         }

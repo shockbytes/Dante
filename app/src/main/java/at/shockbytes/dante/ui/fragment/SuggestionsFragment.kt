@@ -1,9 +1,12 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.FragmentSuggestionsBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.suggestions.Suggestion
 import at.shockbytes.dante.ui.adapter.suggestions.OnSuggestionActionClickedListener
@@ -17,16 +20,13 @@ import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_suggestions.*
 import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
-class SuggestionsFragment : BaseFragment() {
-
-    override val layoutId = R.layout.fragment_suggestions
+class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -54,10 +54,19 @@ class SuggestionsFragment : BaseFragment() {
             },
             onSuggestionExplanationClickedListener = { viewModel.dismissExplanation() }
         )
-        rv_suggestions.apply {
+        vb.rvSuggestions.apply {
             layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
             this.adapter = suggestionAdapter
         }
+    }
+
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentSuggestionsBinding {
+        return FragmentSuggestionsBinding.inflate(inflater, root, attachToRoot)
     }
 
     private fun showReportBookConfirmation(suggestionId: String, suggestionTitle: String) {
@@ -117,9 +126,9 @@ class SuggestionsFragment : BaseFragment() {
     }
 
     private fun handleLoadingState() {
-        pb_suggestions.setVisible(true)
-        rv_suggestions.setVisible(false)
-        tv_suggestions_explanation.setVisible(false)
+        vb.pbSuggestions.setVisible(true)
+        vb.rvSuggestions.setVisible(false)
+        vb.tvSuggestionsExplanation.setVisible(false)
     }
 
     private fun handleUnauthenticatedState() {
@@ -135,18 +144,18 @@ class SuggestionsFragment : BaseFragment() {
     }
 
     private fun handleNonHappyState(textRes: Int) {
-        pb_suggestions.setVisible(false)
-        rv_suggestions.setVisible(false)
-        tv_suggestions_explanation.apply {
+        vb.pbSuggestions.setVisible(false)
+        vb.rvSuggestions.setVisible(false)
+        vb.tvSuggestionsExplanation.apply {
             setVisible(true)
             setText(textRes)
         }
     }
 
     private fun handleSuggestions(suggestions: List<SuggestionsAdapterItem>) {
-        rv_suggestions.setVisible(true)
-        tv_suggestions_explanation.setVisible(false)
-        pb_suggestions.setVisible(false)
+        vb.rvSuggestions.setVisible(true)
+        vb.tvSuggestionsExplanation.setVisible(false)
+        vb.pbSuggestions.setVisible(false)
 
         suggestionAdapter.updateData(suggestions)
     }

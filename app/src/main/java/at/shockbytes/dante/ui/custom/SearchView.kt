@@ -7,10 +7,13 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.SearchViewBinding
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.dante.util.setVisible
-import kotlinx.android.synthetic.main.search_view.view.*
 
 class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+
+    private val vb = SearchViewBinding.inflate(context.layoutInflater(), this, true)
 
     var currentQuery: CharSequence = ""
         private set
@@ -20,7 +23,6 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
     var homeActionClickListener: (() -> Unit)? = null
 
     init {
-        inflate(context, R.layout.search_view, this)
         showProgress(false)
         clearQuery()
 
@@ -30,10 +32,10 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
     }
 
     fun setSearchFocused(isFocused: Boolean) {
-        search_view_edit_query.isFocusable = isFocused
+        vb.searchViewEditQuery.isFocusable = isFocused
 
         if (isFocused) {
-            search_view_edit_query.requestFocus()
+            vb.searchViewEditQuery.requestFocus()
         }
     }
 
@@ -41,47 +43,49 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
 
         if (showProgress) {
 
-            search_view_pb.visibility = View.VISIBLE
-            search_view_pb.animate()
-                    .translationX(0f)
-                    .alpha(1f)
-                    .start()
+            vb.searchViewPb.visibility = View.VISIBLE
+            vb.searchViewPb.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .start()
 
-            search_view_imgbtn_home.animate()
-                    .scaleX(0.4f)
-                    .scaleY(0.4f)
-                    .alpha(0f)
-                    .withEndAction { search_view_imgbtn_home.visibility = View.INVISIBLE }
-                    .start()
+            vb.searchViewImgbtnHome.animate()
+                .scaleX(0.4f)
+                .scaleY(0.4f)
+                .alpha(0f)
+                .withEndAction { vb.searchViewImgbtnHome.visibility = View.INVISIBLE }
+                .start()
         } else {
 
-            search_view_pb.animate()
-                    .alpha(0f)
-                    .withEndAction {
-                        search_view_pb.visibility = View.INVISIBLE
-                        search_view_pb.translationX = -80f
+            vb.searchViewPb.animate()
+                .alpha(0f)
+                .withEndAction {
+                    vb.searchViewPb.apply {
+                        visibility = View.INVISIBLE
+                        translationX = -80f
                     }
-                    .start()
+                }
+                .start()
 
-            search_view_imgbtn_home.visibility = View.VISIBLE
-            search_view_imgbtn_home.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .alpha(1f)
-                    .start()
+            vb.searchViewImgbtnHome.visibility = View.VISIBLE
+            vb.searchViewImgbtnHome.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .alpha(1f)
+                .start()
         }
     }
 
     fun clearQuery() {
         currentQuery = ""
-        search_view_imgbtn_cancel.setVisible(false)
+        vb.searchViewImgbtnCancel.setVisible(false)
     }
 
     // -------------------------------------------------------------------
 
     private fun setupQueryView() {
 
-        search_view_edit_query.addTextChangedListener(object : TextWatcher {
+        vb.searchViewEditQuery.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) = Unit
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -100,23 +104,26 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
 
     private fun setupHomeView() {
 
-        search_view_pb.alpha = 0f
-        search_view_pb.translationX = -80f
-        search_view_pb.visibility = View.INVISIBLE
+        vb.searchViewPb.apply {
+            alpha = 0f
+            translationX = -80f
+            visibility = View.INVISIBLE
+        }
 
-        search_view_imgbtn_home.setOnClickListener {
+        vb.searchViewImgbtnHome.setOnClickListener {
             homeActionClickListener?.invoke()
         }
     }
 
     private fun setupCancelView() {
 
-        search_view_imgbtn_cancel.alpha = 0f
-        search_view_imgbtn_cancel.translationX = 30f
-        search_view_imgbtn_cancel.visibility = View.INVISIBLE
-
-        search_view_imgbtn_cancel.setOnClickListener {
-            search_view_edit_query.setText("")
+        vb.searchViewImgbtnCancel.apply {
+            alpha = 0f
+            translationX = 30f
+            visibility = View.INVISIBLE
+            setOnClickListener {
+                vb.searchViewEditQuery.setText("")
+            }
         }
     }
 
@@ -124,17 +131,20 @@ class SearchView(context: Context, attributeSet: AttributeSet) : FrameLayout(con
 
         if (currentQuery.isNotEmpty()) {
 
-            search_view_imgbtn_cancel.visibility = View.VISIBLE
-            search_view_imgbtn_cancel.animate()
+            vb.searchViewImgbtnCancel.apply {
+                visibility = View.VISIBLE
+                animate()
                     .translationX(0f)
                     .alpha(1f)
                     .start()
+            }
+
         } else {
-            search_view_imgbtn_cancel.animate()
-                    .translationX(30f)
-                    .alpha(0f)
-                    .withEndAction { search_view_imgbtn_cancel.visibility = View.INVISIBLE }
-                    .start()
+            vb.searchViewImgbtnCancel.animate()
+                .translationX(30f)
+                .alpha(0f)
+                .withEndAction { vb.searchViewImgbtnCancel.visibility = View.INVISIBLE }
+                .start()
         }
     }
 }

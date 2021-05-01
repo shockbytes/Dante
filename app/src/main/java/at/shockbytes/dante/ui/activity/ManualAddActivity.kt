@@ -4,8 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.viewbinding.ViewBinding
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.shortcut.AppShortcutHandler
+import at.shockbytes.dante.databinding.ManualAddActivityBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.activity.core.ContainerTintableBackNavigableActivity
 import at.shockbytes.dante.ui.fragment.ManualAddFragment
@@ -16,7 +19,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    30.08.2018
  */
-class ManualAddActivity : ContainerTintableBackNavigableActivity() {
+class ManualAddActivity : ContainerTintableBackNavigableActivity<ManualAddActivityBinding>() {
 
     @Inject
     lateinit var appShortcutHandler: AppShortcutHandler
@@ -27,10 +30,9 @@ class ManualAddActivity : ContainerTintableBackNavigableActivity() {
         get() = ManualAddFragment.newInstance(bookEntity)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         bookEntity = intent.extras?.getParcelable(ARG_BOOK_ENTITY_UPDATE)
-
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.manual_add_activity)
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

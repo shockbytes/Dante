@@ -3,7 +3,7 @@ package at.shockbytes.dante.ui.activity.core
 import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
 
-abstract class BaseBindingActivity<V: ViewBinding>: BaseActivity() {
+abstract class BaseBindingActivity<V : ViewBinding> : BaseActivity() {
 
     protected lateinit var vb: V
 

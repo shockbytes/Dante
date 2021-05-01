@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.ItemSimpleBookBinding
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_simple_book.*
 
 class SimpleBookAdapter(
     context: Context,
@@ -31,9 +31,11 @@ class SimpleBookAdapter(
         override val containerView: View
     ) : BaseAdapter.ViewHolder<BookEntity>(containerView), LayoutContainer {
 
+        private val vb = ItemSimpleBookBinding.bind(containerView)
+
         override fun bindToView(content: BookEntity, position: Int) {
             with(content) {
-                tv_item_simple_book_title.text = title
+                vb.tvItemSimpleBookTitle.text = title
                 updateImageThumbnail(thumbnailAddress)
             }
         }
@@ -44,12 +46,12 @@ class SimpleBookAdapter(
                 imageLoader.loadImageWithCornerRadius(
                     context,
                     address,
-                    iv_item_simple_book_cover,
+                    vb.ivItemSimpleBookCover,
                     cornerDimension = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                 )
             } else {
                 // Books with no image will recycle another cover if not cleared here
-                iv_item_simple_book_cover.setImageResource(R.drawable.ic_placeholder)
+                vb.ivItemSimpleBookCover.setImageResource(R.drawable.ic_placeholder)
             }
         }
     }

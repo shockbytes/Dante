@@ -29,6 +29,7 @@ class BookStorageActivity : BaseBindingActivity<ActivityBookStorageBinding>(), P
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentViewWithBinding(ActivityBookStorageBinding::inflate)
         viewModel = viewModelOf(vmFactory)
 
         initializeNavigation()

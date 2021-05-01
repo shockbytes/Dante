@@ -25,7 +25,7 @@ object MailLauncher {
             .setType("message/rfc822")
             .addEmailTo(recipient)
             .setSubject(subject)
-            .setText(body)
+            .setText(formattedBody)
             .setChooserTitle(activity.getString(R.string.action_send_mail))
             .startChooser()
     }

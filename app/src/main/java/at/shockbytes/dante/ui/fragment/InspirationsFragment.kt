@@ -10,6 +10,7 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.FragmentInspirationsBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.InspirationsPagerAdapter
+import at.shockbytes.dante.util.setVisible
 import com.google.android.material.tabs.TabLayout
 
 class InspirationsFragment : BaseFragment<FragmentInspirationsBinding>() {
@@ -36,11 +37,14 @@ class InspirationsFragment : BaseFragment<FragmentInspirationsBinding>() {
     }
 
     private fun setupToolbar() {
-        dante_toolbar_title.setText(R.string.inspirations)
-        dante_toolbar_back.apply {
-            setVisible(true)
-            setOnClickListener {
-                activity?.onBackPressed()
+
+        with(vb.toolbarFragmentInspirations) {
+            danteToolbarTitle.setText(R.string.inspirations)
+            danteToolbarBack.apply {
+                setVisible(true)
+                setOnClickListener {
+                    activity?.onBackPressed()
+                }
             }
         }
     }

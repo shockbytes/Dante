@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.adapter.stats.viewholder
 import android.view.View
 import androidx.annotation.StringRes
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ItemStatsPagesOverTimeBinding
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.ui.custom.bookspages.BooksAndPageRecordDataPoint
@@ -13,12 +14,14 @@ import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_stats_pages_over_time.*
 
 class BookStatsPagesOverTimeViewHolder(
     override val containerView: View,
     private val onChangeGoalActionListener: (ReadingGoalType) -> Unit
 ) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
+
+
+    private val vb = ItemStatsPagesOverTimeBinding.bind(containerView)
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.BooksAndPagesOverTime) {
@@ -37,20 +40,20 @@ class BookStatsPagesOverTimeViewHolder(
     }
 
     private fun showEmptyState(@StringRes headerRes: Int) {
-        item_books_pages_over_time_header.setHeaderTitleResource(headerRes)
-        item_pages_over_time_empty.setVisible(true)
-        item_stats_pages_over_time_content.setVisible(false)
+        vb.itemBooksPagesOverTimeHeader.setHeaderTitleResource(headerRes)
+        vb.itemPagesOverTimeEmpty.root.setVisible(true)
+        vb.itemStatsPagesOverTimeContent.setVisible(false)
     }
 
     private fun showPagesPerMonth(
         dataPoints: List<BooksAndPageRecordDataPoint>,
         pagesPerMonthGoal: Int?
     ) {
-        item_books_pages_over_time_header.setHeaderTitleResource(R.string.statistics_header_pages_over_time)
-        item_pages_over_time_empty.setVisible(false)
-        item_stats_pages_over_time_content.setVisible(true)
+        vb.itemBooksPagesOverTimeHeader.setHeaderTitleResource(R.string.statistics_header_pages_over_time)
+        vb.itemPagesOverTimeEmpty.root.setVisible(false)
+        vb.itemStatsPagesOverTimeContent.setVisible(true)
 
-        item_pages_stats_diagram_view.apply {
+        vb.itemPagesStatsDiagramView.apply {
 
             headerTitle = if (pagesPerMonthGoal != null) {
                 context.getString(R.string.set_pages_goal_header_with_goal, pagesPerMonthGoal)
@@ -73,11 +76,11 @@ class BookStatsPagesOverTimeViewHolder(
         dataPoints: List<BooksAndPageRecordDataPoint>,
         booksPerMonthGoal: Int?
     ) {
-        item_books_pages_over_time_header.setHeaderTitleResource(R.string.statistics_header_books_over_time)
-        item_pages_over_time_empty.setVisible(false)
-        item_stats_pages_over_time_content.setVisible(true)
+        vb.itemBooksPagesOverTimeHeader.setHeaderTitleResource(R.string.statistics_header_books_over_time)
+        vb.itemPagesOverTimeEmpty.root.setVisible(false)
+        vb.itemStatsPagesOverTimeContent.setVisible(true)
 
-        item_pages_stats_diagram_view.apply {
+        vb.itemPagesStatsDiagramView.apply {
 
             headerTitle = if (booksPerMonthGoal != null) {
                 context.getString(R.string.set_books_goal_header_with_goal, booksPerMonthGoal)

@@ -72,7 +72,7 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
         }
 
         vb.editTextManualAddTitle.doOnTextChanged { text, _, _, _ ->
-            (activity as? TintableBackNavigableActivity)?.tintTitle(text.toString())
+            (activity as? TintableBackNavigableActivity<*>)?.tintTitle(text.toString())
         }
 
         vb.btnManualAddUpcoming.setOnClickListener { v ->
@@ -142,7 +142,7 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
             val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
             val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-            (activity as? TintableBackNavigableActivity)
+            (activity as? TintableBackNavigableActivity<*>)
                 ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
         }
     }

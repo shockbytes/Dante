@@ -6,25 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.core.ui.NegativeDrawable
+import at.shockbytes.dante.databinding.FragmentSuggestBookBinding
+import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.isNightModeEnabled
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jakewharton.rxbinding2.widget.RxTextView
-import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.fragment_suggest_book.*
 import javax.inject.Inject
 
-class SuggestBookBottomSheetDialogFragment : BottomSheetDialogFragment() {
-
-    private val compositeDisposable = CompositeDisposable()
+class SuggestBookBottomSheetDialogFragment : BaseBottomSheetFragment<FragmentSuggestBookBinding>() {
 
     private var bookEntity: BookEntity by argument()
 
@@ -35,23 +31,31 @@ class SuggestBookBottomSheetDialogFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        (activity?.application as DanteApp).appComponent.inject(this)
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentSuggestBookBinding {
+        return FragmentSuggestBookBinding.inflate(inflater, root, attachToRoot)
     }
 
-    override fun onResume() {
-        super.onResume()
-
+    override fun setupViews() {
         setBookImageAndTitle()
         setBackgroundImage()
         checkRecommendationInput()
         setupConfirmButtonListener()
     }
 
+    override fun injectToGraph(appComponent: AppComponent) {
+        appComponent.inject(this)
+    }
+
+    override fun bindViewModel() = Unit
+    override fun unbindViewModel() = Unit
+
     private fun setupConfirmButtonListener() {
-        btn_suggest_book_confirm.setOnClickListener {
-            editTextEnterSuggestion.text?.toString()?.let { text ->
+        vb.btnSuggestBookConfirm.setOnClickListener {
+            vb.editTextEnterSuggestion.text?.toString()?.let { text ->
                 onRecommendationEnteredListener?.invoke(text.trim())
                 dismiss()
             }
@@ -65,18 +69,18 @@ class SuggestBookBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private fun setBookImageAndTitle() {
 
-        tv_suggest_book_title.text = bookEntity.title
+        vb.tvSuggestBookTitle.text = bookEntity.title
 
         val imageUrl = bookEntity.normalizedThumbnailUrl
         if (!imageUrl.isNullOrEmpty()) {
             imageLoader.loadImageWithCornerRadius(
                 requireContext(),
                 imageUrl,
-                iv_suggest_book_cover,
+                vb.ivSuggestBookCover,
                 cornerDimension = requireContext().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
             )
         } else {
-            iv_suggest_book_cover.setImageResource(R.drawable.ic_placeholder)
+            vb.ivSuggestBookCover.setImageResource(R.drawable.ic_placeholder)
         }
     }
 
@@ -86,17 +90,17 @@ class SuggestBookBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 NegativeDrawable.ofDrawable(it).drawable
             } else it
 
-            iv_suggestion_cover_background.setImageDrawable(drawable)
+            vb.ivSuggestionCoverBackground.setImageDrawable(drawable)
         }
     }
 
     private fun checkRecommendationInput() {
-        RxTextView.textChanges(editTextEnterSuggestion)
+        RxTextView.textChanges(vb.editTextEnterSuggestion)
             .map { text ->
                 // Do not allow more than 10 line breaks
                 text.count() in 1 until MAX_CHARS && text.count { it == '\n' } < 10
             }
-            .subscribe(btn_suggest_book_confirm::setEnabled)
+            .subscribe(vb.btnSuggestBookConfirm::setEnabled)
             .addTo(compositeDisposable)
     }
 

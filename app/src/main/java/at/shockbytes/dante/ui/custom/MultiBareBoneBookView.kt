@@ -6,23 +6,23 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.MultiBareBoneBookViewBinding
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.AppUtils
-import kotlinx.android.synthetic.main.multi_bare_bone_book_view.view.*
 
 class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayout(context, attrs) {
 
+    private val vb: MultiBareBoneBookViewBinding
+        get() = MultiBareBoneBookViewBinding.inflate(context.layoutInflater(), this, true)
+
     private val booksToDisplay = 8
 
-    init {
-        inflate(context, R.layout.multi_bare_bone_book_view, this)
-    }
-
     fun setTitle(title: String) {
-        tv_multi_bare_bone_book_view.text = title
+        vb.tvMultiBareBoneBookView.text = title
     }
 
     fun setMultipleBookImages(urls: List<String?>, imageLoader: ImageLoader) {
-        container_multi_bare_bone_book_view.removeAllViews()
+        vb.containerMultiBareBoneBookView.removeAllViews()
 
         urls
             .mapIndexedNotNull { _, url ->
@@ -38,7 +38,7 @@ class MultiBareBoneBookView(context: Context, attrs: AttributeSet?) : FrameLayou
                 } else null
             }
             .take(booksToDisplay)
-            .forEach(container_multi_bare_bone_book_view::addView)
+            .forEach(vb.containerMultiBareBoneBookView::addView)
     }
 
     private fun createImageView(): ImageView {

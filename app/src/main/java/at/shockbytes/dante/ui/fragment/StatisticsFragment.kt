@@ -3,9 +3,12 @@ package at.shockbytes.dante.ui.fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.FragmentStatisticsBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.stats.StatsAdapter
 import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
@@ -14,13 +17,10 @@ import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.dante.util.viewModelOf
-import kotlinx.android.synthetic.main.dante_toolbar.*
-import kotlinx.android.synthetic.main.fragment_statistics.*
+
 import javax.inject.Inject
 
-class StatisticsFragment : BaseFragment() {
-
-    override val layoutId = R.layout.fragment_statistics
+class StatisticsFragment : BaseFragment<FragmentStatisticsBinding>() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -43,22 +43,33 @@ class StatisticsFragment : BaseFragment() {
         viewModel = viewModelOf(vmFactory)
     }
 
-    private fun setupToolbar() {
-        dante_toolbar_title.setText(R.string.label_stats)
-        dante_toolbar_back.apply {
-            setVisible(true)
-            setOnClickListener {
-                activity?.onBackPressed()
-            }
-        }
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentStatisticsBinding {
+        return FragmentStatisticsBinding.inflate(inflater, root, attachToRoot)
     }
 
     override fun setupViews() {
         setupToolbar()
 
-        fragment_statistics_rv.apply {
+        vb.fragmentStatisticsRv.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = statsAdapter
+        }
+    }
+
+    private fun setupToolbar() {
+        with(vb.toolbarStatistics) {
+            danteToolbarTitle.setText(R.string.label_stats)
+            danteToolbarBack.apply {
+                setVisible(true)
+                setOnClickListener {
+                    activity?.onBackPressed()
+                }
+            }
         }
     }
 

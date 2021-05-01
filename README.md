@@ -59,14 +59,11 @@ the user during the login process.
 - [ ] Upgrade to Kotlin > 1.4.20
     - [ ] ViewBinding
       - [x] Camera
-      - [ ] Core
       - [ ] App
-        - [ ] Fragments
-        - [ ] Activities
-        - [ ] Adapters
+      - [ ] Core
       - [ ] Tracking
       - [ ] Util
-    - [ ] Remove Kotterknife usage
+    - [x] Remove Kotterknife usage
 - [ ] Backup file improvements
     - [ ] Show path to local backup files
     - [ ] Open file with FileProvider

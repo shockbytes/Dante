@@ -8,12 +8,12 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.ItemBookBinding
 import at.shockbytes.dante.ui.view.ChipFactory
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_book.*
 
 class BookViewHolder(
     override val containerView: View,
@@ -21,6 +21,8 @@ class BookViewHolder(
     private val onOverflowActionClickedListener: ((BookEntity) -> Unit)?,
     private val onLabelClickedListener: ((BookLabel) -> Unit)?
 ) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
+
+    private val vb = ItemBookBinding.bind(containerView)
 
     private fun context(): Context = containerView.context
 
@@ -35,7 +37,7 @@ class BookViewHolder(
     }
 
     private fun updateLabels(labels: List<BookLabel>) {
-        chips_item_book_label.apply {
+        vb.chipsItemBookLabel.apply {
             setVisible(labels.isNotEmpty())
             removeAllViews()
         }
@@ -48,11 +50,11 @@ class BookViewHolder(
                     onLabelClickedListener
                 )
             }
-            .forEach(chips_item_book_label::addView)
+            .forEach(vb.chipsItemBookLabel::addView)
     }
 
     private fun setOverflowClickListener(content: BookEntity) {
-        item_book_img_overflow.setOnClickListener {
+        vb.itemBookImgOverflow.setOnClickListener {
             onOverflowActionClickedListener?.invoke(content)
         }
     }
@@ -67,14 +69,14 @@ class BookViewHolder(
                 t.pageCount.toDouble()
             )
             animateBookProgress(progress)
-            item_book_tv_progress.text = context().getString(R.string.percentage_formatter, progress)
+            vb.itemBookTvProgress.text = context().getString(R.string.percentage_formatter, progress)
         }
 
-        item_book_group_progress.setVisible(showProgress)
+        vb.itemBookGroupProgress.setVisible(showProgress)
     }
 
     private fun animateBookProgress(progress: Int) {
-        item_book_pb.progress = progress
+        vb.itemBookPb.progress = progress
     }
 
     private fun updateImageThumbnail(address: String?) {
@@ -82,19 +84,19 @@ class BookViewHolder(
             imageLoader.loadImageWithCornerRadius(
                 context(),
                 address,
-                item_book_img_thumb,
+                vb.itemBookImgThumb,
                 cornerDimension = context().resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
             )
         } else {
             // Books with no image will recycle another cover if not cleared here
-            item_book_img_thumb.setImageResource(R.drawable.ic_placeholder)
+            vb.itemBookImgThumb.setImageResource(R.drawable.ic_placeholder)
         }
     }
 
     private fun updateTexts(t: BookEntity) {
-        item_book_txt_title.text = t.title
-        item_book_txt_author.text = t.author
-        item_book_txt_subtitle.apply {
+        vb.itemBookTxtTitle.text = t.title
+        vb.itemBookTxtAuthor.text = t.author
+        vb.itemBookTxtSubtitle.apply {
             text = t.subTitle
             setVisible(t.subTitle.isNotEmpty())
         }

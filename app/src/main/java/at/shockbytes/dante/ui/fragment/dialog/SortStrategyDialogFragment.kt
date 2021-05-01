@@ -2,24 +2,24 @@ package at.shockbytes.dante.ui.fragment.dialog
 
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.RadioGroup
-import android.widget.TextView
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.DialogfragmentSortBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.util.settings.DanteSettings
 import at.shockbytes.dante.util.sort.SortStrategy
-import com.google.android.material.button.MaterialButton
-import kotterknife.bindView
 import javax.inject.Inject
 
 /**
  * Author:  Martin Macheiner
  * Date:    14.06.2018
  */
-class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit>() {
+class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit, DialogfragmentSortBinding>() {
 
     override val containerView: View
         get() = LayoutInflater.from(context).inflate(R.layout.dialogfragment_sort, null, false)
+
+    override val vb: DialogfragmentSortBinding
+        get() = DialogfragmentSortBinding.bind(containerView)
 
     @Inject
     lateinit var settings: DanteSettings
@@ -42,22 +42,22 @@ class SortStrategyDialogFragment : InteractiveViewDialogFragment<Unit>() {
         R.string.sort_strategy_labels_hint
     )
 
-    private val radioGroupDialogFragmentSort: RadioGroup by bindView(R.id.radioGroupDialogFragmentSort)
-    private val btnDialogFragmentSortApply: MaterialButton by bindView(R.id.btnDialogFragmentSortApply)
-    private val txtDialogFragmentSortHint: TextView by bindView(R.id.txtDialogFragmentSortHint)
+    // private val radioGroupDialogFragmentSort: RadioGroup by bindView(R.id.radioGroupDialogFragmentSort)
+    // private val btnDialogFragmentSortApply: MaterialButton by bindView(R.id.btnDialogFragmentSortApply)
+    // private val txtDialogFragmentSortHint: TextView by bindView(R.id.txtDialogFragmentSortHint)
 
     override fun setupViews() {
 
         val selectedId = positionToId(settings.sortStrategy.ordinal)
-        radioGroupDialogFragmentSort.check(selectedId)
-        txtDialogFragmentSortHint.text = hintForId(selectedId)
+        vb.radioGroupDialogFragmentSort.check(selectedId)
+        vb.txtDialogFragmentSortHint.text = hintForId(selectedId)
 
-        radioGroupDialogFragmentSort.setOnCheckedChangeListener { _, checkedId ->
-            txtDialogFragmentSortHint.text = hintForId(checkedId)
+        vb.radioGroupDialogFragmentSort.setOnCheckedChangeListener { _, checkedId ->
+            vb.txtDialogFragmentSortHint.text = hintForId(checkedId)
         }
 
-        btnDialogFragmentSortApply.setOnClickListener {
-            val pos = idToPosition(radioGroupDialogFragmentSort.checkedRadioButtonId)
+        vb.btnDialogFragmentSortApply.setOnClickListener {
+            val pos = idToPosition(vb.radioGroupDialogFragmentSort.checkedRadioButtonId)
             settings.sortStrategy = SortStrategy.values()[pos]
             applyListener?.invoke(Unit)
             dismiss()

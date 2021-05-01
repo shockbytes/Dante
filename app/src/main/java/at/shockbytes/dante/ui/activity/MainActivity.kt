@@ -26,7 +26,6 @@ import at.shockbytes.dante.ui.fragment.AnnouncementFragment
 import at.shockbytes.dante.ui.fragment.MenuFragment
 import at.shockbytes.dante.ui.viewmodel.MainViewModel
 import at.shockbytes.dante.ui.viewmodel.UserViewModel
-import at.shockbytes.dante.core.image.GlideImageLoader.loadBitmap
 import at.shockbytes.dante.databinding.ActivityMainBinding
 import at.shockbytes.dante.ui.widget.DanteAppWidgetManager
 import at.shockbytes.dante.util.settings.DanteSettings

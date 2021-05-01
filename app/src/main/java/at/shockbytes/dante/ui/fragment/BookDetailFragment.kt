@@ -95,7 +95,7 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
 
     private val animatableViewsList: List<View> by lazy {
         listOf(
-            vb.ivDetailImage
+            vb.ivDetailImage,
             vb.txtDetailTitle,
             vb.txtDetailSubtitle,
             vb.txtDetailAuthor,
@@ -284,7 +284,7 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
             .apply {
                 onRateClickListener = { rating ->
                     viewModel.updateRating(rating)
-                    vb.btnDetailRate?.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
+                    vb.btnDetailRate.text = resources.getQuantityString(R.plurals.book_rating, rating, rating)
                 }
             }
     }
@@ -336,7 +336,7 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
         val actionBarTextColor = palette?.lightMutedSwatch?.titleTextColor
         val statusBarColor = palette?.darkMutedSwatch?.rgb
 
-        (activity as? TintableBackNavigableActivity)
+        (activity as? TintableBackNavigableActivity<*>)
             ?.tintSystemBarsWithText(actionBarColor, actionBarTextColor, statusBarColor)
     }
 

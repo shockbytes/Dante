@@ -6,7 +6,9 @@
     android:background="@color/mainBackground"
     android:orientation="vertical">
 
-    <include layout="@layout/dante_toolbar" />
+    <include
+        android:id="@+id/toolbar_timeline"
+        layout="@layout/dante_toolbar" />
 
     <!-- Error layout -->
     <androidx.constraintlayout.widget.ConstraintLayout

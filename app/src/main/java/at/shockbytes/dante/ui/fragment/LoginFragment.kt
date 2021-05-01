@@ -27,7 +27,6 @@ import at.shockbytes.dante.util.viewModelOfActivity
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.github.florent37.inlineactivityresult.kotlin.startForResult
-import kotlinx.android.synthetic.main.fragment_login.*
 import javax.inject.Inject
 
 class LoginFragment : BaseFragment<FragmentLoginBinding>() {
@@ -52,26 +51,26 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun setupViews() {
 
-        btn_login_google.setOnClickListener {
+        vb.btnLoginGoogle.setOnClickListener {
             viewModel.requestGoogleLogin()
                 .subscribe(::handleGoogleLoginRequest)
                 .addTo(compositeDisposable)
         }
 
-        btn_login_mail.setOnClickListener {
+        vb.btnLoginMail.setOnClickListener {
             MailLoginBottomSheetDialogFragment
                 .newInstance(MailLoginViewModel.MailLoginState.ResolveEmailAddress)
                 .setOnCredentialsEnteredListener(viewModel::authorizeWithMail)
                 .show(parentFragmentManager, "mail-login-fragment")
         }
 
-        btn_login_skip.setOnClickListener {
+        vb.btnLoginSkip.setOnClickListener {
             showAnonymousSignUpHintDialog {
                 viewModel.loginAnonymously()
             }
         }
 
-        btn_login_help.setOnClickListener {
+        vb.btnLoginHelp.setOnClickListener {
             viewModel.trackLoginProblemClicked()
             MailLauncher.sendMail(
                 requireActivity(),
@@ -130,11 +129,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun setNewUserTexts() {
-        tv_login_hello.setText(R.string.welcome_to_dante)
+        vb.tvLoginHello.setText(R.string.welcome_to_dante)
 
-        btn_login_google.setText(R.string.login_with_google)
-        btn_login_mail.setText(R.string.login_with_mail)
-        btn_login_skip.apply {
+        vb.btnLoginGoogle.setText(R.string.login_with_google)
+        vb.btnLoginMail.setText(R.string.login_with_mail)
+        vb.btnLoginSkip.apply {
             setText(R.string.login_anonymously)
             setIconResource(0)
         }
@@ -149,7 +148,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
                 viewModel.trackOpenTermsOfServices()
             }
 
-        tv_login_tos.apply {
+        vb.tvLoginTos.apply {
             setVisible(true)
             movementMethod = LinkMovementMethod.getInstance()
             text = getString(R.string.terms_of_services_prefix)
@@ -158,18 +157,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     }
 
     private fun setStandardUserTexts() {
-        tv_login_hello.setText(R.string.welcome_back)
+        vb.tvLoginHello.setText(R.string.welcome_back)
 
-        btn_login_google.setText(R.string.continue_with_google)
-        btn_login_mail.setText(R.string.continue_with_mail)
-        btn_login_skip.apply {
+        vb.btnLoginGoogle.setText(R.string.continue_with_google)
+        vb.btnLoginMail.setText(R.string.continue_with_mail)
+        vb.btnLoginSkip.apply {
             setText(R.string.continue_anonymously)
             setIconResource(R.drawable.ic_incognito)
         }
     }
 
     private fun hideTermsOfServicesButton() {
-        tv_login_tos.setVisible(false)
+        vb.tvLoginTos.setVisible(false)
     }
 
     override fun unbindViewModel() = Unit

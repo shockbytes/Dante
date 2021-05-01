@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.ItemFeatureFlagBinding
 import at.shockbytes.dante.flagging.FeatureFlagItem
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_feature_flag.*
 
 class FeatureFlagConfigAdapter(
     context: Context,
@@ -22,19 +22,21 @@ class FeatureFlagConfigAdapter(
         override val containerView: View
     ) : BaseAdapter.ViewHolder<FeatureFlagItem>(containerView), LayoutContainer {
 
+        private val vb = ItemFeatureFlagBinding.bind(containerView)
+
         override fun bindToView(content: FeatureFlagItem, position: Int) {
             with(content) {
 
-                item_feature_flag_txt_title.text = displayName
-                item_feature_flag_switch.isChecked = value
+                vb.itemFeatureFlagTxtTitle.text = displayName
+                vb.itemFeatureFlagSwitch.isChecked = value
             }
 
-            item_feature_flag_root.setOnClickListener {
-                item_feature_flag_switch.toggle()
+            vb.itemFeatureFlagRoot.setOnClickListener {
+                vb.itemFeatureFlagSwitch.toggle()
                 updateItemState(content)
             }
 
-            item_feature_flag_switch.setOnClickListener {
+            vb.itemFeatureFlagSwitch.setOnClickListener {
                 updateItemState(content)
             }
         }

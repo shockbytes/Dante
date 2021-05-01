@@ -4,21 +4,19 @@ import android.annotation.SuppressLint
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
+import at.shockbytes.dante.databinding.DialogfragmentCreateLabelBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.custom.colorpicker.ColorPickerItems
-import at.shockbytes.dante.ui.custom.colorpicker.ColorPickerView
 import at.shockbytes.dante.util.HexColor
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.hideKeyboard
+import at.shockbytes.dante.util.layoutInflater
 import kotlinx.android.parcel.Parcelize
-import kotterknife.bindView
 
-class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel>() {
+class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel, DialogfragmentCreateLabelBinding>() {
 
     private val colors = listOf(
         R.color.tabcolor_upcoming,
@@ -35,21 +33,20 @@ class CreateLabelDialogFragment : InteractiveViewDialogFragment<BookLabel>() {
 
     private var alreadyCreatedLabels: CreatedLabels by argument()
 
-    private val colorPicker by bindView<ColorPickerView>(R.id.color_picker_label)
-    private val btnCreate by bindView<Button>(R.id.btn_new_label)
-    private val editTextTitle by bindView<EditText>(R.id.et_name_label)
-
     override val containerView: View
         get() = LayoutInflater.from(context).inflate(R.layout.dialogfragment_create_label, null, false)
 
+    override val vb: DialogfragmentCreateLabelBinding
+        get() = DialogfragmentCreateLabelBinding.bind(containerView)
+
     @SuppressLint("ResourceType")
     override fun setupViews() {
-        colorPicker.colors = ColorPickerItems.fromColorResources(colors, preSelectedIndex = 0)
+        vb.colorPickerLabel.initialize(ColorPickerItems.fromColorResources(colors, preSelectedIndex = 0))
 
-        btnCreate.setOnClickListener {
+        vb.btnNewLabel.setOnClickListener {
 
-            val title = editTextTitle.text.toString()
-            val labelColor = colorPicker.selectedItem?.let { colorPickerItem ->
+            val title = vb.etNameLabel.text.toString()
+            val labelColor = vb.colorPickerLabel.selectedItem?.let { colorPickerItem ->
                 resources.getString(colorPickerItem.colorRes)
             }
 

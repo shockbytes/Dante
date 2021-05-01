@@ -2,6 +2,8 @@ package at.shockbytes.dante.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -12,14 +14,14 @@ import at.shockbytes.dante.util.viewModelOf
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.book.PageRecord
+import at.shockbytes.dante.databinding.FragmentPageRecordsDetailsBinding
 import at.shockbytes.dante.ui.adapter.pagerecords.PageRecordsAdapter
 import at.shockbytes.dante.util.addTo
 import at.shockbytes.util.AppUtils
 import com.afollestad.materialdialogs.MaterialDialog
-import kotlinx.android.synthetic.main.fragment_page_records_details.*
 import javax.inject.Inject
 
-class PageRecordsDetailFragment : BaseFragment() {
+class PageRecordsDetailFragment : BaseFragment<FragmentPageRecordsDetailsBinding>() {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -27,8 +29,6 @@ class PageRecordsDetailFragment : BaseFragment() {
     private var bookId: BookId by argument()
 
     private lateinit var viewModel: PageRecordsDetailViewModel
-
-    override val layoutId: Int = R.layout.fragment_page_records_details
 
     private val recordsAdapter: PageRecordsAdapter by lazy {
         PageRecordsAdapter(requireContext(), ::askForEntryDeletionConfirmation)
@@ -55,15 +55,24 @@ class PageRecordsDetailFragment : BaseFragment() {
         viewModel = viewModelOf(vmFactory)
     }
 
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentPageRecordsDetailsBinding {
+        return FragmentPageRecordsDetailsBinding.inflate(inflater, root, attachToRoot)
+    }
+
     override fun setupViews() {
-        btn_page_records_details_close.setOnClickListener {
+        vb.btnPageRecordsDetailsClose.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        layout_page_records_details.setOnClickListener {
+        vb.layoutPageRecordsDetails.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        rv_page_records_details.adapter = recordsAdapter
+        vb.rvPageRecordsDetails.adapter = recordsAdapter
     }
 
     override fun injectToGraph(appComponent: AppComponent) {

@@ -1,5 +1,6 @@
 package at.shockbytes.dante.injection
 
+import androidx.viewbinding.ViewBinding
 import at.shockbytes.dante.DanteApp
 import at.shockbytes.dante.core.injection.CoreComponent
 import at.shockbytes.dante.core.injection.ModuleScope

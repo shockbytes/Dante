@@ -7,10 +7,10 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookIds
 import at.shockbytes.dante.core.book.BookSearchItem
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.ItemBookSearchSuggestionBinding
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_book_search_suggestion.*
 
 /**
  * Author: Martin Macheiner
@@ -31,11 +31,13 @@ class BookSearchSuggestionAdapter(
         override val containerView: View
     ) : BaseAdapter.ViewHolder<BookSearchItem>(containerView), LayoutContainer {
 
-        override fun bindToView(content: BookSearchItem, position: Int) {
-            item_book_search_suggestion_txt_title.text = content.title
-            item_book_search_suggestion_txt_author.text = content.author
+        private val vb = ItemBookSearchSuggestionBinding.bind(containerView)
 
-            item_book_search_suggestion_btn_add.apply {
+        override fun bindToView(content: BookSearchItem, position: Int) {
+            vb.itemBookSearchSuggestionTxtTitle.text = content.title
+            vb.itemBookSearchSuggestionTxtAuthor.text = content.author
+
+            vb.itemBookSearchSuggestionBtnAdd.apply {
                 setVisible(BookIds.isInvalid(content.bookId))
                 setOnClickListener {
                     addClickedListener.invoke(content)
@@ -50,7 +52,7 @@ class BookSearchSuggestionAdapter(
                 imageLoader.loadImageWithCornerRadius(
                     context,
                     thumbnailAddress,
-                    item_book_search_suggestion_imgview_cover,
+                    vb.itemBookSearchSuggestionImgviewCover,
                     R.drawable.ic_placeholder,
                     cornerDimension = context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                 )

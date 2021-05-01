@@ -8,7 +8,7 @@ import androidx.viewbinding.ViewBinding
  * Author:  Martin Macheiner
  * Date:    23.12.2017
  */
-abstract class ContainerTintableBackNavigableActivity : TintableBackNavigableActivity() {
+abstract class ContainerTintableBackNavigableActivity<V : ViewBinding> : TintableBackNavigableActivity<V>() {
 
     abstract val displayFragment: Fragment
 
@@ -16,7 +16,7 @@ abstract class ContainerTintableBackNavigableActivity : TintableBackNavigableAct
         super.onCreate(savedInstanceState)
 
         supportFragmentManager.beginTransaction()
-                .replace(android.R.id.content, displayFragment)
-                .commit()
+            .replace(android.R.id.content, displayFragment)
+            .commit()
     }
 }

@@ -9,7 +9,7 @@ import at.shockbytes.dante.injection.AppComponent
  * Author:  Martin Macheiner
  * Date:    23.12.2017
  */
-abstract class ContainerBackNavigableActivity<B: ViewBinding> : BackNavigableActivity<B>() {
+abstract class ContainerBackNavigableActivity<V: ViewBinding> : BackNavigableActivity<V>() {
 
     abstract val displayFragment: Fragment
 

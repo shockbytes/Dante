@@ -1,52 +1,61 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.FragmentRatingBinding
 import at.shockbytes.dante.ui.viewmodel.BookDetailViewModel
 import at.shockbytes.dante.util.addTo
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxRatingBar
-import kotlinx.android.synthetic.main.fragment_rating.*
 import timber.log.Timber
 import javax.inject.Inject
 
-class RateFragment : BaseFragment() {
-
-    override val layoutId = R.layout.fragment_rating
+class RateFragment : BaseFragment<FragmentRatingBinding>() {
 
     @Inject
     lateinit var imageLoader: ImageLoader
 
     var onRateClickListener: ((Int) -> Unit)? = null
 
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentRatingBinding {
+        return FragmentRatingBinding.inflate(inflater, root, attachToRoot)
+    }
+
     override fun setupViews() {
 
-        layout_rating.setOnClickListener {
+        vb.layoutRating.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        btn_rating_close.setOnClickListener {
+        vb.btnRatingClose.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
 
-        RxRatingBar.ratingChanges(rb_rating)
+        RxRatingBar.ratingChanges(vb.rbRating)
                 .distinctUntilChanged()
                 .subscribe({
                     val rating = it.toInt() - 1 // -1 because rating starts with 1
                     if (rating in 0..4) { // Error can somehow occur, therefore check!
                         context?.let { ctx ->
-                            tv_rating_rationale.text = ctx.resources.getStringArray(R.array.ratings)[rating]
+                            vb.tvRatingRationale.text = ctx.resources.getStringArray(R.array.ratings)[rating]
                         }
                     }
                 }, { throwable -> Timber.e(throwable) })
                 .addTo(compositeDisposable)
 
-        RxView.clicks(btn_rating_rate)
+        RxView.clicks(vb.btnRatingRate)
                 .distinctUntilChanged()
                 .subscribe({
-                    onRateClickListener?.invoke(rb_rating.rating.toInt())
+                    onRateClickListener?.invoke(vb.rbRating.rating.toInt())
                     parentFragmentManager.popBackStack()
                 }, { throwable ->
                     Timber.e(throwable)
@@ -55,14 +64,14 @@ class RateFragment : BaseFragment() {
 
         arguments?.getParcelable<BookDetailViewModel.RatingInfo>(ARG_RATE_INFO)?.let { (title, url, rating) ->
 
-            tv_rating_header.text = getString(R.string.dialogfragment_rating_title, title)
+            vb.tvRatingHeader.text = getString(R.string.dialogfragment_rating_title, title)
 
             context?.let { ctx ->
                 url?.let {
                     imageLoader.loadImageWithCornerRadius(
                         ctx,
                         url,
-                        iv_rating_cover,
+                        vb.ivRatingCover,
                         R.drawable.ic_placeholder,
                         cornerDimension = ctx.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                     )
@@ -70,7 +79,7 @@ class RateFragment : BaseFragment() {
             }
 
             if (rating > 0) {
-                rb_rating.rating = rating.toFloat()
+                vb.rbRating.rating = rating.toFloat()
             }
         }
     }

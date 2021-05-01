@@ -1,22 +1,22 @@
 package at.shockbytes.dante.ui.fragment
 
 import android.os.Bundle
-import at.shockbytes.dante.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
+import at.shockbytes.dante.databinding.FragmentBookActionSheetBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.OnBookActionClickedListener
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.setVisible
-import kotlinx.android.synthetic.main.fragment_book_action_sheet.*
 
 /**
  * Author:  Martin Macheiner
  * Date:    10.06.2020
  */
-class BookActionBottomSheetFragment : BaseBottomSheetFragment() {
+class BookActionBottomSheetFragment : BaseBottomSheetFragment<FragmentBookActionSheetBinding>() {
 
-    override val layoutRes: Int = R.layout.fragment_book_action_sheet
 
     private lateinit var listener: OnBookActionClickedListener
 
@@ -28,6 +28,14 @@ class BookActionBottomSheetFragment : BaseBottomSheetFragment() {
             ?: throw IllegalStateException("$parentFragment does not implement OnBookActionClickedListener interface")
     }
 
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentBookActionSheetBinding {
+        return FragmentBookActionSheetBinding.inflate(inflater, root, attachToRoot)
+    }
+
     override fun setupViews() {
         hideSelectedStateItem(book.state)
         setupClickListeners()
@@ -35,39 +43,39 @@ class BookActionBottomSheetFragment : BaseBottomSheetFragment() {
 
     private fun hideSelectedStateItem(state: BookState) {
         when (state) {
-            BookState.READ_LATER -> listOf(btn_book_action_move_to_upcoming)
-            BookState.READING -> listOf(btn_book_action_move_to_current)
-            BookState.READ -> listOf(btn_book_action_move_to_done)
-            BookState.WISHLIST -> listOf(btn_book_action_edit, btn_book_action_suggest)
+            BookState.READ_LATER -> listOf(vb.btnBookActionMoveToUpcoming)
+            BookState.READING -> listOf(vb.btnBookActionMoveToCurrent)
+            BookState.READ -> listOf(vb.btnBookActionMoveToDone)
+            BookState.WISHLIST -> listOf(vb.btnBookActionEdit, vb.btnBookActionSuggest)
         }.forEach { it.setVisible(false) }
     }
 
     private fun setupClickListeners() {
-        btn_book_action_move_to_upcoming.setOnClickListener {
+        vb.btnBookActionMoveToUpcoming.setOnClickListener {
             listener.onMoveToUpcoming(book)
             dismiss()
         }
-        btn_book_action_move_to_current.setOnClickListener {
+        vb.btnBookActionMoveToCurrent.setOnClickListener {
             listener.onMoveToCurrent(book)
             dismiss()
         }
-        btn_book_action_move_to_done.setOnClickListener {
+        vb.btnBookActionMoveToDone.setOnClickListener {
             listener.onMoveToDone(book)
             dismiss()
         }
-        btn_book_action_share.setOnClickListener {
+        vb.btnBookActionShare.setOnClickListener {
             listener.onShare(book)
             dismiss()
         }
-        btn_book_action_edit.setOnClickListener {
+        vb.btnBookActionEdit.setOnClickListener {
             listener.onEdit(book)
             dismiss()
         }
-        btn_book_action_suggest.setOnClickListener {
+        vb.btnBookActionSuggest.setOnClickListener {
             listener.onSuggest(book)
             dismiss()
         }
-        btn_book_action_delete.setOnClickListener {
+        vb.btnBookActionDelete.setOnClickListener {
             listener.onDelete(book) { gotDeleted ->
                 if (gotDeleted) {
                     dismiss()

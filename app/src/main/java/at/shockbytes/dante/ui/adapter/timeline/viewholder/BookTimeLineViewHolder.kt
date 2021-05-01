@@ -5,32 +5,35 @@ import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
+import at.shockbytes.dante.databinding.ItemTimeLineBookBinding
 import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_time_line_book.*
 
 class BookTimeLineViewHolder(
     override val containerView: View,
     private val imageLoader: ImageLoader
 ) : BaseAdapter.ViewHolder<TimeLineItem>(containerView), LayoutContainer {
 
+    private val vb = ItemTimeLineBookBinding.bind(containerView)
+
     override fun bindToView(content: TimeLineItem, position: Int) {
 
         with(content as TimeLineItem.BookTimeLineItem) {
             if ((position % 2) == 0) {
-                group_item_time_line_left.setVisible(false)
-                group_item_time_line_right.setVisible(true)
+                vb.groupItemTimeLineLeft.setVisible(false)
+                vb.groupItemTimeLineRight.setVisible(true)
 
-                setTitle(tv_item_time_line_book_right, title)
-                loadThumbnail(iv_item_time_line_book_right, image)
+
+                setTitle(vb.tvItemTimeLineBookRight, title)
+                loadThumbnail(vb.ivItemTimeLineBookRight, image)
             } else {
-                group_item_time_line_left.setVisible(true)
-                group_item_time_line_right.setVisible(false)
+                vb.groupItemTimeLineLeft.setVisible(true)
+                vb.groupItemTimeLineRight.setVisible(false)
 
-                setTitle(tv_item_time_line_book_left, title)
-                loadThumbnail(iv_item_time_line_book_left, image)
+                setTitle(vb.tvItemTimeLineBookLeft, title)
+                loadThumbnail(vb.ivItemTimeLineBookLeft, image)
             }
         }
     }

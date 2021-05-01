@@ -6,23 +6,22 @@ import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import at.shockbytes.dante.R
-import kotterknife.bindView
+import at.shockbytes.dante.databinding.DialogfragmentSimpleRequestBinding
+import at.shockbytes.dante.util.arguments.argument
 
 /**
  * Author:  Martin Macheiner
  * Date:    02.01.2018
  */
+// TODO Deprecated
+@Deprecated("Remove this view!")
 class SimpleRequestDialogFragment : DialogFragment() {
 
-    private val txtHeader: TextView by bindView(R.id.txtDialogFragmentSimpleRequestHeader)
-    private val txtMessage: TextView by bindView(R.id.txtDialogFragmentSimpleRequestMessage)
-
-    private lateinit var title: String
-    private lateinit var message: String
-    private var icon: Int = 0
-    private var positiveTextId: Int = 0
+    private var title: String by argument()
+    private var message: String by argument()
+    private var icon: Int by argument()
+    private var positiveTextId: Int by argument()
 
     private var acceptListener: (() -> Unit)? = null
 
@@ -32,16 +31,11 @@ class SimpleRequestDialogFragment : DialogFragment() {
         get() = LayoutInflater.from(context)
                 .inflate(R.layout.dialogfragment_simple_request, null, false)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        title = arguments?.getString(argTitle) ?: ""
-        message = arguments?.getString(argMessage) ?: ""
-        icon = arguments?.getInt(argIcon) ?: R.mipmap.ic_launcher
-        positiveTextId = arguments?.getInt(argPositiveText) ?: android.R.string.ok
-    }
+    private val vb: DialogfragmentSimpleRequestBinding
+        get() = DialogfragmentSimpleRequestBinding.bind(dialogView)
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context!!)
+        return AlertDialog.Builder(requireContext())
                 .setView(dialogView)
                 .setPositiveButton(positiveTextId) { _, _ -> acceptListener?.invoke() }
                 .setNegativeButton(android.R.string.cancel) { _, _ -> declineListener?.invoke() }
@@ -51,9 +45,11 @@ class SimpleRequestDialogFragment : DialogFragment() {
     override fun onResume() {
         super.onResume()
 
-        txtHeader.setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
-        txtHeader.text = title
-        txtMessage.text = message
+        vb.txtDialogFragmentSimpleRequestHeader.apply {
+            setCompoundDrawablesWithIntrinsicBounds(icon, 0, 0, 0)
+            text = title
+        }
+        vb.txtDialogFragmentSimpleRequestMessage.text = message
     }
 
     fun setOnAcceptListener(listener: () -> Unit): SimpleRequestDialogFragment {
@@ -68,11 +64,6 @@ class SimpleRequestDialogFragment : DialogFragment() {
 
     companion object {
 
-        private const val argTitle = "title"
-        private const val argMessage = "message"
-        private const val argIcon = "icon"
-        private const val argPositiveText = "positive_text"
-
         fun newInstance(
             title: String,
             message: String,
@@ -80,12 +71,10 @@ class SimpleRequestDialogFragment : DialogFragment() {
             positiveText: Int = android.R.string.ok
         ): SimpleRequestDialogFragment {
             return SimpleRequestDialogFragment().apply {
-                arguments = Bundle(4).apply {
-                    putString(argTitle, title)
-                    putString(argMessage, message)
-                    putInt(argIcon, icon)
-                    putInt(argPositiveText, positiveText)
-                }
+                this.title = title
+                this.message = message
+                this.icon = icon
+                this.positiveTextId = positiveText
             }
         }
     }

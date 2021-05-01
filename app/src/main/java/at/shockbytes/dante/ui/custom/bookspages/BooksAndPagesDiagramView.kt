@@ -6,8 +6,10 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.PagesDiagramViewBinding
 import at.shockbytes.dante.ui.custom.DanteMarkerView
 import at.shockbytes.dante.util.getThemeFont
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.dante.util.setVisible
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
@@ -18,24 +20,21 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import kotlinx.android.synthetic.main.pages_diagram_view.view.*
 
 class BooksAndPagesDiagramView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
 
-    init {
-        inflate(context, R.layout.pages_diagram_view, this)
-    }
+    private val vb = PagesDiagramViewBinding.inflate(context.layoutInflater(), this, true)
 
     private val chart: LineChart
-        get() = lc_page_records
+        get() = vb.lcPageRecords
 
     var headerTitle: String = ""
         set(value) {
             field = value
-            tv_page_record_header.text = value
+            vb.tvPageRecordHeader.text = value
         }
 
     var action: BooksAndPagesDiagramAction = BooksAndPagesDiagramAction.Gone
@@ -47,16 +46,16 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
     val actionView: View
         get() {
             return when (action) {
-                is BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow
-                is BooksAndPagesDiagramAction.Action -> btn_page_record_action
+                is BooksAndPagesDiagramAction.Overflow -> vb.ivPageRecordOverflow
+                is BooksAndPagesDiagramAction.Action -> vb.btnPageRecordAction
                 is BooksAndPagesDiagramAction.Gone -> throw IllegalStateException("No action view for action type GONE")
             }
         }
 
     fun hideHeader() {
-        tv_page_record_header.setVisible(false)
-        btn_page_record_action.setVisible(false)
-        iv_page_record_overflow.setVisible(false)
+        vb.tvPageRecordHeader.setVisible(false)
+        vb.btnPageRecordAction.setVisible(false)
+        vb.ivPageRecordOverflow.setVisible(false)
     }
 
     fun setData(
@@ -159,8 +158,8 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
 
     fun registerOnActionClick(clickAction: () -> Unit) {
         when (action) {
-            is BooksAndPagesDiagramAction.Overflow -> iv_page_record_overflow.setOnClickListener { clickAction() }
-            is BooksAndPagesDiagramAction.Action -> btn_page_record_action.setOnClickListener { clickAction() }
+            is BooksAndPagesDiagramAction.Overflow -> vb.ivPageRecordOverflow.setOnClickListener { clickAction() }
+            is BooksAndPagesDiagramAction.Action -> vb.btnPageRecordAction.setOnClickListener { clickAction() }
             is BooksAndPagesDiagramAction.Gone -> Unit // Do nothing
         }
     }
@@ -168,16 +167,16 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
     private fun setActionVisibility(value: BooksAndPagesDiagramAction) {
         when (value) {
             BooksAndPagesDiagramAction.Overflow -> {
-                iv_page_record_overflow.setVisible(true)
-                btn_page_record_action.setVisible(false)
+                vb.ivPageRecordOverflow.setVisible(true)
+                vb.btnPageRecordAction.setVisible(false)
             }
             BooksAndPagesDiagramAction.Gone -> {
-                iv_page_record_overflow.setVisible(false)
-                btn_page_record_action.setVisible(false)
+                vb.ivPageRecordOverflow.setVisible(false)
+                vb.btnPageRecordAction.setVisible(false)
             }
             is BooksAndPagesDiagramAction.Action -> {
-                iv_page_record_overflow.setVisible(false)
-                btn_page_record_action.apply {
+                vb.ivPageRecordOverflow.setVisible(false)
+                vb.btnPageRecordAction.apply {
                     setVisible(true)
                     text = value.title
                 }

@@ -1,13 +1,15 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import at.shockbytes.dante.R
+import at.shockbytes.dante.databinding.FragmentReadingGoalPickerBinding
 import at.shockbytes.dante.injection.AppComponent
 import at.shockbytes.dante.ui.adapter.stats.model.ReadingGoalType
 import at.shockbytes.dante.util.arguments.argument
 import at.shockbytes.dante.util.arguments.argumentNullable
-import kotlinx.android.synthetic.main.fragment_reading_goal_picker.*
 
-class ReadingGoalPickerFragment : BaseFragment() {
+class ReadingGoalPickerFragment : BaseFragment<FragmentReadingGoalPickerBinding>() {
 
     interface OnReadingGoalPickedListener {
 
@@ -15,8 +17,6 @@ class ReadingGoalPickerFragment : BaseFragment() {
 
         fun onDelete(goalType: ReadingGoalType)
     }
-
-    override val layoutId: Int = R.layout.fragment_reading_goal_picker
 
     private var type: ReadingGoalType by argument()
     private var initialValue: Int? by argumentNullable()
@@ -30,33 +30,41 @@ class ReadingGoalPickerFragment : BaseFragment() {
         setupCallbackListeners()
         setupType()
 
-        initialValue?.toFloat()?.let(slider_reading_goal::setValue)
+        initialValue?.toFloat()?.let(vb.sliderReadingGoal::setValue)
+    }
+
+    override fun createViewBinding(
+        inflater: LayoutInflater,
+        root: ViewGroup?,
+        attachToRoot: Boolean
+    ): FragmentReadingGoalPickerBinding {
+        return FragmentReadingGoalPickerBinding.inflate(inflater, root, attachToRoot)
     }
 
     private fun setupCallbackListeners() {
-        btn_reading_goal_delete.setOnClickListener {
+        vb.btnReadingGoalDelete.setOnClickListener {
             onReadingGoalPickedListener?.onDelete(type)
             closeFragment()
         }
 
-        btn_reading_goal_apply.setOnClickListener {
-            onReadingGoalPickedListener?.onGoalPicked(slider_reading_goal.value.toInt(), type)
+        vb.btnReadingGoalApply.setOnClickListener {
+            onReadingGoalPickedListener?.onGoalPicked(vb.sliderReadingGoal.value.toInt(), type)
             closeFragment()
         }
     }
 
     private fun setupLottieAnimation() {
-        lav_reading_goal.apply {
+        vb.lavReadingGoal.apply {
             setMinFrame(MIN_FRAME)
             setMaxFrame(MAX_FRAME)
         }
     }
 
     private fun setupCloseListeners() {
-        btn_reading_goal_close.setOnClickListener {
+        vb.btnReadingGoalClose.setOnClickListener {
             closeFragment()
         }
-        layout_reading_goal_picker.setOnClickListener {
+        vb.layoutReadingGoalPicker.setOnClickListener {
             closeFragment()
         }
     }
@@ -66,7 +74,7 @@ class ReadingGoalPickerFragment : BaseFragment() {
     }
 
     private fun setupSlider() {
-        slider_reading_goal.apply {
+        vb.sliderReadingGoal.apply {
 
             valueTo = type.sliderValueTo
             valueFrom = type.sliderValueFrom
@@ -85,7 +93,7 @@ class ReadingGoalPickerFragment : BaseFragment() {
         val valueP = ((100f / (maxValue - minValue)) * value).div(100)
         val frame = ((MAX_FRAME - MIN_FRAME) * valueP).toInt() + MIN_FRAME
 
-        lav_reading_goal.frame = frame
+        vb.lavReadingGoal.frame = frame
     }
 
     private fun updateLevel(min: Float, max: Float, value: Float) {
@@ -99,15 +107,15 @@ class ReadingGoalPickerFragment : BaseFragment() {
             else -> R.string.reading_goal_level_0
         }
 
-        tv_reading_goal_level.setText(levelRes)
+        vb.tvReadingGoalLevel.setText(levelRes)
     }
 
     private fun setupType() {
-        tv_fragment_reading_goal_header.setText(type.title)
+        vb.tvFragmentReadingGoalHeader.setText(type.title)
     }
 
     private fun updateGoalLabel(value: Int) {
-        tv_reading_goal_label.text = getString(type.labelTemplate, value, getString(R.string.month))
+        vb.tvReadingGoalLabel.text = getString(type.labelTemplate, value, getString(R.string.month))
     }
 
     fun setOnReadingGoalPickedListener(

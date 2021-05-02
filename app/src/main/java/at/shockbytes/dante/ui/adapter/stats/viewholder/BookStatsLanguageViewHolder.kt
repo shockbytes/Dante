@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
-import android.view.View
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.Languages
@@ -17,13 +16,10 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
-import kotlinx.android.extensions.LayoutContainer
 
 class BookStatsLanguageViewHolder(
-    override val containerView: View
-) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
-
-    private val vb = ItemStatsLanguagesBinding.bind(containerView)
+    private val vb: ItemStatsLanguagesBinding
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(vb.root) {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.LanguageDistribution) {
@@ -48,8 +44,8 @@ class BookStatsLanguageViewHolder(
         vb.chartItemStatsLanguage.setVisible(true)
 
         val entries = languages.map { (language, books) ->
-            val title = containerView.context.getString(language.title)
-            val iconDrawable = ContextCompat.getDrawable(containerView.context, language.image)
+            val title = vb.root.context.getString(language.title)
+            val iconDrawable = ContextCompat.getDrawable(vb.root.context, language.image)
             PieEntry(books.toFloat(), title, iconDrawable)
         }
 
@@ -89,8 +85,8 @@ class BookStatsLanguageViewHolder(
             setDrawMarkers(true)
             marker = DanteMarkerView(
                 context,
-                vb.chartItemStatsLanguage,
-                MarkerViewLabelFactory.forPlainEntries(R.string.books_amount)
+                chartView = vb.chartItemStatsLanguage,
+                labelFactory = MarkerViewLabelFactory.forPlainEntries(R.string.books_amount)
             )
 
             data = PieData(pieDataSet)

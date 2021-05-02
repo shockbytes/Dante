@@ -1,8 +1,6 @@
 package at.shockbytes.dante.ui.adapter.main
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
@@ -11,20 +9,18 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.databinding.ItemBookBinding
 import at.shockbytes.dante.ui.view.ChipFactory
 import at.shockbytes.dante.util.DanteUtils
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class BookViewHolder(
-    override val containerView: View,
+    private val vb: ItemBookBinding,
     private val imageLoader: ImageLoader,
     private val onOverflowActionClickedListener: ((BookEntity) -> Unit)?,
     private val onLabelClickedListener: ((BookLabel) -> Unit)?
-) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookAdapterItem>(vb.root) {
 
-    private val vb = ItemBookBinding.bind(containerView)
-
-    private fun context(): Context = containerView.context
+    private fun context(): Context = vb.root.context
 
     override fun bindToView(content: BookAdapterItem, position: Int) {
         with(content as BookAdapterItem.Book) {
@@ -111,7 +107,7 @@ class BookViewHolder(
             onLabelClickedListener: ((BookLabel) -> Unit)?
         ): BookViewHolder {
             return BookViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_book, parent, false),
+                ItemBookBinding.inflate(parent.context.layoutInflater(), parent, false),
                 imageLoader,
                 onOverflowActionClickedListener,
                 onLabelClickedListener

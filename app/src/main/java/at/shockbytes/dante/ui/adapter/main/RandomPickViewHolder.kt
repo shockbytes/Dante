@@ -1,19 +1,14 @@
 package at.shockbytes.dante.ui.adapter.main
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ItemRandomPickBinding
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class RandomPickViewHolder(
-    override val containerView: View,
+    private val vb: ItemRandomPickBinding,
     private val callback: RandomPickCallback?
-) : BaseAdapter.ViewHolder<BookAdapterItem>(containerView), LayoutContainer {
-
-    private val vb = ItemRandomPickBinding.bind(containerView)
+) : BaseAdapter.ViewHolder<BookAdapterItem>(vb.root) {
 
     override fun bindToView(content: BookAdapterItem, position: Int) {
 
@@ -33,8 +28,8 @@ class RandomPickViewHolder(
             callback: RandomPickCallback?
         ): RandomPickViewHolder {
             return RandomPickViewHolder(
-                containerView = LayoutInflater.from(parent.context).inflate(R.layout.item_random_pick, parent, false),
-                callback = callback
+                ItemRandomPickBinding.inflate(parent.context.layoutInflater(), parent, false),
+                callback
             )
         }
     }

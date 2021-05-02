@@ -28,7 +28,7 @@ object ChipFactory {
         }
 
         return Chip(context).apply {
-            chipBackgroundColor = ColorStateList.valueOf(Color.WHITE)
+            chipBackgroundColor = ColorStateList.valueOf(Color.TRANSPARENT)
             text = label.title
             typeface = context.getBoldThemeFont()
             setTextColor(chipColor)

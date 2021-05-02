@@ -3,7 +3,6 @@ package at.shockbytes.dante.ui.adapter
 import android.animation.LayoutTransition
 import android.content.Context
 import android.content.res.ColorStateList
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,8 +16,8 @@ import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookLabel
 import at.shockbytes.dante.databinding.ItemBookLabelManagementBinding
 import at.shockbytes.dante.util.isNightModeEnabled
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 import kotlin.math.roundToInt
 
 class LabelManagementAdapter(
@@ -47,8 +46,7 @@ class LabelManagementAdapter(
         layoutWidth: Int
     ) : ConstraintLayout(context) {
 
-        private val vb: ItemBookLabelManagementBinding
-            get() = ItemBookLabelManagementBinding.bind(this)
+        private val vb = ItemBookLabelManagementBinding.inflate(context.layoutInflater(), this, true)
 
         val titleView: TextView
             get() = vb.tvItemLabelManagement
@@ -60,8 +58,6 @@ class LabelManagementAdapter(
             get() = vb.ivItemLabelManagementOverflow
 
         init {
-            inflate(context, R.layout.item_book_label_management, this)
-
             layoutParams = LayoutParams(
                 layoutWidth,
                 RecyclerView.LayoutParams.MATCH_PARENT
@@ -83,8 +79,7 @@ class LabelManagementAdapter(
 
     private inner class LabelManagementViewHolder(
         val view: LabelManagementItemView,
-        override val containerView: View? = view
-    ) : BaseAdapter.ViewHolder<BookLabel>(view), LayoutContainer {
+    ) : BaseAdapter.ViewHolder<BookLabel>(view) {
 
         override fun bindToView(content: BookLabel, position: Int) {
             with(content) {

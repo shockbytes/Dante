@@ -33,6 +33,7 @@ import at.shockbytes.dante.util.viewModelOf
 import com.afollestad.materialdialogs.MaterialDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -73,7 +74,8 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
         }
 
         vb.editTextManualAddTitle.doOnTextChanged { text, _, _, _ ->
-            (activity as? TintableBackNavigableActivity<*>)?.tintTitle(text.toString())
+            (activity as? TintableBackNavigableActivity<*>)
+                ?.tintTitle(text.toString().toUpperCase(Locale.getDefault()))
         }
 
         vb.btnManualAddUpcoming.setOnClickListener { v ->

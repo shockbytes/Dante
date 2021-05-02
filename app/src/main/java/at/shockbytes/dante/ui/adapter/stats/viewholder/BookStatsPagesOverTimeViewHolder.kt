@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
-import android.view.View
 import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ItemStatsPagesOverTimeBinding
@@ -13,15 +12,11 @@ import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramView
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class BookStatsPagesOverTimeViewHolder(
-    override val containerView: View,
+    private val vb: ItemStatsPagesOverTimeBinding,
     private val onChangeGoalActionListener: (ReadingGoalType) -> Unit
-) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
-
-
-    private val vb = ItemStatsPagesOverTimeBinding.bind(containerView)
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(vb.root) {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.BooksAndPagesOverTime) {

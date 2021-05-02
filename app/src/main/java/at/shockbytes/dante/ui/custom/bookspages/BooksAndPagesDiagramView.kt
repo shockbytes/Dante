@@ -149,7 +149,7 @@ class BooksAndPagesDiagramView @JvmOverloads constructor(
             }
 
             setDrawMarkers(true)
-            marker = DanteMarkerView(context, chart, markerViewLabelFactory)
+            marker = DanteMarkerView(context, chartView = chart, labelFactory = markerViewLabelFactory)
 
             data = LineData(dataSet)
             invalidate()

@@ -72,7 +72,6 @@ import javax.inject.Inject
 class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
     BackAnimatable,
     ImageLoadingCallback,
-    Palette.PaletteAsyncListener,
     CircleSeekBar.Callback {
 
     override fun createViewBinding(
@@ -310,12 +309,6 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
         }
     }
 
-    override fun onImageResourceReady(resource: Drawable?) {
-        (resource as? BitmapDrawable)?.bitmap?.let { bm ->
-            Palette.from(bm).generate(this)
-        }
-    }
-
     override fun onStart() {
         super.onStart()
         loadIcons()
@@ -325,7 +318,13 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
         Timber.d(e)
     }
 
-    override fun onGenerated(palette: Palette?) {
+    override fun onImageResourceReady(resource: Drawable?) {
+        (resource as? BitmapDrawable)?.bitmap
+            ?.let(Palette::from)
+            ?.generate(::onPaletteGenerated)
+    }
+
+    private fun onPaletteGenerated(palette: Palette?) {
 
         palette?.lightMutedSwatch?.titleTextColor?.let { textColor ->
             tintEditMenuItem(textColor)
@@ -384,7 +383,7 @@ class BookDetailFragment : BaseFragment<FragmentBookDetailBinding>(),
             text = book.summary
         }
 
-        loadImage(book.thumbnailAddress)
+        loadImage(book.normalizedThumbnailUrl)
 
         setupNotes(book.notes.isNullOrEmpty())
         setupPageComponents(book.state, book.reading, book.hasPages, book.pageCount, book.currentPage)

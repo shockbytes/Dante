@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="7dp"
     app:strokeWidth="0.2dp"
     app:strokeColor="@color/danteAccent"
     android:layout_height="28dp">

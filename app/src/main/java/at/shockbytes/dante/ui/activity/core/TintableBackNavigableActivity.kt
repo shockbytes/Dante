@@ -22,7 +22,7 @@ import at.shockbytes.dante.util.DanteUtils
  * Author:  Martin Macheiner
  * Date:    02.01.2018
  */
-abstract class TintableBackNavigableActivity<V: ViewBinding> : BackNavigableActivity<V>() {
+abstract class TintableBackNavigableActivity<V : ViewBinding> : BackNavigableActivity<V>() {
 
     private val abDefColor = R.color.actionBarItemColor
     private val abTextDefColor = android.R.color.white
@@ -53,9 +53,14 @@ abstract class TintableBackNavigableActivity<V: ViewBinding> : BackNavigableActi
     }
 
     fun tintTitle(title: String) {
-        val text = SpannableString(title)
-        text.setSpan(ForegroundColorSpan(textColor), 0, text.length,
-                Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        val text = SpannableString(title).apply {
+            setSpan(
+                ForegroundColorSpan(textColor),
+                0,
+                this.length,
+                Spannable.SPAN_INCLUSIVE_INCLUSIVE
+            )
+        }
         supportActionBar?.title = text
     }
 
@@ -71,7 +76,8 @@ abstract class TintableBackNavigableActivity<V: ViewBinding> : BackNavigableActi
         // Default initialize if not set
         val abColor = actionBarColor ?: ContextCompat.getColor(applicationContext, abDefColor)
         var sbColor = statusBarColor ?: ContextCompat.getColor(applicationContext, sbDefColor)
-        val abtColor = actionBarTextColor ?: ContextCompat.getColor(applicationContext, abTextDefColor)
+        val abtColor = actionBarTextColor
+            ?: ContextCompat.getColor(applicationContext, abTextDefColor)
         textColor = actionBarTextColor ?: textColor
 
         if (useSameColorsForBoth) {
@@ -99,12 +105,12 @@ abstract class TintableBackNavigableActivity<V: ViewBinding> : BackNavigableActi
         val primaryDark = ContextCompat.getColor(this, R.color.colorPrimaryDark)
 
         val animatorToolbar = ValueAnimator.ofObject(ArgbEvaluator(), primary, newColor)
-                .setDuration(300)
+            .setDuration(300)
         animatorToolbar.addUpdateListener { valueAnimator ->
             supportActionBar?.setBackgroundDrawable(ColorDrawable(valueAnimator.animatedValue as Int))
         }
         val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), primaryDark, newColorDark)
-                .setDuration(300)
+            .setDuration(300)
         // Suppress lint, because we are only setting applyListener, when api is available
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             colorAnimation.addUpdateListener { valueAnimator ->

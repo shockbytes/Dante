@@ -1,15 +1,12 @@
 package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
-import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ItemImporterBinding
 import at.shockbytes.dante.importer.Importer
 import at.shockbytes.dante.util.Stability
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class ImporterAdapter(
     context: Context,
@@ -22,14 +19,12 @@ class ImporterAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<Importer> {
-        return ImporterViewHolder(inflater.inflate(R.layout.item_importer, parent, false))
+        return ImporterViewHolder(ItemImporterBinding.inflate(inflater, parent, false))
     }
 
     inner class ImporterViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<Importer>(containerView), LayoutContainer {
-
-        private val vb = ItemImporterBinding.bind(containerView)
+        private val vb: ItemImporterBinding
+    ) : BaseAdapter.ViewHolder<Importer>(vb.root) {
 
         override fun bindToView(content: Importer, position: Int) {
             with(content) {

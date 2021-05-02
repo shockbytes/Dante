@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
-import android.view.View
 import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ItemStatsLabelsBinding
@@ -15,13 +14,10 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import kotlinx.android.extensions.LayoutContainer
 
 class BookStatsLabelsViewHolder(
-    override val containerView: View
-) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
-
-    private val vb = ItemStatsLabelsBinding.bind(containerView)
+    private val vb: ItemStatsLabelsBinding
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(vb.root) {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.LabelStats) {
@@ -73,7 +69,7 @@ class BookStatsLabelsViewHolder(
                 setDrawAxisLine(false)
                 setDrawGridBackground(false)
                 typeface = context.getThemeFont()
-                textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
+                textColor = ContextCompat.getColor(vb.root.context, R.color.colorPrimaryText)
                 valueFormatter = IndexAxisValueFormatter(labels.map { it.title })
             }
 
@@ -90,7 +86,7 @@ class BookStatsLabelsViewHolder(
                 isEnabled = true
                 setDrawAxisLine(false)
                 typeface = context.getThemeFont()
-                textColor = ContextCompat.getColor(containerView.context, R.color.colorPrimaryText)
+                textColor = ContextCompat.getColor(vb.root.context, R.color.colorPrimaryText)
             }
 
             setFitBars(true)

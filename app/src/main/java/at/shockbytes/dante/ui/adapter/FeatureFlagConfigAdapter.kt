@@ -1,13 +1,11 @@
 package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
-import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ItemFeatureFlagBinding
 import at.shockbytes.dante.flagging.FeatureFlagItem
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class FeatureFlagConfigAdapter(
     context: Context,
@@ -15,14 +13,12 @@ class FeatureFlagConfigAdapter(
 ) : BaseAdapter<FeatureFlagItem>(context) {
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
-        return ViewHolder(inflater.inflate(R.layout.item_feature_flag, parent, false))
+        return ViewHolder(ItemFeatureFlagBinding.inflate(context.layoutInflater(), parent, false))
     }
 
     inner class ViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<FeatureFlagItem>(containerView), LayoutContainer {
-
-        private val vb = ItemFeatureFlagBinding.bind(containerView)
+        private val vb: ItemFeatureFlagBinding
+    ) : BaseAdapter.ViewHolder<FeatureFlagItem>(vb.root) {
 
         override fun bindToView(content: FeatureFlagItem, position: Int) {
             with(content) {

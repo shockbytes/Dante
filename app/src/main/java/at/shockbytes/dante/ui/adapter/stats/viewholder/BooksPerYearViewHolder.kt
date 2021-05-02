@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
-import android.view.View
 import androidx.annotation.StringRes
 import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ItemStatsBooksPerYearBinding
@@ -10,13 +9,10 @@ import at.shockbytes.dante.ui.custom.bookspages.BooksAndPagesDiagramOptions
 import at.shockbytes.dante.ui.custom.bookspages.MarkerViewLabelFactory
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class BooksPerYearViewHolder(
-    override val containerView: View
-) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
-
-    private val vb = ItemStatsBooksPerYearBinding.bind(containerView)
+    private val vb: ItemStatsBooksPerYearBinding
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(vb.root) {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.BooksPerYear) {

@@ -1,8 +1,6 @@
 package at.shockbytes.dante.ui.adapter.suggestions
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import at.shockbytes.dante.R
@@ -11,19 +9,17 @@ import at.shockbytes.dante.databinding.ItemSuggestionBinding
 import at.shockbytes.dante.suggestions.BookSuggestionEntity
 import at.shockbytes.dante.suggestions.Suggester
 import at.shockbytes.dante.suggestions.Suggestion
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.AppUtils
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class SuggestionViewHolder(
-    override val containerView: View,
+    private val vb: ItemSuggestionBinding,
     private val imageLoader: ImageLoader,
     private val onSuggestionActionClickedListener: OnSuggestionActionClickedListener
-) : BaseAdapter.ViewHolder<SuggestionsAdapterItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<SuggestionsAdapterItem>(vb.root) {
 
-    private val vb = ItemSuggestionBinding.bind(containerView)
-
-    private fun context(): Context = containerView.context
+    private fun context(): Context = vb.root.context
 
     override fun bindToView(content: SuggestionsAdapterItem, position: Int) {
         with((content as SuggestionsAdapterItem.SuggestedBook).suggestion) {
@@ -91,7 +87,7 @@ class SuggestionViewHolder(
             onSuggestionActionClickedListener: OnSuggestionActionClickedListener
         ): SuggestionViewHolder {
             return SuggestionViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_suggestion, parent, false),
+                ItemSuggestionBinding.inflate(parent.context.layoutInflater(), parent, false),
                 imageLoader,
                 onSuggestionActionClickedListener
             )

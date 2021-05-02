@@ -1,19 +1,15 @@
 package at.shockbytes.dante.ui.adapter.suggestions
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.databinding.ItemGenericExplanationBinding
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class SuggestionHintViewHolder(
-    override val containerView: View,
+    private val vb: ItemGenericExplanationBinding,
     private val onSuggestionExplanationClickedListener: OnSuggestionExplanationClickedListener
-) : BaseAdapter.ViewHolder<SuggestionsAdapterItem>(containerView), LayoutContainer {
-
-    private val vb = ItemGenericExplanationBinding.bind(containerView)
+) : BaseAdapter.ViewHolder<SuggestionsAdapterItem>(vb.root) {
 
     override fun bindToView(content: SuggestionsAdapterItem, position: Int) {
 
@@ -34,7 +30,7 @@ class SuggestionHintViewHolder(
             onSuggestionExplanationClickedListener: OnSuggestionExplanationClickedListener
         ): SuggestionHintViewHolder {
             return SuggestionHintViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_generic_explanation, parent, false),
+                ItemGenericExplanationBinding.inflate(parent.context.layoutInflater(), parent, false),
                 onSuggestionExplanationClickedListener
             )
         }

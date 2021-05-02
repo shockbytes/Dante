@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
-import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BareBoneBook
 import at.shockbytes.dante.core.image.ImageLoader
@@ -9,14 +8,11 @@ import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.stats.FavoriteAuthor
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class BookStatsFavoritesViewHolder(
-    override val containerView: View,
+    private val vb: ItemStatsFavoritesBinding,
     private val imageLoader: ImageLoader
-) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
-
-    private val vb = ItemStatsFavoritesBinding.bind(containerView)
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(vb.root) {
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.Favorites) {
@@ -65,10 +61,10 @@ class BookStatsFavoritesViewHolder(
                 val url = firstFiveStarBook.thumbnailAddress
                 if (url != null) {
                     imageLoader.loadImageWithCornerRadius(
-                        containerView.context,
+                        vb.root.context,
                         url,
                         imageView,
-                        cornerDimension = containerView.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                        cornerDimension = vb.root.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                     )
                 } else {
                     imageView.setImageResource(R.drawable.ic_placeholder)

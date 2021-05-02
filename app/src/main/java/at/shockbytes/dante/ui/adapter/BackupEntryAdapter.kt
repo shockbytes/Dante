@@ -14,7 +14,6 @@ import at.shockbytes.dante.databinding.ItemBackupEntryBinding
 import at.shockbytes.dante.util.DanteUtils
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 /**
  * Author:  Martin Macheiner
@@ -27,7 +26,7 @@ class BackupEntryAdapter(
 ) : BaseAdapter<BackupMetadataState>(ctx, onItemClickListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BackupMetadataState> {
-        return BackupViewHolder(inflater.inflate(R.layout.item_backup_entry, parent, false))
+        return BackupViewHolder(ItemBackupEntryBinding.inflate(inflater, parent, false))
     }
 
     fun updateData(freshData: List<BackupMetadataState>) {
@@ -37,10 +36,8 @@ class BackupEntryAdapter(
     }
 
     inner class BackupViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<BackupMetadataState>(containerView), LayoutContainer {
-
-        private val vb = ItemBackupEntryBinding.bind(containerView)
+        val vb: ItemBackupEntryBinding
+    ) : BaseAdapter.ViewHolder<BackupMetadataState>(vb.root) {
 
         override fun bindToView(content: BackupMetadataState, position: Int) {
 

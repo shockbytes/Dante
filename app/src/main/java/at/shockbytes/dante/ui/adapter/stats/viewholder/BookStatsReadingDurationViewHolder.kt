@@ -1,20 +1,17 @@
 package at.shockbytes.dante.ui.adapter.stats.viewholder
 
-import android.view.View
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.databinding.ItemStatsReadingDurationBinding
 import at.shockbytes.dante.stats.BookStatsViewItem
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class BookStatsReadingDurationViewHolder(
-    override val containerView: View,
+    private val vb: ItemStatsReadingDurationBinding,
     private val imageLoader: ImageLoader
-) : BaseAdapter.ViewHolder<BookStatsViewItem>(containerView), LayoutContainer {
+) : BaseAdapter.ViewHolder<BookStatsViewItem>(vb.root) {
 
-    private val vb = ItemStatsReadingDurationBinding.bind(containerView)
 
     override fun bindToView(content: BookStatsViewItem, position: Int) {
         with(content as BookStatsViewItem.ReadingDuration) {
@@ -46,16 +43,16 @@ class BookStatsReadingDurationViewHolder(
                 val slowestUrl = slowest.book.thumbnailAddress
                 if (slowestUrl != null) {
                     imageLoader.loadImageWithCornerRadius(
-                        containerView.context,
+                        vb.root.context,
                         slowestUrl,
                         imageView,
-                        cornerDimension = containerView.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                        cornerDimension = vb.root.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                     )
                 } else {
                     imageView.setImageResource(R.drawable.ic_placeholder)
                 }
             }
-            val slowestDays = containerView.context.resources.getQuantityString(R.plurals.days, slowest.days, slowest.days)
+            val slowestDays = vb.root.context.resources.getQuantityString(R.plurals.days, slowest.days, slowest.days)
             vb.tvItemStatsReadingDurationSlowestDuration.text = slowestDays
 
             vb.bareBoneBookViewFastestBook.apply {
@@ -64,16 +61,16 @@ class BookStatsReadingDurationViewHolder(
                 val fastestUrl = fastest.book.thumbnailAddress
                 if (fastestUrl != null) {
                     imageLoader.loadImageWithCornerRadius(
-                        containerView.context,
+                        vb.root.context,
                         fastestUrl,
                         imageView,
-                        cornerDimension = containerView.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                        cornerDimension = vb.root.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
                     )
                 } else {
                     imageView.setImageResource(R.drawable.ic_placeholder)
                 }
             }
-            val fastestDays = containerView.context.resources.getQuantityString(R.plurals.days, fastest.days, fastest.days)
+            val fastestDays = vb.root.context.resources.getQuantityString(R.plurals.days, fastest.days, fastest.days)
             vb.tvItemStatsReadingDurationFastestDuration.text = fastestDays
         }
     }

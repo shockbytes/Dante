@@ -1,13 +1,11 @@
 package at.shockbytes.dante.ui.adapter.pagerecords
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
-import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.PageRecord
 import at.shockbytes.dante.databinding.ItemPageRecordsDetailBinding
+import at.shockbytes.dante.util.layoutInflater
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class PageRecordsAdapter(
     context: Context,
@@ -26,15 +24,13 @@ class PageRecordsAdapter(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder<PageRecordDetailItem> {
-        val view = inflater.inflate(R.layout.item_page_records_detail, parent, false)
-        return PageRecordsViewHolder(view)
+        val vb = ItemPageRecordsDetailBinding.inflate(parent.context.layoutInflater(), parent, false)
+        return PageRecordsViewHolder(vb)
     }
 
     inner class PageRecordsViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<PageRecordDetailItem>(containerView), LayoutContainer {
-
-        private val vb = ItemPageRecordsDetailBinding.bind(containerView)
+        private val vb: ItemPageRecordsDetailBinding
+    ) : BaseAdapter.ViewHolder<PageRecordDetailItem>(vb.root) {
 
         override fun bindToView(content: PageRecordDetailItem, position: Int) {
             with(content) {

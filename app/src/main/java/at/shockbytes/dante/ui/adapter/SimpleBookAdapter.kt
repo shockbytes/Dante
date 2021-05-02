@@ -1,14 +1,12 @@
 package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.databinding.ItemSimpleBookBinding
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class SimpleBookAdapter(
     context: Context,
@@ -24,14 +22,12 @@ class SimpleBookAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<BookEntity> {
-        return SimpleBookViewHolder(inflater.inflate(R.layout.item_simple_book, parent, false))
+        return SimpleBookViewHolder(ItemSimpleBookBinding.inflate(inflater, parent, false))
     }
 
     inner class SimpleBookViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<BookEntity>(containerView), LayoutContainer {
-
-        private val vb = ItemSimpleBookBinding.bind(containerView)
+        private val vb: ItemSimpleBookBinding
+    ) : BaseAdapter.ViewHolder<BookEntity>(vb.root) {
 
         override fun bindToView(content: BookEntity, position: Int) {
             with(content) {

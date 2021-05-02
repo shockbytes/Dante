@@ -1,6 +1,5 @@
 package at.shockbytes.dante.ui.adapter.timeline.viewholder
 
-import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import at.shockbytes.dante.R
@@ -9,14 +8,11 @@ import at.shockbytes.dante.databinding.ItemTimeLineBookBinding
 import at.shockbytes.dante.timeline.TimeLineItem
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 class BookTimeLineViewHolder(
-    override val containerView: View,
+    private val vb: ItemTimeLineBookBinding,
     private val imageLoader: ImageLoader
-) : BaseAdapter.ViewHolder<TimeLineItem>(containerView), LayoutContainer {
-
-    private val vb = ItemTimeLineBookBinding.bind(containerView)
+) : BaseAdapter.ViewHolder<TimeLineItem>(vb.root) {
 
     override fun bindToView(content: TimeLineItem, position: Int) {
 
@@ -46,10 +42,10 @@ class BookTimeLineViewHolder(
 
         if (thumbnailAddress != null) {
             imageLoader.loadImageWithCornerRadius(
-                containerView.context,
+                vb.root.context,
                 thumbnailAddress,
                 imageView,
-                cornerDimension = containerView.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
+                cornerDimension = vb.root.context.resources.getDimension(R.dimen.thumbnail_rounded_corner).toInt()
             )
         } else {
             imageView.setImageResource(R.drawable.ic_placeholder)

@@ -1,7 +1,6 @@
 package at.shockbytes.dante.ui.adapter
 
 import android.content.Context
-import android.view.View
 import android.view.ViewGroup
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookIds
@@ -10,7 +9,6 @@ import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.databinding.ItemBookSearchSuggestionBinding
 import at.shockbytes.dante.util.setVisible
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 /**
  * Author: Martin Macheiner
@@ -24,14 +22,12 @@ class BookSearchSuggestionAdapter(
 ) : BaseAdapter<BookSearchItem>(context, onItemClickListener) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(inflater.inflate(R.layout.item_book_search_suggestion, parent, false))
+        return ViewHolder(ItemBookSearchSuggestionBinding.inflate(inflater, parent, false))
     }
 
     inner class ViewHolder(
-        override val containerView: View
-    ) : BaseAdapter.ViewHolder<BookSearchItem>(containerView), LayoutContainer {
-
-        private val vb = ItemBookSearchSuggestionBinding.bind(containerView)
+        private val vb: ItemBookSearchSuggestionBinding
+    ) : BaseAdapter.ViewHolder<BookSearchItem>(vb.root) {
 
         override fun bindToView(content: BookSearchItem, position: Int) {
             vb.itemBookSearchSuggestionTxtTitle.text = content.title

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import at.shockbytes.dante.backup.model.BackupStorageProvider
 import at.shockbytes.dante.ui.custom.BackupStorageProviderView
 import at.shockbytes.util.adapter.BaseAdapter
-import kotlinx.android.extensions.LayoutContainer
 
 /**
  * Author:  Martin Macheiner
@@ -26,8 +25,8 @@ class BackupStorageProviderAdapter(
     }
 
     inner class ViewHolder(
-        override val containerView: BackupStorageProviderView
-    ) : BaseAdapter.ViewHolder<BackupStorageProvider>(containerView), LayoutContainer {
+        val containerView: BackupStorageProviderView
+    ) : BaseAdapter.ViewHolder<BackupStorageProvider>(containerView) {
 
         override fun bindToView(content: BackupStorageProvider, position: Int) {
             containerView.setStorageProvider(content) {

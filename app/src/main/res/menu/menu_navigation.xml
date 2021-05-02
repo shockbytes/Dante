@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/menu_navigation_upcoming"
-        android:icon="@drawable/ic_tab_upcoming"
+        android:icon="@drawable/ic_tab_upcoming_selector"
         android:title="@string/tab_upcoming" />
 
     <item
         android:id="@+id/menu_navigation_current"
-        android:icon="@drawable/ic_tab_current"
+        android:icon="@drawable/ic_tab_current_selector"
         android:title="@string/tab_current" />
 
     <item
         android:id="@+id/menu_navigation_done"
-        android:icon="@drawable/ic_tab_done"
+        android:icon="@drawable/ic_tab_done_selector"
         android:title="@string/tab_done" />
 
 </menu>

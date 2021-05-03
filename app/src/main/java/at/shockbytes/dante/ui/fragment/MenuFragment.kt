@@ -213,8 +213,12 @@ class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
             navigateToAndDismiss(Destination.Timeline)
         }
 
-        vb.btnMenuInspirations.setOnClickListener {
-            navigateToAndDismiss(Destination.Inspirations)
+        vb.btnMenuWishlist.setOnClickListener {
+            navigateToAndDismiss(Destination.Wishlist)
+        }
+
+        vb.btnMenuSuggestions.setOnClickListener {
+            navigateToAndDismiss(Destination.Suggestions)
         }
 
         vb.btnMenuBookStorage.setOnClickListener {

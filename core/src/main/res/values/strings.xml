@@ -100,7 +100,7 @@
 
     <string name="last_backup">Last backup: %s</string>
     <string name="books_amount">%d books</string>
-    <string name="menu_main_book_storage">Book management</string>
+    <string name="menu_main_book_storage">Management</string>
     <string name="backup_now">Backup now</string>
     <string name="backup_strategy_merge">Merge</string>
     <string name="backup_strategy_overwrite">Overwrite</string>

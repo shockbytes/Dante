@@ -280,7 +280,7 @@
     <string name="prefs_tracking_summary">Erlaube uns die App zu verbessern indem anonyme Daten an unsere Server schickst</string>
     <string name="not_available">N/A</string>
     <string name="restarting_app">Die App startet sich voraussichtlich neu&#8230;</string>
-    <string name="menu_main_book_storage">Bücherverwaltung</string>
+    <string name="menu_main_book_storage">Verwaltung</string>
     <string name="storage_local">Am Gerät</string>
     <string name="storage_remote">Online</string>
     <string name="storage_import">Importieren</string>

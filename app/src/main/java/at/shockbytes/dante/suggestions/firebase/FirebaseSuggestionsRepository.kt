@@ -11,6 +11,7 @@ import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -92,6 +93,19 @@ class FirebaseSuggestionsRepository(
             .doOnComplete {
                 cacheReportedSuggestion(suggestionId, scope)
             }
+            .subscribeOn(schedulers.io)
+    }
+
+    override fun likeSuggestion(
+        suggestionId: String,
+        isLikedByMe: Boolean,
+        scope: CoroutineScope
+    ): Completable {
+        return loginRepository.getAuthorizationHeader()
+            .flatMapCompletable { bearerToken ->
+                firebaseSuggestionsApi.likeSuggestion(bearerToken, suggestionId)
+            }
+            .andThen(Completable.fromSingle(loadRemoteSuggestions(scope)))
             .subscribeOn(schedulers.io)
     }
 

@@ -7,4 +7,6 @@ interface OnSuggestionActionClickedListener {
     fun onAddSuggestionToWishlist(suggestion: Suggestion)
 
     fun onReportBookSuggestion(suggestionId: String, suggestionTitle: String)
+
+    fun onLikeBookSuggestion(suggestionId: String, isLikedByMe: Boolean)
 }

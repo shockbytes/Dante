@@ -188,4 +188,15 @@ class SuggestionsViewModel @Inject constructor(
             })
             .addTo(compositeDisposable)
     }
+
+    fun likeSuggestion(suggestionId: String, isLikedByMe: Boolean) {
+        suggestionsRepository.likeSuggestion(suggestionId, isLikedByMe, scope = viewModelScope)
+            .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .subscribe({
+                Timber.e("Successfully liked suggestion")
+            }, { throwable ->
+                Timber.e("Could not like suggestion: ${throwable.localizedMessage}")
+            })
+            .addTo(compositeDisposable)
+    }
 }

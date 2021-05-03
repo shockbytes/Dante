@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.adapter.suggestions
 import android.content.Context
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import at.shockbytes.dante.R
 import at.shockbytes.dante.core.image.ImageLoader
 import at.shockbytes.dante.databinding.ItemSuggestionBinding
@@ -28,6 +29,7 @@ class SuggestionViewHolder(
             setupSuggester(suggester)
             setupRecommendation(recommendation)
             setupBookActionListener(this)
+            setupLikeButton(suggestionId, isLikedByMe, likesCount)
         }
     }
 
@@ -63,6 +65,27 @@ class SuggestionViewHolder(
     private fun setupBookActionListener(suggestion: Suggestion) {
         vb.btnItemSuggestionAdd.setOnClickListener {
             onSuggestionActionClickedListener.onAddSuggestionToWishlist(suggestion)
+        }
+    }
+
+    private fun setupLikeButton(
+        suggestionId: String,
+        isLikedByMe: Boolean,
+        likes: Int
+    ) {
+        vb.btnLikeItemSuggestion.apply {
+            text = likes.toString()
+
+            icon = ContextCompat.getDrawable(
+                context,
+                if (isLikedByMe) R.drawable.ic_like_filled else R.drawable.ic_like_outlined
+            )
+
+            isEnabled = !isLikedByMe
+
+            setOnClickListener {
+                onSuggestionActionClickedListener.onLikeBookSuggestion(suggestionId, isLikedByMe)
+            }
         }
     }
 

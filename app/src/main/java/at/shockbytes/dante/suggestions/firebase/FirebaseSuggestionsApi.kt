@@ -23,6 +23,12 @@ interface FirebaseSuggestionsApi {
         @Path("suggestionId") suggestionId: String
     ): Completable
 
+    @POST("suggestions/{suggestionId}/like")
+    fun likeSuggestion(
+        @Header("Authorization") bearerToken: String,
+        @Path("suggestionId") suggestionId: String
+    ): Completable
+
     @POST("suggestions")
     fun suggestBook(
         @Header("Authorization") bearerToken: String,

@@ -114,7 +114,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="@id/tv_item_suggestion_recommendation"
+            app:layout_constraintEnd_toEndOf="@+id/ic_quote2"
             app:layout_constraintTop_toBottomOf="@id/tv_item_suggestion_recommendation"
             tools:srcCompat="@drawable/ic_language_norwegian" />
 
@@ -123,18 +123,15 @@
             style="@style/AppTheme.RoundedButton.Outlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:paddingHorizontal="32dp"
-            android:text="@string/wishlist"
-            app:icon="@drawable/ic_add_round"
-            app:iconPadding="8dp"
+            app:icon="@drawable/ic_wishlist"
             app:iconTint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_item_suggestion_suggester" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_like_item_suggestion" />
 
         <ImageView
             android:id="@+id/ic_quote"
@@ -149,7 +146,8 @@
             style="@style/AppTheme.RoundedButton.Outlined"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginBottom="16dp"
             android:text="10"
             android:textColor="@color/danteAccent"
@@ -157,7 +155,8 @@
             app:iconPadding="8dp"
             app:iconTint="@color/danteAccent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_item_suggestion_suggester" />
 
         <ImageView
             android:id="@+id/ic_quote2"

@@ -51,6 +51,10 @@ class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
                 override fun onReportBookSuggestion(suggestionId: String, suggestionTitle: String) {
                     showReportBookConfirmation(suggestionId, suggestionTitle)
                 }
+
+                override fun onLikeBookSuggestion(suggestionId: String, isLikedByMe: Boolean) {
+                    viewModel.likeSuggestion(suggestionId, isLikedByMe)
+                }
             },
             onSuggestionExplanationClickedListener = { viewModel.dismissExplanation() }
         )

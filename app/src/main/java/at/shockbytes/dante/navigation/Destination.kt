@@ -114,8 +114,16 @@ sealed class Destination {
         }
     }
 
-    object Inspirations : Destination() {
+    object Wishlist : Destination() {
         override fun provideIntent(context: Context): Intent {
+            // TODO Split this Activity later
+            return InspirationsActivity.newIntent(context)
+        }
+    }
+
+    object Suggestions : Destination() {
+        override fun provideIntent(context: Context): Intent {
+            // TODO Split this Activity later
             return InspirationsActivity.newIntent(context)
         }
     }

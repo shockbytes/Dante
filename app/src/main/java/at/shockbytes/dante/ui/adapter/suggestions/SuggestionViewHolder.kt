@@ -29,7 +29,7 @@ class SuggestionViewHolder(
             setupSuggester(suggester)
             setupRecommendation(recommendation)
             setupBookActionListener(this)
-            setupLikeButton(suggestionId, isLikedByMe, likesCount)
+            setupLikeButton(suggestionId, suggestion.title, isLikedByMe, likes)
         }
     }
 
@@ -70,6 +70,7 @@ class SuggestionViewHolder(
 
     private fun setupLikeButton(
         suggestionId: String,
+        suggestionTitle: String,
         isLikedByMe: Boolean,
         likes: Int
     ) {
@@ -84,7 +85,11 @@ class SuggestionViewHolder(
             isEnabled = !isLikedByMe
 
             setOnClickListener {
-                onSuggestionActionClickedListener.onLikeBookSuggestion(suggestionId, isLikedByMe)
+                onSuggestionActionClickedListener.onLikeBookSuggestion(
+                    suggestionId,
+                    suggestionTitle,
+                    isLikedByMe
+                )
             }
         }
     }

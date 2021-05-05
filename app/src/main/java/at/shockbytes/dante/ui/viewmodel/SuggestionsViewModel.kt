@@ -1,8 +1,10 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import at.shockbytes.dante.R
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.book.BookState
 import at.shockbytes.dante.core.data.BookRepository
@@ -53,6 +55,16 @@ class SuggestionsViewModel @Inject constructor(
 
             data class Error(val title: String) : ReportSuggestionEvent()
         }
+
+        sealed class LikeSuggestionEvent : SuggestionEvent() {
+
+            data class Success(
+                @StringRes val messageStringRes: Int,
+                val title: String
+            ) : LikeSuggestionEvent()
+
+            data class Error(val title: String) : LikeSuggestionEvent()
+        }
     }
 
     private val onSuggestionEvent = PublishSubject.create<SuggestionEvent>()
@@ -72,7 +84,7 @@ class SuggestionsViewModel @Inject constructor(
             .doOnSubscribe {
                 suggestionState.postValue(SuggestionsState.Loading)
             }
-            .flatMap { (books, reports) ->
+            .map { (books, reports) ->
                 buildSuggestionsState(books, reports)
             }
             .doOnError { throwable ->
@@ -94,33 +106,27 @@ class SuggestionsViewModel @Inject constructor(
     private fun buildSuggestionsState(
         books: List<BookEntity>,
         suggestions: Suggestions
-    ): Single<SuggestionsState> {
-
-        return suggestionsRepository.getUserReportedSuggestions()
-            .map { reports ->
-
-                val suggestedItems = suggestions.suggestions
-                    .sortedBy { it.suggestionId }
-                    .filter { suggestion ->
-                        // Check if book isn't already added in the library
-                        // and if hasn't been reported by this user
-                        val bookAlreadyAdded = books.find {
-                            it.title == suggestion.suggestion.title
-                        } != null
-                        val isReported = reports.contains(suggestion.suggestionId)
-                        !bookAlreadyAdded && !isReported
-                    }
-                    .map(SuggestionsAdapterItem::SuggestedBook)
-
-                when {
-                    suggestedItems.isEmpty() -> SuggestionsState.Empty
-                    explanations.suggestion().show -> {
-                        val items = listOf(SuggestionsAdapterItem.SuggestionHint()) + suggestedItems
-                        SuggestionsState.Present(items)
-                    }
-                    else -> SuggestionsState.Present(suggestedItems)
-                }
+    ): SuggestionsState {
+        val suggestedItems = suggestions.suggestions
+            .sortedBy { it.suggestionId }
+            .filter { suggestion ->
+                // Check if book isn't already added in the library
+                // and if hasn't been reported by this user
+                val bookAlreadyAdded = books.find {
+                    it.title == suggestion.suggestion.title
+                } != null
+                !bookAlreadyAdded && !suggestion.isReportedByMe
             }
+            .map(SuggestionsAdapterItem::SuggestedBook)
+
+        return when {
+            suggestedItems.isEmpty() -> SuggestionsState.Empty
+            explanations.suggestion().show -> {
+                val items = listOf(SuggestionsAdapterItem.SuggestionHint()) + suggestedItems
+                SuggestionsState.Present(items)
+            }
+            else -> SuggestionsState.Present(suggestedItems)
+        }
     }
 
     fun addSuggestionToWishlist(suggestion: Suggestion) {
@@ -163,7 +169,13 @@ class SuggestionsViewModel @Inject constructor(
         bookTitle: String,
         suggester: String
     ) {
-        tracker.track(DanteTrackingEvent.AddSuggestionToWishlist(suggestionId, bookTitle, suggester))
+        tracker.track(
+            DanteTrackingEvent.AddSuggestionToWishlist(
+                suggestionId,
+                bookTitle,
+                suggester
+            )
+        )
     }
 
     fun dismissExplanation() {
@@ -189,13 +201,22 @@ class SuggestionsViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun likeSuggestion(suggestionId: String, isLikedByMe: Boolean) {
+    fun likeSuggestion(suggestionId: String, suggestionTitle: String, isLikedByMe: Boolean) {
         suggestionsRepository.likeSuggestion(suggestionId, isLikedByMe, scope = viewModelScope)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
             .subscribe({
-                Timber.e("Successfully liked suggestion")
-            }, { throwable ->
-                Timber.e("Could not like suggestion: ${throwable.localizedMessage}")
+
+                val msgRes = if (isLikedByMe) {
+                    R.string.suggestion_like_template
+                } else R.string.suggestion_dislike_template
+
+                onSuggestionEvent.onNext(
+                    SuggestionEvent.LikeSuggestionEvent.Success(msgRes, suggestionTitle)
+                )
+            }, {
+                onSuggestionEvent.onNext(
+                    SuggestionEvent.LikeSuggestionEvent.Error(suggestionTitle)
+                )
             })
             .addTo(compositeDisposable)
     }

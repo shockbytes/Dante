@@ -27,6 +27,7 @@ class DataStoreSuggestionsCache(
     private val suggestionsKey = preferencesKey<String>(KEY_SUGGESTION_CACHE)
     private val cacheKey = preferencesKey<Long>(KEY_CACHE)
     private val reportedSuggestionsKey = preferencesSetKey<String>(KEY_REPORTED_SUGGESTION_CACHE)
+    private val likesSuggestionsKey = preferencesSetKey<String>(KEY_LIKED_SUGGESTION_CACHE)
 
     override fun lastCacheTimestamp(): Single<Long> {
         return singleOf {
@@ -49,6 +50,7 @@ class DataStoreSuggestionsCache(
                 dataStore.data.first()[suggestionsKey]
             }?.let { data ->
                 gson.fromJson<Suggestions>(data)
+                // TODO Lookup if liked or reported --> For building the UI
             } ?: Suggestions(listOf())
         }
     }
@@ -69,9 +71,34 @@ class DataStoreSuggestionsCache(
         }
     }
 
+    override suspend fun cacheSuggestionLike(suggestionId: String) {
+        dataStore.edit { preferences ->
+            val likes = preferences[likesSuggestionsKey].orEmpty().toMutableSet()
+            likes.add(suggestionId)
+            preferences[likesSuggestionsKey] = likes
+        }
+    }
+
+    override suspend fun removeSuggestionLike(suggestionId: String) {
+        dataStore.edit { preferences ->
+            val likes = preferences[likesSuggestionsKey].orEmpty().toMutableSet()
+            likes.remove(suggestionId)
+            preferences[likesSuggestionsKey] = likes
+        }
+    }
+
+    override fun loadLikedSuggestions(): Single<List<String>> {
+        return singleOf {
+            runBlocking {
+                dataStore.data.first()[likesSuggestionsKey].orEmpty().toList()
+            }
+        }
+    }
+
     companion object {
         private const val KEY_SUGGESTION_CACHE = "key_suggestion_cache"
         private const val KEY_CACHE = "key_cache"
         private const val KEY_REPORTED_SUGGESTION_CACHE = "key_reported_suggestion_cache"
+        private const val KEY_LIKED_SUGGESTION_CACHE = "key_liked_suggestion_cache"
     }
 }

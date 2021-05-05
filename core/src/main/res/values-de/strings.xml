@@ -405,5 +405,8 @@
     <string name="login_loading">Einen Moment. \n Wir loggen dich ein.</string>
     <string name="add_book">Buch hinzufügen</string>
     <string name="action_edit_color">Farbe ändern</string>
+    <string name="suggestion_like_template">Dir gefällt %s.</string>
+    <string name="suggestion_dislike_template">Dir gefällt %s nicht mehr.</string>
+    <string name="book_liked_error">%s konnte nicht mit gefällt mir markiert werden. Bitte versuche es später nochmals.</string>
 
 </resources>

@@ -52,8 +52,12 @@ class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
                     showReportBookConfirmation(suggestionId, suggestionTitle)
                 }
 
-                override fun onLikeBookSuggestion(suggestionId: String, isLikedByMe: Boolean) {
-                    viewModel.likeSuggestion(suggestionId, isLikedByMe)
+                override fun onLikeBookSuggestion(
+                    suggestionId: String,
+                    suggestionTitle: String,
+                    isLikedByMe: Boolean
+                ) {
+                    viewModel.likeSuggestion(suggestionId, suggestionTitle, isLikedByMe)
                 }
             },
             onSuggestionExplanationClickedListener = { viewModel.dismissExplanation() }
@@ -125,6 +129,12 @@ class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
             }
             is SuggestionsViewModel.SuggestionEvent.ReportSuggestionEvent.Error -> {
                 showSnackbar(getString(R.string.book_reported_error, event.title))
+            }
+            is SuggestionsViewModel.SuggestionEvent.LikeSuggestionEvent.Error -> {
+                showSnackbar()
+            }
+            is SuggestionsViewModel.SuggestionEvent.LikeSuggestionEvent.Success -> {
+                showSnackbar(getString(event.messageStringRes, event.title))
             }
         }
     }

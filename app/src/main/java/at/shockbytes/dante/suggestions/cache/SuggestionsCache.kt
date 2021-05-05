@@ -11,7 +11,17 @@ interface SuggestionsCache {
 
     fun loadSuggestions(): Single<Suggestions>
 
+    // ------------ Reports ------------
+
     suspend fun cacheSuggestionReport(suggestionId: String)
 
     fun loadReportedSuggestions(): Single<List<String>>
+
+    // ------------- Likes -------------
+
+    suspend fun cacheSuggestionLike(suggestionId: String)
+
+    suspend fun removeSuggestionLike(suggestionId: String)
+
+    fun loadLikedSuggestions(): Single<List<String>>
 }

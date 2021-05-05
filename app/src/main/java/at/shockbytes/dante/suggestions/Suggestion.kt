@@ -5,6 +5,7 @@ data class Suggestion(
     val suggestion: BookSuggestionEntity,
     val suggester: Suggester,
     val recommendation: String,
+    val likes: Int,
     val isLikedByMe: Boolean,
-    val likesCount: Int
+    val isReportedByMe: Boolean
 )

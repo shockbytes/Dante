@@ -3,6 +3,8 @@ package at.shockbytes.dante.suggestions.firebase
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.core.login.LoginRepository
 import at.shockbytes.dante.suggestions.BookSuggestionEntity
+import at.shockbytes.dante.suggestions.Suggestion
+import at.shockbytes.dante.suggestions.SuggestionLikeRequest
 import at.shockbytes.dante.suggestions.SuggestionRequest
 import at.shockbytes.dante.suggestions.Suggestions
 import at.shockbytes.dante.suggestions.SuggestionsRepository
@@ -11,7 +13,6 @@ import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Completable
-import io.reactivex.Observable
 import io.reactivex.Single
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -27,7 +28,10 @@ class FirebaseSuggestionsRepository(
     private val tracker: Tracker
 ) : SuggestionsRepository {
 
-    override fun loadSuggestions(accessTimestamp: Long, scope: CoroutineScope): Single<Suggestions> {
+    override fun loadSuggestions(
+        accessTimestamp: Long,
+        scope: CoroutineScope
+    ): Single<Suggestions> {
         return shouldUseRemoteData(accessTimestamp)
             .flatMap { useRemoteSuggestions ->
                 if (useRemoteSuggestions) {
@@ -65,13 +69,46 @@ class FirebaseSuggestionsRepository(
 
     private fun loadRemoteSuggestions(scope: CoroutineScope): Single<Suggestions> {
         return loginRepository.getAuthorizationHeader()
-            .flatMap(firebaseSuggestionsApi::getSuggestions)
+            .flatMap(firebaseSuggestionsApi::getRawSuggestions)
+            .flatMap(::mapToSuggestions)
             .doOnSuccess { suggestions ->
                 if (suggestions.isNotEmpty()) {
                     cacheRemoteSuggestions(suggestions, scope)
                 }
             }
             .subscribeOn(schedulers.io)
+    }
+
+    private fun mapToSuggestions(rawSuggestions: RawSuggestions): Single<Suggestions> {
+
+        return Single
+            .zip(
+                suggestionsCache.loadReportedSuggestions(),
+                suggestionsCache.loadLikedSuggestions(),
+                { reportedSuggestionIds, likedSuggestionIds ->
+
+                    val suggestions = rawSuggestions.suggestions
+                        .map { rawSuggestion ->
+
+                            val isLikedByMe =
+                                likedSuggestionIds.contains(rawSuggestion.suggestionId)
+                            val isReportedByMe =
+                                reportedSuggestionIds.contains(rawSuggestion.suggestionId)
+
+                            Suggestion(
+                                suggestionId = rawSuggestion.suggestionId,
+                                suggestion = rawSuggestion.suggestion,
+                                suggester = rawSuggestion.suggester,
+                                recommendation = rawSuggestion.recommendation,
+                                likes = rawSuggestion.likes,
+                                isLikedByMe = isLikedByMe,
+                                isReportedByMe = isReportedByMe
+                            )
+                        }
+
+                    Suggestions(suggestions)
+                }
+            )
     }
 
     private fun cacheRemoteSuggestions(suggestions: Suggestions, scope: CoroutineScope) {
@@ -103,9 +140,15 @@ class FirebaseSuggestionsRepository(
     ): Completable {
         return loginRepository.getAuthorizationHeader()
             .flatMapCompletable { bearerToken ->
-                firebaseSuggestionsApi.likeSuggestion(bearerToken, suggestionId)
+                firebaseSuggestionsApi.likeSuggestion(
+                    bearerToken,
+                    suggestionId,
+                    SuggestionLikeRequest(isLikedByMe)
+                )
             }
-            .andThen(Completable.fromSingle(loadRemoteSuggestions(scope)))
+            .doOnComplete {
+                cacheLikedSuggestion(suggestionId, isLikedByMe, scope)
+            }
             .subscribeOn(schedulers.io)
     }
 
@@ -116,6 +159,20 @@ class FirebaseSuggestionsRepository(
     private fun cacheReportedSuggestion(suggestionId: String, scope: CoroutineScope) {
         scope.launch {
             suggestionsCache.cacheSuggestionReport(suggestionId)
+        }
+    }
+
+    private fun cacheLikedSuggestion(
+        suggestionId: String,
+        isLikedByMe: Boolean,
+        scope: CoroutineScope
+    ) {
+        scope.launch {
+            if (isLikedByMe) {
+                suggestionsCache.cacheSuggestionLike(suggestionId)
+            } else {
+                suggestionsCache.removeSuggestionLike(suggestionId)
+            }
         }
     }
 

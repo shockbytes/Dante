@@ -55,7 +55,7 @@ the user during the login process.
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
 
 ### Version 4.1 - HIGH MAINTENANCE
-- [ ] Like book suggestions
+- [x] Like book suggestions
 - [x] Upgrade to Kotlin > 1.4.20
     - [x] ViewBinding
     - [x] Remove Kotterknife usage

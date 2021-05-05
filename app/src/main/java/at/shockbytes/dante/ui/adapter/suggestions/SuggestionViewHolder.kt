@@ -82,8 +82,6 @@ class SuggestionViewHolder(
                 if (isLikedByMe) R.drawable.ic_like_filled else R.drawable.ic_like_outlined
             )
 
-            isEnabled = !isLikedByMe
-
             setOnClickListener {
                 onSuggestionActionClickedListener.onLikeBookSuggestion(
                     suggestionId,

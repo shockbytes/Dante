@@ -169,9 +169,9 @@ class FirebaseSuggestionsRepository(
     ) {
         scope.launch {
             if (isLikedByMe) {
-                suggestionsCache.cacheSuggestionLike(suggestionId)
-            } else {
                 suggestionsCache.removeSuggestionLike(suggestionId)
+            } else {
+                suggestionsCache.cacheSuggestionLike(suggestionId)
             }
         }
     }

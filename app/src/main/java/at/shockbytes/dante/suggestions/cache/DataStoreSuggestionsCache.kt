@@ -45,14 +45,37 @@ class DataStoreSuggestionsCache(
     }
 
     override fun loadSuggestions(): Single<Suggestions> {
-        return singleOf {
-            runBlocking {
-                dataStore.data.first()[suggestionsKey]
-            }?.let { data ->
-                gson.fromJson<Suggestions>(data)
-                // TODO Lookup if liked or reported --> For building the UI
-            } ?: Suggestions(listOf())
-        }
+        return Single
+            .zip(
+                loadReportedSuggestions(),
+                loadLikedSuggestions(),
+                { reportedSuggestionIds, likedSuggestionIds ->
+
+                    loadSuggestionsFromCache().suggestions
+                        .map { suggestion ->
+
+                            val isLikedByMe =
+                                likedSuggestionIds.contains(suggestion.suggestionId)
+                            val isReportedByMe =
+                                reportedSuggestionIds.contains(suggestion.suggestionId)
+
+                            suggestion.copy(
+                                isLikedByMe = isLikedByMe,
+                                isReportedByMe = isReportedByMe,
+                                likes = suggestion.likes.inc()
+                            )
+                        }
+                        .let(::Suggestions)
+                }
+            )
+    }
+
+    private fun loadSuggestionsFromCache(): Suggestions {
+        return runBlocking {
+            dataStore.data.first()[suggestionsKey]
+        }?.let { data ->
+            gson.fromJson<Suggestions>(data)
+        } ?: Suggestions(listOf())
     }
 
     override suspend fun cacheSuggestionReport(suggestionId: String) {
@@ -82,8 +105,9 @@ class DataStoreSuggestionsCache(
     override suspend fun removeSuggestionLike(suggestionId: String) {
         dataStore.edit { preferences ->
             val likes = preferences[likesSuggestionsKey].orEmpty().toMutableSet()
-            likes.remove(suggestionId)
-            preferences[likesSuggestionsKey] = likes
+            if (likes.remove(suggestionId)) {
+                preferences[likesSuggestionsKey] = likes
+            }
         }
     }
 

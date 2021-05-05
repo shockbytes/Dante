@@ -131,7 +131,7 @@ class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
                 showSnackbar(getString(R.string.book_reported_error, event.title))
             }
             is SuggestionsViewModel.SuggestionEvent.LikeSuggestionEvent.Error -> {
-                showSnackbar()
+                showSnackbar(getString(R.string.book_liked_error, event.title))
             }
             is SuggestionsViewModel.SuggestionEvent.LikeSuggestionEvent.Success -> {
                 showSnackbar(getString(event.messageStringRes, event.title))

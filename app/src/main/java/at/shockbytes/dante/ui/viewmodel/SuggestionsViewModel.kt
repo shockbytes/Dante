@@ -16,6 +16,7 @@ import at.shockbytes.dante.ui.adapter.suggestions.SuggestionsAdapterItem
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.explanations.Explanations
 import at.shockbytes.dante.util.addTo
+import at.shockbytes.dante.util.scheduler.SchedulerFacade
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import io.reactivex.Observable
@@ -29,7 +30,8 @@ class SuggestionsViewModel @Inject constructor(
     private val suggestionsRepository: SuggestionsRepository,
     private val bookRepository: BookRepository,
     private val tracker: Tracker,
-    private val explanations: Explanations
+    private val explanations: Explanations,
+    private val schedulers: SchedulerFacade
 ) : BaseViewModel() {
 
     sealed class SuggestionsState {
@@ -187,12 +189,15 @@ class SuggestionsViewModel @Inject constructor(
     fun reportBookSuggestion(suggestionId: String, suggestionTitle: String) {
         suggestionsRepository.reportSuggestion(suggestionId, scope = viewModelScope)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .observeOn(schedulers.ui)
+            .doOnComplete {
+                // Reload after a book has been liked
+                requestSuggestions()
+            }
             .subscribe({
                 onSuggestionEvent.onNext(
                     SuggestionEvent.ReportSuggestionEvent.Success(suggestionTitle)
                 )
-                // Reload after a book has been reported
-                requestSuggestions()
             }, {
                 onSuggestionEvent.onNext(
                     SuggestionEvent.ReportSuggestionEvent.Error(suggestionTitle)
@@ -204,11 +209,16 @@ class SuggestionsViewModel @Inject constructor(
     fun likeSuggestion(suggestionId: String, suggestionTitle: String, isLikedByMe: Boolean) {
         suggestionsRepository.likeSuggestion(suggestionId, isLikedByMe, scope = viewModelScope)
             .doOnError(ExceptionHandlers::defaultExceptionHandler)
+            .observeOn(schedulers.ui)
+            .doOnComplete {
+                // Reload after a book has been liked
+                requestSuggestions()
+            }
             .subscribe({
 
                 val msgRes = if (isLikedByMe) {
-                    R.string.suggestion_like_template
-                } else R.string.suggestion_dislike_template
+                    R.string.suggestion_dislike_template
+                } else R.string.suggestion_like_template
 
                 onSuggestionEvent.onNext(
                     SuggestionEvent.LikeSuggestionEvent.Success(msgRes, suggestionTitle)

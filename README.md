@@ -47,6 +47,18 @@ the user during the login process.
 - [ ] Add web client support
 - [ ] Paged request when user clicks on "not my book" in book download view
 
+### Version 4.3 - SOME SWEETS
+- [ ] Backup file improvements
+  - [ ] Check Backup pages & labels restore
+  - [ ] Show path to local backup files
+  - [ ] Open file with FileProvider
+- [ ] Improve main screen
+  - [ ] Bigger book covers
+  - [ ] Show stars for read books
+- [ ] Like book suggestions
+  - [ ] Bugfixes
+  - [ ] Split wishlist and suggestions
+
 ### Version 4.2 - FIREFLASH
 - [ ] Add online sync capability
   - [ ] Use Feature Flag to remotely control this feature if things go south (or better, AB test it)
@@ -55,13 +67,9 @@ the user during the login process.
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
 
 ### Version 4.1 - HIGH MAINTENANCE
-- [ ] Like book suggestions
 - [x] Upgrade to Kotlin > 1.4.20
     - [x] ViewBinding
     - [x] Remove Kotterknife usage
-- [ ] Backup file improvements
-    - [ ] Show path to local backup files
-    - [ ] Open file with FileProvider
 - [x] Improve main screen
     - [x] Replace buggy SharedElementTransition for DetailPageNavigation
     - [x] Use lighter UI for labels (outline instead of filled)

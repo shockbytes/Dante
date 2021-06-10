@@ -10,7 +10,6 @@ import at.shockbytes.dante.core.book.BookId
 import at.shockbytes.dante.core.createSharingIntent
 import at.shockbytes.dante.ui.activity.BookStorageActivity
 import at.shockbytes.dante.ui.activity.DetailActivity
-import at.shockbytes.dante.ui.activity.InspirationsActivity
 import at.shockbytes.dante.ui.activity.LoginActivity
 import at.shockbytes.dante.ui.activity.MainActivity
 import at.shockbytes.dante.ui.activity.ManualAddActivity
@@ -18,7 +17,9 @@ import at.shockbytes.dante.ui.activity.NotesActivity
 import at.shockbytes.dante.ui.activity.SearchActivity
 import at.shockbytes.dante.ui.activity.SettingsActivity
 import at.shockbytes.dante.ui.activity.StatisticsActivity
+import at.shockbytes.dante.ui.activity.SuggestionsActivity
 import at.shockbytes.dante.ui.activity.TimeLineActivity
+import at.shockbytes.dante.ui.activity.WishlistActivity
 import kotlinx.parcelize.Parcelize
 
 sealed class Destination {
@@ -116,15 +117,13 @@ sealed class Destination {
 
     object Wishlist : Destination() {
         override fun provideIntent(context: Context): Intent {
-            // TODO Split this Activity later
-            return InspirationsActivity.newIntent(context)
+            return WishlistActivity.newIntent(context)
         }
     }
 
     object Suggestions : Destination() {
         override fun provideIntent(context: Context): Intent {
-            // TODO Split this Activity later
-            return InspirationsActivity.newIntent(context)
+            return SuggestionsActivity.newIntent(context)
         }
     }
 

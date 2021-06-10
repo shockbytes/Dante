@@ -69,8 +69,10 @@
             android:label="@string/label_stats" />
 
         <activity
-            android:name=".ui.activity.InspirationsActivity"
-            android:label="@string/inspirations" />
+            android:name=".ui.activity.SuggestionsActivity" />
+
+        <activity
+            android:name=".ui.activity.WishlistActivity" />
 
         <activity android:name=".camera.BarcodeCaptureActivity"
             android:screenOrientation="portrait" />

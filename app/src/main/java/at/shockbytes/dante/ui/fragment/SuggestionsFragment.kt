@@ -39,6 +39,7 @@ class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
     private lateinit var suggestionAdapter: SuggestionsAdapter
 
     override fun setupViews() {
+        setupToolbar()
 
         suggestionAdapter = SuggestionsAdapter(
             requireContext(),
@@ -57,6 +58,18 @@ class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
         vb.rvSuggestions.apply {
             layoutManager = SharedViewComponents.layoutManagerForBooks(requireContext())
             this.adapter = suggestionAdapter
+        }
+    }
+
+    private fun setupToolbar() {
+        with(vb.toolbarWishlist) {
+            danteToolbarTitle.setText(R.string.suggestions_title)
+            danteToolbarBack.apply {
+                setVisible(true)
+                setOnClickListener {
+                    activity?.onBackPressed()
+                }
+            }
         }
     }
 
@@ -113,7 +126,6 @@ class SuggestionsFragment : BaseFragment<FragmentSuggestionsBinding>() {
 
         when (event) {
             is SuggestionsViewModel.SuggestionEvent.MoveToWishlistEvent -> {
-                (parentFragment as? InspirationsFragment)?.moveToWishlistTab()
                 showSnackbar(getString(R.string.book_added_to_wishlist, event.title))
             }
             is SuggestionsViewModel.SuggestionEvent.ReportSuggestionEvent.Success -> {

@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginVertical="8dp"
     android:background="@color/mainBackground">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_suggestions"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
+
+        <include layout="@layout/dante_toolbar"
+            android:id="@+id/toolbar_wishlist" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_suggestions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:scrollbars="vertical" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_suggestions_explanation"
@@ -22,23 +31,23 @@
         android:drawablePadding="16dp"
         android:gravity="center"
         android:padding="16dp"
-        tools:text="@string/no_suggestions_for_user"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:textColor="@color/colorSecondaryText"
         android:visibility="gone"
+        tools:text="@string/no_suggestions_for_user"
         tools:visibility="visible" />
 
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/pb_suggestions"
         android:layout_width="150dp"
-        android:layout_gravity="center"
         android:layout_height="150dp"
+        android:layout_gravity="center"
         android:visibility="gone"
-        tools:visibility="visible"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/lottie_loading" />
+        app:lottie_rawRes="@raw/lottie_loading"
+        tools:visibility="visible" />
 
 
 </FrameLayout>

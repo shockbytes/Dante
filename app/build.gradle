@@ -6,14 +6,14 @@ apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion '30.0.0'
+    buildToolsVersion '30.0.2'
 
     defaultConfig {
         applicationId "at.shockbytes.dante"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 44
-        versionName "4.1-dev"
+        versionCode 45
+        versionName "4.1"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

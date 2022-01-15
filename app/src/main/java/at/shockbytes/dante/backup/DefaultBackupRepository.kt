@@ -16,6 +16,7 @@ import at.shockbytes.dante.core.data.BookRepository
 import at.shockbytes.dante.core.data.PageRecordDao
 import at.shockbytes.dante.util.merge
 import at.shockbytes.dante.util.settings.delegate.edit
+import at.shockbytes.dante.util.singleOf
 import at.shockbytes.tracking.Tracker
 import at.shockbytes.tracking.event.DanteTrackingEvent
 import com.f2prateek.rx.preferences2.RxSharedPreferences
@@ -126,8 +127,7 @@ class DefaultBackupRepository(
         pageRecords: List<PageRecord>,
         strategy: RestoreStrategy
     ): Completable {
-        return bookRepository.bookObservable
-            .firstOrError()
+        return singleOf {  bookRepository.allBooks }
             .map { restoredBooks ->
                 val map = createIdMappingForRestoredBooks(restoredBooks, books)
                 pageRecords.map { pageRecord ->

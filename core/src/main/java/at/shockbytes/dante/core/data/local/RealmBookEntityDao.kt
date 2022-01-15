@@ -49,6 +49,12 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
             .map { mapper.mapTo(it) }
             .toObservable()
 
+    override val allBooks: List<BookEntity>
+        get() = realm.read<RealmBook>()
+            .findAll()
+            .toList()
+            .map { mapper.mapTo(it) }
+
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = realm.read<RealmBookLabel>()
             .equalTo("bookId", BookIds.default())
@@ -168,7 +174,7 @@ class RealmBookEntityDao(private val realm: RealmInstanceProvider) : BookEntityD
     }
 
     private fun mergeBackupRestore(backupBooks: List<BookEntity>): Completable {
-        return bookObservable.first(listOf()) // <-- Important! Convert into single first
+        return singleOf { realm.read<RealmBook>().findAll().toList() }
             .map { books ->
                 backupBooks.filter { book ->
                     books.none { it.title == book.title }

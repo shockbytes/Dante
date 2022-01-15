@@ -12,6 +12,8 @@ interface BookRepository {
 
     val bookObservable: Observable<List<BookEntity>>
 
+    val allBooks: List<BookEntity>
+
     val bookLabelObservable: Observable<List<BookLabel>>
 
     val booksCurrentlyReading: List<BookEntity>

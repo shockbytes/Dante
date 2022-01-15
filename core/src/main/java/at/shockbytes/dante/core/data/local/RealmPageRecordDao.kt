@@ -83,7 +83,10 @@ class RealmPageRecordDao(private val realm: RealmInstanceProvider) : PageRecordD
 
     private fun insert(pageRecord: PageRecord) {
         realm.executeTransaction { realm ->
-            realm.copyToRealm(mapper.mapFrom(pageRecord))
+            // Only insert if a page record does not exist yet
+            if (realm.findPageRecord(pageRecord) == null) {
+                realm.copyToRealm(mapper.mapFrom(pageRecord))
+            }
         }
     }
 

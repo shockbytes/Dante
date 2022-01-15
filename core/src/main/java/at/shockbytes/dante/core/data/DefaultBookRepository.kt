@@ -27,6 +27,9 @@ class DefaultBookRepository(private val localBookDao: BookEntityDao) : BookRepos
     override val bookObservable: Observable<List<BookEntity>>
         get() = selectedBookDao.bookObservable
 
+    override val allBooks: List<BookEntity>
+        get() = selectedBookDao.allBooks
+
     override val bookLabelObservable: Observable<List<BookLabel>>
         get() = selectedBookDao.bookLabelObservable
 

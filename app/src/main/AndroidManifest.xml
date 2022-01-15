@@ -90,7 +90,8 @@
 
         <receiver
             android:name=".ui.widget.DanteAppWidget"
-            android:label="@string/currently_reading">
+            android:label="@string/currently_reading"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

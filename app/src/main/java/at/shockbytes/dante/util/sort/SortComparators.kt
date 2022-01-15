@@ -2,6 +2,8 @@ package at.shockbytes.dante.util.sort
 
 import at.shockbytes.dante.core.book.BookEntity
 import at.shockbytes.dante.util.removeBrackets
+import java.util.*
+import kotlin.Comparator
 
 /**
  * Author:  Martin Macheiner
@@ -41,8 +43,40 @@ class SortComparators {
     }
 
     private class TitleComparator : Comparator<BookEntity> {
+
         override fun compare(o1: BookEntity?, o2: BookEntity?): Int {
-            return o1?.title?.compareTo(o2?.title ?: "") ?: 0
+
+            val title1 = sanitizeTitle(o1?.title)
+            val title2 = sanitizeTitle(o2?.title)
+
+            return title1.compareTo(title2)
+        }
+
+        private fun sanitizeTitle(title: String?): String {
+
+            if (title == null) {
+                return ""
+            }
+
+            EXCLUDED_PREFIXES.forEach { prefix ->
+
+                val titleLowercase = title.toLowerCase(Locale.getDefault())
+                val prefixLowercase = prefix.toLowerCase(Locale.getDefault())
+
+                // Check if title contains prefix.
+                // If so, remove the prefix and return it
+                if (titleLowercase.startsWith(prefixLowercase)) {
+                    return title.removePrefix(prefix).trim()
+                }
+            }
+
+            return title
+        }
+
+        companion object {
+            private val EXCLUDED_PREFIXES = arrayOf(
+                "The",
+            )
         }
     }
 

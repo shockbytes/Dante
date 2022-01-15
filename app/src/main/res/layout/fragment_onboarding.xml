@@ -5,17 +5,4 @@
     android:background="@color/white"
     android:layout_height="match_parent">
 
-    <com.tbuonomo.creativeviewpager.CreativeViewPager
-        android:id="@+id/fragment_onboarding_vp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:contentHorizontalPadding="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:contentItemMargin="8dp"
-        app:headerItemMargin="8dp"
-        app:headerItemSize="92dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

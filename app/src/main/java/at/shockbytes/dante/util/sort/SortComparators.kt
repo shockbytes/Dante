@@ -76,7 +76,6 @@ class SortComparators {
         companion object {
             private val EXCLUDED_PREFIXES = arrayOf(
                 "The",
-                "Die"
             )
         }
     }

@@ -66,14 +66,18 @@ the user during the login process.
   - [ ] Online storage switch
   - [ ] How to handle local data when switching accounts? https://github.com/realm/realm-java/issues/2153#issuecomment-174613885
 
+### Version 4.1.1
+* Fix TitleSortComparator
+* Fix backup issues with local storage
+
 ### Version 4.1 - HIGH MAINTENANCE
-- [x] Upgrade to Kotlin > 1.4.20
-    - [x] ViewBinding
-    - [x] Remove Kotterknife usage
-- [x] Improve main screen
-    - [x] Replace buggy SharedElementTransition for DetailPageNavigation
-    - [x] Use lighter UI for labels (outline instead of filled)
-    - [x] New labels screen
+* Upgrade to Kotlin > 1.4.20
+    * ViewBinding
+    * Remove Kotterknife usage
+* Improve main screen
+    * Replace buggy SharedElementTransition for DetailPageNavigation
+    * Use lighter UI for labels (outline instead of filled)
+    * New labels screen
 
 ## Current development
 

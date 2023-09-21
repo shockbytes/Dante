@@ -80,6 +80,9 @@ class AnnouncementFragment : BaseFragment<FragmentAnnouncementBinding>() {
                         setImageResource(illustration.drawableRes)
                     }
                 }
+                null -> {
+                    // Do nothing
+                }
             }
 
             vb.btnAnnouncementAction.apply {

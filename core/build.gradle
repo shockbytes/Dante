@@ -5,11 +5,11 @@ apply plugin: 'kotlin-parcelize'
 apply plugin: 'realm-android'
 
 android {
-    compileSdkVersion 31
+    compileSdk 33
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -21,6 +21,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'at.shockbytes.dante.core'
 }
 
 kapt {
@@ -28,6 +29,11 @@ kapt {
         arg("realm.ignoreKotlinNullability", true)
     }
 }
+
+kotlin {
+    jvmToolchain(17)
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

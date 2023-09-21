@@ -10,7 +10,9 @@ import android.content.ComponentName
 import at.shockbytes.dante.DanteApp
 import android.app.PendingIntent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.os.Build
 import at.shockbytes.dante.core.book.BookIds
+import at.shockbytes.dante.core.sdkVersionOrAbove
 import at.shockbytes.dante.navigation.ActivityNavigator
 import at.shockbytes.dante.navigation.Destination
 
@@ -83,7 +85,19 @@ class DanteAppWidget : AppWidgetProvider() {
 
     private fun createPendingIntentTemplate(context: Context): PendingIntent {
         val openIntent = Intent(context, this::class.java).setAction(ACTION_BOOK_CLICKED)
-        return PendingIntent.getBroadcast(context, 0, openIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val flags = if (sdkVersionOrAbove(Build.VERSION_CODES.M)) {
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+
+        return PendingIntent.getBroadcast(
+            context,
+            0,
+            openIntent,
+            flags
+        )
     }
 
     companion object {

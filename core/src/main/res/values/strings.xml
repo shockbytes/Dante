@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">4.1.3</string>
+    <string name="app_version" translatable="false">4.2</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -72,7 +72,7 @@
     <string name="prefs_category_about">About</string>
     <string name="prefs_app_version_title">App version</string>
     <string name="prefs_developer_title">Developer</string>
-    <string name="prefs_developer_summary" translatable="false">Shockbytes Studio &#169; 2016-2021</string>
+    <string name="prefs_developer_summary" translatable="false">Shockbytes Studio &#169; 2016-2023</string>
     <string name="prefs_icons_title" translatable="false">Icons</string>
     <string name="prefs_icons_summary" translatable="false">www.icons8.com\nwww.flaticon.com</string>
 
@@ -379,8 +379,9 @@
     <string name="ask_for_book_deletion">Delete book?</string>
     <string name="ask_for_book_deletion_msg">Do you want to remove %s from your library?</string>
 
-    <string name="announcement_suggestion_title">Suggest books</string>
-    <string name="announcement_suggestion_description">With the latest update it is now possible to suggest books. If you have a book that you want to share with other readers then simply do that by clicking on the book menu in the overview screen.</string>
+    <string name="open_github">Open Github</string>
+    <string name="announcement_suggestion_title">Further Development</string>
+    <string name="announcement_suggestion_description">There have not been much updates recently. As a single developer, there is just not enough time. The focus shifts now from a pure Android application to a cross-platform approach to support iOS and Web too: Codename DanteX. This also means that some bugs will not be addressed immediately. However, this is quite some work, so I appreciate every help on this topic. Please checkout the Github Repository. A new version of Dante will presumably arrive earliest in the mid of 2024. Until then, happy reading.\n\nP.S.: Special thanks to Lockie Richter who already helped with some features on DanteX.</string>
 
     <string name="mail_subject_translation">I want to help you translate</string>
     <string name="action_send_mail">Drop mail</string>

@@ -114,14 +114,6 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             }
         }
 
-        findPreference<Preference>(getString(R.string.prefs_ad_free_medium_article_key))?.apply {
-            this.setOnPreferenceClickListener {
-                tracker.track(DanteTrackingEvent.OpenAdFreeMediumArticle)
-                UrlLauncher.openAdFreeMediumArticle(requireContext())
-                true
-            }
-        }
-
         findPreference<Preference>(getString(R.string.prefs_feedback_key))?.apply {
             this.setOnPreferenceClickListener {
                 MailLauncher.sendMail(
@@ -156,7 +148,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChan
             featureFlagPreference?.isVisible = true
             featureFlagPreference?.setOnPreferenceClickListener {
                 DanteUtils.addFragmentToActivity(
-                    parentFragmentManager,
+                    fragmentManager!!,
                     FeatureFlagConfigFragment.newInstance(),
                     android.R.id.content,
                     addToBackStack = true

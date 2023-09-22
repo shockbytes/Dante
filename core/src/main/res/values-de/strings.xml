@@ -198,8 +198,9 @@
     <string name="ask_for_book_deletion_msg">Willst du wirklich das Buch %s von deiner Bibliothek entfernen?</string>
     <string name="action_send_mail">Mail senden</string>
 
-    <string name="announcement_suggestion_title">Büchervorschläge</string>
-    <string name="announcement_suggestion_description">Mit dem letzten Update ist es nun möglich anderen Benutzern Bücher vorzuschlagen. Wenn du ein Buch hast, dass du unbedingt mit Lesern auf der ganzen Welt teilen willst, dann kannst du das ganz einfach über das Buchmenü in der Übersicht machen.</string>
+    <string name="open_github">Github öffnen</string>
+    <string name="announcement_suggestion_title">Weitere Entwicklung</string>
+    <string name="announcement_suggestion_description">Es gab nicht viele App-Updates in letzter Zeit. Als einziger Entwickler fehlen schlichtweg die Ressourcen. Der Fokus geht nun weg von einer reinen Android App in Richtung Cross-Plattform Support für iOS und Web: Codename DanteX. Das bedeutet auch, dass Bugs nicht sofort behoben werden. Das ist aber einiges an Arbeit und jede Hilfe ist hier willkommen. Werft gerne einen Blick auf das Github Repository. Eine neue Version von Dante wird voraussichtlich frühestens Mitte 2024 erscheinen. Bis dahin, viel Spaß beim Lesen.\n\nP.S.: Extra Dank für Lockie Richter, der schon bereits bei einigen Features von DanteX geholfen hat.</string>
 
     <string name="mail_subject_translation">Ich will übersetzen helfen</string>
     <string name="prefs_category_contribute">Mitwirken</string>

@@ -8,11 +8,14 @@ class SharedPrefsAnnouncementProvider(
 ) : AnnouncementProvider {
 
     private val activeAnnouncement: Announcement = Announcement(
-        key = "suggestions_announcement",
+        key = "danteX",
         titleRes = R.string.announcement_suggestion_title,
         descriptionRes = R.string.announcement_suggestion_description,
-        illustration = Announcement.Illustration.ImageIllustration(R.drawable.ic_suggestions),
-        action = null
+        illustration = Announcement.Illustration.LottieIllustration(R.raw.in_development),
+        action = Announcement.Action.OpenUrl(
+            actionLabel = R.string.open_github,
+            url = "https://github.com/shockbytes/DanteX"
+        )
     )
 
     override fun getActiveAnnouncement(): Announcement? {

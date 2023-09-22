@@ -90,12 +90,6 @@
     <androidx.preference.PreferenceCategory android:title="@string/prefs_category_about">
 
         <androidx.preference.Preference
-            android:icon="@drawable/ic_settings_ad_free"
-            android:key="@string/prefs_ad_free_medium_article_key"
-            android:title="@string/prefs_ad_free_medium_article_title"
-            android:summary="@string/prefs_ad_free_medium_article_summary" />
-
-        <androidx.preference.Preference
             android:icon="@drawable/ic_settings_feature_flag"
             android:key="@string/prefs_feature_flag_key"
             android:title="@string/prefs_feature_flag_title"

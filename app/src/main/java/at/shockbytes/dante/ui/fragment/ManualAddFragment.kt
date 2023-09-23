@@ -1,5 +1,6 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.graphics.drawable.BitmapDrawable
@@ -66,16 +67,32 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
             .let(viewModel::initialize)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            val url = data?.data
+            if (url != null) {
+                viewModel.imagePicked(url)
+            } else {
+                showSnackbar(getString(R.string.pick_image_error))
+            }
+        } else {
+            showSnackbar(getString(R.string.pick_image_error))
+        }
+    }
+
     override fun setupViews() {
 
         vb.cardImageManualAdd.setOnClickListener { v ->
             v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
-            viewModel.pickImage(requireActivity())
+
+            viewModel.pickImage(this, PICK_IMAGE_REQ_CODE)
         }
 
         vb.editTextManualAddTitle.doOnTextChanged { text, _, _, _ ->
             (activity as? TintableBackNavigableActivity<*>)
-                ?.tintTitle(text.toString().toUpperCase(Locale.getDefault()))
+                ?.tintTitle(text.toString().uppercase(Locale.getDefault()))
         }
 
         vb.btnManualAddUpcoming.setOnClickListener { v ->
@@ -178,6 +195,7 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
                     callbackHandleValues = Pair(first = false, second = true)
                 )
             }
+
             ManualAddViewModel.ImageState.NoImage -> {
                 imageLoader.loadImageResource(
                     requireContext(),
@@ -194,10 +212,12 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
                 vb.pbManualAddImageUpload.setVisible(true)
                 vb.imgViewManualAdd.setVisible(false)
             }
+
             is ManualAddViewModel.ImageLoadingState.Error -> {
                 vb.pbManualAddImageUpload.setVisible(false)
                 vb.imgViewManualAdd.setVisible(true)
             }
+
             ManualAddViewModel.ImageLoadingState.Success -> Unit // Not needed...
         }
     }
@@ -208,6 +228,7 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
                 vb.containerManualAddButtons.setVisible(true)
                 vb.containerUpdateBookButtons.setVisible(false)
             }
+
             is ManualAddViewModel.ViewState.UpdateBook -> {
                 vb.containerManualAddButtons.setVisible(false)
                 vb.containerUpdateBookButtons.setVisible(true)
@@ -222,10 +243,14 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
                 activity?.onBackPressed()
                 sendBookCreatedBroadcast(event.createdBookState)
             }
+
             is ManualAddViewModel.AddEvent.Error -> {
-                showSnackbar(getString(R.string.manual_add_error),
-                    getString(android.R.string.ok), true) { this.dismiss() }
+                showSnackbar(
+                    getString(R.string.manual_add_error),
+                    getString(android.R.string.ok), true
+                ) { this.dismiss() }
             }
+
             is ManualAddViewModel.AddEvent.Updated -> {
                 sendBookUpdatedBroadcast(event.updateBookState)
                 activity?.onBackPressed()
@@ -316,6 +341,8 @@ class ManualAddFragment : BaseFragment<FragmentManualAddBinding>(), ImageLoading
     }
 
     companion object {
+
+        private const val PICK_IMAGE_REQ_CODE = 0x4821
 
         private const val ARG_BOOK_ENTITY_UPDATE = "arg_book_entity_update"
 

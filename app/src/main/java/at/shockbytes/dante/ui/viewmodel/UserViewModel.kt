@@ -1,5 +1,7 @@
 package at.shockbytes.dante.ui.viewmodel
 
+import android.net.Uri
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,6 +23,7 @@ import at.shockbytes.tracking.event.DanteTrackingEvent
 import at.shockbytes.tracking.properties.LoginSource
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -208,9 +211,13 @@ class UserViewModel @Inject constructor(
             .addTo(compositeDisposable)
     }
 
-    fun changeUserImage(activity: FragmentActivity) {
+    fun changeUserImage(fragment: Fragment, requestCode: Int) {
         imagePicker
-            .openGallery(activity)
+            .openGallery(fragment, requestCode)
+    }
+
+    fun userImagePicked(uri: Uri) {
+        Single.just(uri)
             .subscribeOn(schedulers.ui)
             .observeOn(schedulers.ui)
             .flatMap(imageUploadStorage::uploadUserImage)

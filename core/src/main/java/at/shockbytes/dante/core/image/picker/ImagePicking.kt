@@ -1,10 +1,8 @@
 package at.shockbytes.dante.core.image.picker
 
-import android.net.Uri
-import androidx.fragment.app.FragmentActivity
-import io.reactivex.Single
+import androidx.fragment.app.Fragment
 
 interface ImagePicking {
 
-    fun openGallery(activity: FragmentActivity): Single<Uri>
+    fun openGallery(fragment: Fragment, requestCode: Int)
 }

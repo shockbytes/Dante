@@ -3,6 +3,7 @@ package at.shockbytes.dante.ui.viewmodel
 import androidx.lifecycle.MutableLiveData
 import android.net.Uri
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import at.shockbytes.dante.core.book.BookEntity
@@ -14,6 +15,7 @@ import at.shockbytes.dante.ui.viewmodel.ManualAddViewModel.ImageState.ThumbnailU
 import at.shockbytes.dante.util.ExceptionHandlers
 import at.shockbytes.dante.util.addTo
 import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -91,9 +93,13 @@ class ManualAddViewModel @Inject constructor(
         }
     }
 
-    fun pickImage(activity: FragmentActivity) {
+    fun pickImage(fragment: Fragment, requestCode: Int) {
         imagePicker
-            .openGallery(activity)
+            .openGallery(fragment, requestCode)
+    }
+
+    fun imagePicked(uri: Uri) {
+        Single.just(uri)
             .flatMap { imageUri ->
                 imageUploadStorage.uploadCustomImage(imageUri, ::progressUpdate)
             }

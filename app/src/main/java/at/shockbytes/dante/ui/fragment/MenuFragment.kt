@@ -1,6 +1,9 @@
 package at.shockbytes.dante.ui.fragment
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.text.InputType
@@ -45,6 +48,7 @@ import javax.inject.Inject
  * Author:  Martin Macheiner
  * Date:    06.06.2018
  */
+@SuppressLint("CheckResult")
 class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
 
     @Inject
@@ -63,17 +67,13 @@ class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
     override fun bindViewModel() {
         userViewModel.getUserViewState().observe(this, Observer(::handleUserViewState))
 
-        userViewModel.onUserEvent()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::handleUserEvent)
-            .addTo(compositeDisposable)
+        userViewModel.onUserEvent().observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::handleUserEvent).addTo(compositeDisposable)
     }
 
 
     override fun createViewBinding(
-        inflater: LayoutInflater,
-        root: ViewGroup?,
-        attachToRoot: Boolean
+        inflater: LayoutInflater, root: ViewGroup?, attachToRoot: Boolean
     ): BottomSheetMenuBinding {
         return BottomSheetMenuBinding.inflate(inflater, root, attachToRoot)
     }
@@ -90,12 +90,11 @@ class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
 
                 val photoUrl = event.user.photoUrl
                 if (photoUrl != null) {
-                    photoUrl.loadRoundedBitmap(requireContext())
-                        .subscribe({ image ->
-                            vb.profileHeaderMenu.imageView.setImageBitmap(image)
-                        }, { throwable ->
-                            throwable.printStackTrace()
-                        })
+                    photoUrl.loadRoundedBitmap(requireContext()).subscribe({ image ->
+                        vb?.profileHeaderMenu?.imageView?.setImageBitmap(image)
+                    }, { throwable ->
+                        throwable.printStackTrace()
+                    })
                 } else {
                     vb.profileHeaderMenu.imageView.setImageResource(R.drawable.ic_user_template_dark)
                 }
@@ -133,9 +132,7 @@ class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
         ActivityNavigator.navigateTo(
             context,
             Destination.Login,
-            requireActivity()
-                .let(ActivityOptionsCompat::makeSceneTransitionAnimation)
-                .toBundle()
+            requireActivity().let(ActivityOptionsCompat::makeSceneTransitionAnimation).toBundle()
         )
 
         /*
@@ -233,18 +230,30 @@ class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
             navigateToAndDismiss(Destination.Settings)
         }
 
-        vb.profileActionViewMenu.onActionButtonClicked()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::handleProfileClick)
-            .addTo(compositeDisposable)
+        vb.profileActionViewMenu.onActionButtonClicked().observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::handleProfileClick).addTo(compositeDisposable)
     }
 
     private fun handleProfileClick(profileActionViewClick: ProfileActionViewClick) {
         when (profileActionViewClick) {
             ProfileActionViewClick.UPGRADE_ANONYMOUS_ACCOUNT -> showUpgradeBottomSheet()
             ProfileActionViewClick.CHANGE_NAME -> showChangeNameScreen()
-            ProfileActionViewClick.CHANGE_IMAGE -> userViewModel.changeUserImage(requireActivity())
+            ProfileActionViewClick.CHANGE_IMAGE -> userViewModel.changeUserImage(this, REQ_CODE_IMAGE)
             ProfileActionViewClick.CHANGE_PASSWORD -> showChangePasswordScreen()
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+            val url = data?.data
+            if (url != null) {
+                userViewModel.userImagePicked(url)
+            } else {
+                showToast(R.string.pick_image_error)
+            }
+        } else {
+            showToast(R.string.pick_image_error)
         }
     }
 
@@ -281,16 +290,19 @@ class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
     }
 
     private fun showUpgradeBottomSheet() {
-        MailLoginBottomSheetDialogFragment
-            .newInstance(MailLoginViewModel.MailLoginState.ShowEmailAndPassword(isSignUp = true, R.string.anonymous_upgrade))
-            .setOnCredentialsEnteredListener(userViewModel::anonymousUpgrade)
-            .show(parentFragmentManager, "anonymous-upgrade-fragment")
+        MailLoginBottomSheetDialogFragment.newInstance(
+            MailLoginViewModel.MailLoginState.ShowEmailAndPassword(
+                isSignUp = true, R.string.anonymous_upgrade
+            )
+        ).setOnCredentialsEnteredListener(userViewModel::anonymousUpgrade)
+            .show(parentFragment?.fragmentManager!!, "anonymous-upgrade-fragment")
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
         dialog.setOnShowListener {
-            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)!!
+            val bottomSheet =
+                dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)!!
             BottomSheetBehavior.from(bottomSheet).state = BottomSheetBehavior.STATE_EXPANDED
         }
         return dialog
@@ -301,15 +313,15 @@ class MenuFragment : BaseBottomSheetFragment<BottomSheetMenuBinding>() {
         ActivityNavigator.navigateTo(
             activity,
             destination,
-            ActivityOptionsCompat
-                .makeSceneTransitionAnimation(requireActivity())
-                .toBundle()
+            ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity()).toBundle()
         )
 
         dismiss()
     }
 
     companion object {
+
+        private const val REQ_CODE_IMAGE = 0x7582
 
         fun newInstance() = MenuFragment()
     }

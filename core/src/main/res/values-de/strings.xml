@@ -407,4 +407,6 @@
     <string name="add_book">Buch hinzufügen</string>
     <string name="action_edit_color">Farbe ändern</string>
 
+    <string name="pick_image_error">Es ist gerade nicht möglich das gewählte Bild auszuwählen. Versuche es später nochmals.</string>
+
 </resources>

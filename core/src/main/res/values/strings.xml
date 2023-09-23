@@ -1,7 +1,7 @@
 <resources>
 
     <string name="app_name" translatable="false">Dante</string>
-    <string name="app_version" translatable="false">4.2</string>
+    <string name="app_version" translatable="false">4.2.1</string>
 
     <string name="dante_github_link" translatable="false">https://github.com/shockbytes/Dante</string>
 
@@ -511,5 +511,7 @@
 
     <string name="ask_for_all_page_record_deletion_title">Delete all page records</string>
     <string name="ask_for_all_page_record_deletion_msg">Deleting all page records means effectively deleting the whole reading history for this book. This will also set the current page to 0. Are you sure you want to proceed?</string>
+
+    <string name="pick_image_error">Sorry, we are not able to retrieve the image you selected. Please try again later.</string>
 
 </resources>

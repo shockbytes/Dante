@@ -67,7 +67,7 @@ dependencies {
     api "com.jakewharton.timber:timber:$timberVersion"
 
     // Image picker
-    api 'com.github.dhaval2404:imagepicker:1.7.5'
+    api 'com.github.dhaval2404:imagepicker:2.0'
     api 'com.github.raquezha:InlineActivityResult:1.0.0-jitpack'
 
     api "com.github.bumptech.glide:glide:$glideVersion"

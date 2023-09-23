@@ -11,8 +11,8 @@ android {
         applicationId "at.shockbytes.dante"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 48
-        versionName "4.2.0"
+        versionCode 49
+        versionName "4.2.1"
 
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true

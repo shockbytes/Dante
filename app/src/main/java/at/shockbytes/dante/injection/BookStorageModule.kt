@@ -81,6 +81,7 @@ class BookStorageModule(private val app: Application) {
                 schedulerFacade,
                 driveClient
             ),
+            /*
             ShockbytesHerokuServerBackupProvider(
                 loginRepository,
                 shockbytesHerokuApi,
@@ -98,6 +99,7 @@ class BookStorageModule(private val app: Application) {
                 permissionManager,
                 csvImportProvider
             )
+             */
         )
     }
 
